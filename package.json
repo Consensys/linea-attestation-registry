@@ -1,0 +1,37 @@
+{
+  "name": "linea-attestation-registry",
+  "version": "0.0.1",
+  "description": "Core smart contracts to read and write attestations on Linea",
+  "author": "Consensys",
+  "license": "ISC",
+  "scripts": {
+    "build": "forge build",
+    "build:optimized": "FOUNDRY_PROFILE=optimized forge build",
+    "build:smt": "FOUNDRY_PROFILE=smt forge build",
+    "clean": "rm -rf cache out out-optimized out-svg",
+    "lint": "pnpm lint:sol && pnpm prettier:check",
+    "lint:sol": "pnpm solhint \"{script,src,test}/**/*.sol\" && forge fmt --check",
+    "prettier:check": "prettier --check \"**/*.{json,md,svg,yml}\"",
+    "prettier:write": "prettier --write \"**/*.{json,md,svg,yml}\"",
+    "test": "forge test",
+    "test:lite": "FOUNDRY_PROFILE=lite forge test",
+    "test:optimized": "pnpm build:optimized && FOUNDRY_PROFILE=test-optimized forge test"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "solhint": "^3.4.1"
+  },
+  "files": [
+    "src"
+  ],
+  "keywords": [
+    "linea-attestation-registry",
+    "blockchain",
+    "attestation",
+    "ethereum",
+    "foundry",
+    "smart-contracts",
+    "solidity"
+  ],
+  "repository": "github.com/Consensys/linea-attestation-registry"
+}

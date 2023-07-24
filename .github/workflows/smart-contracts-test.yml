@@ -1,6 +1,11 @@
 name: Smart Contracts Test
 
-on: workflow_dispatch
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  push:
 
 env:
   FOUNDRY_PROFILE: ci
@@ -10,7 +15,7 @@ jobs:
     strategy:
       fail-fast: true
 
-    name: Foundry project
+    name: Linea Attestation Registry
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

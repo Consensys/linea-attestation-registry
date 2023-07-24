@@ -1,27 +1,32 @@
 ## Linea Attestation Registry
 
-**Linea Attestation Registry is a set of contracts that allows anyone to read and write attestations of any type and any subject.**
+**Linea Attestation Registry is a set of contracts that allows anyone to read and write attestations of any type and any
+subject.**
 
 Initial draft contains Foundry tool setup with basic example of a contract with unit tests.
+
 ## Foundry Installation
 
 **Using Foundryup**
 
 Foundryup is the Foundry toolchain installer. Open your terminal and run the following command:
 
+curl -L https://foundry.paradigm.xyz | bash This will install Foundryup, then simply follow the instructions on-screen,
+which will make the foundryup command available in your CLI.
 
-curl -L https://foundry.paradigm.xyz | bash
-This will install Foundryup, then simply follow the instructions on-screen, which will make the foundryup command available in your CLI.
-
-Running foundryup by itself will install the latest (nightly) precompiled binaries: forge, cast, anvil, and chisel. See foundryup --help for more options, like installing from a specific version or commit.
+Running foundryup by itself will install the latest (nightly) precompiled binaries: forge, cast, anvil, and chisel. See
+foundryup --help for more options, like installing from a specific version or commit.
 
 ℹ️ Note
 
-If you're on Windows, you will need to install and use Git BASH or WSL, as your terminal, since Foundryup currently does not support Powershell or Cmd.
+If you're on Windows, you will need to install and use Git BASH or WSL, as your terminal, since Foundryup currently does
+not support Powershell or Cmd.
 
-For more details on installation, see the [installation guide](https://book.getfoundry.sh/getting-started/installation) in the book.
+For more details on installation, see the [installation guide](https://book.getfoundry.sh/getting-started/installation)
+in the book.
 
-If you're experiencing any issues while installing, check out [Getting Help](#getting-help) and the [FAQ](https://book.getfoundry.sh/faq).
+If you're experiencing any issues while installing, check out [Getting Help](#getting-help) and the
+[FAQ](https://book.getfoundry.sh/faq).
 
 ## Forge - build and test
 
@@ -50,11 +55,13 @@ Ran 1 test suites: 2 tests passed, 0 failed, 0 skipped (2 total tests)
 
 ## Deployment - using Anvil
 
-Anvil is a local testnet node shipped with Foundry. You can use it for testing your contracts from frontends or for interacting over RPC. Anvil is part of the Foundry suite and is installed alongside forge, cast, and chisel.
+Anvil is a local testnet node shipped with Foundry. You can use it for testing your contracts from frontends or for
+interacting over RPC. Anvil is part of the Foundry suite and is installed alongside forge, cast, and chisel.
 
 **Step 1 : Run local node using Anvil**
 
-To run local node, simply type anvil. You should see a list of accounts and private keys available for use, as well as the address and port that the node is listening on.
+To run local node, simply type anvil. You should see a list of accounts and private keys available for use, as well as
+the address and port that the node is listening on.
 
 ```
 $ anvil
@@ -144,7 +151,8 @@ Forge can deploy smart contracts to a given network with the forge create comman
 
 Forge can deploy only one contract at a time.
 
-To deploy on Anvil local node use ```forge create``` command with RPC url and any private key provided by anvil local node mentioned above. 
+To deploy on Anvil local node use `forge create` command with RPC url and any private key provided by anvil local node
+mentioned above.
 
 e.g.
 

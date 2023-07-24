@@ -1,4 +1,4 @@
-name: test
+name: Smart Contracts Test
 
 on: workflow_dispatch
 

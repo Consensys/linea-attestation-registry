@@ -7,37 +7,125 @@ on:
       - dev
       - release/*
   push:
-        - main
-        - dev
-        - release/*
+    branches:
+      - main
+      - dev
+      - feature/*
+      - release/*
 
 env:
   FOUNDRY_PROFILE: ci
 
 jobs:
-  check:
-    strategy:
-      fail-fast: true
-
-    name: Linea Attestation Registry
-    runs-on: ubuntu-latest
+  lint:
+    runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+
+      - name: "Install Foundry"
+        uses: "foundry-rs/foundry-toolchain@v1"
+
+      - name: "Install Pnpm"
+        uses: "pnpm/action-setup@v2"
         with:
-          submodules: recursive
+          version: "8"
 
-      - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
+      - name: "Install Node.js"
+        uses: "actions/setup-node@v3"
         with:
-          version: nightly
+          cache: "pnpm"
+          node-version: "lts/*"
 
-      - name: Run Forge build
-        run: |
-          forge --version
-          forge build --sizes
-        id: build
+      - name: "Install the Node.js dependencies"
+        run: "pnpm install"
 
-      - name: Run Forge tests
+      - name: "Lint the contracts"
+        run: "pnpm lint"
+
+      - name: "Add lint summary"
         run: |
-          forge test -vvv
-        id: test
+          echo "## Lint result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
+
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+        with:
+          submodules: "recursive"
+
+      - name: "Install Foundry"
+        uses: "foundry-rs/foundry-toolchain@v1"
+
+      - name: "Show the Foundry config"
+        run: "forge config"
+
+      - name: "Produce an optimized build with --via-ir"
+        run: "FOUNDRY_PROFILE=optimized forge build"
+
+      - name: "Cache the build so that it can be re-used by the other jobs"
+        uses: "actions/cache/save@v3"
+        with:
+          path: "out-optimized"
+          key: "foundry-build-${{ github.sha }}"
+
+      - name: "Add build summary"
+        run: |
+          echo "## Build result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
+
+  test-unit:
+    env:
+      FOUNDRY_FUZZ_RUNS: "5000"
+    needs: ["lint", "build"]
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+        with:
+          submodules: "recursive"
+
+      - name: "Install Foundry"
+        uses: "foundry-rs/foundry-toolchain@v1"
+
+      - name: "Restore the cached build"
+        uses: "actions/cache/restore@v3"
+        with:
+          fail-on-cache-miss: true
+          key: "foundry-build-${{ github.sha }}"
+          path: "out-optimized"
+
+      - name: "Run the unit tests against the optimized build"
+        run: "FOUNDRY_PROFILE=test-optimized forge test --match-path \"test/*\""
+
+      - name: "Add test summary"
+        run: |
+          echo "## Unit tests result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
+
+  coverage:
+    needs: ["lint", "build"]
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+        with:
+          submodules: "recursive"
+
+      - name: "Install Foundry"
+        uses: "foundry-rs/foundry-toolchain@v1"
+
+      - name: "Generate the coverage report using the unit tests"
+        run: "forge coverage --match-path \"test/**/*.sol\" --report lcov"
+
+      - name: "Upload coverage report to Codecov"
+        uses: "codecov/codecov-action@v3"
+        with:
+          files: "./lcov.info"
+
+      - name: "Add coverage summary"
+        run: |
+          echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY

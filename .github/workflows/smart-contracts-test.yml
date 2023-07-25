@@ -6,6 +6,9 @@ on:
       - main
       - dev
   push:
+        - main
+        - dev
+        - release/*
 
 env:
   FOUNDRY_PROFILE: ci

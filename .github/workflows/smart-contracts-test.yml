@@ -65,12 +65,6 @@ jobs:
       - name: "Produce an optimized build with --via-ir"
         run: "FOUNDRY_PROFILE=optimized forge build"
 
-      - name: "Cache the build so that it can be re-used by the other jobs"
-        uses: "actions/cache/save@v3"
-        with:
-          path: "out-optimized"
-          key: "foundry-build-${{ github.sha }}"
-
       - name: "Add build summary"
         run: |
           echo "## Build result" >> $GITHUB_STEP_SUMMARY
@@ -89,13 +83,6 @@ jobs:
 
       - name: "Install Foundry"
         uses: "foundry-rs/foundry-toolchain@v1"
-
-      - name: "Restore the cached build"
-        uses: "actions/cache/restore@v3"
-        with:
-          fail-on-cache-miss: true
-          key: "foundry-build-${{ github.sha }}"
-          path: "out-optimized"
 
       - name: "Run the unit tests against the optimized build"
         run: "FOUNDRY_PROFILE=test-optimized forge test --match-path \"test/*\""

@@ -17,9 +17,6 @@
     "test:lite": "FOUNDRY_PROFILE=lite forge test",
     "test:optimized": "pnpm build:optimized && FOUNDRY_PROFILE=test-optimized forge test"
   },
-  "dependencies": {
-    "@openzeppelin/contracts": "4.9.2"
-  },
   "devDependencies": {
     "prettier": "^2.8.8",
     "solhint": "^3.4.1"
@@ -36,8 +33,5 @@
     "smart-contracts",
     "solidity"
   ],
-  "peerDependencies": {
-    "@openzeppelin/contracts": "4.9.2"
-  },
   "repository": "github.com/Consensys/linea-attestation-registry"
 }

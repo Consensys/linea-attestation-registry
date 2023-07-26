@@ -15,3 +15,9 @@ docs/
 
 # Modules
 node_modules
+
+# IDE
+.idea
+
+# Misc
+lcov.info

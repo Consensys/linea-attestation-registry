@@ -13,7 +13,6 @@ out-svg
 # files
 *.env
 *.log
-*.sol
 .DS_Store
 .pnp.*
 lcov.info

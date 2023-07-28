@@ -3,8 +3,6 @@
 **Linea Attestation Registry is a set of contracts that allows anyone to read and write attestations of any type and any
 subject.**
 
-Initial draft contains Foundry tool setup with basic example of a contract with unit tests.
-
 ## Foundry Installation
 
 **Using Foundryup**
@@ -164,3 +162,11 @@ Deployer: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 Deployed to: 0x5FbDB2315678afecb367f032d93F642f64180aa3
 Transaction hash: 0x15b25752da1dfd458b92069248825ce959f5be104f974d62b4ae95050710325d
 ```
+
+## Deployment - on the Linea Goerli testnet
+
+1. Copy the `.env.example` file to a `.env` file
+2. Fill it with your preferred RPC endpoint for chain access
+3. Add your private key
+4. To verify your instance of the contract on Etherscan, also add your Etherscan API key
+5. Run `pnpm run deploy:SchemaRegistry:goerli`

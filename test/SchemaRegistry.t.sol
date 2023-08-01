@@ -13,10 +13,17 @@ contract SchemaRegistryTest is Test {
   string private expectedContext = "Context";
   string private expectedString = "this is a schema";
 
-  event SchemaCreated(bytes32 id, string name, string description, string context);
+  event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
+  event Initialized(uint8 version);
 
   function setUp() public {
     schemaRegistry = new SchemaRegistry();
+  }
+
+  function testInitialize() public {
+    vm.expectEmit();
+    emit Initialized(1);
+    schemaRegistry.initialize();
   }
 
   function testGetIdFromSchemaString() public {
@@ -25,12 +32,9 @@ contract SchemaRegistryTest is Test {
   }
 
   function testCreateSchema() public {
-    assertEq(schemaRegistry.numberOfSchemas(), 0);
-
     vm.expectEmit();
-    emit SchemaCreated(expectedId, expectedName, expectedDescription, expectedContext);
+    emit SchemaCreated(expectedId, expectedName, expectedDescription, expectedContext, expectedString);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-    assertEq(schemaRegistry.numberOfSchemas(), 1);
 
     (string memory name, string memory description, string memory context, string memory schemaString) = schemaRegistry
       .schemas(expectedId);

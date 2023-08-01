@@ -25,13 +25,13 @@
     "deploy:SchemaRegistry:goerli": "source .env && forge script script/SchemaRegistry.s.sol:SchemaRegistryScript --rpc-url $LINEA_GOERLI_RPC_URL --verifier-url https://api-testnet.lineascan.build/api --etherscan-api-key $ETHERSCAN_API_KEY --broadcast --verify --legacy -vvvv",
     "lint": "pnpm lint:sol && pnpm prettier:check",
     "lint:sol": "pnpm solhint \"{script,src,test}/**/*.sol\"",
+    "prepare": "husky install",
     "prettier:check": "prettier --check \"**/*.{json,md,svg,yml,sol}\"",
     "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol}\"",
-    "test": "forge test",
-    "test:lite": "FOUNDRY_PROFILE=lite forge test",
-    "test:optimized": "pnpm build:optimized && FOUNDRY_PROFILE=test-optimized forge test"
+    "test": "forge test"
   },
   "devDependencies": {
+    "husky": "^8.0.3",
     "prettier": "^2.8.8",
     "prettier-plugin-solidity": "^1.1.3",
     "solhint": "^3.4.1",

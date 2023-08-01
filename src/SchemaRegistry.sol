@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Schema } from "./struct/Schema.sol";
-import "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
+import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
 
 /**
  * @title Schema Registry
@@ -10,12 +10,8 @@ import "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
  * @notice This contract aims to manage the Schemas used by the Portals, including their discoverability
  */
 contract SchemaRegistry is Initializable {
-  /// @dev The contract administrator
-  address private admin;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) public schemas;
-  /// @dev The number of Schemas already registered
-  uint256 public numberOfSchemas = 0;
 
   /// @notice Error thrown when an identical Schema was already registered
   error SchemaAlreadyExists();
@@ -25,23 +21,12 @@ contract SchemaRegistry is Initializable {
   error SchemaStringMissing();
 
   /// @notice Event emitted when a Schema is created and registered
-  event SchemaCreated(bytes32 id, string name, string description, string context);
+  event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
 
   /**
    * @notice Contract initialization
-   * @param _admin The administrator of the contract
    */
-  function initialize(address _admin) public initializer {
-    admin = _admin;
-  }
-
-  /**
-   * @notice Get the administrator address for this contract
-   * @return The contract's administrator address
-   */
-  function getAdmin() public view returns (address) {
-    return admin;
-  }
+  function initialize() public initializer {}
 
   /**
    * Generate an ID for a given schema
@@ -84,7 +69,6 @@ contract SchemaRegistry is Initializable {
     }
 
     schemas[schemaId] = Schema(name, description, context, schemaString);
-    numberOfSchemas++;
-    emit SchemaCreated(schemaId, name, description, context);
+    emit SchemaCreated(schemaId, name, description, context, schemaString);
   }
 }

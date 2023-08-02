@@ -41,7 +41,7 @@ contract ModuleRegistryTest is Test {
   function testRegisterModule() public {
     vm.expectEmit();
     emit ModuleRegistered(expectedName, expectedDescription, expectedAddress);
-    moduleRegistry.registerModule(expectedName, expectedDescription, expectedAddress);
+    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
 
     (string memory name, string memory description, address moduleAddress) = moduleRegistry.modules(expectedAddress);
     assertEq(name, expectedName);
@@ -51,24 +51,41 @@ contract ModuleRegistryTest is Test {
 
   function testCannotRegisterModuleWithoutName() public {
     vm.expectRevert(ModuleRegistry.ModuleNameMissing.selector);
-    moduleRegistry.registerModule("", expectedDescription, expectedAddress);
+    moduleRegistry.register("", expectedDescription, expectedAddress);
   }
 
   function testCannotRegisterModuleWithInvalidModuleAddress() public {
     vm.expectRevert(ModuleRegistry.ModuleAddressInvalid.selector);
-    moduleRegistry.registerModule(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
+    moduleRegistry.register(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
   }
 
   function testCannotRegisterModuleWichHasNotImplementedIModuleInterface() public {
     IncorrectModule incorrectModule = new IncorrectModule();
     vm.expectRevert(ModuleRegistry.ModuleInvalid.selector);
-    moduleRegistry.registerModule(expectedName, expectedDescription, address(incorrectModule));
+    moduleRegistry.register(expectedName, expectedDescription, address(incorrectModule));
   }
 
   function testCannotRegisterModuleTwice() public {
-    moduleRegistry.registerModule(expectedName, expectedDescription, expectedAddress);
+    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.expectRevert(ModuleRegistry.ModuleAlreadyExists.selector);
-    moduleRegistry.registerModule(expectedName, expectedDescription, expectedAddress);
+    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
+  }
+
+  function testStoreModuleAddress() public {
+    uint256 modulesNumber = moduleRegistry.getModulesNumber();
+    assertEq(modulesNumber, 0);
+
+    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
+
+    modulesNumber = moduleRegistry.getModulesNumber();
+    assertEq(modulesNumber, 1);
+  }
+
+  function testGetModuleAddress() public {
+    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
+
+    address moduleAddress = moduleRegistry.moduleAddresses(0);
+    assertEq(moduleAddress, expectedAddress);
   }
 }
 

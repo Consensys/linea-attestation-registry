@@ -41,7 +41,7 @@ contract ModuleRegistry is Initializable {
     return contractAddress.code.length > 0;
   }
 
-  /** Create a Module, with its metadata and run some checks:
+  /** Register a Module, with its metadata and run some checks:
    * - mandatory name
    * - mandatory module's deployed smart contract address
    * - the module must be unique
@@ -50,7 +50,7 @@ contract ModuleRegistry is Initializable {
    * @param moduleAddress the address of the deployed smart contract
    * @dev the module is stored in a mapping, the number of modules is incremented and an event is emitted
    */
-  function createModule(string memory name, string memory description, address moduleAddress) public {
+  function registerModule(string memory name, string memory description, address moduleAddress) public {
     if (bytes(name).length == 0) {
       revert ModuleNameMissing();
     }

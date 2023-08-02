@@ -14,15 +14,34 @@ contract ModuleRegistryTest is Test {
   address private expectedAddress = address(new CorrectModule());
 
   event ModuleRegistered(string name, string description, address moduleAddress);
+  event Initialized(uint8 version);
 
   function setUp() public {
     moduleRegistry = new ModuleRegistry();
   }
 
-  function testCreateModule() public {
+  function testInitialize() public {
+    vm.expectEmit();
+    emit Initialized(1);
+    moduleRegistry.initialize();
+  }
+
+  function testIsContractAddress() public {
+    // isContractAddress should return false for EOA address
+    address eoaAddress = vm.addr(1);
+    bool eoaAddressResult = moduleRegistry.isContractAddress(eoaAddress);
+    assertEq(eoaAddressResult, false);
+
+    // isContractAddress should return true for contract address
+    address contractAddress = expectedAddress;
+    bool contractAddressResult = moduleRegistry.isContractAddress(contractAddress);
+    assertEq(contractAddressResult, true);
+  }
+
+  function testRegisterModule() public {
     vm.expectEmit();
     emit ModuleRegistered(expectedName, expectedDescription, expectedAddress);
-    moduleRegistry.createModule(expectedName, expectedDescription, expectedAddress);
+    moduleRegistry.registerModule(expectedName, expectedDescription, expectedAddress);
 
     (string memory name, string memory description, address moduleAddress) = moduleRegistry.modules(expectedAddress);
     assertEq(name, expectedName);
@@ -30,26 +49,26 @@ contract ModuleRegistryTest is Test {
     assertEq(moduleAddress, expectedAddress);
   }
 
-  function testCannotCreateModuleWithoutName() public {
+  function testCannotRegisterModuleWithoutName() public {
     vm.expectRevert(ModuleRegistry.ModuleNameMissing.selector);
-    moduleRegistry.createModule("", expectedDescription, expectedAddress);
+    moduleRegistry.registerModule("", expectedDescription, expectedAddress);
   }
 
-  function testCannotCreateModuleWithInvalidModuleAddress() public {
+  function testCannotRegisterModuleWithInvalidModuleAddress() public {
     vm.expectRevert(ModuleRegistry.ModuleAddressInvalid.selector);
-    moduleRegistry.createModule(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
+    moduleRegistry.registerModule(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
   }
 
-  function testCannotCreateModuleWichHasNotImplementedIModuleInterface() public {
+  function testCannotRegisterModuleWichHasNotImplementedIModuleInterface() public {
     IncorrectModule incorrectModule = new IncorrectModule();
     vm.expectRevert(ModuleRegistry.ModuleInvalid.selector);
-    moduleRegistry.createModule(expectedName, expectedDescription, address(incorrectModule));
+    moduleRegistry.registerModule(expectedName, expectedDescription, address(incorrectModule));
   }
 
-  function testCannotCreateModuleTwice() public {
-    moduleRegistry.createModule(expectedName, expectedDescription, expectedAddress);
+  function testCannotRegisterModuleTwice() public {
+    moduleRegistry.registerModule(expectedName, expectedDescription, expectedAddress);
     vm.expectRevert(ModuleRegistry.ModuleAlreadyExists.selector);
-    moduleRegistry.createModule(expectedName, expectedDescription, expectedAddress);
+    moduleRegistry.registerModule(expectedName, expectedDescription, expectedAddress);
   }
 }
 

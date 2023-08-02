@@ -3,8 +3,9 @@ pragma solidity 0.8.21;
 
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
-import { ModuleRegistry, ModuleInterface } from "../src/ModuleRegistry.sol";
-import "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+import { ModuleRegistry } from "../src/ModuleRegistry.sol";
+import { ModuleInterface } from "../src/interface/ModuleInterface.sol";
+import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract ModuleRegistryTest is Test {
   ModuleRegistry private moduleRegistry;
@@ -12,20 +13,17 @@ contract ModuleRegistryTest is Test {
   string private expectedDescription = "Description";
   address private expectedAddress = address(new CorrectModule());
 
-  event ModuleCreated(string name, string description, address moduleAddress);
+  event ModuleRegistered(string name, string description, address moduleAddress);
 
   function setUp() public {
     moduleRegistry = new ModuleRegistry();
   }
 
   function testCreateModule() public {
-    assertEq(moduleRegistry.numberOfModules(), 0);
-
     vm.expectEmit();
-    emit ModuleCreated(expectedName, expectedDescription, expectedAddress);
+    emit ModuleRegistered(expectedName, expectedDescription, expectedAddress);
     moduleRegistry.createModule(expectedName, expectedDescription, expectedAddress);
-    assertEq(moduleRegistry.numberOfModules(), 1);
-
+    
     (string memory name, string memory description, address moduleAddress) = moduleRegistry.modules(expectedAddress);
     assertEq(name, expectedName);
     assertEq(description, expectedDescription);
@@ -39,7 +37,7 @@ contract ModuleRegistryTest is Test {
 
   function testCannotCreateModuleWithInvalidModuleAddress() public {
     vm.expectRevert(ModuleRegistry.ModuleAddressInvalid.selector);
-    moduleRegistry.createModule(expectedName, expectedDescription, vm.addr(1));
+    moduleRegistry.createModule(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
   }
 
   function testCannotCreateModuleWichHasNotImplementedIModuleInterface() public {
@@ -56,17 +54,13 @@ contract ModuleRegistryTest is Test {
 }
 
 contract CorrectModule is ModuleInterface, IERC165 {
-  constructor() public {}
-
-  function run() external view returns (bool) {
+  function run() external pure returns (bool) {
     return true;
   }
 
-  function supportsInterface(bytes4 interfaceID) external view returns (bool) {
+  function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
     return interfaceID == type(ModuleInterface).interfaceId || interfaceID == type(IERC165).interfaceId;
   }
 }
 
-contract IncorrectModule {
-  constructor() public {}
-}
+contract IncorrectModule {}

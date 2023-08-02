@@ -2,8 +2,9 @@
 pragma solidity 0.8.21;
 
 import { Module } from "./struct/Module.sol";
-import "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
-import "openzeppelin-contracts/contracts/utils/introspection/ERC165Checker.sol";
+import { ModuleInterface } from "./interface/ModuleInterface.sol";
+import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
+import { ERC165Checker } from "openzeppelin-contracts/contracts/utils/introspection/ERC165Checker.sol";
 
 /**
  * @title Module Registry
@@ -11,12 +12,8 @@ import "openzeppelin-contracts/contracts/utils/introspection/ERC165Checker.sol";
  * @notice This contract aims to manage the Modules used by the Portals, including their discoverability
  */
 contract ModuleRegistry is Initializable {
-  /// @dev The contract administrator
-  address private admin;
-  /// @dev The list of Modules, accessed by their ID
+  /// @dev The list of Modules, accessed by their address
   mapping(address id => Module module) public modules;
-  /// @dev The number of Modules already registered
-  uint256 public numberOfModules = 0;
 
   /// @notice Error thrown when an identical Module was already registered
   error ModuleAlreadyExists();
@@ -27,16 +24,13 @@ contract ModuleRegistry is Initializable {
   /// @notice Error thrown when attempting to add a Module which has not implemented the IModule interface
   error ModuleInvalid();
 
-  /// @notice Event emitted when a Module is created and registered
-  event ModuleCreated(string name, string description, address moduleAddress);
+  /// @notice Event emitted when a Module is registered
+  event ModuleRegistered(string name, string description, address moduleAddress);
 
   /**
-   * @notice Contract initialization
-   * @param _admin The administrator of the contract
-   */
-  function initialize(address _admin) public initializer {
-    admin = _admin;
-  }
+  * @notice Contract initialization
+  */
+  function initialize() public initializer {}
 
   /**
    * Check if address is smart contract and not EOA
@@ -45,14 +39,6 @@ contract ModuleRegistry is Initializable {
    */
   function isContractAddress(address contractAddress) public view returns (bool) {
     return contractAddress.code.length > 0;
-  }
-
-  /**
-   * @notice Get the administrator address for this contract
-   * @return The contract's administrator address
-   */
-  function getAdmin() public view returns (address) {
-    return admin;
   }
 
   /** Create a Module, with its metadata and run some checks:
@@ -85,12 +71,6 @@ contract ModuleRegistry is Initializable {
     }
 
     modules[moduleAddress] = Module(name, description, moduleAddress);
-    numberOfModules++;
-    emit ModuleCreated(name, description, moduleAddress);
+    emit ModuleRegistered(name, description, moduleAddress);
   }
-}
-
-//TODO: Replace this interface with proper module interface in future user story
-interface ModuleInterface {
-  function run() external view returns (bool);
 }

@@ -9,10 +9,10 @@ subject.**
 
 Foundryup is the Foundry toolchain installer. Open your terminal and run the following command:
 
-curl -L https://foundry.paradigm.xyz | bash This will install Foundryup, then simply follow the instructions on-screen,
-which will make the foundryup command available in your CLI.
+`curl -L https://foundry.paradigm.xyz | bash` This will install Foundryup, then simply follow the instructions
+on-screen, which will make the foundryup command available in your CLI.
 
-Running foundryup by itself will install the latest (nightly) precompiled binaries: forge, cast, anvil, and chisel. See
+Running foundryup by itself will install the latest (nightly) precompiled binaries: forge, cast, anvil and chisel. See
 foundryup --help for more options, like installing from a specific version or commit.
 
 ℹ️ Note
@@ -23,8 +23,7 @@ not support Powershell or Cmd.
 For more details on installation, see the [installation guide](https://book.getfoundry.sh/getting-started/installation)
 in the book.
 
-If you're experiencing any issues while installing, check out [Getting Help](#getting-help) and the
-[FAQ](https://book.getfoundry.sh/faq).
+If you're experiencing any issues while installing, check out the [FAQ](https://book.getfoundry.sh/faq).
 
 ## Forge - build and test
 
@@ -54,12 +53,12 @@ Ran 1 test suites: 2 tests passed, 0 failed, 0 skipped (2 total tests)
 ## Deployment - using Anvil
 
 Anvil is a local testnet node shipped with Foundry. You can use it for testing your contracts from frontends or for
-interacting over RPC. Anvil is part of the Foundry suite and is installed alongside forge, cast, and chisel.
+interacting over RPC. Anvil is part of the Foundry suite and is installed alongside forge, cast and chisel.
 
-**Step 1 : Run local node using Anvil**
+**Step 1 : Run a local node using Anvil**
 
-To run local node, simply type anvil. You should see a list of accounts and private keys available for use, as well as
-the address and port that the node is listening on.
+To run a local node, simply type anvil. You should see a list of accounts and private keys available for use, as well as
+the address and port the node is listening on.
 
 ```
 $ anvil
@@ -170,3 +169,12 @@ Transaction hash: 0x15b25752da1dfd458b92069248825ce959f5be104f974d62b4ae95050710
 3. Add your private key
 4. To verify your instance of the contract on Etherscan, also add your Etherscan API key
 5. Run `pnpm run deploy:SchemaRegistry:goerli`
+
+## Manual testing
+
+1. `SchemaRegistry` is deployed on Linea Goerli at
+   [0x1267fc4e204b460403d19a00da694df9008a11ba](https://goerli.lineascan.build/address/0x1267fc4e204b460403d19a00da694df9008a11ba#code)
+2. `ModuleRegistry` is deployed on Linea Goerli at
+   [0x96D84c03F3752490687a824DbB0511c219579690](https://goerli.lineascan.build/address/0x96D84c03F3752490687a824DbB0511c219579690#code)
+3. Each contract is verified on Lineascan
+4. Interaction with the contracts is made easy thanks to the UI provided by Lineascan

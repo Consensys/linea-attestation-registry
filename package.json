@@ -23,6 +23,7 @@
     "build:smt": "FOUNDRY_PROFILE=smt forge build",
     "clean": "rm -rf cache out out-optimized out-svg",
     "deploy:SchemaRegistry:goerli": "source .env && forge script script/SchemaRegistry.s.sol:SchemaRegistryScript --rpc-url $LINEA_GOERLI_RPC_URL --verifier-url https://api-testnet.lineascan.build/api --etherscan-api-key $ETHERSCAN_API_KEY --broadcast --verify --legacy -vvvv",
+    "deploy:ModuleRegistry:goerli": "source .env && forge script script/ModuleRegistry.s.sol:ModuleRegistryScript --rpc-url $LINEA_GOERLI_RPC_URL --verifier-url https://api-testnet.lineascan.build/api --etherscan-api-key $ETHERSCAN_API_KEY --broadcast --verify --legacy -vvvv",
     "lint": "pnpm lint:sol && pnpm prettier:check",
     "lint:sol": "pnpm solhint \"{script,src,test}/**/*.sol\"",
     "prepare": "husky install",

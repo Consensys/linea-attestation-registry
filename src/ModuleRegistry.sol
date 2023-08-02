@@ -14,6 +14,8 @@ import { ERC165Checker } from "openzeppelin-contracts/contracts/utils/introspect
 contract ModuleRegistry is Initializable {
   /// @dev The list of Modules, accessed by their address
   mapping(address id => Module module) public modules;
+  /// @dev The list of Module addresses
+  address[] public moduleAddresses;
 
   /// @notice Error thrown when an identical Module was already registered
   error ModuleAlreadyExists();
@@ -50,7 +52,7 @@ contract ModuleRegistry is Initializable {
    * @param moduleAddress the address of the deployed smart contract
    * @dev the module is stored in a mapping, the number of modules is incremented and an event is emitted
    */
-  function registerModule(string memory name, string memory description, address moduleAddress) public {
+  function register(string memory name, string memory description, address moduleAddress) public {
     if (bytes(name).length == 0) {
       revert ModuleNameMissing();
     }
@@ -71,6 +73,16 @@ contract ModuleRegistry is Initializable {
     }
 
     modules[moduleAddress] = Module(name, description, moduleAddress);
+    moduleAddresses.push(moduleAddress);
     emit ModuleRegistered(name, description, moduleAddress);
+  }
+
+  /**
+   * @notice Get the number of Modules managed by the contract
+   * @return The number of Modules already registered
+   * @dev Returns the length of the `moduleAddresses` array
+   */
+  function getModulesNumber() public view returns (uint256) {
+    return moduleAddresses.length;
   }
 }

@@ -28,8 +28,8 @@ contract ModuleRegistry is Initializable {
   event ModuleRegistered(string name, string description, address moduleAddress);
 
   /**
-  * @notice Contract initialization
-  */
+   * @notice Contract initialization
+   */
   function initialize() public initializer {}
 
   /**

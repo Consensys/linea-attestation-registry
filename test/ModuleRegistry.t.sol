@@ -23,7 +23,7 @@ contract ModuleRegistryTest is Test {
     vm.expectEmit();
     emit ModuleRegistered(expectedName, expectedDescription, expectedAddress);
     moduleRegistry.createModule(expectedName, expectedDescription, expectedAddress);
-    
+
     (string memory name, string memory description, address moduleAddress) = moduleRegistry.modules(expectedAddress);
     assertEq(name, expectedName);
     assertEq(description, expectedDescription);

@@ -12,6 +12,8 @@ import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Init
 contract SchemaRegistry is Initializable {
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) public schemas;
+  /// @dev The list of Schema IDs
+  bytes32[] public schemaIds;
 
   /// @notice Error thrown when an identical Schema was already registered
   error SchemaAlreadyExists();
@@ -41,12 +43,12 @@ contract SchemaRegistry is Initializable {
   /** Create a Schema, with its metadata and run some checks:
    * - mandatory name
    * - mandatory string defining the schema
-   * - the schema must be unique
-   * @param name the schema name
-   * @param description the schema description
-   * @param context the schema context
-   * @param schemaString the string defining a schema
-   * @dev the schema is stored in a mapping, the number of schemas is incremented and an event is emitted
+   * - the Schema must be unique
+   * @param name the Schema name
+   * @param description the Schema description
+   * @param context the Schema context
+   * @param schemaString the string defining a Schema
+   * @dev the Schema is stored in a mapping, its ID is added to an array of IDs and an event is emitted
    */
   function createSchema(
     string memory name,
@@ -69,6 +71,16 @@ contract SchemaRegistry is Initializable {
     }
 
     schemas[schemaId] = Schema(name, description, context, schemaString);
+    schemaIds.push(schemaId);
     emit SchemaCreated(schemaId, name, description, context, schemaString);
+  }
+
+  /**
+   * @notice Get the number of Schemas managed by the contract
+   * @return The number of Schemas already registered
+   * @dev Returns the length of the `schemaIds` array
+   */
+  function getSchemasNumber() public view returns (uint256) {
+    return schemaIds.length;
   }
 }

@@ -59,4 +59,21 @@ contract SchemaRegistryTest is Test {
     vm.expectRevert(SchemaRegistry.SchemaAlreadyExists.selector);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
   }
+
+  function testStoreSchemaId() public {
+    uint256 schemasNumber = schemaRegistry.getSchemasNumber();
+    assertEq(schemasNumber, 0);
+
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+
+    schemasNumber = schemaRegistry.getSchemasNumber();
+    assertEq(schemasNumber, 1);
+  }
+
+  function testGetSchemaId() public {
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+
+    bytes32 schemaId = schemaRegistry.schemaIds(0);
+    assertEq(schemaId, expectedId);
+  }
 }

@@ -92,15 +92,17 @@ contract ModuleRegistryTest is Test {
 contract CorrectModule is AbstractModule, IERC165 {
   function test() public {}
 
-  function run(bytes memory attestationPayload,
+  function run(
+    bytes memory attestationPayload,
     bytes memory validationPayload,
     bytes32 schemaId,
-    address msgSender) public override pure returns (bytes memory, bytes memory) {
-    require(schemaId != "" && msgSender != address(0));
+    address msgSender
+  ) public pure override returns (bytes memory, bytes memory) {
+    require(schemaId != "" && msgSender != address(0), "require schemaId and msgSender");
     return (attestationPayload, validationPayload);
   }
 
-  function supportsInterface(bytes4 interfaceID) public override pure returns (bool) {
+  function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
     return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165).interfaceId;
   }
 }

@@ -59,7 +59,7 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.register(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
   }
 
-  function testCannotRegisterModuleWichHasNotImplementedIAbstractModule() public {
+  function testCannotRegisterModuleWichHasNotImplementedAbstractModule() public {
     IncorrectModule incorrectModule = new IncorrectModule();
     vm.expectRevert(ModuleRegistry.ModuleInvalid.selector);
     moduleRegistry.register(expectedName, expectedDescription, address(incorrectModule));

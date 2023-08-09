@@ -16,9 +16,11 @@ contract MsgSenderModuleTest is Test {
 
   function setUp() public {
     msgSenderModule = new MsgSenderModule();
+    msgSenderModule.initialize(expectedMsgSender);
   }
 
   function testInitialize() public {
+    msgSenderModule = new MsgSenderModule();
     vm.expectEmit();
     emit Initialized(1);
     msgSenderModule.initialize(expectedMsgSender);

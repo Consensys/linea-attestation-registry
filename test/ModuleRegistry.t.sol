@@ -4,6 +4,8 @@ pragma solidity 0.8.21;
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { ModuleRegistry } from "../src/ModuleRegistry.sol";
+import { CorrectModule } from "../src/example/CorrectModule.sol";
+import { IncorrectModule } from "../src/example/IncorrectModule.sol";
 import { AbstractModule } from "../src/interface/AbstractModule.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
@@ -87,26 +89,4 @@ contract ModuleRegistryTest is Test {
     address moduleAddress = moduleRegistry.moduleAddresses(0);
     assertEq(moduleAddress, expectedAddress);
   }
-}
-
-contract CorrectModule is AbstractModule, IERC165 {
-  function test() public {}
-
-  function run(
-    bytes memory attestationPayload,
-    bytes memory validationPayload,
-    bytes32 schemaId,
-    address msgSender
-  ) public pure override returns (bytes memory, bytes memory) {
-    require(schemaId != "" && msgSender != address(0), "require schemaId and msgSender");
-    return (attestationPayload, validationPayload);
-  }
-
-  function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
-    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165).interfaceId;
-  }
-}
-
-contract IncorrectModule {
-  function test() public {}
 }

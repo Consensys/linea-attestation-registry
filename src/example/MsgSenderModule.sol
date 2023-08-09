@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import { Module } from "../interface/Module.sol";
+import { AbstractModule } from "../interface/AbstractModule.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/IERC165.sol";
 import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
 
-contract MsgSenderModule is IERC165, Module, Initializable {
+contract MsgSenderModule is IERC165, AbstractModule, Initializable {
   address public expectedMsgSender;
 
   /**
@@ -20,29 +20,16 @@ contract MsgSenderModule is IERC165, Module, Initializable {
     bytes memory _validationPayload,
     bytes32 _schemaId,
     address _msgSender
-  )
-    external
-    view
-    returns (
-      bytes memory attestationPayload,
-      bytes memory validationPayload,
-      bytes32 schemaId,
-      address msgSender,
-      bool isValid
-    )
-  {
+  ) public view override returns (bytes memory attestationPayload, bytes memory validationPayload) {
+    require(_schemaId != "", "require schemaId");
     attestationPayload = _attestationPayload;
     validationPayload = _validationPayload;
-    schemaId = _schemaId;
-    msgSender = _msgSender;
-    isValid = false;
-
-    if (_msgSender == expectedMsgSender) {
-      isValid = true;
+    if (_msgSender != expectedMsgSender) {
+      revert("Incorrect message sender");
     }
   }
 
   function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(Module).interfaceId || interfaceID == type(IERC165).interfaceId;
+    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165).interfaceId;
   }
 }

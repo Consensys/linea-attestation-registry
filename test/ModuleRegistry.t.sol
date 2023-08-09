@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { ModuleRegistry } from "../src/ModuleRegistry.sol";
-import { ModuleInterface } from "../src/interface/ModuleInterface.sol";
+import { AbstractModule } from "../src/interface/AbstractModule.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract ModuleRegistryTest is Test {
@@ -59,7 +59,7 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.register(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
   }
 
-  function testCannotRegisterModuleWichHasNotImplementedIModuleInterface() public {
+  function testCannotRegisterModuleWichHasNotImplementedAbstractModule() public {
     IncorrectModule incorrectModule = new IncorrectModule();
     vm.expectRevert(ModuleRegistry.ModuleInvalid.selector);
     moduleRegistry.register(expectedName, expectedDescription, address(incorrectModule));
@@ -89,15 +89,21 @@ contract ModuleRegistryTest is Test {
   }
 }
 
-contract CorrectModule is ModuleInterface, IERC165 {
+contract CorrectModule is AbstractModule, IERC165 {
   function test() public {}
 
-  function run() external pure returns (bool) {
-    return true;
+  function run(
+    bytes memory attestationPayload,
+    bytes memory validationPayload,
+    bytes32 schemaId,
+    address msgSender
+  ) public pure override returns (bytes memory, bytes memory) {
+    require(schemaId != "" && msgSender != address(0), "require schemaId and msgSender");
+    return (attestationPayload, validationPayload);
   }
 
-  function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(ModuleInterface).interfaceId || interfaceID == type(IERC165).interfaceId;
+  function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
+    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165).interfaceId;
   }
 }
 

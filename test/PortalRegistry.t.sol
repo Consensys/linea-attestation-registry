@@ -88,11 +88,11 @@ contract PortalRegistryTest is Test {
 }
 
 contract ValidPortal is IPortal, IERC165 {
-  function attest(bytes32 /*schemaId*/, bytes memory /*attestationData*/) external view returns (bool) {
+  function attest(bytes32 /*schemaId*/, bytes memory /*attestationData*/) external pure returns (bool) {
     return true;
   }
 
-  function getModules() external view returns (address[] memory) {
+  function getModules() external pure returns (address[] memory) {
     address[] memory modules = new address[](2);
     modules[0] = address(0);
     modules[1] = address(1);

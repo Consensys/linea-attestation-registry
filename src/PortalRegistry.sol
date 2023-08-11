@@ -38,10 +38,9 @@ contract PortalRegistry is Initializable {
 
   /**
    * @notice Registers a Portal to the PortalRegistry
-   * @param id the module name
-   * @param name the module description
+   * @param id the portal name
+   * @param name the portal description
    * @param description the address of the deployed smart contract
-   * @dev the module is stored in a mapping, the number of modules is incremented and an event is emitted
    */
   function register(address id, string memory name, string memory description) external {
     // Check if portal already exists

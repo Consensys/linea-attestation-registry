@@ -25,6 +25,8 @@ contract PortalRegistry is Initializable {
   error PortalDescriptionMissing();
   /// @notice Error thrown when attempting to register a Portal that does not implement IPortal interface
   error PortalInvalid();
+  /// @notice Error thrown when attempting to get a Portal that is not registered
+  error PortalNotRegistered();
 
   /// @notice Event emitted when a Portal registered
   event PortalRegistered(string name, string description, address moduleAddress);
@@ -75,7 +77,17 @@ contract PortalRegistry is Initializable {
    * @return The Portal
    */
   function getPortals(address id) public view returns (Portal memory) {
+    if (!isRegistered(id)) revert PortalNotRegistered();
     return portals[id];
+  }
+
+  /**
+   * @notice Check if a Portal is registered
+   * @param id The address of the Portal
+   * @return True if the Portal is registered, false otherwise
+   */
+  function isRegistered(address id) public view returns (bool) {
+    return portals[id].id != address(0);
   }
 
   /**

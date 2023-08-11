@@ -23,7 +23,7 @@ contract PortalRegistryTest is Test {
     portalRegistry = new PortalRegistry();
   }
 
-  function testInitialize() public {
+  function test_initialize() public {
     vm.expectEmit();
     emit Initialized(1);
     portalRegistry.initialize();
@@ -32,7 +32,7 @@ contract PortalRegistryTest is Test {
     portalRegistry.initialize();
   }
 
-  function testRegister() public {
+  function test_register() public {
     vm.expectEmit(true, true, true, true);
     emit PortalRegistered(expectedName, expectedDescription, address(validPortal));
     portalRegistry.register(address(validPortal), expectedName, expectedDescription);
@@ -46,13 +46,13 @@ contract PortalRegistryTest is Test {
     assertEq(portal.modules.length, 2);
   }
 
-  function testRegister_PortalAlreadyExists() public {
+  function test_register_PortalAlreadyExists() public {
     portalRegistry.register(address(validPortal), expectedName, expectedDescription);
     vm.expectRevert(PortalRegistry.PortalAlreadyExists.selector);
     portalRegistry.register(address(validPortal), expectedName, expectedDescription);
   }
 
-  function testRegister_PortalAddressInvalid() public {
+  function test_register_PortalAddressInvalid() public {
     vm.expectRevert(PortalRegistry.PortalAddressInvalid.selector);
     portalRegistry.register(address(0), expectedName, expectedDescription);
 
@@ -60,19 +60,30 @@ contract PortalRegistryTest is Test {
     portalRegistry.register(user, expectedName, expectedDescription);
   }
 
-  function testRegister_PortalNameMissing() public {
+  function test_register_PortalNameMissing() public {
     vm.expectRevert(PortalRegistry.PortalNameMissing.selector);
     portalRegistry.register(address(validPortal), "", expectedDescription);
   }
 
-  function testRegister_PortalDescriptionMissing() public {
+  function test_register_PortalDescriptionMissing() public {
     vm.expectRevert(PortalRegistry.PortalDescriptionMissing.selector);
     portalRegistry.register(address(validPortal), expectedName, "");
   }
 
-  function testRegister_PortalInvalid() public {
+  function test_register_PortalInvalid() public {
     vm.expectRevert(PortalRegistry.PortalInvalid.selector);
     portalRegistry.register(address(invalidPortal), expectedName, expectedDescription);
+  }
+
+  function test_getPortals_PortalNotRegistered() public {
+    vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
+    portalRegistry.getPortals(address(validPortal));
+  }
+
+  function test_isRegistered() public {
+    assertEq(portalRegistry.isRegistered(address(validPortal)), false);
+    portalRegistry.register(address(validPortal), expectedName, expectedDescription);
+    assertEq(portalRegistry.isRegistered(address(validPortal)), true);
   }
 }
 

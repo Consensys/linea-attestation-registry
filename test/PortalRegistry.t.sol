@@ -93,8 +93,4 @@ contract ValidPortal is IPortal, IERC165 {
   }
 }
 
-contract InvalidPortal {
-  function attest() external view returns (bool) {
-    return true;
-  }
-}
+contract InvalidPortal {}

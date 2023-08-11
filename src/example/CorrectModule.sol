@@ -10,10 +10,9 @@ contract CorrectModule is AbstractModule, IERC165 {
   function run(
     bytes memory attestationPayload,
     bytes memory validationPayload,
-    bytes32 schemaId,
-    address msgSender
+    bytes32 /*schemaId*/,
+    address /*msgSender*/
   ) public pure override returns (bytes memory, bytes memory) {
-    require(schemaId != "" && msgSender != address(0), "require schemaId and msgSender");
     return (attestationPayload, validationPayload);
   }
 

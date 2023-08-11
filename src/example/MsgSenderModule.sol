@@ -18,10 +18,9 @@ contract MsgSenderModule is IERC165, AbstractModule, Initializable {
   function run(
     bytes memory _attestationPayload,
     bytes memory _validationPayload,
-    bytes32 _schemaId,
+    bytes32 /*_schemaId*/,
     address _msgSender
   ) public view override returns (bytes memory attestationPayload, bytes memory validationPayload) {
-    require(_schemaId != "", "require schemaId");
     attestationPayload = _attestationPayload;
     validationPayload = _validationPayload;
     if (_msgSender != expectedMsgSender) {

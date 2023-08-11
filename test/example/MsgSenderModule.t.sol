@@ -55,15 +55,6 @@ contract MsgSenderModuleTest is Test {
     msgSenderModule.run(attestationPayload, validationPayload, schemaId, incorrectMsgSender);
   }
 
-  function testRequiredSchemaId() public {
-    assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
-    bytes memory attestationPayload = bytes("attestation payload");
-    bytes memory validationPayload = bytes("validation payload");
-    bytes32 schemaId = "";
-    vm.expectRevert("require schemaId");
-    msgSenderModule.run(attestationPayload, validationPayload, schemaId, expectedMsgSender);
-  }
-
   function testSupportsInterface() public {
     bool isIERC165Supported = msgSenderModule.supportsInterface(type(IERC165).interfaceId);
     assertEq(isIERC165Supported, true);

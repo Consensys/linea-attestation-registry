@@ -72,7 +72,7 @@ jobs:
   test-unit:
     env:
       FOUNDRY_FUZZ_RUNS: "5000"
-    needs: ["lint", "build"]
+    needs: [ "lint", "build" ]
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"
@@ -83,8 +83,8 @@ jobs:
       - name: "Install Foundry"
         uses: "foundry-rs/foundry-toolchain@v1"
 
-      - name: "Run the unit tests against the optimized build"
-        run: "FOUNDRY_PROFILE=test-optimized forge test --match-path \"test/*\""
+      - name: "Run the unit tests"
+        run: "forge test --match-path \"test/*\""
 
       - name: "Add test summary"
         run: |
@@ -92,7 +92,7 @@ jobs:
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
   coverage:
-    needs: ["lint", "build"]
+    needs: [ "lint", "build" ]
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"
@@ -110,6 +110,15 @@ jobs:
         uses: "codecov/codecov-action@v3"
         with:
           files: "./lcov.info"
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: "Check test coverage"
+        uses: "terencetcf/github-actions-lcov-minimum-coverage-checker@v1"
+        with:
+          coverage-file: lcov.info
+          minimum-coverage: 100
 
       - name: "Add coverage summary"
         run: |

@@ -38,9 +38,9 @@ contract PortalRegistry is Initializable {
 
   /**
    * @notice Registers a Portal to the PortalRegistry
-   * @param id the portal name
-   * @param name the portal description
-   * @param description the address of the deployed smart contract
+   * @param id the portal address
+   * @param name the portal name
+   * @param description the portal description
    */
   function register(address id, string memory name, string memory description) external {
     // Check if portal already exists
@@ -75,7 +75,7 @@ contract PortalRegistry is Initializable {
    * @param id The address of the Portal
    * @return The Portal
    */
-  function getPortals(address id) public view returns (Portal memory) {
+  function getPortalByAddress(address id) public view returns (Portal memory) {
     if (!isRegistered(id)) revert PortalNotRegistered();
     return portals[id];
   }

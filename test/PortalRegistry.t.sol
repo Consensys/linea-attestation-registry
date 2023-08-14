@@ -40,7 +40,7 @@ contract PortalRegistryTest is Test {
     uint256 portalCount = portalRegistry.getPortalsCount();
     assertEq(portalCount, 1);
 
-    Portal memory portal = portalRegistry.getPortals(address(validPortal));
+    Portal memory portal = portalRegistry.getPortalByAddress(address(validPortal));
     assertEq(portal.name, expectedName);
     assertEq(portal.description, expectedDescription);
     assertEq(portal.modules.length, 2);
@@ -77,7 +77,7 @@ contract PortalRegistryTest is Test {
 
   function test_getPortals_PortalNotRegistered() public {
     vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
-    portalRegistry.getPortals(address(validPortal));
+    portalRegistry.getPortalByAddress(address(validPortal));
   }
 
   function test_isRegistered() public {

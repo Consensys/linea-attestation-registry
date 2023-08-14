@@ -90,6 +90,8 @@ contract ModuleRegistryTest is Test {
 }
 
 contract CorrectModule is ModuleInterface, IERC165 {
+  function test() public {}
+
   function run() external pure returns (bool) {
     return true;
   }
@@ -99,4 +101,6 @@ contract CorrectModule is ModuleInterface, IERC165 {
   }
 }
 
-contract IncorrectModule {}
+contract IncorrectModule {
+  function test() public {}
+}

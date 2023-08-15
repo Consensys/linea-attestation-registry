@@ -4,7 +4,9 @@ pragma solidity 0.8.21;
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { ModuleRegistry } from "../src/ModuleRegistry.sol";
-import { ModuleInterface } from "../src/interface/ModuleInterface.sol";
+import { CorrectModule } from "../src/example/CorrectModule.sol";
+import { IncorrectModule } from "../src/example/IncorrectModule.sol";
+import { AbstractModule } from "../src/interface/AbstractModule.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract ModuleRegistryTest is Test {
@@ -59,7 +61,7 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.register(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
   }
 
-  function testCannotRegisterModuleWichHasNotImplementedIModuleInterface() public {
+  function testCannotRegisterModuleWichHasNotImplementedAbstractModule() public {
     IncorrectModule incorrectModule = new IncorrectModule();
     vm.expectRevert(ModuleRegistry.ModuleInvalid.selector);
     moduleRegistry.register(expectedName, expectedDescription, address(incorrectModule));
@@ -87,20 +89,4 @@ contract ModuleRegistryTest is Test {
     address moduleAddress = moduleRegistry.moduleAddresses(0);
     assertEq(moduleAddress, expectedAddress);
   }
-}
-
-contract CorrectModule is ModuleInterface, IERC165 {
-  function test() public {}
-
-  function run() external pure returns (bool) {
-    return true;
-  }
-
-  function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(ModuleInterface).interfaceId || interfaceID == type(IERC165).interfaceId;
-  }
-}
-
-contract IncorrectModule {
-  function test() public {}
 }

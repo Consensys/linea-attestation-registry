@@ -15,7 +15,6 @@ contract AttestationRegistry is Initializable {
   PortalRegistry public portalRegistry;
   SchemaRegistry public schemaRegistry;
 
-  mapping(address portal => Attestation[] attestation) private attestationsByPortal;
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
@@ -65,8 +64,6 @@ contract AttestationRegistry is Initializable {
    */
   function attest(Attestation calldata attestation) external onlyPortals(msg.sender) {
     attestations[attestation.attestationId] = attestation;
-    attestationsByPortal[msg.sender].push(attestation);
-
     emit AttestationRegistered(attestation);
   }
 
@@ -100,25 +97,5 @@ contract AttestationRegistry is Initializable {
   function getAttestation(bytes32 attestationId) public view returns (Attestation memory) {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
     return attestations[attestationId];
-  }
-
-  /**
-   * @notice Gets the attestations of a given portal
-   * @param portal the portal address
-   * @return the attestations
-   */
-  function getAttestationsByPortal(address portal) public view returns (Attestation[] memory) {
-    if (!portalRegistry.isRegistered(portal)) revert PortalNotRegistered();
-    return attestationsByPortal[portal];
-  }
-
-  /**
-   * @notice Gets the number of attestations of a given portal
-   * @param portal the portal address
-   * @return the number of attestations
-   */
-  function getAttestationsCountByPortal(address portal) public view returns (uint256) {
-    if (!portalRegistry.isRegistered(portal)) revert PortalNotRegistered();
-    return attestationsByPortal[portal].length;
   }
 }

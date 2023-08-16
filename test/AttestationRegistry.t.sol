@@ -55,8 +55,6 @@ contract AttestationRegistryTest is Test {
     vm.prank(portal);
     attestationRegistry.attest(attestation);
 
-    uint256 attestationCount = attestationRegistry.getAttestationsCountByPortal(portal);
-    assertEq(attestationCount, 1);
     Attestation memory registeredAttestation = attestationRegistry.getAttestation(attestation.attestationId);
     _assertAttestation(attestation, registeredAttestation);
   }
@@ -125,42 +123,6 @@ contract AttestationRegistryTest is Test {
   function test_getAttestation_AttestationNotAttested(Attestation memory attestation) public {
     vm.expectRevert(AttestationRegistry.AttestationNotAttested.selector);
     attestationRegistry.getAttestation(attestation.attestationId);
-  }
-
-  function test_getAttestationsByPortal(Attestation memory attestation) public {
-    vm.assume(attestation.attestationId != bytes32(0));
-    attestation.portal = portal;
-
-    vm.startPrank(portal);
-    attestationRegistry.attest(attestation);
-
-    Attestation[] memory registeredAttestations = attestationRegistry.getAttestationsByPortal(portal);
-    assertEq(registeredAttestations.length, 1);
-    _assertAttestation(attestation, registeredAttestations[0]);
-  }
-
-  function test_getAttestationsByPortal_PortalNotRegistered() public {
-    vm.expectRevert(AttestationRegistry.PortalNotRegistered.selector);
-    attestationRegistry.getAttestationsByPortal(user);
-  }
-
-  function getAttestationsCountByPortal(Attestation memory attestation) public {
-    vm.assume(attestation.attestationId != bytes32(0));
-    attestation.portal = portal;
-
-    uint256 attestationCount = attestationRegistry.getAttestationsCountByPortal(portal);
-    assertEq(attestationCount, 0);
-
-    vm.startPrank(portal);
-    attestationRegistry.attest(attestation);
-
-    attestationCount = attestationRegistry.getAttestationsCountByPortal(portal);
-    assertEq(attestationCount, 1);
-  }
-
-  function test_getAttestationsCountByPortal_PortalNotRegistered() public {
-    vm.expectRevert(AttestationRegistry.PortalNotRegistered.selector);
-    attestationRegistry.getAttestationsCountByPortal(user);
   }
 
   function _assertAttestation(Attestation memory attestation1, Attestation memory attestation2) internal {

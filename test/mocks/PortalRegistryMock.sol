@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 contract PortalRegistryMock {
   event PortalRegistered(string name, string description, address moduleAddress);
-  mapping(address => bool) public portals;
+  mapping(address id => bool registered) public portals;
 
   function register(address id, string memory name, string memory description) external {
     portals[id] = true;

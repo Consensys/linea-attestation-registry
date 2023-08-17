@@ -5,6 +5,8 @@ contract PortalRegistryMock {
   event PortalRegistered(string name, string description, address moduleAddress);
   mapping(address id => bool registered) public portals;
 
+  function test() public {}
+
   function register(address id, string memory name, string memory description) external {
     portals[id] = true;
     emit PortalRegistered(name, description, id);

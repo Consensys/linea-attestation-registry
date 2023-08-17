@@ -4,6 +4,8 @@ pragma solidity 0.8.21;
 contract SchemaRegistryMock {
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
 
+  function test() public {}
+
   function getIdFromSchemaString(string memory schema) public pure returns (bytes32) {
     return keccak256(abi.encodePacked(schema));
   }

@@ -3,10 +3,10 @@ pragma solidity 0.8.21;
 
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
-import { ModuleRegistry } from "../../src/ModuleRegistry.sol";
-import { CorrectModule } from "../../src/example/CorrectModule.sol";
-import { IncorrectModule } from "../../src/example/IncorrectModule.sol";
-import { AbstractModule } from "../../src/interface/AbstractModule.sol";
+import { ModuleRegistry } from "../src/ModuleRegistry.sol";
+import { CorrectModule } from "../src/example/CorrectModule.sol";
+import { IncorrectModule } from "../src/example/IncorrectModule.sol";
+import { AbstractModule } from "../src/interface/AbstractModule.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract ModuleRegistryTest is Test {

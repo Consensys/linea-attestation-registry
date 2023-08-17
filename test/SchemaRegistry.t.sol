@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
-import { SchemaRegistry } from "../../src/SchemaRegistry.sol";
+import { SchemaRegistry } from "../src/SchemaRegistry.sol";
 
 contract SchemaRegistryTest is Test {
   SchemaRegistry private schemaRegistry;
@@ -75,5 +75,13 @@ contract SchemaRegistryTest is Test {
 
     bytes32 schemaId = schemaRegistry.schemaIds(0);
     assertEq(schemaId, expectedId);
+  }
+
+  function testIsSchemaRegistered() public {
+    bool isRegistered = schemaRegistry.isRegistered(expectedId);
+    assertFalse(isRegistered);
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    isRegistered = schemaRegistry.isRegistered(expectedId);
+    assertTrue(isRegistered);
   }
 }

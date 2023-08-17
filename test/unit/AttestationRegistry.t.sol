@@ -3,11 +3,11 @@ pragma solidity 0.8.21;
 
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
-import { AttestationRegistry } from "../src/AttestationRegistry.sol";
-import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
-import { PortalRegistry } from "../src/PortalRegistry.sol";
-import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
-import { Attestation } from "../src/types/Structs.sol";
+import { AttestationRegistry } from "../../src/AttestationRegistry.sol";
+import { PortalRegistryMock } from "./../mocks/PortalRegistryMock.sol";
+import { PortalRegistry } from "../../src/PortalRegistry.sol";
+import { SchemaRegistryMock } from "./../mocks/SchemaRegistryMock.sol";
+import { Attestation } from "../../src/types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract AttestationRegistryTest is Test {

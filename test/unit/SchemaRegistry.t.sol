@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
-import { SchemaRegistry } from "../src/SchemaRegistry.sol";
+import { SchemaRegistry } from "../../src/SchemaRegistry.sol";
 
 contract SchemaRegistryTest is Test {
   SchemaRegistry private schemaRegistry;

@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Module } from "./struct/Module.sol";
-import { ModuleInterface } from "./interface/ModuleInterface.sol";
+import { AbstractModule } from "./interface/AbstractModule.sol";
 import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
 import { ERC165Checker } from "openzeppelin-contracts/contracts/utils/introspection/ERC165Checker.sol";
 
@@ -62,8 +62,8 @@ contract ModuleRegistry is Initializable {
       revert ModuleAddressInvalid();
     }
 
-    // Check if module has implemented ModuleInterface
-    if (!ERC165Checker.supportsInterface(moduleAddress, type(ModuleInterface).interfaceId)) {
+    // Check if module has implemented AbstractModule
+    if (!ERC165Checker.supportsInterface(moduleAddress, type(AbstractModule).interfaceId)) {
       revert ModuleInvalid();
     }
 

@@ -25,6 +25,14 @@ contract ModuleRegistry is Initializable {
   error ModuleAddressInvalid();
   /// @notice Error thrown when attempting to add a Module which has not implemented the IModule interface
   error ModuleInvalid();
+  /// @notice Error thrown when attempting to run modules with no module addresses provided
+  error ModulesAddressesMissing();
+  /// @notice Error thrown when attempting to run modules with no attestation payload provided
+  error AttestationPayloadMissing();
+  /// @notice Error thrown when attempting to run modules with no validation payload provided
+  error ValidationPayloadMissing();
+  /// @notice Error thrown when module is not registered
+  error ModuleNotRegistered();
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
@@ -75,6 +83,34 @@ contract ModuleRegistry is Initializable {
     modules[moduleAddress] = Module(name, description, moduleAddress);
     moduleAddresses.push(moduleAddress);
     emit ModuleRegistered(name, description, moduleAddress);
+  }
+
+  /** Execute run method from given Modules:
+   * - mandatory list of modules
+   * - the module must be registered
+   * @param modulesAddresses the addresses of the registered modules
+   * @dev check if modules are registered and execute run method for each module
+   */
+  function runModules(
+    address[] memory modulesAddresses,
+    bytes32 schemaId,
+    bytes memory attestationPayload,
+    bytes memory validationPayload
+  ) public {
+    // Check if modules addresses are not missing
+    if (modulesAddresses.length == 0) revert ModulesAddressesMissing();
+
+    // Check if attestation payload is not missing
+    if (bytes(attestationPayload).length == 0) revert AttestationPayloadMissing();
+
+    // Check if validation payload is not missing
+    if (bytes(validationPayload).length == 0) revert ValidationPayloadMissing();
+
+    // For each module check if it is registered and call run method
+    for (uint i = 0; i < modulesAddresses.length; i++) {
+      if (bytes(modules[modulesAddresses[i]].name).length == 0) revert ModuleNotRegistered();
+      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayload, schemaId, msg.sender);
+    }
   }
 
   /**

@@ -129,11 +129,12 @@ contract AttestationRegistryTest is Test {
     assertEq(attestation1.attestationId, attestation2.attestationId);
     assertEq(attestation1.schemaId, attestation2.schemaId);
     assertEq(attestation1.portal, attestation2.portal);
-    assertEq(attestation1.attestee, attestation2.attestee);
-    assertEq(attestation1.attestor, attestation2.attestor);
+    assertEq(attestation1.subject, attestation2.subject);
+    assertEq(attestation1.attester, attestation2.attester);
     assertEq(attestation1.attestedDate, attestation2.attestedDate);
     assertEq(attestation1.expirationDate, attestation2.expirationDate);
     assertEq(attestation1.revoked, attestation2.revoked);
+    assertEq(attestation1.version, attestation2.version);
     assertEq(attestation1.attestationData.length, attestation2.attestationData.length);
   }
 }

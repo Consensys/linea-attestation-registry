@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
+// solhint-disable-next-line max-line-length
+import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
 import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { AbstractPortal } from "../interface/AbstractPortal.sol";
@@ -13,13 +14,10 @@ import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
  * @author Consensys
  * @notice This contract aims to provide a default portal
  */
-contract DefaultPortal is Initializable, AbstractPortal, IERC165 {
+contract DefaultPortal is Initializable, AbstractPortal, IERC165Upgradeable {
   address[] public modules;
   ModuleRegistry public moduleRegistry;
   AttestationRegistry public attestationRegistry;
-
-  /// @notice Error thown when attempting to initialize the default portal twice
-  error PortalAlreadyInitialized();
 
   /**
    * @notice Contract initialization
@@ -73,6 +71,6 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165 {
    * @notice Implements supports interface method declaring it is an AbstractPortal
    */
   function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
-    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
+    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 }

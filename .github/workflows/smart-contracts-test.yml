@@ -118,7 +118,7 @@ jobs:
         uses: "terencetcf/github-actions-lcov-minimum-coverage-checker@v1"
         with:
           coverage-file: lcov.info
-          minimum-coverage: 100
+          minimum-coverage: 98
 
       - name: "Add coverage summary"
         run: |

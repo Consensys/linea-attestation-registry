@@ -9,6 +9,8 @@ node_modules
 out
 out-optimized
 out-svg
+artifacts
+cache_hardhat
 
 # files
 *.env

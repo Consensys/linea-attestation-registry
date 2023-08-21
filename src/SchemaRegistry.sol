@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { Schema } from "./struct/Schema.sol";
+import { Schema } from "./types/Structs.sol";
 import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
 
 /**
@@ -66,7 +66,7 @@ contract SchemaRegistry is Initializable {
 
     bytes32 schemaId = getIdFromSchemaString(schemaString);
 
-    if (bytes(schemas[schemaId].name).length > 0) {
+    if (isRegistered(schemaId)) {
       revert SchemaAlreadyExists();
     }
 
@@ -82,5 +82,14 @@ contract SchemaRegistry is Initializable {
    */
   function getSchemasNumber() public view returns (uint256) {
     return schemaIds.length;
+  }
+
+  /**
+   * @notice Check if a Schema is registered
+   * @param schemaId The ID of the Schema
+   * @return True if the Schema is registered, false otherwise
+   */
+  function isRegistered(bytes32 schemaId) public view returns (bool) {
+    return bytes(schemas[schemaId].name).length > 0;
   }
 }

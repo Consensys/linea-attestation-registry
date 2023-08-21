@@ -5,7 +5,7 @@ import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Init
 import { ERC165Checker } from "openzeppelin-contracts/contracts/utils/introspection/ERC165Checker.sol";
 import { AbstractPortal } from "./interface/AbstractPortal.sol";
 import { DefaultPortal } from "./portal/DefaultPortal.sol";
-import { Portal } from "./struct/Portal.sol";
+import { Portal } from "./types/Structs.sol";
 
 /**
  * @title Portal Registry
@@ -16,6 +16,7 @@ contract PortalRegistry is Initializable {
   mapping(address id => Portal portal) private portals;
   address[] private portalAddresses;
   address public moduleRegistry;
+  address public attestationRegistry;
 
   /// @notice Error thown when attempting to register a Portal twice
   error PortalAlreadyExists();
@@ -36,8 +37,9 @@ contract PortalRegistry is Initializable {
   /**
    * @notice Contract initialization
    */
-  function initialize(address _moduleRegistry) public initializer {
+  function initialize(address _moduleRegistry, address _attestationRegistry) public initializer {
     moduleRegistry = _moduleRegistry;
+    attestationRegistry = _attestationRegistry;
   }
 
   /**
@@ -82,7 +84,7 @@ contract PortalRegistry is Initializable {
    */
   function deployDefaultPortal(address[] calldata modules, string memory name, string memory description) external {
     DefaultPortal defaultPortal = new DefaultPortal();
-    defaultPortal.initialize(modules, moduleRegistry);
+    defaultPortal.initialize(modules, moduleRegistry, attestationRegistry);
     register(address(defaultPortal), name, description);
   }
 

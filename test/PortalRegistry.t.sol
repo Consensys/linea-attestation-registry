@@ -5,7 +5,7 @@ import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
-import { Portal } from "../src/struct/Portal.sol";
+import { Portal } from "../src/types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract PortalRegistryTest is Test {
@@ -26,10 +26,10 @@ contract PortalRegistryTest is Test {
   function test_initialize() public {
     vm.expectEmit();
     emit Initialized(1);
-    portalRegistry.initialize(address(1));
+    portalRegistry.initialize(address(1), address(2));
 
     vm.expectRevert("Initializable: contract is already initialized");
-    portalRegistry.initialize(address(1));
+    portalRegistry.initialize(address(1), address(2));
   }
 
   function test_register() public {
@@ -94,7 +94,7 @@ contract ValidPortal is AbstractPortal, IERC165 {
     bytes32 /*schemaId*/,
     bytes memory /*attestationPayload*/,
     bytes memory /*validationPayload*/
-  ) external pure override returns (bool) {
+  ) external payable override returns (bool) {
     return true;
   }
 

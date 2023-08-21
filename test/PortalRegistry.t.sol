@@ -5,7 +5,7 @@ import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { IPortal } from "../src/interface/IPortal.sol";
-import { Portal } from "../src/struct/Portal.sol";
+import { Portal } from "../src/types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract PortalRegistryTest is Test {

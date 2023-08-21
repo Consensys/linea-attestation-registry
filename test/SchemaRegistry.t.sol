@@ -76,4 +76,12 @@ contract SchemaRegistryTest is Test {
     bytes32 schemaId = schemaRegistry.schemaIds(0);
     assertEq(schemaId, expectedId);
   }
+
+  function testIsSchemaRegistered() public {
+    bool isRegistered = schemaRegistry.isRegistered(expectedId);
+    assertFalse(isRegistered);
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    isRegistered = schemaRegistry.isRegistered(expectedId);
+    assertTrue(isRegistered);
+  }
 }

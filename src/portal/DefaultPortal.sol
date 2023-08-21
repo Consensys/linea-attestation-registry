@@ -86,19 +86,25 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165 {
     bytes memory attestationPayload
   ) private view returns (Attestation memory attestation) {
     //TODO: Add validations for attestation payload
-    (bytes32 attestationId, address attestee, uint256 expirationDate, bytes[] memory attestationData) = abi.decode(
-      attestationPayload,
-      (bytes32, address, uint256, bytes[])
-    );
+    (
+      bytes32 attestationId,
+      address attester,
+      bytes memory subject,
+      uint256 expirationDate,
+      bool isPrivate,
+      bytes[] memory attestationData
+    ) = abi.decode(attestationPayload, (bytes32, address, bytes, uint256, bool, bytes[]));
     attestation = Attestation(
       attestationId,
       schemaId,
+      attester,
       address(this),
-      attestee,
-      address(attestationRegistry),
+      subject,
       block.timestamp,
       expirationDate,
+      isPrivate,
       false,
+      1,
       attestationData
     );
 

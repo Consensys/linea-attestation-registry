@@ -3,13 +3,15 @@ pragma solidity 0.8.21;
 
 struct Attestation {
   bytes32 attestationId; // The unique identifier of the attestation.
-  bytes32 schemaId; // The unique identifier of the schema used.
-  address portal; // The address issuing the attestation to the attestee.
-  address attestee; // The Attestee address (receiving attestation).
-  address attestor; // The Attestor smart contract address.
+  bytes32 schemaId; // The identifier of the schema this attestation adheres to.
+  address attester; // The address issuing the attestation to the subject.
+  address portal; // The id of the portal that created the attestation.
+  bytes subject; // The ID of the attestee, EVM address, DID, URL etc.
   uint256 attestedDate; // The date the attestation is issued.
   uint256 expirationDate; // The expiration date of the attestation.
+  bool isPrivate; // Whether the attestation is private or public.
   bool revoked; // Whether the attestation is revoked or not.
+  uint16 version; // Version of the registry when the attestation was created.
   bytes[] attestationData; // The attestation data.
 }
 

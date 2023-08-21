@@ -146,4 +146,18 @@ contract AttestationRegistryTest is Test {
     assertEq(attestation1.version, attestation2.version);
     assertEq(attestation1.attestationData.length, attestation2.attestationData.length);
   }
+
+  function test_incrementVersionNumber() public {
+    vm.assume(attestationRegistry.getVersionNumber() == 0);
+
+    attestationRegistry.incrementVersionNumber();
+
+    uint16 newVersion = attestationRegistry.getVersionNumber();
+    assertEq(newVersion, 1);
+
+    attestationRegistry.incrementVersionNumber();
+
+    newVersion = attestationRegistry.getVersionNumber();
+    assertEq(newVersion, 2);
+  }
 }

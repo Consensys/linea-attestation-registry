@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
+import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
 import { Attestation } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
@@ -11,11 +12,13 @@ import { SchemaRegistry } from "./SchemaRegistry.sol";
  * @author Consensys
  * @notice This contract stores a registry of all attestations
  */
-contract AttestationRegistry is Initializable {
+contract AttestationRegistry is Initializable, Ownable {
   PortalRegistry public portalRegistry;
   SchemaRegistry public schemaRegistry;
 
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
+
+  uint16 private version;
 
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
@@ -100,5 +103,23 @@ contract AttestationRegistry is Initializable {
   function getAttestation(bytes32 attestationId) public view returns (Attestation memory) {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
     return attestations[attestationId];
+  }
+
+  /**
+   * @notice Increments the registry version
+   * @return The new version number
+   */
+  function incrementVersionNumber() public onlyOwner returns (uint16) {
+    version++;
+
+    return version;
+  }
+
+  /**
+   * @notice Gets the registry version
+   * @return The current version number
+   */
+  function getVersionNumber() public view returns (uint16) {
+    return version;
   }
 }

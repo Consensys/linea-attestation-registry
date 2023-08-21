@@ -25,6 +25,8 @@ contract AttestationRegistry is Initializable {
   error SchemaRegistryInvalid();
   /// @notice Error thrown when a portal is not registered in the PortalRegistry
   error PortalNotRegistered();
+  /// @notice Error thrown when an attestation is already registered in the AttestationRegistry
+  error AttestationAlreadyAttested();
   /// @notice Error thrown when a schema is not registered in the SchemaRegistry
   error SchemaNotRegistered();
   /// @notice Error thrown when an attestation is not registered in the AttestationRegistry
@@ -63,6 +65,7 @@ contract AttestationRegistry is Initializable {
    * @dev This method is only callable by a registered Portal
    */
   function attest(Attestation calldata attestation) external onlyPortals(msg.sender) {
+    if (isRegistered(attestation.attestationId)) revert AttestationAlreadyAttested();
     attestations[attestation.attestationId] = attestation;
     emit AttestationRegistered(attestation);
   }

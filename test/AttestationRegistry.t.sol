@@ -65,6 +65,15 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.attest(attestation);
   }
 
+  function test_attest_AttestationAlreadyAttested(Attestation memory attestation) public {
+    vm.startPrank(portal);
+    attestationRegistry.attest(attestation);
+
+    vm.expectRevert(AttestationRegistry.AttestationAlreadyAttested.selector);
+    attestationRegistry.attest(attestation);
+    vm.stopPrank();
+  }
+
   function test_revoke(Attestation memory attestation) public {
     vm.assume(attestation.attestationId != bytes32(0));
     attestation.portal = portal;

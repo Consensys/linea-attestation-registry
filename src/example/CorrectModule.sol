@@ -2,17 +2,17 @@
 pragma solidity 0.8.21;
 
 import { AbstractModule } from "../interface/AbstractModule.sol";
+import { AttestationPayload } from "../types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract CorrectModule is AbstractModule, IERC165 {
   function test() public {}
 
   function run(
-    bytes memory attestationPayload,
-    bytes memory validationPayload,
-    bytes32 /*schemaId*/,
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayload,
     address /*msgSender*/
-  ) public pure override returns (bytes memory, bytes memory) {
+  ) public pure override returns (AttestationPayload memory, bytes[] memory) {
     return (attestationPayload, validationPayload);
   }
 

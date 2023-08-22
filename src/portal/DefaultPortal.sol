@@ -6,7 +6,7 @@ import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ER
 import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { AbstractPortal } from "../interface/AbstractPortal.sol";
-import { Attestation, Portal } from "../types/Structs.sol";
+import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
 
 /**
  * @title Default Portal
@@ -54,19 +54,14 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165 {
    * @dev Runs all modules for the portal and stores the attestation in AttestationRegistry
    */
   function attest(
-    bytes32 schemaId,
-    bytes memory attestationPayload,
-    bytes memory validationPayload
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayload
   ) external payable override returns (bool) {
-    moduleRegistry.runModules(modules, schemaId, attestationPayload, validationPayload);
+    moduleRegistry.runModules(modules, attestationPayload, validationPayload);
 
-    Attestation memory attestation = _buildAttestation(schemaId, attestationPayload);
-
-    super._beforeAttest(attestation, msg.value, attestationPayload);
+    Attestation memory attestation = _buildAttestation(attestationPayload);
 
     attestationRegistry.attest(attestation);
-
-    super._afterAttest(attestation, msg.value, attestationPayload);
 
     return true;
   }
@@ -82,30 +77,20 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165 {
    * @notice Implements supports interface method declaring it is an AbstractPortal
    */
   function _buildAttestation(
-    bytes32 schemaId,
-    bytes memory attestationPayload
+    AttestationPayload memory attestationPayload
   ) private view returns (Attestation memory attestation) {
     //TODO: Add validations for attestation payload
-    (
-      bytes32 attestationId,
-      address attester,
-      bytes memory subject,
-      uint256 expirationDate,
-      bool isPrivate,
-      bytes[] memory attestationData
-    ) = abi.decode(attestationPayload, (bytes32, address, bytes, uint256, bool, bytes[]));
     attestation = Attestation(
-      attestationId,
-      schemaId,
-      attester,
+      attestationPayload.attestationId,
+      attestationPayload.schemaId,
+      attestationPayload.attester,
       address(this),
-      subject,
+      attestationPayload.subject,
       block.timestamp,
-      expirationDate,
-      isPrivate,
+      attestationPayload.expirationDate,
       false,
       1,
-      attestationData
+      attestationPayload.attestationData
     );
 
     return attestation;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { Module } from "./types/Structs.sol";
+import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./interface/AbstractModule.sol";
 import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
 import { ERC165Checker } from "openzeppelin-contracts/contracts/utils/introspection/ERC165Checker.sol";
@@ -93,23 +93,27 @@ contract ModuleRegistry is Initializable {
    */
   function runModules(
     address[] memory modulesAddresses,
-    bytes32 schemaId,
-    bytes memory attestationPayload,
-    bytes memory validationPayload
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayload
   ) public {
     // Check if modules addresses are not missing
     if (modulesAddresses.length == 0) revert ModulesAddressesMissing();
 
-    // Check if attestation payload is not missing
-    if (bytes(attestationPayload).length == 0) revert AttestationPayloadMissing();
+    // Check if mandatory fields in attestation payload are not missing
+    if (
+      bytes32(attestationPayload.attestationId).length == 0 ||
+      bytes32(attestationPayload.attestationId).length == 0 ||
+      address(attestationPayload.attester) == address(0) ||
+      bytes(attestationPayload.subject).length == 0
+    ) revert AttestationPayloadMissing();
 
     // Check if validation payload is not missing
-    if (bytes(validationPayload).length == 0) revert ValidationPayloadMissing();
+    if (validationPayload.length == 0) revert ValidationPayloadMissing();
 
     // For each module check if it is registered and call run method
     for (uint i = 0; i < modulesAddresses.length; i++) {
       if (bytes(modules[modulesAddresses[i]].name).length == 0) revert ModuleNotRegistered();
-      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayload, schemaId, msg.sender);
+      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayload, msg.sender);
     }
   }
 

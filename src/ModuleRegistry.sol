@@ -102,7 +102,7 @@ contract ModuleRegistry is Initializable {
     // Check if mandatory fields in attestation payload are not missing
     if (
       bytes32(attestationPayload.attestationId).length == 0 ||
-      bytes32(attestationPayload.attestationId).length == 0 ||
+      bytes32(attestationPayload.schemaId).length == 0 ||
       address(attestationPayload.attester) == address(0) ||
       bytes(attestationPayload.subject).length == 0
     ) revert AttestationPayloadMissing();

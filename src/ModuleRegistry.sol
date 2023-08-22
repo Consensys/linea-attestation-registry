@@ -36,6 +36,8 @@ contract ModuleRegistry is Initializable {
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
+  /// @notice Event emitted when all Modules are run for the attestation
+  event ModulesRunForAttestation(bytes32 attestationId);
 
   /**
    * @notice Contract initialization
@@ -101,20 +103,18 @@ contract ModuleRegistry is Initializable {
 
     // Check if mandatory fields in attestation payload are not missing
     if (
-      bytes32(attestationPayload.attestationId).length == 0 ||
-      bytes32(attestationPayload.schemaId).length == 0 ||
+      attestationPayload.attestationId == bytes32(0) ||
+      attestationPayload.schemaId == bytes32(0) ||
       address(attestationPayload.attester) == address(0) ||
       bytes(attestationPayload.subject).length == 0
     ) revert AttestationPayloadMissing();
-
-    // Check if validation payload is not missing
-    if (validationPayload.length == 0) revert ValidationPayloadMissing();
 
     // For each module check if it is registered and call run method
     for (uint i = 0; i < modulesAddresses.length; i++) {
       if (bytes(modules[modulesAddresses[i]].name).length == 0) revert ModuleNotRegistered();
       AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayload, msg.sender);
     }
+    emit ModulesRunForAttestation(attestationPayload.attestationId);
   }
 
   /**

@@ -5,6 +5,7 @@ import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
+import { CorrectModule } from "../src/example/CorrectModule.sol";
 import { AttestationPayload, Portal } from "../src/types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
@@ -18,6 +19,7 @@ contract PortalRegistryTest is Test {
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address moduleAddress);
+  event DefaultPortalInitialized(address[] modules);
 
   function setUp() public {
     portalRegistry = new PortalRegistry();
@@ -33,7 +35,7 @@ contract PortalRegistryTest is Test {
   }
 
   function test_register() public {
-    vm.expectEmit(true, true, true, true);
+    vm.expectEmit();
     emit PortalRegistered(expectedName, expectedDescription, address(validPortal));
     portalRegistry.register(address(validPortal), expectedName, expectedDescription);
 
@@ -73,6 +75,25 @@ contract PortalRegistryTest is Test {
   function test_register_PortalInvalid() public {
     vm.expectRevert(PortalRegistry.PortalInvalid.selector);
     portalRegistry.register(address(invalidPortal), expectedName, expectedDescription);
+  }
+
+  function test_deployDefaultPortal() public {
+    CorrectModule correctModule = new CorrectModule();
+    address[] memory modules = new address[](1);
+    modules[0] = address(correctModule);
+    vm.expectEmit();
+    emit DefaultPortalInitialized(modules);
+    portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription);
+
+    // vm.expectEmit(true, true, true, true);
+    //     emit PortalRegistered(expectedName, expectedDescription, address(validPortal));
+    //     uint256 portalCount = portalRegistry.getPortalsCount();
+    //     assertEq(portalCount, 1);
+
+    //     Portal memory portal = portalRegistry.getPortalByAddress(address(validPortal));
+    //     assertEq(portal.name, expectedName);
+    //     assertEq(portal.description, expectedDescription);
+    //     assertEq(portal.modules.length, 2);
   }
 
   function test_getPortals_PortalNotRegistered() public {

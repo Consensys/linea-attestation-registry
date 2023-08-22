@@ -84,16 +84,6 @@ contract PortalRegistryTest is Test {
     vm.expectEmit();
     emit DefaultPortalInitialized(modules);
     portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription);
-
-    // vm.expectEmit(true, true, true, true);
-    //     emit PortalRegistered(expectedName, expectedDescription, address(validPortal));
-    //     uint256 portalCount = portalRegistry.getPortalsCount();
-    //     assertEq(portalCount, 1);
-
-    //     Portal memory portal = portalRegistry.getPortalByAddress(address(validPortal));
-    //     assertEq(portal.name, expectedName);
-    //     assertEq(portal.description, expectedDescription);
-    //     assertEq(portal.modules.length, 2);
   }
 
   function test_getPortals_PortalNotRegistered() public {

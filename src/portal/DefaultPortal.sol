@@ -21,9 +21,6 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165 {
   /// @notice Error thown when attempting to initialize the default portal twice
   error PortalAlreadyInitialized();
 
-  /// @notice Event emitted when a clone of default portal is initialized
-  event DefaultPortalInitialized(address[] modules);
-
   /**
    * @notice Contract initialization
    */
@@ -36,8 +33,6 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165 {
     attestationRegistry = AttestationRegistry(_attestationRegistry);
     moduleRegistry = ModuleRegistry(_moduleRegistry);
     modules = _modules;
-    // Emit event
-    emit DefaultPortalInitialized(modules);
   }
 
   /**
@@ -58,26 +53,7 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165 {
   ) external payable override {
     moduleRegistry.runModules(modules, validationPayload);
 
-    Attestation memory attestation = _buildAttestation(attestationPayload);
-
-    attestationRegistry.attest(attestation);
-  }
-
-  /**
-   * @notice Implements supports interface method declaring it is an AbstractPortal
-   */
-  function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
-    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
-  }
-
-  /**
-   * @notice Implements supports interface method declaring it is an AbstractPortal
-   */
-  function _buildAttestation(
-    AttestationPayload memory attestationPayload
-  ) private view returns (Attestation memory attestation) {
-    //TODO: Add validations for attestation payload
-    attestation = Attestation(
+    Attestation memory attestation = Attestation(
       attestationPayload.attestationId,
       attestationPayload.schemaId,
       attestationPayload.attester,
@@ -90,6 +66,13 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165 {
       attestationPayload.attestationData
     );
 
-    return attestation;
+    attestationRegistry.attest(attestation);
+  }
+
+  /**
+   * @notice Implements supports interface method declaring it is an AbstractPortal
+   */
+  function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
+    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
   }
 }

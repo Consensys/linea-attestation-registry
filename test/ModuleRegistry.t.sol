@@ -98,6 +98,21 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.runModules(moduleAddresses, validationPayload);
   }
 
+  function testRunModulesWithIncorrectNumberOfValidationPayload() public {
+    // Register 2 modules
+    address[] memory moduleAddresses = new address[](2);
+    moduleAddresses[0] = address(new CorrectModule());
+    moduleAddresses[1] = address(new CorrectModule());
+    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
+    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](1);
+
+    vm.expectRevert(ModuleRegistry.ModuleValidationPayloadMismatch.selector);
+    moduleRegistry.runModules(moduleAddresses, validationPayload);
+  }
+
   function testRunModulesWithoutSendingModuleAddresses() public {
     // Register a module
     address[] memory moduleAddresses = new address[](0);

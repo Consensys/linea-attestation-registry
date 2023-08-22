@@ -19,7 +19,6 @@ contract PortalRegistryTest is Test {
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address moduleAddress);
-  event DefaultPortalInitialized(address[] modules);
 
   function setUp() public {
     portalRegistry = new PortalRegistry();
@@ -81,8 +80,6 @@ contract PortalRegistryTest is Test {
     CorrectModule correctModule = new CorrectModule();
     address[] memory modules = new address[](1);
     modules[0] = address(correctModule);
-    vm.expectEmit();
-    emit DefaultPortalInitialized(modules);
     portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription);
   }
 

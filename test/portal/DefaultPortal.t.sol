@@ -20,7 +20,6 @@ contract DefaultPortalTest is Test {
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address moduleAddress);
-  event DefaultPortalInitialized(address[] modules);
   event ModulesRunForAttestation();
   event AttestationRegistered();
 

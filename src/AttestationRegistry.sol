@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
-import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
+import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import { Attestation } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
@@ -12,7 +11,7 @@ import { SchemaRegistry } from "./SchemaRegistry.sol";
  * @author Consensys
  * @notice This contract stores a registry of all attestations
  */
-contract AttestationRegistry is Initializable, Ownable {
+contract AttestationRegistry is OwnableUpgradeable {
   PortalRegistry public portalRegistry;
   SchemaRegistry public schemaRegistry;
 
@@ -59,6 +58,7 @@ contract AttestationRegistry is Initializable, Ownable {
    * @notice Contract initialization
    */
   function initialize(address _portalRegistry, address _schemaRegistry) public initializer {
+    __Ownable_init();
     if (_portalRegistry == address(0)) revert PortalRegistryInvalid();
     if (_schemaRegistry == address(0)) revert SchemaRegistryInvalid();
     portalRegistry = PortalRegistry(_portalRegistry);

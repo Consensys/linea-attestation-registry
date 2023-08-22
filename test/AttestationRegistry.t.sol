@@ -20,6 +20,7 @@ contract AttestationRegistryTest is Test {
   event Initialized(uint8 version);
   event AttestationRegistered(Attestation attestation);
   event AttestationRevoked(bytes32 attestationId);
+  event VersionUpdated(uint16 version);
 
   function setUp() public {
     attestationRegistry = new AttestationRegistry();
@@ -148,16 +149,14 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_incrementVersionNumber() public {
-    vm.assume(attestationRegistry.getVersionNumber() == 0);
-
-    attestationRegistry.incrementVersionNumber();
-
-    uint16 newVersion = attestationRegistry.getVersionNumber();
-    assertEq(newVersion, 1);
-
-    attestationRegistry.incrementVersionNumber();
-
-    newVersion = attestationRegistry.getVersionNumber();
-    assertEq(newVersion, 2);
+    assertEq(attestationRegistry.getVersionNumber(), 0);
+    for (uint16 i = 1; i <= 5; i++) {
+      vm.expectEmit(true, true, true, true);
+      emit VersionUpdated(i);
+      uint256 version = attestationRegistry.incrementVersionNumber();
+      assertEq(version, i);
+      uint16 newVersion = attestationRegistry.getVersionNumber();
+      assertEq(newVersion, i);
+    }
   }
 }

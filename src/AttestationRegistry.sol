@@ -42,6 +42,9 @@ contract AttestationRegistry is Initializable, Ownable {
   /// @notice Event emitted when an attestation is revoked
   event AttestationRevoked(bytes32 attestationId);
 
+  /// @notice Event emitted when the version number is incremented
+  event VersionUpdated(uint16 version);
+
   /**
    * @notice Checks if the caller is a registered portal
    * @param portal the portal address
@@ -110,8 +113,8 @@ contract AttestationRegistry is Initializable, Ownable {
    * @return The new version number
    */
   function incrementVersionNumber() public onlyOwner returns (uint16) {
-    version++;
-
+    ++version;
+    emit VersionUpdated(version);
     return version;
   }
 

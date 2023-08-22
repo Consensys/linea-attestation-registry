@@ -17,7 +17,6 @@ contract ModuleRegistryTest is Test {
   address private expectedAddress = address(new CorrectModule());
 
   event ModuleRegistered(string name, string description, address moduleAddress);
-  event ModulesRunForAttestation(bytes32 attestationId);
   event Initialized(uint8 version);
 
   function setUp() public {
@@ -92,64 +91,21 @@ contract ModuleRegistryTest is Test {
     moduleAddresses[1] = address(new CorrectModule());
     moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
     moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
-    // Create attestation payload
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32("attestationId"),
-      bytes32("schemaId"),
-      address(1),
-      bytes("subject"),
-      block.timestamp + 1 days,
-      new bytes[](0)
-    );
-    // Create validation payload
-    bytes[] memory validationPayload = new bytes[](0);
 
-    // execute runModules
-    vm.expectEmit();
-    emit ModulesRunForAttestation(bytes32("attestationId"));
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+
+    moduleRegistry.runModules(moduleAddresses, validationPayload);
   }
 
   function testRunModulesWithoutSendingModuleAddresses() public {
     // Register a module
     address[] memory moduleAddresses = new address[](0);
-    // Create attestation payload
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32("attestationId"),
-      bytes32("schemaId"),
-      address(1),
-      bytes("subject"),
-      block.timestamp + 1 days,
-      new bytes[](0)
-    );
+
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](0);
 
-    // execute runModules
-    vm.expectRevert(ModuleRegistry.ModulesAddressesMissing.selector);
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
-  }
-
-  function testRunModulesWithInvalidAttestationPayload() public {
-    // Register a module
-    address[] memory moduleAddresses = new address[](1);
-    moduleAddresses[0] = address(new CorrectModule());
-    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
-    // Create attestation payload
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32(""),
-      bytes32(""),
-      address(0),
-      bytes(""),
-      block.timestamp + 1 days,
-      new bytes[](0)
-    );
-    // Create validation payload
-    bytes[] memory validationPayload = new bytes[](0);
-
-    // execute runModules
-    vm.expectRevert(ModuleRegistry.AttestationPayloadMissing.selector);
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, validationPayload);
   }
 
   function testRunModulesForUnregisteredModules() public {
@@ -157,21 +113,13 @@ contract ModuleRegistryTest is Test {
     address[] memory moduleAddresses = new address[](2);
     moduleAddresses[0] = address(new CorrectModule());
     moduleAddresses[1] = address(new CorrectModule());
-    // Create attestation payload
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32("attestationId"),
-      bytes32("schemaId"),
-      address(1),
-      bytes("subject"),
-      block.timestamp + 1 days,
-      new bytes[](0)
-    );
+
     // Create validation payload
-    bytes[] memory validationPayload = new bytes[](0);
+    bytes[] memory validationPayload = new bytes[](2);
 
     // execute runModules
     vm.expectRevert(ModuleRegistry.ModuleNotRegistered.selector);
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, validationPayload);
   }
 
   function testGetModuleAddress() public {

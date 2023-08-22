@@ -8,7 +8,7 @@ abstract contract AbstractPortal {
   function attest(
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayload
-  ) external payable virtual returns (bool);
+  ) external payable virtual;
 
   function getModules() external virtual returns (address[] memory);
 }

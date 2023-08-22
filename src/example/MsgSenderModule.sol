@@ -17,11 +17,9 @@ contract MsgSenderModule is IERC165, AbstractModule, Initializable {
   }
 
   function run(
-    AttestationPayload memory _attestationPayload,
     bytes[] memory _validationPayload,
     address _msgSender
-  ) public view override returns (AttestationPayload memory attestationPayload, bytes[] memory validationPayload) {
-    attestationPayload = _attestationPayload;
+  ) public view override returns (bytes[] memory validationPayload) {
     validationPayload = _validationPayload;
     if (_msgSender != expectedMsgSender) {
       revert("Incorrect message sender");

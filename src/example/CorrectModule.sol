@@ -8,12 +8,8 @@ import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ER
 contract CorrectModule is AbstractModule, IERC165 {
   function test() public {}
 
-  function run(
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload,
-    address /*msgSender*/
-  ) public pure override returns (AttestationPayload memory, bytes[] memory) {
-    return (attestationPayload, validationPayload);
+  function run(bytes[] memory validationPayload, address /*msgSender*/) public pure override returns (bytes[] memory) {
+    return (validationPayload);
   }
 
   function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {

@@ -25,14 +25,12 @@ contract ModuleRegistry is Initializable {
   error ModuleAddressInvalid();
   /// @notice Error thrown when attempting to add a Module which has not implemented the IModule interface
   error ModuleInvalid();
-  /// @notice Error thrown when attempting to run modules with no module addresses provided
-  error ModulesAddressesMissing();
   /// @notice Error thrown when attempting to run modules with no attestation payload provided
   error AttestationPayloadMissing();
-  /// @notice Error thrown when attempting to run modules with no validation payload provided
-  error ValidationPayloadMissing();
   /// @notice Error thrown when module is not registered
   error ModuleNotRegistered();
+  /// @notice Error thrown when module addresses and validation payload length mismatch
+  error ModuleValidationPayloadMismatch();
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
@@ -93,28 +91,16 @@ contract ModuleRegistry is Initializable {
    * @param modulesAddresses the addresses of the registered modules
    * @dev check if modules are registered and execute run method for each module
    */
-  function runModules(
-    address[] memory modulesAddresses,
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload
-  ) public {
-    // Check if modules addresses are not missing
-    if (modulesAddresses.length == 0) revert ModulesAddressesMissing();
-
-    // Check if mandatory fields in attestation payload are not missing
-    if (
-      attestationPayload.attestationId == bytes32(0) ||
-      attestationPayload.schemaId == bytes32(0) ||
-      address(attestationPayload.attester) == address(0) ||
-      bytes(attestationPayload.subject).length == 0
-    ) revert AttestationPayloadMissing();
+  function runModules(address[] memory modulesAddresses, bytes[] memory validationPayload) public {
+    // If no modules provided, bypass module validation
+    if (modulesAddresses.length == 0) return;
+    if (modulesAddresses.length != validationPayload.length) revert ModuleValidationPayloadMismatch();
 
     // For each module check if it is registered and call run method
     for (uint i = 0; i < modulesAddresses.length; i++) {
-      if (bytes(modules[modulesAddresses[i]].name).length == 0) revert ModuleNotRegistered();
-      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayload, msg.sender);
+      if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
+      AbstractModule(modulesAddresses[i]).run(validationPayload, msg.sender);
     }
-    emit ModulesRunForAttestation(attestationPayload.attestationId);
   }
 
   /**
@@ -124,5 +110,14 @@ contract ModuleRegistry is Initializable {
    */
   function getModulesNumber() public view returns (uint256) {
     return moduleAddresses.length;
+  }
+
+  /**
+   * @notice Checks that a module is registered in the module registry
+   * @param moduleAddress The address of the Module to check
+   * @return True if the Module is registered, False otherwise
+   */
+  function isRegistered(address moduleAddress) public view returns (bool) {
+    return bytes(modules[moduleAddress].name).length > 0;
   }
 }

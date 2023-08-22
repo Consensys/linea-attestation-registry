@@ -8,10 +8,12 @@ import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { Attestation } from "../src/types/Structs.sol";
+import { Router } from "../src/Router.sol";
 
 contract AttestationRegistryTest is Test {
   address public portal = makeAddr("portal");
   address public user = makeAddr("user");
+  Router public router;
   AttestationRegistry public attestationRegistry;
   address public portalRegistryAddress;
   address public schemaRegistryAddress;
@@ -22,13 +24,19 @@ contract AttestationRegistryTest is Test {
   event VersionUpdated(uint16 version);
 
   function setUp() public {
+    router = new Router();
+    router.initialize();
+
     attestationRegistry = new AttestationRegistry();
+    router.updateAttestationRegistry(address(attestationRegistry));
+
     portalRegistryAddress = address(new PortalRegistryMock());
     schemaRegistryAddress = address(new SchemaRegistryMock());
-    vm.startPrank(address(0));
-    attestationRegistry.updatePortalRegistry(portalRegistryAddress);
-    attestationRegistry.updateSchemaRegistry(schemaRegistryAddress);
-    vm.stopPrank();
+    vm.prank(address(0));
+    attestationRegistry.updateRouter(address(router));
+
+    router.updatePortalRegistry(portalRegistryAddress);
+    router.updateSchemaRegistry(schemaRegistryAddress);
 
     PortalRegistry(portalRegistryAddress).register(portal, "Portal", "Portal");
   }
@@ -38,38 +46,21 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.initialize();
   }
 
-  function test_updatePortalRegistry() public {
+  function test_updateRouter() public {
     AttestationRegistry testAttestationRegistry = new AttestationRegistry();
 
     vm.prank(address(0));
-    testAttestationRegistry.updatePortalRegistry(address(1));
-    address portalRegistry = address(testAttestationRegistry.portalRegistry());
-    assertEq(portalRegistry, address(1));
+    testAttestationRegistry.updateRouter(address(1));
+    address routerAddress = address(testAttestationRegistry.router());
+    assertEq(routerAddress, address(1));
   }
 
-  function test_updatePortalRegistry_InvalidParameter() public {
+  function test_updateRouter_InvalidParameter() public {
     AttestationRegistry testAttestationRegistry = new AttestationRegistry();
 
-    vm.expectRevert(AttestationRegistry.PortalRegistryInvalid.selector);
+    vm.expectRevert(AttestationRegistry.RouterInvalid.selector);
     vm.prank(address(0));
-    testAttestationRegistry.updatePortalRegistry(address(0));
-  }
-
-  function test_updateSchemaRegistry() public {
-    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
-
-    vm.prank(address(0));
-    testAttestationRegistry.updateSchemaRegistry(address(1));
-    address schemaRegistry = address(testAttestationRegistry.schemaRegistry());
-    assertEq(schemaRegistry, address(1));
-  }
-
-  function test_updateSchemaRegistry_InvalidParameter() public {
-    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
-
-    vm.expectRevert(AttestationRegistry.SchemaRegistryInvalid.selector);
-    vm.prank(address(0));
-    testAttestationRegistry.updateSchemaRegistry(address(0));
+    testAttestationRegistry.updateRouter(address(0));
   }
 
   function test_attest(Attestation memory attestation) public {

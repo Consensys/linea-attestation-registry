@@ -5,6 +5,7 @@ import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts
 import { Attestation } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
+import { IRouter } from "./interface/IRouter.sol";
 
 /**
  * @title Attestation Registry
@@ -12,8 +13,7 @@ import { SchemaRegistry } from "./SchemaRegistry.sol";
  * @notice This contract stores a registry of all attestations
  */
 contract AttestationRegistry is OwnableUpgradeable {
-  PortalRegistry public portalRegistry;
-  SchemaRegistry public schemaRegistry;
+  IRouter public router;
 
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
@@ -21,10 +21,8 @@ contract AttestationRegistry is OwnableUpgradeable {
 
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
-  /// @notice Error thrown when an invalid PortalRegistry address is given
-  error PortalRegistryInvalid();
-  /// @notice Error thrown when an invalid SchemaRegistry address is given
-  error SchemaRegistryInvalid();
+  /// @notice Error thrown when an invalid Router address is given
+  error RouterInvalid();
   /// @notice Error thrown when a portal is not registered in the PortalRegistry
   error PortalNotRegistered();
   /// @notice Error thrown when an attestation is already registered in the AttestationRegistry
@@ -49,7 +47,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param portal the portal address
    */
   modifier onlyPortals(address portal) {
-    bool isPortalRegistered = portalRegistry.isRegistered(portal);
+    bool isPortalRegistered = PortalRegistry(router.getPortalRegistry()).isRegistered(portal);
     if (!isPortalRegistered) revert OnlyPortal();
     _;
   }
@@ -67,19 +65,11 @@ contract AttestationRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Changes the address for the Portal registry
+   * @notice Changes the address for the Router
    */
-  function updatePortalRegistry(address _portalRegistry) public onlyOwner {
-    if (_portalRegistry == address(0)) revert PortalRegistryInvalid();
-    portalRegistry = PortalRegistry(_portalRegistry);
-  }
-
-  /**
-   * @notice Changes the address for the Schema registry
-   */
-  function updateSchemaRegistry(address _schemaRegistry) public onlyOwner {
-    if (_schemaRegistry == address(0)) revert SchemaRegistryInvalid();
-    schemaRegistry = SchemaRegistry(_schemaRegistry);
+  function updateRouter(address _router) public onlyOwner {
+    if (_router == address(0)) revert RouterInvalid();
+    router = IRouter(_router);
   }
 
   /**

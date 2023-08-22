@@ -9,10 +9,16 @@ import { CorrectModule } from "../src/example/CorrectModule.sol";
 import { AttestationPayload, Portal } from "../src/types/Structs.sol";
 // solhint-disable-next-line max-line-length
 import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
+import { Router } from "../src/Router.sol";
+import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
+import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
 
 contract PortalRegistryTest is Test {
   address public user = makeAddr("user");
+  Router public router;
   PortalRegistry public portalRegistry;
+  address public moduleRegistryAddress;
+  address public attestationRegistryAddress;
   string public expectedName = "Name";
   string public expectedDescription = "Description";
   ValidPortal public validPortal = new ValidPortal();
@@ -22,7 +28,19 @@ contract PortalRegistryTest is Test {
   event PortalRegistered(string name, string description, address moduleAddress);
 
   function setUp() public {
+    router = new Router();
+    router.initialize();
+
     portalRegistry = new PortalRegistry();
+    router.updatePortalRegistry(address(portalRegistry));
+
+    moduleRegistryAddress = address(new ModuleRegistryMock());
+    attestationRegistryAddress = address(new AttestationRegistryMock());
+    vm.prank(address(0));
+    portalRegistry.updateRouter(address(router));
+
+    router.updateModuleRegistry(moduleRegistryAddress);
+    router.updateAttestationRegistry(attestationRegistryAddress);
   }
 
   function test_alreadyInitialized() public {
@@ -30,38 +48,21 @@ contract PortalRegistryTest is Test {
     portalRegistry.initialize();
   }
 
-  function test_updateModuleRegistry() public {
+  function test_updateRouter() public {
     PortalRegistry testPortalRegistry = new PortalRegistry();
 
     vm.prank(address(0));
-    testPortalRegistry.updateModuleRegistry(address(1));
-    address moduleRegistry = testPortalRegistry.moduleRegistry();
-    assertEq(moduleRegistry, address(1));
+    testPortalRegistry.updateRouter(address(1));
+    address routerAddress = address(testPortalRegistry.router());
+    assertEq(routerAddress, address(1));
   }
 
-  function test_updateModuleRegistry_InvalidParameter() public {
+  function test_updateRouter_InvalidParameter() public {
     PortalRegistry testPortalRegistry = new PortalRegistry();
 
-    vm.expectRevert(PortalRegistry.ModuleRegistryInvalid.selector);
+    vm.expectRevert(PortalRegistry.RouterInvalid.selector);
     vm.prank(address(0));
-    testPortalRegistry.updateModuleRegistry(address(0));
-  }
-
-  function test_updateAttestationRegistry() public {
-    PortalRegistry testPortalRegistry = new PortalRegistry();
-
-    vm.prank(address(0));
-    testPortalRegistry.updateAttestationRegistry(address(1));
-    address attestationRegistry = testPortalRegistry.attestationRegistry();
-    assertEq(attestationRegistry, address(1));
-  }
-
-  function test_updateAttestationRegistry_InvalidParameter() public {
-    PortalRegistry testPortalRegistry = new PortalRegistry();
-
-    vm.expectRevert(PortalRegistry.AttestationRegistryInvalid.selector);
-    vm.prank(address(0));
-    testPortalRegistry.updateAttestationRegistry(address(0));
+    testPortalRegistry.updateRouter(address(0));
   }
 
   function test_register() public {

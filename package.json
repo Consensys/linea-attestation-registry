@@ -27,6 +27,7 @@
     "deploy:IncorrectModule:goerli": "source .env && forge script script/IncorrectModule.s.sol:IncorrectModuleScript --with-gas-price 100000000000 --rpc-url $LINEA_GOERLI_RPC_URL --verifier-url https://api-testnet.lineascan.build/api --etherscan-api-key $ETHERSCAN_API_KEY --broadcast --verify --legacy -vvvv",
     "deploy:ModuleRegistry:goerli": "npx hardhat run --network linea-goerli script/deployModuleRegistry.ts",
     "deploy:PortalRegistry:goerli": "npx hardhat run --network linea-goerli script/deployPortalRegistry.ts",
+    "deploy:Router:goerli": "npx hardhat run --network linea-goerli script/deployRouter.ts",
     "deploy:SchemaRegistry:goerli": "npx hardhat run --network linea-goerli script/deploySchemaRegistry.ts",
     "lint": "pnpm lint:sol && pnpm prettier:check",
     "lint:sol": "pnpm solhint \"{script,src,test}/**/*.sol\"",
@@ -37,6 +38,7 @@
     "upgrade:AttestationRegistry:goerli": "npx hardhat run --network linea-goerli script/upgradeAttestationRegistry.ts",
     "upgrade:ModuleRegistry:goerli": "npx hardhat run --network linea-goerli script/upgradeModuleRegistry.ts",
     "upgrade:PortalRegistry:goerli": "npx hardhat run --network linea-goerli script/upgradePortalRegistry.ts",
+    "upgrade:Router:goerli": "npx hardhat run --network linea-goerli script/upgradeRouter.ts",
     "upgrade:SchemaRegistry:goerli": "npx hardhat run --network linea-goerli script/upgradeSchemaRegistry.ts"
   },
   "devDependencies": {

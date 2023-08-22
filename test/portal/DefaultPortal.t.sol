@@ -15,8 +15,8 @@ contract DefaultPortalTest is Test {
   CorrectModule public correctModule = new CorrectModule();
   address[] public modules = new address[](1);
   DefaultPortal public defaultPortal;
-  ModuleRegistryMock moduleRegistryMock = new ModuleRegistryMock();
-  AttestationRegistryMock attestationRegistryMock = new AttestationRegistryMock();
+  ModuleRegistryMock public moduleRegistryMock = new ModuleRegistryMock();
+  AttestationRegistryMock public attestationRegistryMock = new AttestationRegistryMock();
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address moduleAddress);

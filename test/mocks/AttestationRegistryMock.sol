@@ -8,7 +8,7 @@ contract AttestationRegistryMock {
   function test() public {}
 
   function attest(Attestation memory attestation) public {
-    require(bytes32(attestation.attestationId) != 0);
+    require(bytes32(attestation.attestationId) != 0, "Invalid attestation");
     emit AttestationRegistered();
   }
 }

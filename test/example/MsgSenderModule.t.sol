@@ -55,7 +55,7 @@ contract MsgSenderModuleTest is Test {
 
   function assertBytesArrayEq(bytes[] memory actualBytesArray, bytes[] memory expectedBytesArray) public {
     // Compare bytes[] arrays using assertEq
-    require(expectedBytesArray.length == actualBytesArray.length);
+    require(expectedBytesArray.length == actualBytesArray.length, "Number of elements are not equal");
 
     for (uint256 i = 0; i < expectedBytesArray.length; i++) {
       assertEq(expectedBytesArray[i], actualBytesArray[i]);

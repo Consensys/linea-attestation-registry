@@ -30,46 +30,20 @@ contract MsgSenderModuleTest is Test {
 
   function testCorrectMsgSenderAddress() public {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32("attestationId"),
-      bytes32("schemaId"),
-      address(1),
-      bytes("subject"),
-      block.timestamp + 1 days,
-      new bytes[](0)
-    );
     bytes[] memory validationPayload = new bytes[](0);
     address msgSender = expectedMsgSender;
 
-    (AttestationPayload memory _attestationPayload, bytes[] memory _validationPayload) = msgSenderModule.run(
-      attestationPayload,
-      validationPayload,
-      msgSender
-    );
+    bytes[] memory _validationPayload = msgSenderModule.run(validationPayload, msgSender);
 
-    assertEq(_attestationPayload.attestationId, attestationPayload.attestationId);
-    assertEq(_attestationPayload.schemaId, attestationPayload.schemaId);
-    assertEq(_attestationPayload.attester, attestationPayload.attester);
-    assertEq(_attestationPayload.subject, attestationPayload.subject);
-    assertEq(_attestationPayload.expirationDate, attestationPayload.expirationDate);
-    assertBytesArrayEq(_attestationPayload.attestationData, attestationPayload.attestationData);
     assertBytesArrayEq(_validationPayload, validationPayload);
   }
 
   function testIncorrectMsgSenderAddress() public {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32("attestationId"),
-      bytes32("schemaId"),
-      address(1),
-      bytes("subject"),
-      block.timestamp + 1 days,
-      new bytes[](0)
-    );
     bytes[] memory validationPayload = new bytes[](0);
     address incorrectMsgSender = address(1);
     vm.expectRevert("Incorrect message sender");
-    msgSenderModule.run(attestationPayload, validationPayload, incorrectMsgSender);
+    msgSenderModule.run(validationPayload, incorrectMsgSender);
   }
 
   function testSupportsInterface() public {

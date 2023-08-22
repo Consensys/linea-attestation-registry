@@ -21,7 +21,7 @@ contract DefaultPortalTest is Test {
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address moduleAddress);
   event DefaultPortalInitialized(address[] modules);
-  event ModulesRunForAttestation(bytes32 attestationId);
+  event ModulesRunForAttestation();
   event AttestationRegistered();
 
   function setUp() public {
@@ -65,12 +65,10 @@ contract DefaultPortalTest is Test {
     bytes[] memory validationPayload = new bytes[](0);
 
     vm.expectEmit(true, true, true, true);
-    emit ModulesRunForAttestation(attestationPayload.attestationId);
+    emit ModulesRunForAttestation();
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    bool result = defaultPortal.attest(attestationPayload, validationPayload);
-
-    assertEq(result, true);
+    defaultPortal.attest(attestationPayload, validationPayload);
   }
 
   function testSupportsInterface() public {

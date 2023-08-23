@@ -17,6 +17,7 @@ contract PortalRegistry is Initializable {
   address[] private portalAddresses;
   address public moduleRegistry;
   address public attestationRegistry;
+  address public schemaRegistry;
 
   /// @notice Error thown when attempting to register a Portal twice
   error PortalAlreadyExists();
@@ -37,9 +38,10 @@ contract PortalRegistry is Initializable {
   /**
    * @notice Contract initialization
    */
-  function initialize(address _moduleRegistry, address _attestationRegistry) public initializer {
+  function initialize(address _moduleRegistry, address _attestationRegistry, address _schemaRegistry) public initializer {
     moduleRegistry = _moduleRegistry;
     attestationRegistry = _attestationRegistry;
+    schemaRegistry = _schemaRegistry;
   }
 
   /**
@@ -84,7 +86,7 @@ contract PortalRegistry is Initializable {
    */
   function deployDefaultPortal(address[] calldata modules, string memory name, string memory description) external {
     DefaultPortal defaultPortal = new DefaultPortal();
-    defaultPortal.initialize(modules, moduleRegistry, attestationRegistry);
+    defaultPortal.initialize(modules, moduleRegistry, attestationRegistry, schemaRegistry);
     register(address(defaultPortal), name, description);
   }
 

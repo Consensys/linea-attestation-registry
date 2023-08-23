@@ -2,9 +2,7 @@
 pragma solidity 0.8.21;
 
 struct AttestationPayload {
-  bytes32 attestationId; // The unique identifier of the attestation.
   bytes32 schemaId; // The identifier of the schema this attestation adheres to.
-  address attester; // The address issuing the attestation to the subject.
   bytes subject; // The ID of the attestee, EVM address, DID, URL etc.
   uint256 expirationDate; // The expiration date of the attestation.
   bytes[] attestationData; // The attestation data.

@@ -27,10 +27,10 @@ contract PortalRegistryTest is Test {
   function test_initialize() public {
     vm.expectEmit();
     emit Initialized(1);
-    portalRegistry.initialize(address(1), address(2));
+    portalRegistry.initialize(address(1), address(2), address(3));
 
     vm.expectRevert("Initializable: contract is already initialized");
-    portalRegistry.initialize(address(1), address(2));
+    portalRegistry.initialize(address(1), address(2), address(3));
   }
 
   function test_register() public {

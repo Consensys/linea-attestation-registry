@@ -37,10 +37,6 @@ contract AttestationRegistry is OwnableUpgradeable {
   error AttestationNotAttested();
   /// @notice Error thrown when an attempt is made to revoke an attestation by an entity other than the attesting portal
   error OnlyAttestingPortal();
-  /// @notice Error thrown when an attempt is made to register an attestation with an empty subject field
-  error EmptyAttestationSubjectField();
-  /// @notice Error thrown when an attempt is made to register an attestation with an empty data field
-  error DataAttestationFieldEmpty();
 
   /// @notice Event emitted when an attestation is registered
   event AttestationRegistered(Attestation attestation);
@@ -78,39 +74,8 @@ contract AttestationRegistry is OwnableUpgradeable {
    */
   function attest(Attestation memory attestation) external onlyPortals(msg.sender) {
     if (isRegistered(attestation.attestationId)) revert AttestationAlreadyAttested();
-
-    /*
-    // verify the schema id exists
-    if (!schemaRegistry.isRegistered(attestation.schemaId)) revert SchemaNotRegistered();
-
-    // the subject field is not blank (or is of minimum length - 8 bytes?)
-    if (attestation.subject.length == 0) revert EmptyAttestationSubjectField();
-
-    // the attestationData field is not blank
-    if (attestation.attestationData.length == 0) revert DataAttestationFieldEmpty();
-
-    // the version is set to the current version of the registry
-    attestation.version = version;
-
-    // the attester field is set to tx.origin
-    attestation.attester = tx.origin;
-
-    // the portalId is set to the msg.sender
-    attestation.portal = msg.sender;
-
-    // the attestationId is created deterministically (e.g. auto-increment, or keccak hash)
-    attestation.attestationId = bytes32(++attestationCount);
-
-    // the attestedDate field is set to the current date
-    attestation.attestedDate = block.timestamp;
-
-    // the revoked field is uninitialized
-    attestation.revoked = false;
-
-    // record attestation in state
-    */
-
     attestations[attestation.attestationId] = attestation;
+    attestationCount++;
     emit AttestationRegistered(attestation);
   }
 

@@ -25,15 +25,11 @@ contract DefaultPortalTest is Test {
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
 
   function setUp() public {
-    defaultPortal = new DefaultPortal();
+    defaultPortal = new DefaultPortal(modules, address(moduleRegistryMock), address(attestationRegistryMock));
     modules.push(address(correctModule));
   }
 
   function test_initialize() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    defaultPortal.initialize(modules, address(1), address(2));
-
     vm.expectRevert("Initializable: contract is already initialized");
     defaultPortal.initialize(modules, address(1), address(2));
   }

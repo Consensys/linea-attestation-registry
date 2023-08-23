@@ -153,10 +153,7 @@ contract PortalRegistryTest is Test {
 contract ValidPortal is AbstractPortal, IERC165Upgradeable {
   function test() public {}
 
-  function attest(
-    AttestationPayload memory /*attestationPayload*/,
-    bytes[] memory /*validationPayload*/
-  ) external payable override {}
+  function _beforeAttest(Attestation memory attestation, uint256 value) internal override {}
 
   function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) external override {}
 

@@ -33,13 +33,7 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165Upgradeable {
     modules = _modules;
   }
 
-  /**
-   * @notice Get all modules from the default portal clone
-   * @return The Modules
-   */
-  function getModules() external view override returns (address[] memory) {
-    return modules;
-  }
+  function _beforeAttest(Attestation memory attestation, uint256 value) internal override {}
 
   /**
    * @notice attest the schema with given attestationPayload and validationPayload
@@ -70,4 +64,6 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165Upgradeable {
   function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
     return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
+
+  function _afterAttest(Attestation memory attestation, uint256 value) internal override {}
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
+import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import { Attestation } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
@@ -11,11 +11,13 @@ import { SchemaRegistry } from "./SchemaRegistry.sol";
  * @author Consensys
  * @notice This contract stores a registry of all attestations
  */
-contract AttestationRegistry is Initializable {
+contract AttestationRegistry is OwnableUpgradeable {
   PortalRegistry public portalRegistry;
   SchemaRegistry public schemaRegistry;
 
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
+
+  uint16 private version;
 
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
@@ -39,6 +41,9 @@ contract AttestationRegistry is Initializable {
   /// @notice Event emitted when an attestation is revoked
   event AttestationRevoked(bytes32 attestationId);
 
+  /// @notice Event emitted when the version number is incremented
+  event VersionUpdated(uint16 version);
+
   /**
    * @notice Checks if the caller is a registered portal
    * @param portal the portal address
@@ -53,6 +58,7 @@ contract AttestationRegistry is Initializable {
    * @notice Contract initialization
    */
   function initialize(address _portalRegistry, address _schemaRegistry) public initializer {
+    __Ownable_init();
     if (_portalRegistry == address(0)) revert PortalRegistryInvalid();
     if (_schemaRegistry == address(0)) revert SchemaRegistryInvalid();
     portalRegistry = PortalRegistry(_portalRegistry);
@@ -100,5 +106,23 @@ contract AttestationRegistry is Initializable {
   function getAttestation(bytes32 attestationId) public view returns (Attestation memory) {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
     return attestations[attestationId];
+  }
+
+  /**
+   * @notice Increments the registry version
+   * @return The new version number
+   */
+  function incrementVersionNumber() public onlyOwner returns (uint16) {
+    ++version;
+    emit VersionUpdated(version);
+    return version;
+  }
+
+  /**
+   * @notice Gets the registry version
+   * @return The current version number
+   */
+  function getVersionNumber() public view returns (uint16) {
+    return version;
   }
 }

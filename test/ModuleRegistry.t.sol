@@ -7,6 +7,7 @@ import { ModuleRegistry } from "../src/ModuleRegistry.sol";
 import { CorrectModule } from "../src/example/CorrectModule.sol";
 import { IncorrectModule } from "../src/example/IncorrectModule.sol";
 import { AbstractModule } from "../src/interface/AbstractModule.sol";
+import { AttestationPayload } from "../src/types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract ModuleRegistryTest is Test {
@@ -81,6 +82,59 @@ contract ModuleRegistryTest is Test {
 
     modulesNumber = moduleRegistry.getModulesNumber();
     assertEq(modulesNumber, 1);
+  }
+
+  function testRunModules() public {
+    // Register 2 modules
+    address[] memory moduleAddresses = new address[](2);
+    moduleAddresses[0] = address(new CorrectModule());
+    moduleAddresses[1] = address(new CorrectModule());
+    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
+    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+
+    moduleRegistry.runModules(moduleAddresses, validationPayload);
+  }
+
+  function testRunModulesWithIncorrectNumberOfValidationPayload() public {
+    // Register 2 modules
+    address[] memory moduleAddresses = new address[](2);
+    moduleAddresses[0] = address(new CorrectModule());
+    moduleAddresses[1] = address(new CorrectModule());
+    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
+    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](1);
+
+    vm.expectRevert(ModuleRegistry.ModuleValidationPayloadMismatch.selector);
+    moduleRegistry.runModules(moduleAddresses, validationPayload);
+  }
+
+  function testRunModulesWithoutSendingModuleAddresses() public {
+    // Register a module
+    address[] memory moduleAddresses = new address[](0);
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](0);
+
+    moduleRegistry.runModules(moduleAddresses, validationPayload);
+  }
+
+  function testRunModulesForUnregisteredModules() public {
+    // Create 2 modules without registration
+    address[] memory moduleAddresses = new address[](2);
+    moduleAddresses[0] = address(new CorrectModule());
+    moduleAddresses[1] = address(new CorrectModule());
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+
+    // execute runModules
+    vm.expectRevert(ModuleRegistry.ModuleNotRegistered.selector);
+    moduleRegistry.runModules(moduleAddresses, validationPayload);
   }
 
   function testGetModuleAddress() public {

@@ -14,8 +14,8 @@ contract AttestationRegistryTest is Test {
   address public portal = makeAddr("portal");
   address public user = makeAddr("user");
   AttestationRegistry public attestationRegistry;
-  address portalRegistryAddress;
-  address schemaRegistryAddress;
+  address public portalRegistryAddress;
+  address public schemaRegistryAddress;
 
   event Initialized(uint8 version);
   event AttestationRegistered(Attestation attestation);

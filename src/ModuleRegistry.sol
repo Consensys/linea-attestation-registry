@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { Module } from "./types/Structs.sol";
+import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./interface/AbstractModule.sol";
 import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
 import { ERC165Checker } from "openzeppelin-contracts/contracts/utils/introspection/ERC165Checker.sol";
@@ -25,9 +25,17 @@ contract ModuleRegistry is Initializable {
   error ModuleAddressInvalid();
   /// @notice Error thrown when attempting to add a Module which has not implemented the IModule interface
   error ModuleInvalid();
+  /// @notice Error thrown when attempting to run modules with no attestation payload provided
+  error AttestationPayloadMissing();
+  /// @notice Error thrown when module is not registered
+  error ModuleNotRegistered();
+  /// @notice Error thrown when module addresses and validation payload length mismatch
+  error ModuleValidationPayloadMismatch();
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
+  /// @notice Event emitted when all Modules are run for the attestation
+  event ModulesRunForAttestation(bytes32 attestationId);
 
   /**
    * @notice Contract initialization
@@ -77,6 +85,24 @@ contract ModuleRegistry is Initializable {
     emit ModuleRegistered(name, description, moduleAddress);
   }
 
+  /** Execute run method from given Modules:
+   * - mandatory list of modules
+   * - the module must be registered
+   * @param modulesAddresses the addresses of the registered modules
+   * @dev check if modules are registered and execute run method for each module
+   */
+  function runModules(address[] memory modulesAddresses, bytes[] memory validationPayload) public {
+    // If no modules provided, bypass module validation
+    if (modulesAddresses.length == 0) return;
+    if (modulesAddresses.length != validationPayload.length) revert ModuleValidationPayloadMismatch();
+
+    // For each module check if it is registered and call run method
+    for (uint i = 0; i < modulesAddresses.length; i++) {
+      if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
+      AbstractModule(modulesAddresses[i]).run(validationPayload, msg.sender);
+    }
+  }
+
   /**
    * @notice Get the number of Modules managed by the contract
    * @return The number of Modules already registered
@@ -84,5 +110,14 @@ contract ModuleRegistry is Initializable {
    */
   function getModulesNumber() public view returns (uint256) {
     return moduleAddresses.length;
+  }
+
+  /**
+   * @notice Checks that a module is registered in the module registry
+   * @param moduleAddress The address of the Module to check
+   * @return True if the Module is registered, False otherwise
+   */
+  function isRegistered(address moduleAddress) public view returns (bool) {
+    return bytes(modules[moduleAddress].name).length > 0;
   }
 }

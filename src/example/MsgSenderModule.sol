@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { AbstractModule } from "../interface/AbstractModule.sol";
+import { AttestationPayload } from "../types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/IERC165.sol";
 import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
 
@@ -16,12 +17,9 @@ contract MsgSenderModule is IERC165, AbstractModule, Initializable {
   }
 
   function run(
-    bytes memory _attestationPayload,
-    bytes memory _validationPayload,
-    bytes32 /*_schemaId*/,
+    bytes[] memory _validationPayload,
     address _msgSender
-  ) public view override returns (bytes memory attestationPayload, bytes memory validationPayload) {
-    attestationPayload = _attestationPayload;
+  ) public view override returns (bytes[] memory validationPayload) {
     validationPayload = _validationPayload;
     if (_msgSender != expectedMsgSender) {
       revert("Incorrect message sender");

@@ -4,8 +4,9 @@ pragma solidity 0.8.21;
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
-import { IPortal } from "../src/interface/IPortal.sol";
-import { Portal } from "../src/types/Structs.sol";
+import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
+import { CorrectModule } from "../src/example/CorrectModule.sol";
+import { AttestationPayload, Portal } from "../src/types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract PortalRegistryTest is Test {
@@ -26,14 +27,14 @@ contract PortalRegistryTest is Test {
   function test_initialize() public {
     vm.expectEmit();
     emit Initialized(1);
-    portalRegistry.initialize();
+    portalRegistry.initialize(address(1), address(2));
 
     vm.expectRevert("Initializable: contract is already initialized");
-    portalRegistry.initialize();
+    portalRegistry.initialize(address(1), address(2));
   }
 
   function test_register() public {
-    vm.expectEmit(true, true, true, true);
+    vm.expectEmit();
     emit PortalRegistered(expectedName, expectedDescription, address(validPortal));
     portalRegistry.register(address(validPortal), expectedName, expectedDescription);
 
@@ -75,6 +76,13 @@ contract PortalRegistryTest is Test {
     portalRegistry.register(address(invalidPortal), expectedName, expectedDescription);
   }
 
+  function test_deployDefaultPortal() public {
+    CorrectModule correctModule = new CorrectModule();
+    address[] memory modules = new address[](1);
+    modules[0] = address(correctModule);
+    portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription);
+  }
+
   function test_getPortals_PortalNotRegistered() public {
     vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
     portalRegistry.getPortalByAddress(address(validPortal));
@@ -87,14 +95,15 @@ contract PortalRegistryTest is Test {
   }
 }
 
-contract ValidPortal is IPortal, IERC165 {
+contract ValidPortal is AbstractPortal, IERC165 {
   function test() public {}
 
-  function attest(bytes32 /*schemaId*/, bytes memory /*attestationData*/) external pure returns (bool) {
-    return true;
-  }
+  function attest(
+    AttestationPayload memory /*attestationPayload*/,
+    bytes[] memory /*validationPayload*/
+  ) external payable override {}
 
-  function getModules() external pure returns (address[] memory) {
+  function getModules() external pure override returns (address[] memory) {
     address[] memory modules = new address[](2);
     modules[0] = address(0);
     modules[1] = address(1);
@@ -102,7 +111,7 @@ contract ValidPortal is IPortal, IERC165 {
   }
 
   function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(IPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
+    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
   }
 }
 

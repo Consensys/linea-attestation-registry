@@ -3,7 +3,8 @@ pragma solidity 0.8.21;
 
 import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
 import { ERC165Checker } from "openzeppelin-contracts/contracts/utils/introspection/ERC165Checker.sol";
-import { IPortal } from "./interface/IPortal.sol";
+import { AbstractPortal } from "./interface/AbstractPortal.sol";
+import { DefaultPortal } from "./portal/DefaultPortal.sol";
 import { Portal } from "./types/Structs.sol";
 
 /**
@@ -14,6 +15,8 @@ import { Portal } from "./types/Structs.sol";
 contract PortalRegistry is Initializable {
   mapping(address id => Portal portal) private portals;
   address[] private portalAddresses;
+  address public moduleRegistry;
+  address public attestationRegistry;
 
   /// @notice Error thown when attempting to register a Portal twice
   error PortalAlreadyExists();
@@ -34,7 +37,10 @@ contract PortalRegistry is Initializable {
   /**
    * @notice Contract initialization
    */
-  function initialize() public initializer {}
+  function initialize(address _moduleRegistry, address _attestationRegistry) public initializer {
+    moduleRegistry = _moduleRegistry;
+    attestationRegistry = _attestationRegistry;
+  }
 
   /**
    * @notice Registers a Portal to the PortalRegistry
@@ -42,7 +48,7 @@ contract PortalRegistry is Initializable {
    * @param name the portal name
    * @param description the portal description
    */
-  function register(address id, string memory name, string memory description) external {
+  function register(address id, string memory name, string memory description) public {
     // Check if portal already exists
     if (portals[id].id != address(0)) revert PortalAlreadyExists();
 
@@ -56,10 +62,10 @@ contract PortalRegistry is Initializable {
     if (bytes(description).length == 0) revert PortalDescriptionMissing();
 
     // Check if portal has implemented IPortal
-    if (!ERC165Checker.supportsInterface(id, type(IPortal).interfaceId)) revert PortalInvalid();
+    if (!ERC165Checker.supportsInterface(id, type(AbstractPortal).interfaceId)) revert PortalInvalid();
 
     // Get the array of modules implemented by the portal
-    address[] memory modules = IPortal(id).getModules();
+    address[] memory modules = AbstractPortal(id).getModules();
 
     // Add portal to mapping
     Portal memory newPortal = Portal(id, name, description, modules);
@@ -68,6 +74,18 @@ contract PortalRegistry is Initializable {
 
     // Emit event
     emit PortalRegistered(name, description, id);
+  }
+
+  /**
+   * @notice Deploys and registers a clone of default portal
+   * @param modules the modules addresses
+   * @param name the portal name
+   * @param description the portal description
+   */
+  function deployDefaultPortal(address[] calldata modules, string memory name, string memory description) external {
+    DefaultPortal defaultPortal = new DefaultPortal();
+    defaultPortal.initialize(modules, moduleRegistry, attestationRegistry);
+    register(address(defaultPortal), name, description);
   }
 
   /**

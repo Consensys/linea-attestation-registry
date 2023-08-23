@@ -21,6 +21,8 @@ contract SchemaRegistry is Initializable {
   error SchemaNameMissing();
   /// @notice Error thrown when attempting to add a Schema without a string to define it
   error SchemaStringMissing();
+  /// @notice Error thrown when attempting to add a Schema without a context to define it
+  error SchemaContextMissing();
 
   /// @notice Event emitted when a Schema is created and registered
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
@@ -62,6 +64,10 @@ contract SchemaRegistry is Initializable {
 
     if (bytes(schemaString).length == 0) {
       revert SchemaStringMissing();
+    }
+
+    if (bytes(context).length == 0) {
+      revert SchemaContextMissing();
     }
 
     bytes32 schemaId = getIdFromSchemaString(schemaString);

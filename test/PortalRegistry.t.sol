@@ -22,7 +22,7 @@ contract PortalRegistryTest is Test {
   string public expectedName = "Name";
   string public expectedDescription = "Description";
   string public expectedOwnerName = "Owner Name";
-  ValidPortal public validPortal = new ValidPortal();
+  ValidPortal public validPortal;
   InvalidPortal public invalidPortal = new InvalidPortal();
 
   event Initialized(uint8 version);
@@ -44,6 +44,8 @@ contract PortalRegistryTest is Test {
     router.updateAttestationRegistry(attestationRegistryAddress);
     vm.prank(address(0));
     portalRegistry.setIssuer(user);
+
+    validPortal = new ValidPortal();
   }
 
   function test_alreadyInitialized() public {
@@ -194,7 +196,7 @@ contract PortalRegistryTest is Test {
 contract ValidPortal is AbstractPortal {
   function test() public {}
 
-  function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
+  function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal override {}
 
   function _afterAttest(Attestation memory attestation) internal override {}
 

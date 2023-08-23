@@ -30,9 +30,15 @@ contract DefaultPortalTest is Test {
   event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
 
   function setUp() public {
-    defaultPortal = new DefaultPortal();
     modules.push(address(correctModule));
+    defaultPortal = new DefaultPortal();
     defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
+  }
+
+  function test_setup() public {
+    assertEq(address(defaultPortal.modules(0)), address(modules[0]));
+    assertEq(address(defaultPortal.moduleRegistry()), address(moduleRegistryMock));
+    assertEq(address(defaultPortal.attestationRegistry()), address(attestationRegistryMock));
   }
 
   function test_initialize() public {

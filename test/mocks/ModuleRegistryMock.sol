@@ -9,13 +9,11 @@ contract ModuleRegistryMock {
 
   function test() public {}
 
-  function runModules(address[] memory modulesAddresses, bytes[] memory validationPayload) public {
-    require(modulesAddresses.length > 0 && validationPayload.length >= 0, "Invalid input");
-    emit ModulesRunForAttestation();
-  }
+  function runModules(address[] memory modulesAddresses, bytes[] memory validationPayload) public {}
 
   function bulkRunModules(address[] memory modulesAddresses, bytes[][] memory validationPayloads) public {
-    require(modulesAddresses.length > 0 && validationPayloads.length >= 0, "Invalid input");
+    require(modulesAddresses.length >= 0, "Invalid input for modulesAddresses");
+    require(validationPayloads.length >= 0, "Invalid input for validationPayloads");
     emit ModulesBulkRunForAttestation();
   }
 }

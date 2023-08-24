@@ -7,6 +7,7 @@ import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/con
 import { AbstractPortal } from "./interface/AbstractPortal.sol";
 import { DefaultPortal } from "./portal/DefaultPortal.sol";
 import { Portal } from "./types/Structs.sol";
+import { IRouter } from "./interface/IRouter.sol";
 
 /**
  * @title Portal Registry
@@ -14,15 +15,14 @@ import { Portal } from "./types/Structs.sol";
  * @notice This contract aims to manage the Portals used by attestation issuers
  */
 contract PortalRegistry is OwnableUpgradeable {
-  mapping(address id => Portal portal) private portals;
-  address[] private portalAddresses;
-  address public moduleRegistry;
-  address public attestationRegistry;
+  IRouter public router;
 
-  /// @notice Error thrown when an invalid ModuleRegistry address is given
-  error ModuleRegistryInvalid();
-  /// @notice Error thrown when an invalid AttestationRegistry address is given
-  error AttestationRegistryInvalid();
+  mapping(address id => Portal portal) private portals;
+
+  address[] private portalAddresses;
+
+  /// @notice Error thrown when an invalid Router address is given
+  error RouterInvalid();
   /// @notice Error thrown when attempting to register a Portal twice
   error PortalAlreadyExists();
   /// @notice Error thrown when attempting to register a Portal that is not a smart contract
@@ -52,19 +52,11 @@ contract PortalRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Changes the address for the Module registry
+   * @notice Changes the address for the Router
    */
-  function updateModuleRegistry(address _moduleRegistry) public onlyOwner {
-    if (_moduleRegistry == address(0)) revert ModuleRegistryInvalid();
-    moduleRegistry = _moduleRegistry;
-  }
-
-  /**
-   * @notice Changes the address for the Attestation registry
-   */
-  function updateAttestationRegistry(address _attestationRegistry) public onlyOwner {
-    if (_attestationRegistry == address(0)) revert AttestationRegistryInvalid();
-    attestationRegistry = _attestationRegistry;
+  function updateRouter(address _router) public onlyOwner {
+    if (_router == address(0)) revert RouterInvalid();
+    router = IRouter(_router);
   }
 
   /**
@@ -109,7 +101,7 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function deployDefaultPortal(address[] calldata modules, string memory name, string memory description) external {
     DefaultPortal defaultPortal = new DefaultPortal();
-    defaultPortal.initialize(modules, moduleRegistry, attestationRegistry);
+    defaultPortal.initialize(modules, router.getModuleRegistry(), router.getAttestationRegistry());
     register(address(defaultPortal), name, description);
   }
 

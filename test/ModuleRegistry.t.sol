@@ -8,7 +8,6 @@ import { CorrectModule } from "../src/example/CorrectModule.sol";
 import { IncorrectModule } from "../src/example/IncorrectModule.sol";
 import { AbstractModule } from "../src/interface/AbstractModule.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract ModuleRegistryTest is Test {
   ModuleRegistry private moduleRegistry;
@@ -23,9 +22,8 @@ contract ModuleRegistryTest is Test {
     moduleRegistry = new ModuleRegistry();
   }
 
-  function testInitialize() public {
-    vm.expectEmit();
-    emit Initialized(1);
+  function testAlreadyInitialized() public {
+    vm.expectRevert("Initializable: contract is already initialized");
     moduleRegistry.initialize();
   }
 
@@ -142,5 +140,13 @@ contract ModuleRegistryTest is Test {
 
     address moduleAddress = moduleRegistry.moduleAddresses(0);
     assertEq(moduleAddress, expectedAddress);
+  }
+
+  function testIsModuleRegistered() public {
+    bool isRegistered = moduleRegistry.isRegistered(expectedAddress);
+    assertFalse(isRegistered);
+    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
+    isRegistered = moduleRegistry.isRegistered(expectedAddress);
+    assertTrue(isRegistered);
   }
 }

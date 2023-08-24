@@ -20,5 +20,12 @@ node_modules
 .idea
 .vscode
 
-# Misc
+# Coverage
 lcov.info
+coverage
+
+# Hardhat
+cache_hardhat
+artifacts
+typechain-types
+.openzeppelin

@@ -9,7 +9,7 @@ import { AttestationPayload } from "../../src/types/Structs.sol";
 import { CorrectModule } from "../../src/example/CorrectModule.sol";
 import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../mocks/ModuleRegistryMock.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+import { ERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
 
 contract DefaultPortalTest is Test {
   CorrectModule public correctModule = new CorrectModule();
@@ -71,7 +71,7 @@ contract DefaultPortalTest is Test {
   }
 
   function testSupportsInterface() public {
-    bool isIERC165Supported = defaultPortal.supportsInterface(type(IERC165).interfaceId);
+    bool isIERC165Supported = defaultPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);
     assertEq(isIERC165Supported, true);
     bool isAbstractPortalSupported = defaultPortal.supportsInterface(type(AbstractPortal).interfaceId);
     assertEq(isAbstractPortalSupported, true);

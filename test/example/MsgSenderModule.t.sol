@@ -6,7 +6,8 @@ import { Test } from "forge-std/Test.sol";
 import { AbstractModule } from "../../src/interface/AbstractModule.sol";
 import { MsgSenderModule } from "../../src/example/MsgSenderModule.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/IERC165.sol";
+// solhint-disable-next-line max-line-length
+import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
 
 contract MsgSenderModuleTest is Test {
   MsgSenderModule private msgSenderModule;
@@ -47,7 +48,7 @@ contract MsgSenderModuleTest is Test {
   }
 
   function testSupportsInterface() public {
-    bool isIERC165Supported = msgSenderModule.supportsInterface(type(IERC165).interfaceId);
+    bool isIERC165Supported = msgSenderModule.supportsInterface(type(IERC165Upgradeable).interfaceId);
     assertEq(isIERC165Supported, true);
     bool isAbstractModuleSupported = msgSenderModule.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);

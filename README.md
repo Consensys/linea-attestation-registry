@@ -23,8 +23,7 @@ not support Powershell or Cmd.
 For more details on installation, see the [installation guide](https://book.getfoundry.sh/getting-started/installation)
 in the book.
 
-If you're experiencing any issues while installing, check out [Getting Help](#getting-help) and the
-[FAQ](https://book.getfoundry.sh/faq).
+If you're experiencing any issues while installing, check out the [FAQ](https://book.getfoundry.sh/faq).
 
 ## Forge - build and test
 
@@ -166,7 +165,12 @@ Transaction hash: 0x15b25752da1dfd458b92069248825ce959f5be104f974d62b4ae95050710
 ## Deployment - on the Linea Goerli testnet
 
 1. Copy the `.env.example` file to a `.env` file
-2. Fill it with your preferred RPC endpoint for chain access
+2. Fill it with your Infura key
 3. Add your private key
 4. To verify your instance of the contract on Etherscan, also add your Etherscan API key
-5. Run `pnpm run deploy:SchemaRegistry:goerli`
+5. Run `pnpm run deploy:ContractName:goerli`, replacing `ContractName` with the contract you want to deploy
+
+## Upgrade - on the Linea Goerli testnet
+
+1. Check your `.env` file contains the address of the proxy for the contract you want to upgrade
+2. Run `pnpm run upgrade:ContractName:goerli`, replacing `ContractName` with the contract you want to upgrade

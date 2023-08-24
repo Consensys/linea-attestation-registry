@@ -20,9 +20,8 @@ contract SchemaRegistryTest is Test {
     schemaRegistry = new SchemaRegistry();
   }
 
-  function testInitialize() public {
-    vm.expectEmit();
-    emit Initialized(1);
+  function testAlreadyInitialized() public {
+    vm.expectRevert("Initializable: contract is already initialized");
     schemaRegistry.initialize();
   }
 

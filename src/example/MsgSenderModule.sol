@@ -3,10 +3,11 @@ pragma solidity 0.8.21;
 
 import { AbstractModule } from "../interface/AbstractModule.sol";
 import { AttestationPayload } from "../types/Structs.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/IERC165.sol";
-import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
+// solhint-disable-next-line max-line-length
+import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
+import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 
-contract MsgSenderModule is IERC165, AbstractModule, Initializable {
+contract MsgSenderModule is IERC165Upgradeable, AbstractModule, Initializable {
   address public expectedMsgSender;
 
   /**
@@ -27,6 +28,6 @@ contract MsgSenderModule is IERC165, AbstractModule, Initializable {
   }
 
   function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165).interfaceId;
+    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 }

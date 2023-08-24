@@ -3,8 +3,9 @@ pragma solidity 0.8.21;
 
 import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./interface/AbstractModule.sol";
-import { Initializable } from "openzeppelin-contracts/contracts/proxy/utils/Initializable.sol";
-import { ERC165Checker } from "openzeppelin-contracts/contracts/utils/introspection/ERC165Checker.sol";
+import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
+// solhint-disable-next-line max-line-length
+import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
 
 /**
  * @title Module Registry
@@ -36,6 +37,11 @@ contract ModuleRegistry is Initializable {
   event ModuleRegistered(string name, string description, address moduleAddress);
   /// @notice Event emitted when all Modules are run for the attestation
   event ModulesRunForAttestation(bytes32 attestationId);
+
+  /// @custom:oz-upgrades-unsafe-allow constructor
+  constructor() {
+    _disableInitializers();
+  }
 
   /**
    * @notice Contract initialization
@@ -71,7 +77,7 @@ contract ModuleRegistry is Initializable {
     }
 
     // Check if module has implemented AbstractModule
-    if (!ERC165Checker.supportsInterface(moduleAddress, type(AbstractModule).interfaceId)) {
+    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId)) {
       revert ModuleInvalid();
     }
 

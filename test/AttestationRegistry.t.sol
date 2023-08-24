@@ -8,7 +8,6 @@ import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { Attestation } from "../src/types/Structs.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract AttestationRegistryTest is Test {
   address public portal = makeAddr("portal");
@@ -26,28 +25,51 @@ contract AttestationRegistryTest is Test {
     attestationRegistry = new AttestationRegistry();
     portalRegistryAddress = address(new PortalRegistryMock());
     schemaRegistryAddress = address(new SchemaRegistryMock());
-    attestationRegistry.initialize(portalRegistryAddress, schemaRegistryAddress);
+    vm.startPrank(address(0));
+    attestationRegistry.updatePortalRegistry(portalRegistryAddress);
+    attestationRegistry.updateSchemaRegistry(schemaRegistryAddress);
+    vm.stopPrank();
 
     PortalRegistry(portalRegistryAddress).register(portal, "Portal", "Portal");
   }
 
   function test_initialize_ContractAlreadyInitialized() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
-    testAttestationRegistry.initialize(portalRegistryAddress, schemaRegistryAddress);
     vm.expectRevert("Initializable: contract is already initialized");
-    attestationRegistry.initialize(portalRegistryAddress, schemaRegistryAddress);
+    attestationRegistry.initialize();
   }
 
-  function test_initialize_InvalidParameters() public {
+  function test_updatePortalRegistry() public {
+    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
+
+    vm.prank(address(0));
+    testAttestationRegistry.updatePortalRegistry(address(1));
+    address portalRegistry = address(testAttestationRegistry.portalRegistry());
+    assertEq(portalRegistry, address(1));
+  }
+
+  function test_updatePortalRegistry_InvalidParameter() public {
     AttestationRegistry testAttestationRegistry = new AttestationRegistry();
 
     vm.expectRevert(AttestationRegistry.PortalRegistryInvalid.selector);
-    testAttestationRegistry.initialize(address(0), schemaRegistryAddress);
+    vm.prank(address(0));
+    testAttestationRegistry.updatePortalRegistry(address(0));
+  }
+
+  function test_updateSchemaRegistry() public {
+    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
+
+    vm.prank(address(0));
+    testAttestationRegistry.updateSchemaRegistry(address(1));
+    address schemaRegistry = address(testAttestationRegistry.schemaRegistry());
+    assertEq(schemaRegistry, address(1));
+  }
+
+  function test_updateSchemaRegistry_InvalidParameter() public {
+    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
 
     vm.expectRevert(AttestationRegistry.SchemaRegistryInvalid.selector);
-    testAttestationRegistry.initialize(portalRegistryAddress, address(0));
+    vm.prank(address(0));
+    testAttestationRegistry.updateSchemaRegistry(address(0));
   }
 
   function test_attest(Attestation memory attestation) public {
@@ -153,6 +175,7 @@ contract AttestationRegistryTest is Test {
     for (uint16 i = 1; i <= 5; i++) {
       vm.expectEmit(true, true, true, true);
       emit VersionUpdated(i);
+      vm.prank(address(0));
       uint256 version = attestationRegistry.incrementVersionNumber();
       assertEq(version, i);
       uint16 newVersion = attestationRegistry.getVersionNumber();

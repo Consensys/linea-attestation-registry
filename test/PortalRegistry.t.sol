@@ -7,7 +7,8 @@ import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
 import { CorrectModule } from "../src/example/CorrectModule.sol";
 import { AttestationPayload, Portal } from "../src/types/Structs.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+// solhint-disable-next-line max-line-length
+import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
 
 contract PortalRegistryTest is Test {
   address public user = makeAddr("user");
@@ -24,13 +25,43 @@ contract PortalRegistryTest is Test {
     portalRegistry = new PortalRegistry();
   }
 
-  function test_initialize() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    portalRegistry.initialize(address(1), address(2));
-
+  function test_alreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    portalRegistry.initialize(address(1), address(2));
+    portalRegistry.initialize();
+  }
+
+  function test_updateModuleRegistry() public {
+    PortalRegistry testPortalRegistry = new PortalRegistry();
+
+    vm.prank(address(0));
+    testPortalRegistry.updateModuleRegistry(address(1));
+    address moduleRegistry = testPortalRegistry.moduleRegistry();
+    assertEq(moduleRegistry, address(1));
+  }
+
+  function test_updateModuleRegistry_InvalidParameter() public {
+    PortalRegistry testPortalRegistry = new PortalRegistry();
+
+    vm.expectRevert(PortalRegistry.ModuleRegistryInvalid.selector);
+    vm.prank(address(0));
+    testPortalRegistry.updateModuleRegistry(address(0));
+  }
+
+  function test_updateAttestationRegistry() public {
+    PortalRegistry testPortalRegistry = new PortalRegistry();
+
+    vm.prank(address(0));
+    testPortalRegistry.updateAttestationRegistry(address(1));
+    address attestationRegistry = testPortalRegistry.attestationRegistry();
+    assertEq(attestationRegistry, address(1));
+  }
+
+  function test_updateAttestationRegistry_InvalidParameter() public {
+    PortalRegistry testPortalRegistry = new PortalRegistry();
+
+    vm.expectRevert(PortalRegistry.AttestationRegistryInvalid.selector);
+    vm.prank(address(0));
+    testPortalRegistry.updateAttestationRegistry(address(0));
   }
 
   function test_register() public {
@@ -95,7 +126,7 @@ contract PortalRegistryTest is Test {
   }
 }
 
-contract ValidPortal is AbstractPortal, IERC165 {
+contract ValidPortal is AbstractPortal, IERC165Upgradeable {
   function test() public {}
 
   function attest(
@@ -111,7 +142,7 @@ contract ValidPortal is AbstractPortal, IERC165 {
   }
 
   function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
+    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 }
 

@@ -54,14 +54,31 @@ contract AttestationRegistry is OwnableUpgradeable {
     _;
   }
 
+  /// @custom:oz-upgrades-unsafe-allow constructor
+  constructor() {
+    _disableInitializers();
+  }
+
   /**
    * @notice Contract initialization
    */
-  function initialize(address _portalRegistry, address _schemaRegistry) public initializer {
+  function initialize() public initializer {
     __Ownable_init();
+  }
+
+  /**
+   * @notice Changes the address for the Portal registry
+   */
+  function updatePortalRegistry(address _portalRegistry) public onlyOwner {
     if (_portalRegistry == address(0)) revert PortalRegistryInvalid();
-    if (_schemaRegistry == address(0)) revert SchemaRegistryInvalid();
     portalRegistry = PortalRegistry(_portalRegistry);
+  }
+
+  /**
+   * @notice Changes the address for the Schema registry
+   */
+  function updateSchemaRegistry(address _schemaRegistry) public onlyOwner {
+    if (_schemaRegistry == address(0)) revert SchemaRegistryInvalid();
     schemaRegistry = SchemaRegistry(_schemaRegistry);
   }
 

@@ -3,9 +3,10 @@ pragma solidity 0.8.21;
 
 import { AbstractModule } from "../interface/AbstractModule.sol";
 import { AttestationPayload } from "../types/Structs.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+// solhint-disable-next-line max-line-length
+import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
 
-contract CorrectModule is AbstractModule, IERC165 {
+contract CorrectModule is AbstractModule, IERC165Upgradeable {
   function test() public {}
 
   function run(bytes[] memory validationPayload, address /*msgSender*/) public pure override returns (bytes[] memory) {
@@ -13,6 +14,6 @@ contract CorrectModule is AbstractModule, IERC165 {
   }
 
   function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
-    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165).interfaceId;
+    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 }

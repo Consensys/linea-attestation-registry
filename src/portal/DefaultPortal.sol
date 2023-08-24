@@ -43,28 +43,16 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165Upgradeable {
 
   /**
    * @notice attest the schema with given attestationPayload and validationPayload
-   * @dev Runs all modules for the portal and stores the attestation in AttestationRegistry
+   * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
    */
   function attest(
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayload
   ) external payable override {
+    // Run all modules
     moduleRegistry.runModules(modules, validationPayload);
-
-    Attestation memory attestation = Attestation(
-      attestationPayload.attestationId,
-      attestationPayload.schemaId,
-      attestationPayload.attester,
-      address(this),
-      attestationPayload.subject,
-      block.timestamp,
-      attestationPayload.expirationDate,
-      false,
-      1,
-      attestationPayload.attestationData
-    );
-
-    attestationRegistry.attest(attestation);
+    // Register attestation using attestation registry
+    attestationRegistry.attest(attestationPayload, msg.sender);
   }
 
   /**

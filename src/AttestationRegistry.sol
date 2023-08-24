@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
-import { Attestation } from "./types/Structs.sol";
+import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { IRouter } from "./interface/IRouter.sol";
@@ -19,16 +19,12 @@ contract AttestationRegistry is OwnableUpgradeable {
 
   uint16 private version;
 
+  uint private attestationIdCounter;
+
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
   /// @notice Error thrown when an invalid Router address is given
   error RouterInvalid();
-  /// @notice Error thrown when a portal is not registered in the PortalRegistry
-  error PortalNotRegistered();
-  /// @notice Error thrown when an attestation is already registered in the AttestationRegistry
-  error AttestationAlreadyAttested();
-  /// @notice Error thrown when a schema is not registered in the SchemaRegistry
-  error SchemaNotRegistered();
   /// @notice Error thrown when an attestation is not registered in the AttestationRegistry
   error AttestationNotAttested();
   /// @notice Error thrown when an attempt is made to revoke an attestation by an entity other than the attesting portal
@@ -74,12 +70,26 @@ contract AttestationRegistry is OwnableUpgradeable {
 
   /**
    * @notice Registers an attestation to the AttestationRegistry
-   * @param attestation the attestation to register
+   * @param attestationPayload the attestation payload to create attestation and register it
    * @dev This method is only callable by a registered Portal
    */
-  function attest(Attestation calldata attestation) external onlyPortals(msg.sender) {
-    if (isRegistered(attestation.attestationId)) revert AttestationAlreadyAttested();
+  function attest(AttestationPayload calldata attestationPayload, address attester) external onlyPortals(msg.sender) {
+    // Create attestation
+    Attestation memory attestation = Attestation(
+      bytes32(keccak256(abi.encode((attestationIdCounter)))),
+      attestationPayload.schemaId,
+      attester,
+      msg.sender,
+      attestationPayload.subject,
+      block.timestamp,
+      attestationPayload.expirationDate,
+      false,
+      version,
+      attestationPayload.attestationData
+    );
     attestations[attestation.attestationId] = attestation;
+    // Auto increament attestation counter
+    attestationIdCounter += 1;
     emit AttestationRegistered(attestation);
   }
 
@@ -131,5 +141,13 @@ contract AttestationRegistry is OwnableUpgradeable {
    */
   function getVersionNumber() public view returns (uint16) {
     return version;
+  }
+
+  /**
+   * @notice Gets the attestation id counter
+   * @return The attestationIdCounter
+   */
+  function getAttestationIdCounter() public view returns (uint) {
+    return attestationIdCounter;
   }
 }

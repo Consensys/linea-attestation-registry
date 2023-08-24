@@ -2,12 +2,26 @@
 pragma solidity 0.8.21;
 
 struct AttestationPayload {
-  bytes32 attestationId; // The unique identifier of the attestation.
   bytes32 schemaId; // The identifier of the schema this attestation adheres to.
-  address attester; // The address issuing the attestation to the subject.
   bytes subject; // The ID of the attestee, EVM address, DID, URL etc.
   uint256 expirationDate; // The expiration date of the attestation.
-  bytes[] attestationData; // The attestation data.
+  bytes attestationData; // The attestation data.
+}
+
+/// @notice EAS attestation request data.
+struct AttestationRequestData {
+  address recipient; // The recipient of the attestation.
+  uint64 expirationTime; // The time when the attestation expires (Unix timestamp).
+  bool revocable; // Whether the attestation is revocable.
+  bytes32 refUID; // The UID of the related attestation.
+  bytes data; // Custom attestation data.
+  uint256 value; // An explicit ETH amount to send to the resolver. This is important to prevent accidental user errors.
+}
+
+/// @notice A struct representing the full arguments of the EAS attestation request.
+struct AttestationRequest {
+  bytes32 schema; // The unique identifier of the schema.
+  AttestationRequestData data; // The arguments of the attestation request.
 }
 
 struct Attestation {
@@ -20,7 +34,7 @@ struct Attestation {
   uint256 expirationDate; // The expiration date of the attestation.
   bool revoked; // Whether the attestation is revoked or not.
   uint16 version; // Version of the registry when the attestation was created.
-  bytes[] attestationData; // The attestation data.
+  bytes attestationData; // The attestation data.
 }
 
 struct Schema {

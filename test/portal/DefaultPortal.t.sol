@@ -19,7 +19,7 @@ contract DefaultPortalTest is Test {
   AttestationRegistryMock public attestationRegistryMock = new AttestationRegistryMock();
 
   event Initialized(uint8 version);
-  event PortalRegistered(string name, string description, address moduleAddress);
+  event PortalRegistered(string name, string description, address portalAddress);
   event ModulesRunForAttestation();
   event AttestationRegistered();
 
@@ -53,12 +53,10 @@ contract DefaultPortalTest is Test {
 
     // Create attestation payload
     AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32("attestationId"),
-      bytes32("schemaId"),
-      address(1),
+      bytes32(uint256(1)),
       bytes("subject"),
       block.timestamp + 1 days,
-      new bytes[](0)
+      new bytes(1)
     );
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](0);

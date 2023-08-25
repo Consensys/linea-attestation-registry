@@ -7,8 +7,27 @@ import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts
 import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { SchemaRegistry } from "../SchemaRegistry.sol";
-import { EASAbstractPortal } from "../interface/EASAbstractPortal.sol";
-import { Attestation, AttestationPayload, AttestationRequest, AttestationRequestData, Portal } from "../types/Structs.sol";
+import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
+
+/// @notice EAS attestation request data.
+struct AttestationRequestData {
+  address recipient; // The recipient of the attestation.
+  uint64 expirationTime; // The time when the attestation expires (Unix timestamp).
+  bool revocable; // Whether the attestation is revocable.
+  bytes32 refUID; // The UID of the related attestation.
+  bytes data; // Custom attestation data.
+  uint256 value; // An explicit ETH amount to send to the resolver. This is important to prevent accidental user errors.
+}
+
+/// @notice A struct representing the full arguments of the EAS attestation request.
+struct AttestationRequest {
+  bytes32 schema; // The unique identifier of the schema.
+  AttestationRequestData data; // The arguments of the attestation request.
+}
+
+abstract contract EASAbstractPortal {
+  function attest(AttestationRequest memory attestationRequest) external payable virtual;
+}
 
 /**
  * @title EAS Portal
@@ -16,36 +35,14 @@ import { Attestation, AttestationPayload, AttestationRequest, AttestationRequest
  * @notice This contract aims to integrate with dapps that are already integrated with EAS
  */
 contract EASPortal is Initializable, EASAbstractPortal, IERC165Upgradeable {
-  address[] public modules;
-  bytes32 public schemaId;
-  ModuleRegistry public moduleRegistry;
   AttestationRegistry public attestationRegistry;
-  SchemaRegistry public schemaRegistry;
 
   /**
    * @notice Contract initialization
    */
-  function initialize(
-    address[] calldata _modules,
-    bytes32 _schemaId,
-    address _moduleRegistry,
-    address _attestationRegistry,
-    address _schemaRegistry
-  ) public initializer {
-    // Store registries addresses and modules
+  function initialize(address _attestationRegistry) public initializer {
+    // Store registries addresses
     attestationRegistry = AttestationRegistry(_attestationRegistry);
-    moduleRegistry = ModuleRegistry(_moduleRegistry);
-    schemaRegistry = SchemaRegistry(_schemaRegistry);
-    modules = _modules;
-    schemaId = _schemaId;
-  }
-
-  /**
-   * @notice Get all modules from the default portal clone
-   * @return The Modules
-   */
-  function getModules() external view override returns (address[] memory) {
-    return modules;
   }
 
   /**

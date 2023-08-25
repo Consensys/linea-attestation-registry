@@ -10,5 +10,7 @@ abstract contract AbstractPortal {
     bytes[] memory validationPayload
   ) external payable virtual;
 
+  function revoke(bytes32 attestationId, bytes32 replacedBy) external virtual;
+
   function getModules() external virtual returns (address[] memory);
 }

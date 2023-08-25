@@ -64,8 +64,9 @@ contract PortalRegistry is OwnableUpgradeable {
    * @param id the portal address
    * @param name the portal name
    * @param description the portal description
+   * @param isRevocable whether the portal issues revocable attestations
    */
-  function register(address id, string memory name, string memory description) public {
+  function register(address id, string memory name, string memory description, bool isRevocable) public {
     // Check if portal already exists
     if (portals[id].id != address(0)) revert PortalAlreadyExists();
 
@@ -85,7 +86,7 @@ contract PortalRegistry is OwnableUpgradeable {
     address[] memory modules = AbstractPortal(id).getModules();
 
     // Add portal to mapping
-    Portal memory newPortal = Portal(id, name, description, modules);
+    Portal memory newPortal = Portal(id, name, description, modules, isRevocable);
     portals[id] = newPortal;
     portalAddresses.push(id);
 
@@ -99,10 +100,15 @@ contract PortalRegistry is OwnableUpgradeable {
    * @param name the portal name
    * @param description the portal description
    */
-  function deployDefaultPortal(address[] calldata modules, string memory name, string memory description) external {
+  function deployDefaultPortal(
+    address[] calldata modules,
+    string memory name,
+    string memory description,
+    bool isRevocable
+  ) external {
     DefaultPortal defaultPortal = new DefaultPortal();
     defaultPortal.initialize(modules, router.getModuleRegistry(), router.getAttestationRegistry());
-    register(address(defaultPortal), name, description);
+    register(address(defaultPortal), name, description, isRevocable);
   }
 
   /**

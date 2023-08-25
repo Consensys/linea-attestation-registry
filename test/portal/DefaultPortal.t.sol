@@ -22,6 +22,7 @@ contract DefaultPortalTest is Test {
   event PortalRegistered(string name, string description, address portalAddress);
   event ModulesRunForAttestation();
   event AttestationRegistered();
+  event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
 
   function setUp() public {
     defaultPortal = new DefaultPortal();
@@ -66,6 +67,16 @@ contract DefaultPortalTest is Test {
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
     defaultPortal.attest(attestationPayload, validationPayload);
+  }
+
+  function test_revoke() public {
+    vm.expectEmit();
+    emit Initialized(1);
+    defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
+
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRevoked(bytes32("1"), bytes32("2"));
+    defaultPortal.revoke(bytes32("1"), bytes32("2"));
   }
 
   function testSupportsInterface() public {

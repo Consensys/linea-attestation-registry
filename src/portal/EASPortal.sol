@@ -9,20 +9,18 @@ import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { SchemaRegistry } from "../SchemaRegistry.sol";
 import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
 
-/// @notice EAS attestation request data.
 struct AttestationRequestData {
-  address recipient; // The recipient of the attestation.
-  uint64 expirationTime; // The time when the attestation expires (Unix timestamp).
-  bool revocable; // Whether the attestation is revocable.
-  bytes32 refUID; // The UID of the related attestation.
-  bytes data; // Custom attestation data.
-  uint256 value; // An explicit ETH amount to send to the resolver. This is important to prevent accidental user errors.
+  address recipient;
+  uint64 expirationTime;
+  bool revocable;
+  bytes32 refUID;
+  bytes data;
+  uint256 value;
 }
 
-/// @notice A struct representing the full arguments of the EAS attestation request.
 struct AttestationRequest {
-  bytes32 schema; // The unique identifier of the schema.
-  AttestationRequestData data; // The arguments of the attestation request.
+  bytes32 schema;
+  AttestationRequestData data;
 }
 
 abstract contract EASAbstractPortal {

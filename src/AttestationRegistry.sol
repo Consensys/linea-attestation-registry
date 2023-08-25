@@ -111,6 +111,9 @@ contract AttestationRegistry is OwnableUpgradeable {
     attestations[attestation.attestationId] = attestation;
     emit AttestationRegistered(attestation);
 
+    return attestation;
+  }
+
   /**
    * @notice Revokes an attestation for given identifier and can replace it by an other one
    * @param attestationId the attestation ID to revoke
@@ -136,18 +139,8 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationId the attestation identifier
    * @return true if the attestation is registered, false otherwise
    */
-  function isRegistered(uint256 attestationId) public view returns (bool) {
+  function isRegistered(bytes32 attestationId) public view returns (bool) {
     return attestations[attestationId].attestationId != bytes32(0);
-  }
-
-  /**
-   * @notice Checks whether a portal issues revocable attestations
-   * @param portalId the portal address (ID)
-   * @return true if the attestations issued by this portal are revocable, false otherwise
-   */
-  function isRevocable(address portalId) public view returns (bool) {
-    PortalRegistry portalRegistry = PortalRegistry(router.getPortalRegistry());
-    return portalRegistry.getPortalByAddress(portalId).isRevocable;
   }
 
   /**

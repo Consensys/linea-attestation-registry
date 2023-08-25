@@ -38,21 +38,7 @@ contract DefaultPortal is Initializable, AbstractPortal {
 
   function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
 
-  function _afterAttest(Attestation memory attestation, uint256 value) internal override {}
-
-  /**
-   * @notice attest the schema with given attestationPayload and validationPayload
-   * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
-   */
-  function attest(
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload
-  ) external payable override {
-    // Run all modules
-    moduleRegistry.runModules(modules, validationPayload);
-    // Register attestation using attestation registry
-    attestationRegistry.attest(attestationPayload);
-  }
+  function _afterAttest(Attestation memory attestation) internal override {}
 
   /**
    * @notice Revokes an attestation for given identifier and can replace it by an other one
@@ -61,12 +47,5 @@ contract DefaultPortal is Initializable, AbstractPortal {
    */
   function revoke(bytes32 attestationId, bytes32 replacedBy) external override {
     attestationRegistry.revoke(attestationId, replacedBy);
-  }
-
-  /**
-   * @notice Implements supports interface method declaring it is an AbstractPortal
-   */
-  function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
-    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 }

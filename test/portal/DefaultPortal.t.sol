@@ -63,10 +63,6 @@ contract DefaultPortalTest is Test {
   // }
 
   function test_revoke() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
-
     vm.expectEmit(true, true, true, true);
     emit AttestationRevoked(bytes32("1"), bytes32("2"));
     defaultPortal.revoke(bytes32("1"), bytes32("2"));

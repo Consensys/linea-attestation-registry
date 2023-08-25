@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import { AttestationPayload } from "../../src/types/Structs.sol";
 
 contract AttestationRegistryMock {
-  uint256 public attestationId;
+  bytes32 public _attestationId;
   uint16 public version;
 
   event AttestationRegistered();
@@ -23,8 +23,8 @@ contract AttestationRegistryMock {
     emit AttestationRevoked(attestationId, replacedBy);
   }
 
-  function getAttestationId() public view returns (uint256) {
-    return attestationId;
+  function getAttestationId() public view returns (bytes32) {
+    return _attestationId;
   }
 
   function getVersionNumber() public view returns (uint16) {

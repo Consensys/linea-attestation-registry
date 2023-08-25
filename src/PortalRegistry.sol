@@ -37,7 +37,7 @@ contract PortalRegistry is OwnableUpgradeable {
   error PortalNotRegistered();
 
   /// @notice Event emitted when a Portal registered
-  event PortalRegistered(string name, string description, address moduleAddress);
+  event PortalRegistered(string name, string description, address portalAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -78,7 +78,7 @@ contract PortalRegistry is OwnableUpgradeable {
     // Check if description is not empty
     if (bytes(description).length == 0) revert PortalDescriptionMissing();
 
-    // Check if portal has implemented IPortal
+    // Check if portal has implemented AbstractPortal
     if (!ERC165CheckerUpgradeable.supportsInterface(id, type(AbstractPortal).interfaceId)) revert PortalInvalid();
 
     // Get the array of modules implemented by the portal

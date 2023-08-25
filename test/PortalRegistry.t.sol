@@ -25,7 +25,7 @@ contract PortalRegistryTest is Test {
   InvalidPortal public invalidPortal = new InvalidPortal();
 
   event Initialized(uint8 version);
-  event PortalRegistered(string name, string description, address moduleAddress);
+  event PortalRegistered(string name, string description, address portalAddress);
 
   function setUp() public {
     router = new Router();

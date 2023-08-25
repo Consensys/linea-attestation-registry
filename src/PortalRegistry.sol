@@ -120,9 +120,12 @@ contract PortalRegistry is OwnableUpgradeable {
     bool isRevocable,
     string memory ownerName
   ) external {
-    DefaultPortal defaultPortal = new DefaultPortal();
-    defaultPortal.initialize(modules, router.getModuleRegistry(), router.getAttestationRegistry());
-    register(address(defaultPortal), name, description, isRevocable, ownerName);
+    DefaultPortal defaultPortal = new DefaultPortal(
+      modules,
+      router.getModuleRegistry(),
+      router.getAttestationRegistry()
+    );
+    register(address(defaultPortal), name, description, isRevocable);
   }
 
   /**

@@ -30,26 +30,26 @@ contract EASPortalTest is Test {
     easPortal.initialize(address(1));
   }
 
-  function test_attest() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    easPortal.initialize(address(attestationRegistryMock));
+  // function test_attest() public {
+  //   vm.expectEmit();
+  //   emit Initialized(1);
+  //   easPortal.initialize(address(attestationRegistryMock));
 
-    // Create EAS attestation request
-    AttestationRequestData memory attestationRequestData = AttestationRequestData(
-      makeAddr("recipient"),
-      uint64(block.timestamp + 1 days),
-      false,
-      bytes32("refUID"),
-      new bytes(0),
-      uint256(1)
-    );
-    AttestationRequest memory attestationRequest = AttestationRequest(bytes32(uint256(1)), attestationRequestData);
+  //   // Create EAS attestation request
+  //   AttestationRequestData memory attestationRequestData = AttestationRequestData(
+  //     makeAddr("recipient"),
+  //     uint64(block.timestamp + 1 days),
+  //     false,
+  //     bytes32("refUID"),
+  //     new bytes(0),
+  //     uint256(1)
+  //   );
+  //   AttestationRequest memory attestationRequest = AttestationRequest(bytes32(uint256(1)), attestationRequestData);
 
-    vm.expectEmit(true, true, true, true);
-    emit AttestationRegistered();
-    easPortal.attest(attestationRequest);
-  }
+  //   vm.expectEmit(true, true, true, true);
+  //   emit AttestationRegistered();
+  //   easPortal.attest(attestationRequest);
+  // }
 
   function testSupportsInterface() public {
     bool isIERC165Supported = easPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);

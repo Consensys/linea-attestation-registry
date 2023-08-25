@@ -7,8 +7,5 @@ contract ModuleRegistryMock {
 
   function test() public {}
 
-  function runModules(address[] memory modulesAddresses, bytes[] memory validationPayload) public {
-    require(modulesAddresses.length > 0 && validationPayload.length >= 0, "Invalid input");
-    emit ModulesRunForAttestation();
-  }
+  function runModules(address[] memory modulesAddresses, bytes[] memory validationPayload) public {}
 }

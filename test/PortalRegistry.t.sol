@@ -6,7 +6,7 @@ import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
 import { CorrectModule } from "../src/example/CorrectModule.sol";
-import { AttestationPayload, Portal } from "../src/types/Structs.sol";
+import { AttestationPayload, Portal, Attestation } from "../src/types/Structs.sol";
 // solhint-disable-next-line max-line-length
 import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
 import { Router } from "../src/Router.sol";
@@ -42,6 +42,8 @@ contract PortalRegistryTest is Test {
 
     router.updateModuleRegistry(moduleRegistryAddress);
     router.updateAttestationRegistry(attestationRegistryAddress);
+
+    validPortal = new ValidPortal(new address[](0), moduleRegistryAddress, attestationRegistryAddress);
   }
 
   function test_alreadyInitialized() public {
@@ -150,23 +152,18 @@ contract PortalRegistryTest is Test {
   }
 }
 
-contract ValidPortal is AbstractPortal, IERC165Upgradeable {
-  function test() public {}
+contract ValidPortal is AbstractPortal {
+  constructor(
+    address[] memory _modules,
+    address _moduleRegistry,
+    address _attestationRegistry
+  ) AbstractPortal(_modules, _moduleRegistry, _attestationRegistry) {}
 
-  function _beforeAttest(Attestation memory attestation, uint256 value) internal override {}
+  function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal override {}
 
   function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) external override {}
 
-  function getModules() external pure override returns (address[] memory) {
-    address[] memory modules = new address[](2);
-    modules[0] = address(0);
-    modules[1] = address(1);
-    return modules;
-  }
-
-  function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
-  }
+  function _afterAttest(Attestation memory attestation) internal override {}
 }
 
 contract InvalidPortal {

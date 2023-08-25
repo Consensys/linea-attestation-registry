@@ -4,12 +4,12 @@ pragma solidity 0.8.21;
 import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { Attestation, AttestationPayload } from "../types/Structs.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+import "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
 
-abstract contract AbstractPortal is IERC165 {
-  address[] modules;
-  ModuleRegistry moduleRegistry;
-  AttestationRegistry attestationRegistry;
+abstract contract AbstractPortal is IERC165Upgradeable {
+  address[] public modules;
+  ModuleRegistry public moduleRegistry;
+  AttestationRegistry public attestationRegistry;
 
   error ModulePayloadMismatch();
 
@@ -19,23 +19,25 @@ abstract contract AbstractPortal is IERC165 {
     modules = _modules;
   }
 
-  function _beforeAttest(Attestation memory attestation, uint256 value) internal virtual;
+  function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal virtual;
 
-  function _afterAttest(Attestation memory attestation, uint256 value) internal virtual;
+  function _afterAttest(Attestation memory attestation) internal virtual;
 
+  /**
+   * @notice attest the schema with given attestationPayload and validationPayload
+   * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
+   */
   function attest(
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayload
   ) external payable virtual {
     if (modules.length != 0) _runModules(validationPayload);
 
-    Attestation memory attestation = _buildAttestation(attestationPayload);
+    _beforeAttest(attestationPayload, msg.value);
 
-    _beforeAttest(attestation, msg.value);
+    Attestation memory attestation = attestationRegistry.attest(attestationPayload, msg.sender);
 
-    attestationRegistry.attest(attestation);
-
-    _afterAttest(attestation, msg.value);
+    _afterAttest(attestation);
   }
 
   function getModules() external view returns (address[] memory) {
@@ -43,25 +45,7 @@ abstract contract AbstractPortal is IERC165 {
   }
 
   function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
-    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
-  }
-
-  function _buildAttestation(AttestationPayload memory attestationPayload) internal view returns (Attestation memory) {
-    uint256 attestationId = attestationRegistry.getAttestationId();
-    uint16 version = attestationRegistry.getVersionNumber();
-    return
-      Attestation(
-        attestationId,
-        attestationPayload.schemaId,
-        attestationPayload.attester,
-        address(this),
-        attestationPayload.subject,
-        block.timestamp,
-        attestationPayload.expirationDate,
-        false,
-        version,
-        attestationPayload.attestationData
-      );
+    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 
   function revoke(bytes32 attestationId, bytes32 replacedBy) external virtual;

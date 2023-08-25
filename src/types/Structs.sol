@@ -9,7 +9,7 @@ struct AttestationPayload {
 }
 
 struct Attestation {
-  uint256 attestationId; // The unique identifier of the attestation.
+  bytes32 attestationId; // The unique identifier of the attestation.
   bytes32 schemaId; // The identifier of the schema this attestation adheres to.
   address attester; // The address issuing the attestation to the subject.
   address portal; // The id of the portal that created the attestation.

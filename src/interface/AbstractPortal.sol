@@ -27,10 +27,7 @@ abstract contract AbstractPortal is IERC165Upgradeable {
    * @notice attest the schema with given attestationPayload and validationPayload
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
    */
-  function attest(
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload
-  ) external payable virtual {
+  function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayload) external payable {
     if (modules.length != 0) _runModules(validationPayload);
 
     _beforeAttest(attestationPayload, msg.value);

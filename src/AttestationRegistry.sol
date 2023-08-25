@@ -29,6 +29,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   error OnlyAttestingPortal();
   /// @notice Error thrown when an attempt is made to revoke an attestation by someone else than the orignal attester
   error OnlyAttester();
+  /// @notice Error thrown when an attempt is made to revoke an attestation that was already revoked
+  error AlreadyRevoked();
   /// @notice Error thrown when an attempt is made to revoke an attestation based on a non-revocable schema
   error AttestationNotRevocable();
 
@@ -36,7 +38,6 @@ contract AttestationRegistry is OwnableUpgradeable {
   event AttestationRegistered(Attestation attestation);
   /// @notice Event emitted when an attestation is revoked
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
-
   /// @notice Event emitted when the version number is incremented
   event VersionUpdated(uint16 version);
 
@@ -76,6 +77,8 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @dev This method is only callable by a registered Portal
    */
   function attest(AttestationPayload calldata attestationPayload, address attester) external onlyPortals(msg.sender) {
+    // Auto increment attestation counter
+    attestationIdCounter++;
     // Create attestation
     Attestation memory attestation = Attestation(
       bytes32(keccak256(abi.encode((attestationIdCounter)))),
@@ -86,12 +89,12 @@ contract AttestationRegistry is OwnableUpgradeable {
       block.timestamp,
       attestationPayload.expirationDate,
       false,
+      0,
+      bytes32(0),
       version,
       attestationPayload.attestationData
     );
     attestations[attestation.attestationId] = attestation;
-    // Auto increament attestation counter
-    attestationIdCounter += 1;
     emit AttestationRegistered(attestation);
   }
 
@@ -102,6 +105,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    */
   function revoke(bytes32 attestationId, bytes32 replacedBy) external {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
+    if (attestations[attestationId].revoked) revert AlreadyRevoked();
     if (msg.sender != attestations[attestationId].portal) revert OnlyAttestingPortal();
     if (tx.origin != attestations[attestationId].attester) revert OnlyAttester();
     if (!isRevocable(attestations[attestationId].portal)) revert AttestationNotRevocable();

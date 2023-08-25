@@ -65,10 +65,8 @@ contract AttestationRegistryTest is Test {
 
   function test_attest(AttestationPayload memory attestationPayload) public {
     vm.expectEmit(true, true, true, true);
-    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-    uint16 versionNumber = attestationRegistry.getVersionNumber();
     Attestation memory attestation = Attestation(
-      bytes32(keccak256(abi.encode((attestationIdCounter++)))),
+      bytes32(keccak256(abi.encode((1)))),
       attestationPayload.schemaId,
       user,
       portal,
@@ -76,7 +74,9 @@ contract AttestationRegistryTest is Test {
       block.timestamp,
       attestationPayload.expirationDate,
       false,
-      versionNumber,
+      0,
+      bytes32(0),
+      0,
       attestationPayload.attestationData
     );
     emit AttestationRegistered(attestation);
@@ -84,6 +84,27 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.attest(attestationPayload, user);
 
     Attestation memory registeredAttestation = attestationRegistry.getAttestation(attestation.attestationId);
+    _assertAttestation(attestation, registeredAttestation);
+
+    attestation = Attestation(
+      bytes32(keccak256(abi.encode((2)))),
+      attestationPayload.schemaId,
+      user,
+      portal,
+      attestationPayload.subject,
+      block.timestamp,
+      attestationPayload.expirationDate,
+      false,
+      0,
+      bytes32(0),
+      0,
+      attestationPayload.attestationData
+    );
+    emit AttestationRegistered(attestation);
+    vm.prank(portal);
+    attestationRegistry.attest(attestationPayload, user);
+
+    registeredAttestation = attestationRegistry.getAttestation(attestation.attestationId);
     _assertAttestation(attestation, registeredAttestation);
   }
 
@@ -94,123 +115,108 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_revoke(AttestationPayload memory attestationPayload) public {
-    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
+    vm.startPrank(portal, user);
 
-  vm.assume(attestation.attestationId != bytes32(0));
-    attestation.portal = portal;
-    attestation.attester = tx.origin;
-    attestation.revoked = false;
-    attestation.revocationDate = 0;
-    attestation.replacedBy = bytes32(0);
-
-    vm.startPrank(portal);
     attestationRegistry.attest(attestationPayload, user);
-    bytes32 attestationId = bytes32(keccak256(abi.encode((attestationIdCounter))));
 
     // Assert initial state is a valid attestation
-    Attestation memory registeredAttestation = attestationRegistry.getAttestation(attestation.attestationId);
+    Attestation memory registeredAttestation = attestationRegistry.getAttestation(bytes32(keccak256(abi.encode((1)))));
+
+    assertEq(registeredAttestation.attestationId, bytes32(keccak256(abi.encode((1)))));
     assertFalse(registeredAttestation.revoked);
     assertEq(registeredAttestation.revocationDate, 0);
     assertEq(registeredAttestation.replacedBy, bytes32(0));
+    assertEq(registeredAttestation.portal, portal);
+    assertEq(registeredAttestation.attester, user);
 
     // Do revoke the attestation
-    vm.expectEmit(true, true, true, true);
-    emit AttestationRevoked(attestationId, bytes32(0));
-    attestationRegistry.revoke(attestationId, bytes32(0));
+    vm.expectEmit();
+    emit AttestationRevoked(bytes32(keccak256(abi.encode((1)))), bytes32(0));
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), bytes32(0));
+
     vm.stopPrank();
 
     // Assert final state is a revoked attestation
-    Attestation memory revokedAttestation = attestationRegistry.getAttestation(attestationId);
+    Attestation memory revokedAttestation = attestationRegistry.getAttestation(bytes32(keccak256(abi.encode((1)))));
     assertTrue(revokedAttestation.revoked);
     assertEq(revokedAttestation.revocationDate, block.timestamp);
     assertEq(revokedAttestation.replacedBy, bytes32(0));
   }
 
+  function test_revoke_AttestationAlreadyRevoked(AttestationPayload memory attestationPayload) public {
+    vm.startPrank(portal, user);
+    attestationRegistry.attest(attestationPayload, user);
+
+    vm.expectEmit();
+    emit AttestationRevoked(bytes32(keccak256(abi.encode((1)))), bytes32(0));
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
+
+    vm.expectRevert(AttestationRegistry.AlreadyRevoked.selector);
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
+
+    vm.stopPrank();
+  }
+
   function test_revoke_AttestationNotAttested() public {
     vm.expectRevert(AttestationRegistry.AttestationNotAttested.selector);
-    attestationRegistry.revoke(bytes32(uint256(1)),"");
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
   }
 
   function test_revoke_OnlyAttestingPortal(AttestationPayload memory attestationPayload) public {
-    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-    uint16 versionNumber = attestationRegistry.getVersionNumber();
-    Attestation memory attestation = Attestation(
-      bytes32(keccak256(abi.encode((attestationIdCounter++)))),
-      attestationPayload.schemaId,
-      user,
-      portal,
-      attestationPayload.subject,
-      block.timestamp,
-      attestationPayload.expirationDate,
-      false,
-      versionNumber,
-      attestationPayload.attestationData
-    );
     vm.prank(portal);
     attestationRegistry.attest(attestationPayload, user);
 
     vm.expectRevert(AttestationRegistry.OnlyAttestingPortal.selector);
     vm.prank(user);
-    attestationRegistry.revoke(attestation.attestationId, "");
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
   }
 
-  function test_revoke_AttestationNotRevocable(Attestation memory attestation) public {
-    address nonRevocablePortalAddress = makeAddr("portal2");
+  function test_revoke_AttestationNotRevocable(AttestationPayload memory attestationPayload) public {
+    address nonRevocablePortalAddress = makeAddr("nonRevocablePortalAddress");
     PortalRegistry(portalRegistryAddress).register(nonRevocablePortalAddress, "Name", "Description", false);
 
-    vm.assume(attestation.attestationId != bytes32(0));
-    attestation.portal = nonRevocablePortalAddress;
-    attestation.attester = tx.origin;
-    attestation.revoked = false;
-    attestation.revocationDate = 0;
-    attestation.replacedBy = bytes32(0);
+    vm.startPrank(nonRevocablePortalAddress, user);
 
-    vm.startPrank(nonRevocablePortalAddress);
-    attestationRegistry.attest(attestation);
+    attestationRegistry.attest(attestationPayload, user);
 
     vm.expectRevert(AttestationRegistry.AttestationNotRevocable.selector);
-    attestationRegistry.revoke(attestation.attestationId, "");
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
+
     vm.stopPrank();
   }
 
-  function test_revoke_OnlyAttester(Attestation memory attestation) public {
-    attestation.portal = portal;
-    attestation.attester = user;
-
+  function test_revoke_OnlyAttester(AttestationPayload memory attestationPayload) public {
     vm.startPrank(portal);
-    attestationRegistry.attest(attestation);
+
+    attestationRegistry.attest(attestationPayload, user);
 
     vm.expectRevert(AttestationRegistry.OnlyAttester.selector);
-    attestationRegistry.revoke(attestation.attestationId, "");
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
+
     vm.stopPrank();
   }
 
   function test_revokeAndReplace(
-    Attestation memory attestationOrigin,
-    Attestation memory attestationReplacement
+    AttestationPayload memory attestationPayloadOrigin,
+    AttestationPayload memory attestationPayloadReplacement
   ) public {
-    vm.assume(attestationOrigin.attestationId != bytes32(0));
-    attestationOrigin.portal = portal;
-    attestationOrigin.attester = tx.origin;
-    attestationOrigin.revoked = false;
-    attestationOrigin.revocationDate = 0;
-    attestationOrigin.replacedBy = bytes32(0);
+    vm.startPrank(portal, user);
 
-    vm.startPrank(portal);
-    attestationRegistry.attest(attestationOrigin);
-    attestationRegistry.attest(attestationReplacement);
+    attestationRegistry.attest(attestationPayloadOrigin, user);
+    attestationRegistry.attest(attestationPayloadReplacement, user);
 
     // Do revert and replace the attestation
     vm.expectEmit(true, true, true, true);
-    emit AttestationRevoked(attestationOrigin.attestationId, attestationReplacement.attestationId);
-    attestationRegistry.revoke(attestationOrigin.attestationId, attestationReplacement.attestationId);
+    emit AttestationRevoked(bytes32(keccak256(abi.encode((1)))), bytes32(keccak256(abi.encode((2)))));
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), bytes32(keccak256(abi.encode((2)))));
+
     vm.stopPrank();
 
     // Assert final state is a revoked and replaced attestation
-    Attestation memory revokedAttestation = attestationRegistry.getAttestation(attestationOrigin.attestationId);
+    Attestation memory revokedAttestation = attestationRegistry.getAttestation(bytes32(keccak256(abi.encode((1)))));
     assertTrue(revokedAttestation.revoked);
     assertEq(revokedAttestation.revocationDate, block.timestamp);
-    assertEq(revokedAttestation.replacedBy, attestationReplacement.attestationId);
+    assertEq(revokedAttestation.replacedBy, bytes32(keccak256(abi.encode((2)))));
   }
 
   function test_isRevocable() public {
@@ -227,13 +233,11 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_isRegistered(AttestationPayload memory attestationPayload) public {
-    bool isRegistered = attestationRegistry.isRegistered(bytes32(uint256(1)));
+    bool isRegistered = attestationRegistry.isRegistered(bytes32(keccak256(abi.encode((1)))));
     assertFalse(isRegistered);
 
-    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-    uint16 versionNumber = attestationRegistry.getVersionNumber();
     Attestation memory attestation = Attestation(
-      keccak256(abi.encode((attestationIdCounter++))),
+      keccak256(abi.encode((1))),
       attestationPayload.schemaId,
       user,
       portal,
@@ -241,7 +245,9 @@ contract AttestationRegistryTest is Test {
       block.timestamp,
       attestationPayload.expirationDate,
       false,
-      versionNumber,
+      0,
+      bytes32(0),
+      0,
       attestationPayload.attestationData
     );
 
@@ -256,10 +262,8 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_getAttestation(AttestationPayload memory attestationPayload) public {
-    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-    uint16 versionNumber = attestationRegistry.getVersionNumber();
     Attestation memory attestation = Attestation(
-      keccak256(abi.encode((attestationIdCounter++))),
+      keccak256(abi.encode((1))),
       attestationPayload.schemaId,
       user,
       portal,
@@ -267,7 +271,9 @@ contract AttestationRegistryTest is Test {
       block.timestamp,
       attestationPayload.expirationDate,
       false,
-      versionNumber,
+      0,
+      bytes32(0),
+      0,
       attestationPayload.attestationData
     );
 
@@ -280,7 +286,7 @@ contract AttestationRegistryTest is Test {
 
   function test_getAttestation_AttestationNotAttested() public {
     vm.expectRevert(AttestationRegistry.AttestationNotAttested.selector);
-    attestationRegistry.getAttestation(bytes32(uint256(1)));
+    attestationRegistry.getAttestation(bytes32(keccak256(abi.encode((1)))));
   }
 
   function test_incrementVersionNumber() public {
@@ -294,6 +300,25 @@ contract AttestationRegistryTest is Test {
       uint16 newVersion = attestationRegistry.getVersionNumber();
       assertEq(newVersion, i);
     }
+  }
+
+  function test_getAttestationIdCounter(AttestationPayload memory attestationPayload) public {
+    uint version = attestationRegistry.getAttestationIdCounter();
+
+    assertEq(version, 0);
+
+    vm.startPrank(portal);
+    attestationRegistry.attest(attestationPayload, user);
+
+    version = attestationRegistry.getAttestationIdCounter();
+    assertEq(version, 1);
+
+    attestationRegistry.attest(attestationPayload, user);
+
+    version = attestationRegistry.getAttestationIdCounter();
+    assertEq(version, 2);
+
+    vm.stopPrank();
   }
 
   function _assertAttestation(Attestation memory attestation1, Attestation memory attestation2) internal {

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 // solhint-disable-next-line max-line-length
 import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
@@ -13,29 +12,7 @@ import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
  * @author Consensys
  * @notice This contract aims to provide a default portal
  */
-contract DefaultPortal is Initializable, AbstractPortal {
-  constructor(
-    address[] memory _modules,
-    address _moduleRegistry,
-    address _attestationRegistry
-  ) AbstractPortal(_modules, _moduleRegistry, _attestationRegistry) {
-    _disableInitializers();
-  }
-
-  /**
-   * @notice Contract initialization
-   */
-  function initialize(
-    address[] calldata _modules,
-    address _moduleRegistry,
-    address _attestationRegistry
-  ) public initializer {
-    // Store module registry and attestation registry addresses and modules
-    attestationRegistry = AttestationRegistry(_attestationRegistry);
-    moduleRegistry = ModuleRegistry(_moduleRegistry);
-    modules = _modules;
-  }
-
+contract DefaultPortal is AbstractPortal {
   function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
 
   function _afterAttest(Attestation memory attestation) internal override {}

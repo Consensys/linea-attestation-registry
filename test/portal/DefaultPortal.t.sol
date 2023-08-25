@@ -26,7 +26,8 @@ contract DefaultPortalTest is Test {
 
   function setUp() public {
     modules.push(address(correctModule));
-    defaultPortal = new DefaultPortal(modules, address(moduleRegistryMock), address(attestationRegistryMock));
+    defaultPortal = new DefaultPortal();
+    defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
   }
 
   function test_setup() public {

@@ -43,7 +43,7 @@ contract PortalRegistryTest is Test {
     router.updateModuleRegistry(moduleRegistryAddress);
     router.updateAttestationRegistry(attestationRegistryAddress);
 
-    validPortal = new ValidPortal(new address[](0), moduleRegistryAddress, attestationRegistryAddress);
+    validPortal = new ValidPortal();
   }
 
   function test_alreadyInitialized() public {
@@ -153,12 +153,6 @@ contract PortalRegistryTest is Test {
 }
 
 contract ValidPortal is AbstractPortal {
-  constructor(
-    address[] memory _modules,
-    address _moduleRegistry,
-    address _attestationRegistry
-  ) AbstractPortal(_modules, _moduleRegistry, _attestationRegistry) {}
-
   function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal override {}
 
   function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) external override {}

@@ -5,15 +5,24 @@ import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { Attestation, AttestationPayload } from "../types/Structs.sol";
 import "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
+import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 
-abstract contract AbstractPortal is IERC165Upgradeable {
+abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   address[] public modules;
   ModuleRegistry public moduleRegistry;
   AttestationRegistry public attestationRegistry;
 
   error ModulePayloadMismatch();
 
-  constructor(address[] memory _modules, address _moduleRegistry, address _attestationRegistry) {
+  /**
+   * @notice Contract initialization
+   */
+  function initialize(
+    address[] calldata _modules,
+    address _moduleRegistry,
+    address _attestationRegistry
+  ) public initializer {
+    // Store module registry and attestation registry addresses and modules
     attestationRegistry = AttestationRegistry(_attestationRegistry);
     moduleRegistry = ModuleRegistry(_moduleRegistry);
     modules = _modules;

@@ -4,6 +4,7 @@ pragma solidity 0.8.21;
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { SchemaRegistry } from "../src/SchemaRegistry.sol";
+import { Schema } from "../src/types/Structs.sol";
 
 contract SchemaRegistryTest is Test {
   SchemaRegistry private schemaRegistry;
@@ -35,12 +36,10 @@ contract SchemaRegistryTest is Test {
     emit SchemaCreated(expectedId, expectedName, expectedDescription, expectedContext, expectedString);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
 
-    (string memory name, string memory description, string memory context, string memory schemaString) = schemaRegistry
-      .schemas(expectedId);
-    assertEq(name, expectedName);
-    assertEq(description, expectedDescription);
-    assertEq(context, expectedContext);
-    assertEq(schemaString, expectedString);
+    Schema memory expectedSchema = Schema(expectedName, expectedDescription, expectedContext, expectedString);
+
+    Schema memory registeredSchema = schemaRegistry.getSchema(expectedId);
+    _assertSchema(registeredSchema, expectedSchema);
   }
 
   function testCannotCreateSchemaWithoutName() public {
@@ -53,10 +52,29 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, "");
   }
 
+  function testCannotCreateSchemaWithoutContext() public {
+    vm.expectRevert(SchemaRegistry.SchemaContextMissing.selector);
+    schemaRegistry.createSchema(expectedName, expectedDescription, "", expectedString);
+  }
+
   function testCannotCreateSchemaTwice() public {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.expectRevert(SchemaRegistry.SchemaAlreadyExists.selector);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+  }
+
+  function testGetSchema() public {
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+
+    Schema memory expectedSchema = Schema(expectedName, expectedDescription, expectedContext, expectedString);
+
+    Schema memory registeredSchema = schemaRegistry.getSchema(expectedId);
+    _assertSchema(registeredSchema, expectedSchema);
+  }
+
+  function testGetSchemaNotRegistered() public {
+    vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
+    schemaRegistry.getSchema(bytes32("not registered"));
   }
 
   function testStoreSchemaId() public {
@@ -82,5 +100,12 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     isRegistered = schemaRegistry.isRegistered(expectedId);
     assertTrue(isRegistered);
+  }
+
+  function _assertSchema(Schema memory schema1, Schema memory schema2) internal {
+    assertEq(schema2.name, schema1.name);
+    assertEq(schema2.description, schema1.description);
+    assertEq(schema2.context, schema1.context);
+    assertEq(schema2.schema, schema1.schema);
   }
 }

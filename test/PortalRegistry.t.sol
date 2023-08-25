@@ -22,7 +22,7 @@ contract PortalRegistryTest is Test {
   string public expectedName = "Name";
   string public expectedDescription = "Description";
   string public expectedOwnerName = "Owner Name";
-  ValidPortal public validPortal = new ValidPortal();
+  ValidPortal public validPortal;
   InvalidPortal public invalidPortal = new InvalidPortal();
 
   event Initialized(uint8 version);

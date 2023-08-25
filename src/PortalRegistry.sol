@@ -125,7 +125,7 @@ contract PortalRegistry is OwnableUpgradeable {
       router.getModuleRegistry(),
       router.getAttestationRegistry()
     );
-    register(address(defaultPortal), name, description, isRevocable);
+    register(address(defaultPortal), name, description, isRevocable, ownerName);
   }
 
   /**

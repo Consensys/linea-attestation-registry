@@ -38,7 +38,7 @@ contract AttestationRegistryTest is Test {
     router.updatePortalRegistry(portalRegistryAddress);
     router.updateSchemaRegistry(schemaRegistryAddress);
 
-    PortalRegistry(portalRegistryAddress).register(portal, "Name", "Description", true);
+    PortalRegistry(portalRegistryAddress).register(portal, "Name", "Description", true, "Owner name");
   }
 
   function test_initialize_ContractAlreadyInitialized() public {
@@ -173,7 +173,13 @@ contract AttestationRegistryTest is Test {
 
   function test_revoke_AttestationNotRevocable(AttestationPayload memory attestationPayload) public {
     address nonRevocablePortalAddress = makeAddr("nonRevocablePortalAddress");
-    PortalRegistry(portalRegistryAddress).register(nonRevocablePortalAddress, "Name", "Description", false);
+    PortalRegistry(portalRegistryAddress).register(
+      nonRevocablePortalAddress,
+      "Name",
+      "Description",
+      false,
+      "Owner name"
+    );
 
     vm.startPrank(nonRevocablePortalAddress, user);
 
@@ -226,7 +232,7 @@ contract AttestationRegistryTest is Test {
 
   function test_isNotRevocable() public {
     address nonRevocablePortal = makeAddr("nonRevocablePortal");
-    PortalRegistry(portalRegistryAddress).register(nonRevocablePortal, "Name", "Description", false);
+    PortalRegistry(portalRegistryAddress).register(nonRevocablePortal, "Name", "Description", false, "Owner name");
 
     bool isRevocable = attestationRegistry.isRevocable(nonRevocablePortal);
     assertFalse(isRevocable);

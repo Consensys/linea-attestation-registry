@@ -11,7 +11,7 @@ import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/prox
  */
 contract SchemaRegistry is Initializable {
   /// @dev The list of Schemas, accessed by their ID
-  mapping(bytes32 id => Schema schema) public schemas;
+  mapping(bytes32 id => Schema schema) private schemas;
   /// @dev The list of Schema IDs
   bytes32[] public schemaIds;
 
@@ -21,6 +21,10 @@ contract SchemaRegistry is Initializable {
   error SchemaNameMissing();
   /// @notice Error thrown when attempting to add a Schema without a string to define it
   error SchemaStringMissing();
+  /// @notice Error thrown when attempting to add a Schema without a context
+  error SchemaContextMissing();
+  /// @notice Error thrown when attempting to get a Schema that is not registered
+  error SchemaNotRegistered();
 
   /// @notice Event emitted when a Schema is created and registered
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
@@ -61,13 +65,9 @@ contract SchemaRegistry is Initializable {
     string memory context,
     string memory schemaString
   ) public {
-    if (bytes(name).length == 0) {
-      revert SchemaNameMissing();
-    }
-
-    if (bytes(schemaString).length == 0) {
-      revert SchemaStringMissing();
-    }
+    if (bytes(name).length == 0) revert SchemaNameMissing();
+    if (bytes(schemaString).length == 0) revert SchemaStringMissing();
+    if (bytes(context).length == 0) revert SchemaContextMissing();
 
     bytes32 schemaId = getIdFromSchemaString(schemaString);
 
@@ -78,6 +78,16 @@ contract SchemaRegistry is Initializable {
     schemas[schemaId] = Schema(name, description, context, schemaString);
     schemaIds.push(schemaId);
     emit SchemaCreated(schemaId, name, description, context, schemaString);
+  }
+
+  /**
+   * @notice Gets a schema by its identifier
+   * @param schemaId the schema ID
+   * @return the schema
+   */
+  function getSchema(bytes32 schemaId) public view returns (Schema memory) {
+    if (!isRegistered(schemaId)) revert SchemaNotRegistered();
+    return schemas[schemaId];
   }
 
   /**

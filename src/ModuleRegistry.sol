@@ -100,6 +100,7 @@ contract ModuleRegistry is Initializable {
   function runModules(address[] memory modulesAddresses, bytes[] memory validationPayload) public {
     // If no modules provided, bypass module validation
     if (modulesAddresses.length == 0) return;
+    // Each module involved must have a corresponding item from the validation payload
     if (modulesAddresses.length != validationPayload.length) revert ModuleValidationPayloadMismatch();
 
     // For each module check if it is registered and call run method

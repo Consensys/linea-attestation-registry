@@ -25,8 +25,8 @@ struct Attestation {
 
 struct Schema {
   string name; // The name of the schema.
-  string context; // The context of the schema.
   string description; // A description of the schema.
+  string context; // The context of the schema.
   string schema; // The schema definition.
 }
 
@@ -36,6 +36,8 @@ struct Portal {
   string description; // A description of the portal.
   address[] modules; // Addresses of modules implemented by the portal.
   bool isRevocable; // Whether attestations issued can be revoked.
+  address ownerAddress; // The address of the owner of this portal.
+  string ownerName; // The name of the owner of this portal.
 }
 
 struct Module {

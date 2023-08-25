@@ -10,8 +10,14 @@ contract PortalRegistryMock {
 
   function test() public {}
 
-  function register(address id, string memory name, string memory description, bool isRevocable) external {
-    Portal memory newPortal = Portal(id, name, description, new address[](0), isRevocable);
+  function register(
+    address id,
+    string memory name,
+    string memory description,
+    bool isRevocable,
+    string memory ownerName
+  ) external {
+    Portal memory newPortal = Portal(id, name, description, new address[](0), isRevocable, msg.sender, ownerName);
     portals[id] = newPortal;
     emit PortalRegistered(name, description, id);
   }

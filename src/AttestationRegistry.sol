@@ -27,6 +27,12 @@ contract AttestationRegistry is OwnableUpgradeable {
   error AttestationNotAttested();
   /// @notice Error thrown when an attempt is made to revoke an attestation by an entity other than the attesting portal
   error OnlyAttestingPortal();
+  /// @notice Error thrown when a schema id is not registered
+  error SchemaNotRegistered();
+  /// @notice Error thrown when an attestation subject is empty
+  error AttestationSubjectFieldEmpty();
+  /// @notice Error thrown when an attestation data field is empty
+  error AttestationDataFieldEmpty();
 
   /// @notice Event emitted when an attestation is registered
   event AttestationRegistered(Attestation attestation);
@@ -71,12 +77,19 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationPayload the attestation payload to create attestation and register it
    * @dev This method is only callable by a registered Portal
    */
-  function attest(AttestationPayload calldata attestationPayload, address attester) external onlyPortals(msg.sender) {
+  function attest(AttestationPayload calldata attestationPayload) external onlyPortals(msg.sender) {
+    // Verify the schema id exists
+    SchemaRegistry schemaRegistry = SchemaRegistry(router.getSchemaRegistry());
+    if (!schemaRegistry.isRegistered(attestationPayload.schemaId)) revert SchemaNotRegistered();
+    // Verify the subject field is not blank
+    if (attestationPayload.subject.length == 0) revert AttestationSubjectFieldEmpty();
+    // Verify the attestationData field is not blank
+    if (attestationPayload.attestationData.length == 0) revert AttestationDataFieldEmpty();
     // Create attestation
     Attestation memory attestation = Attestation(
       bytes32(keccak256(abi.encode((attestationIdCounter)))),
       attestationPayload.schemaId,
-      attester,
+      tx.origin,
       msg.sender,
       attestationPayload.subject,
       block.timestamp,

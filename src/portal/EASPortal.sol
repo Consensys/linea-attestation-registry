@@ -57,7 +57,7 @@ contract EASPortal is Initializable, EASAbstractPortal, IERC165Upgradeable {
       attestationRequestData.data
     );
 
-    attestationRegistry.attest(attestationPayload, msg.sender);
+    attestationRegistry.attest(attestationPayload);
   }
 
   /**

@@ -7,8 +7,8 @@ contract AttestationRegistryMock {
 
   function test() public {}
 
-  function attest(AttestationPayload calldata attestationPayload, address attester) public {
-    require(bytes32(attestationPayload.schemaId) != 0 && attester != address(0), "Invalid attestation");
+  function attest(AttestationPayload calldata attestationPayload) public {
+    require(bytes32(attestationPayload.schemaId) != 0, "Invalid attestation");
     emit AttestationRegistered();
   }
 }

@@ -2,6 +2,8 @@
 pragma solidity 0.8.21;
 
 contract SchemaRegistryMock {
+  mapping(bytes32 id => bool exists) public schemas;
+
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
 
   function test() public {}
@@ -17,10 +19,11 @@ contract SchemaRegistryMock {
     string memory schemaString
   ) public {
     bytes32 schemaId = getIdFromSchemaString(schemaString);
+    schemas[schemaId] = true;
     emit SchemaCreated(schemaId, name, description, context, schemaString);
   }
 
-  function isRegistered(bytes32 /*schemaId*/) public pure returns (bool) {
-    return true;
+  function isRegistered(bytes32 schemaId) public view returns (bool) {
+    return schemas[schemaId];
   }
 }

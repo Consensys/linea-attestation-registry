@@ -52,7 +52,7 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165Upgradeable {
     // Run all modules
     moduleRegistry.runModules(modules, validationPayload);
     // Register attestation using attestation registry
-    attestationRegistry.attest(attestationPayload, msg.sender);
+    attestationRegistry.attest(attestationPayload);
   }
 
   /**

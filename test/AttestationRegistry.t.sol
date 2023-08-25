@@ -64,39 +64,67 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_attest(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    Attestation memory attestation = _createAttestation(attestationPayload);
+
     vm.expectEmit(true, true, true, true);
-    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-    uint16 versionNumber = attestationRegistry.getVersionNumber();
-    Attestation memory attestation = Attestation(
-      bytes32(keccak256(abi.encode((attestationIdCounter++)))),
-      attestationPayload.schemaId,
-      user,
-      portal,
-      attestationPayload.subject,
-      block.timestamp,
-      attestationPayload.expirationDate,
-      false,
-      versionNumber,
-      attestationPayload.attestationData
-    );
     emit AttestationRegistered(attestation);
     vm.prank(portal);
-    attestationRegistry.attest(attestationPayload, user);
+    attestationRegistry.attest(attestationPayload);
 
     Attestation memory registeredAttestation = attestationRegistry.getAttestation(attestation.attestationId);
     _assertAttestation(attestation, registeredAttestation);
   }
 
+  function test_attest_SchemaNotRegistered(AttestationPayload memory attestationPayload) public {
+    vm.expectRevert(AttestationRegistry.SchemaNotRegistered.selector);
+    vm.prank(portal);
+    attestationRegistry.attest(attestationPayload);
+  }
+
+  function test_attest_AttestationSubjectFieldEmpty(AttestationPayload memory attestationPayload) public {
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+
+    attestationPayload.subject = "";
+
+    vm.expectRevert(AttestationRegistry.AttestationSubjectFieldEmpty.selector);
+    vm.prank(portal);
+    attestationRegistry.attest(attestationPayload);
+  }
+
+  function test_attest_AttestationDataFieldEmpty(AttestationPayload memory attestationPayload) public {
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+    attestationPayload.subject = "subject";
+
+    attestationPayload.attestationData = "";
+
+    vm.expectRevert(AttestationRegistry.AttestationDataFieldEmpty.selector);
+    vm.prank(portal);
+    attestationRegistry.attest(attestationPayload);
+  }
+
   function test_attest_PortalNotRegistered(AttestationPayload memory attestationPayload) public {
     vm.expectRevert(AttestationRegistry.OnlyPortal.selector);
     vm.prank(user);
-    attestationRegistry.attest(attestationPayload, user);
+    attestationRegistry.attest(attestationPayload);
   }
 
   function test_revoke(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
     uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
     vm.startPrank(portal);
-    attestationRegistry.attest(attestationPayload, user);
+    attestationRegistry.attest(attestationPayload);
     bytes32 attestationId = bytes32(keccak256(abi.encode((attestationIdCounter))));
     vm.expectEmit(true, true, true, true);
     emit AttestationRevoked(attestationId);
@@ -113,22 +141,14 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_revoke_OnlyAttestingPortal(AttestationPayload memory attestationPayload) public {
-    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-    uint16 versionNumber = attestationRegistry.getVersionNumber();
-    Attestation memory attestation = Attestation(
-      bytes32(keccak256(abi.encode((attestationIdCounter++)))),
-      attestationPayload.schemaId,
-      user,
-      portal,
-      attestationPayload.subject,
-      block.timestamp,
-      attestationPayload.expirationDate,
-      false,
-      versionNumber,
-      attestationPayload.attestationData
-    );
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    Attestation memory attestation = _createAttestation(attestationPayload);
+
     vm.prank(portal);
-    attestationRegistry.attest(attestationPayload, user);
+    attestationRegistry.attest(attestationPayload);
 
     vm.expectRevert(AttestationRegistry.OnlyAttestingPortal.selector);
     vm.prank(user);
@@ -136,49 +156,30 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_isRegistered(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
     bool isRegistered = attestationRegistry.isRegistered(bytes32(uint256(1)));
     assertEq(isRegistered, false);
-
-    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-    uint16 versionNumber = attestationRegistry.getVersionNumber();
-    Attestation memory attestation = Attestation(
-      keccak256(abi.encode((attestationIdCounter++))),
-      attestationPayload.schemaId,
-      user,
-      portal,
-      attestationPayload.subject,
-      block.timestamp,
-      attestationPayload.expirationDate,
-      false,
-      versionNumber,
-      attestationPayload.attestationData
-    );
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    Attestation memory attestation = _createAttestation(attestationPayload);
 
     vm.startPrank(portal);
-    attestationRegistry.attest(attestationPayload, user);
+    attestationRegistry.attest(attestationPayload);
 
     isRegistered = attestationRegistry.isRegistered(attestation.attestationId);
     assertEq(isRegistered, true);
   }
 
   function test_getAttestation(AttestationPayload memory attestationPayload) public {
-    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-    uint16 versionNumber = attestationRegistry.getVersionNumber();
-    Attestation memory attestation = Attestation(
-      keccak256(abi.encode((attestationIdCounter++))),
-      attestationPayload.schemaId,
-      user,
-      portal,
-      attestationPayload.subject,
-      block.timestamp,
-      attestationPayload.expirationDate,
-      false,
-      versionNumber,
-      attestationPayload.attestationData
-    );
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    Attestation memory attestation = _createAttestation(attestationPayload);
 
     vm.startPrank(portal);
-    attestationRegistry.attest(attestationPayload, user);
+    attestationRegistry.attest(attestationPayload);
 
     Attestation memory registeredAttestation = attestationRegistry.getAttestation(attestation.attestationId);
     _assertAttestation(attestation, registeredAttestation);
@@ -200,6 +201,26 @@ contract AttestationRegistryTest is Test {
       uint16 newVersion = attestationRegistry.getVersionNumber();
       assertEq(newVersion, i);
     }
+  }
+
+  function _createAttestation(AttestationPayload memory attestationPayload) internal returns (Attestation memory) {
+    uint attestationIdCounter = attestationRegistry.getAttestationIdCounter();
+    uint16 versionNumber = attestationRegistry.getVersionNumber();
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+    Attestation memory attestation = Attestation(
+      bytes32(keccak256(abi.encode((attestationIdCounter++)))),
+      attestationPayload.schemaId,
+      tx.origin,
+      portal,
+      attestationPayload.subject,
+      block.timestamp,
+      attestationPayload.expirationDate,
+      false,
+      versionNumber,
+      attestationPayload.attestationData
+    );
+    return attestation;
   }
 
   function _assertAttestation(Attestation memory attestation1, Attestation memory attestation2) internal {

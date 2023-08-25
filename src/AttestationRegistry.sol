@@ -15,11 +15,9 @@ import { IRouter } from "./interface/IRouter.sol";
 contract AttestationRegistry is OwnableUpgradeable {
   IRouter public router;
 
-  mapping(bytes32 attestationId => Attestation attestation) private attestations;
-
   uint16 private version;
-
   uint private attestationIdCounter;
+  mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();

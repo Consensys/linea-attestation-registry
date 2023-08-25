@@ -61,8 +61,8 @@ jobs:
       - name: "Show the Foundry config"
         run: "forge config"
 
-      - name: "Produce an optimized build with --via-ir"
-        run: "FOUNDRY_PROFILE=optimized forge build"
+      - name: "Produce a build"
+        run: "forge build"
 
       - name: "Add build summary"
         run: |
@@ -124,3 +124,40 @@ jobs:
         run: |
           echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
+
+  upgradeability:
+    needs: [ "lint", "build" ]
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+        with:
+          submodules: "recursive"
+
+      - name: "Install Foundry"
+        uses: "foundry-rs/foundry-toolchain@v1"
+
+      - name: "Install Pnpm"
+        uses: "pnpm/action-setup@v2"
+        with:
+          version: "8"
+
+      - name: "Install Node.js"
+        uses: "actions/setup-node@v3"
+        with:
+          cache: "pnpm"
+          node-version: "lts/*"
+
+      - name: "Install the Node.js dependencies"
+        run: "pnpm install"
+
+      - name: "Produce a build"
+        run: "forge build"
+
+      - name: "Check contracts upgradeability"
+        run: "pnpm run check:upgradeability:ci"
+
+      - name: "Add upgradeability summary"
+        run: |
+          echo "## Upgradeability check result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Contracts are upgradeable" >> $GITHUB_STEP_SUMMARY

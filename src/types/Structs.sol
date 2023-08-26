@@ -17,13 +17,15 @@ struct Attestation {
   uint256 attestedDate; // The date the attestation is issued.
   uint256 expirationDate; // The expiration date of the attestation.
   bool revoked; // Whether the attestation is revoked or not.
+  uint256 revocationDate; // The date when the attestation was revoked.
+  bytes32 replacedBy; // Whether the attestation was replaced by a new one.
   uint16 version; // Version of the registry when the attestation was created.
   bytes attestationData; // The attestation data.
 }
 
 struct Schema {
-  string context; // The context of the schema.
   string name; // The name of the schema.
+  string context; // The context of the schema.
   string description; // A description of the schema.
   string schema; // The schema definition.
 }
@@ -33,6 +35,7 @@ struct Portal {
   string name; // The name of the portal.
   string description; // A description of the portal.
   address[] modules; // Addresses of modules implemented by the portal.
+  bool isRevocable; // Whether attestations issued can be revoked.
 }
 
 struct Module {

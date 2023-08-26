@@ -68,7 +68,7 @@ contract PortalRegistryTest is Test {
   function test_register() public {
     vm.expectEmit();
     emit PortalRegistered(expectedName, expectedDescription, address(validPortal));
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription);
+    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true);
 
     uint256 portalCount = portalRegistry.getPortalsCount();
     assertEq(portalCount, 1);
@@ -80,39 +80,39 @@ contract PortalRegistryTest is Test {
   }
 
   function test_register_PortalAlreadyExists() public {
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription);
+    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true);
     vm.expectRevert(PortalRegistry.PortalAlreadyExists.selector);
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription);
+    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true);
   }
 
   function test_register_PortalAddressInvalid() public {
     vm.expectRevert(PortalRegistry.PortalAddressInvalid.selector);
-    portalRegistry.register(address(0), expectedName, expectedDescription);
+    portalRegistry.register(address(0), expectedName, expectedDescription, true);
 
     vm.expectRevert(PortalRegistry.PortalAddressInvalid.selector);
-    portalRegistry.register(user, expectedName, expectedDescription);
+    portalRegistry.register(user, expectedName, expectedDescription, true);
   }
 
   function test_register_PortalNameMissing() public {
     vm.expectRevert(PortalRegistry.PortalNameMissing.selector);
-    portalRegistry.register(address(validPortal), "", expectedDescription);
+    portalRegistry.register(address(validPortal), "", expectedDescription, true);
   }
 
   function test_register_PortalDescriptionMissing() public {
     vm.expectRevert(PortalRegistry.PortalDescriptionMissing.selector);
-    portalRegistry.register(address(validPortal), expectedName, "");
+    portalRegistry.register(address(validPortal), expectedName, "", true);
   }
 
   function test_register_PortalInvalid() public {
     vm.expectRevert(PortalRegistry.PortalInvalid.selector);
-    portalRegistry.register(address(invalidPortal), expectedName, expectedDescription);
+    portalRegistry.register(address(invalidPortal), expectedName, expectedDescription, true);
   }
 
   function test_deployDefaultPortal() public {
     CorrectModule correctModule = new CorrectModule();
     address[] memory modules = new address[](1);
     modules[0] = address(correctModule);
-    portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription);
+    portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription, true);
   }
 
   function test_getPortals_PortalNotRegistered() public {
@@ -122,7 +122,7 @@ contract PortalRegistryTest is Test {
 
   function test_isRegistered() public {
     assertEq(portalRegistry.isRegistered(address(validPortal)), false);
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription);
+    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true);
     assertEq(portalRegistry.isRegistered(address(validPortal)), true);
   }
 }
@@ -134,6 +134,8 @@ contract ValidPortal is AbstractPortal, IERC165Upgradeable {
     AttestationPayload memory /*attestationPayload*/,
     bytes[] memory /*validationPayload*/
   ) external payable override {}
+
+  function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) external override {}
 
   function getModules() external pure override returns (address[] memory) {
     address[] memory modules = new address[](2);

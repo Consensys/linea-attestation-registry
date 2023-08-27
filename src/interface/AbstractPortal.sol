@@ -41,7 +41,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
 
     _beforeAttest(attestationPayload, msg.value);
 
-    Attestation memory attestation = attestationRegistry.attest(attestationPayload, msg.sender);
+    Attestation memory attestation = attestationRegistry.attest(attestationPayload);
 
     _afterAttest(attestation);
   }

@@ -83,7 +83,9 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationPayload the attestation payload to create attestation and register it
    * @dev This method is only callable by a registered Portal
    */
-  function attest(AttestationPayload calldata attestationPayload) external onlyPortals(msg.sender) {
+  function attest(
+    AttestationPayload calldata attestationPayload
+  ) external onlyPortals(msg.sender) returns (Attestation memory) {
     // Verify the schema id exists
     SchemaRegistry schemaRegistry = SchemaRegistry(router.getSchemaRegistry());
     if (!schemaRegistry.isRegistered(attestationPayload.schemaId)) revert SchemaNotRegistered();

@@ -1,23 +1,49 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.21;
 
-import { AttestationPayload } from "../../src/types/Structs.sol";
+import { AttestationPayload, Attestation } from "../../src/types/Structs.sol";
 
 contract AttestationRegistryMock {
+  bytes32 public _attestationId;
+  uint16 public version;
+
   event AttestationRegistered();
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
   event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
 
   function test() public {}
 
-  function attest(AttestationPayload calldata attestationPayload) public {
-    require(bytes32(attestationPayload.schemaId) != 0, "Invalid attestation");
+  function attest(AttestationPayload calldata attestationPayload) public returns (Attestation memory) {
+    require(bytes32(attestationPayload.schemaId) != 0 && tx.origin != address(0), "Invalid attestation");
+    Attestation memory attestation = Attestation(
+      bytes32(keccak256(abi.encode((1)))),
+      attestationPayload.schemaId,
+      tx.origin,
+      msg.sender,
+      attestationPayload.subject,
+      block.timestamp,
+      attestationPayload.expirationDate,
+      false,
+      0,
+      bytes32(0),
+      version,
+      attestationPayload.attestationData
+    );
     emit AttestationRegistered();
+    return attestation;
   }
 
   function revoke(bytes32 attestationId, bytes32 replacedBy) public {
     require(bytes32(attestationId) != 0, "Invalid attestation");
     emit AttestationRevoked(attestationId, replacedBy);
+  }
+
+  function getAttestationId() public view returns (bytes32) {
+    return _attestationId;
+  }
+
+  function getVersionNumber() public view returns (uint16) {
+    return version;
   }
 
   function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) public {

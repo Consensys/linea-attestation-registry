@@ -16,7 +16,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   IRouter public router;
 
   uint16 private version;
-  uint private attestationIdCounter;
+  uint256 private attestationIdCounter;
+
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
@@ -86,7 +87,9 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationPayload the attestation payload to create attestation and register it
    * @dev This method is only callable by a registered Portal
    */
-  function attest(AttestationPayload calldata attestationPayload) external onlyPortals(msg.sender) {
+  function attest(
+    AttestationPayload calldata attestationPayload
+  ) external onlyPortals(msg.sender) returns (Attestation memory) {
     // Verify the schema id exists
     SchemaRegistry schemaRegistry = SchemaRegistry(router.getSchemaRegistry());
     if (!schemaRegistry.isRegistered(attestationPayload.schemaId)) revert SchemaNotRegistered();
@@ -113,6 +116,8 @@ contract AttestationRegistry is OwnableUpgradeable {
     );
     attestations[attestation.attestationId] = attestation;
     emit AttestationRegistered(attestation);
+
+    return attestation;
   }
 
   /**

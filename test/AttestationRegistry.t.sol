@@ -3,7 +3,6 @@ pragma solidity 0.8.21;
 
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
-import { console } from "forge-std/console.sol";
 import { AttestationRegistry } from "../src/AttestationRegistry.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";

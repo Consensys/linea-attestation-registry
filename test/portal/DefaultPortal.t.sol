@@ -51,10 +51,7 @@ contract DefaultPortalTest is Test {
   }
 
   function test_attest(AttestationPayload memory attestationPayload) public {
-    vm.assume(attestationPayload.subject.length != 0);
-    vm.assume(attestationPayload.attestationData.length != 0);
-
-    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    vm.assume(bytes32(attestationPayload.schemaId) != 0);
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](1);
 
@@ -66,14 +63,8 @@ contract DefaultPortalTest is Test {
   }
 
   function test_bulkAttest(AttestationPayload[2] memory attestationsPayloads) public {
-    vm.assume(attestationsPayloads[0].subject.length != 0);
-    vm.assume(attestationsPayloads[0].attestationData.length != 0);
-    vm.assume(attestationsPayloads[1].subject.length != 0);
-    vm.assume(attestationsPayloads[1].attestationData.length != 0);
-
-    attestationsPayloads[0].schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
-    attestationsPayloads[1].schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
-
+    vm.assume(bytes32(attestationsPayloads[0].schemaId) != 0);
+    vm.assume(bytes32(attestationsPayloads[1].schemaId) != 0);
     // Create attestations payloads
     AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
     payloadsToAttest[0] = attestationsPayloads[0];

@@ -19,10 +19,14 @@ contract PortalRegistry is OwnableUpgradeable {
 
   mapping(address id => Portal portal) private portals;
 
+  mapping(address issuerAddress => bool isIssuer) private issuers;
+
   address[] private portalAddresses;
 
   /// @notice Error thrown when an invalid Router address is given
   error RouterInvalid();
+  /// @notice Error thrown when a non-issuer tries to call a method that can only be called by an issuer
+  error OnlyIssuer();
   /// @notice Error thrown when attempting to register a Portal twice
   error PortalAlreadyExists();
   /// @notice Error thrown when attempting to register a Portal that is not a smart contract
@@ -62,6 +66,39 @@ contract PortalRegistry is OwnableUpgradeable {
   }
 
   /**
+   * @notice Registers an address as been an issuer
+   * @param issuer the address to register as an issuer
+   */
+  function setIssuer(address issuer) public onlyOwner {
+    issuers[issuer] = true;
+  }
+
+  /**
+   * @notice Revokes issuer status from an address
+   * @param issuer the address to be revoked as an issuer
+   */
+  function removeIssuer(address issuer) public onlyOwner {
+    issuers[issuer] = false;
+  }
+
+  /**
+   * @notice Checks if a given address is an issuer
+   * @return A flag indicating whether the given address is an issuer
+   */
+  function isIssuer(address issuer) public view returns (bool) {
+    return issuers[issuer];
+  }
+
+  /**
+   * @notice Checks if the caller is a registered issuer.
+   * @param issuer the issuer address
+   */
+  modifier onlyIssuers(address issuer) {
+    if (!isIssuer(issuer)) revert OnlyIssuer();
+    _;
+  }
+
+  /**
    * @notice Registers a Portal to the PortalRegistry
    * @param id the portal address
    * @param name the portal name
@@ -75,7 +112,7 @@ contract PortalRegistry is OwnableUpgradeable {
     string memory description,
     bool isRevocable,
     string memory ownerName
-  ) public {
+  ) public onlyIssuers(msg.sender) {
     // Check if portal already exists
     if (portals[id].id != address(0)) revert PortalAlreadyExists();
 
@@ -119,7 +156,7 @@ contract PortalRegistry is OwnableUpgradeable {
     string memory description,
     bool isRevocable,
     string memory ownerName
-  ) external {
+  ) external onlyIssuers(msg.sender) {
     DefaultPortal defaultPortal = new DefaultPortal();
     defaultPortal.initialize(modules, router.getModuleRegistry(), router.getAttestationRegistry());
     register(address(defaultPortal), name, description, isRevocable, ownerName);

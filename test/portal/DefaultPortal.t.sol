@@ -27,6 +27,7 @@ contract DefaultPortalTest is Test {
   event ModulesRunForAttestation();
   event ModulesBulkRunForAttestation();
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
+  event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
 
   function setUp() public {
     defaultPortal = new DefaultPortal();

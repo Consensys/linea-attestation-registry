@@ -8,6 +8,8 @@ contract PortalRegistryMock {
 
   mapping(address id => Portal portal) private portals;
 
+  mapping(address issuerAddress => bool isIssuer) private issuers;
+
   function test() public {}
 
   function register(
@@ -28,5 +30,17 @@ contract PortalRegistryMock {
 
   function getPortalByAddress(address id) public view returns (Portal memory) {
     return portals[id];
+  }
+
+  function setIssuer(address issuer) public {
+    issuers[issuer] = true;
+  }
+
+  /**
+   * @notice Checks if a given address is an issuer
+   * @return A flag indicating whether the given address is an issuer
+   */
+  function isIssuer(address issuer) public view returns (bool) {
+    return issuers[issuer];
   }
 }

@@ -17,5 +17,7 @@ abstract contract AbstractPortal {
 
   function revoke(bytes32 attestationId, bytes32 replacedBy) external virtual;
 
+  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external virtual;
+
   function getModules() external virtual returns (address[] memory);
 }

@@ -39,6 +39,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   error AlreadyRevoked();
   /// @notice Error thrown when an attempt is made to revoke an attestation based on a non-revocable schema
   error AttestationNotRevocable();
+  /// @notice Error thrown when attempting to bulk revoke attestations without the same number of replacing attestations
+  error BulkRevocationInvalidParams();
 
   /// @notice Event emitted when an attestation is registered
   event AttestationRegistered(Attestation attestation);
@@ -46,6 +48,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   event BulkAttestationsRegistered(Attestation[] attestations);
   /// @notice Event emitted when an attestation is revoked
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
+  /// @notice Event emitted when a list of attestations is revoked
+  event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
   /// @notice Event emitted when the version number is incremented
   event VersionUpdated(uint16 version);
 
@@ -139,7 +143,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationId the attestation ID to revoke
    * @param replacedBy the replacing attestation ID (leave empty to just revoke)
    */
-  function revoke(bytes32 attestationId, bytes32 replacedBy) external {
+  function revoke(bytes32 attestationId, bytes32 replacedBy) public {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
     if (attestations[attestationId].revoked) revert AlreadyRevoked();
     if (msg.sender != attestations[attestationId].portal) revert OnlyAttestingPortal();
@@ -152,6 +156,21 @@ contract AttestationRegistry is OwnableUpgradeable {
     if (isRegistered(replacedBy)) attestations[attestationId].replacedBy = replacedBy;
 
     emit AttestationRevoked(attestationId, replacedBy);
+  }
+
+  /**
+   * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
+   * @param attestationIds the attestations IDs to revoke
+   * @param replacedBy the replacing attestations IDs (leave an ID empty to just revoke)
+   */
+  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external {
+    if (attestationIds.length != replacedBy.length) revert BulkRevocationInvalidParams();
+
+    for (uint i = 0; i < attestationIds.length; i++) {
+      revoke(attestationIds[i], replacedBy[i]);
+    }
+
+    emit BulkAttestationsRevoked(attestationIds, replacedBy);
   }
 
   /**

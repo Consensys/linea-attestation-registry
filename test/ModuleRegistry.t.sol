@@ -182,6 +182,27 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.runModules(moduleAddresses, validationPayload);
   }
 
+  function testBulkRunModules() public {
+   // Register 2 modules
+    address[] memory moduleAddresses = new address[](2);
+    moduleAddresses[0] = address(new CorrectModule());
+    moduleAddresses[1] = address(new CorrectModule());
+    vm.startPrank(user);
+    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
+    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
+    
+    // Create validation payloads
+    bytes[] memory validationPayload1 = new bytes[](2);
+    bytes[] memory validationPayload2 = new bytes[](2);
+
+    bytes[][] memory validationPayloads = new bytes[][](2);
+    validationPayloads[0] = validationPayload1;
+    validationPayloads[1] = validationPayload2;
+
+    moduleRegistry.bulkRunModules(moduleAddresses, validationPayloads);
+    vm.stopPrank();
+  }
+
   function testGetModuleAddress() public {
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);

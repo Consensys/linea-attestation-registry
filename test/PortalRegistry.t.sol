@@ -202,10 +202,10 @@ contract ValidPortal is AbstractPortal {
 
   function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal override {}
 
-  function bulkAttest(
-    AttestationPayload[] memory /*attestationsPayloads*/,
-    bytes[][] memory /*validationPayloads*/
-  ) external payable override {}
+  function _onBulkAttest(
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) internal override {}
 }
 
 contract InvalidPortal {

@@ -21,18 +21,8 @@ contract DefaultPortal is AbstractPortal {
 
   function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal override {}
 
-  /**
-   * @notice Bulk attest the schema with payloads to attest and validation payloads
-   * @param attestationsPayloads the payloads to attest
-   * @param validationPayloads the payloads to validate in order to issue the attestations
-   */
-  function bulkAttest(
+  function _onBulkAttest(
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) external payable override {
-    // Run all modules for all payloads
-    moduleRegistry.bulkRunModules(modules, validationPayloads);
-    // Register attestations using the attestation registry
-    attestationRegistry.bulkAttest(attestationsPayloads);
-  }
+  ) internal override {}
 }

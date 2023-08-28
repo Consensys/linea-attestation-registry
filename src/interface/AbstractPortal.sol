@@ -29,10 +29,6 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
     modules = _modules;
   }
 
-  function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal virtual;
-
-  function _afterAttest(Attestation memory attestation) internal virtual;
-
   /**
    * @notice attest the schema with given attestationPayload and validationPayload
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
@@ -47,6 +43,21 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
     _afterAttest(attestation);
   }
 
+  function revoke(bytes32 attestationId, bytes32 replacedBy) external {
+    _onRevoke(attestationId, replacedBy);
+    attestationRegistry.revoke(attestationId, replacedBy);
+  }
+
+  /**
+   * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
+   * @param attestationIds the attestations IDs to revoke
+   * @param replacedBy the replacing attestations IDs (leave an ID empty to just revoke)
+   */
+  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external {
+    _onBulkRevoke(attestationIds, replacedBy);
+    attestationRegistry.bulkRevoke(attestationIds, replacedBy);
+  }
+
   function getModules() external view returns (address[] memory) {
     return modules;
   }
@@ -55,12 +66,16 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
     return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 
-  function revoke(bytes32 attestationId, bytes32 replacedBy) external virtual;
-
   function _runModules(bytes[] memory validationPayload) internal {
     if (modules.length != validationPayload.length) revert ModulePayloadMismatch();
     moduleRegistry.runModules(modules, validationPayload);
   }
 
-  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external virtual;
+  function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal virtual;
+
+  function _afterAttest(Attestation memory attestation) internal virtual;
+
+  function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal virtual;
+
+  function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal virtual;
 }

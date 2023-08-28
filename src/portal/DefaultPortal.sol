@@ -65,6 +65,15 @@ contract DefaultPortal is Initializable, AbstractPortal, IERC165Upgradeable {
   }
 
   /**
+   * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
+   * @param attestationIds the attestations IDs to revoke
+   * @param replacedBy the replacing attestations IDs (leave an ID empty to just revoke)
+   */
+  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external override {
+    attestationRegistry.bulkRevoke(attestationIds, replacedBy);
+  }
+
+  /**
    * @notice Implements supports interface method declaring it is an AbstractPortal
    */
   function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {

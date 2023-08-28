@@ -42,6 +42,8 @@ contract AttestationRegistry is OwnableUpgradeable {
 
   /// @notice Event emitted when an attestation is registered
   event AttestationRegistered(Attestation attestation);
+  /// @notice Event emitted when a list of attestations is registered
+  event BulkAttestationsRegistered(Attestation[] attestations);
   /// @notice Event emitted when an attestation is revoked
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
   /// @notice Event emitted when the version number is incremented
@@ -80,9 +82,12 @@ contract AttestationRegistry is OwnableUpgradeable {
   /**
    * @notice Registers an attestation to the AttestationRegistry
    * @param attestationPayload the attestation payload to create attestation and register it
+   * @return the registered attestation with its metadata
    * @dev This method is only callable by a registered Portal
    */
-  function attest(AttestationPayload calldata attestationPayload) external onlyPortals(msg.sender) {
+  function attest(
+    AttestationPayload calldata attestationPayload
+  ) public onlyPortals(msg.sender) returns (Attestation memory) {
     // Verify the schema id exists
     SchemaRegistry schemaRegistry = SchemaRegistry(router.getSchemaRegistry());
     if (!schemaRegistry.isRegistered(attestationPayload.schemaId)) revert SchemaNotRegistered();
@@ -109,6 +114,24 @@ contract AttestationRegistry is OwnableUpgradeable {
     );
     attestations[attestation.attestationId] = attestation;
     emit AttestationRegistered(attestation);
+    return attestation;
+  }
+
+  /**
+   * @notice Registers attestations to the AttestationRegistry
+   * @param attestationsPayloads the attestations payloads to create attestations and register them
+   * @return the registered attestations with their metadata
+   */
+  function bulkAttest(AttestationPayload[] calldata attestationsPayloads) public returns (Attestation[] memory) {
+    Attestation[] memory registeredAttestations = new Attestation[](attestationsPayloads.length);
+
+    for (uint i = 0; i < attestationsPayloads.length; i++) {
+      registeredAttestations[i] = attest(attestationsPayloads[i]);
+    }
+
+    emit BulkAttestationsRegistered(registeredAttestations);
+
+    return registeredAttestations;
   }
 
   /**

@@ -35,8 +35,6 @@ contract ModuleRegistry is Initializable {
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
-  /// @notice Event emitted when all Modules are run for the attestation
-  event ModulesRunForAttestation(bytes32 attestationId);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -91,10 +89,9 @@ contract ModuleRegistry is Initializable {
     emit ModuleRegistered(name, description, moduleAddress);
   }
 
-  /** Execute run method from given Modules:
-   * - mandatory list of modules
-   * - the module must be registered
+  /** Execute the run method for all given Modules that are registered
    * @param modulesAddresses the addresses of the registered modules
+   * @param validationPayload the payloads to check for each module
    * @dev check if modules are registered and execute run method for each module
    */
   function runModules(address[] memory modulesAddresses, bytes[] memory validationPayload) public {
@@ -107,6 +104,17 @@ contract ModuleRegistry is Initializable {
     for (uint i = 0; i < modulesAddresses.length; i++) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
       AbstractModule(modulesAddresses[i]).run(validationPayload, msg.sender);
+    }
+  }
+
+  /** Execute the run method for all given Modules that are registered
+   * @param modulesAddresses the addresses of the registered modules
+   * @param validationPayloads the payloads to check for each module
+   * @dev check if modules are registered and execute run method for each module
+   */
+  function bulkRunModules(address[] memory modulesAddresses, bytes[][] memory validationPayloads) public {
+    for (uint i = 0; i < modulesAddresses.length; i++) {
+      runModules(modulesAddresses, validationPayloads[i]);
     }
   }
 

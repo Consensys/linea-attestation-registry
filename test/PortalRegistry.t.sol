@@ -158,6 +158,11 @@ contract ValidPortal is AbstractPortal, IERC165Upgradeable {
     bytes[] memory /*validationPayload*/
   ) external payable override {}
 
+  function bulkAttest(
+    AttestationPayload[] memory /*attestationsPayloads*/,
+    bytes[][] memory /*validationPayloads*/
+  ) external payable override {}
+
   function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) external override {}
 
   function getModules() external pure override returns (address[] memory) {

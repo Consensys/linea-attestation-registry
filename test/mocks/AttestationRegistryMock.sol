@@ -6,6 +6,7 @@ import { AttestationPayload } from "../../src/types/Structs.sol";
 contract AttestationRegistryMock {
   event AttestationRegistered();
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
+  event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
 
   function test() public {}
 
@@ -16,7 +17,11 @@ contract AttestationRegistryMock {
 
   function revoke(bytes32 attestationId, bytes32 replacedBy) public {
     require(bytes32(attestationId) != 0, "Invalid attestation");
-    require(bytes32(replacedBy) != 0, "Invalid replacement attestation");
     emit AttestationRevoked(attestationId, replacedBy);
+  }
+
+  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) public {
+    require(attestationIds.length > 0, "Invalid attestation");
+    emit BulkAttestationsRevoked(attestationIds, replacedBy);
   }
 }

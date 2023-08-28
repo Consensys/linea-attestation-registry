@@ -160,6 +160,8 @@ contract ValidPortal is AbstractPortal, IERC165Upgradeable {
 
   function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) external override {}
 
+  function bulkRevoke(bytes32[] memory /*attestationIds*/, bytes32[] memory /*replacedBy*/) external override {}
+
   function getModules() external pure override returns (address[] memory) {
     address[] memory modules = new address[](2);
     modules[0] = address(0);

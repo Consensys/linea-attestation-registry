@@ -23,6 +23,7 @@ contract DefaultPortalTest is Test {
   event ModulesRunForAttestation();
   event AttestationRegistered();
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
+  event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
 
   function setUp() public {
     modules.push(address(correctModule));
@@ -38,7 +39,7 @@ contract DefaultPortalTest is Test {
 
   function test_initialize() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    defaultPortal.initialize(modules, address(1), address(2));
+    defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
   }
 
   function test_getModules() public {
@@ -65,6 +66,19 @@ contract DefaultPortalTest is Test {
     vm.expectEmit(true, true, true, true);
     emit AttestationRevoked(bytes32("1"), bytes32("2"));
     defaultPortal.revoke(bytes32("1"), bytes32("2"));
+  }
+
+  function test_bulkRevoke() public {
+    bytes32[] memory attestationsToRevoke = new bytes32[](2);
+    attestationsToRevoke[0] = bytes32("1");
+    attestationsToRevoke[1] = bytes32("2");
+    bytes32[] memory replacingAttestations = new bytes32[](2);
+    replacingAttestations[0] = bytes32(0);
+    replacingAttestations[1] = bytes32(0);
+
+    vm.expectEmit(true, true, true, true);
+    emit BulkAttestationsRevoked(attestationsToRevoke, replacingAttestations);
+    defaultPortal.bulkRevoke(attestationsToRevoke, replacingAttestations);
   }
 
   function testSupportsInterface() public {

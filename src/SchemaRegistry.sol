@@ -1,20 +1,27 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
+import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import { Schema } from "./types/Structs.sol";
-import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
+import { PortalRegistry } from "./PortalRegistry.sol";
+import { IRouter } from "./interface/IRouter.sol";
 
 /**
  * @title Schema Registry
  * @author Consensys
  * @notice This contract aims to manage the Schemas used by the Portals, including their discoverability
  */
-contract SchemaRegistry is Initializable {
+contract SchemaRegistry is OwnableUpgradeable {
+  IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) private schemas;
   /// @dev The list of Schema IDs
   bytes32[] public schemaIds;
 
+  /// @notice Error thrown when an invalid Router address is given
+  error RouterInvalid();
+  /// @notice Error thrown when a non-issuer tries to call a method that can only be called by an issuer
+  error OnlyIssuer();
   /// @notice Error thrown when an identical Schema was already registered
   error SchemaAlreadyExists();
   /// @notice Error thrown when attempting to add a Schema without a name
@@ -37,7 +44,27 @@ contract SchemaRegistry is Initializable {
   /**
    * @notice Contract initialization
    */
-  function initialize() public initializer {}
+  function initialize() public initializer {
+    __Ownable_init();
+  }
+
+  /**
+   * @notice Checks if the caller is a registered issuer.
+   * @param issuer the issuer address
+   */
+  modifier onlyIssuers(address issuer) {
+    bool isIssuerRegistered = PortalRegistry(router.getPortalRegistry()).isIssuer(issuer);
+    if (!isIssuerRegistered) revert OnlyIssuer();
+    _;
+  }
+
+  /**
+   * @notice Changes the address for the Router
+   */
+  function updateRouter(address _router) public onlyOwner {
+    if (_router == address(0)) revert RouterInvalid();
+    router = IRouter(_router);
+  }
 
   /**
    * Generate an ID for a given schema
@@ -64,7 +91,7 @@ contract SchemaRegistry is Initializable {
     string memory description,
     string memory context,
     string memory schemaString
-  ) public {
+  ) public onlyIssuers(msg.sender) {
     if (bytes(name).length == 0) revert SchemaNameMissing();
     if (bytes(schemaString).length == 0) revert SchemaStringMissing();
     if (bytes(context).length == 0) revert SchemaContextMissing();

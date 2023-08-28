@@ -25,4 +25,13 @@ contract DefaultPortal is AbstractPortal {
   function revoke(bytes32 attestationId, bytes32 replacedBy) external override {
     attestationRegistry.revoke(attestationId, replacedBy);
   }
+
+  /**
+   * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
+   * @param attestationIds the attestations IDs to revoke
+   * @param replacedBy the replacing attestations IDs (leave an ID empty to just revoke)
+   */
+  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external override {
+    attestationRegistry.bulkRevoke(attestationIds, replacedBy);
+  }
 }

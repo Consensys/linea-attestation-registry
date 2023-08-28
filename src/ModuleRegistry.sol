@@ -3,21 +3,28 @@ pragma solidity 0.8.21;
 
 import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./interface/AbstractModule.sol";
-import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
+import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
+import { PortalRegistry } from "./PortalRegistry.sol";
+import { IRouter } from "./interface/IRouter.sol";
 
 /**
  * @title Module Registry
  * @author Consensys
  * @notice This contract aims to manage the Modules used by the Portals, including their discoverability
  */
-contract ModuleRegistry is Initializable {
+contract ModuleRegistry is OwnableUpgradeable {
+  IRouter public router;
   /// @dev The list of Modules, accessed by their address
   mapping(address id => Module module) public modules;
   /// @dev The list of Module addresses
   address[] public moduleAddresses;
 
+  /// @notice Error thrown when an invalid Router address is given
+  error RouterInvalid();
+  /// @notice Error thrown when a non-issuer tries to call a method that can only be called by an issuer
+  error OnlyIssuer();
   /// @notice Error thrown when an identical Module was already registered
   error ModuleAlreadyExists();
   /// @notice Error thrown when attempting to add a Module without a name
@@ -46,7 +53,27 @@ contract ModuleRegistry is Initializable {
   /**
    * @notice Contract initialization
    */
-  function initialize() public initializer {}
+  function initialize() public initializer {
+    __Ownable_init();
+  }
+
+  /**
+   * @notice Checks if the caller is a registered issuer.
+   * @param issuer the issuer address
+   */
+  modifier onlyIssuers(address issuer) {
+    bool isIssuerRegistered = PortalRegistry(router.getPortalRegistry()).isIssuer(issuer);
+    if (!isIssuerRegistered) revert OnlyIssuer();
+    _;
+  }
+
+  /**
+   * @notice Changes the address for the Router
+   */
+  function updateRouter(address _router) public onlyOwner {
+    if (_router == address(0)) revert RouterInvalid();
+    router = IRouter(_router);
+  }
 
   /**
    * Check if address is smart contract and not EOA
@@ -66,7 +93,11 @@ contract ModuleRegistry is Initializable {
    * @param moduleAddress the address of the deployed smart contract
    * @dev the module is stored in a mapping, the number of modules is incremented and an event is emitted
    */
-  function register(string memory name, string memory description, address moduleAddress) public {
+  function register(
+    string memory name,
+    string memory description,
+    address moduleAddress
+  ) public onlyIssuers(msg.sender) {
     if (bytes(name).length == 0) {
       revert ModuleNameMissing();
     }

@@ -10,6 +10,11 @@ abstract contract AbstractPortal {
     bytes[] memory validationPayload
   ) external payable virtual;
 
+  function bulkAttest(
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) external payable virtual;
+
   function revoke(bytes32 attestationId, bytes32 replacedBy) external virtual;
 
   function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external virtual;

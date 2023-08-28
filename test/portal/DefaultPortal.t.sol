@@ -10,6 +10,7 @@ import { CorrectModule } from "../../src/example/CorrectModule.sol";
 import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../mocks/ModuleRegistryMock.sol";
 import { ERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
+import { SchemaRegistryMock } from "../mocks/SchemaRegistryMock.sol";
 
 contract DefaultPortalTest is Test {
   CorrectModule public correctModule = new CorrectModule();
@@ -17,74 +18,89 @@ contract DefaultPortalTest is Test {
   DefaultPortal public defaultPortal;
   ModuleRegistryMock public moduleRegistryMock = new ModuleRegistryMock();
   AttestationRegistryMock public attestationRegistryMock = new AttestationRegistryMock();
+  SchemaRegistryMock public schemaRegistryMock = new SchemaRegistryMock();
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address portalAddress);
-  event ModulesRunForAttestation();
   event AttestationRegistered();
+  event BulkAttestationsRegistered();
+  event ModulesRunForAttestation();
+  event ModulesBulkRunForAttestation();
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
   event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
 
   function setUp() public {
     defaultPortal = new DefaultPortal();
     modules.push(address(correctModule));
+    defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
   }
 
   function test_initialize() public {
+    DefaultPortal defaultPortalTest = new DefaultPortal();
     vm.expectEmit();
     emit Initialized(1);
-    defaultPortal.initialize(modules, address(1), address(2));
+    defaultPortalTest.initialize(modules, address(1), address(2));
 
     vm.expectRevert("Initializable: contract is already initialized");
-    defaultPortal.initialize(modules, address(1), address(2));
+    defaultPortalTest.initialize(modules, address(1), address(2));
   }
 
   function test_getModules() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    defaultPortal.initialize(modules, address(1), address(2));
-
     address[] memory _modules = defaultPortal.getModules();
     assertEq(_modules, modules);
   }
 
-  function test_attest() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
+  function test_attest(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
 
-    // Create attestation payload
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32(uint256(1)),
-      bytes("subject"),
-      block.timestamp + 1 days,
-      new bytes(1)
-    );
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
     // Create validation payload
-    bytes[] memory validationPayload = new bytes[](0);
+    bytes[] memory validationPayload = new bytes[](1);
 
-    vm.expectEmit(true, true, true, true);
+    vm.expectEmit();
     emit ModulesRunForAttestation();
-    vm.expectEmit(true, true, true, true);
+    vm.expectEmit();
     emit AttestationRegistered();
     defaultPortal.attest(attestationPayload, validationPayload);
   }
 
-  function test_revoke() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
+  function test_bulkAttest(AttestationPayload[2] memory attestationsPayloads) public {
+    vm.assume(attestationsPayloads[0].subject.length != 0);
+    vm.assume(attestationsPayloads[0].attestationData.length != 0);
+    vm.assume(attestationsPayloads[1].subject.length != 0);
+    vm.assume(attestationsPayloads[1].attestationData.length != 0);
 
+    attestationsPayloads[0].schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    attestationsPayloads[1].schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+
+    // Create attestations payloads
+    AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
+    payloadsToAttest[0] = attestationsPayloads[0];
+    payloadsToAttest[1] = attestationsPayloads[1];
+
+    // Create validation payloads
+    bytes[] memory validationPayload1 = new bytes[](1);
+    bytes[] memory validationPayload2 = new bytes[](1);
+
+    bytes[][] memory validationPayloads = new bytes[][](2);
+    validationPayloads[0] = validationPayload1;
+    validationPayloads[1] = validationPayload2;
+
+    vm.expectEmit(true, true, true, true);
+    emit ModulesBulkRunForAttestation();
+    vm.expectEmit(true, true, true, true);
+    emit BulkAttestationsRegistered();
+    defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
+  }
+
+  function test_revoke() public {
     vm.expectEmit(true, true, true, true);
     emit AttestationRevoked(bytes32("1"), bytes32("2"));
     defaultPortal.revoke(bytes32("1"), bytes32("2"));
   }
 
   function test_bulkRevoke() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
-
     bytes32[] memory attestationsToRevoke = new bytes32[](2);
     attestationsToRevoke[0] = bytes32("1");
     attestationsToRevoke[1] = bytes32("2");

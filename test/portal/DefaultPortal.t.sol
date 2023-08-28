@@ -50,14 +50,17 @@ contract DefaultPortalTest is Test {
     assertEq(_modules, modules);
   }
 
-  function test_attest(AttestationPayload memory attestationPayload) public {
-    vm.assume(bytes32(attestationPayload.schemaId) != 0);
+  function test_attest() public {
+    // Create attestation payload
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      bytes("subject"),
+      block.timestamp + 1 days,
+      new bytes(1)
+    );
     // Create validation payload
-    bytes[] memory validationPayload = new bytes[](1);
-
-    vm.expectEmit();
-    emit ModulesRunForAttestation();
-    vm.expectEmit();
+    bytes[] memory validationPayload = new bytes[](2);
+    vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
     defaultPortal.attest(attestationPayload, validationPayload);
   }

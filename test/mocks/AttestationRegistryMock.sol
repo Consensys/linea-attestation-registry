@@ -4,6 +4,9 @@ pragma solidity 0.8.21;
 import { Attestation, AttestationPayload } from "../../src/types/Structs.sol";
 
 contract AttestationRegistryMock {
+  bytes32 public _attestationId;
+  uint16 public version;
+
   event AttestationRegistered();
   event BulkAttestationsRegistered();
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
@@ -41,6 +44,14 @@ contract AttestationRegistryMock {
   function revoke(bytes32 attestationId, bytes32 replacedBy) public {
     require(bytes32(attestationId) != 0, "Invalid attestation");
     emit AttestationRevoked(attestationId, replacedBy);
+  }
+
+  function getAttestationId() public view returns (bytes32) {
+    return _attestationId;
+  }
+
+  function getVersionNumber() public view returns (uint16) {
+    return version;
   }
 
   function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) public {

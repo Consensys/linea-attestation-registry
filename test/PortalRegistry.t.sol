@@ -6,7 +6,7 @@ import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
 import { CorrectModule } from "../src/example/CorrectModule.sol";
-import { AttestationPayload, Portal } from "../src/types/Structs.sol";
+import { AttestationPayload, Portal, Attestation } from "../src/types/Structs.sol";
 // solhint-disable-next-line max-line-length
 import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
 import { Router } from "../src/Router.sol";
@@ -191,33 +191,21 @@ contract PortalRegistryTest is Test {
   }
 }
 
-contract ValidPortal is AbstractPortal, IERC165Upgradeable {
+contract ValidPortal is AbstractPortal {
   function test() public {}
 
-  function attest(
-    AttestationPayload memory /*attestationPayload*/,
-    bytes[] memory /*validationPayload*/
-  ) external payable override {}
+  function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
+
+  function _afterAttest(Attestation memory attestation) internal override {}
+
+  function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
+
+  function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal override {}
 
   function bulkAttest(
     AttestationPayload[] memory /*attestationsPayloads*/,
     bytes[][] memory /*validationPayloads*/
   ) external payable override {}
-
-  function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) external override {}
-
-  function bulkRevoke(bytes32[] memory /*attestationIds*/, bytes32[] memory /*replacedBy*/) external override {}
-
-  function getModules() external pure override returns (address[] memory) {
-    address[] memory modules = new address[](2);
-    modules[0] = address(0);
-    modules[1] = address(1);
-    return modules;
-  }
-
-  function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
-  }
 }
 
 contract InvalidPortal {

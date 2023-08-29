@@ -20,4 +20,9 @@ contract DefaultPortal is AbstractPortal {
   function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
 
   function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal override {}
+
+  function _onBulkAttest(
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) internal override {}
 }

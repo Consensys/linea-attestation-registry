@@ -12,7 +12,6 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   address[] public modules;
   ModuleRegistry public moduleRegistry;
   AttestationRegistry public attestationRegistry;
-
   error ModulePayloadMismatch();
 
   /**
@@ -49,6 +48,22 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   }
 
   /**
+   * @notice Bulk attest the schema with payloads to attest and validation payloads
+   * @param attestationsPayloads the payloads to attest
+   * @param validationPayloads the payloads to validate in order to issue the attestations
+   */
+  function bulkAttest(
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) external payable {
+    _onBulkAttest(attestationsPayloads, validationPayloads);
+    // Run all modules for all payloads
+    moduleRegistry.bulkRunModules(modules, validationPayloads);
+    // Register attestations using the attestation registry
+    attestationRegistry.bulkAttest(attestationsPayloads);
+  }
+
+  /**
    * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
    * @param attestationIds the attestations IDs to revoke
    * @param replacedBy the replacing attestations IDs (leave an ID empty to just revoke)
@@ -76,6 +91,11 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   function _afterAttest(Attestation memory attestation) internal virtual;
 
   function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal virtual;
+
+  function _onBulkAttest(
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) internal virtual;
 
   function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal virtual;
 }

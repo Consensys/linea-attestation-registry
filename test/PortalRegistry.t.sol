@@ -192,6 +192,8 @@ contract PortalRegistryTest is Test {
 }
 
 contract ValidPortal is AbstractPortal {
+  function test() public {}
+
   function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
 
   function _afterAttest(Attestation memory attestation) internal override {}
@@ -199,6 +201,11 @@ contract ValidPortal is AbstractPortal {
   function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
 
   function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal override {}
+
+  function _onBulkAttest(
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) internal override {}
 }
 
 contract InvalidPortal {

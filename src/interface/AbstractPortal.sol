@@ -12,6 +12,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   address[] public modules;
   ModuleRegistry public moduleRegistry;
   AttestationRegistry public attestationRegistry;
+
   error ModulePayloadMismatch();
 
   /**
@@ -32,7 +33,10 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
    * @notice attest the schema with given attestationPayload and validationPayload
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
    */
-  function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayload) external payable {
+  function attest(
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayload
+  ) public payable virtual {
     if (modules.length != 0) _runModules(validationPayload);
 
     _beforeAttest(attestationPayload, msg.value);
@@ -40,11 +44,6 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
     Attestation memory attestation = attestationRegistry.attest(attestationPayload);
 
     _afterAttest(attestation);
-  }
-
-  function revoke(bytes32 attestationId, bytes32 replacedBy) external {
-    _onRevoke(attestationId, replacedBy);
-    attestationRegistry.revoke(attestationId, replacedBy);
   }
 
   /**
@@ -55,7 +54,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   function bulkAttest(
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) external payable {
+  ) public payable {
     _onBulkAttest(attestationsPayloads, validationPayloads);
     // Run all modules for all payloads
     moduleRegistry.bulkRunModules(modules, validationPayloads);
@@ -64,11 +63,21 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   }
 
   /**
+   * @notice Revokes the attestation for the given identifier and can replace it by a new one
+   * @param attestationId the attestation ID to revoke
+   * @param replacedBy the replacing attestation ID (leave to just revoke)
+   */
+  function revoke(bytes32 attestationId, bytes32 replacedBy) external virtual {
+    _onRevoke(attestationId, replacedBy);
+    attestationRegistry.revoke(attestationId, replacedBy);
+  }
+
+  /**
    * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
    * @param attestationIds the attestations IDs to revoke
    * @param replacedBy the replacing attestations IDs (leave an ID empty to just revoke)
    */
-  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external {
+  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external virtual {
     _onBulkRevoke(attestationIds, replacedBy);
     attestationRegistry.bulkRevoke(attestationIds, replacedBy);
   }

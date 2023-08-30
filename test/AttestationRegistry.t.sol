@@ -19,7 +19,7 @@ contract AttestationRegistryTest is Test {
   address public schemaRegistryAddress;
 
   event Initialized(uint8 version);
-  event AttestationRegistered(bytes32 indexed attestationId, Attestation attestation);
+  event AttestationRegistered(Attestation attestation);
   event BulkAttestationsRegistered(Attestation[] attestations);
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
   event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
@@ -68,13 +68,11 @@ contract AttestationRegistryTest is Test {
   function test_attest(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);
-
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
     attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
-
     Attestation memory attestation = _createAttestation(attestationPayload, 1);
     vm.expectEmit(true, true, true, true);
-    emit AttestationRegistered(attestation.attestationId, attestation);
+    emit AttestationRegistered(attestation);
     vm.prank(portal);
     attestationRegistry.attest(attestationPayload);
 
@@ -159,10 +157,10 @@ contract AttestationRegistryTest is Test {
     vm.startPrank(portal);
     attestationRegistry.attest(attestationPayload);
     // Assert initial state is a valid attestation
-    bytes32 attestationId = bytes32(abi.encode(1));
+    bytes32 attestationId = bytes32(keccak256(abi.encode((1))));
     Attestation memory registeredAttestation = attestationRegistry.getAttestation(attestationId);
 
-    assertEq(registeredAttestation.attestationId, bytes32(abi.encode(1)));
+    assertEq(registeredAttestation.attestationId, bytes32(keccak256(abi.encode((1)))));
     assertFalse(registeredAttestation.revoked);
     assertEq(registeredAttestation.revocationDate, 0);
     assertEq(registeredAttestation.replacedBy, bytes32(0));
@@ -175,7 +173,7 @@ contract AttestationRegistryTest is Test {
     vm.stopPrank();
 
     // Assert final state is a revoked attestation
-    Attestation memory revokedAttestation = attestationRegistry.getAttestation(bytes32(abi.encode(1)));
+    Attestation memory revokedAttestation = attestationRegistry.getAttestation(bytes32(keccak256(abi.encode((1)))));
     assertTrue(revokedAttestation.revoked);
     assertEq(revokedAttestation.revocationDate, block.timestamp);
     assertEq(revokedAttestation.replacedBy, bytes32(0));
@@ -191,18 +189,18 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.attest(attestationPayload);
 
     vm.expectEmit();
-    emit AttestationRevoked(bytes32(abi.encode(1)), bytes32(0));
-    attestationRegistry.revoke(bytes32(abi.encode(1)), "");
+    emit AttestationRevoked(bytes32(keccak256(abi.encode((1)))), bytes32(0));
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
 
     vm.expectRevert(AttestationRegistry.AlreadyRevoked.selector);
-    attestationRegistry.revoke(bytes32(abi.encode(1)), "");
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
 
     vm.stopPrank();
   }
 
   function test_revoke_AttestationNotAttested() public {
     vm.expectRevert(AttestationRegistry.AttestationNotAttested.selector);
-    attestationRegistry.revoke(bytes32(abi.encode(1)), "");
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
   }
 
   function test_revoke_OnlyAttestingPortal(AttestationPayload memory attestationPayload) public {
@@ -217,7 +215,7 @@ contract AttestationRegistryTest is Test {
 
     vm.expectRevert(AttestationRegistry.OnlyAttestingPortal.selector);
     vm.prank(user);
-    attestationRegistry.revoke(bytes32(abi.encode(1)), "");
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
   }
 
   function test_revoke_AttestationNotRevocable(AttestationPayload memory attestationPayload) public {
@@ -241,7 +239,7 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.attest(attestationPayload);
 
     vm.expectRevert(AttestationRegistry.AttestationNotRevocable.selector);
-    attestationRegistry.revoke(bytes32(abi.encode(1)), "");
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
 
     vm.stopPrank();
   }
@@ -257,7 +255,7 @@ contract AttestationRegistryTest is Test {
     vm.stopPrank();
     vm.startPrank(portal, user);
     vm.expectRevert(AttestationRegistry.OnlyAttester.selector);
-    attestationRegistry.revoke(bytes32(abi.encode(1)), "");
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), "");
 
     vm.stopPrank();
   }
@@ -281,16 +279,16 @@ contract AttestationRegistryTest is Test {
 
     // Do revert and replace the attestation
     vm.expectEmit(true, true, true, true);
-    emit AttestationRevoked(bytes32(abi.encode(1)), bytes32(abi.encode(2)));
-    attestationRegistry.revoke(bytes32(abi.encode(1)), bytes32(abi.encode(2)));
+    emit AttestationRevoked(bytes32(keccak256(abi.encode((1)))), bytes32(keccak256(abi.encode((2)))));
+    attestationRegistry.revoke(bytes32(keccak256(abi.encode((1)))), bytes32(keccak256(abi.encode((2)))));
 
     vm.stopPrank();
 
     // Assert final state is a revoked and replaced attestation
-    Attestation memory revokedAttestation = attestationRegistry.getAttestation(bytes32(abi.encode(1)));
+    Attestation memory revokedAttestation = attestationRegistry.getAttestation(bytes32(keccak256(abi.encode((1)))));
     assertTrue(revokedAttestation.revoked);
     assertEq(revokedAttestation.revocationDate, block.timestamp);
-    assertEq(revokedAttestation.replacedBy, bytes32(abi.encode(2)));
+    assertEq(revokedAttestation.replacedBy, bytes32(keccak256(abi.encode((2)))));
   }
 
   function test_bulkRevoke(AttestationPayload[3] memory attestationPayloads) public {
@@ -314,9 +312,9 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.attest(attestationPayloads[1]);
     attestationRegistry.attest(attestationPayloads[2]);
 
-    bytes32 attestationId1 = bytes32(abi.encode(1));
-    bytes32 attestationId2 = bytes32(abi.encode(2));
-    bytes32 attestationId3 = bytes32(abi.encode(3));
+    bytes32 attestationId1 = bytes32(keccak256(abi.encode((1))));
+    bytes32 attestationId2 = bytes32(keccak256(abi.encode((2))));
+    bytes32 attestationId3 = bytes32(keccak256(abi.encode((3))));
 
     // Assert initial state is a valid attestation
     Attestation memory registeredAttestation1 = attestationRegistry.getAttestation(attestationId1);
@@ -362,8 +360,8 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_bulkRevoke_InvalidParams() public {
-    bytes32 attestationId1 = bytes32(abi.encode(1));
-    bytes32 attestationId2 = bytes32(abi.encode(2));
+    bytes32 attestationId1 = bytes32(keccak256(abi.encode((1))));
+    bytes32 attestationId2 = bytes32(keccak256(abi.encode((2))));
 
     bytes32[] memory attestationsToRevoke = new bytes32[](2);
     attestationsToRevoke[0] = attestationId1;
@@ -391,7 +389,7 @@ contract AttestationRegistryTest is Test {
   function test_isRegistered(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);
-    bool isRegistered = attestationRegistry.isRegistered(bytes32(abi.encode(1)));
+    bool isRegistered = attestationRegistry.isRegistered(bytes32(keccak256(abi.encode((1)))));
     assertFalse(isRegistered);
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
     attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
@@ -423,7 +421,7 @@ contract AttestationRegistryTest is Test {
 
   function test_getAttestation_AttestationNotAttested() public {
     vm.expectRevert(AttestationRegistry.AttestationNotAttested.selector);
-    attestationRegistry.getAttestation(bytes32(abi.encode(1)));
+    attestationRegistry.getAttestation(bytes32(keccak256(abi.encode((1)))));
   }
 
   function test_incrementVersionNumber() public {
@@ -472,7 +470,7 @@ contract AttestationRegistryTest is Test {
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
     schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
     Attestation memory attestation = Attestation(
-      bytes32(abi.encode(id)),
+      bytes32(keccak256(abi.encode((id)))),
       attestationPayload.schemaId,
       tx.origin,
       portal,

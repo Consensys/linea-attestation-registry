@@ -36,7 +36,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   function attest(
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayload
-  ) public payable virtual returns (bytes32) {
+  ) public payable virtual {
     if (modules.length != 0) _runModules(validationPayload);
 
     _beforeAttest(attestationPayload, msg.value);
@@ -44,8 +44,6 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
     Attestation memory attestation = attestationRegistry.attest(attestationPayload);
 
     _afterAttest(attestation);
-
-    return attestation.attestationId;
   }
 
   /**

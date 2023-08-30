@@ -17,7 +17,7 @@ contract AttestationRegistryMock {
   function attest(AttestationPayload calldata attestationPayload) public returns (Attestation memory) {
     require(bytes32(attestationPayload.schemaId) != 0 && tx.origin != address(0), "Invalid attestation payload");
     Attestation memory attestation = Attestation(
-      bytes32(abi.encode(1)),
+      bytes32(keccak256(abi.encode((1)))),
       attestationPayload.schemaId,
       tx.origin,
       msg.sender,

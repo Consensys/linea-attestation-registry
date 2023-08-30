@@ -44,7 +44,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   error BulkRevocationInvalidParams();
 
   /// @notice Event emitted when an attestation is registered
-  event AttestationRegistered(Attestation attestation);
+  event AttestationRegistered(bytes32 indexed attestationId, Attestation attestation);
   /// @notice Event emitted when a list of attestations is registered
   event BulkAttestationsRegistered(Attestation[] attestations);
   /// @notice Event emitted when an attestation is revoked
@@ -104,7 +104,7 @@ contract AttestationRegistry is OwnableUpgradeable {
     attestationIdCounter++;
     // Create attestation
     Attestation memory attestation = Attestation(
-      bytes32(keccak256(abi.encode((attestationIdCounter)))),
+      bytes32(abi.encode(attestationIdCounter)),
       attestationPayload.schemaId,
       tx.origin,
       msg.sender,
@@ -118,7 +118,7 @@ contract AttestationRegistry is OwnableUpgradeable {
       attestationPayload.attestationData
     );
     attestations[attestation.attestationId] = attestation;
-    emit AttestationRegistered(attestation);
+    emit AttestationRegistered(attestation.attestationId, attestation);
     return attestation;
   }
 

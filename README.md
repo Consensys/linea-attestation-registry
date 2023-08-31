@@ -1,4 +1,4 @@
-## Linea Attestation Registry
+## Verax (Linea Attestation Registry)
 
 **Linea Attestation Registry is a set of contracts that allows anyone to read and write attestations of any type and any
 subject.**
@@ -9,10 +9,10 @@ subject.**
 
 Foundryup is the Foundry toolchain installer. Open your terminal and run the following command:
 
-curl -L https://foundry.paradigm.xyz | bash This will install Foundryup, then simply follow the instructions on-screen,
-which will make the foundryup command available in your CLI.
+`curl -L https://foundry.paradigm.xyz | bash` This will install Foundryup, then simply follow the instructions
+on-screen, which will make the foundryup command available in your CLI.
 
-Running foundryup by itself will install the latest (nightly) precompiled binaries: forge, cast, anvil, and chisel. See
+Running foundryup by itself will install the latest (nightly) precompiled binaries: forge, cast, anvil and chisel. See
 foundryup --help for more options, like installing from a specific version or commit.
 
 ℹ️ Note
@@ -53,12 +53,12 @@ Ran 1 test suites: 2 tests passed, 0 failed, 0 skipped (2 total tests)
 ## Deployment - using Anvil
 
 Anvil is a local testnet node shipped with Foundry. You can use it for testing your contracts from frontends or for
-interacting over RPC. Anvil is part of the Foundry suite and is installed alongside forge, cast, and chisel.
+interacting over RPC. Anvil is part of the Foundry suite and is installed alongside forge, cast and chisel.
 
-**Step 1 : Run local node using Anvil**
+**Step 1 : Run a local node using Anvil**
 
-To run local node, simply type anvil. You should see a list of accounts and private keys available for use, as well as
-the address and port that the node is listening on.
+To run a local node, simply type anvil. You should see a list of accounts and private keys available for use, as well as
+the address and port the node is listening on.
 
 ```
 $ anvil
@@ -162,15 +162,48 @@ Deployed to: 0x5FbDB2315678afecb367f032d93F642f64180aa3
 Transaction hash: 0x15b25752da1dfd458b92069248825ce959f5be104f974d62b4ae95050710325d
 ```
 
-## Deployment - on the Linea Goerli testnet
+## Verax contracts deployment
+
+### On the Linea Goerli testnet:
 
 1. Copy the `.env.example` file to a `.env` file
 2. Fill it with your Infura key
 3. Add your private key
-4. To verify your instance of the contract on Etherscan, also add your Etherscan API key
-5. Run `pnpm run deploy:ContractName:goerli`, replacing `ContractName` with the contract you want to deploy
+4. To verify the contracts on Etherscan, also add your Etherscan API key
+5. Deploy every contract via the `pnpm run deploy:all:goerli` command
+6. Note down the summarized addresses (proxies), and the total logs can be of interest too
+7. Gather the first list of issuers addresses
+8. Set the issuers via the PortalRegistry’s `setIssuers` method
+9. Deploy an instance of DefaultPortal via the PortalRegistry’s `deployDefaultPortal` method and note down its address
+10. Verify this contract via `npx hardhat verify --network linea-goerli ADDRESS`
+11. _Optional_: Deploy some valid modules via the `pnpm run deploy:CorrectModule:goerli` command and note down their
+    addresses
+12. _Optional_: Deploy an invalid module via the `pnpm run deploy:IncorrectModule:goerli` command and note down its
+    address
 
-## Upgrade - on the Linea Goerli testnet
+### On the Linea mainnet:
+
+1. Copy the `.env.example` file to a `.env` file
+2. Fill it with your Infura key
+3. Add your private key
+4. To verify the contracts on Etherscan, also add your Etherscan API key
+5. Deploy every contract via the `pnpm run deploy:all` command
+6. Note down the summarized addresses (proxies), and the total logs can be of interest too
+7. Gather the first list of issuers addresses
+8. Set the issuers via the PortalRegistry’s `setIssuers` method
+9. Deploy an instance of DefaultPortal via the PortalRegistry’s `deployDefaultPortal` method and note down its address
+10. Verify this contract via `npx hardhat verify --network linea ADDRESS`
+11. _Optional_: Deploy some valid modules via the `pnpm run deploy:CorrectModule` command and note down their addresses
+12. _Optional_: Deploy an invalid module via the `pnpm run deploy:IncorrectModule` command and note down its address
+
+## Verax contract upgrade
+
+### On the Linea Goerli testnet:
 
 1. Check your `.env` file contains the address of the proxy for the contract you want to upgrade
 2. Run `pnpm run upgrade:ContractName:goerli`, replacing `ContractName` with the contract you want to upgrade
+
+### On the Linea mainnet:
+
+1. Check your `.env` file contains the address of the proxy for the contract you want to upgrade
+2. Run `pnpm run upgrade:ContractName`, replacing `ContractName` with the contract you want to upgrade

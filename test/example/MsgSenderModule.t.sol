@@ -43,7 +43,7 @@ contract MsgSenderModuleTest is Test {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
     bytes[] memory validationPayload = new bytes[](0);
     address incorrectMsgSender = address(1);
-    vm.expectRevert("Incorrect message sender");
+    vm.expectRevert(MsgSenderModule.WrongTransactionSender.selector);
     msgSenderModule.run(validationPayload, incorrectMsgSender);
   }
 

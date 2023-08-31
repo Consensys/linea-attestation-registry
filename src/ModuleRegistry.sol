@@ -134,7 +134,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     // For each module check if it is registered and call run method
     for (uint i = 0; i < modulesAddresses.length; i++) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
-      AbstractModule(modulesAddresses[i]).run(validationPayload, msg.sender);
+      AbstractModule(modulesAddresses[i]).run(validationPayload, tx.origin);
     }
   }
 

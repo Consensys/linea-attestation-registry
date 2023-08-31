@@ -149,6 +149,7 @@ contract PortalRegistry is OwnableUpgradeable {
    * @param name the portal name
    * @param description the portal description
    * @param ownerName name of this portal's owner
+   * @return defaultPortalAddress the deployed portal's address
    */
   function deployDefaultPortal(
     address[] calldata modules,
@@ -156,10 +157,11 @@ contract PortalRegistry is OwnableUpgradeable {
     string memory description,
     bool isRevocable,
     string memory ownerName
-  ) external onlyIssuers(msg.sender) {
+  ) external onlyIssuers(msg.sender) returns (address defaultPortalAddress) {
     DefaultPortal defaultPortal = new DefaultPortal();
+    defaultPortalAddress = address(defaultPortal);
     defaultPortal.initialize(modules, router.getModuleRegistry(), router.getAttestationRegistry());
-    register(address(defaultPortal), name, description, isRevocable, ownerName);
+    register(defaultPortalAddress, name, description, isRevocable, ownerName);
   }
 
   /**

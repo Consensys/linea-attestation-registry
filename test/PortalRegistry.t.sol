@@ -160,7 +160,14 @@ contract PortalRegistryTest is Test {
     address[] memory modules = new address[](1);
     modules[0] = address(correctModule);
     vm.prank(user);
-    portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription, true, expectedOwnerName);
+    address defaultPortalAddress = portalRegistry.deployDefaultPortal(
+      modules,
+      expectedName,
+      expectedDescription,
+      true,
+      expectedOwnerName
+    );
+    assertFalse(defaultPortalAddress == address(0));
   }
 
   function test_deployDefaultPortal_OnlyIssuer() public {

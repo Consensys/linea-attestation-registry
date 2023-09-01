@@ -45,8 +45,6 @@ contract AttestationRegistry is OwnableUpgradeable {
 
   /// @notice Event emitted when an attestation is registered
   event AttestationRegistered(bytes32 indexed attestationId);
-  /// @notice Event emitted when a list of attestations is registered
-  event BulkAttestationsRegistered(Attestation[] attestations);
   /// @notice Event emitted when an attestation is revoked
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
   /// @notice Event emitted when a list of attestations is revoked

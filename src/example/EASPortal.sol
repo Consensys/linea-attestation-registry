@@ -14,11 +14,11 @@ contract EASPortal is AbstractPortal {
   // this definition was taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L9
   struct AttestationRequestData {
     address recipient;
-    bytes32 refUID;
     uint64 expirationTime;
-    uint256 value;
     bool revocable;
+    bytes32 refUID;
     bytes data;
+    uint256 value;
   }
 
   // @notice This struct is defined in EAS's contracts' codebase

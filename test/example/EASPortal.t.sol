@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
-import { EASPortal } from "../../src/portal/EASPortal.sol";
+import { EASPortal } from "../../src/example/EASPortal.sol";
 import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 import { CorrectModule } from "../../src/example/CorrectModule.sol";

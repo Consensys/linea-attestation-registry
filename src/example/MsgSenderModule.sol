@@ -5,6 +5,7 @@ import { AbstractModule } from "../interface/AbstractModule.sol";
 // solhint-disable-next-line max-line-length
 import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
 import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
+import { AttestationPayload } from "../types/Structs.sol";
 
 /**
  * @title Msg Sender Module
@@ -29,6 +30,7 @@ contract MsgSenderModule is IERC165Upgradeable, AbstractModule, Initializable {
    * @notice The main method for the module, running the check
    */
   function run(
+    AttestationPayload memory /*_attestationPayload*/,
     bytes[] memory _validationPayload,
     address _txSender
   ) public view override returns (bytes[] memory validationPayload) {

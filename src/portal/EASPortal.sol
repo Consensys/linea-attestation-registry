@@ -8,10 +8,11 @@ import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
 
 /**
  * @title EAS Portal
- * @author Consensys
- * @notice This contract aims to provide a default portal
+ * @notice This is an example of how to maintain interoperability with EAS - https://attest.sh
  */
 contract EASPortal is AbstractPortal {
+  // @notice This struct is defined in EAS's contracts' codebase
+  // this definition was taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L9
   struct AttestationRequestData {
     address recipient;
     uint64 expirationTime;
@@ -21,6 +22,8 @@ contract EASPortal is AbstractPortal {
     uint256 value;
   }
 
+  // @notice This struct is defined in EAS's contracts' codebase
+  // definition taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L19
   struct AttestationRequest {
     bytes32 schema;
     AttestationRequestData data;

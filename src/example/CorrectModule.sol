@@ -9,7 +9,11 @@ import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts
 contract CorrectModule is AbstractModule, IERC165Upgradeable {
   function test() public {}
 
-  function run(bytes[] memory validationPayload, address /*msgSender*/) public pure override returns (bytes[] memory) {
+  function run(
+    AttestationPayload memory /*attestationPayload*/,
+    bytes[] memory validationPayload,
+    address /*txSender*/
+  ) public pure override returns (bytes[] memory) {
     return (validationPayload);
   }
 

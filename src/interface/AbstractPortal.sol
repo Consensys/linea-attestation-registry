@@ -36,14 +36,16 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   function attest(
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayload
-  ) public payable virtual {
-    if (modules.length != 0) _runModules(validationPayload);
+  ) public payable virtual returns (bytes32) {
+    if (modules.length != 0) _runModules(attestationPayload, validationPayload);
 
     _beforeAttest(attestationPayload, msg.value);
 
     Attestation memory attestation = attestationRegistry.attest(attestationPayload);
 
     _afterAttest(attestation);
+
+    return attestation.attestationId;
   }
 
   /**
@@ -57,7 +59,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   ) public payable {
     _onBulkAttest(attestationsPayloads, validationPayloads);
     // Run all modules for all payloads
-    moduleRegistry.bulkRunModules(modules, validationPayloads);
+    moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
     // Register attestations using the attestation registry
     attestationRegistry.bulkAttest(attestationsPayloads);
   }
@@ -90,9 +92,9 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
     return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 
-  function _runModules(bytes[] memory validationPayload) internal {
+  function _runModules(AttestationPayload memory attestationPayload, bytes[] memory validationPayload) internal {
     if (modules.length != validationPayload.length) revert ModulePayloadMismatch();
-    moduleRegistry.runModules(modules, validationPayload);
+    moduleRegistry.runModules(modules, attestationPayload, validationPayload);
   }
 
   function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal virtual;

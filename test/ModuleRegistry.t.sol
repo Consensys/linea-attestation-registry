@@ -19,6 +19,7 @@ contract ModuleRegistryTest is Test {
   string private expectedDescription = "Description";
   address private expectedAddress = address(new CorrectModule());
   address private user = makeAddr("user");
+  AttestationPayload private attestationPayload;
 
   event ModuleRegistered(string name, string description, address moduleAddress);
   event Initialized(uint8 version);
@@ -34,6 +35,13 @@ contract ModuleRegistryTest is Test {
     portalRegistryAddress = address(portalRegistryMock);
     router.updatePortalRegistry(portalRegistryAddress);
     portalRegistryMock.setIssuer(user);
+
+    attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      bytes("subject"),
+      uint64(block.timestamp + 1 days),
+      new bytes(1)
+    );
   }
 
   function testAlreadyInitialized() public {
@@ -101,7 +109,7 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.register(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
   }
 
-  function testCannotRegisterModuleWichHasNotImplementedAbstractModule() public {
+  function testCannotRegisterModuleWhichHasNotImplementedAbstractModule() public {
     IncorrectModule incorrectModule = new IncorrectModule();
     vm.expectRevert(ModuleRegistry.ModuleInvalid.selector);
     vm.prank(user);
@@ -138,7 +146,7 @@ contract ModuleRegistryTest is Test {
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](2);
 
-    moduleRegistry.runModules(moduleAddresses, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
   }
 
   function testRunModulesWithIncorrectNumberOfValidationPayload() public {
@@ -155,7 +163,7 @@ contract ModuleRegistryTest is Test {
     bytes[] memory validationPayload = new bytes[](1);
 
     vm.expectRevert(ModuleRegistry.ModuleValidationPayloadMismatch.selector);
-    moduleRegistry.runModules(moduleAddresses, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
   }
 
   function testRunModulesWithoutSendingModuleAddresses() public {
@@ -165,7 +173,7 @@ contract ModuleRegistryTest is Test {
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](0);
 
-    moduleRegistry.runModules(moduleAddresses, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
   }
 
   function testRunModulesForUnregisteredModules() public {
@@ -179,7 +187,7 @@ contract ModuleRegistryTest is Test {
 
     // execute runModules
     vm.expectRevert(ModuleRegistry.ModuleNotRegistered.selector);
-    moduleRegistry.runModules(moduleAddresses, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
   }
 
   function testBulkRunModules() public {
@@ -199,7 +207,11 @@ contract ModuleRegistryTest is Test {
     validationPayloads[0] = validationPayload1;
     validationPayloads[1] = validationPayload2;
 
-    moduleRegistry.bulkRunModules(moduleAddresses, validationPayloads);
+    AttestationPayload[] memory attestationPayloads = new AttestationPayload[](2);
+    attestationPayloads[0] = attestationPayload;
+    attestationPayloads[1] = attestationPayload;
+
+    moduleRegistry.bulkRunModules(moduleAddresses, attestationPayloads, validationPayloads);
     vm.stopPrank();
   }
 

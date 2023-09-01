@@ -122,10 +122,15 @@ contract ModuleRegistry is OwnableUpgradeable {
 
   /** Execute the run method for all given Modules that are registered
    * @param modulesAddresses the addresses of the registered modules
+   * @param attestationPayload the payload to attest
    * @param validationPayload the payloads to check for each module
    * @dev check if modules are registered and execute run method for each module
    */
-  function runModules(address[] memory modulesAddresses, bytes[] memory validationPayload) public {
+  function runModules(
+    address[] memory modulesAddresses,
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayload
+  ) public {
     // If no modules provided, bypass module validation
     if (modulesAddresses.length == 0) return;
     // Each module involved must have a corresponding item from the validation payload
@@ -134,18 +139,23 @@ contract ModuleRegistry is OwnableUpgradeable {
     // For each module check if it is registered and call run method
     for (uint i = 0; i < modulesAddresses.length; i++) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
-      AbstractModule(modulesAddresses[i]).run(validationPayload, msg.sender);
+      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayload, tx.origin);
     }
   }
 
   /** Execute the run method for all given Modules that are registered
    * @param modulesAddresses the addresses of the registered modules
+   * @param attestationsPayloads the payloads to attest
    * @param validationPayloads the payloads to check for each module
    * @dev check if modules are registered and execute run method for each module
    */
-  function bulkRunModules(address[] memory modulesAddresses, bytes[][] memory validationPayloads) public {
+  function bulkRunModules(
+    address[] memory modulesAddresses,
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) public {
     for (uint i = 0; i < modulesAddresses.length; i++) {
-      runModules(modulesAddresses, validationPayloads[i]);
+      runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i]);
     }
   }
 

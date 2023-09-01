@@ -12,6 +12,7 @@ import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts
 contract MsgSenderModuleTest is Test {
   MsgSenderModule private msgSenderModule;
   address private expectedMsgSender = 0x809e815596AbEB3764aBf81BE2DC39fBBAcc9949;
+  AttestationPayload private attestationPayload;
 
   event ModuleRegistered(string name, string description, address moduleAddress);
   event Initialized(uint8 version);
@@ -19,6 +20,13 @@ contract MsgSenderModuleTest is Test {
   function setUp() public {
     msgSenderModule = new MsgSenderModule();
     msgSenderModule.initialize(expectedMsgSender);
+
+    attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      bytes("subject"),
+      uint64(block.timestamp + 1 days),
+      new bytes(1)
+    );
   }
 
   function testInitialize() public {
@@ -34,7 +42,7 @@ contract MsgSenderModuleTest is Test {
     bytes[] memory validationPayload = new bytes[](0);
     address msgSender = expectedMsgSender;
 
-    bytes[] memory _validationPayload = msgSenderModule.run(validationPayload, msgSender);
+    bytes[] memory _validationPayload = msgSenderModule.run(attestationPayload, validationPayload, msgSender);
 
     assertBytesArrayEq(_validationPayload, validationPayload);
   }
@@ -43,8 +51,8 @@ contract MsgSenderModuleTest is Test {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
     bytes[] memory validationPayload = new bytes[](0);
     address incorrectMsgSender = address(1);
-    vm.expectRevert("Incorrect message sender");
-    msgSenderModule.run(validationPayload, incorrectMsgSender);
+    vm.expectRevert(MsgSenderModule.WrongTransactionSender.selector);
+    msgSenderModule.run(attestationPayload, validationPayload, incorrectMsgSender);
   }
 
   function testSupportsInterface() public {

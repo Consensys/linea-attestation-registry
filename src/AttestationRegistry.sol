@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
-import { Attestation, AttestationPayload, Portal } from "./types/Structs.sol";
+import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { IRouter } from "./interface/IRouter.sol";
@@ -16,7 +16,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   IRouter public router;
 
   uint16 private version;
-  uint256 private attestationIdCounter;
+  uint32 private attestationIdCounter;
 
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
@@ -123,7 +123,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationsPayloads the attestations payloads to create attestations and register them
    */
   function bulkAttest(AttestationPayload[] calldata attestationsPayloads) public {
-    for (uint i = 0; i < attestationsPayloads.length; i++) {
+    for (uint256 i = 0; i < attestationsPayloads.length; i++) {
       attest(attestationsPayloads[i]);
     }
   }
@@ -156,7 +156,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external {
     if (attestationIds.length != replacedBy.length) revert BulkRevocationInvalidParams();
 
-    for (uint i = 0; i < attestationIds.length; i++) {
+    for (uint256 i = 0; i < attestationIds.length; i++) {
       revoke(attestationIds[i], replacedBy[i]);
     }
 
@@ -214,7 +214,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @notice Gets the attestation id counter
    * @return The attestationIdCounter
    */
-  function getAttestationIdCounter() public view returns (uint) {
+  function getAttestationIdCounter() public view returns (uint32) {
     return attestationIdCounter;
   }
 }

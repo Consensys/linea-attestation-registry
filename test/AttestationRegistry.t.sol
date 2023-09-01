@@ -7,7 +7,7 @@ import { AttestationRegistry } from "../src/AttestationRegistry.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
-import { Attestation, AttestationPayload, Portal } from "../src/types/Structs.sol";
+import { Attestation, AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 
 contract AttestationRegistryTest is Test {
@@ -444,7 +444,7 @@ contract AttestationRegistryTest is Test {
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
     attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
     schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
-    uint version = attestationRegistry.getAttestationIdCounter();
+    uint32 version = attestationRegistry.getAttestationIdCounter();
 
     assertEq(version, 0);
 

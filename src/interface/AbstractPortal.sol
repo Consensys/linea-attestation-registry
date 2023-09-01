@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
-import { Attestation, AttestationPayload } from "../types/Structs.sol";
+import { AttestationPayload } from "../types/Structs.sol";
 // solhint-disable-next-line max-line-length
 import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
 import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";

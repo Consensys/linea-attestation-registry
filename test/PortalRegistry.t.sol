@@ -6,9 +6,7 @@ import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
 import { CorrectModule } from "../src/example/CorrectModule.sol";
-import { AttestationPayload, Portal, Attestation } from "../src/types/Structs.sol";
-// solhint-disable-next-line max-line-length
-import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
+import { AttestationPayload, Portal } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";

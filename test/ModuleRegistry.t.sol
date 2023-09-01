@@ -6,7 +6,6 @@ import { Test } from "forge-std/Test.sol";
 import { ModuleRegistry } from "../src/ModuleRegistry.sol";
 import { CorrectModule } from "../src/example/CorrectModule.sol";
 import { IncorrectModule } from "../src/example/IncorrectModule.sol";
-import { AbstractModule } from "../src/interface/AbstractModule.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";

@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AttestationRegistry } from "../AttestationRegistry.sol";
-import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { AbstractPortal } from "../interface/AbstractPortal.sol";
-import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
+import { AttestationPayload } from "../types/Structs.sol";
 
 /**
  * @title EAS Portal

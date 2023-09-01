@@ -5,8 +5,6 @@ import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { EASPortal } from "../../src/example/EASPortal.sol";
 import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
-import { AttestationPayload } from "../../src/types/Structs.sol";
-import { CorrectModule } from "../../src/example/CorrectModule.sol";
 import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../mocks/ModuleRegistryMock.sol";
 import { ERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";

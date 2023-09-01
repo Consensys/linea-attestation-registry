@@ -20,9 +20,9 @@ contract ModuleRegistryMock {
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
   ) public {
-    require(modulesAddresses.length >= 0, "Invalid input for modulesAddresses");
-    require(attestationsPayloads.length >= 0, "Invalid input for attestationsPayloads");
-    require(validationPayloads.length >= 0, "Invalid input for validationPayloads");
+    require(modulesAddresses.length >= 0, "Invalid modulesAddresses");
+    require(attestationsPayloads.length >= 0, "Invalid attestationsPayloads");
+    require(validationPayloads.length >= 0, "Invalid validationPayloads");
     emit ModulesBulkRunForAttestation();
   }
 }

@@ -7,7 +7,7 @@ import { AttestationRegistry } from "../src/AttestationRegistry.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
-import { Attestation, AttestationPayload, Portal } from "../src/types/Structs.sol";
+import { Attestation, AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 
 contract AttestationRegistryTest is Test {
@@ -19,7 +19,7 @@ contract AttestationRegistryTest is Test {
   address public schemaRegistryAddress;
 
   event Initialized(uint8 version);
-  event AttestationRegistered(bytes32 indexed attestationId, Attestation attestation);
+  event AttestationRegistered(bytes32 indexed attestationId);
   event BulkAttestationsRegistered(Attestation[] attestations);
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
   event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
@@ -74,7 +74,7 @@ contract AttestationRegistryTest is Test {
 
     Attestation memory attestation = _createAttestation(attestationPayload, 1);
     vm.expectEmit(true, true, true, true);
-    emit AttestationRegistered(attestation.attestationId, attestation);
+    emit AttestationRegistered(attestation.attestationId);
     vm.prank(portal);
     attestationRegistry.attest(attestationPayload);
 
@@ -141,13 +141,12 @@ contract AttestationRegistryTest is Test {
     payloadsToAttest[1] = attestationsPayloads[1];
 
     vm.expectEmit(true, true, true, true);
-
-    emit BulkAttestationsRegistered(attestations);
+    emit AttestationRegistered(attestations[0].attestationId);
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered(attestations[1].attestationId);
     vm.prank(portal);
 
-    Attestation[] memory registeredAttestations = attestationRegistry.bulkAttest(payloadsToAttest);
-    _assertAttestation(attestation1, registeredAttestations[0]);
-    _assertAttestation(attestation2, registeredAttestations[1]);
+    attestationRegistry.bulkAttest(payloadsToAttest);
   }
 
   function test_revoke(AttestationPayload memory attestationPayload) public {
@@ -445,7 +444,7 @@ contract AttestationRegistryTest is Test {
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
     attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
     schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
-    uint version = attestationRegistry.getAttestationIdCounter();
+    uint32 version = attestationRegistry.getAttestationIdCounter();
 
     assertEq(version, 0);
 
@@ -474,15 +473,15 @@ contract AttestationRegistryTest is Test {
     Attestation memory attestation = Attestation(
       bytes32(abi.encode(id)),
       attestationPayload.schemaId,
+      bytes32(0),
       tx.origin,
       portal,
-      attestationPayload.subject,
-      block.timestamp,
+      uint64(block.timestamp),
       attestationPayload.expirationDate,
-      false,
       0,
-      bytes32(0),
       versionNumber,
+      false,
+      attestationPayload.subject,
       attestationPayload.attestationData
     );
     return attestation;

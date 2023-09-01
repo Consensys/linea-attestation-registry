@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-// solhint-disable-next-line max-line-length
-import { AttestationRegistry } from "../AttestationRegistry.sol";
-import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { AbstractPortal } from "../interface/AbstractPortal.sol";
-import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
+import { AttestationPayload } from "../types/Structs.sol";
 
 /**
  * @title Default Portal
@@ -15,7 +12,7 @@ import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
 contract DefaultPortal is AbstractPortal {
   function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
 
-  function _afterAttest(Attestation memory attestation) internal override {}
+  function _afterAttest() internal override {}
 
   function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
 

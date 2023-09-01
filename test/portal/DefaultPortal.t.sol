@@ -60,8 +60,8 @@ contract DefaultPortalTest is Test {
     // Create attestation payload
     AttestationPayload memory attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
       bytes("subject"),
-      block.timestamp + 1 days,
       new bytes(1)
     );
     // Create validation payload

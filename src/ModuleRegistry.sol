@@ -115,7 +115,7 @@ contract ModuleRegistry is OwnableUpgradeable {
       revert ModuleAlreadyExists();
     }
 
-    modules[moduleAddress] = Module(name, description, moduleAddress);
+    modules[moduleAddress] = Module(moduleAddress, name, description);
     moduleAddresses.push(moduleAddress);
     emit ModuleRegistered(name, description, moduleAddress);
   }
@@ -137,7 +137,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     if (modulesAddresses.length != validationPayload.length) revert ModuleValidationPayloadMismatch();
 
     // For each module check if it is registered and call run method
-    for (uint i = 0; i < modulesAddresses.length; i++) {
+    for (uint32 i = 0; i < modulesAddresses.length; i++) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
       AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayload, tx.origin);
     }
@@ -154,7 +154,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
   ) public {
-    for (uint i = 0; i < modulesAddresses.length; i++) {
+    for (uint32 i = 0; i < modulesAddresses.length; i++) {
       runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i]);
     }
   }

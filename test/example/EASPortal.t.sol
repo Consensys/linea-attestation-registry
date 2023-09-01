@@ -35,11 +35,11 @@ contract EASPortalTest is Test {
     // Create EAS attestation request
     EASPortal.AttestationRequestData memory attestationRequestData = EASPortal.AttestationRequestData(
       makeAddr("recipient"),
-      uint64(block.timestamp + 1 days),
-      false,
       bytes32("refUID"),
-      new bytes(0),
-      uint256(1)
+      uint64(block.timestamp + 1 days),
+      uint256(1),
+      false,
+      new bytes(0)
     );
     EASPortal.AttestationRequest memory attestationRequest = EASPortal.AttestationRequest(
       bytes32(uint256(1)),
@@ -55,11 +55,11 @@ contract EASPortalTest is Test {
     // Create EAS attestation request
     EASPortal.AttestationRequestData memory attestationRequestData = EASPortal.AttestationRequestData(
       makeAddr("recipient"),
-      uint64(block.timestamp + 1 days),
-      false,
       bytes32("refUID"),
-      new bytes(0),
-      uint256(1)
+      uint64(block.timestamp + 1 days),
+      uint256(1),
+      false,
+      new bytes(0)
     );
 
     EASPortal.AttestationRequest[] memory attestationsRequests = new EASPortal.AttestationRequest[](2);

@@ -19,15 +19,15 @@ contract AttestationRegistryMock {
     Attestation memory attestation = Attestation(
       bytes32(abi.encode(1)),
       attestationPayload.schemaId,
+      bytes32(0),
       tx.origin,
       msg.sender,
-      attestationPayload.subject,
-      block.timestamp,
+      uint64(block.timestamp),
       attestationPayload.expirationDate,
-      false,
       0,
-      bytes32(0),
       version,
+      false,
+      attestationPayload.subject,
       attestationPayload.attestationData
     );
     emit AttestationRegistered();

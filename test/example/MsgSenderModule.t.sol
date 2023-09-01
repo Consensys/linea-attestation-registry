@@ -23,8 +23,8 @@ contract MsgSenderModuleTest is Test {
 
     attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
-      bytes("subject"),
       uint64(block.timestamp + 1 days),
+      bytes("subject"),
       new bytes(1)
     );
   }

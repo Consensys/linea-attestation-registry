@@ -95,11 +95,11 @@ contract PortalRegistryTest is Test {
 
     Portal memory expectedPortal = Portal(
       address(validPortal),
-      expectedName,
-      expectedDescription,
+      user,
       new address[](0),
       true,
-      user,
+      expectedName,
+      expectedDescription,
       expectedOwnerName
     );
 
@@ -198,7 +198,7 @@ contract ValidPortal is AbstractPortal {
 
   function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal override {}
 
-  function _afterAttest(Attestation memory attestation) internal override {}
+  function _afterAttest() internal override {}
 
   function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
 

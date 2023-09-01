@@ -16,11 +16,11 @@ contract EASPortal is AbstractPortal {
   // this definition was taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L9
   struct AttestationRequestData {
     address recipient;
-    uint64 expirationTime;
-    bool revocable;
     bytes32 refUID;
-    bytes data;
+    uint64 expirationTime;
     uint256 value;
+    bool revocable;
+    bytes data;
   }
 
   // @notice This struct is defined in EAS's contracts' codebase
@@ -33,7 +33,7 @@ contract EASPortal is AbstractPortal {
 
   function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
 
-  function _afterAttest(Attestation memory attestation) internal override {}
+  function _afterAttest() internal override {}
 
   function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
 
@@ -49,8 +49,8 @@ contract EASPortal is AbstractPortal {
 
     AttestationPayload memory attestationPayload = AttestationPayload(
       attestationRequest.schema,
+      attestationRequest.data.expirationTime,
       abi.encodePacked(attestationRequest.data.recipient),
-      uint256(attestationRequest.data.expirationTime),
       attestationRequest.data.data
     );
 
@@ -61,11 +61,11 @@ contract EASPortal is AbstractPortal {
     AttestationPayload[] memory attestationsPayloads = new AttestationPayload[](attestationsRequests.length);
     bytes[][] memory validationPayloads = new bytes[][](attestationsRequests.length);
 
-    for (uint i = 0; i < attestationsRequests.length; i++) {
+    for (uint256 i = 0; i < attestationsRequests.length; i++) {
       attestationsPayloads[i] = AttestationPayload(
         attestationsRequests[i].schema,
+        attestationsRequests[i].data.expirationTime,
         abi.encodePacked(attestationsRequests[i].data.recipient),
-        uint256(attestationsRequests[i].data.expirationTime),
         attestationsRequests[i].data.data
       );
 

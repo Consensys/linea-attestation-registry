@@ -44,7 +44,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   error BulkRevocationInvalidParams();
 
   /// @notice Event emitted when an attestation is registered
-  event AttestationRegistered(bytes32 indexed attestationId, Attestation attestation);
+  event AttestationRegistered(bytes32 indexed attestationId);
   /// @notice Event emitted when a list of attestations is registered
   event BulkAttestationsRegistered(Attestation[] attestations);
   /// @notice Event emitted when an attestation is revoked
@@ -87,12 +87,9 @@ contract AttestationRegistry is OwnableUpgradeable {
   /**
    * @notice Registers an attestation to the AttestationRegistry
    * @param attestationPayload the attestation payload to create attestation and register it
-   * @return the registered attestation with its metadata
    * @dev This method is only callable by a registered Portal
    */
-  function attest(
-    AttestationPayload calldata attestationPayload
-  ) public onlyPortals(msg.sender) returns (Attestation memory) {
+  function attest(AttestationPayload calldata attestationPayload) public onlyPortals(msg.sender) {
     // Verify the schema id exists
     SchemaRegistry schemaRegistry = SchemaRegistry(router.getSchemaRegistry());
     if (!schemaRegistry.isRegistered(attestationPayload.schemaId)) revert SchemaNotRegistered();
@@ -106,37 +103,29 @@ contract AttestationRegistry is OwnableUpgradeable {
     Attestation memory attestation = Attestation(
       bytes32(abi.encode(attestationIdCounter)),
       attestationPayload.schemaId,
+      bytes32(0),
       tx.origin,
       msg.sender,
-      attestationPayload.subject,
-      block.timestamp,
+      uint64(block.timestamp),
       attestationPayload.expirationDate,
-      false,
       0,
-      bytes32(0),
       version,
+      false,
+      attestationPayload.subject,
       attestationPayload.attestationData
     );
     attestations[attestation.attestationId] = attestation;
-    emit AttestationRegistered(attestation.attestationId, attestation);
-    return attestation;
+    emit AttestationRegistered(attestation.attestationId);
   }
 
   /**
    * @notice Registers attestations to the AttestationRegistry
    * @param attestationsPayloads the attestations payloads to create attestations and register them
-   * @return the registered attestations with their metadata
    */
-  function bulkAttest(AttestationPayload[] calldata attestationsPayloads) public returns (Attestation[] memory) {
-    Attestation[] memory registeredAttestations = new Attestation[](attestationsPayloads.length);
-
+  function bulkAttest(AttestationPayload[] calldata attestationsPayloads) public {
     for (uint i = 0; i < attestationsPayloads.length; i++) {
-      registeredAttestations[i] = attest(attestationsPayloads[i]);
+      attest(attestationsPayloads[i]);
     }
-
-    emit BulkAttestationsRegistered(registeredAttestations);
-
-    return registeredAttestations;
   }
 
   /**
@@ -152,7 +141,7 @@ contract AttestationRegistry is OwnableUpgradeable {
     if (!isRevocable(attestations[attestationId].portal)) revert AttestationNotRevocable();
 
     attestations[attestationId].revoked = true;
-    attestations[attestationId].revocationDate = block.timestamp;
+    attestations[attestationId].revocationDate = uint64(block.timestamp);
 
     if (isRegistered(replacedBy)) attestations[attestationId].replacedBy = replacedBy;
 

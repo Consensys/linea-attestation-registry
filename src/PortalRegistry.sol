@@ -135,7 +135,7 @@ contract PortalRegistry is OwnableUpgradeable {
     address[] memory modules = AbstractPortal(id).getModules();
 
     // Add portal to mapping
-    Portal memory newPortal = Portal(id, name, description, modules, isRevocable, msg.sender, ownerName);
+    Portal memory newPortal = Portal(id, msg.sender, modules, isRevocable, name, description, ownerName);
     portals[id] = newPortal;
     portalAddresses.push(id);
 

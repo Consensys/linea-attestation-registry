@@ -38,8 +38,8 @@ contract ModuleRegistryTest is Test {
 
     attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
-      bytes("subject"),
       uint64(block.timestamp + 1 days),
+      bytes("subject"),
       new bytes(1)
     );
   }
@@ -84,10 +84,10 @@ contract ModuleRegistryTest is Test {
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
 
-    (string memory name, string memory description, address moduleAddress) = moduleRegistry.modules(expectedAddress);
+    (address moduleAddress, string memory name, string memory description) = moduleRegistry.modules(expectedAddress);
+    assertEq(moduleAddress, expectedAddress);
     assertEq(name, expectedName);
     assertEq(description, expectedDescription);
-    assertEq(moduleAddress, expectedAddress);
   }
 
   function testCannotRegisterModuleWithInvalidIssuer() public {

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-// solhint-disable-next-line max-line-length
 import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { AbstractPortal } from "../interface/AbstractPortal.sol";
@@ -13,6 +12,7 @@ import { Attestation, AttestationPayload, Portal } from "../types/Structs.sol";
  */
 contract EASPortal is AbstractPortal {
   // @notice This struct is defined in EAS's contracts' codebase
+  // solhint-disable-next-line max-line-length
   // this definition was taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L9
   struct AttestationRequestData {
     address recipient;
@@ -24,6 +24,7 @@ contract EASPortal is AbstractPortal {
   }
 
   // @notice This struct is defined in EAS's contracts' codebase
+  // solhint-disable-next-line max-line-length
   // definition taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L19
   struct AttestationRequest {
     bytes32 schema;

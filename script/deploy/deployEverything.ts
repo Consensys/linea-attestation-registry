@@ -127,28 +127,12 @@ async function main() {
 
   console.log(`\n----\n`);
 
-  console.log("Deploying EASPortal...");
-  const EASPortal = await ethers.getContractFactory("EASPortal");
-  const easPortal = await EASPortal.deploy();
-  await easPortal.waitForDeployment();
-  const easPortalAddress = await easPortal.getAddress();
-
-  await run("verify:verify", {
-    address: easPortalAddress,
-  });
-
-  console.log(`EASPortal successfully deployed and verified!`);
-  console.log(`EASPortal is at ${easPortalAddress}`);
-
-  console.log(`\n----\n`);
-
   console.log(`** SUMMARY **`);
   console.log(`Router = ${routerProxyAddress}`);
   console.log(`AttestationRegistry = ${attestationRegistryProxyAddress}`);
   console.log(`ModuleRegistry = ${moduleRegistryProxyAddress}`);
   console.log(`PortalRegistry = ${portalRegistryProxyAddress}`);
   console.log(`SchemaRegistry = ${schemaRegistryProxyAddress}`);
-  console.log(`EASPortal = ${easPortalAddress}`);
 
   console.log(`END SCRIPT`);
 }

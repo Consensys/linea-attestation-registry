@@ -344,7 +344,10 @@ contract AttestationRegistryTest is Test {
     replacingAttestations[1] = attestationId3;
 
     vm.expectEmit(true, true, true, true);
-    emit BulkAttestationsRevoked(attestationsToRevoke, replacingAttestations);
+    emit AttestationRevoked(attestationsToRevoke[0], replacingAttestations[0]);
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRevoked(attestationsToRevoke[1], replacingAttestations[1]);
+
     attestationRegistry.bulkRevoke(attestationsToRevoke, replacingAttestations);
     vm.stopPrank();
 

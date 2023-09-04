@@ -47,8 +47,6 @@ contract AttestationRegistry is OwnableUpgradeable {
   event AttestationRegistered(bytes32 indexed attestationId);
   /// @notice Event emitted when an attestation is revoked
   event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
-  /// @notice Event emitted when a list of attestations is revoked
-  event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
   /// @notice Event emitted when the version number is incremented
   event VersionUpdated(uint16 version);
 
@@ -157,8 +155,6 @@ contract AttestationRegistry is OwnableUpgradeable {
     for (uint256 i = 0; i < attestationIds.length; i++) {
       revoke(attestationIds[i], replacedBy[i]);
     }
-
-    emit BulkAttestationsRevoked(attestationIds, replacedBy);
   }
 
   /**

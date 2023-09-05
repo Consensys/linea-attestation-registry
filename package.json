@@ -30,6 +30,7 @@
     "deploy:MsgSenderModule:goerli": "npx hardhat run --network linea-goerli script/deploy/deployMsgSenderModule.ts",
     "deploy:all": "npx hardhat run --network linea script/deploy/deployEverything.ts",
     "deploy:all:goerli": "npx hardhat run --network linea-goerli script/deploy/deployEverything.ts",
+    "deploy:post:goerli": "npx hardhat run --network linea-goerli script/deploy/postDeployment.ts",
     "lint": "pnpm lint:sol && pnpm prettier:check",
     "lint:sol": "pnpm solhint \"{script,src,test}/**/*.sol\"",
     "prepare": "husky install",

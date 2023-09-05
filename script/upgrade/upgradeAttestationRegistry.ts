@@ -7,14 +7,17 @@ async function main() {
   const proxyAddress = process.env.ATTESTATION_REGISTRY_ADDRESS ?? "";
   console.log("Upgrading AttestationRegistry, with proxy at", proxyAddress);
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");
-  await upgrades.upgradeProxy(proxyAddress, AttestationRegistry);
+  const attestationRegistry = await upgrades.upgradeProxy(proxyAddress, AttestationRegistry);
   const implementationAddress = await upgrades.erc1967.getImplementationAddress(proxyAddress);
 
   await run("verify:verify", {
     address: proxyAddress,
   });
 
-  console.log(`AttestationRegistry successfully upgraded and verified!`);
+  await attestationRegistry.incrementVersionNumber();
+  const newVersion = await attestationRegistry.getVersionNumber();
+
+  console.log(`AttestationRegistry successfully upgraded to version ${newVersion} and verified!`);
   console.log(`Proxy is at ${proxyAddress}`);
   console.log(`Implementation is at ${implementationAddress}`);
 }

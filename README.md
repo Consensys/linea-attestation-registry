@@ -237,3 +237,10 @@ Transaction hash: 0x15b25752da1dfd458b92069248825ce959f5be104f974d62b4ae95050710
   [0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083](https://lineascan.build/address/0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083)
 - SchemaRegistry =
   [0x0f95dCec4c7a93F2637eb13b655F2223ea036B59](https://lineascan.build/address/0x0f95dCec4c7a93F2637eb13b655F2223ea036B59)
+
+## Relationship schemas id's
+
+### Testnet & Mainnet
+
+- Relationship schema id = 0x89bd76e17fd84df8e1e448fa1b46dd8d97f7e8e806552b003f8386a5aebcb9f0
+- namedGraphRelationship schema id = 0x5003a7832fa2734780a5bf6a1f3940b84c0c66a398e62dd4e7f183fdbc7da6ee

@@ -12,12 +12,12 @@ async function main() {
       "Relationship", 
       "Creates a named relationship between two attestations", 
       "https://schema.org/Property", 
-      "bytes32 subject, atring predicate, bytes32 object");
+      "bytes32 subject, string predicate, bytes32 object");
   await createSchema(schemaRegistry, 
       "namedGraphRelationship", 
       "Creates a named relationship between two attestations inside a specific named graph", 
       "https://schema.org/Property", 
-      "string namedGraph, bytes32 subject, atring predicate, bytes32 object");
+      "string namedGraph, bytes32 subject, string predicate, bytes32 object");
 }
 
 // We recommend this pattern to be able to use async/await everywhere

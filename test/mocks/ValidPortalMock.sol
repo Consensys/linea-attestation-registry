@@ -1,17 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractPortal } from "../interface/AbstractPortal.sol";
-import { AttestationPayload } from "../types/Structs.sol";
+import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
+import { AttestationPayload } from "../../src/types/Structs.sol";
 
-/**
- * @title Default Portal
- * @author Consensys
- * @notice This contract aims to provide a default portal
- * @dev This Portal does not add any logic to the AbstractPortal
- */
-contract DefaultPortal is AbstractPortal {
-  function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
+contract ValidPortalMock is AbstractPortal {
+  function test() public {}
+
+  function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal override {}
 
   function _afterAttest() internal override {}
 
@@ -23,4 +19,8 @@ contract DefaultPortal is AbstractPortal {
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
   ) internal override {}
+
+  function _getAttester() public view override returns (address) {
+    return msg.sender;
+  }
 }

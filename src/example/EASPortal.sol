@@ -29,6 +29,11 @@ contract EASPortal is AbstractPortal {
     AttestationRequestData data;
   }
 
+  /// @notice Error thrown when trying to revoke an attestation
+  error NoRevocation();
+  /// @notice Error thrown when trying to bulk revoke attestations
+  error NoBulkRevocation();
+
   function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
 
   function _afterAttest() internal override {}
@@ -55,7 +60,7 @@ contract EASPortal is AbstractPortal {
     super.attest(attestationPayload, validationPayload);
   }
 
-  function bulkAttest(AttestationRequest[] memory attestationsRequests) external payable {
+  function bulkAttest(AttestationRequest[] memory attestationsRequests) public payable {
     AttestationPayload[] memory attestationsPayloads = new AttestationPayload[](attestationsRequests.length);
     bytes[][] memory validationPayloads = new bytes[][](attestationsRequests.length);
 
@@ -73,11 +78,15 @@ contract EASPortal is AbstractPortal {
     super.bulkAttest(attestationsPayloads, validationPayloads);
   }
 
-  function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) external pure override {
-    revert("No revoking");
+  function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) public pure override {
+    revert NoRevocation();
   }
 
-  function bulkRevoke(bytes32[] memory /*attestationIds*/, bytes32[] memory /*replacedBy*/) external pure override {
-    revert("No bulk revoking");
+  function bulkRevoke(bytes32[] memory /*attestationIds*/, bytes32[] memory /*replacedBy*/) public pure override {
+    revert NoBulkRevocation();
+  }
+
+  function _getAttester() public view override returns (address) {
+    return msg.sender;
   }
 }

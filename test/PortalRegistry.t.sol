@@ -4,12 +4,13 @@ pragma solidity 0.8.21;
 import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
-import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
 import { CorrectModule } from "../src/example/CorrectModule.sol";
-import { AttestationPayload, Portal } from "../src/types/Structs.sol";
+import { Portal } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
+import { ValidPortalMock } from "./mocks/ValidPortalMock.sol";
+import { InvalidPortalMock } from "./mocks/InvalidPortalMock.sol";
 
 contract PortalRegistryTest is Test {
   address public user = makeAddr("user");
@@ -20,8 +21,8 @@ contract PortalRegistryTest is Test {
   string public expectedName = "Name";
   string public expectedDescription = "Description";
   string public expectedOwnerName = "Owner Name";
-  ValidPortal public validPortal;
-  InvalidPortal public invalidPortal = new InvalidPortal();
+  ValidPortalMock public validPortalMock;
+  InvalidPortalMock public invalidPortalMock = new InvalidPortalMock();
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address portalAddress);
@@ -43,7 +44,7 @@ contract PortalRegistryTest is Test {
     vm.prank(address(0));
     portalRegistry.setIssuer(user);
 
-    validPortal = new ValidPortal();
+    validPortalMock = new ValidPortalMock();
   }
 
   function test_alreadyInitialized() public {
@@ -84,15 +85,15 @@ contract PortalRegistryTest is Test {
 
   function test_register() public {
     vm.expectEmit();
-    emit PortalRegistered(expectedName, expectedDescription, address(validPortal));
+    emit PortalRegistered(expectedName, expectedDescription, address(validPortalMock));
     vm.prank(user);
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true, expectedOwnerName);
+    portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
 
     uint256 portalCount = portalRegistry.getPortalsCount();
     assertEq(portalCount, 1);
 
     Portal memory expectedPortal = Portal(
-      address(validPortal),
+      address(validPortalMock),
       user,
       new address[](0),
       true,
@@ -101,22 +102,22 @@ contract PortalRegistryTest is Test {
       expectedOwnerName
     );
 
-    Portal memory registeredPortal = portalRegistry.getPortalByAddress(address(validPortal));
+    Portal memory registeredPortal = portalRegistry.getPortalByAddress(address(validPortalMock));
     _assertPortal(registeredPortal, expectedPortal);
   }
 
   function test_register_OnlyIssuer() public {
     vm.expectRevert(PortalRegistry.OnlyIssuer.selector);
     vm.prank(makeAddr("InvalidIssuer"));
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true, expectedOwnerName);
+    portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
   }
 
   function test_register_PortalAlreadyExists() public {
     vm.prank(user);
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true, expectedOwnerName);
+    portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
     vm.expectRevert(PortalRegistry.PortalAlreadyExists.selector);
     vm.prank(user);
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true, expectedOwnerName);
+    portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
   }
 
   function test_register_PortalAddressInvalid() public {
@@ -132,25 +133,25 @@ contract PortalRegistryTest is Test {
   function test_register_PortalNameMissing() public {
     vm.expectRevert(PortalRegistry.PortalNameMissing.selector);
     vm.prank(user);
-    portalRegistry.register(address(validPortal), "", expectedDescription, true, expectedOwnerName);
+    portalRegistry.register(address(validPortalMock), "", expectedDescription, true, expectedOwnerName);
   }
 
   function test_register_PortalDescriptionMissing() public {
     vm.expectRevert(PortalRegistry.PortalDescriptionMissing.selector);
     vm.prank(user);
-    portalRegistry.register(address(validPortal), expectedName, "", true, expectedOwnerName);
+    portalRegistry.register(address(validPortalMock), expectedName, "", true, expectedOwnerName);
   }
 
   function test_register_PortalOwnerNameMissing() public {
     vm.expectRevert(PortalRegistry.PortalOwnerNameMissing.selector);
     vm.prank(user);
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true, "");
+    portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, "");
   }
 
   function test_register_PortalInvalid() public {
     vm.expectRevert(PortalRegistry.PortalInvalid.selector);
     vm.prank(user);
-    portalRegistry.register(address(invalidPortal), expectedName, expectedDescription, true, expectedOwnerName);
+    portalRegistry.register(address(invalidPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
   }
 
   function test_deployDefaultPortal() public {
@@ -172,14 +173,14 @@ contract PortalRegistryTest is Test {
 
   function test_getPortals_PortalNotRegistered() public {
     vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
-    portalRegistry.getPortalByAddress(address(validPortal));
+    portalRegistry.getPortalByAddress(address(validPortalMock));
   }
 
   function test_isRegistered() public {
-    assertEq(portalRegistry.isRegistered(address(validPortal)), false);
+    assertEq(portalRegistry.isRegistered(address(validPortalMock)), false);
     vm.prank(user);
-    portalRegistry.register(address(validPortal), expectedName, expectedDescription, true, expectedOwnerName);
-    assertEq(portalRegistry.isRegistered(address(validPortal)), true);
+    portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
+    assertEq(portalRegistry.isRegistered(address(validPortalMock)), true);
   }
 
   function _assertPortal(Portal memory portal1, Portal memory portal2) internal {
@@ -189,25 +190,4 @@ contract PortalRegistryTest is Test {
     assertEq(portal1.ownerAddress, portal2.ownerAddress);
     assertEq(portal1.ownerName, portal2.ownerName);
   }
-}
-
-contract ValidPortal is AbstractPortal {
-  function test() public {}
-
-  function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal override {}
-
-  function _afterAttest() internal override {}
-
-  function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
-
-  function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal override {}
-
-  function _onBulkAttest(
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
-  ) internal override {}
-}
-
-contract InvalidPortal {
-  function test() public {}
 }

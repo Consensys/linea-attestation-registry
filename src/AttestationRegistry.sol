@@ -34,8 +34,6 @@ contract AttestationRegistry is OwnableUpgradeable {
   error AttestationSubjectFieldEmpty();
   /// @notice Error thrown when an attestation data field is empty
   error AttestationDataFieldEmpty();
-  /// @notice Error thrown when an attempt is made to revoke an attestation by someone else than the orignal attester
-  error OnlyAttester();
   /// @notice Error thrown when an attempt is made to revoke an attestation that was already revoked
   error AlreadyRevoked();
   /// @notice Error thrown when an attempt is made to revoke an attestation based on a non-revocable schema
@@ -83,9 +81,10 @@ contract AttestationRegistry is OwnableUpgradeable {
   /**
    * @notice Registers an attestation to the AttestationRegistry
    * @param attestationPayload the attestation payload to create attestation and register it
+   * @param attester the account address issuing the attestation
    * @dev This method is only callable by a registered Portal
    */
-  function attest(AttestationPayload calldata attestationPayload) public onlyPortals(msg.sender) {
+  function attest(AttestationPayload calldata attestationPayload, address attester) public onlyPortals(msg.sender) {
     // Verify the schema id exists
     SchemaRegistry schemaRegistry = SchemaRegistry(router.getSchemaRegistry());
     if (!schemaRegistry.isRegistered(attestationPayload.schemaId)) revert SchemaNotRegistered();
@@ -100,7 +99,7 @@ contract AttestationRegistry is OwnableUpgradeable {
       bytes32(abi.encode(attestationIdCounter)),
       attestationPayload.schemaId,
       bytes32(0),
-      tx.origin,
+      attester,
       msg.sender,
       uint64(block.timestamp),
       attestationPayload.expirationDate,
@@ -118,9 +117,9 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @notice Registers attestations to the AttestationRegistry
    * @param attestationsPayloads the attestations payloads to create attestations and register them
    */
-  function bulkAttest(AttestationPayload[] calldata attestationsPayloads) public {
+  function bulkAttest(AttestationPayload[] calldata attestationsPayloads, address attester) public {
     for (uint256 i = 0; i < attestationsPayloads.length; i++) {
-      attest(attestationsPayloads[i]);
+      attest(attestationsPayloads[i], attester);
     }
   }
 
@@ -133,7 +132,6 @@ contract AttestationRegistry is OwnableUpgradeable {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
     if (attestations[attestationId].revoked) revert AlreadyRevoked();
     if (msg.sender != attestations[attestationId].portal) revert OnlyAttestingPortal();
-    if (tx.origin != attestations[attestationId].attester) revert OnlyAttester();
     if (!isRevocable(attestations[attestationId].portal)) revert AttestationNotRevocable();
 
     attestations[attestationId].revoked = true;

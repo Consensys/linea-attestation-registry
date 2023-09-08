@@ -1,0 +1,21 @@
+---
+name: New version releaser
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    if: github.actor == 'alainncls' || github.actor  == 'fdemiramon' || github.actor  == 'satyajeetkolhapure' || github.actor  == 'orbmis' || github.actor  == '0xEillo'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PROD_RELEASER_GH_TOKEN }}
+
+      - name: "Run release script"
+        run: ./release.sh

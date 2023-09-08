@@ -94,9 +94,10 @@ contract AttestationRegistry is OwnableUpgradeable {
     if (attestationPayload.attestationData.length == 0) revert AttestationDataFieldEmpty();
     // Auto increment attestation counter
     attestationIdCounter++;
+    bytes32 id = bytes32(abi.encode(attestationIdCounter));
     // Create attestation
-    Attestation memory attestation = Attestation(
-      bytes32(abi.encode(attestationIdCounter)),
+    attestations[id] = Attestation(
+      id,
       attestationPayload.schemaId,
       bytes32(0),
       attester,
@@ -109,8 +110,7 @@ contract AttestationRegistry is OwnableUpgradeable {
       attestationPayload.subject,
       attestationPayload.attestationData
     );
-    attestations[attestation.attestationId] = attestation;
-    emit AttestationRegistered(attestation.attestationId);
+    emit AttestationRegistered(id);
   }
 
   /**
@@ -120,6 +120,29 @@ contract AttestationRegistry is OwnableUpgradeable {
   function bulkAttest(AttestationPayload[] calldata attestationsPayloads, address attester) public {
     for (uint256 i = 0; i < attestationsPayloads.length; i++) {
       attest(attestationsPayloads[i], attester);
+    }
+  }
+
+  function massImport(AttestationPayload[] calldata attestationsPayloads, address portal) public onlyOwner {
+    for (uint256 i = 0; i < attestationsPayloads.length; i++) {
+      // Auto increment attestation counter
+      attestationIdCounter++;
+      bytes32 id = bytes32(abi.encode(attestationIdCounter));
+      // Create attestation
+      attestations[id] = Attestation(
+        id,
+        attestationsPayloads[i].schemaId,
+        bytes32(0),
+        msg.sender,
+        portal,
+        uint64(block.timestamp),
+        attestationsPayloads[i].expirationDate,
+        0,
+        version,
+        false,
+        attestationsPayloads[i].subject,
+        attestationsPayloads[i].attestationData
+      );
     }
   }
 

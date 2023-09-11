@@ -82,7 +82,7 @@ contract EASPortal is AbstractPortal {
   function bulkAttest(AttestationRequest[] memory attestationsRequests) external payable {
     for (uint256 i = 0; i < attestationsRequests.length; i++) {
       attest(attestationsRequests[i]);
-    }    
+    }
   }
 
   function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) public pure override {

@@ -30,7 +30,7 @@ contract EASPortal is AbstractPortal {
   }
 
   bytes32 private relationshipSchemaId = 0x89bd76e17fd84df8e1e448fa1b46dd8d97f7e8e806552b003f8386a5aebcb9f0;
-  
+
   event BulkAttestationsRegistered();
 
   /// @notice Error thrown when reference attestation with refUID is not registered

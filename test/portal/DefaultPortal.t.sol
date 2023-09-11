@@ -9,16 +9,19 @@ import { AttestationPayload } from "../../src/types/Structs.sol";
 import { CorrectModule } from "../../src/example/CorrectModule.sol";
 import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../mocks/ModuleRegistryMock.sol";
+import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 import { ERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
-import { SchemaRegistryMock } from "../mocks/SchemaRegistryMock.sol";
+import { Router } from "../../src/Router.sol";
 
 contract DefaultPortalTest is Test {
   CorrectModule public correctModule = new CorrectModule();
   address[] public modules = new address[](1);
   DefaultPortal public defaultPortal;
   ModuleRegistryMock public moduleRegistryMock = new ModuleRegistryMock();
+  PortalRegistryMock public portalRegistryMock = new PortalRegistryMock();
   AttestationRegistryMock public attestationRegistryMock = new AttestationRegistryMock();
-  SchemaRegistryMock public schemaRegistryMock = new SchemaRegistryMock();
+  Router public router = new Router();
+  address public portalOwner = makeAddr("portalOwner");
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address portalAddress);
@@ -32,23 +35,33 @@ contract DefaultPortalTest is Test {
   function setUp() public {
     modules.push(address(correctModule));
     defaultPortal = new DefaultPortal();
-    defaultPortal.initialize(modules, address(moduleRegistryMock), address(attestationRegistryMock));
+    router.initialize();
+    router.updateModuleRegistry(address(moduleRegistryMock));
+    router.updateAttestationRegistry(address(attestationRegistryMock));
+    router.updatePortalRegistry(address(portalRegistryMock));
+
+    vm.prank(portalOwner);
+    portalRegistryMock.register(address(defaultPortal), "Name", "Description", true, "Owner name");
+
+    defaultPortal.initialize(modules, address(router));
   }
 
   function test_setup() public {
     assertEq(address(defaultPortal.modules(0)), address(modules[0]));
     assertEq(address(defaultPortal.moduleRegistry()), address(moduleRegistryMock));
     assertEq(address(defaultPortal.attestationRegistry()), address(attestationRegistryMock));
+    assertEq(address(defaultPortal.portalRegistry()), address(portalRegistryMock));
+    assertEq(portalRegistryMock.getPortalByAddress(address(defaultPortal)).ownerAddress, portalOwner);
   }
 
   function test_initialize() public {
     DefaultPortal defaultPortalTest = new DefaultPortal();
     vm.expectEmit();
     emit Initialized(1);
-    defaultPortalTest.initialize(modules, address(1), address(2));
+    defaultPortalTest.initialize(modules, address(router));
 
     vm.expectRevert("Initializable: contract is already initialized");
-    defaultPortalTest.initialize(modules, address(1), address(2));
+    defaultPortalTest.initialize(modules, address(router));
   }
 
   function test_getModules() public {
@@ -94,10 +107,53 @@ contract DefaultPortalTest is Test {
     defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
   }
 
-  function test_revoke() public {
+  function test_revoke_byPortalOwner() public {
+    // Create attestation payload
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
+      bytes("subject"),
+      new bytes(1)
+    );
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+
+    // Do register the attestation
+    vm.prank(makeAddr("attester"));
     vm.expectEmit(true, true, true, true);
-    emit AttestationRevoked(bytes32("1"), bytes32("2"));
-    defaultPortal.revoke(bytes32("1"), bytes32("2"));
+    emit AttestationRegistered();
+    defaultPortal.attest(attestationPayload, validationPayload);
+
+    // Revoke the attestation as portal owner
+    vm.prank(portalOwner);
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRevoked(bytes32(abi.encode(1)), bytes32(0));
+    defaultPortal.revoke(bytes32(abi.encode(1)), "");
+  }
+
+  function test_revokeFail_OnlyOwner() public {
+    // Create attestation payload
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
+      bytes("subject"),
+      new bytes(1)
+    );
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+
+    // Do register the attestation
+    vm.prank(makeAddr("attester"));
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    defaultPortal.attest(attestationPayload, validationPayload);
+
+    // Revoke the attestation as a random user
+    vm.prank(makeAddr("random"));
+    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+    defaultPortal.revoke(bytes32(abi.encode(1)), "");
   }
 
   function test_bulkRevoke() public {
@@ -118,5 +174,12 @@ contract DefaultPortalTest is Test {
     assertEq(isIERC165Supported, true);
     bool isAbstractPortalSupported = defaultPortal.supportsInterface(type(AbstractPortal).interfaceId);
     assertEq(isAbstractPortalSupported, true);
+  }
+
+  function test_getAttester() public {
+    address attester = makeAddr("attester");
+    vm.prank(attester);
+    address registeredAttester = defaultPortal._getAttester();
+    assertEq(registeredAttester, attester);
   }
 }

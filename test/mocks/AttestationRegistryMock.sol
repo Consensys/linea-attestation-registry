@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { Attestation, AttestationPayload, Attestation } from "../../src/types/Structs.sol";
+import { AttestationPayload, Attestation } from "../../src/types/Structs.sol";
 
 contract AttestationRegistryMock {
-  uint32 private attestationIdCounter;
-  bytes32 public _attestationId;
   uint16 public version;
+  uint32 private attestationIdCounter;
+  mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
   event AttestationRegistered();
   event BulkAttestationsRegistered();
@@ -15,13 +15,17 @@ contract AttestationRegistryMock {
 
   function test() public {}
 
-  function attest(AttestationPayload calldata attestationPayload) public returns (Attestation memory) {
-    require(bytes32(attestationPayload.schemaId) != 0 && tx.origin != address(0), "Invalid attestation payload");
+  function attest(AttestationPayload calldata attestationPayload, address attester) public {
+    require(bytes32(attestationPayload.schemaId) != 0, "Invalid attestationPayload");
+    require(attester != address(0), "Invalid attester");
+
+    attestationIdCounter++;
+    // Create attestation
     Attestation memory attestation = Attestation(
-      bytes32(abi.encode(1)),
+      bytes32(abi.encode(attestationIdCounter)),
       attestationPayload.schemaId,
       bytes32(0),
-      tx.origin,
+      attester,
       msg.sender,
       uint64(block.timestamp),
       attestationPayload.expirationDate,
@@ -31,16 +35,15 @@ contract AttestationRegistryMock {
       attestationPayload.subject,
       attestationPayload.attestationData
     );
-    emit AttestationRegistered();
-    attestationIdCounter++;
-    return attestation;
+    attestations[attestation.attestationId] = attestation;
+
+    emit AttestationRegistered();    
   }
 
-  function bulkAttest(AttestationPayload[] calldata attestationsPayloads) public returns (Attestation[] memory) {
-    require(attestationsPayloads.length > 0, "Invalid attestations payloads");
+  function bulkAttest(AttestationPayload[] calldata attestationsPayloads, address attester) public {
+    require(attestationsPayloads.length > 0, "Invalid attestationsPayloads");
+    require(attester != address(0), "Invalid attester");
     emit BulkAttestationsRegistered();
-    Attestation[] memory attestations = new Attestation[](1);
-    return attestations;
   }
 
   function revoke(bytes32 attestationId, bytes32 replacedBy) public {
@@ -51,10 +54,6 @@ contract AttestationRegistryMock {
   function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) public {
     require(attestationIds.length > 0, "Invalid attestation");
     emit BulkAttestationsRevoked(attestationIds, replacedBy);
-  }
-
-  function getAttestationId() public view returns (bytes32) {
-    return _attestationId;
   }
 
   function getVersionNumber() public view returns (uint16) {
@@ -68,5 +67,9 @@ contract AttestationRegistryMock {
 
   function getAttestationIdCounter() public view returns (uint32) {
     return attestationIdCounter;
+  }
+  
+  function getAttestation(bytes32 attestationId) public view returns (Attestation memory) {
+    return attestations[attestationId];
   }
 }

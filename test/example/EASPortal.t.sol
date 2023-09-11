@@ -41,7 +41,7 @@ contract EASPortalTest is Test {
       makeAddr("recipient"),
       uint64(block.timestamp + 1 days),
       false,
-      bytes32("refUID"),
+      bytes32(0),
       new bytes(0),
       uint256(1)
     );
@@ -55,13 +55,74 @@ contract EASPortalTest is Test {
     easPortal.attest(attestationRequest);
   }
 
+  function test_attest_WithRelationshipAttestation() public {
+    // Create first EAS attestation request without RefUID
+    EASPortal.AttestationRequestData memory attestationRequestDataWithoutRefUID = EASPortal.AttestationRequestData(
+      makeAddr("recipient"),
+      uint64(block.timestamp + 1 days),
+      false,
+      bytes32(0),
+      new bytes(0),
+      uint256(1)
+    );
+    EASPortal.AttestationRequest memory attestationRequestWithoutRefUID = EASPortal.AttestationRequest(
+      bytes32(uint256(1)),
+      attestationRequestDataWithoutRefUID
+    );
+
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    easPortal.attest(attestationRequestWithoutRefUID);
+
+    bytes32 attestationIdWithoutRefUID = bytes32(abi.encode(1));
+
+    // Create second EAS attestation request with RefUID
+    EASPortal.AttestationRequestData memory attestationRequestDataWithRefUID = EASPortal.AttestationRequestData(
+      makeAddr("recipient"),
+      uint64(block.timestamp + 1 days),
+      false,
+      attestationIdWithoutRefUID,
+      new bytes(0),
+      uint256(1)
+    );
+    EASPortal.AttestationRequest memory attestationRequestWithRefUID = EASPortal.AttestationRequest(
+      bytes32(uint256(1)),
+      attestationRequestDataWithRefUID
+    );
+
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    easPortal.attest(attestationRequestWithRefUID);
+  }
+
+  function test_attest_ReferenceAttestationNotRegistered() public {
+    // Create EAS attestation request
+    EASPortal.AttestationRequestData memory attestationRequestData = EASPortal.AttestationRequestData(
+      makeAddr("recipient"),
+      uint64(block.timestamp + 1 days),
+      false,
+      bytes32("NotRegistered"),
+      new bytes(0),
+      uint256(1)
+    );
+    EASPortal.AttestationRequest memory attestationRequest = EASPortal.AttestationRequest(
+      bytes32(uint256(1)),
+      attestationRequestData
+    );
+
+    vm.expectRevert(EASPortal.ReferenceAttestationNotRegistered.selector);
+    easPortal.attest(attestationRequest);
+  }
+
   function test_bulkAttest() public {
     // Create EAS attestation request
     EASPortal.AttestationRequestData memory attestationRequestData = EASPortal.AttestationRequestData(
       makeAddr("recipient"),
       uint64(block.timestamp + 1 days),
       false,
-      bytes32("refUID"),
+      bytes32(0),
       new bytes(0),
       uint256(1)
     );
@@ -71,7 +132,9 @@ contract EASPortalTest is Test {
     attestationsRequests[1] = EASPortal.AttestationRequest(bytes32(uint256(1)), attestationRequestData);
 
     vm.expectEmit(true, true, true, true);
-    emit BulkAttestationsRegistered();
+    emit AttestationRegistered();
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
     easPortal.bulkAttest(attestationsRequests);
   }
 

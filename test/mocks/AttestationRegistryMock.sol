@@ -60,6 +60,15 @@ contract AttestationRegistryMock {
     return version;
   }
 
+  function isRegistered(bytes32 attestationId) public pure returns (bool) {
+    if (attestationId == bytes32("NotRegistered")) return false;
+    return true;
+  }
+
+  function getAttestationIdCounter() public view returns (uint32) {
+    return attestationIdCounter;
+  }
+
   function getAttestation(bytes32 attestationId) public view returns (Attestation memory) {
     return attestations[attestationId];
   }

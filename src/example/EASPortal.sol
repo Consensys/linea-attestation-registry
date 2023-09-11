@@ -29,6 +29,10 @@ contract EASPortal is AbstractPortal {
     AttestationRequestData data;
   }
 
+  bytes32 private relationshipSchemaId = 0x89bd76e17fd84df8e1e448fa1b46dd8d97f7e8e806552b003f8386a5aebcb9f0;
+
+  /// @notice Error thrown when reference attestation with refUID is not registered
+  error ReferenceAttestationNotRegistered();
   /// @notice Error thrown when trying to revoke an attestation
   error NoRevocation();
   /// @notice Error thrown when trying to bulk revoke attestations
@@ -47,7 +51,7 @@ contract EASPortal is AbstractPortal {
 
   function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal override {}
 
-  function attest(AttestationRequest memory attestationRequest) external payable {
+  function attest(AttestationRequest memory attestationRequest) public payable {
     bytes[] memory validationPayload = new bytes[](0);
 
     AttestationPayload memory attestationPayload = AttestationPayload(
@@ -56,26 +60,29 @@ contract EASPortal is AbstractPortal {
       abi.encodePacked(attestationRequest.data.recipient),
       attestationRequest.data.data
     );
-
     super.attest(attestationPayload, validationPayload);
-  }
+    // if refUID exists then create relationship attestation
+    if (attestationRequest.data.refUID != 0) {
+      if (!attestationRegistry.isRegistered(attestationRequest.data.refUID)) revert ReferenceAttestationNotRegistered();
 
-  function bulkAttest(AttestationRequest[] memory attestationsRequests) public payable {
-    AttestationPayload[] memory attestationsPayloads = new AttestationPayload[](attestationsRequests.length);
-    bytes[][] memory validationPayloads = new bytes[][](attestationsRequests.length);
+      uint32 attestationIdCounter = attestationRegistry.getAttestationIdCounter();
+      bytes32 attestationId = bytes32(abi.encode(attestationIdCounter));
 
-    for (uint256 i = 0; i < attestationsRequests.length; i++) {
-      attestationsPayloads[i] = AttestationPayload(
-        attestationsRequests[i].schema,
-        attestationsRequests[i].data.expirationTime,
-        abi.encodePacked(attestationsRequests[i].data.recipient),
-        attestationsRequests[i].data.data
+      AttestationPayload memory relationshipAttestationPayload = AttestationPayload(
+        relationshipSchemaId,
+        attestationRequest.data.expirationTime,
+        abi.encodePacked(attestationRequest.data.refUID),
+        abi.encode(attestationId, "EASrefUID", attestationRequest.data.refUID)
       );
 
-      validationPayloads[i] = new bytes[](0);
+      super.attest(relationshipAttestationPayload, validationPayload);
     }
+  }
 
-    super.bulkAttest(attestationsPayloads, validationPayloads);
+  function bulkAttest(AttestationRequest[] memory attestationsRequests) external payable {
+    for (uint256 i = 0; i < attestationsRequests.length; i++) {
+      attest(attestationsRequests[i]);
+    }
   }
 
   function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) public pure override {

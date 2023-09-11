@@ -132,7 +132,9 @@ contract EASPortalTest is Test {
     attestationsRequests[1] = EASPortal.AttestationRequest(bytes32(uint256(1)), attestationRequestData);
 
     vm.expectEmit(true, true, true, true);
-    emit BulkAttestationsRegistered();
+    emit AttestationRegistered();
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
     easPortal.bulkAttest(attestationsRequests);
   }
 

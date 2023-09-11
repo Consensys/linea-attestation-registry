@@ -31,8 +31,6 @@ contract EASPortal is AbstractPortal {
 
   bytes32 private relationshipSchemaId = 0x89bd76e17fd84df8e1e448fa1b46dd8d97f7e8e806552b003f8386a5aebcb9f0;
 
-  event BulkAttestationsRegistered();
-
   /// @notice Error thrown when reference attestation with refUID is not registered
   error ReferenceAttestationNotRegistered();
   /// @notice Error thrown when trying to revoke an attestation
@@ -84,8 +82,7 @@ contract EASPortal is AbstractPortal {
   function bulkAttest(AttestationRequest[] memory attestationsRequests) external payable {
     for (uint256 i = 0; i < attestationsRequests.length; i++) {
       attest(attestationsRequests[i]);
-    }
-    emit BulkAttestationsRegistered();
+    }    
   }
 
   function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) public pure override {

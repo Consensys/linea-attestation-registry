@@ -37,7 +37,7 @@ contract AttestationRegistryMock {
     );
     attestations[attestation.attestationId] = attestation;
 
-    emit AttestationRegistered();    
+    emit AttestationRegistered();
   }
 
   function bulkAttest(AttestationPayload[] calldata attestationsPayloads, address attester) public {
@@ -68,7 +68,7 @@ contract AttestationRegistryMock {
   function getAttestationIdCounter() public view returns (uint32) {
     return attestationIdCounter;
   }
-  
+
   function getAttestation(bytes32 attestationId) public view returns (Attestation memory) {
     return attestations[attestationId];
   }

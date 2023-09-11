@@ -1,5 +1,11 @@
 import { ethers, upgrades } from "hardhat";
 
+/*
+ * This script aims to statically check if the registries contracts follow the rules for upgradability.
+ * It validates implementation contracts without deploying them.
+ * OpenZeppelin doc: https://docs.openzeppelin.com/upgrades-plugins/1.x/api-hardhat-upgrades#validate-implementation
+ * Note: this does not run the check against the already deployed version of the registries.
+ */
 async function main() {
   console.log("Checking contracts for upgradeability...");
 

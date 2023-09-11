@@ -1,7 +1,7 @@
-## Verax (Linea Attestation Registry)
+## Verax
 
-**Linea Attestation Registry is a set of contracts that allows anyone to read and write attestations of any type and any
-subject.**
+**Verax, previously known as "Linea Attestation Registry", is a set of contracts that allows anyone to read and write
+attestations of any type and any subject.**
 
 ## Foundry Installation
 
@@ -196,7 +196,27 @@ Transaction hash: 0x15b25752da1dfd458b92069248825ce959f5be104f974d62b4ae95050710
 11. _Optional_: Deploy some valid modules via the `pnpm run deploy:CorrectModule` command and note down their addresses
 12. _Optional_: Deploy an invalid module via the `pnpm run deploy:IncorrectModule` command and note down its address
 
-## Verax contract upgrade
+## Verax contracts upgrade
+
+### Check all registries implementations follow the upgradability rules
+
+Run `pnpm run check:upgradeability` to check if the local versions of the registries follow the upgradability rules.
+
+:warning: Note: this is a static check, not run against the already deployed contracts.
+
+### Check all registries implementations are upgradeable
+
+Run `pnpm run check:upgradeable:goerli` or `pnpm run check:upgradeable` to check if the already deployed registries are
+upgradable to the new local versions.
+
+:warning: Note: this is a dynamic check, run against the already deployed contracts.
+
+### Recreate the network files
+
+Run `pnpm run check:upgradeable:goerli` or `pnpm run check:upgradeable` to re-generate the network files describing the
+deployed contracts. This can be useful if the file was lost/modified since the last upgrade or the first deployment.
+
+:warning: Note: the script will fail if a network file already contains one of the targeted proxy addresses.
 
 ### On the Linea Goerli testnet:
 

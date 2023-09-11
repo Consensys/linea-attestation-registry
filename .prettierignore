@@ -1,16 +1,13 @@
 # directories
-.github/workflows
 broadcast
 cache
 coverage
-docs
 lib
 node_modules
 out
-out-optimized
-out-svg
 artifacts
 cache_hardhat
+typechain-types
 
 # files
 *.env
@@ -18,6 +15,4 @@ cache_hardhat
 .DS_Store
 .pnp.*
 lcov.info
-package-lock.json
 pnpm-lock.yaml
-yarn.lock

@@ -11,6 +11,8 @@ import { AttestationPayload } from "../types/Structs.sol";
  * @dev This Portal does not add any logic to the AbstractPortal
  */
 contract DefaultPortal is AbstractPortal {
+  function withdraw(address payable to, uint256 amount) external override {}
+
   function _onAttest(AttestationPayload memory attestation) internal override {}
 
   function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}

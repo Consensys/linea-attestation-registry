@@ -113,6 +113,13 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   }
 
   /**
+   * @notice Optional method to withdraw funds from the Portal
+   * @param to the address to send the funds to
+   * @param amount the amount to withdraw
+   */
+  function withdraw(address payable to, uint256 amount) external virtual;
+
+  /**
    * @notice Optional method run before a payload is attested
    * @param attestationPayload the attestation payload supposed to be attested
    */

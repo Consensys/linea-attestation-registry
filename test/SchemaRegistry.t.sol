@@ -107,6 +107,46 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
+  function testUpdateContext() public {
+    vm.expectEmit();
+    emit SchemaCreated(expectedId, expectedName, expectedDescription, expectedContext, expectedString);
+    vm.startPrank(user);
+
+    // create a schema
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    assertEq(schemaRegistry.getSchema(expectedId).context, expectedContext);
+
+    // update the context
+    string memory newContext = "New context";
+    schemaRegistry.updateContext(expectedId, newContext);
+    assertEq(schemaRegistry.getSchema(expectedId).context, newContext);
+
+    vm.stopPrank();
+  }
+
+  function testCannotUpdateContextWithInvalidIssuer() public {
+    vm.expectRevert(SchemaRegistry.OnlyIssuer.selector);
+    vm.startPrank(makeAddr("InvalidIssuer"));
+    schemaRegistry.updateContext(expectedId, "New context");
+    vm.stopPrank();
+  }
+
+  function testCannotUpdateContextWithSchemaNotRegistered() public {
+    vm.startPrank(user);
+    vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
+    schemaRegistry.updateContext("Invalid ID", "New context");
+    vm.stopPrank();
+  }
+
+  function testCannotUpdateContextWithSchemaContextMissing() public {
+    vm.startPrank(user);
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+
+    vm.expectRevert(SchemaRegistry.SchemaContextMissing.selector);
+    schemaRegistry.updateContext(expectedId, "");
+    vm.stopPrank();
+  }
+
   function testGetSchema() public {
     vm.startPrank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);

@@ -107,6 +107,17 @@ contract SchemaRegistry is OwnableUpgradeable {
     emit SchemaCreated(schemaId, name, description, context, schemaString);
   }
 
+  /** Update a context field of schema :
+   * @param schemaId the schema ID
+   * @param context the Schema context
+   * @dev Retrieve the Schema with given ID and update its context with new value
+   */
+  function updateContext(bytes32 schemaId, string memory context) public onlyIssuers(msg.sender) {
+    if (!isRegistered(schemaId)) revert SchemaNotRegistered();
+    if (bytes(context).length == 0) revert SchemaContextMissing();
+    schemas[schemaId].context = context;
+  }
+
   /**
    * @notice Gets a schema by its identifier
    * @param schemaId the schema ID

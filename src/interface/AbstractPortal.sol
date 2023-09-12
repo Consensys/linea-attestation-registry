@@ -17,8 +17,6 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   AttestationRegistry public attestationRegistry;
   PortalRegistry public portalRegistry;
 
-  /// @notice Error thrown when the numbers of modules to go through and payloads for them is not the same
-  error ModulePayloadMismatch();
   /// @notice Error thrown when someone else than the portal's owner is trying to revoke
   error OnlyPortalOwner();
 

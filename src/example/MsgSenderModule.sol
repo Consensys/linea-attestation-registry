@@ -33,7 +33,7 @@ contract MsgSenderModule is IERC165Upgradeable, AbstractModule {
     AttestationPayload memory /*_attestationPayload*/,
     bytes memory /*_validationPayload*/,
     address _txSender,
-    uint256 /*_value*/ 
+    uint256 /*_value*/
   ) public view override {
     if (_txSender != expectedMsgSender) {
       revert WrongTransactionSender();

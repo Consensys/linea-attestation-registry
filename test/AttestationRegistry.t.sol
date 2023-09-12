@@ -150,6 +150,34 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.bulkAttest(payloadsToAttest, attester);
   }
 
+  function test_massImport(AttestationPayload[2] memory attestationsPayloads) public {
+    vm.assume(attestationsPayloads[0].subject.length != 0);
+    vm.assume(attestationsPayloads[0].attestationData.length != 0);
+    vm.assume(attestationsPayloads[1].subject.length != 0);
+    vm.assume(attestationsPayloads[1].attestationData.length != 0);
+
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationsPayloads[0].schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    attestationsPayloads[1].schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+
+    AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
+    payloadsToAttest[0] = attestationsPayloads[0];
+    payloadsToAttest[1] = attestationsPayloads[1];
+
+    bool isRegistered1 = attestationRegistry.isRegistered(bytes32(abi.encode(1)));
+    assertFalse(isRegistered1);
+    bool isRegistered2 = attestationRegistry.isRegistered(bytes32(abi.encode(2)));
+    assertFalse(isRegistered2);
+
+    vm.prank(address(0));
+    attestationRegistry.massImport(payloadsToAttest, portal);
+
+    isRegistered1 = attestationRegistry.isRegistered(bytes32(abi.encode(1)));
+    assertTrue(isRegistered1);
+    isRegistered2 = attestationRegistry.isRegistered(bytes32(abi.encode(2)));
+    assertTrue(isRegistered2);
+  }
+
   function test_revoke(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);

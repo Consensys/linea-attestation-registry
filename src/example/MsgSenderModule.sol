@@ -12,7 +12,7 @@ import { AttestationPayload } from "../types/Structs.sol";
  * @notice This contract is an example of a module, able to check if the transaction sender is a given address
  * @dev A module should not be initializable (to prevent it from being upgradeable)
  */
-contract MsgSenderModule is IERC165Upgradeable, AbstractModule {
+contract MsgSenderModule is AbstractModule {
   /// @dev The address expected by this module
   address public expectedMsgSender;
 
@@ -38,12 +38,5 @@ contract MsgSenderModule is IERC165Upgradeable, AbstractModule {
     if (_txSender != expectedMsgSender) {
       revert WrongTransactionSender();
     }
-  }
-
-  /**
-   * @notice To check this contract implements the Module interface
-   */
-  function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 }

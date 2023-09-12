@@ -15,7 +15,7 @@ abstract contract AbstractModule is IERC165 {
   /**
    * @notice To check this contract implements the Module interface
    */
-  function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
+  function supportsInterface(bytes4 interfaceID) public pure virtual override returns (bool) {
     return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165).interfaceId;
   }
 }

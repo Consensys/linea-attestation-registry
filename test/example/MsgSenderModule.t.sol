@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { AbstractModule } from "../../src/interface/AbstractModule.sol";
 import { MsgSenderModule } from "../../src/example/MsgSenderModule.sol";
@@ -32,7 +31,7 @@ contract MsgSenderModuleTest is Test {
     bytes memory validationPayload = new bytes(0);
     address msgSender = expectedMsgSender;
 
-    msgSenderModule.run(attestationPayload, validationPayload, msgSender);
+    msgSenderModule.run(attestationPayload, validationPayload, msgSender, 0);
   }
 
   function testIncorrectMsgSenderAddress() public {
@@ -41,7 +40,7 @@ contract MsgSenderModuleTest is Test {
     address incorrectMsgSender = address(1);
 
     vm.expectRevert(MsgSenderModule.WrongTransactionSender.selector);
-    msgSenderModule.run(attestationPayload, validationPayload, incorrectMsgSender);
+    msgSenderModule.run(attestationPayload, validationPayload, incorrectMsgSender, 0);
   }
 
   function testSupportsInterface() public {

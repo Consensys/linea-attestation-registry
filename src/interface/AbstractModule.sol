@@ -7,6 +7,7 @@ abstract contract AbstractModule {
   function run(
     AttestationPayload memory attestationPayload,
     bytes memory validationPayload,
-    address txSender
+    address txSender,
+    uint256 value
   ) public virtual;
 }

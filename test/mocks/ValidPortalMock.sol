@@ -7,9 +7,7 @@ import { AttestationPayload } from "../../src/types/Structs.sol";
 contract ValidPortalMock is AbstractPortal {
   function test() public {}
 
-  function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal override {}
-
-  function _afterAttest() internal override {}
+  function _onAttest(AttestationPayload memory attestationPayload) internal override {}
 
   function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
 

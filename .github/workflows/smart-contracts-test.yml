@@ -72,7 +72,7 @@ jobs:
   test-unit:
     env:
       FOUNDRY_FUZZ_RUNS: "5000"
-    needs: [ "lint", "build" ]
+    needs: ["lint", "build"]
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"
@@ -84,7 +84,7 @@ jobs:
         uses: "foundry-rs/foundry-toolchain@v1"
 
       - name: "Run the unit tests"
-        run: "forge test --match-path \"test/*\""
+        run: 'forge test --match-path "test/*"'
 
       - name: "Add test summary"
         run: |
@@ -92,7 +92,7 @@ jobs:
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
   coverage:
-    needs: [ "lint", "build" ]
+    needs: ["lint", "build"]
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"
@@ -104,7 +104,7 @@ jobs:
         uses: "foundry-rs/foundry-toolchain@v1"
 
       - name: "Generate the coverage report using the unit tests"
-        run: "forge coverage --match-path \"test/**/*.sol\" --report lcov"
+        run: 'forge coverage --match-path "test/**/*.sol" --report lcov'
 
       - name: "Upload coverage report to Codecov"
         uses: "codecov/codecov-action@v3"
@@ -126,7 +126,7 @@ jobs:
           echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
 
   upgradeability:
-    needs: [ "lint", "build" ]
+    needs: ["lint", "build"]
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"

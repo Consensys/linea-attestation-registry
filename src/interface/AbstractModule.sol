@@ -6,7 +6,7 @@ import { AttestationPayload } from "../types/Structs.sol";
 abstract contract AbstractModule {
   function run(
     AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload,
+    bytes memory validationPayload,
     address txSender
-  ) public virtual returns (bytes[] memory moduleValidationPayload);
+  ) public virtual;
 }

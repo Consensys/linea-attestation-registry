@@ -123,23 +123,23 @@ contract ModuleRegistry is OwnableUpgradeable {
   /** Execute the run method for all given Modules that are registered
    * @param modulesAddresses the addresses of the registered modules
    * @param attestationPayload the payload to attest
-   * @param validationPayload the payloads to check for each module
+   * @param validationPayloads the payloads to check for each module (one payload per module)
    * @dev check if modules are registered and execute run method for each module
    */
   function runModules(
     address[] memory modulesAddresses,
     AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload
+    bytes[] memory validationPayloads
   ) public {
     // If no modules provided, bypass module validation
     if (modulesAddresses.length == 0) return;
     // Each module involved must have a corresponding item from the validation payload
-    if (modulesAddresses.length != validationPayload.length) revert ModuleValidationPayloadMismatch();
+    if (modulesAddresses.length != validationPayloads.length) revert ModuleValidationPayloadMismatch();
 
     // For each module check if it is registered and call run method
     for (uint32 i = 0; i < modulesAddresses.length; i++) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
-      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayload, tx.origin);
+      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayloads[i], tx.origin);
     }
   }
 

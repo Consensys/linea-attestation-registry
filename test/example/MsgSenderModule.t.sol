@@ -29,18 +29,17 @@ contract MsgSenderModuleTest is Test {
 
   function testCorrectMsgSenderAddress() public {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
-    bytes[] memory validationPayload = new bytes[](0);
+    bytes memory validationPayload = new bytes(0);
     address msgSender = expectedMsgSender;
 
-    bytes[] memory _validationPayload = msgSenderModule.run(attestationPayload, validationPayload, msgSender);
-
-    assertBytesArrayEq(_validationPayload, validationPayload);
+    msgSenderModule.run(attestationPayload, validationPayload, msgSender);
   }
 
   function testIncorrectMsgSenderAddress() public {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
-    bytes[] memory validationPayload = new bytes[](0);
+    bytes memory validationPayload = new bytes(0);
     address incorrectMsgSender = address(1);
+
     vm.expectRevert(MsgSenderModule.WrongTransactionSender.selector);
     msgSenderModule.run(attestationPayload, validationPayload, incorrectMsgSender);
   }
@@ -50,14 +49,5 @@ contract MsgSenderModuleTest is Test {
     assertEq(isIERC165Supported, true);
     bool isAbstractModuleSupported = msgSenderModule.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);
-  }
-
-  function assertBytesArrayEq(bytes[] memory actualBytesArray, bytes[] memory expectedBytesArray) public {
-    // Compare bytes[] arrays using assertEq
-    require(expectedBytesArray.length == actualBytesArray.length, "Number of elements are not equal");
-
-    for (uint256 i = 0; i < expectedBytesArray.length; i++) {
-      assertEq(expectedBytesArray[i], actualBytesArray[i]);
-    }
   }
 }

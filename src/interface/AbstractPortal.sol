@@ -39,14 +39,14 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   /**
    * @notice attest the schema with given attestationPayload and validationPayload
    * @param attestationPayload the payload to attest
-   * @param validationPayload the payload to validate via the modules to issue the attestations
+   * @param validationPayloads the payloads to validate via the modules to issue the attestations
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
    */
   function attest(
     AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload
+    bytes[] memory validationPayloads
   ) public payable virtual {
-    if (modules.length != 0) _runModules(attestationPayload, validationPayload);
+    if (modules.length != 0) _runModules(attestationPayload, validationPayloads);
 
     _beforeAttest(attestationPayload, msg.value);
 
@@ -114,12 +114,12 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   /**
    * @notice Runs all the modules linked to the Portal to check their logic against the validation payload
    * @param attestationPayload the attestation payload supposed to be attested
-   * @param validationPayload the list of payloads used by modules
+   * @param validationPayloads the list of payloads used by modules
    * @dev Each module must have its own item in the list of validation payloads
    */
-  function _runModules(AttestationPayload memory attestationPayload, bytes[] memory validationPayload) internal {
-    if (modules.length != validationPayload.length) revert ModulePayloadMismatch();
-    moduleRegistry.runModules(modules, attestationPayload, validationPayload);
+  function _runModules(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) internal {
+    if (modules.length != validationPayloads.length) revert ModulePayloadMismatch();
+    moduleRegistry.runModules(modules, attestationPayload, validationPayloads);
   }
 
   /**

@@ -15,11 +15,9 @@ contract MsgSenderModuleTest is Test {
   AttestationPayload private attestationPayload;
 
   event ModuleRegistered(string name, string description, address moduleAddress);
-  event Initialized(uint8 version);
 
   function setUp() public {
-    msgSenderModule = new MsgSenderModule();
-    msgSenderModule.initialize(expectedMsgSender);
+    msgSenderModule = new MsgSenderModule(expectedMsgSender);
 
     attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
@@ -27,14 +25,6 @@ contract MsgSenderModuleTest is Test {
       bytes("subject"),
       new bytes(1)
     );
-  }
-
-  function testInitialize() public {
-    msgSenderModule = new MsgSenderModule();
-    vm.expectEmit();
-    emit Initialized(1);
-    msgSenderModule.initialize(expectedMsgSender);
-    assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
   }
 
   function testCorrectMsgSenderAddress() public {

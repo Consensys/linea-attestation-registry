@@ -23,6 +23,10 @@ contract PayableModule is Ownable, AbstractModule {
     attestationFee = _attestationFee;
   }
 
+  /**
+   * @notice Set the fee required to attest
+   * @param _attestationFee The fee required to attest
+   */
   function setFee(uint256 _attestationFee) public onlyOwner {
     attestationFee = _attestationFee;
   }

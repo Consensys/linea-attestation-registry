@@ -35,6 +35,13 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   }
 
   /**
+   * @notice Optional method to withdraw funds from the Portal
+   * @param to the address to send the funds to
+   * @param amount the amount to withdraw
+   */
+  function withdraw(address payable to, uint256 amount) external virtual;
+
+  /**
    * @notice attest the schema with given attestationPayload and validationPayload
    * @param attestationPayload the payload to attest
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
@@ -113,17 +120,18 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   }
 
   /**
-   * @notice Optional method to withdraw funds from the Portal
-   * @param to the address to send the funds to
-   * @param amount the amount to withdraw
+   * @notice Defines the address of the entity issuing attestations to the subject
+   * @dev We strongly encourage a reflection when overriding this rule: who should be set as the attester?
    */
-  function withdraw(address payable to, uint256 amount) external virtual;
+  function _getAttester() public view virtual returns (address) {
+    return msg.sender;
+  }
 
   /**
    * @notice Optional method run before a payload is attested
    * @param attestationPayload the attestation payload supposed to be attested
    */
-  function _onAttest(AttestationPayload memory attestationPayload) internal virtual;
+  function _onAttest(AttestationPayload memory attestationPayload) internal virtual {}
 
   /**
    * @notice Optional method run when attesting a batch of payloads
@@ -133,27 +141,19 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   function _onBulkAttest(
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) internal virtual;
+  ) internal virtual {}
 
   /**
    * @notice Optional method run when an attestation is revoked or replaced
    * @param attestationId the attestation ID to revoke
    * @param replacedBy the replacing attestation ID
    */
-  function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal virtual;
+  function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal virtual {}
 
   /**
    * @notice Optional method run when a batch of attestations are revoked or replaced
    * @param attestationIds the attestations IDs to revoke
    * @param replacedBy the replacing attestations IDs
    */
-  function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal virtual;
-
-  /**
-   * @notice Defines the address of the entity issuing attestations to the subject
-   * @dev We strongly encourage a reflection when overriding this rule: who should be set as the attester?
-   */
-  function _getAttester() public view virtual returns (address) {
-    return msg.sender;
-  }
+  function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal virtual {}
 }

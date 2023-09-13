@@ -40,17 +40,6 @@ contract EASPortal is AbstractPortal {
 
   function withdraw(address payable to, uint256 amount) external override {}
 
-  function _onAttest(AttestationPayload memory attestation) internal override {}
-
-  function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
-
-  function _onBulkAttest(
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
-  ) internal override {}
-
-  function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal override {}
-
   function attest(AttestationRequest memory attestationRequest) public payable {
     bytes[] memory validationPayload = new bytes[](0);
 

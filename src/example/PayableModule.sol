@@ -33,6 +33,7 @@ contract PayableModule is Ownable, AbstractModule {
 
   /**
    * @notice The main method for the module, running the check
+   * @param _value The value sent for the attestation
    */
   function run(
     AttestationPayload memory /*_attestationPayload*/,

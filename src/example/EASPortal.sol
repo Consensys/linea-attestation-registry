@@ -38,9 +38,9 @@ contract EASPortal is AbstractPortal {
   /// @notice Error thrown when trying to bulk revoke attestations
   error NoBulkRevocation();
 
-  function _beforeAttest(AttestationPayload memory attestation, uint256 value) internal override {}
+  function withdraw(address payable to, uint256 amount) external override {}
 
-  function _afterAttest() internal override {}
+  function _onAttest(AttestationPayload memory attestation) internal override {}
 
   function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal override {}
 

@@ -12,7 +12,8 @@ contract ModuleRegistryMock {
   function runModules(
     address[] memory modulesAddresses,
     AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload
+    bytes[] memory validationPayload,
+    uint256 value
   ) public {}
 
   function bulkRunModules(

@@ -17,8 +17,6 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   AttestationRegistry public attestationRegistry;
   PortalRegistry public portalRegistry;
 
-  /// @notice Error thrown when the numbers of modules to go through and payloads for them is not the same
-  error ModulePayloadMismatch();
   /// @notice Error thrown when someone else than the portal's owner is trying to revoke
   error OnlyPortalOwner();
 
@@ -46,13 +44,11 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayloads
   ) public payable virtual {
-    if (modules.length != 0) _runModules(attestationPayload, validationPayloads);
+    moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
 
-    _beforeAttest(attestationPayload, msg.value);
+    _onAttest(attestationPayload);
 
     attestationRegistry.attest(attestationPayload, _getAttester());
-
-    _afterAttest();
   }
 
   /**
@@ -64,9 +60,11 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
   ) public payable virtual {
-    _onBulkAttest(attestationsPayloads, validationPayloads);
     // Run all modules for all payloads
     moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
+
+    _onBulkAttest(attestationsPayloads, validationPayloads);
+
     // Register attestations using the attestation registry
     attestationRegistry.bulkAttest(attestationsPayloads, _getAttester());
   }
@@ -80,7 +78,9 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
    */
   function revoke(bytes32 attestationId, bytes32 replacedBy) public virtual {
     if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+
     _onRevoke(attestationId, replacedBy);
+
     attestationRegistry.revoke(attestationId, replacedBy);
   }
 
@@ -91,6 +91,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
    */
   function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) public virtual {
     _onBulkRevoke(attestationIds, replacedBy);
+
     attestationRegistry.bulkRevoke(attestationIds, replacedBy);
   }
 
@@ -112,27 +113,17 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   }
 
   /**
-   * @notice Runs all the modules linked to the Portal to check their logic against the validation payload
-   * @param attestationPayload the attestation payload supposed to be attested
-   * @param validationPayloads the list of payloads used by modules
-   * @dev Each module must have its own item in the list of validation payloads
+   * @notice Optional method to withdraw funds from the Portal
+   * @param to the address to send the funds to
+   * @param amount the amount to withdraw
    */
-  function _runModules(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) internal {
-    if (modules.length != validationPayloads.length) revert ModulePayloadMismatch();
-    moduleRegistry.runModules(modules, attestationPayload, validationPayloads);
-  }
+  function withdraw(address payable to, uint256 amount) external virtual;
 
   /**
    * @notice Optional method run before a payload is attested
    * @param attestationPayload the attestation payload supposed to be attested
-   * @param value the optional ETH value paid for this attestation
    */
-  function _beforeAttest(AttestationPayload memory attestationPayload, uint256 value) internal virtual;
-
-  /**
-   * @notice Optional method run after a payload is attested
-   */
-  function _afterAttest() internal virtual;
+  function _onAttest(AttestationPayload memory attestationPayload) internal virtual;
 
   /**
    * @notice Optional method run when attesting a batch of payloads

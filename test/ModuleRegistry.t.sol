@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { ModuleRegistry } from "../src/ModuleRegistry.sol";
 import { CorrectModule } from "../src/example/CorrectModule.sol";
@@ -145,7 +144,7 @@ contract ModuleRegistryTest is Test {
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](2);
 
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
   function testRunModulesWithIncorrectNumberOfValidationPayload() public {
@@ -162,7 +161,7 @@ contract ModuleRegistryTest is Test {
     bytes[] memory validationPayload = new bytes[](1);
 
     vm.expectRevert(ModuleRegistry.ModuleValidationPayloadMismatch.selector);
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
   function testRunModulesWithoutSendingModuleAddresses() public {
@@ -172,7 +171,7 @@ contract ModuleRegistryTest is Test {
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](0);
 
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
   function testRunModulesForUnregisteredModules() public {
@@ -186,7 +185,7 @@ contract ModuleRegistryTest is Test {
 
     // execute runModules
     vm.expectRevert(ModuleRegistry.ModuleNotRegistered.selector);
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
+    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
   function testBulkRunModules() public {

@@ -22,11 +22,11 @@ const config: HardhatUserConfig = {
     hardhat: {},
     "linea-goerli": {
       url: `https://linea-goerli.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: [process.env.PRIVATE_KEY ?? ""],
+      accounts: [process.env.PRIVATE_KEY ?? "0000000000000000000000000000000000000000000000000000000000000000"],
     },
     linea: {
       url: `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: [process.env.PRIVATE_KEY ?? ""],
+      accounts: [process.env.PRIVATE_KEY ?? "0000000000000000000000000000000000000000000000000000000000000000"],
     },
   },
   paths: {

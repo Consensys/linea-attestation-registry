@@ -12,7 +12,8 @@ contract ModuleRegistryMock {
   function runModules(
     address[] memory /*modulesAddresses*/,
     AttestationPayload memory /*attestationPayload*/,
-    bytes[] memory /*validationPayload*/
+    bytes[] memory /*validationPayload*/,
+    uint256 /*value*/
   ) public pure returns (bool[] memory) {
     bool[] memory results = new bool[](1);
     results[0] = true;

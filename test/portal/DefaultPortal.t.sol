@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
 import { DefaultPortal } from "../../src/portal/DefaultPortal.sol";

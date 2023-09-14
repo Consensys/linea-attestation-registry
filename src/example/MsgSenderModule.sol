@@ -2,8 +2,6 @@
 pragma solidity 0.8.21;
 
 import { AbstractModule } from "../interface/AbstractModule.sol";
-// solhint-disable-next-line max-line-length
-import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
 import { AttestationPayload } from "../types/Structs.sol";
 
 /**
@@ -12,7 +10,7 @@ import { AttestationPayload } from "../types/Structs.sol";
  * @notice This contract is an example of a module, able to check if the transaction sender is a given address
  * @dev A module should not be initializable (to prevent it from being upgradeable)
  */
-contract MsgSenderModule is IERC165Upgradeable, AbstractModule {
+contract MsgSenderModule is AbstractModule {
   /// @dev The address expected by this module
   address public expectedMsgSender;
 
@@ -32,18 +30,12 @@ contract MsgSenderModule is IERC165Upgradeable, AbstractModule {
   function run(
     AttestationPayload memory /*_attestationPayload*/,
     bytes memory /*_validationPayload*/,
-    address _txSender
+    address _txSender,
+    uint256 /*_value*/
   ) public view override returns (bool) {
     if (_txSender != expectedMsgSender) {
       revert WrongTransactionSender();
     }
     return true;
-  }
-
-  /**
-   * @notice To check this contract implements the Module interface
-   */
-  function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 }

@@ -1,0 +1,39 @@
+type Attestation @entity {
+    id: ID!
+    schemaId: Bytes!
+    replacedBy: Bytes!
+    attester: Bytes!
+    portal: Bytes!
+    attestedDate: BigInt!
+    expirationDate: BigInt!
+    revocationDate: BigInt!
+    version: BigInt!
+    revoked: Boolean!
+    subject: Bytes!
+    attestationData: Bytes!
+}
+
+type Module @entity {
+    id: ID!
+    moduleAddress: Bytes!
+    name: String!
+    description: String!
+}
+
+type Portal @entity {
+    id: ID!
+    ownerAddress: Bytes!
+    modules: [Bytes!]
+    isRevocable: Boolean!
+    name: String!
+    description: String!
+    ownerName: String!
+}
+
+type Schema @entity {
+    id: ID!
+    name: String!
+    description: String!
+    context: String!
+    schema: String!
+}

@@ -10,9 +10,12 @@ contract PayableModuleTest is Test {
   PayableModule private payableModule;
   uint256 private attestationFee = 0.01 ether;
   AttestationPayload private attestationPayload;
+  address private owner = makeAddr("owner");
+
+  error OwnableUnauthorizedAccount(address account);
 
   function setUp() public {
-    payableModule = new PayableModule(attestationFee);
+    payableModule = new PayableModule(attestationFee, owner);
 
     attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
@@ -31,8 +34,16 @@ contract PayableModuleTest is Test {
 
   function test_PayableModule_setFee() public {
     assertEq(payableModule.attestationFee(), 0.01 ether);
+    vm.prank(owner);
     payableModule.setFee(0.001 ether);
     assertEq(payableModule.attestationFee(), 0.001 ether);
+  }
+
+  function test_PayableModule_setFee_WrongCaller() public {
+    address randomCaller = makeAddr("randomCaller");
+    vm.prank(randomCaller);
+    vm.expectRevert(abi.encodeWithSelector(OwnableUnauthorizedAccount.selector, randomCaller));
+    payableModule.setFee(0.001 ether);
   }
 
   function test_PayableModule_InvalidAttestationFee() public {

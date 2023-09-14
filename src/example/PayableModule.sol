@@ -19,7 +19,7 @@ contract PayableModule is Ownable, AbstractModule {
   /**
    * @param _attestationFee The fee required to attest
    */
-  constructor(uint256 _attestationFee) {
+  constructor(uint256 _attestationFee, address _initialOwner) Ownable(_initialOwner) {
     attestationFee = _attestationFee;
   }
 

@@ -139,7 +139,7 @@ contract EASPortalTest is Test {
 
   function test_revoke() public {
     vm.expectRevert(EASPortal.NoRevocation.selector);
-    easPortal.revoke(bytes32(uint256(1)), bytes32(uint256(1)));
+    easPortal.revoke(bytes32(uint256(1)));
   }
 
   function test_bulkRevoke() public {
@@ -152,7 +152,7 @@ contract EASPortalTest is Test {
     replacingAttestations[1] = bytes32(uint256(3));
 
     vm.expectRevert(EASPortal.NoBulkRevocation.selector);
-    easPortal.bulkRevoke(attestationsToRevoke, replacingAttestations);
+    easPortal.bulkRevoke(attestationsToRevoke);
   }
 
   function testSupportsInterface() public {

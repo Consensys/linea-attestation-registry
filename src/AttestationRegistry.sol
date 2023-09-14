@@ -38,13 +38,13 @@ contract AttestationRegistry is OwnableUpgradeable {
   error AlreadyRevoked();
   /// @notice Error thrown when an attempt is made to revoke an attestation based on a non-revocable schema
   error AttestationNotRevocable();
-  /// @notice Error thrown when attempting to bulk revoke attestations without the same number of replacing attestations
-  error BulkRevocationInvalidParams();
 
   /// @notice Event emitted when an attestation is registered
   event AttestationRegistered(bytes32 indexed attestationId);
+  /// @notice Event emitted when an attestation is replaced
+  event AttestationReplaced(bytes32 attestationId, bytes32 replacedBy);
   /// @notice Event emitted when an attestation is revoked
-  event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
+  event AttestationRevoked(bytes32 attestationId);
   /// @notice Event emitted when the version number is incremented
   event VersionUpdated(uint16 version);
 
@@ -147,11 +147,41 @@ contract AttestationRegistry is OwnableUpgradeable {
   }
 
   /**
+   * @notice Replaces an attestation for given identifier and replaces it by an other one
+   * @param attestationId the attestation ID to replace
+   * @param attestationPayload the attestation payload to create attestation and register it
+   * @param attester the account address issuing the attestation
+   */
+  function replace(bytes32 attestationId, AttestationPayload calldata attestationPayload, address attester) public {
+    attest(attestationPayload, attester);
+    revoke(attestationId);
+    bytes32 replacedBy = bytes32(abi.encode(attestationIdCounter));
+    attestations[attestationId].replacedBy = replacedBy;
+
+    emit AttestationReplaced(attestationId, replacedBy);
+  }
+
+  /**
+   * @notice Replaces attestations for given identifiers and replaces them by new ones
+   * @param attestationId the attestation ID to replace
+   * @param attestationPayload the attestation payload to create attestation and register it
+   * @param attester the account address issuing the attestation
+   */
+  function bulkReplace(
+    bytes32[] calldata attestationId,
+    AttestationPayload[] calldata attestationPayload,
+    address attester
+  ) public {
+    for (uint256 i = 0; i < attestationId.length; i++) {
+      replace(attestationId[i], attestationPayload[i], attester);
+    }
+  }
+
+  /**
    * @notice Revokes an attestation for given identifier and can replace it by an other one
    * @param attestationId the attestation ID to revoke
-   * @param replacedBy the replacing attestation ID (leave empty to just revoke)
    */
-  function revoke(bytes32 attestationId, bytes32 replacedBy) public {
+  function revoke(bytes32 attestationId) public {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
     if (attestations[attestationId].revoked) revert AlreadyRevoked();
     if (msg.sender != attestations[attestationId].portal) revert OnlyAttestingPortal();
@@ -160,21 +190,16 @@ contract AttestationRegistry is OwnableUpgradeable {
     attestations[attestationId].revoked = true;
     attestations[attestationId].revocationDate = uint64(block.timestamp);
 
-    if (isRegistered(replacedBy)) attestations[attestationId].replacedBy = replacedBy;
-
-    emit AttestationRevoked(attestationId, replacedBy);
+    emit AttestationRevoked(attestationId);
   }
 
   /**
    * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
    * @param attestationIds the attestations IDs to revoke
-   * @param replacedBy the replacing attestations IDs (leave an ID empty to just revoke)
    */
-  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) external {
-    if (attestationIds.length != replacedBy.length) revert BulkRevocationInvalidParams();
-
+  function bulkRevoke(bytes32[] memory attestationIds) external {
     for (uint256 i = 0; i < attestationIds.length; i++) {
-      revoke(attestationIds[i], replacedBy[i]);
+      revoke(attestationIds[i]);
     }
   }
 

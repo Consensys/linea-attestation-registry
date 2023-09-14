@@ -130,17 +130,20 @@ contract ModuleRegistry is OwnableUpgradeable {
     address[] memory modulesAddresses,
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayloads
-  ) public {
+  ) public returns (bool[] memory) {
+    bool[] memory results = new bool[](modulesAddresses.length);
     // If no modules provided, bypass module validation
-    if (modulesAddresses.length == 0) return;
+    if (modulesAddresses.length == 0) return results;
     // Each module involved must have a corresponding item from the validation payload
     if (modulesAddresses.length != validationPayloads.length) revert ModuleValidationPayloadMismatch();
 
     // For each module check if it is registered and call run method
     for (uint32 i = 0; i < modulesAddresses.length; i++) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
-      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayloads[i], tx.origin);
+      bool result = AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayloads[i], tx.origin);
+      results[i] = result;
     }
+    return results;
   }
 
   /** Execute the run method for all given Modules that are registered
@@ -153,10 +156,13 @@ contract ModuleRegistry is OwnableUpgradeable {
     address[] memory modulesAddresses,
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) public {
+  ) public returns (bool[][] memory) {
+    bool[][] memory results = new bool[][](modulesAddresses.length);
     for (uint32 i = 0; i < modulesAddresses.length; i++) {
-      runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i]);
+      results[i] = new bool[](attestationsPayloads.length);
+      results[i] = runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i]);
     }
+    return results;
   }
 
   /**

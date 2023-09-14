@@ -10,19 +10,27 @@ contract ModuleRegistryMock {
   function test() public {}
 
   function runModules(
-    address[] memory modulesAddresses,
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload
-  ) public {}
+    address[] memory /*modulesAddresses*/,
+    AttestationPayload memory /*attestationPayload*/,
+    bytes[] memory /*validationPayload*/
+  ) public pure returns (bool[] memory) {
+    bool[] memory results = new bool[](1);
+    results[0] = true;
+    return results;
+  }
 
   function bulkRunModules(
     address[] memory modulesAddresses,
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) public {
+  ) public returns (bool[][] memory) {
     require(modulesAddresses.length >= 0, "Invalid modulesAddresses");
     require(attestationsPayloads.length >= 0, "Invalid attestationsPayloads");
     require(validationPayloads.length >= 0, "Invalid validationPayloads");
     emit ModulesBulkRunForAttestation();
+    bool[][] memory results = new bool[][](1);
+    results[0] = new bool[](1);
+    results[0][0] = true;
+    return results;
   }
 }

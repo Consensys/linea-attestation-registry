@@ -145,7 +145,9 @@ contract ModuleRegistryTest is Test {
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](2);
 
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
+    bool[] memory results = moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload);
+    assertEq(results[0], true);
+    assertEq(results[1], true);
   }
 
   function testRunModulesWithIncorrectNumberOfValidationPayload() public {
@@ -210,7 +212,11 @@ contract ModuleRegistryTest is Test {
     attestationPayloads[0] = attestationPayload;
     attestationPayloads[1] = attestationPayload;
 
-    moduleRegistry.bulkRunModules(moduleAddresses, attestationPayloads, validationPayloads);
+    bool[][] memory results = moduleRegistry.bulkRunModules(moduleAddresses, attestationPayloads, validationPayloads);
+    assertEq(results[0][0], true);
+    assertEq(results[0][1], true);
+    assertEq(results[1][0], true);
+    assertEq(results[1][1], true);
     vm.stopPrank();
   }
 

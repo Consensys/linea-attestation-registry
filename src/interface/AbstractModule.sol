@@ -8,5 +8,5 @@ abstract contract AbstractModule {
     AttestationPayload memory attestationPayload,
     bytes memory validationPayload,
     address txSender
-  ) public virtual;
+  ) public virtual returns (bool);
 }

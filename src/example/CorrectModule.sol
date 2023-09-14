@@ -11,9 +11,11 @@ contract CorrectModule is AbstractModule, IERC165Upgradeable {
 
   function run(
     AttestationPayload memory /*attestationPayload*/,
-    bytes memory validationPayload,
+    bytes memory /*validationPayload*/,
     address /*txSender*/
-  ) public pure override {}
+  ) public pure override returns (bool) {
+    return true;
+  }
 
   function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
     return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;

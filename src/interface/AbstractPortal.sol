@@ -186,6 +186,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
 
   /**
    * @notice Optional method run when an attestation is revoked or replaced
+   * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
    */
   function _onRevoke(bytes32 /*attestationId*/) internal virtual {
     if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
@@ -193,6 +194,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
 
   /**
    * @notice Optional method run when a batch of attestations are revoked or replaced
+   * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
    */
   function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal virtual {
     if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();

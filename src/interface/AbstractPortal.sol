@@ -72,10 +72,10 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   }
 
   /**
-   * @notice Replaces the attestation for the given identifier and replaces it with new attestation
-   * @param attestationId the attestation ID to replace
-   * @param attestationPayload the attestation payload to create attestation and register it
-   * @param validationPayloads the payloads to validate via the modules to issue the attestations
+   * @notice Replaces the attestation for the given identifier and replaces it with a new attestation
+   * @param attestationId the ID of the attestation to replace
+   * @param attestationPayload the attestation payload to create the new attestation and register it
+   * @param validationPayloads the payloads to validate via the modules to issue the attestation
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
    */
   function replace(
@@ -92,8 +92,8 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
 
   /**
    * @notice Bulk replaces the attestation for the given identifiers and replaces them with new attestations
-   * @param attestationIds the attestation IDs to replace
-   * @param attestationsPayloads the payloads to attest
+   * @param attestationIds the list of IDs of the attestations to replace
+   * @param attestationsPayloads the list of attestation payloads to create the new attestations and register them
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
    */
   function bulkReplace(
@@ -109,8 +109,8 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   }
 
   /**
-   * @notice Revokes the attestation for the given identifier
-   * @param attestationId the attestation ID to revoke
+   * @notice Revokes an attestation for the given identifier
+   * @param attestationId the ID of the attestation to revoke
    * @dev By default, revocation is only possible by the portal owner
    * We strongly encourage implementing such a rule in your Portal if you intend on overriding this method
    */
@@ -121,8 +121,8 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   }
 
   /**
-   * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
-   * @param attestationIds the attestations IDs to revoke
+   * @notice Bulk revokes a list of attestations for the given identifiers
+   * @param attestationIds the IDs of the attestations to revoke
    */
   function bulkRevoke(bytes32[] memory attestationIds) public {
     _onBulkRevoke(attestationIds);

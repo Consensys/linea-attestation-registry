@@ -147,9 +147,9 @@ contract AttestationRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Replaces an attestation for given identifier and replaces it by an other one
-   * @param attestationId the attestation ID to replace
-   * @param attestationPayload the attestation payload to create attestation and register it
+   * @notice Replaces an attestation for the given identifier and replaces it with a new attestation
+   * @param attestationId the ID of the attestation to replace
+   * @param attestationPayload the attestation payload to create the new attestation and register it
    * @param attester the account address issuing the attestation
    */
   function replace(bytes32 attestationId, AttestationPayload calldata attestationPayload, address attester) public {
@@ -162,24 +162,24 @@ contract AttestationRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Replaces attestations for given identifiers and replaces them by new ones
-   * @param attestationId the attestation ID to replace
-   * @param attestationPayload the attestation payload to create attestation and register it
+   * @notice Replaces attestations for given identifiers and replaces them with new attestations
+   * @param attestationIds the list of IDs of the attestations to replace
+   * @param attestationPayloads the list of attestation payloads to create the new attestations and register them
    * @param attester the account address issuing the attestation
    */
   function bulkReplace(
-    bytes32[] calldata attestationId,
-    AttestationPayload[] calldata attestationPayload,
+    bytes32[] calldata attestationIds,
+    AttestationPayload[] calldata attestationPayloads,
     address attester
   ) public {
-    for (uint256 i = 0; i < attestationId.length; i++) {
-      replace(attestationId[i], attestationPayload[i], attester);
+    for (uint256 i = 0; i < attestationIds.length; i++) {
+      replace(attestationIds[i], attestationPayloads[i], attester);
     }
   }
 
   /**
-   * @notice Revokes an attestation for given identifier and can replace it by an other one
-   * @param attestationId the attestation ID to revoke
+   * @notice Revokes an attestation for a given identifier
+   * @param attestationId the ID of the attestation to revoke
    */
   function revoke(bytes32 attestationId) public {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
@@ -194,8 +194,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
-   * @param attestationIds the attestations IDs to revoke
+   * @notice Bulk revokes a list of attestations for the given identifiers
+   * @param attestationIds the IDs of the attestations to revoke
    */
   function bulkRevoke(bytes32[] memory attestationIds) external {
     for (uint256 i = 0; i < attestationIds.length; i++) {

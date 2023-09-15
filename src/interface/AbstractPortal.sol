@@ -114,7 +114,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
    * @dev By default, revocation is only possible by the portal owner
    * We strongly encourage implementing such a rule in your Portal if you intend on overriding this method
    */
-  function revoke(bytes32 attestationId) public virtual {
+  function revoke(bytes32 attestationId) public {
     _onRevoke(attestationId);
 
     attestationRegistry.revoke(attestationId);
@@ -124,7 +124,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
    * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
    * @param attestationIds the attestations IDs to revoke
    */
-  function bulkRevoke(bytes32[] memory attestationIds) public virtual {
+  function bulkRevoke(bytes32[] memory attestationIds) public {
     _onBulkRevoke(attestationIds);
 
     attestationRegistry.bulkRevoke(attestationIds);

@@ -213,6 +213,9 @@ upgradable to the new local versions.
 
 ### Recreate the network files
 
+:warning: Note: this script must only be run on a branch/commit corresponding to the version of the contracts deployed
+on the targeted network!.
+
 Run `pnpm run check:upgradeable:goerli` or `pnpm run check:upgradeable` to re-generate the network files describing the
 deployed contracts. This can be useful if the file was lost/modified since the last upgrade or the first deployment.
 
@@ -220,15 +223,21 @@ deployed contracts. This can be useful if the file was lost/modified since the l
 
 ### On the Linea Goerli testnet:
 
-1. Check your `.env` file contains the address of the proxy for the contract you want to upgrade
-2. Run `pnpm run upgrade:ContractName:goerli`, replacing `ContractName` with the contract you want to upgrade
-3. Alternatively, you can upgrade all contracts at once via `pnpm run upgrade:all:goerli`
+1. Check that your `.env` file contains the address of all the proxies
+2. Upgrade only the implementations that changed since the last upgrade via the `pnpm run upgrade:all:goerli` command
+3. _Optional_: Upgrade all the implementations by forcing their re-deployment via the
+   `pnpm run upgrade:all:goerli:force` command
+
+:warning: Note: Forcing the redeployment of all the implementations is more expensive!
 
 ### On the Linea mainnet:
 
-1. Check your `.env` file contains the address of the proxy for the contract you want to upgrade
-2. Run `pnpm run upgrade:ContractName`, replacing `ContractName` with the contract you want to upgrade
-3. Alternatively, you can upgrade all contracts at once via `pnpm run upgrade:all`
+1. Check that your `.env` file contains the address of all the proxies
+2. Upgrade only the implementations that changed since the last upgrade via the `pnpm run upgrade:all` command
+3. _Optional_: Upgrade all the implementations by forcing their re-deployment via the `pnpm run upgrade:all:force`
+   command
+
+:warning: Note: Forcing the redeployment of all the implementations is more expensive!
 
 ## Contracts addresses
 

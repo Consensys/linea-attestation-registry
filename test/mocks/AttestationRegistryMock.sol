@@ -9,9 +9,10 @@ contract AttestationRegistryMock {
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
   event AttestationRegistered();
+  event AttestationReplaced();
   event BulkAttestationsRegistered();
-  event AttestationRevoked(bytes32 attestationId, bytes32 replacedBy);
-  event BulkAttestationsRevoked(bytes32[] attestationId, bytes32[] replacedBy);
+  event AttestationRevoked(bytes32 attestationId);
+  event BulkAttestationsRevoked(bytes32[] attestationId);
 
   function test() public {}
 
@@ -46,14 +47,28 @@ contract AttestationRegistryMock {
     emit BulkAttestationsRegistered();
   }
 
-  function revoke(bytes32 attestationId, bytes32 replacedBy) public {
-    require(bytes32(attestationId) != 0, "Invalid attestation");
-    emit AttestationRevoked(attestationId, replacedBy);
+  function replace(bytes32 /*attestationId*/, AttestationPayload calldata attestationPayload, address attester) public {
+    require(bytes32(attestationPayload.schemaId) != 0, "Invalid attestationPayload");
+    require(attester != address(0), "Invalid attester");
+
+    emit AttestationRegistered();
+    emit AttestationReplaced();
   }
 
-  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) public {
+  function bulkReplace(
+    bytes32[] calldata attestationId,
+    AttestationPayload[] calldata attestationPayload,
+    address attester
+  ) public {}
+
+  function revoke(bytes32 attestationId) public {
+    require(bytes32(attestationId) != 0, "Invalid attestation");
+    emit AttestationRevoked(attestationId);
+  }
+
+  function bulkRevoke(bytes32[] memory attestationIds) public {
     require(attestationIds.length > 0, "Invalid attestation");
-    emit BulkAttestationsRevoked(attestationIds, replacedBy);
+    emit BulkAttestationsRevoked(attestationIds);
   }
 
   function getVersionNumber() public view returns (uint16) {

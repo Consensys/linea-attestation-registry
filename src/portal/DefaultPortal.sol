@@ -2,7 +2,6 @@
 pragma solidity 0.8.21;
 
 import { AbstractPortal } from "../interface/AbstractPortal.sol";
-import { AttestationPayload } from "../types/Structs.sol";
 
 /**
  * @title Default Portal

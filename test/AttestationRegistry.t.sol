@@ -226,6 +226,39 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.bulkReplace(attestationIds, payloadsToAttest, attester);
   }
 
+  function test_bulkReplace_ArrayLengthMismatch(AttestationPayload[2] memory attestationPayloads) public {
+    vm.assume(attestationPayloads[0].subject.length != 0);
+    vm.assume(attestationPayloads[0].attestationData.length != 0);
+    vm.assume(attestationPayloads[1].subject.length != 0);
+    vm.assume(attestationPayloads[1].attestationData.length != 0);
+
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayloads[0].schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    attestationPayloads[1].schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+
+    Attestation memory attestation1 = _createAttestation(attestationPayloads[0], 1);
+    Attestation memory attestation2 = _createAttestation(attestationPayloads[1], 2);
+
+    Attestation[] memory attestations = new Attestation[](2);
+    attestations[0] = attestation1;
+    attestations[1] = attestation2;
+
+    AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
+    payloadsToAttest[0] = attestationPayloads[0];
+    payloadsToAttest[1] = attestationPayloads[1];
+
+    bytes32[] memory attestationIds = new bytes32[](3);
+    attestationIds[0] = attestation1.attestationId;
+    attestationIds[1] = attestation2.attestationId;
+    attestationIds[2] = bytes32(abi.encode(3));
+
+    vm.startPrank(portal);
+    attestationRegistry.bulkAttest(payloadsToAttest, attester);
+
+    vm.expectRevert(AttestationRegistry.ArrayLengthMismatch.selector);
+    attestationRegistry.bulkReplace(attestationIds, payloadsToAttest, attester);
+  }
+
   function test_revoke(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);

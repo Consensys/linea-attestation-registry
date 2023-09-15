@@ -34,6 +34,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   error AttestationSubjectFieldEmpty();
   /// @notice Error thrown when an attestation data field is empty
   error AttestationDataFieldEmpty();
+  /// @notice Error thrown when an attempt is made to bulk replace with mismatched parameter array lengths
+  error ArrayLengthMismatch();
   /// @notice Error thrown when an attempt is made to revoke an attestation that was already revoked
   error AlreadyRevoked();
   /// @notice Error thrown when an attempt is made to revoke an attestation based on a non-revocable schema
@@ -172,6 +174,7 @@ contract AttestationRegistry is OwnableUpgradeable {
     AttestationPayload[] calldata attestationPayloads,
     address attester
   ) public {
+    if (attestationIds.length != attestationPayloads.length) revert ArrayLengthMismatch();
     for (uint256 i = 0; i < attestationIds.length; i++) {
       replace(attestationIds[i], attestationPayloads[i], attester);
     }

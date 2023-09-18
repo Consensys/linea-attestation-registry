@@ -157,8 +157,7 @@ contract PortalRegistry is OwnableUpgradeable {
     bool isRevocable,
     string memory ownerName
   ) external onlyIssuers(msg.sender) {
-    DefaultPortal defaultPortal = new DefaultPortal();
-    defaultPortal.initialize(modules, address(router));
+    DefaultPortal defaultPortal = new DefaultPortal(modules, address(router));
     register(address(defaultPortal), name, description, isRevocable, ownerName);
   }
 

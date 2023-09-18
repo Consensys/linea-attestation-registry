@@ -32,17 +32,16 @@ contract DefaultPortalTest is Test {
   event BulkAttestationsRevoked(bytes32[] attestationId);
 
   function setUp() public {
-    modules.push(address(correctModule));
-    defaultPortal = new DefaultPortal();
     router.initialize();
     router.updateModuleRegistry(address(moduleRegistryMock));
     router.updateAttestationRegistry(address(attestationRegistryMock));
     router.updatePortalRegistry(address(portalRegistryMock));
 
+    modules.push(address(correctModule));
+    defaultPortal = new DefaultPortal(modules, address(router));
+
     vm.prank(portalOwner);
     portalRegistryMock.register(address(defaultPortal), "Name", "Description", true, "Owner name");
-
-    defaultPortal.initialize(modules, address(router));
   }
 
   function test_setup() public {
@@ -51,16 +50,6 @@ contract DefaultPortalTest is Test {
     assertEq(address(defaultPortal.attestationRegistry()), address(attestationRegistryMock));
     assertEq(address(defaultPortal.portalRegistry()), address(portalRegistryMock));
     assertEq(portalRegistryMock.getPortalByAddress(address(defaultPortal)).ownerAddress, portalOwner);
-  }
-
-  function test_initialize() public {
-    DefaultPortal defaultPortalTest = new DefaultPortal();
-    vm.expectEmit();
-    emit Initialized(1);
-    defaultPortalTest.initialize(modules, address(router));
-
-    vm.expectRevert("Initializable: contract is already initialized");
-    defaultPortalTest.initialize(modules, address(router));
   }
 
   function test_getModules() public {

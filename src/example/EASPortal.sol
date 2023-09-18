@@ -38,6 +38,8 @@ contract EASPortal is AbstractPortal {
   /// @notice Error thrown when trying to bulk revoke attestations
   error NoBulkRevocation();
 
+  constructor(address[] memory modules, address router) AbstractPortal(modules, router) {}
+
   function withdraw(address payable to, uint256 amount) external override {}
 
   function attest(AttestationRequest memory attestationRequest) public payable {

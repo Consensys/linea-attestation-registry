@@ -43,7 +43,7 @@ contract PortalRegistryTest is Test {
     vm.prank(address(0));
     portalRegistry.setIssuer(user);
 
-    validPortalMock = new ValidPortalMock();
+    validPortalMock = new ValidPortalMock(new address[](0), address(router));
   }
 
   function test_alreadyInitialized() public {

@@ -22,16 +22,11 @@ contract EASPortalTest is Test {
   event BulkAttestationsRegistered();
 
   function setUp() public {
-    easPortal = new EASPortal();
     router.initialize();
     router.updateModuleRegistry(address(moduleRegistryMock));
     router.updateAttestationRegistry(address(attestationRegistryMock));
-    easPortal.initialize(modules, address(router));
-  }
 
-  function test_initialize() public {
-    vm.expectRevert("Initializable: contract is already initialized");
-    easPortal.initialize(modules, address(router));
+    easPortal = new EASPortal(modules, address(router));
   }
 
   function test_attest() public {

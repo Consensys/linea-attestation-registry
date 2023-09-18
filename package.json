@@ -39,11 +39,13 @@
     "prepare": "husky install",
     "prettier:check": "prettier --check \"**/*.{json,md,svg,yml,sol,ts}\"",
     "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol,ts}\"",
-    "reimport": "npx hardhat run --network linea script/upgrade/upgradeEverything.ts",
-    "reimport:goerli": "npx hardhat run --network linea-goerli script/upgrade/upgradeEverything.ts",
+    "reimport": "npx hardhat run --network linea script/recreateNetworkFile.ts",
+    "reimport:goerli": "npx hardhat run --network linea-goerli script/recreateNetworkFile.ts",
     "test": "forge test",
     "upgrade:all": "npx hardhat run --network linea script/upgrade/upgradeEverything.ts",
-    "upgrade:all:goerli": "npx hardhat run --network linea-goerli script/upgrade/upgradeEverything.ts"
+    "upgrade:all:force": "npx hardhat run --network linea script/upgrade/forceUgradeEverything.ts",
+    "upgrade:all:goerli": "npx hardhat run --network linea-goerli script/upgrade/upgradeEverything.ts",
+    "upgrade:all:goerli:force": "npx hardhat run --network linea-goerli script/upgrade/forceUgradeEverything.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.4",

@@ -96,24 +96,14 @@ contract ModuleRegistry is OwnableUpgradeable {
     string memory description,
     address moduleAddress
   ) public onlyIssuers(msg.sender) {
-    if (bytes(name).length == 0) {
-      revert ModuleNameMissing();
-    }
-
+    if (bytes(name).length == 0) revert ModuleNameMissing();
     // Check if moduleAddress is a smart contract address
-    if (!isContractAddress(moduleAddress)) {
-      revert ModuleAddressInvalid();
-    }
-
+    if (!isContractAddress(moduleAddress)) revert ModuleAddressInvalid();
     // Check if module has implemented AbstractModule
-    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId)) {
+    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId))
       revert ModuleInvalid();
-    }
-
     // Module address is used to identify uniqueness of the module
-    if (bytes(modules[moduleAddress].name).length > 0) {
-      revert ModuleAlreadyExists();
-    }
+    if (bytes(modules[moduleAddress].name).length > 0) revert ModuleAlreadyExists();
 
     modules[moduleAddress] = Module(moduleAddress, name, description);
     moduleAddresses.push(moduleAddress);
@@ -123,23 +113,24 @@ contract ModuleRegistry is OwnableUpgradeable {
   /** Execute the run method for all given Modules that are registered
    * @param modulesAddresses the addresses of the registered modules
    * @param attestationPayload the payload to attest
-   * @param validationPayload the payloads to check for each module
+   * @param validationPayloads the payloads to check for each module (one payload per module)
    * @dev check if modules are registered and execute run method for each module
    */
   function runModules(
     address[] memory modulesAddresses,
     AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload
+    bytes[] memory validationPayloads,
+    uint256 value
   ) public {
     // If no modules provided, bypass module validation
     if (modulesAddresses.length == 0) return;
     // Each module involved must have a corresponding item from the validation payload
-    if (modulesAddresses.length != validationPayload.length) revert ModuleValidationPayloadMismatch();
+    if (modulesAddresses.length != validationPayloads.length) revert ModuleValidationPayloadMismatch();
 
     // For each module check if it is registered and call run method
     for (uint32 i = 0; i < modulesAddresses.length; i++) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
-      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayload, tx.origin);
+      AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayloads[i], tx.origin, value);
     }
   }
 
@@ -148,6 +139,8 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @param attestationsPayloads the payloads to attest
    * @param validationPayloads the payloads to check for each module
    * @dev check if modules are registered and execute run method for each module
+   * @dev NOTE: Currently the bulk run modules does not handle payable modules
+   *            a default value of 0 is used.
    */
   function bulkRunModules(
     address[] memory modulesAddresses,
@@ -155,7 +148,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     bytes[][] memory validationPayloads
   ) public {
     for (uint32 i = 0; i < modulesAddresses.length; i++) {
-      runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i]);
+      runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i], 0);
     }
   }
 

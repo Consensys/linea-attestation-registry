@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { Vm } from "forge-std/Vm.sol";
 import { Test } from "forge-std/Test.sol";
 import { AbstractModule } from "../../src/interface/AbstractModule.sol";
 import { MsgSenderModule } from "../../src/example/MsgSenderModule.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
-// solhint-disable-next-line max-line-length
-import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
 
 contract MsgSenderModuleTest is Test {
   MsgSenderModule private msgSenderModule;
@@ -15,11 +12,9 @@ contract MsgSenderModuleTest is Test {
   AttestationPayload private attestationPayload;
 
   event ModuleRegistered(string name, string description, address moduleAddress);
-  event Initialized(uint8 version);
 
   function setUp() public {
-    msgSenderModule = new MsgSenderModule();
-    msgSenderModule.initialize(expectedMsgSender);
+    msgSenderModule = new MsgSenderModule(expectedMsgSender);
 
     attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
@@ -29,45 +24,25 @@ contract MsgSenderModuleTest is Test {
     );
   }
 
-  function testInitialize() public {
-    msgSenderModule = new MsgSenderModule();
-    vm.expectEmit();
-    emit Initialized(1);
-    msgSenderModule.initialize(expectedMsgSender);
-    assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
-  }
-
   function testCorrectMsgSenderAddress() public {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
-    bytes[] memory validationPayload = new bytes[](0);
+    bytes memory validationPayload = new bytes(0);
     address msgSender = expectedMsgSender;
 
-    bytes[] memory _validationPayload = msgSenderModule.run(attestationPayload, validationPayload, msgSender);
-
-    assertBytesArrayEq(_validationPayload, validationPayload);
+    msgSenderModule.run(attestationPayload, validationPayload, msgSender, 0);
   }
 
   function testIncorrectMsgSenderAddress() public {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
-    bytes[] memory validationPayload = new bytes[](0);
+    bytes memory validationPayload = new bytes(0);
     address incorrectMsgSender = address(1);
+
     vm.expectRevert(MsgSenderModule.WrongTransactionSender.selector);
-    msgSenderModule.run(attestationPayload, validationPayload, incorrectMsgSender);
+    msgSenderModule.run(attestationPayload, validationPayload, incorrectMsgSender, 0);
   }
 
   function testSupportsInterface() public {
-    bool isIERC165Supported = msgSenderModule.supportsInterface(type(IERC165Upgradeable).interfaceId);
-    assertEq(isIERC165Supported, true);
     bool isAbstractModuleSupported = msgSenderModule.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);
-  }
-
-  function assertBytesArrayEq(bytes[] memory actualBytesArray, bytes[] memory expectedBytesArray) public {
-    // Compare bytes[] arrays using assertEq
-    require(expectedBytesArray.length == actualBytesArray.length, "Number of elements are not equal");
-
-    for (uint256 i = 0; i < expectedBytesArray.length; i++) {
-      assertEq(expectedBytesArray[i], actualBytesArray[i]);
-    }
   }
 }

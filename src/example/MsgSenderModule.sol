@@ -2,17 +2,15 @@
 pragma solidity 0.8.21;
 
 import { AbstractModule } from "../interface/AbstractModule.sol";
-// solhint-disable-next-line max-line-length
-import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/IERC165Upgradeable.sol";
-import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
 import { AttestationPayload } from "../types/Structs.sol";
 
 /**
  * @title Msg Sender Module
  * @author Consensys
  * @notice This contract is an example of a module, able to check if the transaction sender is a given address
+ * @dev A module should not be initializable (to prevent it from being upgradeable)
  */
-contract MsgSenderModule is IERC165Upgradeable, AbstractModule, Initializable {
+contract MsgSenderModule is AbstractModule {
   /// @dev The address expected by this module
   address public expectedMsgSender;
 
@@ -20,9 +18,9 @@ contract MsgSenderModule is IERC165Upgradeable, AbstractModule, Initializable {
   error WrongTransactionSender();
 
   /**
-   * @notice Contract initialization
+   * @param _expectedMsgSender the expected caller to be validated against
    */
-  function initialize(address _expectedMsgSender) public initializer {
+  constructor(address _expectedMsgSender) {
     expectedMsgSender = _expectedMsgSender;
   }
 
@@ -31,19 +29,12 @@ contract MsgSenderModule is IERC165Upgradeable, AbstractModule, Initializable {
    */
   function run(
     AttestationPayload memory /*_attestationPayload*/,
-    bytes[] memory _validationPayload,
-    address _txSender
-  ) public view override returns (bytes[] memory validationPayload) {
-    validationPayload = _validationPayload;
+    bytes memory /*_validationPayload*/,
+    address _txSender,
+    uint256 /*_value*/
+  ) public view override {
     if (_txSender != expectedMsgSender) {
       revert WrongTransactionSender();
     }
-  }
-
-  /**
-   * @notice To check this contract implements the Module interface
-   */
-  function supportsInterface(bytes4 interfaceID) external pure returns (bool) {
-    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
   }
 }

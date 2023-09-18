@@ -74,11 +74,11 @@ contract EASPortal is AbstractPortal {
     }
   }
 
-  function revoke(bytes32 /*attestationId*/, bytes32 /*replacedBy*/) public pure override {
+  function _onRevoke(bytes32 /*attestationId*/) internal pure override {
     revert NoRevocation();
   }
 
-  function bulkRevoke(bytes32[] memory /*attestationIds*/, bytes32[] memory /*replacedBy*/) public pure override {
+  function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal pure override {
     revert NoBulkRevocation();
   }
 

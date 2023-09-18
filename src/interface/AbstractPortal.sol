@@ -47,10 +47,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
    */
-  function attest(
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayloads
-  ) public payable virtual {
+  function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
     moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
 
     _onAttest(attestationPayload);
@@ -66,40 +63,71 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   function bulkAttest(
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) public payable virtual {
-    // Run all modules for all payloads
+  ) public payable {
     moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
 
     _onBulkAttest(attestationsPayloads, validationPayloads);
 
-    // Register attestations using the attestation registry
     attestationRegistry.bulkAttest(attestationsPayloads, _getAttester());
   }
 
   /**
-   * @notice Revokes the attestation for the given identifier and can replace it by a new one
-   * @param attestationId the attestation ID to revoke
-   * @param replacedBy the replacing attestation ID (leave empty to just revoke)
-   * @dev By default, revocation is only possible by the portal owner
-   * We strongly encourage implementing such a rule in your Portal if you intend on overriding this method
+   * @notice Replaces the attestation for the given identifier and replaces it with a new attestation
+   * @param attestationId the ID of the attestation to replace
+   * @param attestationPayload the attestation payload to create the new attestation and register it
+   * @param validationPayloads the payloads to validate via the modules to issue the attestation
+   * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
    */
-  function revoke(bytes32 attestationId, bytes32 replacedBy) public virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+  function replace(
+    bytes32 attestationId,
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayloads
+  ) public payable {
+    moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
 
-    _onRevoke(attestationId, replacedBy);
+    _onReplace(attestationId, attestationPayload);
 
-    attestationRegistry.revoke(attestationId, replacedBy);
+    attestationRegistry.replace(attestationId, attestationPayload, _getAttester());
   }
 
   /**
-   * @notice Bulk revokes attestations for given identifiers and can replace them by new ones
-   * @param attestationIds the attestations IDs to revoke
-   * @param replacedBy the replacing attestations IDs (leave an ID empty to just revoke)
+   * @notice Bulk replaces the attestation for the given identifiers and replaces them with new attestations
+   * @param attestationIds the list of IDs of the attestations to replace
+   * @param attestationsPayloads the list of attestation payloads to create the new attestations and register them
+   * @param validationPayloads the payloads to validate via the modules to issue the attestations
    */
-  function bulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) public virtual {
-    _onBulkRevoke(attestationIds, replacedBy);
+  function bulkReplace(
+    bytes32[] memory attestationIds,
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) public payable {
+    moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
 
-    attestationRegistry.bulkRevoke(attestationIds, replacedBy);
+    _onBulkReplace(attestationIds, attestationsPayloads, validationPayloads);
+
+    attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, _getAttester());
+  }
+
+  /**
+   * @notice Revokes an attestation for the given identifier
+   * @param attestationId the ID of the attestation to revoke
+   * @dev By default, revocation is only possible by the portal owner
+   * We strongly encourage implementing such a rule in your Portal if you intend on overriding this method
+   */
+  function revoke(bytes32 attestationId) public {
+    _onRevoke(attestationId);
+
+    attestationRegistry.revoke(attestationId);
+  }
+
+  /**
+   * @notice Bulk revokes a list of attestations for the given identifiers
+   * @param attestationIds the IDs of the attestations to revoke
+   */
+  function bulkRevoke(bytes32[] memory attestationIds) public {
+    _onBulkRevoke(attestationIds);
+
+    attestationRegistry.bulkRevoke(attestationIds);
   }
 
   /**
@@ -134,6 +162,13 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   function _onAttest(AttestationPayload memory attestationPayload) internal virtual {}
 
   /**
+   * @notice Optional method run when an attestation is replaced
+   * @param attestationId the ID of the attestation being replaced
+   * @param attestationPayload the attestation payload to create attestation and register it
+   */
+  function _onReplace(bytes32 attestationId, AttestationPayload memory attestationPayload) internal virtual {}
+
+  /**
    * @notice Optional method run when attesting a batch of payloads
    * @param attestationsPayloads the payloads to attest
    * @param validationPayloads the payloads to validate in order to issue the attestations
@@ -143,17 +178,25 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
     bytes[][] memory validationPayloads
   ) internal virtual {}
 
+  function _onBulkReplace(
+    bytes32[] memory attestationIds,
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) internal virtual {}
+
   /**
    * @notice Optional method run when an attestation is revoked or replaced
-   * @param attestationId the attestation ID to revoke
-   * @param replacedBy the replacing attestation ID
+   * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
    */
-  function _onRevoke(bytes32 attestationId, bytes32 replacedBy) internal virtual {}
+  function _onRevoke(bytes32 /*attestationId*/) internal virtual {
+    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+  }
 
   /**
    * @notice Optional method run when a batch of attestations are revoked or replaced
-   * @param attestationIds the attestations IDs to revoke
-   * @param replacedBy the replacing attestations IDs
+   * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
    */
-  function _onBulkRevoke(bytes32[] memory attestationIds, bytes32[] memory replacedBy) internal virtual {}
+  function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal virtual {
+    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+  }
 }

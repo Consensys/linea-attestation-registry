@@ -93,12 +93,6 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, "");
   }
 
-  function testCannotCreateSchemaWithoutContext() public {
-    vm.expectRevert(SchemaRegistry.SchemaContextMissing.selector);
-    vm.prank(user);
-    schemaRegistry.createSchema(expectedName, expectedDescription, "", expectedString);
-  }
-
   function testCannotCreateSchemaTwice() public {
     vm.startPrank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
@@ -138,12 +132,11 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function testCannotUpdateContextWithSchemaContextMissing() public {
+  function testCanUpdateContextWithEmptySchemaContext() public {
     vm.startPrank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-
-    vm.expectRevert(SchemaRegistry.SchemaContextMissing.selector);
     schemaRegistry.updateContext(expectedId, "");
+    assertEq(schemaRegistry.getSchema(expectedId).context, "");
     vm.stopPrank();
   }
 

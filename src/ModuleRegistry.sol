@@ -134,11 +134,10 @@ contract ModuleRegistry is OwnableUpgradeable {
     }
   }
 
-  /** Execute the run method for all given Modules that are registered
+  /** Execute the modules validation for all attestations payloads for all given Modules that are registered
    * @param modulesAddresses the addresses of the registered modules
    * @param attestationsPayloads the payloads to attest
    * @param validationPayloads the payloads to check for each module
-   * @dev check if modules are registered and execute run method for each module
    * @dev NOTE: Currently the bulk run modules does not handle payable modules
    *            a default value of 0 is used.
    */
@@ -147,7 +146,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
   ) public {
-    for (uint32 i = 0; i < modulesAddresses.length; i++) {
+    for (uint32 i = 0; i < attestationsPayloads.length; i++) {
       runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i], 0);
     }
   }

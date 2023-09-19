@@ -57,8 +57,7 @@ contract AttestationRegistryMassTest is Test {
     portalRegistry.setIssuer(portalOwner);
     vm.prank(portalOwner);
     address[] memory modules = new address[](0);
-    defaultPortal = new DefaultPortal();
-    defaultPortal.initialize(modules, address(router));
+    defaultPortal = new DefaultPortal(modules, address(router));
 
     vm.prank(portalOwner);
     portalRegistry.register(address(defaultPortal), "Name", "Description", true, "Linea");

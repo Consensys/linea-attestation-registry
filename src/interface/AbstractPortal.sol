@@ -5,12 +5,10 @@ import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
 import { AttestationPayload } from "../types/Structs.sol";
-// solhint-disable-next-line max-line-length
-import { IERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
-import { Initializable } from "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol";
+import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 import { IRouter } from "../interface/IRouter.sol";
 
-abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
+abstract contract AbstractPortal is IERC165 {
   IRouter public router;
   address[] public modules;
   ModuleRegistry public moduleRegistry;
@@ -21,12 +19,12 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
   error OnlyPortalOwner();
 
   /**
-   * @notice Contract initialization
+   * @notice Contract constructor
    * @param _modules list of modules to use for the portal (can be empty)
    * @param _router Router's address
+   * @dev This sets the addresses for the AttestationRegistry, ModuleRegistry and PortalRegistry
    */
-  function initialize(address[] calldata _modules, address _router) public virtual initializer {
-    // Store addresses for linked modules, ModuleRegistry and AttestationRegistry
+  constructor(address[] memory _modules, address _router) {
     modules = _modules;
     router = IRouter(_router);
     attestationRegistry = AttestationRegistry(router.getAttestationRegistry());
@@ -144,7 +142,7 @@ abstract contract AbstractPortal is Initializable, IERC165Upgradeable {
    * @return The list of modules addresses linked to the Portal
    */
   function supportsInterface(bytes4 interfaceID) public pure virtual override returns (bool) {
-    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165Upgradeable).interfaceId;
+    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
   }
 
   /**

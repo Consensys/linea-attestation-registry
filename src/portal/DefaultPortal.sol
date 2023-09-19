@@ -10,5 +10,7 @@ import { AbstractPortal } from "../interface/AbstractPortal.sol";
  * @dev This Portal does not add any logic to the AbstractPortal
  */
 contract DefaultPortal is AbstractPortal {
+  constructor(address[] memory modules, address router) AbstractPortal(modules, router) {}
+
   function withdraw(address payable to, uint256 amount) external override {}
 }

@@ -28,8 +28,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   error SchemaNameMissing();
   /// @notice Error thrown when attempting to add a Schema without a string to define it
   error SchemaStringMissing();
-  /// @notice Error thrown when attempting to add a Schema without a context
-  error SchemaContextMissing();
   /// @notice Error thrown when attempting to get a Schema that is not registered
   error SchemaNotRegistered();
 
@@ -94,7 +92,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   ) public onlyIssuers(msg.sender) {
     if (bytes(name).length == 0) revert SchemaNameMissing();
     if (bytes(schemaString).length == 0) revert SchemaStringMissing();
-    if (bytes(context).length == 0) revert SchemaContextMissing();
 
     bytes32 schemaId = getIdFromSchemaString(schemaString);
 
@@ -114,7 +111,6 @@ contract SchemaRegistry is OwnableUpgradeable {
    */
   function updateContext(bytes32 schemaId, string memory context) public onlyIssuers(msg.sender) {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
-    if (bytes(context).length == 0) revert SchemaContextMissing();
     schemas[schemaId].context = context;
   }
 

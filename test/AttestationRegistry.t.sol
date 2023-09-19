@@ -164,18 +164,12 @@ contract AttestationRegistryTest is Test {
     payloadsToAttest[0] = attestationsPayloads[0];
     payloadsToAttest[1] = attestationsPayloads[1];
 
-    bool isRegistered1 = attestationRegistry.isRegistered(bytes32(abi.encode(1)));
-    assertFalse(isRegistered1);
-    bool isRegistered2 = attestationRegistry.isRegistered(bytes32(abi.encode(2)));
-    assertFalse(isRegistered2);
-
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered(bytes32(abi.encode(1)));
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered(bytes32(abi.encode(2)));
     vm.prank(address(0));
     attestationRegistry.massImport(payloadsToAttest, portal);
-
-    isRegistered1 = attestationRegistry.isRegistered(bytes32(abi.encode(1)));
-    assertTrue(isRegistered1);
-    isRegistered2 = attestationRegistry.isRegistered(bytes32(abi.encode(2)));
-    assertTrue(isRegistered2);
   }
 
   function test_replace(AttestationPayload memory attestationPayload) public {

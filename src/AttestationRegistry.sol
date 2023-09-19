@@ -145,6 +145,7 @@ contract AttestationRegistry is OwnableUpgradeable {
         attestationsPayloads[i].subject,
         attestationsPayloads[i].attestationData
       );
+      emit AttestationRegistered(id);
     }
   }
 

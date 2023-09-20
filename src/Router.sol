@@ -10,10 +10,10 @@ import { IRouter } from "./interface/IRouter.sol";
  * @notice This contract aims to provides a single entrypoint for the Verax registries
  */
 contract Router is IRouter, OwnableUpgradeable {
-  address private ATTESTATION_REGISTRY;
-  address private MODULE_REGISTRY;
-  address private PORTAL_REGISTRY;
-  address private SCHEMA_REGISTRY;
+  address private _attestationRegistry;
+  address private _moduleRegistry;
+  address private _portalRegistry;
+  address private _schemaRegistry;
 
   event AttestationRegistryUpdated(address indexed registryAddress);
   event ModuleRegistryUpdated(address indexed registryAddress);
@@ -25,38 +25,38 @@ contract Router is IRouter, OwnableUpgradeable {
   }
 
   function getAttestationRegistry() external view override returns (address) {
-    return ATTESTATION_REGISTRY;
+    return _attestationRegistry;
   }
 
-  function updateAttestationRegistry(address _attestationRegistry) public onlyOwner {
-    ATTESTATION_REGISTRY = _attestationRegistry;
+  function updateAttestationRegistry(address attestationRegistry) public onlyOwner {
+    _attestationRegistry = attestationRegistry;
     emit AttestationRegistryUpdated(_attestationRegistry);
   }
 
   function getModuleRegistry() external view override returns (address) {
-    return MODULE_REGISTRY;
+    return _moduleRegistry;
   }
 
-  function updateModuleRegistry(address _moduleRegistry) public onlyOwner {
-    MODULE_REGISTRY = _moduleRegistry;
+  function updateModuleRegistry(address moduleRegistry) public onlyOwner {
+    _moduleRegistry = moduleRegistry;
     emit ModuleRegistryUpdated(_moduleRegistry);
   }
 
   function getPortalRegistry() external view override returns (address) {
-    return PORTAL_REGISTRY;
+    return _portalRegistry;
   }
 
-  function updatePortalRegistry(address _portalRegistry) public onlyOwner {
-    PORTAL_REGISTRY = _portalRegistry;
+  function updatePortalRegistry(address portalRegistry) public onlyOwner {
+    _portalRegistry = portalRegistry;
     emit PortalRegistryUpdated(_portalRegistry);
   }
 
   function getSchemaRegistry() external view override returns (address) {
-    return SCHEMA_REGISTRY;
+    return _schemaRegistry;
   }
 
-  function updateSchemaRegistry(address _schemaRegistry) public onlyOwner {
-    SCHEMA_REGISTRY = _schemaRegistry;
+  function updateSchemaRegistry(address schemaRegistry) public onlyOwner {
+    _schemaRegistry = schemaRegistry;
     emit SchemaRegistryUpdated(_schemaRegistry);
   }
 }

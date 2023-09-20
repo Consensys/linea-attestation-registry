@@ -14,7 +14,7 @@ import { IRouter } from "./interface/IRouter.sol";
 contract SchemaRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
-  mapping(bytes32 id => Schema schema) private schemas;
+  mapping(bytes32 id => Schema schema) private _schemas;
   /// @dev The list of Schema IDs
   bytes32[] public schemaIds;
 
@@ -99,7 +99,7 @@ contract SchemaRegistry is OwnableUpgradeable {
       revert SchemaAlreadyExists();
     }
 
-    schemas[schemaId] = Schema(name, description, context, schemaString);
+    _schemas[schemaId] = Schema(name, description, context, schemaString);
     schemaIds.push(schemaId);
     emit SchemaCreated(schemaId, name, description, context, schemaString);
   }
@@ -111,7 +111,7 @@ contract SchemaRegistry is OwnableUpgradeable {
    */
   function updateContext(bytes32 schemaId, string memory context) public onlyIssuers(msg.sender) {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
-    schemas[schemaId].context = context;
+    _schemas[schemaId].context = context;
   }
 
   /**
@@ -121,7 +121,7 @@ contract SchemaRegistry is OwnableUpgradeable {
    */
   function getSchema(bytes32 schemaId) public view returns (Schema memory) {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
-    return schemas[schemaId];
+    return _schemas[schemaId];
   }
 
   /**
@@ -139,6 +139,6 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @return True if the Schema is registered, false otherwise
    */
   function isRegistered(bytes32 schemaId) public view returns (bool) {
-    return bytes(schemas[schemaId].name).length > 0;
+    return bytes(_schemas[schemaId].name).length > 0;
   }
 }

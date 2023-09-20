@@ -17,11 +17,11 @@ import { IRouter } from "./interface/IRouter.sol";
 contract PortalRegistry is OwnableUpgradeable {
   IRouter public router;
 
-  mapping(address id => Portal portal) private portals;
+  mapping(address id => Portal portal) private _portals;
 
-  mapping(address issuerAddress => bool isIssuer) private issuers;
+  mapping(address issuerAddress => bool isIssuer) private _issuers;
 
-  address[] private portalAddresses;
+  address[] private _portalAddresses;
 
   /// @notice Error thrown when an invalid Router address is given
   error RouterInvalid();
@@ -70,7 +70,7 @@ contract PortalRegistry is OwnableUpgradeable {
    * @param issuer the address to register as an issuer
    */
   function setIssuer(address issuer) public onlyOwner {
-    issuers[issuer] = true;
+    _issuers[issuer] = true;
   }
 
   /**
@@ -78,7 +78,7 @@ contract PortalRegistry is OwnableUpgradeable {
    * @param issuer the address to be revoked as an issuer
    */
   function removeIssuer(address issuer) public onlyOwner {
-    issuers[issuer] = false;
+    _issuers[issuer] = false;
   }
 
   /**
@@ -86,7 +86,7 @@ contract PortalRegistry is OwnableUpgradeable {
    * @return A flag indicating whether the given address is an issuer
    */
   function isIssuer(address issuer) public view returns (bool) {
-    return issuers[issuer];
+    return _issuers[issuer];
   }
 
   /**
@@ -114,10 +114,10 @@ contract PortalRegistry is OwnableUpgradeable {
     string memory ownerName
   ) public onlyIssuers(msg.sender) {
     // Check if portal already exists
-    if (portals[id].id != address(0)) revert PortalAlreadyExists();
+    if (_portals[id].id != address(0)) revert PortalAlreadyExists();
 
     // Check if portal is a smart contract
-    if (!isContractAddress(id)) revert PortalAddressInvalid();
+    if (!_isContractAddress(id)) revert PortalAddressInvalid();
 
     // Check if name is not empty
     if (bytes(name).length == 0) revert PortalNameMissing();
@@ -136,8 +136,8 @@ contract PortalRegistry is OwnableUpgradeable {
 
     // Add portal to mapping
     Portal memory newPortal = Portal(id, msg.sender, modules, isRevocable, name, description, ownerName);
-    portals[id] = newPortal;
-    portalAddresses.push(id);
+    _portals[id] = newPortal;
+    _portalAddresses.push(id);
 
     // Emit event
     emit PortalRegistered(name, description, id);
@@ -168,7 +168,7 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function getPortalByAddress(address id) public view returns (Portal memory) {
     if (!isRegistered(id)) revert PortalNotRegistered();
-    return portals[id];
+    return _portals[id];
   }
 
   /**
@@ -177,7 +177,7 @@ contract PortalRegistry is OwnableUpgradeable {
    * @return True if the Portal is registered, false otherwise
    */
   function isRegistered(address id) public view returns (bool) {
-    return portals[id].id != address(0);
+    return _portals[id].id != address(0);
   }
 
   /**
@@ -186,7 +186,7 @@ contract PortalRegistry is OwnableUpgradeable {
    * @dev Returns the length of the `portalAddresses` array
    */
   function getPortalsCount() public view returns (uint256) {
-    return portalAddresses.length;
+    return _portalAddresses.length;
   }
 
   /**
@@ -194,7 +194,7 @@ contract PortalRegistry is OwnableUpgradeable {
    * @param contractAddress address to be verified
    * @return the result as true if it is a smart contract else false
    */
-  function isContractAddress(address contractAddress) internal view returns (bool) {
+  function _isContractAddress(address contractAddress) internal view returns (bool) {
     return contractAddress.code.length > 0;
   }
 }

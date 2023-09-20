@@ -15,10 +15,10 @@ import { IRouter } from "./interface/IRouter.sol";
 contract AttestationRegistry is OwnableUpgradeable {
   IRouter public router;
 
-  uint16 private version;
-  uint32 private attestationIdCounter;
+  uint16 private _version;
+  uint32 private _attestationIdCounter;
 
-  mapping(bytes32 attestationId => Attestation attestation) private attestations;
+  mapping(bytes32 attestationId => Attestation attestation) private _attestations;
 
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
@@ -95,10 +95,10 @@ contract AttestationRegistry is OwnableUpgradeable {
     // Verify the attestationData field is not blank
     if (attestationPayload.attestationData.length == 0) revert AttestationDataFieldEmpty();
     // Auto increment attestation counter
-    attestationIdCounter++;
-    bytes32 id = bytes32(abi.encode(attestationIdCounter));
+    _attestationIdCounter++;
+    bytes32 id = bytes32(abi.encode(_attestationIdCounter));
     // Create attestation
-    attestations[id] = Attestation(
+    _attestations[id] = Attestation(
       id,
       attestationPayload.schemaId,
       bytes32(0),
@@ -107,7 +107,7 @@ contract AttestationRegistry is OwnableUpgradeable {
       uint64(block.timestamp),
       attestationPayload.expirationDate,
       0,
-      version,
+      _version,
       false,
       attestationPayload.subject,
       attestationPayload.attestationData
@@ -128,10 +128,10 @@ contract AttestationRegistry is OwnableUpgradeable {
   function massImport(AttestationPayload[] calldata attestationsPayloads, address portal) public onlyOwner {
     for (uint256 i = 0; i < attestationsPayloads.length; i++) {
       // Auto increment attestation counter
-      attestationIdCounter++;
-      bytes32 id = bytes32(abi.encode(attestationIdCounter));
+      _attestationIdCounter++;
+      bytes32 id = bytes32(abi.encode(_attestationIdCounter));
       // Create attestation
-      attestations[id] = Attestation(
+      _attestations[id] = Attestation(
         id,
         attestationsPayloads[i].schemaId,
         bytes32(0),
@@ -140,7 +140,7 @@ contract AttestationRegistry is OwnableUpgradeable {
         uint64(block.timestamp),
         attestationsPayloads[i].expirationDate,
         0,
-        version,
+        _version,
         false,
         attestationsPayloads[i].subject,
         attestationsPayloads[i].attestationData
@@ -158,8 +158,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   function replace(bytes32 attestationId, AttestationPayload calldata attestationPayload, address attester) public {
     attest(attestationPayload, attester);
     revoke(attestationId);
-    bytes32 replacedBy = bytes32(abi.encode(attestationIdCounter));
-    attestations[attestationId].replacedBy = replacedBy;
+    bytes32 replacedBy = bytes32(abi.encode(_attestationIdCounter));
+    _attestations[attestationId].replacedBy = replacedBy;
 
     emit AttestationReplaced(attestationId, replacedBy);
   }
@@ -187,12 +187,12 @@ contract AttestationRegistry is OwnableUpgradeable {
    */
   function revoke(bytes32 attestationId) public {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
-    if (attestations[attestationId].revoked) revert AlreadyRevoked();
-    if (msg.sender != attestations[attestationId].portal) revert OnlyAttestingPortal();
-    if (!isRevocable(attestations[attestationId].portal)) revert AttestationNotRevocable();
+    if (_attestations[attestationId].revoked) revert AlreadyRevoked();
+    if (msg.sender != _attestations[attestationId].portal) revert OnlyAttestingPortal();
+    if (!isRevocable(_attestations[attestationId].portal)) revert AttestationNotRevocable();
 
-    attestations[attestationId].revoked = true;
-    attestations[attestationId].revocationDate = uint64(block.timestamp);
+    _attestations[attestationId].revoked = true;
+    _attestations[attestationId].revocationDate = uint64(block.timestamp);
 
     emit AttestationRevoked(attestationId);
   }
@@ -213,7 +213,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @return true if the attestation is registered, false otherwise
    */
   function isRegistered(bytes32 attestationId) public view returns (bool) {
-    return attestations[attestationId].attestationId != bytes32(0);
+    return _attestations[attestationId].attestationId != bytes32(0);
   }
 
   /**
@@ -233,7 +233,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    */
   function getAttestation(bytes32 attestationId) public view returns (Attestation memory) {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
-    return attestations[attestationId];
+    return _attestations[attestationId];
   }
 
   /**
@@ -241,9 +241,9 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @return The new version number
    */
   function incrementVersionNumber() public onlyOwner returns (uint16) {
-    ++version;
-    emit VersionUpdated(version);
-    return version;
+    ++_version;
+    emit VersionUpdated(_version);
+    return _version;
   }
 
   /**
@@ -251,7 +251,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @return The current version number
    */
   function getVersionNumber() public view returns (uint16) {
-    return version;
+    return _version;
   }
 
   /**
@@ -259,6 +259,6 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @return The attestationIdCounter
    */
   function getAttestationIdCounter() public view returns (uint32) {
-    return attestationIdCounter;
+    return _attestationIdCounter;
   }
 }

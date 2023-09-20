@@ -31,14 +31,16 @@ contract NFTPortal is AbstractPortal, ERC721 {
   ///  about them do throw.
   /// @param tokenId The identifier for an NFT
   /// @return The address of the owner of the NFT
-  function ownerOf(uint256 tokenId) public view virtual override returns (address)
-  {
+  function ownerOf(uint256 tokenId) public view virtual override returns (address) {
     bytes32 attestationId = bytes32(tokenId);
     Attestation memory attestation = attestationRegistry.getAttestation(attestationId);
     return address(uint160(bytes20(attestation.subject)));
   }
 
-  function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public override payable {
+  function attest(
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayloads
+  ) public payable override {
     super.attest(attestationPayload, validationPayloads);
     numberOfAttestationsPerOwner[attestationPayload.subject]++;
   }

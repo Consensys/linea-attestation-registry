@@ -45,7 +45,7 @@ abstract contract AbstractPortal is IERC165 {
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
    */
-  function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
+  function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public virtual payable {
     moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
 
     _onAttest(attestationPayload);

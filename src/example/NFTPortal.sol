@@ -17,31 +17,33 @@ contract NFTPortal is AbstractPortal, ERC721 {
 
   constructor(address[] memory modules, address router) AbstractPortal(modules, router) ERC721("1", "2") {}
 
-  /// @notice Count all NFTs assigned to an owner
-  /// @dev NFTs assigned to the zero address are considered invalid, and this
-  ///  function throws for queries about the zero address.
-  /// @param owner An address for whom to query the balance
-  /// @return The number of NFTs owned by `owner`, possibly zero
+  /** @notice Count all NFTs assigned to an owner
+   * @dev NFTs assigned to the zero address are considered invalid, and this
+   *  function throws for queries about the zero address.
+   * @param owner An address for whom to query the balance
+   * @return The number of NFTs owned by `owner`, possibly zero
+   */
   function balanceOf(address owner) public view virtual override returns (uint256) {
-    return numberOfAttestationsPerOwner[abi.encodePacked(owner)];
+    return numberOfAttestationsPerOwner[abi.encode(owner)];
   }
 
-  /// @notice Find the owner of an NFT
-  /// @dev NFTs assigned to zero address are considered invalid, and queries
-  ///  about them do throw.
-  /// @param tokenId The identifier for an NFT
-  /// @return The address of the owner of the NFT
+  /** @notice Find the owner of an NFT
+   * @dev NFTs assigned to zero address are considered invalid, and queries
+   *  about them do throw.
+   * @param tokenId The identifier for an NFT
+   * @return The address of the owner of the NFT
+   */
   function ownerOf(uint256 tokenId) public view virtual override returns (address) {
     bytes32 attestationId = bytes32(tokenId);
     Attestation memory attestation = attestationRegistry.getAttestation(attestationId);
-    return address(uint160(bytes20(attestation.subject)));
+    return abi.decode(attestation.subject, (address));
   }
 
-  function attest(
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayloads
-  ) public payable override {
-    super.attest(attestationPayload, validationPayloads);
+  /**
+   * @notice Method run before a payload is attested
+   * @param attestationPayload the attestation payload supposed to be attested
+   */
+  function _onAttest(AttestationPayload memory attestationPayload) internal override {
     numberOfAttestationsPerOwner[attestationPayload.subject]++;
   }
 

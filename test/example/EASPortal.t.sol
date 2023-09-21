@@ -156,10 +156,4 @@ contract EASPortalTest is Test {
     bool isEASAbstractPortalSupported = easPortal.supportsInterface(type(AbstractPortal).interfaceId);
     assertEq(isEASAbstractPortalSupported, true);
   }
-
-  function test_getAttester() public {
-    vm.prank(attester);
-    address registeredAttester = easPortal._getAttester();
-    assertEq(registeredAttester, attester);
-  }
 }

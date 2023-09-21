@@ -9,29 +9,28 @@ import { Attestation, AttestationPayload } from "../types/Structs.sol";
 /**
  * @title NFT Portal
  * @author Consensys
- * @notice This contract aims to provide ERC 721 features
- * @dev This Portal implements ERC 721 - balanceOf and ownerOf functions
+ * @notice This contract aims to provide ERC 721 compatibility
+ * @dev This Portal implements parts of ERC 721 - balanceOf and ownerOf functions
  */
 contract NFTPortal is AbstractPortal, ERC721 {
   mapping(bytes owner => uint256 numberOfAttestations) private numberOfAttestationsPerOwner;
 
-  constructor(address[] memory modules, address router) AbstractPortal(modules, router) ERC721("1", "2") {}
+  constructor(
+    address[] memory modules,
+    address router
+  ) AbstractPortal(modules, router) ERC721("NFTPortal", "NFTPortal") {}
 
-  /** @notice Count all NFTs assigned to an owner
-   * @dev NFTs assigned to the zero address are considered invalid, and this
-   *  function throws for queries about the zero address.
+  /** @notice Count all attestations assigned to an owner
    * @param owner An address for whom to query the balance
-   * @return The number of NFTs owned by `owner`, possibly zero
+   * @return The number of attestations owned by `owner`, possibly zero
    */
   function balanceOf(address owner) public view virtual override returns (uint256) {
     return numberOfAttestationsPerOwner[abi.encode(owner)];
   }
 
-  /** @notice Find the owner of an NFT
-   * @dev NFTs assigned to zero address are considered invalid, and queries
-   *  about them do throw.
-   * @param tokenId The identifier for an NFT
-   * @return The address of the owner of the NFT
+  /** @notice Find the owner of an attestation
+   * @param tokenId The identifier for an attestation
+   * @return The address of the owner of the attestation
    */
   function ownerOf(uint256 tokenId) public view virtual override returns (address) {
     bytes32 attestationId = bytes32(tokenId);

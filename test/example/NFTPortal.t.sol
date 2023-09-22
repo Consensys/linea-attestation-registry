@@ -59,7 +59,7 @@ contract NFTPortalTest is Test {
 
   function testSupportsInterface() public {
     bool isIERC165Supported = nftPortal.supportsInterface(type(IERC165).interfaceId);
-    assertEq(isIERC165Supported, true);
+    assertTrue(isIERC165Supported);
     bool isIERC721Supported = nftPortal.supportsInterface(type(IERC721).interfaceId);
     assertEq(isIERC721Supported, true);
     bool isEASAbstractPortalSupported = nftPortal.supportsInterface(type(AbstractPortal).interfaceId);

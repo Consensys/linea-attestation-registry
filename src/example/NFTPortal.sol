@@ -28,7 +28,8 @@ contract NFTPortal is AbstractPortal, ERC721 {
     return numberOfAttestationsPerOwner[abi.encode(owner)];
   }
 
-  /** @notice Find the owner of an attestation
+  /** 
+   * @notice Find the owner of an attestation
    * @param tokenId The identifier for an attestation
    * @return The address of the owner of the attestation
    */

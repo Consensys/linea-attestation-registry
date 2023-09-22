@@ -20,7 +20,8 @@ contract NFTPortal is AbstractPortal, ERC721 {
     address router
   ) AbstractPortal(modules, router) ERC721("NFTPortal", "NFTPortal") {}
 
-  /** @notice Count all attestations assigned to an owner
+  /** 
+   * @notice Count all attestations assigned to an owner
    * @param owner An address for whom to query the balance
    * @return The number of attestations owned by `owner`, possibly zero
    */

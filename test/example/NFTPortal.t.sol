@@ -29,9 +29,7 @@ contract NFTPortalTest is Test {
     router.updateAttestationRegistry(address(attestationRegistryMock));
 
     nftPortal = new NFTPortal(modules, address(router));
-  }
 
-  function test_balanceOf_ownerOf() public {
     // Create attestation payload
     AttestationPayload memory attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
@@ -41,16 +39,21 @@ contract NFTPortalTest is Test {
     );
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](0);
+    // Create 2 attestations
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
     nftPortal.attest(attestationPayload, validationPayload);
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
     nftPortal.attest(attestationPayload, validationPayload);
+  }
 
+  function test_balanceOf() public {
     uint256 balance = nftPortal.balanceOf(address(1));
     assertEq(balance, 2);
+  }
 
+  function test_ownerOf() public {
     address ownerOfFirstAttestation = nftPortal.ownerOf(1);
     address ownerOfSecondAttestation = nftPortal.ownerOf(2);
     assertEq(ownerOfFirstAttestation, address(1));

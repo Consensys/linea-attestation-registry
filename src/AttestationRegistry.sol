@@ -74,6 +74,7 @@ contract AttestationRegistry is OwnableUpgradeable {
 
   /**
    * @notice Changes the address for the Router
+   * @dev Only the registry owner can call this method
    */
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();

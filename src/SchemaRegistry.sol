@@ -58,6 +58,7 @@ contract SchemaRegistry is OwnableUpgradeable {
 
   /**
    * @notice Changes the address for the Router
+   * @dev Only the registry owner can call this method
    */
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
@@ -74,7 +75,8 @@ contract SchemaRegistry is OwnableUpgradeable {
     return keccak256(abi.encodePacked(schema));
   }
 
-  /** Create a Schema, with its metadata and run some checks:
+  /**
+   * @notice Creates a Schema, with its metadata and runs some checks:
    * - mandatory name
    * - mandatory string defining the schema
    * - the Schema must be unique
@@ -104,7 +106,8 @@ contract SchemaRegistry is OwnableUpgradeable {
     emit SchemaCreated(schemaId, name, description, context, schemaString);
   }
 
-  /** Update a context field of schema :
+  /**
+   * @notice Updates the context of a given schema
    * @param schemaId the schema ID
    * @param context the Schema context
    * @dev Retrieve the Schema with given ID and update its context with new value

@@ -25,7 +25,8 @@ contract MsgSenderModule is AbstractModule {
   }
 
   /**
-   * @notice The main method for the module, running the check
+   * @inheritdoc AbstractModule
+   * @notice If the transaction sender is not the expected address, an error is thrown
    */
   function run(
     AttestationPayload memory /*_attestationPayload*/,

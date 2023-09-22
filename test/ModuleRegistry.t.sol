@@ -42,7 +42,7 @@ contract ModuleRegistryTest is Test {
     );
   }
 
-  function testAlreadyInitialized() public {
+  function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
     moduleRegistry.initialize();
   }
@@ -64,7 +64,7 @@ contract ModuleRegistryTest is Test {
     testModuleRegistry.updateRouter(address(0));
   }
 
-  function testIsContractAddress() public {
+  function test_isContractAddress() public {
     // isContractAddress should return false for EOA address
     address eoaAddress = vm.addr(1);
     bool eoaAddressResult = moduleRegistry.isContractAddress(eoaAddress);
@@ -76,7 +76,7 @@ contract ModuleRegistryTest is Test {
     assertEq(contractAddressResult, true);
   }
 
-  function testRegisterModule() public {
+  function test_register() public {
     vm.expectEmit();
     emit ModuleRegistered(expectedName, expectedDescription, expectedAddress);
     vm.prank(user);
@@ -88,33 +88,33 @@ contract ModuleRegistryTest is Test {
     assertEq(description, expectedDescription);
   }
 
-  function testCannotRegisterModuleWithInvalidIssuer() public {
+  function test_register_OnlyIssuer() public {
     vm.expectRevert(ModuleRegistry.OnlyIssuer.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.stopPrank();
   }
 
-  function testCannotRegisterModuleWithoutName() public {
+  function test_register_ModuleNameMissing() public {
     vm.expectRevert(ModuleRegistry.ModuleNameMissing.selector);
     vm.prank(user);
     moduleRegistry.register("", expectedDescription, expectedAddress);
   }
 
-  function testCannotRegisterModuleWithInvalidModuleAddress() public {
+  function test_register_ModuleAddressInvalid() public {
     vm.expectRevert(ModuleRegistry.ModuleAddressInvalid.selector);
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, vm.addr(1)); //vm.addr(1) gives EOA address
   }
 
-  function testCannotRegisterModuleWhichHasNotImplementedAbstractModule() public {
+  function test_register_ModuleInvalid() public {
     IncorrectModule incorrectModule = new IncorrectModule();
     vm.expectRevert(ModuleRegistry.ModuleInvalid.selector);
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, address(incorrectModule));
   }
 
-  function testCannotRegisterModuleTwice() public {
+  function test_register_ModuleAlreadyExists() public {
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.expectRevert(ModuleRegistry.ModuleAlreadyExists.selector);
@@ -122,7 +122,7 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
   }
 
-  function testStoreModuleAddress() public {
+  function test_getModulesNumber() public {
     uint256 modulesNumber = moduleRegistry.getModulesNumber();
     assertEq(modulesNumber, 0);
     vm.prank(user);
@@ -132,7 +132,7 @@ contract ModuleRegistryTest is Test {
     assertEq(modulesNumber, 1);
   }
 
-  function testRunModules() public {
+  function test_runModules() public {
     // Register 2 modules
     address[] memory moduleAddresses = new address[](2);
     moduleAddresses[0] = address(new CorrectModule());
@@ -147,7 +147,7 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
-  function testRunModulesWithIncorrectNumberOfValidationPayload() public {
+  function test_runModules_ModuleValidationPayloadMismatch() public {
     // Register 2 modules
     address[] memory moduleAddresses = new address[](2);
     moduleAddresses[0] = address(new CorrectModule());
@@ -164,7 +164,7 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
-  function testRunModulesWithoutSendingModuleAddresses() public {
+  function test_runModules_withoutModule() public {
     // Register a module
     address[] memory moduleAddresses = new address[](0);
 
@@ -174,7 +174,7 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
-  function testRunModulesForUnregisteredModules() public {
+  function test_runModules_ModuleNotRegistered() public {
     // Create 2 modules without registration
     address[] memory moduleAddresses = new address[](2);
     moduleAddresses[0] = address(new CorrectModule());
@@ -188,7 +188,7 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
-  function testBulkRunModules() public {
+  function test_bulkRunModules() public {
     // Register 2 modules
     address[] memory moduleAddresses = new address[](2);
     moduleAddresses[0] = address(new CorrectModule());
@@ -213,7 +213,7 @@ contract ModuleRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function testGetModuleAddress() public {
+  function test_getModuleAddress() public {
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
 
@@ -221,7 +221,7 @@ contract ModuleRegistryTest is Test {
     assertEq(moduleAddress, expectedAddress);
   }
 
-  function testIsModuleRegistered() public {
+  function test_isRegistered() public {
     bool isRegistered = moduleRegistry.isRegistered(expectedAddress);
     assertFalse(isRegistered);
     vm.prank(user);

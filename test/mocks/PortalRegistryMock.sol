@@ -36,10 +36,6 @@ contract PortalRegistryMock {
     issuers[issuer] = true;
   }
 
-  /**
-   * @notice Checks if a given address is an issuer
-   * @return A flag indicating whether the given address is an issuer
-   */
   function isIssuer(address issuer) public view returns (bool) {
     return issuers[issuer];
   }

@@ -150,7 +150,7 @@ contract EASPortalTest is Test {
     easPortal.bulkRevoke(attestationsToRevoke);
   }
 
-  function testSupportsInterface() public {
+  function test_supportsInterface() public {
     bool isIERC165Supported = easPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);
     assertEq(isIERC165Supported, true);
     bool isEASAbstractPortalSupported = easPortal.supportsInterface(type(AbstractPortal).interfaceId);

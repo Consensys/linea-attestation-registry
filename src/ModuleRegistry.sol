@@ -67,6 +67,7 @@ contract ModuleRegistry is OwnableUpgradeable {
 
   /**
    * @notice Changes the address for the Router
+   * @dev Only the registry owner can call this method
    */
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
@@ -82,7 +83,8 @@ contract ModuleRegistry is OwnableUpgradeable {
     return contractAddress.code.length > 0;
   }
 
-  /** Register a Module, with its metadata and run some checks:
+  /**
+   * @notice Registers a Module, with its metadata and run some checks:
    * - mandatory name
    * - mandatory module's deployed smart contract address
    * - the module must be unique
@@ -110,7 +112,8 @@ contract ModuleRegistry is OwnableUpgradeable {
     emit ModuleRegistered(name, description, moduleAddress);
   }
 
-  /** Execute the run method for all given Modules that are registered
+  /**
+   * @notice Executes the run method for all given Modules that are registered
    * @param modulesAddresses the addresses of the registered modules
    * @param attestationPayload the payload to attest
    * @param validationPayloads the payloads to check for each module (one payload per module)
@@ -134,7 +137,8 @@ contract ModuleRegistry is OwnableUpgradeable {
     }
   }
 
-  /** Execute the modules validation for all attestations payloads for all given Modules that are registered
+  /**
+   * @notice Executes the modules validation for all attestations payloads for all given Modules that are registered
    * @param modulesAddresses the addresses of the registered modules
    * @param attestationsPayloads the payloads to attest
    * @param validationPayloads the payloads to check for each module

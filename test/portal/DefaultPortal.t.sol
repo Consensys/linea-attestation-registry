@@ -44,7 +44,7 @@ contract DefaultPortalTest is Test {
     portalRegistryMock.register(address(defaultPortal), "Name", "Description", true, "Owner name");
   }
 
-  function test_setup() public {
+  function test_setUp() public {
     assertEq(address(defaultPortal.modules(0)), address(modules[0]));
     assertEq(address(defaultPortal.moduleRegistry()), address(moduleRegistryMock));
     assertEq(address(defaultPortal.attestationRegistry()), address(attestationRegistryMock));
@@ -195,7 +195,7 @@ contract DefaultPortalTest is Test {
     defaultPortal.bulkRevoke(attestationsToRevoke);
   }
 
-  function testSupportsInterface() public {
+  function test_supportsInterface() public {
     bool isIERC165Supported = defaultPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);
     assertEq(isIERC165Supported, true);
     bool isAbstractPortalSupported = defaultPortal.supportsInterface(type(AbstractPortal).interfaceId);

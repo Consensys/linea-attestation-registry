@@ -23,62 +23,58 @@ contract RouterTest is Test {
     router.initialize();
   }
 
-  function testInitialize() public {
-    vm.expectEmit();
-    emit Initialized(1);
-    Router testRouter = new Router();
-    testRouter.initialize();
+  function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    testRouter.initialize();
+    router.initialize();
   }
 
-  function testUpdateAttestationRegistry() public {
+  function test_updateAttestationRegistry() public {
     vm.expectEmit();
     emit AttestationRegistryUpdated(attestationRegistry);
     router.updateAttestationRegistry(attestationRegistry);
     assertEq(router.getAttestationRegistry(), attestationRegistry);
   }
 
-  function testUpdateAttestationRegistryNotOwner() public {
+  function test_updateAttestationRegistry_NotOwner() public {
     vm.prank(user);
     vm.expectRevert("Ownable: caller is not the owner");
     router.updateAttestationRegistry(attestationRegistry);
   }
 
-  function testUpdateModuleRegistry() public {
+  function test_updateModuleRegistry() public {
     vm.expectEmit();
     emit ModuleRegistryUpdated(moduleRegistry);
     router.updateModuleRegistry(moduleRegistry);
     assertEq(router.getModuleRegistry(), moduleRegistry);
   }
 
-  function testUpdateModuleRegistryNotOwner() public {
+  function test_updateModuleRegistry_NotOwner() public {
     vm.prank(user);
     vm.expectRevert("Ownable: caller is not the owner");
     router.updateModuleRegistry(moduleRegistry);
   }
 
-  function testUpdatePortalRegistry() public {
+  function test_updatePortalRegistry() public {
     vm.expectEmit();
     emit PortalRegistryUpdated(portalRegistry);
     router.updatePortalRegistry(portalRegistry);
     assertEq(router.getPortalRegistry(), portalRegistry);
   }
 
-  function testUpdatePortalRegistryNotOwner() public {
+  function test_updatePortalRegistry_NotOwner() public {
     vm.prank(user);
     vm.expectRevert("Ownable: caller is not the owner");
     router.updatePortalRegistry(portalRegistry);
   }
 
-  function testUpdateSchemaRegistry() public {
+  function test_updateSchemaRegistry() public {
     vm.expectEmit();
     emit SchemaRegistryUpdated(schemaRegistry);
     router.updateSchemaRegistry(schemaRegistry);
     assertEq(router.getSchemaRegistry(), schemaRegistry);
   }
 
-  function testUpdateSchemaRegistryNotOwner() public {
+  function test_updateSchemaRegistry_NotOwner() public {
     vm.prank(user);
     vm.expectRevert("Ownable: caller is not the owner");
     router.updateSchemaRegistry(schemaRegistry);

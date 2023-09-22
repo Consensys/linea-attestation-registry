@@ -34,7 +34,7 @@ contract SchemaRegistryTest is Test {
     portalRegistryMock.setIssuer(user);
   }
 
-  function testAlreadyInitialized() public {
+  function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
     schemaRegistry.initialize();
   }
@@ -48,7 +48,7 @@ contract SchemaRegistryTest is Test {
     assertEq(routerAddress, address(1));
   }
 
-  function test_updateRouter_InvalidParameter() public {
+  function test_updateRouter_RouterInvalid() public {
     SchemaRegistry testSchemaRegistry = new SchemaRegistry();
 
     vm.expectRevert(SchemaRegistry.RouterInvalid.selector);
@@ -56,12 +56,12 @@ contract SchemaRegistryTest is Test {
     testSchemaRegistry.updateRouter(address(0));
   }
 
-  function testGetIdFromSchemaString() public {
+  function test_getIdFromSchemaString() public {
     bytes32 id = schemaRegistry.getIdFromSchemaString(expectedString);
     assertEq(id, expectedId);
   }
 
-  function testCreateSchema() public {
+  function test_createSchema() public {
     vm.expectEmit();
     emit SchemaCreated(expectedId, expectedName, expectedDescription, expectedContext, expectedString);
     vm.startPrank(user);
@@ -74,26 +74,26 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function testCannotCreateSchemaWithInvalidIssuer() public {
+  function test_createSchema_OnlyIssuer() public {
     vm.expectRevert(SchemaRegistry.OnlyIssuer.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.stopPrank();
   }
 
-  function testCannotCreateSchemaWithoutName() public {
+  function test_createSchema_SchemaNameMissing() public {
     vm.expectRevert(SchemaRegistry.SchemaNameMissing.selector);
     vm.prank(user);
     schemaRegistry.createSchema("", expectedDescription, expectedContext, expectedString);
   }
 
-  function testCannotCreateSchemaWithoutString() public {
+  function test_createSchema_SchemaStringMissing() public {
     vm.expectRevert(SchemaRegistry.SchemaStringMissing.selector);
     vm.prank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, "");
   }
 
-  function testCannotCreateSchemaTwice() public {
+  function test_createSchema_SchemaAlreadyExists() public {
     vm.startPrank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.expectRevert(SchemaRegistry.SchemaAlreadyExists.selector);
@@ -101,7 +101,7 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function testUpdateContext() public {
+  function test_updateContext() public {
     vm.expectEmit();
     emit SchemaCreated(expectedId, expectedName, expectedDescription, expectedContext, expectedString);
     vm.startPrank(user);
@@ -118,21 +118,21 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function testCannotUpdateContextWithInvalidIssuer() public {
+  function test_updateContext_OnlyIssuer() public {
     vm.expectRevert(SchemaRegistry.OnlyIssuer.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
     schemaRegistry.updateContext(expectedId, "New context");
     vm.stopPrank();
   }
 
-  function testCannotUpdateContextWithSchemaNotRegistered() public {
+  function test_updateContext_SchemaNotRegistered() public {
     vm.startPrank(user);
     vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
     schemaRegistry.updateContext("Invalid ID", "New context");
     vm.stopPrank();
   }
 
-  function testCanUpdateContextWithEmptySchemaContext() public {
+  function test_updateContext_withEmptyContext() public {
     vm.startPrank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     schemaRegistry.updateContext(expectedId, "");
@@ -140,7 +140,7 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function testGetSchema() public {
+  function test_getSchema() public {
     vm.startPrank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
 
@@ -151,12 +151,12 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function testGetSchemaNotRegistered() public {
+  function test_getSchema_SchemaNotRegistered() public {
     vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
     schemaRegistry.getSchema(bytes32("not registered"));
   }
 
-  function testStoreSchemaId() public {
+  function test_getSchemasNumber() public {
     uint256 schemasNumber = schemaRegistry.getSchemasNumber();
     assertEq(schemasNumber, 0);
     vm.startPrank(user);
@@ -167,7 +167,7 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function testGetSchemaId() public {
+  function test_getSchemaIds() public {
     vm.startPrank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
 
@@ -176,7 +176,7 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function testIsSchemaRegistered() public {
+  function test_isRegistered() public {
     bool isRegistered = schemaRegistry.isRegistered(expectedId);
     assertFalse(isRegistered);
     vm.startPrank(user);

@@ -32,7 +32,8 @@ contract PayableModule is Ownable, AbstractModule {
   }
 
   /**
-   * @notice The main method for the module, running the check
+   * @inheritdoc AbstractModule
+   * @notice If the paid value is below the expected amount, an error is thrown
    * @param _value The value sent for the attestation
    */
   function run(

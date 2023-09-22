@@ -46,7 +46,7 @@ contract PortalRegistryTest is Test {
     validPortalMock = new ValidPortalMock(new address[](0), address(router));
   }
 
-  function test_alreadyInitialized() public {
+  function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
     portalRegistry.initialize();
   }
@@ -60,7 +60,7 @@ contract PortalRegistryTest is Test {
     assertEq(routerAddress, address(1));
   }
 
-  function test_updateRouter_InvalidParameter() public {
+  function test_updateRouter_RouterInvalid() public {
     PortalRegistry testPortalRegistry = new PortalRegistry();
 
     vm.expectRevert(PortalRegistry.RouterInvalid.selector);
@@ -68,7 +68,7 @@ contract PortalRegistryTest is Test {
     testPortalRegistry.updateRouter(address(0));
   }
 
-  function test_setIssuer_isIssuer_removeIssuer() public {
+  function test_removeIssuer() public {
     vm.startPrank(address(0));
     address issuerAddress = makeAddr("Issuer");
     portalRegistry.setIssuer(issuerAddress);

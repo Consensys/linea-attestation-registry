@@ -10,20 +10,17 @@ contract ModuleRegistryMock {
   function test() public {}
 
   function runModules(
-    address[] memory modulesAddresses,
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayload,
-    uint256 value
+    address[] memory /*modulesAddresses*/,
+    AttestationPayload memory /*attestationPayload*/,
+    bytes[] memory /*validationPayload*/,
+    uint256 /*value*/
   ) public {}
 
   function bulkRunModules(
-    address[] memory modulesAddresses,
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
+    address[] memory /*modulesAddresses*/,
+    AttestationPayload[] memory /*attestationsPayloads*/,
+    bytes[][] memory /*validationPayloads*/
   ) public {
-    require(modulesAddresses.length >= 0, "Invalid modulesAddresses");
-    require(attestationsPayloads.length >= 0, "Invalid attestationsPayloads");
-    require(validationPayloads.length >= 0, "Invalid validationPayloads");
     emit ModulesBulkRunForAttestation();
   }
 }

@@ -40,7 +40,7 @@ abstract contract AbstractPortal is IERC165 {
   function withdraw(address payable to, uint256 amount) external virtual;
 
   /**
-   * @notice attest the schema with given attestationPayload and validationPayload
+   * @notice Attest the schema with given attestationPayload and validationPayload
    * @param attestationPayload the payload to attest
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry

@@ -17,9 +17,6 @@ contract AttestationRegistryMock {
   function test() public {}
 
   function attest(AttestationPayload calldata attestationPayload, address attester) public {
-    require(bytes32(attestationPayload.schemaId) != 0, "Invalid attestationPayload");
-    require(attester != address(0), "Invalid attester");
-
     attestationIdCounter++;
     // Create attestation
     Attestation memory attestation = Attestation(
@@ -41,33 +38,30 @@ contract AttestationRegistryMock {
     emit AttestationRegistered();
   }
 
-  function bulkAttest(AttestationPayload[] calldata attestationsPayloads, address attester) public {
-    require(attestationsPayloads.length > 0, "Invalid attestationsPayloads");
-    require(attester != address(0), "Invalid attester");
+  function bulkAttest(AttestationPayload[] calldata /*attestationsPayloads*/, address /*attester*/) public {
     emit BulkAttestationsRegistered();
   }
 
-  function replace(bytes32 /*attestationId*/, AttestationPayload calldata attestationPayload, address attester) public {
-    require(bytes32(attestationPayload.schemaId) != 0, "Invalid attestationPayload");
-    require(attester != address(0), "Invalid attester");
-
+  function replace(
+    bytes32 /*attestationId*/,
+    AttestationPayload calldata /*attestationPayload*/,
+    address /*attester*/
+  ) public {
     emit AttestationRegistered();
     emit AttestationReplaced();
   }
 
   function bulkReplace(
-    bytes32[] calldata attestationId,
-    AttestationPayload[] calldata attestationPayload,
-    address attester
+    bytes32[] calldata /*attestationId*/,
+    AttestationPayload[] calldata /*attestationPayload*/,
+    address /*attester*/
   ) public {}
 
   function revoke(bytes32 attestationId) public {
-    require(bytes32(attestationId) != 0, "Invalid attestation");
     emit AttestationRevoked(attestationId);
   }
 
   function bulkRevoke(bytes32[] memory attestationIds) public {
-    require(attestationIds.length > 0, "Invalid attestation");
     emit BulkAttestationsRevoked(attestationIds);
   }
 

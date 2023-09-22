@@ -24,7 +24,7 @@ contract MsgSenderModuleTest is Test {
     );
   }
 
-  function testCorrectMsgSenderAddress() public {
+  function test_MsgSenderModule_correctAddress() public {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
     bytes memory validationPayload = new bytes(0);
     address msgSender = expectedMsgSender;
@@ -32,7 +32,7 @@ contract MsgSenderModuleTest is Test {
     msgSenderModule.run(attestationPayload, validationPayload, msgSender, 0);
   }
 
-  function testIncorrectMsgSenderAddress() public {
+  function test_MsgSenderModule_incorrectAddress() public {
     assertEq(msgSenderModule.expectedMsgSender(), expectedMsgSender);
     bytes memory validationPayload = new bytes(0);
     address incorrectMsgSender = address(1);
@@ -41,7 +41,7 @@ contract MsgSenderModuleTest is Test {
     msgSenderModule.run(attestationPayload, validationPayload, incorrectMsgSender, 0);
   }
 
-  function testSupportsInterface() public {
+  function test_MsgSenderModule_supportsInterface() public {
     bool isAbstractModuleSupported = msgSenderModule.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);
   }

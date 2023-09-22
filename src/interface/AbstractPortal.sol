@@ -48,9 +48,9 @@ abstract contract AbstractPortal is IERC165 {
   function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
     moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
 
-    _onAttest(attestationPayload);
+    _onAttest(attestationPayload, getAttester(), msg.value);
 
-    attestationRegistry.attest(attestationPayload, _getAttester());
+    attestationRegistry.attest(attestationPayload, getAttester());
   }
 
   /**
@@ -58,15 +58,12 @@ abstract contract AbstractPortal is IERC165 {
    * @param attestationsPayloads the payloads to attest
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
    */
-  function bulkAttest(
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
-  ) public payable {
+  function bulkAttest(AttestationPayload[] memory attestationsPayloads, bytes[][] memory validationPayloads) public {
     moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
 
     _onBulkAttest(attestationsPayloads, validationPayloads);
 
-    attestationRegistry.bulkAttest(attestationsPayloads, _getAttester());
+    attestationRegistry.bulkAttest(attestationsPayloads, getAttester());
   }
 
   /**
@@ -83,9 +80,9 @@ abstract contract AbstractPortal is IERC165 {
   ) public payable {
     moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
 
-    _onReplace(attestationId, attestationPayload);
+    _onReplace(attestationId, attestationPayload, getAttester(), msg.value);
 
-    attestationRegistry.replace(attestationId, attestationPayload, _getAttester());
+    attestationRegistry.replace(attestationId, attestationPayload, getAttester());
   }
 
   /**
@@ -98,12 +95,12 @@ abstract contract AbstractPortal is IERC165 {
     bytes32[] memory attestationIds,
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) public payable {
+  ) public {
     moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
 
     _onBulkReplace(attestationIds, attestationsPayloads, validationPayloads);
 
-    attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, _getAttester());
+    attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, getAttester());
   }
 
   /**
@@ -149,22 +146,31 @@ abstract contract AbstractPortal is IERC165 {
    * @notice Defines the address of the entity issuing attestations to the subject
    * @dev We strongly encourage a reflection when overriding this rule: who should be set as the attester?
    */
-  function _getAttester() public view virtual returns (address) {
+  function getAttester() public view virtual returns (address) {
     return msg.sender;
   }
 
   /**
    * @notice Optional method run before a payload is attested
    * @param attestationPayload the attestation payload supposed to be attested
+   * @param attester the address of the attester
+   * @param value the value sent with the attestation
    */
-  function _onAttest(AttestationPayload memory attestationPayload) internal virtual {}
+  function _onAttest(AttestationPayload memory attestationPayload, address attester, uint256 value) internal virtual {}
 
   /**
    * @notice Optional method run when an attestation is replaced
    * @param attestationId the ID of the attestation being replaced
    * @param attestationPayload the attestation payload to create attestation and register it
+   * @param attester the address of the attester
+   * @param value the value sent with the attestation
    */
-  function _onReplace(bytes32 attestationId, AttestationPayload memory attestationPayload) internal virtual {}
+  function _onReplace(
+    bytes32 attestationId,
+    AttestationPayload memory attestationPayload,
+    address attester,
+    uint256 value
+  ) internal virtual {}
 
   /**
    * @notice Optional method run when attesting a batch of payloads

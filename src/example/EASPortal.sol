@@ -83,8 +83,4 @@ contract EASPortal is AbstractPortal {
   function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal pure override {
     revert NoBulkRevocation();
   }
-
-  function _getAttester() public view override returns (address) {
-    return msg.sender;
-  }
 }

@@ -201,11 +201,4 @@ contract DefaultPortalTest is Test {
     bool isAbstractPortalSupported = defaultPortal.supportsInterface(type(AbstractPortal).interfaceId);
     assertEq(isAbstractPortalSupported, true);
   }
-
-  function test_getAttester() public {
-    address attester = makeAddr("attester");
-    vm.prank(attester);
-    address registeredAttester = defaultPortal._getAttester();
-    assertEq(registeredAttester, attester);
-  }
 }

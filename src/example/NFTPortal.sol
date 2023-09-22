@@ -44,7 +44,11 @@ contract NFTPortal is AbstractPortal, ERC721 {
    * @notice Method run before a payload is attested
    * @param attestationPayload the attestation payload supposed to be attested
    */
-  function _onAttest(AttestationPayload memory attestationPayload) internal override {
+  function _onAttest(
+    AttestationPayload memory attestationPayload,
+    address /*attester*/,
+    uint256 /*value*/
+  ) internal override {
     numberOfAttestationsPerOwner[attestationPayload.subject]++;
   }
 

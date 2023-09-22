@@ -48,9 +48,9 @@ abstract contract AbstractPortal is IERC165 {
   function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
     moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
 
-    _onAttest(attestationPayload, _attester(), msg.value);
+    _onAttest(attestationPayload, getAttester(), msg.value);
 
-    attestationRegistry.attest(attestationPayload, _attester());
+    attestationRegistry.attest(attestationPayload, getAttester());
   }
 
   /**
@@ -63,7 +63,7 @@ abstract contract AbstractPortal is IERC165 {
 
     _onBulkAttest(attestationsPayloads, validationPayloads);
 
-    attestationRegistry.bulkAttest(attestationsPayloads, _attester());
+    attestationRegistry.bulkAttest(attestationsPayloads, getAttester());
   }
 
   /**
@@ -80,9 +80,9 @@ abstract contract AbstractPortal is IERC165 {
   ) public payable {
     moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
 
-    _onReplace(attestationId, attestationPayload, _attester(), msg.value);
+    _onReplace(attestationId, attestationPayload, getAttester(), msg.value);
 
-    attestationRegistry.replace(attestationId, attestationPayload, _attester());
+    attestationRegistry.replace(attestationId, attestationPayload, getAttester());
   }
 
   /**
@@ -100,7 +100,7 @@ abstract contract AbstractPortal is IERC165 {
 
     _onBulkReplace(attestationIds, attestationsPayloads, validationPayloads);
 
-    attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, _attester());
+    attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, getAttester());
   }
 
   /**
@@ -146,7 +146,7 @@ abstract contract AbstractPortal is IERC165 {
    * @notice Defines the address of the entity issuing attestations to the subject
    * @dev We strongly encourage a reflection when overriding this rule: who should be set as the attester?
    */
-  function _attester() internal view virtual returns (address) {
+  function getAttester() public view virtual returns (address) {
     return msg.sender;
   }
 

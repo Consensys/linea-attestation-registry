@@ -296,12 +296,4 @@ contract AttestationRegistry is OwnableUpgradeable, ERC1155Upgradeable {
     }
     return result;
   }
-
-  // function _msgSender() internal view override(Context, ContextUpgradeable) returns (address sender) {
-  //   sender = ContextUpgradeable._msgSender();
-  // }
-
-  // function _msgData() internal view override(Context, ContextUpgradeable) returns (bytes calldata) {
-  //   return ContextUpgradeable._msgData();
-  // }
 }

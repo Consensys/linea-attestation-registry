@@ -267,7 +267,7 @@ contract AttestationRegistry is OwnableUpgradeable, ERC1155 {
   }
 
   /**
-   * @notice Get the balance of an account's attestations for a given attestation ID.
+   * @notice Checks if an address owns a given attestation
    * @param account The address of the token holder
    * @param id ID of the attestation
    * @return The _owner's balance of the attestations on a given attestation ID

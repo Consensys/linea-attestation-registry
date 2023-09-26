@@ -2,7 +2,6 @@
 pragma solidity 0.8.21;
 
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
-import { ContextUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/ContextUpgradeable.sol";
 import { ERC1155Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/token/ERC1155/ERC1155Upgradeable.sol";
 import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";

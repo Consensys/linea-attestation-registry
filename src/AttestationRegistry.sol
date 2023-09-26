@@ -3,8 +3,7 @@ pragma solidity 0.8.21;
 
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import { ContextUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/ContextUpgradeable.sol";
-import { ERC1155 } from "openzeppelin-contracts/contracts/token/ERC1155/ERC1155.sol";
-import { Context } from "openzeppelin-contracts/contracts/utils/Context.sol";
+import { ERC1155Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/token/ERC1155/ERC1155Upgradeable.sol";
 import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
@@ -15,7 +14,7 @@ import { IRouter } from "./interface/IRouter.sol";
  * @author Consensys
  * @notice This contract stores a registry of all attestations
  */
-contract AttestationRegistry is OwnableUpgradeable, ERC1155 {
+contract AttestationRegistry is OwnableUpgradeable, ERC1155Upgradeable {
   IRouter public router;
 
   uint16 private version;
@@ -64,7 +63,7 @@ contract AttestationRegistry is OwnableUpgradeable, ERC1155 {
   }
 
   /// @custom:oz-upgrades-unsafe-allow constructor
-  constructor() ERC1155("NA") {
+  constructor() {
     _disableInitializers();
   }
 
@@ -299,11 +298,11 @@ contract AttestationRegistry is OwnableUpgradeable, ERC1155 {
     return result;
   }
 
-  function _msgSender() internal view override(Context, ContextUpgradeable) returns (address sender) {
-    sender = ContextUpgradeable._msgSender();
-  }
+  // function _msgSender() internal view override(Context, ContextUpgradeable) returns (address sender) {
+  //   sender = ContextUpgradeable._msgSender();
+  // }
 
-  function _msgData() internal view override(Context, ContextUpgradeable) returns (bytes calldata) {
-    return ContextUpgradeable._msgData();
-  }
+  // function _msgData() internal view override(Context, ContextUpgradeable) returns (bytes calldata) {
+  //   return ContextUpgradeable._msgData();
+  // }
 }

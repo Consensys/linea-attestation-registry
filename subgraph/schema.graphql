@@ -11,6 +11,8 @@ type Attestation @entity {
     revoked: Boolean!
     subject: Bytes!
     attestationData: Bytes!
+    schemaString: String
+    decodedData:[String!]
 }
 
 type Module @entity {

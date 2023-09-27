@@ -13,7 +13,7 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   attestation.schemaId = attestationData.schemaId;
   attestation.replacedBy = attestationData.replacedBy;
   attestation.attester = attestationData.attester;
-  attestation.portal = attestationData.portal;
+  attestation.portal = attestationData.portal.toHexString();
   attestation.attestedDate = attestationData.attestedDate;
   attestation.expirationDate = attestationData.expirationDate;
   attestation.revocationDate = attestationData.revocationDate;

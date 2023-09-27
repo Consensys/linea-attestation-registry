@@ -12,7 +12,7 @@
     "solidity"
   ],
   "repository": "github.com/Consensys/linea-attestation-registry",
-  "license": "ISC",
+  "license": "MIT",
   "author": "Consensys",
   "files": [
     "src"

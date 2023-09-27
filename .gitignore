@@ -20,3 +20,11 @@ coverage
 cache_hardhat
 artifacts
 typechain-types
+
+# Subgraph
+build
+generated
+subgraph.yaml
+
+# Misc
+.DS_Store

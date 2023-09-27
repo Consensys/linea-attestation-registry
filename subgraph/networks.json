@@ -1,0 +1,38 @@
+{
+  "linea-goerli": {
+    "AttestationRegistry": {
+      "address": "0xC765F28096F6121C2F2b82D35A4346280164428b",
+      "startBlock": 1454659
+    },
+    "ModuleRegistry": {
+      "address": "0x1a20b2CFA134686306436D2c9f778D7eC6c43A43",
+      "startBlock": 1454663
+    },
+    "PortalRegistry": {
+      "address": "0x506f88a5Ca8D5F001f2909b029738A40042e42a6",
+      "startBlock": 1454667
+    },
+    "SchemaRegistry": {
+      "address": "0xB2c4Da1f8F08A0CA25862509E5431289BE2b598B",
+      "startBlock": 1454671
+    }
+  },
+  "linea-mainnet": {
+    "AttestationRegistry": {
+      "address": "0x3de3893aa4Cdea029e84e75223a152FD08315138",
+      "startBlock": 346695
+    },
+    "ModuleRegistry": {
+      "address": "0xf851513A732996F22542226341748f3C9978438f",
+      "startBlock": 346699
+    },
+    "PortalRegistry": {
+      "address": "0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083",
+      "startBlock": 346703
+    },
+    "SchemaRegistry": {
+      "address": "0x0f95dCec4c7a93F2637eb13b655F2223ea036B59",
+      "startBlock": 346707
+    }
+  }
+}

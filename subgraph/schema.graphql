@@ -39,3 +39,11 @@ type Schema @entity {
     context: String!
     schema: String!
 }
+
+type Counter @entity{
+    id: ID!
+    attestations: Int
+    modules: Int
+    portals: Int
+    schemas: Int
+}

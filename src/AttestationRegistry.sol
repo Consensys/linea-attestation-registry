@@ -2,7 +2,6 @@
 pragma solidity 0.8.21;
 
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
-import { ERC1155Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/token/ERC1155/ERC1155Upgradeable.sol";
 import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
@@ -13,7 +12,7 @@ import { IRouter } from "./interface/IRouter.sol";
  * @author Consensys
  * @notice This contract stores a registry of all attestations
  */
-contract AttestationRegistry is OwnableUpgradeable, ERC1155Upgradeable {
+contract AttestationRegistry is OwnableUpgradeable {
   IRouter public router;
 
   uint16 private version;
@@ -262,38 +261,5 @@ contract AttestationRegistry is OwnableUpgradeable, ERC1155Upgradeable {
    */
   function getAttestationIdCounter() public view returns (uint32) {
     return attestationIdCounter;
-  }
-
-  /**
-   * @notice Checks if an address owns a given attestation
-   * @param account The address of the token holder
-   * @param id ID of the attestation
-   * @return The _owner's balance of the attestations on a given attestation ID
-   */
-  function balanceOf(address account, uint256 id) public view override returns (uint256) {
-    bytes32 attestationId = bytes32(abi.encode(id));
-    Attestation memory attestation = attestations[attestationId];
-    if (keccak256(attestation.subject) == keccak256(abi.encode(account))) return 1;
-    return 0;
-  }
-
-  /**
-   * @notice Get the balance of multiple account/attestation pairs
-   * @param accounts The addresses of the attestation holders
-   * @param ids ID of the attestations
-   * @return The _owner's balance of the attestation for a given address (i.e. balance for each (owner, id) pair)
-   */
-  function balanceOfBatch(
-    address[] memory accounts,
-    uint256[] memory ids
-  ) public view override returns (uint256[] memory) {
-    if (accounts.length != ids.length) revert ArrayLengthMismatch();
-    uint256[] memory result = new uint256[](accounts.length);
-    for (uint256 i = 0; i < accounts.length; i++) {
-      bytes32 attestationId = bytes32(abi.encode(ids[i]));
-      Attestation memory attestation = attestations[attestationId];
-      if (keccak256(attestation.subject) == keccak256(abi.encode(accounts[i]))) result[i] = 1;
-    }
-    return result;
   }
 }

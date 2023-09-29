@@ -14,32 +14,48 @@ on:
 
 jobs:
   lint:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v3"
-
-      - name: "Install Pnpm"
-        uses: "pnpm/action-setup@v2"
+      - name: Check out the repo
+        uses: actions/checkout@v3
         with:
-          version: "8"
+          submodules: recursive
 
-      - name: "Install Node.js"
-        uses: "actions/setup-node@v3"
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v2
         with:
-          cache: "pnpm"
-          node-version: "lts/*"
+          version: 8
+          run_install: false
 
-      - name: "Install the Node.js dependencies"
-        run: "pnpm install"
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
 
-      - name: "Check code linting"
-        run: "pnpm -r run lint"
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - name: "Run Prettier"
-        run: "pnpm run prettier"
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
-      - name: "Add lint summary"
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check code linting
+        run: pnpm -r run lint
+
+      - name: Run Prettier
+        run: pnpm run prettier
+
+      - name: Add lint summary
         run: |
           echo "## Lint result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

@@ -2,13 +2,15 @@ import {
   AttestationRegistered as AttestationRegisteredEvent,
   AttestationRegistry,
 } from "../generated/AttestationRegistry/AttestationRegistry";
-import { Attestation, Schema } from "../generated/schema";
+import { Attestation, Counter, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
 
 export function handleAttestationRegistered(event: AttestationRegisteredEvent): void {
   const attestationRegistryContract = AttestationRegistry.bind(event.address);
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
   const attestation = new Attestation(event.params.attestationId.toHex());
+
+  incrementAttestationCount();
 
   attestation.schemaId = attestationData.schemaId;
   attestation.replacedBy = attestationData.replacedBy;
@@ -109,4 +111,20 @@ function valueToString(value: ethereum.Value): string {
     default:
       return "UNKNOWN TYPE";
   }
+}
+
+function incrementAttestationCount(): void {
+  let counter = Counter.load("counter");
+
+  if (!counter) {
+    counter = new Counter("counter");
+  }
+
+  if (!counter.attestations) {
+    counter.attestations = 1;
+  } else {
+    counter.attestations += 1;
+  }
+
+  counter.save();
 }

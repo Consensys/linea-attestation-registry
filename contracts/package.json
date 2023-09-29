@@ -1,0 +1,64 @@
+{
+  "name": "linea-attestation-registry-contracts",
+  "version": "0.0.1",
+  "description": "Verax Attestation Registry core smart contracts",
+  "keywords": [
+    "linea-attestation-registry",
+    "blockchain",
+    "attestation",
+    "ethereum",
+    "foundry",
+    "smart-contracts",
+    "solidity"
+  ],
+  "repository": "github.com/Consensys/linea-attestation-registry",
+  "license": "MIT",
+  "author": "Consensys",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build": "forge build",
+    "check:upgradeability": "npx hardhat run script/upgrade/checkUpgradeability.ts",
+    "check:upgradeability:ci": "cp .env.example .env && pnpm run check:upgradeability",
+    "check:upgradeable": "npx hardhat run --network linea script/upgrade/checkUpgradeable.ts",
+    "check:upgradeable:goerli": "npx hardhat run --network linea-goerli script/upgrade/checkUpgradeable.ts",
+    "clean": "rm -rf lcov.info coverage artifacts cache_hardhat cache out typechain-types",
+    "deploy:CorrectModule": "npx hardhat run --network linea script/deploy/deployCorrectModule.ts",
+    "deploy:CorrectModule:goerli": "npx hardhat run --network linea-goerli script/deploy/deployCorrectModule.ts",
+    "deploy:IncorrectModule": "npx hardhat run --network linea script/deploy/deployIncorrectModule.ts",
+    "deploy:IncorrectModule:goerli": "npx hardhat run --network linea-goerli script/deploy/deployIncorrectModule.ts",
+    "deploy:MsgSenderModule": "npx hardhat run --network linea script/deploy/deployMsgSenderModule.ts",
+    "deploy:MsgSenderModule:goerli": "npx hardhat run --network linea-goerli script/deploy/deployMsgSenderModule.ts",
+    "deploy:all": "npx hardhat run --network linea script/deploy/deployEverything.ts",
+    "deploy:all:goerli": "npx hardhat run --network linea-goerli script/deploy/deployEverything.ts",
+    "deploy:post": "npx hardhat run --network linea script/deploy/postDeployment.ts",
+    "deploy:post:goerli": "npx hardhat run --network linea-goerli script/deploy/postDeployment.ts",
+    "lint": "pnpm solhint \"{script,src,test}/**/*.sol\"",
+    "reimport": "npx hardhat run --network linea script/recreateNetworkFile.ts",
+    "reimport:goerli": "npx hardhat run --network linea-goerli script/recreateNetworkFile.ts",
+    "test": "forge test",
+    "upgrade:all": "npx hardhat run --network linea script/upgrade/upgradeEverything.ts",
+    "upgrade:all:force": "npx hardhat run --network linea script/upgrade/forceUgradeEverything.ts",
+    "upgrade:all:goerli": "npx hardhat run --network linea-goerli script/upgrade/upgradeEverything.ts",
+    "upgrade:all:goerli:force": "npx hardhat run --network linea-goerli script/upgrade/forceUgradeEverything.ts"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@nomicfoundation/hardhat-foundry": "^1.1.1",
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/hardhat-upgrades": "^2.2.1",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.7.1",
+    "hardhat": "^2.17.2",
+    "solhint": "^3.6.2",
+    "solhint-plugin-prettier": "^0.0.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "flat@<5.0.1": ">=5.0.1",
+      "tough-cookie@<4.1.3": ">=4.1.3",
+      "minimatch@<3.0.5": ">=3.0.5"
+    }
+  }
+}

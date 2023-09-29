@@ -1,4 +1,4 @@
-name: Smart Contracts Test
+name: Smart Contracts
 
 on:
   pull_request:
@@ -16,39 +16,13 @@ env:
   FOUNDRY_PROFILE: ci
 
 jobs:
-  lint:
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v3"
-
-      - name: "Install Foundry"
-        uses: "foundry-rs/foundry-toolchain@v1"
-
-      - name: "Install Pnpm"
-        uses: "pnpm/action-setup@v2"
-        with:
-          version: "8"
-
-      - name: "Install Node.js"
-        uses: "actions/setup-node@v3"
-        with:
-          cache: "pnpm"
-          node-version: "lts/*"
-
-      - name: "Install the Node.js dependencies"
-        run: "pnpm install"
-
-      - name: "Lint the contracts"
-        run: "pnpm lint"
-
-      - name: "Add lint summary"
-        run: |
-          echo "## Lint result" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
-
   build:
+    defaults:
+      run:
+        working-directory: contracts
+
     runs-on: "ubuntu-latest"
+
     steps:
       - name: "Check out the repo"
         uses: "actions/checkout@v3"
@@ -70,10 +44,17 @@ jobs:
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
   test-unit:
+    defaults:
+      run:
+        working-directory: contracts
+
     env:
       FOUNDRY_FUZZ_RUNS: "5000"
-    needs: ["lint", "build"]
+
+    needs: ["build"]
+
     runs-on: "ubuntu-latest"
+
     steps:
       - name: "Check out the repo"
         uses: "actions/checkout@v3"
@@ -84,7 +65,7 @@ jobs:
         uses: "foundry-rs/foundry-toolchain@v1"
 
       - name: "Run the unit tests"
-        run: 'forge test --match-path "test/*"'
+        run: "forge test"
 
       - name: "Add test summary"
         run: |
@@ -92,8 +73,10 @@ jobs:
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
   coverage:
-    needs: ["lint", "build"]
+    needs: ["build"]
+
     runs-on: "ubuntu-latest"
+
     steps:
       - name: "Check out the repo"
         uses: "actions/checkout@v3"
@@ -104,7 +87,10 @@ jobs:
         uses: "foundry-rs/foundry-toolchain@v1"
 
       - name: "Generate the coverage report using the unit tests"
-        run: 'forge coverage --match-path "test/**/*.sol" --report lcov'
+        run: "cd contracts && forge coverage --report lcov"
+
+      - name: "Move the report at the root of the project"
+        run: "mv contracts/lcov.info ."
 
       - name: "Upload coverage report to Codecov"
         uses: "codecov/codecov-action@v3"
@@ -126,8 +112,14 @@ jobs:
           echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
 
   upgradeability:
-    needs: ["lint", "build"]
+    defaults:
+      run:
+        working-directory: contracts
+
+    needs: ["build"]
+
     runs-on: "ubuntu-latest"
+
     steps:
       - name: "Check out the repo"
         uses: "actions/checkout@v3"

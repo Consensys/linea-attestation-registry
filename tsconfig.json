@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
     "target": "ESNext",
     "allowJs": false,
     "skipLibCheck": true,
@@ -14,6 +18,14 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true
   },
+  "references": [
+    {
+      "path": "contracts"
+    },
+    {
+      "path": "subgraph"
+    }
+  ],
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "typechain-types"]
 }

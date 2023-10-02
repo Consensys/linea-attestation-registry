@@ -83,7 +83,7 @@ console.log(myAttestation);
 
 ```
 
-### 2. Read content (list / many objects)
+### 3. Read content (list / many objects)
 
 Each DataMapper comes with the method `findBy` to get objects by criterias. 
 ```js
@@ -92,8 +92,10 @@ Each DataMapper comes with the method `findBy` to get objects by criterias.
 // 	- criterias: object {property1: value1, property2: value2, ...}
 // 	- page: integer (optional, default 0)
 // 	- offset: integer (optional, default 50, max= 500)
+// 	- orderBy: string (optional, default createdAt)
+// 	- order(property?): enum string "ASC", "DESC" (optional, default "DESC")
 // 
-const myAttestations = await attestationDataMapper.findBy({portalId: "37773", subject: "John"}, 4, 30);
+const myAttestations = await attestationDataMapper.findBy({portalId: "37773", subject: "John"}, 4, 30, "schemaId", "ASC");
 
 console.log(myAttestations);
 // 
@@ -107,7 +109,8 @@ console.log(myAttestations);
 //
 ```
 
-### 3. Write content
+### 4. Write content
+[WORK IN PROGRESS]
 Each dataMapper comes with write methods, that may vary depending on the class. See the detail of write method per class dataMapper.
 
 ```js
@@ -148,15 +151,17 @@ console.log(result);
 
 ```
 
+## Other operations
+[Work in progress]
+The class `veraxSdk.utils` extends the capabilities:
+* precompute the id of an attestation
+* encode decode payload
 
 ## Changelog
 
-
 See [CHANGELOG.md](./CHANGELOG.md).
 
-## Upgrades
 
-You can read about how to migrate to the new version [here](./docs/upgrade/).
 
 ## Documentation
 

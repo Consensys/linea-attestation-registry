@@ -1,4 +1,3 @@
 {
-  "extends": "@graphprotocol/graph-ts/types/tsconfig.base.json",
-  "include": ["src"]
+  "extends": "@graphprotocol/graph-ts/types/tsconfig.base.json"
 }

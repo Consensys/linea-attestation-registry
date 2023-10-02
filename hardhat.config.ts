@@ -28,6 +28,10 @@ const config: HardhatUserConfig = {
       url: `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: [process.env.PRIVATE_KEY ?? "0000000000000000000000000000000000000000000000000000000000000000"],
     },
+    sepolia: {
+      url: `https://sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      accounts: [process.env.PRIVATE_KEY ?? "0000000000000000000000000000000000000000000000000000000000000000"],
+    },
   },
   paths: {
     sources: "./src",
@@ -36,6 +40,7 @@ const config: HardhatUserConfig = {
     apiKey: {
       "linea-goerli": process.env.ETHERSCAN_API_KEY ?? "",
       linea: process.env.ETHERSCAN_API_KEY ?? "",
+      sepolia: process.env.ETHERSCAN_API_KEY ?? "",
     },
     customChains: [
       {

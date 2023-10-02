@@ -239,6 +239,32 @@ deployed contracts. This can be useful if the file was lost/modified since the l
 
 :warning: Note: Forcing the redeployment of all the implementations is more expensive!
 
+## Utils
+
+### Encode
+
+Change the data you want to encode in `contracts/script/encode.ts`, then run:
+
+```
+pnpm run encode
+```
+
+### Decode
+
+Change the data you want to decode in `contracts/script/decode.ts`, then run:
+
+```
+pnpm run decode
+```
+
+### Verify with arguments
+
+Change the arguments you want to use fpr the verify action in `contracts/script/arguments.ts`, then run:
+
+```
+npx hardhat verify --network NETWORK_NAME CONTRACT_ADDRESS --constructor-args contracts/script/arguments.ts
+```
+
 ## Contracts addresses
 
 ### Testnet

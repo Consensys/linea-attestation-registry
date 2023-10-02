@@ -8,8 +8,8 @@ import { AttestationRegistry } from "../src/AttestationRegistry.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { EASRegistryMock } from "./mocks/EASRegistryMock.sol";
-import { Attestation, AttestationPayload } from "../src/types/Structs.sol";
-import { Attestation as EASAttestation, IEAS } from "../src/interface/IEAS.sol";
+import { AttestationPayload } from "../src/types/Structs.sol";
+import { Attestation as EASAttestation } from "../src/interface/IEAS.sol";
 import { Router } from "../src/Router.sol";
 
 contract AttestationReaderTest is Test {
@@ -20,7 +20,7 @@ contract AttestationReaderTest is Test {
   address public attestationRegistryAddress;
   address public portalRegistryAddress;
   address public easRegistryAddress;
-  
+
   function setUp() public {
     router = new Router();
     router.initialize();
@@ -35,7 +35,7 @@ contract AttestationReaderTest is Test {
     vm.stopPrank();
     router.updatePortalRegistry(portalRegistryAddress);
     router.updateAttestationRegistry(attestationRegistryAddress);
-    
+
     PortalRegistry(portalRegistryAddress).register(portal, "Name", "Description", true, "Owner name");
   }
 

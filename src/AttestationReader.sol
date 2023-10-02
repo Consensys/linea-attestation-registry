@@ -70,9 +70,7 @@ contract AttestationReader is OwnableUpgradeable {
   /**
    * @notice Converts verax attestation to EAS attestation
    */
-  function _convertToEASAttestation(
-    Attestation memory veraxAttestation
-  ) private view returns (EASAttestation memory) {
+  function _convertToEASAttestation(Attestation memory veraxAttestation) private view returns (EASAttestation memory) {
     EASAttestation memory attestation = EASAttestation(
       veraxAttestation.attestationId,
       veraxAttestation.schemaId,

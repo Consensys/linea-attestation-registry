@@ -12,7 +12,7 @@ npm install --save verax-sdk
 ```
 ```bash
 # yarn
-yarn add box-node-sdk
+yarn add verax-sdk
 ```
 
 ## Getting Started
@@ -32,12 +32,12 @@ import VeraxSdk from "verax-sdk";
 
 ```js
 // Default configuration for Linea Testnet
-const veraxSdk = new VeraxSdk(VERAX_CONF_TESTNET);
+const veraxSdk = new VeraxSdk(VeraxSdk.LineaConfTestnet);
 ```
 or,
 ```js
 // Default configuration for Linea Mainnet
-const veraxSdk = new VeraxSdk(VERAX_CONF_MAINNET);
+const veraxSdk = new VeraxSdk(VeraxSdk.LineaConfMainnet);
 ```
 or,
 ```js
@@ -47,7 +47,7 @@ const myVeraxConfiguration = {
 	chain: 12345,
 	subgraphUrl: "https://my.subgraph.url",
 	portalRegistryAddress: "0xMyPortalRegistryAddress",
-	moduleRegistryAddress: "0xMyPoduleRegistryAddress",
+	moduleRegistryAddress: "0xMyModuleRegistryAddress",
 	schemaRegistryAddress: "0xMySchemaRegistryAddress",
 	attestationRegistryAddress: "0xMyAttestationRegistryAddress"
 };

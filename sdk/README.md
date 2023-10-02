@@ -1,6 +1,8 @@
 VeraxSDK
 ===============
 
+[DRAFT]
+
 ## Installation
 VeraxSDK is a [npm package](https://www.npmjs.com/package/verax-sdk/).
 

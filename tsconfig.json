@@ -24,6 +24,9 @@
     },
     {
       "path": "subgraph"
+    },
+    {
+      "path": "sdk"
     }
   ],
   "include": ["**/*.ts"],

@@ -1,0 +1,31 @@
+{
+  "name": "linea-attestation-registry-sdk",
+  "version": "0.0.1",
+  "description": "Verax Attestation Registry SDK to interact with the subgraph and the contracts",
+  "keywords": [
+    "linea-attestation-registry",
+    "blockchain",
+    "attestation",
+    "ethereum",
+    "foundry",
+    "smart-contracts",
+    "solidity"
+  ],
+  "type": "module",
+  "repository": "github.com/Consensys/linea-attestation-registry",
+  "license": "MIT",
+  "author": "Consensys",
+  "scripts": {
+    "dev": "vite",
+    "attestation": "ts-node examples/AttestationFindOneById.ts"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.8.4",
+    "graphql": "^16.8.1",
+    "viem": "^1.14.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "vite": "^4.4.9"
+  }
+}

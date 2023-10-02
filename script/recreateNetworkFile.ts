@@ -9,6 +9,12 @@ import { ethers, upgrades } from "hardhat";
 async function main() {
   console.log("Re-importing deployed contracts...");
 
+  console.log("Re-importing Router...");
+  const routerProxyAddress = process.env.ROUTER_ADDRESS ?? "";
+  const Router = await ethers.getContractFactory("Router");
+
+  await upgrades.forceImport(routerProxyAddress, Router, { kind: "transparent" });
+
   console.log("Re-importing AttestationRegistry...");
   const attestationRegistryProxyAddress = process.env.ATTESTATION_REGISTRY_ADDRESS ?? "";
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");

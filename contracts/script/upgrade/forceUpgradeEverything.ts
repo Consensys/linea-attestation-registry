@@ -160,7 +160,9 @@ async function main() {
 
   console.log(`\n----\n`);
 
-  const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(attestationReaderProxyAddress);
+  const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(
+    attestationReaderProxyAddress,
+  );
 
   await run("verify:verify", {
     address: attestationReaderProxyAddress,
@@ -179,7 +181,7 @@ async function main() {
   console.log(`PortalRegistry = ${portalProxyAddress}`);
   console.log(`SchemaRegistry = ${schemaProxyAddress}`);
   console.log(`AttestationReader = ${attestationReaderProxyAddress}`);
-  
+
   console.log(`END SCRIPT`);
 }
 

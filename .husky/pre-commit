@@ -2,5 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 pnpm run prettier:write
-pnpm run lint
-pnpm run test
+pnpm -r run lint
+pnpm -r run test

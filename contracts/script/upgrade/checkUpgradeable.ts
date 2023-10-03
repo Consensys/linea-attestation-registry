@@ -33,6 +33,12 @@ async function main() {
 
   await upgrades.validateUpgrade(schemaRegistryProxyAddress, SchemaRegistry, { kind: "transparent" });
 
+  console.log("Checking AttestationReader...");
+  const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS ?? "";
+  const AttestationReader = await ethers.getContractFactory("AttestationReader");
+
+  await upgrades.validateUpgrade(attestationReaderProxyAddress, AttestationReader, { kind: "transparent" });
+
   console.log("All contracts are upgradeable!");
 }
 

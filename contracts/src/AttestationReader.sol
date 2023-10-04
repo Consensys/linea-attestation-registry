@@ -63,7 +63,6 @@ contract AttestationReader is OwnableUpgradeable {
     if (attestation.schema == bytes32(0)) {
       AttestationRegistry veraxAttestationRegistry = AttestationRegistry(router.getAttestationRegistry());
       Attestation memory veraxAttestation = veraxAttestationRegistry.getAttestation(uid);
-      //TODO: currently conversion reverts if subject field is not abi encoded. In future this needs to be handled.
       attestation = _convertToEASAttestation(veraxAttestation);
     }
   }
@@ -72,8 +71,14 @@ contract AttestationReader is OwnableUpgradeable {
    * @notice Converts a Verax attestation to an EAS attestation
    * @param veraxAttestation the Verax attestation to convert
    * @return The EAS attestation converted from the Verax attestation
+   * @dev The EAS attestation will have a "zero address" subject if the original subject is not an address
    */
   function _convertToEASAttestation(Attestation memory veraxAttestation) private view returns (EASAttestation memory) {
+    address subject = address(0);
+
+    if (veraxAttestation.subject.length == 32) subject = abi.decode(veraxAttestation.subject, (address));
+    if (veraxAttestation.subject.length == 20) subject = address(uint160(bytes20(veraxAttestation.subject)));
+
     return
       EASAttestation(
         veraxAttestation.attestationId,
@@ -82,7 +87,7 @@ contract AttestationReader is OwnableUpgradeable {
         veraxAttestation.expirationDate,
         veraxAttestation.revocationDate,
         bytes32(0),
-        abi.decode(veraxAttestation.subject, (address)),
+        subject,
         veraxAttestation.attester,
         PortalRegistry(router.getPortalRegistry()).getPortalByAddress(veraxAttestation.portal).isRevocable,
         veraxAttestation.attestationData

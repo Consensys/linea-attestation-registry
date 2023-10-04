@@ -279,6 +279,8 @@ npx hardhat verify --network NETWORK_NAME CONTRACT_ADDRESS --constructor-args co
   [0x506f88a5Ca8D5F001f2909b029738A40042e42a6](https://goerli.lineascan.build/address/0x506f88a5Ca8D5F001f2909b029738A40042e42a6)
 - SchemaRegistry =
   [0xB2c4Da1f8F08A0CA25862509E5431289BE2b598B](https://goerli.lineascan.build/address/0xB2c4Da1f8F08A0CA25862509E5431289BE2b598B)
+- AttestationReader =
+  [0xa0B8f98874Ee13A940170BBa08185b8a3687f433](https://goerli.lineascan.build/address/0xa0B8f98874Ee13A940170BBa08185b8a3687f433)
 
 ### Mainnet
 

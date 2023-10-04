@@ -63,6 +63,7 @@ contract AttestationReader is OwnableUpgradeable {
     if (attestation.schema == bytes32(0)) {
       AttestationRegistry veraxAttestationRegistry = AttestationRegistry(router.getAttestationRegistry());
       Attestation memory veraxAttestation = veraxAttestationRegistry.getAttestation(uid);
+      //TODO: currently conversion reverts if subject field is not abi encoded. In future this needs to be handled.
       attestation = _convertToEASAttestation(veraxAttestation);
     }
   }

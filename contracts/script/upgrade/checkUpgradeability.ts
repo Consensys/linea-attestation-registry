@@ -29,6 +29,11 @@ async function main() {
   await upgrades.validateImplementation(SchemaRegistry);
   console.log("SchemaRegistry OK");
 
+  console.log("Checking AttestationReader...");
+  const AttestationReader = await ethers.getContractFactory("AttestationReader");
+  await upgrades.validateImplementation(AttestationReader);
+  console.log("AttestationReader OK");
+
   console.log("All contracts are upgradeable!");
 }
 

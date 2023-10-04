@@ -1,7 +1,12 @@
 import { ethers, run, upgrades } from "hardhat";
+import dotenv from "dotenv";
+
+dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`START SCRIPT`);
+
+  const easRegistryAddress = process.env.EAS_REGISTRY_ADDRESS;
 
   console.log("Deploying Router...");
   const Router = await ethers.getContractFactory("Router");
@@ -96,6 +101,25 @@ async function main() {
 
   console.log(`\n----\n`);
 
+  console.log("Deploying AttestationReader...");
+  const AttestationReader = await ethers.getContractFactory("AttestationReader");
+  const attestationReader = await upgrades.deployProxy(AttestationReader);
+  await attestationReader.waitForDeployment();
+  const attestationReaderProxyAddress = await attestationReader.getAddress();
+  const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(
+    attestationReaderProxyAddress,
+  );
+
+  await run("verify:verify", {
+    address: attestationReaderProxyAddress,
+  });
+
+  console.log(`AttestationReader successfully deployed and verified!`);
+  console.log(`Proxy is at ${attestationReaderProxyAddress}`);
+  console.log(`Implementation is at ${attestationReaderImplementationAddress}`);
+
+  console.log(`\n----\n`);
+
   console.log("Updating Router with the registries addresses...");
   await router.updateAttestationRegistry(attestationRegistryProxyAddress);
   await router.updateModuleRegistry(moduleRegistryProxyAddress);
@@ -127,12 +151,23 @@ async function main() {
 
   console.log(`\n----\n`);
 
+  console.log("Updating AttestationReader with the Router address...");
+  await attestationReader.updateRouter(routerProxyAddress);
+  console.log("AttestationReader updated with router address!");
+
+  console.log("Updating AttestationReader with the EAS Registry address...");
+  await attestationReader.updateEASRegistryAddress(easRegistryAddress);
+  console.log("AttestationReader updated with EAS registry address!");
+
+  console.log(`\n----\n`);
+
   console.log(`** SUMMARY **`);
   console.log(`Router = ${routerProxyAddress}`);
   console.log(`AttestationRegistry = ${attestationRegistryProxyAddress}`);
   console.log(`ModuleRegistry = ${moduleRegistryProxyAddress}`);
   console.log(`PortalRegistry = ${portalRegistryProxyAddress}`);
   console.log(`SchemaRegistry = ${schemaRegistryProxyAddress}`);
+  console.log(`AttestationReader = ${attestationReaderProxyAddress}`);
 
   console.log(`END SCRIPT`);
 }

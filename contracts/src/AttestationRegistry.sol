@@ -262,4 +262,34 @@ contract AttestationRegistry is OwnableUpgradeable {
   function getAttestationIdCounter() public view returns (uint32) {
     return attestationIdCounter;
   }
+
+  /**
+   * @notice Checks if an address owns a given attestation following ERC-1155
+   * @param account The address of the token holder
+   * @param id ID of the attestation
+   * @return The _owner's balance of the attestations on a given attestation ID
+   */
+  function balanceOf(address account, uint256 id) public view returns (uint256) {
+    bytes32 attestationId = bytes32(abi.encode(id));
+    Attestation memory attestation = attestations[attestationId];
+    if (attestation.subject.length > 20 && keccak256(attestation.subject) == keccak256(abi.encode(account))) return 1;
+    if (attestation.subject.length == 20 && keccak256(attestation.subject) == keccak256(abi.encodePacked(account)))
+      return 1;
+    return 0;
+  }
+
+  /**
+   * @notice Get the balance of multiple account/attestation pairs following ERC-1155
+   * @param accounts The addresses of the attestation holders
+   * @param ids ID of the attestations
+   * @return The _owner's balance of the attestation for a given address (i.e. balance for each (owner, id) pair)
+   */
+  function balanceOfBatch(address[] memory accounts, uint256[] memory ids) public view returns (uint256[] memory) {
+    if (accounts.length != ids.length) revert ArrayLengthMismatch();
+    uint256[] memory result = new uint256[](accounts.length);
+    for (uint256 i = 0; i < accounts.length; i++) {
+      result[i] = balanceOf(accounts[i], ids[i]);
+    }
+    return result;
+  }
 }

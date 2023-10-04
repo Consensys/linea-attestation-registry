@@ -9,9 +9,9 @@ import { PortalRegistry } from "./PortalRegistry.sol";
 import { IRouter } from "./interface/IRouter.sol";
 
 /**
- * @title Attestation reader
+ * @title Attestation Reader
  * @author Consensys
- * @notice This is an example of how to read attestations from both Verax and EAS.
+ * @notice This contract allows to read attestations stored by EAS or Verax
  */
 contract AttestationReader is OwnableUpgradeable {
   IRouter public router;
@@ -45,6 +45,7 @@ contract AttestationReader is OwnableUpgradeable {
 
   /**
    * @notice Changes the address for the EAS attestation registry
+   * @param _easRegistryAddress the new EAS Registry address
    * @dev Only the owner can call this method
    */
   function updateEASRegistryAddress(address _easRegistryAddress) public onlyOwner {
@@ -55,34 +56,35 @@ contract AttestationReader is OwnableUpgradeable {
   /**
    * @notice Gets an attestation by its identifier
    * @param uid the attestation identifier
-   * @return the attestation
+   * @return attestation the attestation, following EAS's format
    */
-  function getAttestation(bytes32 uid) public view returns (EASAttestation memory) {
-    EASAttestation memory attestation = easRegistry.getAttestation(uid);
+  function getAttestation(bytes32 uid) public view returns (EASAttestation memory attestation) {
+    attestation = easRegistry.getAttestation(uid);
     if (attestation.schema == bytes32(0)) {
       AttestationRegistry veraxAttestationRegistry = AttestationRegistry(router.getAttestationRegistry());
       Attestation memory veraxAttestation = veraxAttestationRegistry.getAttestation(uid);
       attestation = _convertToEASAttestation(veraxAttestation);
     }
-    return attestation;
   }
 
   /**
-   * @notice Converts verax attestation to EAS attestation
+   * @notice Converts a Verax attestation to an EAS attestation
+   * @param veraxAttestation the Verax attestation to convert
+   * @return The EAS attestation converted from the Verax attestation
    */
   function _convertToEASAttestation(Attestation memory veraxAttestation) private view returns (EASAttestation memory) {
-    EASAttestation memory attestation = EASAttestation(
-      veraxAttestation.attestationId,
-      veraxAttestation.schemaId,
-      veraxAttestation.attestedDate,
-      veraxAttestation.expirationDate,
-      veraxAttestation.revocationDate,
-      bytes32(0),
-      abi.decode(veraxAttestation.subject, (address)),
-      veraxAttestation.attester,
-      PortalRegistry(router.getPortalRegistry()).getPortalByAddress(veraxAttestation.portal).isRevocable,
-      veraxAttestation.attestationData
-    );
-    return attestation;
+    return
+      EASAttestation(
+        veraxAttestation.attestationId,
+        veraxAttestation.schemaId,
+        veraxAttestation.attestedDate,
+        veraxAttestation.expirationDate,
+        veraxAttestation.revocationDate,
+        bytes32(0),
+        abi.decode(veraxAttestation.subject, (address)),
+        veraxAttestation.attester,
+        PortalRegistry(router.getPortalRegistry()).getPortalByAddress(veraxAttestation.portal).isRevocable,
+        veraxAttestation.attestationData
+      );
   }
 }

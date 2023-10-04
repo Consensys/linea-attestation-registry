@@ -484,23 +484,89 @@ contract AttestationRegistryTest is Test {
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
     attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
     schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
-    uint32 version = attestationRegistry.getAttestationIdCounter();
+    uint32 attestationIdCounter = attestationRegistry.getAttestationIdCounter();
 
-    assertEq(version, 0);
+    assertEq(attestationIdCounter, 0);
 
     vm.startPrank(portal);
 
     attestationRegistry.attest(attestationPayload, attester);
 
-    version = attestationRegistry.getAttestationIdCounter();
-    assertEq(version, 1);
+    attestationIdCounter = attestationRegistry.getAttestationIdCounter();
+    assertEq(attestationIdCounter, 1);
 
     attestationRegistry.attest(attestationPayload, attester);
 
-    version = attestationRegistry.getAttestationIdCounter();
-    assertEq(version, 2);
+    attestationIdCounter = attestationRegistry.getAttestationIdCounter();
+    assertEq(attestationIdCounter, 2);
 
     vm.stopPrank();
+  }
+
+  function test_balanceOf_subjectEncodedAddress(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+
+    vm.startPrank(portal);
+    attestationPayload.subject = abi.encode(address(1));
+    attestationRegistry.attest(attestationPayload, attester);
+
+    uint256 balance = attestationRegistry.balanceOf(address(1), 1);
+    assertEq(balance, 1);
+  }
+
+  function test_balanceOf_subjectPackedEncodedAddress(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+
+    vm.startPrank(portal);
+    attestationPayload.subject = abi.encodePacked(address(1));
+    attestationRegistry.attest(attestationPayload, attester);
+
+    uint256 balance = attestationRegistry.balanceOf(address(1), 1);
+    assertEq(balance, 1);
+  }
+
+  function test_balanceOfBatch(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+
+    address[] memory owners = new address[](2);
+    owners[0] = address(1);
+    owners[1] = address(2);
+
+    vm.startPrank(portal);
+    attestationPayload.subject = abi.encode(owners[0]); // Address fully encoded
+    attestationRegistry.attest(attestationPayload, attester);
+
+    attestationPayload.subject = abi.encodePacked(owners[1]);
+    attestationRegistry.attest(attestationPayload, attester); // Address as subject
+
+    uint256[] memory ids = new uint256[](2);
+    ids[0] = 1;
+    ids[1] = 2;
+    uint256[] memory balance = attestationRegistry.balanceOfBatch(owners, ids);
+    assertEq(balance[0], 1);
+    assertEq(balance[1], 1);
+  }
+
+  function test_balanceOfBatch_ArrayLengthMismatch() public {
+    address[] memory owners = new address[](2);
+    owners[0] = address(1);
+    owners[1] = address(2);
+    uint256[] memory ids = new uint256[](1);
+    ids[0] = 1;
+    vm.expectRevert(AttestationRegistry.ArrayLengthMismatch.selector);
+    attestationRegistry.balanceOfBatch(owners, ids);
   }
 
   function _createAttestation(

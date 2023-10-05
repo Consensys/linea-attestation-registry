@@ -11,13 +11,24 @@
     "smart-contracts",
     "solidity"
   ],
-  "type": "module",
   "repository": "github.com/Consensys/linea-attestation-registry",
   "license": "MIT",
   "author": "Consensys",
+  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "attestation": "ts-node examples/AttestationFindOneById.ts"
+    "attestation:all": "ts-node examples/attestation/findBy.ts",
+    "attestation:one": "ts-node examples/attestation/findOneById.ts",
+    "module:all": "ts-node examples/module/findBy.ts",
+    "module:one": "ts-node examples/module/findOneById.ts",
+    "portal:all": "ts-node examples/portal/findBy.ts",
+    "portal:one": "ts-node examples/portal/findOneById.ts",
+    "schema:all": "ts-node examples/schema/findBy.ts",
+    "schema:one": "ts-node examples/schema/findOneById.ts",
+    "utils:attestation:counter": "ts-node examples/utils/getAttestationIdCounter.ts",
+    "utils:attestation:version": "ts-node examples/utils/getVersionNumber.ts",
+    "utils:module:counter": "ts-node examples/utils/getModulesNumber.ts",
+    "utils:portal:counter": "ts-node examples/utils/getPortalsCount.ts",
+    "utils:schema:counter": "ts-node examples/utils/getSchemasNumber.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.8.4",
@@ -25,7 +36,6 @@
     "viem": "^1.14.0"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1",
-    "vite": "^4.4.9"
+    "ts-node": "^10.9.1"
   }
 }

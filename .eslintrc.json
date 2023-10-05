@@ -9,9 +9,7 @@
     "sourceType": "module"
   },
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-  "rules": {
-    "@typescript-eslint/no-explicit-any": 1
-  },
+  "rules": {},
   "settings": {
     "import/resolver": {
       "node": {

@@ -1,20 +1,34 @@
-import Conf from "./../interface/Conf";
-import { findOneById } from "../AttestationRegistryWrapper";
 import { PublicClient } from "viem";
-import { ApolloClient } from "@apollo/client/core";
+import { ApolloClient, gql } from "@apollo/client/core";
+import { Conf } from "../types";
 
-export default class BaseDataMapper {
-  private conf: Conf;
-  private web3Client: PublicClient;
-  private apolloClient: ApolloClient<any>;
+export default abstract class BaseDataMapper {
+  protected readonly conf: Conf;
+  protected readonly web3Client: PublicClient;
+  protected readonly apolloClient: ApolloClient<object>;
+  protected abstract typeName: string;
+  protected abstract gqlInterface: string;
 
-  constructor(_conf: Conf, _web3Client: PublicClient, _apolloClient: ApolloClient<any>) {
+  constructor(_conf: Conf, _web3Client: PublicClient, _apolloClient: ApolloClient<object>) {
     this.conf = _conf;
     this.web3Client = _web3Client;
     this.apolloClient = _apolloClient;
   }
 
-  findOneById(id: string): object {
-    return findOneById(id);
+  async find(id: string) {
+    const queryResult = await this.apolloClient.query({
+      query: gql(`query GetOne($id: ID!) { ${this.typeName}(id: $id) ${this.gqlInterface} }`),
+      variables: { id },
+    });
+
+    return JSON.stringify(queryResult.data[this.typeName]);
+  }
+
+  async findBy() {
+    const queryResult = await this.apolloClient.query({
+      query: gql(`query GetBy { ${this.typeName}s ${this.gqlInterface} }`),
+    });
+
+    return JSON.stringify(queryResult.data[`${this.typeName}s`]);
   }
 }

@@ -17,7 +17,19 @@
   "author": "Consensys",
   "scripts": {
     "dev": "vite",
-    "attestation": "ts-node examples/AttestationFindOneById.ts"
+    "attestation:one": "ts-node examples/attestation/find.ts",
+    "attestation:all": "ts-node examples/attestation/findBy.ts",
+    "attestation:counter": "ts-node examples/attestation/getAttestationIdCounter.ts",
+    "attestation:version": "ts-node examples/attestation/getVersionNumber.ts",
+    "module:one": "ts-node examples/module/find.ts",
+    "module:all": "ts-node examples/module/findBy.ts",
+    "module:counter": "ts-node examples/module/getModulesNumber.ts",
+    "portal:one": "ts-node examples/portal/find.ts",
+    "portal:all": "ts-node examples/portal/findBy.ts",
+    "portal:counter": "ts-node examples/portal/getPortalsCount.ts",
+    "schema:one": "ts-node examples/schema/find.ts",
+    "schema:all": "ts-node examples/schema/findBy.ts",
+    "schema:counter": "ts-node examples/schema/getSchemasNumber.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.8.4",
@@ -25,7 +37,6 @@
     "viem": "^1.14.0"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1",
-    "vite": "^4.4.9"
+    "ts-node": "^10.9.1"
   }
 }

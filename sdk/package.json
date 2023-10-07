@@ -17,7 +17,7 @@
   "author": "Consensys",
   "scripts": {
     "dev": "vite",
-    "test" : "jest",
+    "test": "jest",
     "attestation": "ts-node examples/AttestationFindOneById.ts"
   },
   "dependencies": {

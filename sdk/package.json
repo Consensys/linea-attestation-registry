@@ -24,6 +24,7 @@
     "portal:one": "ts-node examples/portal/findOneById.ts",
     "schema:all": "ts-node examples/schema/findBy.ts",
     "schema:one": "ts-node examples/schema/findOneById.ts",
+    "test": "jest",
     "utils:attestation:counter": "ts-node examples/utils/getAttestationIdCounter.ts",
     "utils:attestation:version": "ts-node examples/utils/getVersionNumber.ts",
     "utils:decode": "ts-node examples/utils/decode.ts",
@@ -38,6 +39,10 @@
     "viem": "^1.14.0"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1"
+    "@types/jest": "^29.5.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "vite": "^4.4.9"
   }
 }

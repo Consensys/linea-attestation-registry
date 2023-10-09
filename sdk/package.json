@@ -26,6 +26,8 @@
     "schema:one": "ts-node examples/schema/findOneById.ts",
     "utils:attestation:counter": "ts-node examples/utils/getAttestationIdCounter.ts",
     "utils:attestation:version": "ts-node examples/utils/getVersionNumber.ts",
+    "utils:decode": "ts-node examples/utils/decode.ts",
+    "utils:encode": "ts-node examples/utils/encode.ts",
     "utils:module:counter": "ts-node examples/utils/getModulesNumber.ts",
     "utils:portal:counter": "ts-node examples/utils/getPortalsCount.ts",
     "utils:schema:counter": "ts-node examples/utils/getSchemasNumber.ts"

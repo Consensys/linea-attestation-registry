@@ -3,8 +3,9 @@ import { abiAttestationRegistry } from "../abi/AttestationRegistry";
 import { abiModuleRegistry } from "../abi/ModuleRegistry";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { abiSchemaRegistry } from "../abi/SchemaRegistry";
+import { decode, encode } from "../utils/abiCoder";
 
-export default class ModuleDataMapper extends BaseDataMapper {
+export default class UtilsDataMapper extends BaseDataMapper {
   typeName = "counter";
   gqlInterface = `{
         attestations
@@ -51,5 +52,13 @@ export default class ModuleDataMapper extends BaseDataMapper {
       address: this.conf.attestationRegistryAddress,
       functionName: "getAttestationIdCounter",
     });
+  }
+
+  encode(schema: string, values: unknown[]): `0x${string}` {
+    return encode(schema, values);
+  }
+
+  decode(schema: string, attestationData: `0x${string}`): readonly unknown[] {
+    return decode(schema, attestationData);
   }
 }

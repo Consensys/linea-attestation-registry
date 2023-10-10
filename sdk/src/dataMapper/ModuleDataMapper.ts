@@ -8,4 +8,8 @@ export default class ModuleDataMapper extends BaseDataMapper {
         name
         description
   }`;
+
+  async register() {
+    throw new Error("Not implemented");
+  }
 }

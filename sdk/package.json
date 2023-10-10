@@ -16,6 +16,10 @@
   "author": "Consensys",
   "type": "module",
   "scripts": {
+    "attestation": "ts-node examples/attestation/index.ts",
+    "module": "ts-node examples/module/index.ts",
+    "portal": "ts-node examples/portal/index.ts",
+    "schema": "ts-node examples/schema/index.ts",
     "attestation:all": "ts-node examples/attestation/findBy.ts",
     "attestation:one": "ts-node examples/attestation/findOneById.ts",
     "module:all": "ts-node examples/module/findBy.ts",

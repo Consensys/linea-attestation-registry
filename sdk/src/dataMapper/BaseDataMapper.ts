@@ -24,9 +24,9 @@ export default abstract class BaseDataMapper {
     return JSON.stringify(queryResult.data[this.typeName]);
   }
 
-  async findBy() {
+  async findBy(whereClause: string) {
     const queryResult = await this.apolloClient.query({
-      query: gql(`query GetBy { ${this.typeName}s ${this.gqlInterface} }`),
+      query: gql(`query GetBy { ${this.typeName}s(where: ${whereClause}) ${this.gqlInterface} }`),
     });
 
     return JSON.stringify(queryResult.data[`${this.typeName}s`]);

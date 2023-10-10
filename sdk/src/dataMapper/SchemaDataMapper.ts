@@ -9,4 +9,8 @@ export default class SchemaDataMapper extends BaseDataMapper {
         context
         schema
   }`;
+
+  async create() {
+    throw new Error("Not implemented");
+  }
 }

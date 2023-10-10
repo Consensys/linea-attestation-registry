@@ -1,7 +1,8 @@
-import { Address, Chain } from "viem";
+import { Address, Chain, EthereumProvider } from "viem";
 
 export interface Conf {
   chain: Chain;
+  mode: SDKMode;
   subgraphUrl: string;
   portalRegistryAddress: Address;
   moduleRegistryAddress: Address;
@@ -9,12 +10,19 @@ export interface Conf {
   attestationRegistryAddress: Address;
 }
 
+export type AttestationPayload = {
+  schemaId: string; // The identifier of the schema this attestation adheres to.
+  expirationDate: number; // The expiration date of the attestation.
+  subject: string; // The ID of the attestee, EVM address, DID, URL etc.
+  attestationData: object[]; // The attestation data.
+};
+
 export type Attestation = {
   attestationId: string; // The unique identifier of the attestation.
   schemaId: string; // The identifier of the schema this attestation adheres to.
   replacedBy: string | null; // Whether the attestation was replaced by a new one.
-  Address: string; // The address issuing the attestation to the subject.
-  Address: string; // The id of the portal that created the attestation.
+  attester: Address; // The address issuing the attestation to the subject.
+  portal: Address; // The id of the portal that created the attestation.
   attestedDate: number; // The date the attestation is issued.
   expirationDate: number; // The expiration date of the attestation.
   revocationDate: number | null; // The date when the attestation was revoked.
@@ -25,6 +33,7 @@ export type Attestation = {
 };
 
 export type Schema = {
+  id: string; // The ID of the schema.
   name: string; // The name of the schema.
   description: string; // A description of the schema.
   context: string; // The context of the schema.
@@ -61,3 +70,13 @@ export type FilterModule = Module;
 export type FilterSchema = Schema;
 
 export type FilterPortal = Portal;
+
+export type QueryResult<T, K extends string> = {
+  [P in K]: T;
+};
+
+declare global {
+  interface Window {
+    ethereum: EthereumProvider;
+  }
+}

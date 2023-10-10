@@ -1,12 +1,13 @@
 import AttestationDataMapper from "../../src/dataMapper/AttestationDataMapper";
 import VeraxSdk from "../../src/VeraxSdk";
-import { createPublicClient, http, PublicClient } from "viem";
+import { createPublicClient, createWalletClient, http, PublicClient, WalletClient } from "viem";
 import { ApolloClient, ApolloQueryResult, gql, InMemoryCache } from "@apollo/client/core";
 import { Constants } from "../../src/utils/constants";
 
 describe("AttestationDataMapper", () => {
   let mockApolloClient: ApolloClient<object>;
   let web3Client: PublicClient;
+  let walletClient: WalletClient;
   let attestationDataMapper: AttestationDataMapper;
   const typeName: string = "attestation";
   const gqlInterface: string = `{
@@ -33,12 +34,24 @@ describe("AttestationDataMapper", () => {
       transport: http(),
     });
 
+    // Create walletClient
+    walletClient = createWalletClient({
+      chain: VeraxSdk.DEFAULT_LINEA_TESTNET.chain,
+      transport: http(),
+    });
+
     // Create a mock Apollo Client with an in-memory cache
     mockApolloClient = new ApolloClient({
       cache: new InMemoryCache(),
     });
 
-    attestationDataMapper = new AttestationDataMapper(VeraxSdk.DEFAULT_LINEA_TESTNET, web3Client, mockApolloClient);
+    attestationDataMapper = new AttestationDataMapper(
+      VeraxSdk.DEFAULT_LINEA_TESTNET,
+      web3Client,
+      walletClient,
+      mockApolloClient,
+      new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET),
+    );
   });
 
   afterEach(() => {
@@ -60,7 +73,7 @@ describe("AttestationDataMapper", () => {
       const result = await attestationDataMapper.findOneById(attestationId);
 
       // Assert
-      expect(result).toMatchObject({ attestation: { result: "success" } });
+      expect(result).toMatchObject({ result: "success" });
       expect(mockApolloClient.query).toHaveBeenCalledWith({
         query: gql(`query GetOne($id: ID!) { ${typeName}(id: $id) ${gqlInterface} }`),
         variables: { id: attestationId },
@@ -82,7 +95,7 @@ describe("AttestationDataMapper", () => {
       const result = await attestationDataMapper.getRelatedAttestations(attestationId);
 
       // Assert
-      expect(result).toMatchObject({ attestations: { result: "success" } });
+      expect(result).toMatchObject({ result: "success" });
       expect(mockApolloClient.query).toHaveBeenCalledWith({
         query: gql(
           `query GetBy { ${typeName}s(where: {attestationData_contains:"${attestationId}",schemaId_in:["${Constants.RELATIONSHIP_SCHEMA_ID}","${Constants.NAMED_GRAPH_RELATIONSHIP_SCHEMA_ID}"]}) ${gqlInterface} }`,

@@ -1,6 +1,5 @@
-import { Chain } from "viem";
+import { Chain, Address } from "viem";
 
-export type Address = `0x${string}`;
 export interface Conf {
   chain: Chain;
   subgraphUrl: string;

@@ -5,7 +5,7 @@ import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { abiSchemaRegistry } from "../abi/SchemaRegistry";
 import { decode, encode } from "../utils/abiCoder";
 
-export default class UtilsDataMapper extends BaseDataMapper {
+export default class UtilsDataMapper extends BaseDataMapper<object> {
   typeName = "counter";
   gqlInterface = `{
         attestations

@@ -1,5 +1,6 @@
 import VeraxSdk from "../../src/VeraxSdk";
+import ModuleExamples from "./moduleExamples";
 
 const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET);
 
-console.log(await veraxSdk.schema.findBy());
+await new ModuleExamples(veraxSdk).run(process.argv[2]);

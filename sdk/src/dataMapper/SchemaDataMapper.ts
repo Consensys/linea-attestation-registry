@@ -1,6 +1,7 @@
+import { Schema } from "../types";
 import BaseDataMapper from "./BaseDataMapper";
 
-export default class SchemaDataMapper extends BaseDataMapper {
+export default class SchemaDataMapper extends BaseDataMapper<Schema> {
   typeName = "schema";
   gqlInterface = `{
         id

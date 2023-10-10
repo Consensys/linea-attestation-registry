@@ -1,6 +1,7 @@
+import { Portal } from "../types";
 import BaseDataMapper from "./BaseDataMapper";
 
-export default class PortalDataMapper extends BaseDataMapper {
+export default class PortalDataMapper extends BaseDataMapper<Portal> {
   typeName = "portal";
   gqlInterface = `{
         id

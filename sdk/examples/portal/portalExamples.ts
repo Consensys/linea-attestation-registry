@@ -10,7 +10,7 @@ export default class PortalExamples {
       console.log(await this.veraxSdk.portal.findOneById("0x1495341ab1019798dd08976f4a3e5ab0e095510b"));
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "")
-      console.log(await this.veraxSdk.portal.findBy(`{ownerName: "Clique"}`));
+      console.log(await this.veraxSdk.portal.findBy({ ownerName: "Clique" }));
 
     if (methodName.toLowerCase() == "attest" || methodName == "") console.log(await this.veraxSdk.portal.attest());
 

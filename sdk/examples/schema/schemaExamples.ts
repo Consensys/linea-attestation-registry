@@ -12,7 +12,7 @@ export default class SchemaExamples {
       );
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "")
-      console.log(await this.veraxSdk.schema.findBy(`{name: "Relationship"}`));
+      console.log(await this.veraxSdk.schema.findBy({ name: "Relationship" }));
 
     if (methodName.toLowerCase() == "create" || methodName == "") console.log(await this.veraxSdk.schema.create());
   }

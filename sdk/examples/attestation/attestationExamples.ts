@@ -14,9 +14,9 @@ export default class AttestationExamples {
       );
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "")
       console.log(
-        await this.veraxSdk.attestation.findBy(
-          `{schemaId: "0xd1664d97bd195df77e3d5fe78c1737ab3adaa38bbe52a680d1aa30fa51f186ba"}`,
-        ),
+        await this.veraxSdk.attestation.findBy({
+          schemaId: "0xd1664d97bd195df77e3d5fe78c1737ab3adaa38bbe52a680d1aa30fa51f186ba",
+        }),
       );
   }
 }

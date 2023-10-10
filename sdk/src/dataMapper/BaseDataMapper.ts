@@ -1,8 +1,9 @@
 import { PublicClient } from "viem";
 import { ApolloClient, gql } from "@apollo/client/core";
 import { Conf } from "../types";
+import { stringifyWhereClause } from "../utils/apolloClientHelper";
 
-export default abstract class BaseDataMapper {
+export default abstract class BaseDataMapper<T> {
   protected readonly conf: Conf;
   protected readonly web3Client: PublicClient;
   protected readonly apolloClient: ApolloClient<object>;
@@ -15,20 +16,20 @@ export default abstract class BaseDataMapper {
     this.apolloClient = _apolloClient;
   }
 
-  async findOneById(id: string) {
-    const queryResult = await this.apolloClient.query({
+  async findOneById(id: string): Promise<T> {
+    const queryResult = await this.apolloClient.query<T>({
       query: gql(`query GetOne($id: ID!) { ${this.typeName}(id: $id) ${this.gqlInterface} }`),
       variables: { id },
     });
 
-    return JSON.stringify(queryResult.data[this.typeName]);
+    return queryResult.data;
   }
 
-  async findBy(whereClause: string) {
-    const queryResult = await this.apolloClient.query({
-      query: gql(`query GetBy { ${this.typeName}s(where: ${whereClause}) ${this.gqlInterface} }`),
+  async findBy(whereClause: Partial<T>) {
+    const queryResult = await this.apolloClient.query<Array<T>>({
+      query: gql(`query GetBy { ${this.typeName}s(where: ${stringifyWhereClause(whereClause)}) ${this.gqlInterface} }`),
     });
 
-    return JSON.stringify(queryResult.data[`${this.typeName}s`]);
+    return queryResult.data;
   }
 }

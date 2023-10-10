@@ -59,7 +59,7 @@ describe("AttestationDataMapper", () => {
       const result = await attestationDataMapper.findOneById(attestationId);
 
       // Assert
-      expect(result).toBe('{"result":"success"}');
+      expect(result).toMatchObject({ attestation: { result: "success" } });
       expect(mockApolloClient.query).toHaveBeenCalledWith({
         query: gql(`query GetOne($id: ID!) { ${typeName}(id: $id) ${gqlInterface} }`),
         variables: { id: attestationId },

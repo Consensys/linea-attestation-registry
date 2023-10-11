@@ -1,4 +1,4 @@
-import { Chain, Address } from "viem";
+import { Address, Chain } from "viem";
 
 export interface Conf {
   chain: Chain;
@@ -46,3 +46,18 @@ export type Module = {
   name: string; // The name of the module.
   description: string; // A description of the module.
 };
+
+export type FilterMap = {
+  Attestation: FilterAttestation;
+  Module: FilterModule;
+  Schema: FilterSchema;
+  Portal: FilterPortal;
+};
+
+export type FilterAttestation = Attestation & { schemaId_in: string[]; attestationData_contains: string };
+
+export type FilterModule = Module;
+
+export type FilterSchema = Schema;
+
+export type FilterPortal = Portal;

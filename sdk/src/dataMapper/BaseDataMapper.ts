@@ -1,6 +1,6 @@
 import { PublicClient } from "viem";
 import { ApolloClient, gql } from "@apollo/client/core";
-import { Conf } from "../types";
+import { Conf, FilterMap } from "../types";
 import { stringifyWhereClause } from "../utils/apolloClientHelper";
 
 export default abstract class BaseDataMapper<T> {
@@ -25,7 +25,7 @@ export default abstract class BaseDataMapper<T> {
     return queryResult.data;
   }
 
-  async findBy(whereClause: Partial<T>) {
+  async findBy<T extends keyof FilterMap>(whereClause: Partial<FilterMap[T]>) {
     const queryResult = await this.apolloClient.query<Array<T>>({
       query: gql(`query GetBy { ${this.typeName}s(where: ${stringifyWhereClause(whereClause)}) ${this.gqlInterface} }`),
     });

@@ -121,13 +121,16 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationsPayloads the attestations payloads to create attestations and register them
    */
   function bulkAttest(AttestationPayload[] calldata attestationsPayloads, address attester) public {
-    for (uint256 i = 0; i < attestationsPayloads.length; i++) {
+    for (uint256 i; i < attestationsPayloads.length;) {
       attest(attestationsPayloads[i], attester);
+      unchecked {
+        ++i;
+      }
     }
   }
 
   function massImport(AttestationPayload[] calldata attestationsPayloads, address portal) public onlyOwner {
-    for (uint256 i = 0; i < attestationsPayloads.length; i++) {
+    for (uint256 i; i < attestationsPayloads.length;) {
       // Auto increment attestation counter
       attestationIdCounter++;
       bytes32 id = bytes32(abi.encode(attestationIdCounter));
@@ -147,6 +150,10 @@ contract AttestationRegistry is OwnableUpgradeable {
         attestationsPayloads[i].attestationData
       );
       emit AttestationRegistered(id);
+
+      unchecked {
+        ++i;
+      }
     }
   }
 
@@ -203,8 +210,11 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationIds the IDs of the attestations to revoke
    */
   function bulkRevoke(bytes32[] memory attestationIds) external {
-    for (uint256 i = 0; i < attestationIds.length; i++) {
+    for (uint256 i; i < attestationIds.length;) {
       revoke(attestationIds[i]);
+      unchecked {
+        ++i;
+      }
     }
   }
 
@@ -287,8 +297,11 @@ contract AttestationRegistry is OwnableUpgradeable {
   function balanceOfBatch(address[] memory accounts, uint256[] memory ids) public view returns (uint256[] memory) {
     if (accounts.length != ids.length) revert ArrayLengthMismatch();
     uint256[] memory result = new uint256[](accounts.length);
-    for (uint256 i = 0; i < accounts.length; i++) {
+    for (uint256 i; i < accounts.length;) {
       result[i] = balanceOf(accounts[i], ids[i]);
+      unchecked {
+        ++i;
+      }
     }
     return result;
   }

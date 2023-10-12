@@ -36,7 +36,7 @@ export default abstract class BaseDataMapper<T> {
     return queryResult.data[this.typeName];
   }
 
-  async findBy<T extends keyof FilterMap>(whereClause: Partial<FilterMap[T]>) {
+  async findBy<TFilter extends keyof FilterMap>(whereClause: Partial<FilterMap[TFilter]>) {
     const queryResult = await this.apolloClient.query<QueryResult<Array<T>, typeof this.typeName>>({
       query: gql(`query GetBy { ${this.typeName}s(where: ${stringifyWhereClause(whereClause)}) ${this.gqlInterface} }`),
     });

@@ -49,7 +49,23 @@ export default class PortalExamples {
 
     if (methodName.toLowerCase() == "replace" || methodName == "") console.log(await this.veraxSdk.portal.replace());
 
-    if (methodName.toLowerCase() == "revoke" || methodName == "") console.log(await this.veraxSdk.portal.revoke());
+    if (methodName.toLowerCase() == "revoke" || methodName == "") {
+      console.log(
+        await this.veraxSdk.portal.revoke(
+          "0xeea25bc2ec56cae601df33b8fc676673285e12cc",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+        ),
+      );
+    }
+
+    if (methodName.toLowerCase() == "simulateRevoke".toLowerCase() || methodName == "") {
+      console.log(
+        await this.veraxSdk.portal.simulateRevoke(
+          "0xeea25bc2ec56cae601df33b8fc676673285e12cc",
+          "0x0000000000000000000000000000000000000000000000000000000000000001",
+        ),
+      );
+    }
 
     if (methodName.toLowerCase() == "bulkRevoke".toLowerCase() || methodName == "")
       console.log(await this.veraxSdk.portal.bulkRevoke());

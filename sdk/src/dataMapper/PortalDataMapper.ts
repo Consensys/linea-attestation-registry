@@ -34,16 +34,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal> {
 
       return request;
     } catch (err) {
-      if (err instanceof BaseError) {
-        const revertError = err.walk((err) => err instanceof ContractFunctionRevertedError);
-        if (revertError instanceof ContractFunctionRevertedError) {
-          const errorName = revertError.data?.errorName ?? "";
-          console.error(`Failing with ${errorName}`);
-        }
-      }
-      console.error(err);
-
-      throw new Error("Simulation failed");
+      this.handleError(err);
     }
   }
 
@@ -64,8 +55,29 @@ export default class PortalDataMapper extends BaseDataMapper<Portal> {
     throw new Error("Not implemented");
   }
 
-  async revoke() {
-    throw new Error("Not implemented");
+  async simulateRevoke(portalAddress: Address, attestationId: string) {
+    try {
+      const { request } = await this.web3Client.simulateContract({
+        address: portalAddress,
+        abi: abiDefaultPortal,
+        functionName: "revoke",
+        account: this.walletClient.account,
+        args: [attestationId],
+      });
+
+      return request;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
+
+  async revoke(portalAddress: Address, attestationId: string) {
+    const request = await this.simulateRevoke(portalAddress, attestationId);
+    const hash: Hash = await this.walletClient.writeContract(request);
+
+    console.log(`Transaction sent with hash ${hash}`);
+
+    return hash;
   }
 
   async bulkRevoke() {
@@ -82,5 +94,18 @@ export default class PortalDataMapper extends BaseDataMapper<Portal> {
 
   async clone() {
     throw new Error("Not implemented");
+  }
+
+  private handleError(err: unknown): never {
+    if (err instanceof BaseError) {
+      const revertError = err.walk((err) => err instanceof ContractFunctionRevertedError);
+      if (revertError instanceof ContractFunctionRevertedError) {
+        const errorName = revertError.data?.errorName ?? "";
+        console.error(`Failing with ${errorName}`);
+      }
+    }
+    console.error(err);
+
+    throw new Error("Simulation failed");
   }
 }

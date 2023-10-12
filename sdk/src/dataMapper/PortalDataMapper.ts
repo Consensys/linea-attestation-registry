@@ -3,8 +3,9 @@ import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
 import { Address, BaseError, ContractFunctionRevertedError, Hash } from "viem";
 import { encode } from "../utils/abiCoder";
+import { Portal_filter, Portal_orderBy } from "../../.graphclient";
 
-export default class PortalDataMapper extends BaseDataMapper<Portal> {
+export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filter, Portal_orderBy> {
   typeName = "portal";
   gqlInterface = `{
         id

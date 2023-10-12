@@ -1,5 +1,4 @@
 import VeraxSdk from "../../src/VeraxSdk";
-import { Attestation } from "../../src/types";
 
 export default class AttestationExamples {
   private veraxSdk: VeraxSdk;
@@ -8,7 +7,7 @@ export default class AttestationExamples {
     this.veraxSdk = _veraxSdk;
   }
 
-  async run(methodName: string = "", argv: string) {
+  async run(argv: string, methodName: string = "") {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
       const attestationId: string =
         argv === "" ? "0x00000000000000000000000000000000000000000000000000000000000007b5" : argv;
@@ -16,11 +15,15 @@ export default class AttestationExamples {
     }
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
-      const params: Partial<Attestation> =
-        argv === ""
-          ? { schemaId: "0xd1664d97bd195df77e3d5fe78c1737ab3adaa38bbe52a680d1aa30fa51f186ba" }
-          : JSON.parse(argv);
-      console.log(await this.veraxSdk.attestation.findBy(params));
+      console.log(
+        await this.veraxSdk.attestation.findBy(
+          2,
+          0,
+          { attester_not: "0x809e815596AbEB3764aBf81BE2DC39fBBAcc9949" },
+          "attestedDate",
+          "desc",
+        ),
+      );
     }
 
     if (methodName.toLowerCase() == "getRelatedAttestations".toLowerCase() || methodName == "") {

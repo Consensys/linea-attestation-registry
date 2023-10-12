@@ -6,4 +6,4 @@ argv !== null && argv !== undefined ? (argv = argv.replaceAll("\\", "")) : (argv
 
 const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET);
 
-await new AttestationExamples(veraxSdk).run(process.argv[2], argv);
+await new AttestationExamples(veraxSdk).run(argv, process.argv[2]);

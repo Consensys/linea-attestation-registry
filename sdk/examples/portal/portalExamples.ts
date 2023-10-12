@@ -1,6 +1,5 @@
 import { Address } from "viem";
 import VeraxSdk from "../../src/VeraxSdk";
-import { Portal } from "../../src/types";
 
 export default class PortalExamples {
   private veraxSdk: VeraxSdk;
@@ -9,15 +8,14 @@ export default class PortalExamples {
     this.veraxSdk = _veraxSdk;
   }
 
-  async run(methodName: string = "", argv: string) {
+  async run(argv: string, methodName: string = "") {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
       const portalId: string = argv === "" ? "0x1495341ab1019798dd08976f4a3e5ab0e095510b" : argv;
       console.log(await this.veraxSdk.portal.findOneById(portalId));
     }
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
-      const params: Partial<Portal> = argv === "" ? { ownerName: "Clique" } : JSON.parse(argv);
-      console.log(await this.veraxSdk.portal.findBy(params));
+      console.log(await this.veraxSdk.portal.findBy(2, 0, { ownerName: "Alain" }, "name", "desc"));
     }
 
     if (methodName.toLowerCase() == "simulateAttest".toLowerCase() || methodName == "") {

@@ -178,9 +178,9 @@ Note: if your don't pass any parameter (e.g. `pnpm portal findBy`)`, some defaul
 ### Portal examples
 
 ```shell
-pnpm portal findby '{\"ownerName\": \"Tester\"}'
-
 pnpm portal findonebyid '0x34798a866f52949208e67fb57ad36244024c50c0'
+
+pnpm portal findby
 
 pnpm portal simulateattest '{\"portalAddress\": \"0x34798a866f52949208e67fb57ad36244024c50c0\", \"attestationPayload\" : { \"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"expirationDate\": \"1693583329\", \"subject\": \"0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47\", \"attestationData\": [{ \"isBuidler\": \"true\" }]}, \"validationPayloads\": []}'
 
@@ -196,9 +196,9 @@ pnpm portal revoke '{\"portalAddress\": \"0x34798a866f52949208e67fb57ad36244024c
 ```shell
 pnpm attestation findonebyid "0x000000000000000000000000000000000000000000000000000000000000109b"
 
-pnpm attestation findby '{\"portal\": \"0x34798a866f52949208e67fb57ad36244024c50c0\"}'
+pnpm attestation findby
 
-pnpm attestation getRelatedAttestations "0x000000000000000000000000000000000000000000000000000000000000109b"
+pnpm attestation getRelatedAttestations "0x0000000000000000000000000000000000000000000000000000000000000001"
 ```
 
 ### Module examples
@@ -206,7 +206,7 @@ pnpm attestation getRelatedAttestations "0x0000000000000000000000000000000000000
 ```shell
 pnpm module findonebyid "0x4bb8769e18f1518c35be8405d43d7cc07ecf501c"
 
-pnpm module findby '{\"name\": \"Msg Sender Module\"}'
+pnpm module findby
 ```
 
 ### Schema examples
@@ -214,7 +214,7 @@ pnpm module findby '{\"name\": \"Msg Sender Module\"}'
 ```shell
 pnpm schema findonebyid "0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e"
 
-pnpm schema findby '{\"description\": \"Gitcoin Passport Score\"}'
+pnpm schema findby
 ```
 
 ## Other operations

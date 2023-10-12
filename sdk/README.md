@@ -178,7 +178,7 @@ Note : While executing the commands if parameters are not sent e.g pnpm module f
 ### Portal commands
 
 ```
-pnpm portal findby '{\"ownerName\": \"Satya\"}'
+pnpm portal findby '{\"ownerName\": \"Tester\"}'
 
 pnpm portal findonebyid '0x34798a866f52949208e67fb57ad36244024c50c0'
 

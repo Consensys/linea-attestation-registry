@@ -20,25 +20,12 @@
     "module": "ts-node examples/module/index.ts",
     "portal": "ts-node examples/portal/index.ts",
     "schema": "ts-node examples/schema/index.ts",
-    "attestation:all": "ts-node examples/attestation/findBy.ts",
-    "attestation:one": "ts-node examples/attestation/findOneById.ts",
-    "module:all": "ts-node examples/module/findBy.ts",
-    "module:one": "ts-node examples/module/findOneById.ts",
-    "portal:all": "ts-node examples/portal/findBy.ts",
-    "portal:one": "ts-node examples/portal/findOneById.ts",
-    "schema:all": "ts-node examples/schema/findBy.ts",
-    "schema:one": "ts-node examples/schema/findOneById.ts",
     "test": "jest",
-    "utils:attestation:counter": "ts-node examples/utils/getAttestationIdCounter.ts",
-    "utils:attestation:version": "ts-node examples/utils/getVersionNumber.ts",
-    "utils:decode": "ts-node examples/utils/decode.ts",
-    "utils:encode": "ts-node examples/utils/encode.ts",
-    "utils:module:counter": "ts-node examples/utils/getModulesNumber.ts",
-    "utils:portal:counter": "ts-node examples/utils/getPortalsCount.ts",
-    "utils:schema:counter": "ts-node examples/utils/getSchemasNumber.ts"
+    "test:ci": "cp .env.example .env && jest"
   },
   "dependencies": {
     "@apollo/client": "^3.8.4",
+    "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
     "viem": "^1.14.0"
   },

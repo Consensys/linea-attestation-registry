@@ -22,15 +22,19 @@ const config: HardhatUserConfig = {
     hardhat: {},
     "linea-goerli": {
       url: `https://linea-goerli.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: [process.env.PRIVATE_KEY ?? "0000000000000000000000000000000000000000000000000000000000000000"],
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     linea: {
       url: `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: [process.env.PRIVATE_KEY ?? "0000000000000000000000000000000000000000000000000000000000000000"],
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     sepolia: {
       url: `https://sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: [process.env.PRIVATE_KEY ?? "0000000000000000000000000000000000000000000000000000000000000000"],
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+    "scroll-sepolia": {
+      url: "https://sepolia-rpc.scroll.io/" || "",
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
   },
   paths: {
@@ -41,6 +45,7 @@ const config: HardhatUserConfig = {
       "linea-goerli": process.env.ETHERSCAN_API_KEY ?? "",
       linea: process.env.ETHERSCAN_API_KEY ?? "",
       sepolia: process.env.ETHERSCAN_API_KEY ?? "",
+      "scroll-sepolia": process.env.SCROLL_API_KEY ?? "",
     },
     customChains: [
       {
@@ -57,6 +62,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api.lineascan.build/api",
           browserURL: "https://lineascan.build",
+        },
+      },
+      {
+        network: "scroll-sepolia",
+        chainId: 534351,
+        urls: {
+          apiURL: "https://sepolia-blockscout.scroll.io/api",
+          browserURL: "https://sepolia-blockscout.scroll.io/",
         },
       },
     ],

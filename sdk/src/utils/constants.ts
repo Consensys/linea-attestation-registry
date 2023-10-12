@@ -3,3 +3,8 @@ export class Constants {
   static readonly NAMED_GRAPH_RELATIONSHIP_SCHEMA_ID =
     "0x5003a7832fa2734780a5bf6a1f3940b84c0c66a398e62dd4e7f183fdbc7da6ee";
 }
+
+export enum SDKMode {
+  BACKEND = "BACKEND",
+  FRONTEND = "FRONTEND",
+}

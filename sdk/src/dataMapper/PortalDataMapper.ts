@@ -47,8 +47,46 @@ export default class PortalDataMapper extends BaseDataMapper<Portal> {
     return hash;
   }
 
-  async bulkAttest() {
-    throw new Error("Not implemented");
+  async simulateBulkAttest(
+    portalAddress: Address,
+    attestationPayloads: AttestationPayload[],
+    validationPayloads: string[][],
+  ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const attestationPayloadsArg: any[] = [];
+    attestationPayloads.forEach(async (attestationPayload) => {
+      const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
+      attestationPayloadsArg.push([
+        attestationPayload.schemaId,
+        attestationPayload.expirationDate,
+        attestationPayload.subject,
+        attestationData,
+      ]);
+    });
+
+    try {
+      const { request } = await this.web3Client.simulateContract({
+        address: portalAddress,
+        abi: abiDefaultPortal,
+        functionName: "bulkAttest",
+        account: this.walletClient.account,
+        args: [attestationPayloadsArg, validationPayloads],
+      });
+
+      return request;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
+
+  async bulkAttest(portalAddress: Address, attestationPayloads: AttestationPayload[], validationPayloads: string[][]) {
+    const request = await this.simulateBulkAttest(portalAddress, attestationPayloads, validationPayloads);
+    const hash: Hash = await this.walletClient.writeContract(request);
+
+    console.log(`Transaction sent with hash ${hash}`);
+
+    return hash;
   }
 
   async replace() {
@@ -80,8 +118,29 @@ export default class PortalDataMapper extends BaseDataMapper<Portal> {
     return hash;
   }
 
-  async bulkRevoke() {
-    throw new Error("Not implemented");
+  async simulateBulkRevoke(portalAddress: Address, attestationIds: string[]) {
+    try {
+      const { request } = await this.web3Client.simulateContract({
+        address: portalAddress,
+        abi: abiDefaultPortal,
+        functionName: "bulkRevoke",
+        account: this.walletClient.account,
+        args: [attestationIds],
+      });
+
+      return request;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
+
+  async bulkRevoke(portalAddress: Address, attestationIds: string[]) {
+    const request = await this.simulateBulkRevoke(portalAddress, attestationIds);
+    const hash: Hash = await this.walletClient.writeContract(request);
+
+    console.log(`Transaction sent with hash ${hash}`);
+
+    return hash;
   }
 
   async massImport() {

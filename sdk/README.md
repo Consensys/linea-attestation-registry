@@ -169,15 +169,15 @@ console.log(result);
 //
 ```
 
-## Console commands
+## CLI examples
 
-You can run console commands to execute SDK methods. Below are examples to how to execute commands.
+You can use command lines to test all the implemented SDK methods. Here are some examples.
 
-Note : While executing the commands if parameters are not sent e.g pnpm module findby, then default values will be used.
+Note: if your don't pass any parameter (e.g. `pnpm portal findBy`)`, some default values will be used.
 
-### Portal commands
+### Portal examples
 
-```
+```shell
 pnpm portal findby '{\"ownerName\": \"Tester\"}'
 
 pnpm portal findonebyid '0x34798a866f52949208e67fb57ad36244024c50c0'
@@ -191,9 +191,9 @@ pnpm portal simulaterevoke '{\"portalAddress\": \"0x34798a866f52949208e67fb57ad3
 pnpm portal revoke '{\"portalAddress\": \"0x34798a866f52949208e67fb57ad36244024c50c0\", \"attestationId\" : \"0x000000000000000000000000000000000000000000000000000000000000109b\" }'
 ```
 
-### Attestation commands
+### Attestation examples
 
-```
+```shell
 pnpm attestation findonebyid "0x000000000000000000000000000000000000000000000000000000000000109b"
 
 pnpm attestation findby '{\"portal\": \"0x34798a866f52949208e67fb57ad36244024c50c0\"}'
@@ -201,17 +201,17 @@ pnpm attestation findby '{\"portal\": \"0x34798a866f52949208e67fb57ad36244024c50
 pnpm attestation getRelatedAttestations "0x000000000000000000000000000000000000000000000000000000000000109b"
 ```
 
-### Module commands
+### Module examples
 
-```
+```shell
 pnpm module findonebyid "0x4bb8769e18f1518c35be8405d43d7cc07ecf501c"
 
 pnpm module findby '{\"name\": \"Msg Sender Module\"}'
 ```
 
-### Schema commands
+### Schema examples
 
-```
+```shell
 pnpm schema findonebyid "0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e"
 
 pnpm schema findby '{\"description\": \"Gitcoin Passport Score\"}'

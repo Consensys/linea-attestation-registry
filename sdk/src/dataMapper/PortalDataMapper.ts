@@ -52,18 +52,19 @@ export default class PortalDataMapper extends BaseDataMapper<Portal> {
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const attestationPayloadsArg: any[] = [];
-    attestationPayloads.forEach(async (attestationPayload) => {
+    const attestationPayloadsArg = [];
+
+    for (const attestationPayload of attestationPayloads) {
       const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
       const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
+
       attestationPayloadsArg.push([
         attestationPayload.schemaId,
         attestationPayload.expirationDate,
         attestationPayload.subject,
         attestationData,
       ]);
-    });
+    }
 
     try {
       const { request } = await this.web3Client.simulateContract({

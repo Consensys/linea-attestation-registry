@@ -44,8 +44,51 @@ export default class PortalExamples {
       );
     }
 
-    if (methodName.toLowerCase() == "bulkAttest".toLowerCase() || methodName == "")
-      console.log(await this.veraxSdk.portal.bulkAttest());
+    if (methodName.toLowerCase() == "simulateBulkAttest".toLowerCase() || methodName == "") {
+      console.log(
+        await this.veraxSdk.portal.simulateBulkAttest(
+          "0x34798a866f52949208e67fb57ad36244024c50c0",
+          [
+            {
+              schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+              expirationDate: 1693583329,
+              subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
+              attestationData: [{ isBuidler: true }],
+            },
+            {
+              schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+              expirationDate: 1693583329,
+              subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
+              attestationData: [{ isBuidler: true }],
+            },
+          ],
+          [],
+        ),
+      );
+    }
+
+    if (methodName.toLowerCase() == "bulkAttest".toLowerCase() || methodName == "") {
+      console.log(
+        await this.veraxSdk.portal.bulkAttest(
+          "0x34798a866f52949208e67fb57ad36244024c50c0",
+          [
+            {
+              schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+              expirationDate: 1693583329,
+              subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
+              attestationData: [{ isBuidler: true }],
+            },
+            {
+              schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+              expirationDate: 1693583329,
+              subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
+              attestationData: [{ isBuidler: false }],
+            },
+          ],
+          [[], []],
+        ),
+      );
+    }
 
     if (methodName.toLowerCase() == "replace" || methodName == "") console.log(await this.veraxSdk.portal.replace());
 
@@ -67,8 +110,21 @@ export default class PortalExamples {
       );
     }
 
+    if (methodName.toLowerCase() == "simulateBulkRevoke".toLowerCase() || methodName == "")
+      console.log(
+        await this.veraxSdk.portal.simulateBulkRevoke("0x34798a866f52949208e67fb57ad36244024c50c0", [
+          "0x00000000000000000000000000000000000000000000000000000000000010a0",
+          "0x00000000000000000000000000000000000000000000000000000000000010a1",
+        ]),
+      );
+
     if (methodName.toLowerCase() == "bulkRevoke".toLowerCase() || methodName == "")
-      console.log(await this.veraxSdk.portal.bulkRevoke());
+      console.log(
+        await this.veraxSdk.portal.bulkRevoke("0x34798a866f52949208e67fb57ad36244024c50c0", [
+          "0x00000000000000000000000000000000000000000000000000000000000010a0",
+          "0x00000000000000000000000000000000000000000000000000000000000010a1",
+        ]),
+      );
 
     if (methodName.toLowerCase() == "massImport".toLowerCase() || methodName == "")
       console.log(await this.veraxSdk.portal.massImport());

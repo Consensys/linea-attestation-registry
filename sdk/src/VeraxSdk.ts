@@ -4,7 +4,6 @@ import SchemaDataMapper from "./dataMapper/SchemaDataMapper";
 import ModuleDataMapper from "./dataMapper/ModuleDataMapper";
 import PortalDataMapper from "./dataMapper/PortalDataMapper";
 import { createPublicClient, createWalletClient, custom, Hex, http, PublicClient, WalletClient } from "viem";
-import { ApolloClient, InMemoryCache } from "@apollo/client/core";
 import UtilsDataMapper from "./dataMapper/UtilsDataMapper";
 import { privateKeyToAccount } from "viem/accounts";
 import dotenv from "dotenv";
@@ -46,7 +45,6 @@ export default class VeraxSdk {
 
   private readonly web3Client: PublicClient;
   private readonly walletClient: WalletClient;
-  private readonly apolloClient: ApolloClient<object>;
 
   public attestation: AttestationDataMapper;
   public schema: SchemaDataMapper;
@@ -72,15 +70,10 @@ export default class VeraxSdk {
             transport: custom(window.ethereum),
           });
 
-    this.apolloClient = new ApolloClient({
-      uri: conf.subgraphUrl,
-      cache: new InMemoryCache(),
-    });
-
-    this.attestation = new AttestationDataMapper(conf, this.web3Client, this.walletClient, this.apolloClient, this);
-    this.schema = new SchemaDataMapper(conf, this.web3Client, this.walletClient, this.apolloClient, this);
-    this.module = new ModuleDataMapper(conf, this.web3Client, this.walletClient, this.apolloClient, this);
-    this.portal = new PortalDataMapper(conf, this.web3Client, this.walletClient, this.apolloClient, this);
-    this.utils = new UtilsDataMapper(conf, this.web3Client, this.walletClient, this.apolloClient, this);
+    this.attestation = new AttestationDataMapper(conf, this.web3Client, this.walletClient, this);
+    this.schema = new SchemaDataMapper(conf, this.web3Client, this.walletClient, this);
+    this.module = new ModuleDataMapper(conf, this.web3Client, this.walletClient, this);
+    this.portal = new PortalDataMapper(conf, this.web3Client, this.walletClient, this);
+    this.utils = new UtilsDataMapper(conf, this.web3Client, this.walletClient, this);
   }
 }

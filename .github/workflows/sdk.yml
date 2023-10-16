@@ -53,9 +53,12 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run the unit tests
-        run: pnpm run test:ci
+        run: pnpm run test:unit:ci
+
+      - name: Run the integration tests
+        run: pnpm run test:integration:ci
 
       - name: Add test summary
         run: |
-          echo "## Unit tests result" >> $GITHUB_STEP_SUMMARY
+          echo "## Tests result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

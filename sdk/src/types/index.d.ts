@@ -17,7 +17,13 @@ export type AttestationPayload = {
   attestationData: object[]; // The attestation data.
 };
 
-export type Attestation = {
+export type Attestation = OnChainAttestation & {
+  id: string;
+  schemaString: string;
+  decodedData: string[];
+};
+
+export type OnChainAttestation = {
   attestationId: string; // The unique identifier of the attestation.
   schemaId: string; // The identifier of the schema this attestation adheres to.
   replacedBy: string | null; // Whether the attestation was replaced by a new one.
@@ -50,29 +56,12 @@ export type Portal = {
   ownerName: string; // The name of the owner of this portal.
 };
 
-export type Module = {
+export type Module = OnChainModule & { id: string };
+
+export type OnChainModule = {
   moduleAddress: Address; // The address of the module.
   name: string; // The name of the module.
   description: string; // A description of the module.
-};
-
-export type FilterMap = {
-  Attestation: FilterAttestation;
-  Module: FilterModule;
-  Schema: FilterSchema;
-  Portal: FilterPortal;
-};
-
-export type FilterAttestation = Attestation & { schemaId_in: string[]; attestationData_contains: string };
-
-export type FilterModule = Module;
-
-export type FilterSchema = Schema;
-
-export type FilterPortal = Portal;
-
-export type QueryResult<T, K extends string> = {
-  [P in K]: T;
 };
 
 declare global {

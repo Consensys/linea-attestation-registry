@@ -1,0 +1,6 @@
+# .graphclientrc.yml
+sources:
+  - name: linea-attestation-registry
+    handler:
+      graphql:
+        endpoint: https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry

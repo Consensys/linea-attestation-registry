@@ -1,46 +1,70 @@
 import { PublicClient, WalletClient } from "viem";
-import { ApolloClient, gql } from "@apollo/client/core";
-import { Conf, FilterMap, QueryResult } from "../types";
-import { stringifyWhereClause } from "../utils/apolloClientHelper";
+import { Conf } from "../types";
+import { OrderDirection } from "../../.graphclient";
 import VeraxSdk from "../VeraxSdk";
+import { stringifyWhereClause } from "../utils/graphClientHelper";
+import axios from "axios";
 
-export default abstract class BaseDataMapper<T> {
+export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   protected readonly conf: Conf;
   protected readonly web3Client: PublicClient;
   protected readonly walletClient: WalletClient;
-  protected readonly apolloClient: ApolloClient<object>;
   protected readonly veraxSdk: VeraxSdk;
   protected abstract typeName: string;
   protected abstract gqlInterface: string;
 
-  constructor(
-    _conf: Conf,
-    _web3Client: PublicClient,
-    _walletClient: WalletClient,
-    _apolloClient: ApolloClient<object>,
-    _veraxSdk: VeraxSdk,
-  ) {
+  constructor(_conf: Conf, _web3Client: PublicClient, _walletClient: WalletClient, _veraxSdk: VeraxSdk) {
     this.conf = _conf;
     this.web3Client = _web3Client;
     this.walletClient = _walletClient;
-    this.apolloClient = _apolloClient;
     this.veraxSdk = _veraxSdk;
   }
 
-  async findOneById(id: string): Promise<T> {
-    const queryResult = await this.apolloClient.query<QueryResult<T, typeof this.typeName>>({
-      query: gql(`query GetOne($id: ID!) { ${this.typeName}(id: $id) ${this.gqlInterface} }`),
-      variables: { id },
-    });
+  async findOneById(id: string) {
+    const query = `query get_${this.typeName} { ${this.typeName}(id: "${id}") ${this.gqlInterface} }`;
 
-    return queryResult.data[this.typeName];
+    const { data, status } = await this.subgraphCall(query);
+
+    if (status != 200) {
+      throw new Error(`Error(s) while fetching ${this.typeName}`);
+    }
+
+    return data.data[`${this.typeName}`] as T;
   }
 
-  async findBy<TFilter extends keyof FilterMap>(whereClause: Partial<FilterMap[TFilter]>) {
-    const queryResult = await this.apolloClient.query<QueryResult<Array<T>, typeof this.typeName>>({
-      query: gql(`query GetBy { ${this.typeName}s(where: ${stringifyWhereClause(whereClause)}) ${this.gqlInterface} }`),
-    });
+  async findBy(first?: number, skip?: number, where?: TFilter, orderBy?: TOrder, orderDirection?: OrderDirection) {
+    const query = `
+        query get_${this.typeName}s{
+          ${this.typeName}s(
+            first: ${first || 100}
+            skip: ${skip || 0}
+            where: ${where ? stringifyWhereClause(where) : null}
+            orderBy: ${orderBy || null}
+            orderDirection: ${orderDirection || null}
+          )
+          ${this.gqlInterface}
+        }
+    `;
 
-    return queryResult.data[`${this.typeName}s`];
+    const { data, status } = await this.subgraphCall(query);
+
+    if (status != 200) {
+      throw new Error(`Error(s) while fetching ${this.typeName}s`);
+    }
+
+    return data.data[`${this.typeName}s`] as T[];
+  }
+
+  async subgraphCall(query: string) {
+    return axios.post(
+      this.conf.subgraphUrl,
+      { query },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      },
+    );
   }
 }

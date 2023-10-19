@@ -52,7 +52,7 @@
     "upgrade:all:goerli": "npx hardhat run --network linea-goerli script/upgrade/upgradeEverything.ts",
     "upgrade:all:goerli:force": "npx hardhat run --network linea-goerli script/upgrade/forceUpgradeEverything.ts",
     "upgrade:all:scroll-sepolia": "npx hardhat run --network scroll-sepolia script/upgrade/upgradeEverything.ts",
-    "upgrade:all:goerli:scroll-sepolia": "npx hardhat run --network scroll-sepolia script/upgrade/forceUpgradeEverything.ts"
+    "upgrade:all:scroll-sepolia:force": "npx hardhat run --network scroll-sepolia script/upgrade/forceUpgradeEverything.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.4",

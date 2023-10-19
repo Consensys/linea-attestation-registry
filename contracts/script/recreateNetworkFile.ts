@@ -39,6 +39,12 @@ async function main() {
 
   await upgrades.forceImport(schemaRegistryProxyAddress, SchemaRegistry, { kind: "transparent" });
 
+  console.log("Re-importing AttestationReader...");
+  const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS ?? "";
+  const AttestationReader = await ethers.getContractFactory("AttestationReader");
+
+  await upgrades.forceImport(attestationReaderProxyAddress, AttestationReader, { kind: "transparent" });
+
   console.log("All contracts are re-imported and the network file is re-created!");
 }
 

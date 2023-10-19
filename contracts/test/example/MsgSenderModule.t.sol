@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { AbstractModule } from "../../src/interface/AbstractModule.sol";
-import { MsgSenderModule } from "../../src/example/MsgSenderModule.sol";
+import { MsgSenderModule } from "../../src/examples/modules/MsgSenderModule.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 
 contract MsgSenderModuleTest is Test {

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractModule } from "../interface/AbstractModule.sol";
-import { AttestationPayload } from "../types/Structs.sol";
+import { AbstractModule } from "../../interface/AbstractModule.sol";
+import { AttestationPayload } from "../../types/Structs.sol";
 import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 /**

@@ -7,8 +7,16 @@ import { PortalRegistry } from "../PortalRegistry.sol";
 import { AttestationPayload } from "../types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 import { IRouter } from "../interface/IRouter.sol";
+import { IPortal } from "../interface/IPortal.sol";
 
-abstract contract AbstractPortal is IERC165 {
+/**
+ * @title Abstract Portal
+ * @author Consensys
+ * @notice This contract is an abstract contract with basic Portal logic
+ *         to be inherited. We strongly encourage all Portals to implement
+ *         this contract.
+ */
+abstract contract AbstractPortal is IPortal {
   IRouter public router;
   address[] public modules;
   ModuleRegistry public moduleRegistry;
@@ -139,7 +147,10 @@ abstract contract AbstractPortal is IERC165 {
    * @return The list of modules addresses linked to the Portal
    */
   function supportsInterface(bytes4 interfaceID) public pure virtual override returns (bool) {
-    return interfaceID == type(AbstractPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
+    return
+      interfaceID == type(AbstractPortal).interfaceId ||
+      interfaceID == type(IPortal).interfaceId ||
+      interfaceID == type(IERC165).interfaceId;
   }
 
   /**

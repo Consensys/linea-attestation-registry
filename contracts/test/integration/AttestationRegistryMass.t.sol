@@ -6,7 +6,7 @@ import { AttestationRegistry } from "../../src/AttestationRegistry.sol";
 import { PortalRegistry } from "../../src/PortalRegistry.sol";
 import { SchemaRegistry } from "../../src/SchemaRegistry.sol";
 import { ModuleRegistry } from "../../src/ModuleRegistry.sol";
-import { DefaultPortal } from "../../src/portal/DefaultPortal.sol";
+import { DefaultPortal } from "../../src/DefaultPortal.sol";
 import { Attestation, AttestationPayload } from "../../src/types/Structs.sol";
 import { Router } from "../../src/Router.sol";
 

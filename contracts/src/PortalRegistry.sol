@@ -5,9 +5,10 @@ import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { AbstractPortal } from "./interface/AbstractPortal.sol";
-import { DefaultPortal } from "./portal/DefaultPortal.sol";
+import { DefaultPortal } from "./DefaultPortal.sol";
 import { Portal } from "./types/Structs.sol";
 import { IRouter } from "./interface/IRouter.sol";
+import { IPortal } from "./interface/IPortal.sol";
 
 /**
  * @title Portal Registry
@@ -130,7 +131,7 @@ contract PortalRegistry is OwnableUpgradeable {
     if (bytes(ownerName).length == 0) revert PortalOwnerNameMissing();
 
     // Check if portal has implemented AbstractPortal
-    if (!ERC165CheckerUpgradeable.supportsInterface(id, type(AbstractPortal).interfaceId)) revert PortalInvalid();
+    if (!ERC165CheckerUpgradeable.supportsInterface(id, type(IPortal).interfaceId)) revert PortalInvalid();
 
     // Get the array of modules implemented by the portal
     address[] memory modules = AbstractPortal(id).getModules();

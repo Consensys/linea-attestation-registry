@@ -10,8 +10,7 @@ import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
 import { ValidPortalMock } from "./mocks/ValidPortalMock.sol";
 import { InvalidPortalMock } from "./mocks/InvalidPortalMock.sol";
-import { IPortal } from "../src/interface/IPortal.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+import { IPortalImplementation } from "./mocks/IPortalImplementation.sol";
 
 contract PortalRegistryTest is Test {
   address public user = makeAddr("user");
@@ -24,7 +23,7 @@ contract PortalRegistryTest is Test {
   string public expectedOwnerName = "Owner Name";
   ValidPortalMock public validPortalMock;
   InvalidPortalMock public invalidPortalMock = new InvalidPortalMock();
-  IPortalImplementation public iportalImplementation = new IPortalImplementation();
+  IPortalImplementation public iPortalImplementation = new IPortalImplementation();
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address portalAddress);
@@ -97,10 +96,10 @@ contract PortalRegistryTest is Test {
 
     // Register a portal implementing IPortal
     vm.expectEmit();
-    emit PortalRegistered("IPortalImplementation", "IPortalImplementation description", address(iportalImplementation));
+    emit PortalRegistered("IPortalImplementation", "IPortalImplementation description", address(iPortalImplementation));
     vm.prank(user);
     portalRegistry.register(
-      address(iportalImplementation),
+      address(iPortalImplementation),
       "IPortalImplementation",
       "IPortalImplementation description",
       true,
@@ -207,22 +206,5 @@ contract PortalRegistryTest is Test {
     assertEq(portal1.isRevocable, portal2.isRevocable);
     assertEq(portal1.ownerAddress, portal2.ownerAddress);
     assertEq(portal1.ownerName, portal2.ownerName);
-  }
-}
-
-contract IPortalImplementation is IPortal {
-  /// @dev This empty method prevents Foundry from counting this contract in code coverage
-  function test() public {}
-
-  function getModules() external pure override returns (address[] memory) {
-    return new address[](0);
-  }
-
-  function getAttester() external view override returns (address) {
-    return msg.sender;
-  }
-
-  function supportsInterface(bytes4 interfaceID) public pure override returns (bool) {
-    return interfaceID == type(IPortal).interfaceId || interfaceID == type(IERC165).interfaceId;
   }
 }

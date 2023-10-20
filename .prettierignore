@@ -8,6 +8,9 @@ out
 artifacts
 cache_hardhat
 typechain-types
+generated
+build
+.graphclient
 
 # files
 *.env

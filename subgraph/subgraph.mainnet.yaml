@@ -1,0 +1,84 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AttestationRegistry
+    network: linea-mainnet
+    source:
+      abi: AttestationRegistry
+      address: "0x3de3893aa4Cdea029e84e75223a152FD08315138"
+      startBlock: 346695
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Attestation
+      abis:
+        - name: AttestationRegistry
+          file: ./abis/AttestationRegistry.json
+      eventHandlers:
+        - event: AttestationRegistered(indexed bytes32)
+          handler: handleAttestationRegistered
+      file: ./src/attestation-registry.ts
+  - kind: ethereum
+    name: ModuleRegistry
+    network: linea-mainnet
+    source:
+      abi: ModuleRegistry
+      address: "0xf851513A732996F22542226341748f3C9978438f"
+      startBlock: 346699
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Module
+      abis:
+        - name: ModuleRegistry
+          file: ./abis/ModuleRegistry.json
+      eventHandlers:
+        - event: ModuleRegistered(string,string,address)
+          handler: handleModuleRegistered
+      file: ./src/module-registry.ts
+  - kind: ethereum
+    name: PortalRegistry
+    network: linea-mainnet
+    source:
+      abi: PortalRegistry
+      address: "0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083"
+      startBlock: 346703
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Portal
+      abis:
+        - name: PortalRegistry
+          file: ./abis/PortalRegistry.json
+      eventHandlers:
+        - event: PortalRegistered(string,string,address)
+          handler: handlePortalRegistered
+      file: ./src/portal-registry.ts
+  - kind: ethereum
+    name: SchemaRegistry
+    network: linea-mainnet
+    source:
+      abi: SchemaRegistry
+      address: "0x0f95dCec4c7a93F2637eb13b655F2223ea036B59"
+      startBlock: 346707
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Portal
+      abis:
+        - name: SchemaRegistry
+          file: ./abis/SchemaRegistry.json
+      eventHandlers:
+        - event: SchemaCreated(indexed bytes32,string,string,string,string)
+          handler: handleSchemaCreated
+      file: ./src/schema-registry.ts

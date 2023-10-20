@@ -1,0 +1,10 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+[rpc_endpoints]
+linea_goerli = "${LINEA_GOERLI_RPC_URL}"
+
+[etherscan]
+linea_goerli = { key = "${ETHERSCAN_API_KEY}" }

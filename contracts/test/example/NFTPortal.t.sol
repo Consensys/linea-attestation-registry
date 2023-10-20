@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { NFTPortal } from "../../src/example/NFTPortal.sol";
+import { NFTPortal } from "../../src/examples/portals/NFTPortal.sol";
 import { Router } from "../../src/Router.sol";
 import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";

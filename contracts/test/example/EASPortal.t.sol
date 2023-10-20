@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { EASPortal } from "../../src/example/EASPortal.sol";
+import { EASPortal } from "../../src/examples/portals/EASPortal.sol";
 import { Router } from "../../src/Router.sol";
 import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
 import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";

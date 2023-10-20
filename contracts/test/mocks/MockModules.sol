@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractModule } from "../interface/AbstractModule.sol";
-import { AttestationPayload } from "../types/Structs.sol";
+import { AbstractModule } from "../../src/interface/AbstractModule.sol";
+import { AttestationPayload } from "../../src/types/Structs.sol";
 
 /**
  * @title Correct Module
@@ -20,4 +20,13 @@ contract CorrectModule is AbstractModule {
     address /*txSender*/,
     uint256 /*value*/
   ) public pure override {}
+}
+
+/**
+ * @title Incorrect Module
+ * @author Consensys
+ * @notice This contract illustrates an invalid Module that doesn't follow the AbstractModule interface
+ */
+contract IncorrectModule {
+
 }

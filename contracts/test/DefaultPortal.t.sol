@@ -2,15 +2,15 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
-import { DefaultPortal } from "../../src/portal/DefaultPortal.sol";
-import { AttestationPayload } from "../../src/types/Structs.sol";
-import { CorrectModule } from "../../src/example/CorrectModule.sol";
-import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
-import { ModuleRegistryMock } from "../mocks/ModuleRegistryMock.sol";
-import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
+import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
+import { DefaultPortal } from "../src/DefaultPortal.sol";
+import { AttestationPayload } from "../src/types/Structs.sol";
+import { CorrectModule } from "./mocks/MockModules.sol";
+import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
+import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
+import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { ERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
-import { Router } from "../../src/Router.sol";
+import { Router } from "./../src/Router.sol";
 
 contract DefaultPortalTest is Test {
   CorrectModule public correctModule = new CorrectModule();

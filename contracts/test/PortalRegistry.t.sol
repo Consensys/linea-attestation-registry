@@ -211,6 +211,9 @@ contract PortalRegistryTest is Test {
 }
 
 contract IPortalImplementation is IPortal {
+  /// @dev This empty method prevents Foundry from counting this contract in code coverage
+  function test() public {}
+
   function getModules() external pure override returns (address[] memory) {
     return new address[](0);
   }

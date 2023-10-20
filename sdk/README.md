@@ -1,21 +1,26 @@
 # Verax Attestation Registry - SDK
 
-The `verax-sdk` facilitates the interactions with the contracts and the subgraph, both from a frontend and a backend.
+The Verax SDK facilitates the interactions with the contracts and the subgraph, both from a frontend and a backend.
 
 [DRAFT]
 
 ## Installation
 
-VeraxSDK is a [npm package](https://www.npmjs.com/package/verax-sdk/).
+VeraxSDK is a [npm package](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk/).
 
 ```bash
 # npm
-npm install --save verax-sdk
+npm i @verax-attestation-registry/verax-sdk
 ```
 
 ```bash
 # yarn
-yarn add verax-sdk
+yarn add @verax-attestation-registry/verax-sdk
+```
+
+```bash
+# pnpm
+pnpm add @verax-attestation-registry/verax-sdk
 ```
 
 ## Getting Started
@@ -24,26 +29,26 @@ yarn add verax-sdk
 
 ```js
 // CommonJS
-var VeraxSdk = require("verax-sdk");
+var VeraxSdk = require("@verax-attestation-registry/verax-sdk");
 ```
 
 ```js
 // ES6
-import VeraxSdk from "verax-sdk";
+import VeraxSdk from "@verax-attestation-registry/verax-sdk";
 ```
 
 ### 2. Instantiate VeraxSdk
 
 ```js
 // Default configuration for Linea Testnet
-const veraxSdk = new VeraxSdk(VeraxSdk.LineaConfTestnet);
+const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET);
 ```
 
 or,
 
 ```js
 // Default configuration for Linea Mainnet
-const veraxSdk = new VeraxSdk(VeraxSdk.LineaConfMainnet);
+const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_MAINNET);
 ```
 
 or,
@@ -51,8 +56,8 @@ or,
 ```js
 // Custom configuration
 const myVeraxConfiguration = {
-  rpcUrl: "https://my.rpc.url",
-  chain: 12345,
+  chain: lineaTestnet,
+  mode: SDKMode.BACKEND,
   subgraphUrl: "https://my.subgraph.url",
   portalRegistryAddress: "0xMyPortalRegistryAddress",
   moduleRegistryAddress: "0xMyModuleRegistryAddress",
@@ -69,10 +74,10 @@ const veraxSdk = new VeraxSdk(myVeraxConfiguration);
 ```js
 // Each Verax classes has its DataMapper
 // Get them from the SDK instance
-const portalDataMapper = veraxSdk.portalDataMapper; // RW Portals
-const schemaDataMapper = veraxSdk.schemaDataMapper; // RW Schemas
-const moduleDataMapper = veraxSdk.moduleDataMapper; // RW Modules
-const attestationDataMapper = veraxSdk.attestationDataMapper; // RW Attestations
+const portalDataMapper = veraxSdk.portal; // RW Portals
+const schemaDataMapper = veraxSdk.schema; // RW Schemas
+const moduleDataMapper = veraxSdk.module; // RW Modules
+const attestationDataMapper = veraxSdk.attestation; // RW Attestations
 ```
 
 ### 2. Read content (one object)

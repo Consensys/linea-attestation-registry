@@ -16,7 +16,7 @@ contract ECDSAModule is AbstractModule, Ownable {
   address public signer;
   mapping(uint256 => bool) public usedNonces; // nonce => used
 
-  constructor(address initialOwner, address _signer) {
+  constructor(address _signer) {
     signer = _signer;
   }
 

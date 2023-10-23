@@ -4,6 +4,7 @@ import { abiDefaultPortal } from "../abi/DefaultPortal";
 import { Address, BaseError, ContractFunctionRevertedError, Hash } from "viem";
 import { encode } from "../utils/abiCoder";
 import { Portal_filter, Portal_orderBy } from "../../.graphclient";
+import { abiPortalRegistry } from "../abi/PortalRegistry";
 
 export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filter, Portal_orderBy> {
   typeName = "portal";
@@ -149,12 +150,72 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     throw new Error("Not implemented");
   }
 
-  async register() {
-    throw new Error("Not implemented");
+  async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
+    return this.simulatePortalRegistryContract("register", [id, name, description, isRevocable, ownerName]);
   }
 
-  async clone() {
-    throw new Error("Not implemented");
+  async register(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
+    const request = await this.simulateRegister(id, name, description, isRevocable, ownerName);
+    return await this.executeTransaction(request);
+  }
+
+  async simulateClone(modules: Address[], name: string, description: string, isRevocable: boolean, ownerName: string) {
+    return this.simulatePortalRegistryContract("deployDefaultPortal", [
+      modules,
+      name,
+      description,
+      isRevocable,
+      ownerName,
+    ]);
+  }
+
+  async clone(modules: Address[], name: string, description: string, isRevocable: boolean, ownerName: string) {
+    const request = await this.simulateClone(modules, name, description, isRevocable, ownerName);
+    return await this.executeTransaction(request);
+  }
+
+  async getPortalByAddress(id: Address) {
+    return await this.executePortalRegistryReadMethod("getPortalByAddress", [id]);
+  }
+
+  async isPortalRegistered(id: Address) {
+    return await this.executePortalRegistryReadMethod("isRegistered", [id]);
+  }
+
+  async getPortalsCount() {
+    return await this.executePortalRegistryReadMethod("getPortalsCount", []);
+  }
+
+  private async executePortalRegistryReadMethod(functionName: string, args: unknown[]) {
+    return await this.web3Client.readContract({
+      abi: abiPortalRegistry,
+      address: this.conf.portalRegistryAddress,
+      functionName,
+      args,
+    });
+  }
+
+  private async simulatePortalRegistryContract(functionName: string, args: unknown[]) {
+    try {
+      const { request } = await this.web3Client.simulateContract({
+        address: this.conf.portalRegistryAddress,
+        abi: abiPortalRegistry,
+        functionName,
+        account: this.walletClient.account,
+        args,
+      });
+
+      return request;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private async executeTransaction(request: any) {
+    const hash: Hash = await this.walletClient.writeContract(request);
+    console.log(`Transaction sent with hash ${hash}`);
+    return hash;
   }
 
   private handleError(err: unknown): never {

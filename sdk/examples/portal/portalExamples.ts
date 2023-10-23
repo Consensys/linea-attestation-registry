@@ -155,8 +155,78 @@ export default class PortalExamples {
     if (methodName.toLowerCase() == "massImport".toLowerCase() || methodName == "")
       console.log(await this.veraxSdk.portal.massImport());
 
-    if (methodName.toLowerCase() == "register" || methodName == "") console.log(await this.veraxSdk.portal.register());
+    if (methodName.toLowerCase() == "simulateRegister".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const { id, name, description, isRevocable, ownerName } = params ?? {
+        id: "0xD39c439cD3Ae5E1F3c7d13985aDAC90846284904",
+        name: "test",
+        description: "example",
+        isRevocable: true,
+        ownerName: "test",
+      };
+      console.log(await this.veraxSdk.portal.simulateRegister(id, name, description, isRevocable, ownerName));
+    }
 
-    if (methodName.toLowerCase() == "clone" || methodName == "") console.log(await this.veraxSdk.portal.clone());
+    if (methodName.toLowerCase() == "register".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const { id, name, description, isRevocable, ownerName } = params ?? {
+        id: "0xD39c439cD3Ae5E1F3c7d13985aDAC90846284904",
+        name: "test",
+        description: "example",
+        isRevocable: true,
+        ownerName: "test",
+      };
+      console.log(await this.veraxSdk.portal.register(id, name, description, isRevocable, ownerName));
+    }
+
+    if (methodName.toLowerCase() == "simulateClone".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const { modules, name, description, isRevocable, ownerName } = params ?? {
+        modules: [],
+        name: "test",
+        description: "example",
+        isRevocable: true,
+        ownerName: "test",
+      };
+      console.log(await this.veraxSdk.portal.simulateClone(modules, name, description, isRevocable, ownerName));
+    }
+
+    if (methodName.toLowerCase() == "clone".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const { modules, name, description, isRevocable, ownerName } = params ?? {
+        modules: [],
+        name: "test",
+        description: "example",
+        isRevocable: true,
+        ownerName: "test",
+      };
+      console.log(await this.veraxSdk.portal.clone(modules, name, description, isRevocable, ownerName));
+    }
+
+    if (methodName.toLowerCase() == "getPortalByAddress".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const portalAddress = params?.portalAddress
+        ? (params.portalAddress as Address)
+        : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
+      console.log(await this.veraxSdk.portal.getPortalByAddress(portalAddress));
+    }
+
+    if (methodName.toLowerCase() == "isPortalRegistered".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const portalAddress = params?.portalAddress
+        ? (params.portalAddress as Address)
+        : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
+      console.log(await this.veraxSdk.portal.isPortalRegistered(portalAddress));
+    }
+
+    if (methodName.toLowerCase() == "getPortalsCount".toLocaleLowerCase() || methodName == "") {
+      console.log(await this.veraxSdk.portal.getPortalsCount());
+    }
   }
 }

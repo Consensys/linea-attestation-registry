@@ -143,15 +143,6 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return await this.executeTransaction(request);
   }
 
-  async register() {
-    throw new Error("Not implemented");
-  }
-
-  async clone() {
-    throw new Error("Not implemented");
-  }
-
-  // TODO: Use correct type for args
   private async simulateContract(portalAddress: Address, functionName: string, args: unknown[]) {
     try {
       const { request } = await this.web3Client.simulateContract({
@@ -166,11 +157,6 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     } catch (err) {
       handleError(err);
     }
-  }
-
-  async bulkRevoke(portalAddress: Address, attestationIds: string[]) {
-    const request = await this.simulateBulkRevoke(portalAddress, attestationIds);
-    return await this.executeTransaction(request);
   }
 
   async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
@@ -238,15 +224,8 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
       return request;
     } catch (err) {
-      this.handleError(err);
+      handleError(err);
     }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private async executeTransaction(request: any) {
-    const hash: Hash = await this.walletClient.writeContract(request);
-    console.log(`Transaction sent with hash ${hash}`);
-    return hash;
   }
 
   // TODO: Use correct type for request

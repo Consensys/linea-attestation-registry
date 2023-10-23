@@ -112,7 +112,6 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return await this.executeReadMethod("balanceOfBatch", [accounts, ids]);
   }
 
-  // TODO: Use correct type for args
   private async executeReadMethod(functionName: string, args: unknown[]) {
     return await this.web3Client.readContract({
       abi: abiAttestationRegistry,
@@ -122,7 +121,6 @@ export default class AttestationDataMapper extends BaseDataMapper<
     });
   }
 
-  // TODO: Use correct type for args
   private async simulateContract(functionName: string, args: unknown[]) {
     try {
       const { request } = await this.web3Client.simulateContract({

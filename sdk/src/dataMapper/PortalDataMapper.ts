@@ -4,6 +4,7 @@ import { abiDefaultPortal } from "../abi/DefaultPortal";
 import { Address, BaseError, ContractFunctionRevertedError, Hash } from "viem";
 import { encode } from "../utils/abiCoder";
 import { Portal_filter, Portal_orderBy } from "../../.graphclient";
+import { abiPortalRegistry } from "../abi/PortalRegistry";
 
 export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filter, Portal_orderBy> {
   typeName = "portal";
@@ -41,11 +42,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async attest(portalAddress: Address, attestationPayload: AttestationPayload, validationPayloads: string[]) {
     const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
+    return await this.executeTransaction(request);
   }
 
   async simulateBulkAttest(
@@ -84,11 +81,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async bulkAttest(portalAddress: Address, attestationPayloads: AttestationPayload[], validationPayloads: string[][]) {
     const request = await this.simulateBulkAttest(portalAddress, attestationPayloads, validationPayloads);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
+    return await this.executeTransaction(request);
   }
 
   async replace() {
@@ -113,11 +106,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async revoke(portalAddress: Address, attestationId: string) {
     const request = await this.simulateRevoke(portalAddress, attestationId);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
+    return await this.executeTransaction(request);
   }
 
   async simulateBulkRevoke(portalAddress: Address, attestationIds: string[]) {
@@ -138,23 +127,83 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async bulkRevoke(portalAddress: Address, attestationIds: string[]) {
     const request = await this.simulateBulkRevoke(portalAddress, attestationIds);
+    return await this.executeTransaction(request);
+  }
+
+  async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
+    return this.simulatePortalRegistryContract("register", [id, name, description, isRevocable, ownerName]);
+  }
+
+  async register(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
+    const request = await this.simulateRegister(id, name, description, isRevocable, ownerName);
+    return await this.executeTransaction(request);
+  }
+
+  async simulateDeployDefaultPortal(
+    modules: Address[],
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+  ) {
+    return this.simulatePortalRegistryContract("deployDefaultPortal", [
+      modules,
+      name,
+      description,
+      isRevocable,
+      ownerName,
+    ]);
+  }
+
+  async deployDefaultPortal(
+    modules: Address[],
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+  ) {
+    const request = await this.simulateDeployDefaultPortal(modules, name, description, isRevocable, ownerName);
+    return await this.executeTransaction(request);
+  }
+
+  async getPortalByAddress(id: Address) {
+    return await this.executePortalRegistryReadMethod("getPortalByAddress", [id]);
+  }
+
+  async isPortalRegistered(id: Address) {
+    return await this.executePortalRegistryReadMethod("isRegistered", [id]);
+  }
+
+  private async executePortalRegistryReadMethod(functionName: string, args: unknown[]) {
+    return await this.web3Client.readContract({
+      abi: abiPortalRegistry,
+      address: this.conf.portalRegistryAddress,
+      functionName,
+      args,
+    });
+  }
+
+  private async simulatePortalRegistryContract(functionName: string, args: unknown[]) {
+    try {
+      const { request } = await this.web3Client.simulateContract({
+        address: this.conf.portalRegistryAddress,
+        abi: abiPortalRegistry,
+        functionName,
+        account: this.walletClient.account,
+        args,
+      });
+
+      return request;
+    } catch (err) {
+      this.handleError(err);
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private async executeTransaction(request: any) {
     const hash: Hash = await this.walletClient.writeContract(request);
-
     console.log(`Transaction sent with hash ${hash}`);
-
     return hash;
-  }
-
-  async massImport() {
-    throw new Error("Not implemented");
-  }
-
-  async register() {
-    throw new Error("Not implemented");
-  }
-
-  async clone() {
-    throw new Error("Not implemented");
   }
 
   private handleError(err: unknown): never {

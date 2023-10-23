@@ -3,9 +3,10 @@ import { abiAttestationRegistry } from "../abi/AttestationRegistry";
 import { Attestation, AttestationPayload } from "../types";
 import { Attestation_filter, Attestation_orderBy } from "../../.graphclient";
 import { Constants } from "../utils/constants";
-import { handleError } from "../utils/errorHandler";
-import { Address, Hash } from "viem";
+import { handleSimulationError } from "../utils/simulationErrorHandler";
+import { Address } from "viem";
 import { encode } from "../utils/abiCoder";
+import { executeTransaction } from "../utils/transactionSender";
 
 export default class AttestationDataMapper extends BaseDataMapper<
   Attestation,
@@ -44,12 +45,12 @@ export default class AttestationDataMapper extends BaseDataMapper<
   }
 
   async simulateUpdateRouter(routerAddress: Address) {
-    return await this.simulateContract("updateRouter", [routerAddress]);
+    return this.simulateContract("updateRouter", [routerAddress]);
   }
 
   async updateRouter(routerAddress: Address) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return await this.executeTransaction(request);
+    return executeTransaction(this.walletClient, request);
   }
 
   async simulateMassImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
@@ -67,53 +68,53 @@ export default class AttestationDataMapper extends BaseDataMapper<
       ]);
     }
 
-    return await this.simulateContract("massImport", [attestationPayloadsArg, portalAddress]);
+    return this.simulateContract("massImport", [attestationPayloadsArg, portalAddress]);
   }
 
   async massImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
     const request = await this.simulateMassImport(portalAddress, attestationPayloads);
-    return await this.executeTransaction(request);
+    return executeTransaction(this.walletClient, request);
   }
 
   async simulateIncrementVersionNumber() {
-    return await this.simulateContract("incrementVersionNumber", []);
+    return this.simulateContract("incrementVersionNumber", []);
   }
 
   async incrementVersionNumber() {
     const request = await this.simulateIncrementVersionNumber();
-    return await this.executeTransaction(request);
+    return executeTransaction(this.walletClient, request);
   }
 
   async isRegistered(attestationId: string) {
-    return await this.executeReadMethod("isRegistered", [attestationId]);
+    return this.executeReadMethod("isRegistered", [attestationId]);
   }
 
   async isRevocable(portalId: string) {
-    return await this.executeReadMethod("isRevocable", [portalId]);
+    return this.executeReadMethod("isRevocable", [portalId]);
   }
 
   async getAttestation(attestationId: string) {
-    return await this.executeReadMethod("getAttestation", [attestationId]);
+    return this.executeReadMethod("getAttestation", [attestationId]);
   }
 
   async getVersionNumber() {
-    return await this.executeReadMethod("getVersionNumber", []);
+    return this.executeReadMethod("getVersionNumber", []);
   }
 
   async getAttestationIdCounter() {
-    return await this.executeReadMethod("getAttestationIdCounter", []);
+    return this.executeReadMethod("getAttestationIdCounter", []);
   }
 
   async balanceOf(account: Address, id: number) {
-    return await this.executeReadMethod("balanceOf", [account, id]);
+    return this.executeReadMethod("balanceOf", [account, id]);
   }
 
   async balanceOfBatch(accounts: Address[], ids: number[]) {
-    return await this.executeReadMethod("balanceOfBatch", [accounts, ids]);
+    return this.executeReadMethod("balanceOfBatch", [accounts, ids]);
   }
 
   private async executeReadMethod(functionName: string, args: unknown[]) {
-    return await this.web3Client.readContract({
+    return this.web3Client.readContract({
       abi: abiAttestationRegistry,
       address: this.conf.attestationRegistryAddress,
       functionName,
@@ -133,15 +134,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
       return request;
     } catch (err) {
-      handleError(err);
+      handleSimulationError(err);
     }
-  }
-
-  // TODO: Use correct type for request
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private async executeTransaction(request: any) {
-    const hash: Hash = await this.walletClient.writeContract(request);
-    console.log(`Transaction sent with hash ${hash}`);
-    return hash;
   }
 }

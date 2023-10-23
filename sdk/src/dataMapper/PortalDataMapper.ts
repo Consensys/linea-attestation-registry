@@ -42,11 +42,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async attest(portalAddress: Address, attestationPayload: AttestationPayload, validationPayloads: string[]) {
     const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
+    return await this.executeTransaction(request);
   }
 
   async simulateBulkAttest(
@@ -85,11 +81,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async bulkAttest(portalAddress: Address, attestationPayloads: AttestationPayload[], validationPayloads: string[][]) {
     const request = await this.simulateBulkAttest(portalAddress, attestationPayloads, validationPayloads);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
+    return await this.executeTransaction(request);
   }
 
   async replace() {
@@ -114,11 +106,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async revoke(portalAddress: Address, attestationId: string) {
     const request = await this.simulateRevoke(portalAddress, attestationId);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
+    return await this.executeTransaction(request);
   }
 
   async simulateBulkRevoke(portalAddress: Address, attestationIds: string[]) {
@@ -139,15 +127,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async bulkRevoke(portalAddress: Address, attestationIds: string[]) {
     const request = await this.simulateBulkRevoke(portalAddress, attestationIds);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
-  }
-
-  async massImport() {
-    throw new Error("Not implemented");
+    return await this.executeTransaction(request);
   }
 
   async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
@@ -159,7 +139,13 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return await this.executeTransaction(request);
   }
 
-  async simulateClone(modules: Address[], name: string, description: string, isRevocable: boolean, ownerName: string) {
+  async simulateDeployDefaultPortal(
+    modules: Address[],
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+  ) {
     return this.simulatePortalRegistryContract("deployDefaultPortal", [
       modules,
       name,
@@ -169,8 +155,14 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     ]);
   }
 
-  async clone(modules: Address[], name: string, description: string, isRevocable: boolean, ownerName: string) {
-    const request = await this.simulateClone(modules, name, description, isRevocable, ownerName);
+  async deployDefaultPortal(
+    modules: Address[],
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+  ) {
+    const request = await this.simulateDeployDefaultPortal(modules, name, description, isRevocable, ownerName);
     return await this.executeTransaction(request);
   }
 
@@ -180,10 +172,6 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async isPortalRegistered(id: Address) {
     return await this.executePortalRegistryReadMethod("isRegistered", [id]);
-  }
-
-  async getPortalsCount() {
-    return await this.executePortalRegistryReadMethod("getPortalsCount", []);
   }
 
   private async executePortalRegistryReadMethod(functionName: string, args: unknown[]) {

@@ -152,9 +152,6 @@ export default class PortalExamples {
       console.log(await this.veraxSdk.portal.bulkRevoke(portalAddress, attestationIds));
     }
 
-    if (methodName.toLowerCase() == "massImport".toLowerCase() || methodName == "")
-      console.log(await this.veraxSdk.portal.massImport());
-
     if (methodName.toLowerCase() == "simulateRegister".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
@@ -181,7 +178,7 @@ export default class PortalExamples {
       console.log(await this.veraxSdk.portal.register(id, name, description, isRevocable, ownerName));
     }
 
-    if (methodName.toLowerCase() == "simulateClone".toLowerCase() || methodName == "") {
+    if (methodName.toLowerCase() == "simulateDeployDefaultPortal".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
       const { modules, name, description, isRevocable, ownerName } = params ?? {
@@ -191,10 +188,12 @@ export default class PortalExamples {
         isRevocable: true,
         ownerName: "test",
       };
-      console.log(await this.veraxSdk.portal.simulateClone(modules, name, description, isRevocable, ownerName));
+      console.log(
+        await this.veraxSdk.portal.simulateDeployDefaultPortal(modules, name, description, isRevocable, ownerName),
+      );
     }
 
-    if (methodName.toLowerCase() == "clone".toLowerCase() || methodName == "") {
+    if (methodName.toLowerCase() == "deployDefaultPortal".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
       const { modules, name, description, isRevocable, ownerName } = params ?? {
@@ -204,7 +203,7 @@ export default class PortalExamples {
         isRevocable: true,
         ownerName: "test",
       };
-      console.log(await this.veraxSdk.portal.clone(modules, name, description, isRevocable, ownerName));
+      console.log(await this.veraxSdk.portal.deployDefaultPortal(modules, name, description, isRevocable, ownerName));
     }
 
     if (methodName.toLowerCase() == "getPortalByAddress".toLowerCase() || methodName == "") {
@@ -223,10 +222,6 @@ export default class PortalExamples {
         ? (params.portalAddress as Address)
         : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
       console.log(await this.veraxSdk.portal.isPortalRegistered(portalAddress));
-    }
-
-    if (methodName.toLowerCase() == "getPortalsCount".toLocaleLowerCase() || methodName == "") {
-      console.log(await this.veraxSdk.portal.getPortalsCount());
     }
   }
 }

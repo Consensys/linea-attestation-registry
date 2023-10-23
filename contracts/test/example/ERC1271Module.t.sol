@@ -37,6 +37,25 @@ contract ERC1271ModuleTest is Test {
     erc1271Module.run(attestationPayload, signature, signerAddress, 0);
   }
 
+  function test_ERC1271Module_InvalidSignature() public {
+    address user = makeAddr("user");
+    uint256 nonce = 1234567;
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1234)),
+      0,
+      abi.encode(user),
+      abi.encode(nonce)
+    );
+
+    bytes32 hash = keccak256(abi.encodePacked("\x19Not a correct SignMessage:\n", abi.encodePacked(user, nonce)));
+    (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, hash);
+
+    bytes memory signature = abi.encodePacked(r, s, v);
+
+    vm.expectRevert(ERC1271Module.InvalidSignature.selector);
+    erc1271Module.run(attestationPayload, signature, signerAddress, 0);
+  }
+
   function test_EcRecoverModule_supportsInterface() public {
     bool isAbstractModuleSupported = erc1271Module.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);

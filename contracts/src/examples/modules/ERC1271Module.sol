@@ -7,6 +7,9 @@ import { AttestationPayload } from "../../types/Structs.sol";
 contract ERC1271Module is AbstractModule {
   address public owner;
 
+  error InvalidSignature();
+  error WrongSender();
+
   constructor(address _owner) {
     owner = _owner;
   }
@@ -59,14 +62,15 @@ contract ERC1271Module is AbstractModule {
     address txSender,
     uint256 /*value*/
   ) public view override {
-    require(txSender == owner, "Invalid sender");
+    if (txSender != owner) {
+      revert WrongSender();
+    }
     address signee = abi.decode(attestationPayload.subject, (address));
     uint256 nonce = abi.decode(attestationPayload.attestationData, (uint256));
     bytes memory message = abi.encodePacked(signee, nonce);
     bytes32 digest = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", message));
-    require(
-      isValidSignature(digest, validationPayload) == 0x1626ba7e,
-      "SignatureValidator#isValidSignature: INVALID_SIGNER"
-    );
+    if (isValidSignature(digest, validationPayload) != 0x1626ba7e) {
+      revert InvalidSignature();
+    }
   }
 }

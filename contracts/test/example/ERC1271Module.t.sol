@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { AbstractModule } from "../../src/interface/AbstractModule.sol";
-import { ERC1271Module } from "../../src/example/ERC1271Module.sol";
+import { ERC1271Module } from "../../src/examples/modules/ERC1271Module.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 
 contract ERC1271ModuleTest is Test {
@@ -29,7 +29,7 @@ contract ERC1271ModuleTest is Test {
       abi.encode(nonce)
     );
 
-    bytes32 hash = keccak256(bytes.concat("\x19Ethereum Signed Message:\n", abi.encodePacked(user, nonce)));
+    bytes32 hash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", abi.encodePacked(user, nonce)));
     (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, hash);
     
     bytes memory signature = abi.encodePacked(r, s, v);

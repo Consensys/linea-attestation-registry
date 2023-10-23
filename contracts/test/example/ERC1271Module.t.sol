@@ -31,9 +31,9 @@ contract ERC1271ModuleTest is Test {
 
     bytes32 hash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", abi.encodePacked(user, nonce)));
     (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, hash);
-    
+
     bytes memory signature = abi.encodePacked(r, s, v);
-    
+
     erc1271Module.run(attestationPayload, signature, signerAddress, 0);
   }
 

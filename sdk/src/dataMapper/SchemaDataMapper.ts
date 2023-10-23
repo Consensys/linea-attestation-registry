@@ -1,9 +1,10 @@
-import { Address, Hash } from "viem";
+import { Address } from "viem";
 import { Schema_filter, Schema_orderBy } from "../../.graphclient";
 import { Schema } from "../types";
 import { handleError } from "../utils/errorHandler";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiSchemaRegistry } from "../abi/SchemaRegistry";
+import { executeTransaction } from "../utils/transactionSender";
 
 export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filter, Schema_orderBy> {
   typeName = "schema";
@@ -21,7 +22,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
 
   async updateRouter(routerAddress: Address) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return this.executeTransaction(request);
+    return executeTransaction(this.walletClient, request);
   }
 
   async simulateCreate(name: string, description: string, context: string, schemaString: string) {
@@ -30,7 +31,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
 
   async create(name: string, description: string, context: string, schemaString: string) {
     const request = await this.simulateCreate(name, description, context, schemaString);
-    return this.executeTransaction(request);
+    return executeTransaction(this.walletClient, request);
   }
 
   async simulateUpdateContext(schemaId: string, context: string) {
@@ -39,7 +40,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
 
   async updateContext(schemaId: string, context: string) {
     const request = await this.simulateUpdateContext(schemaId, context);
-    return this.executeTransaction(request);
+    return executeTransaction(this.walletClient, request);
   }
 
   async getIdFromSchemaString(schema: string) {
@@ -72,7 +73,6 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
     });
   }
 
-  // TODO: Use correct type for args
   private async simulateContract(functionName: string, args: unknown[]) {
     try {
       const { request } = await this.web3Client.simulateContract({
@@ -87,13 +87,5 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
     } catch (err) {
       handleError(err);
     }
-  }
-
-  // TODO: Use correct type for request
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private async executeTransaction(request: any) {
-    const hash: Hash = await this.walletClient.writeContract(request);
-    console.log(`Transaction sent with hash ${hash}`);
-    return hash;
   }
 }

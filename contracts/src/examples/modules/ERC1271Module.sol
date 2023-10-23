@@ -41,11 +41,6 @@ contract ERC1271Module is AbstractModule {
       revert("SignatureValidator#recoverSigner: invalid signature 'v' value");
     }
 
-    //address signee = abi.decode(attestationPayload.subject, (address));
-    //uint256 nonce = abi.decode(attestationPayload.attestationData, (uint256));
-    //bytes memory message = abi.encodePacked(signee, nonce);
-    //bytes32 digest =  keccak256(bytes.concat("\x19Ethereum Signed Message:\n", bytes(Strings.toString(message.length)), message));
-
     signer = ecrecover(_hash, v, r, s);
     // Prevent signer from being 0x0
     require(

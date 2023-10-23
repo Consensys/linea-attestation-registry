@@ -32,12 +32,6 @@ contract ERC1271ModuleTest is Test {
     );
 
     bytes32 hash = keccak256(bytes.concat("\x19Ethereum Signed Message:\n", abi.encodePacked(user, nonce)));
-    /*console.log(message.length);
-    assembly {
-        mstore(0x00, "\x19Ethereum Signed Message:\n32") // 32 is the bytes-length of messageHash
-        mstore(0x1c, message) // 0x1c (28) is the length of the prefix
-        hash := keccak256(0x00, 0x3c) // 0x3c is the length of the prefix (0x1c) + messageHash (0x20)
-    }*/
     (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, hash);
     
     bytes memory signature = abi.encodePacked(r, s, v);

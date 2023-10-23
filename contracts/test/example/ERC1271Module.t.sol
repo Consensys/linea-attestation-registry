@@ -56,6 +56,19 @@ contract ERC1271ModuleTest is Test {
     erc1271Module.run(attestationPayload, signature, signerAddress, 0);
   }
 
+  function test_ERC1271Module_WrongSender() public {
+    address user = makeAddr("NotASigner");
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1234)),
+      0,
+      bytes("subject"),
+      new bytes(1)
+    );
+
+    vm.expectRevert(ERC1271Module.WrongSender.selector);
+    erc1271Module.run(attestationPayload, bytes("0"), user, 0);
+  }
+
   function test_EcRecoverModule_supportsInterface() public {
     bool isAbstractModuleSupported = erc1271Module.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);

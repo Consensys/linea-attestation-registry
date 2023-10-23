@@ -2,11 +2,9 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { ECDSA } from "openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
 import { AbstractModule } from "../../src/interface/AbstractModule.sol";
 import { ERC1271Module } from "../../src/example/ERC1271Module.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
-import "forge-std/console.sol";
 
 contract ERC1271ModuleTest is Test {
   ERC1271Module private erc1271Module;

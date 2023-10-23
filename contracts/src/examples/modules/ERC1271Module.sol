@@ -1,13 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { ECDSA } from "openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
-import { Strings } from "openzeppelin-contracts/contracts/utils/Strings.sol";
-
 import { AbstractModule } from "../interface/AbstractModule.sol";
 import { AttestationPayload } from "../types/Structs.sol";
-
-import "forge-std/console.sol";
 
 contract ERC1271Module is AbstractModule {
     address public owner;
@@ -77,6 +72,7 @@ contract ERC1271Module is AbstractModule {
     uint256 nonce = abi.decode(attestationPayload.attestationData, (uint256));
     bytes memory message = abi.encodePacked(signee, nonce);
     bytes32 digest =  keccak256(bytes.concat("\x19Ethereum Signed Message:\n", message));
-    require(isValidSignature(digest, validationPayload) == 0x1626ba7e, "SignatureValidator#isValidSignature: INVALID_SIGNER");
+    require(isValidSignature(digest, validationPayload) == 0x1626ba7e, 
+        "SignatureValidator#isValidSignature: INVALID_SIGNER");
   }
 }

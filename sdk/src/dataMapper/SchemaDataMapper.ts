@@ -1,10 +1,10 @@
 import { Address } from "viem";
 import { Schema_filter, Schema_orderBy } from "../../.graphclient";
 import { Schema } from "../types";
-import { handleError } from "../utils/errorHandler";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiSchemaRegistry } from "../abi/SchemaRegistry";
 import { executeTransaction } from "../utils/transactionSender";
+import { handleSimulationError } from "../utils/simulationErrorHandler";
 
 export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filter, Schema_orderBy> {
   typeName = "schema";
@@ -63,7 +63,6 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
     return this.executeReadMethod("schemaIds", [index]);
   }
 
-  // TODO: Use correct type for args
   private async executeReadMethod(functionName: string, args: unknown[]) {
     return this.web3Client.readContract({
       abi: abiSchemaRegistry,
@@ -85,7 +84,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
 
       return request;
     } catch (err) {
-      handleError(err);
+      handleSimulationError(err);
     }
   }
 }

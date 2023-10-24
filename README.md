@@ -34,7 +34,7 @@ the network.</h4>
 ```
 .
 ├── contracts   # All smart contracts needed to run Verax
-├── explorer    # Explorer frontend to discover the main objects (Coming soon)
+├── explorer    # Explorer frontend to discover the main objects
 ├── sdk         # The Verax SDK to easily interact with the contracts and the subgraph
 ├── subgraph    # The subgraph indexing Verax data
 ```

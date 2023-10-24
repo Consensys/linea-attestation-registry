@@ -18,15 +18,14 @@ contract SchemaCheckerModuleTest is Test {
     vm.deal(issuer, 1 ether);
   }
 
-  function test_SchemaCheckerModule_verifySchemaId() public {
+  function test_SchemaCheckerModule_matchSchemaId() public {
     address user = makeAddr("user");
-    bytes32 schemaId = bytes32(uint256(1234));
     uint64 issueDate = 0;
     AttestationPayload memory attestationPayload = AttestationPayload(
-      schemaId,
+      bytes32("12345678"),
       0,
       abi.encode(user),
-      abi.encode(issuer, schemaId, issueDate)
+      abi.encode(issuer, "112334", issueDate)
     );
 
     schemaCheckerModule.run(attestationPayload, bytes("0000"), user, 0);
@@ -47,7 +46,7 @@ contract SchemaCheckerModuleTest is Test {
     schemaCheckerModule.run(attestationPayload, bytes("0000"), user, 0);
   }
 
-  function test_EcRecoverModule_supportsInterface() public {
+  function test_SchemaCheckerModule_supportsInterface() public {
     bool isAbstractModuleSupported = schemaCheckerModule.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);
   }

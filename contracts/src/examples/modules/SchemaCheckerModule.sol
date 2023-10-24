@@ -26,13 +26,9 @@ contract SchemaCheckerModule is AbstractModule {
     address /*txSender*/,
     uint256 /*value*/
   ) public view override {
-    Profile memory issuerProfile;
-    (issuerProfile.issuer, issuerProfile.schemaId, issuerProfile.issueDate) = abi.decode(
-      attestationPayload.attestationData,
-      (address, bytes32, uint64)
-    );
-    if (issuerProfile.schemaId != attestationPayload.schemaId) {
+    if (keccak256(abi.encodePacked(attestationPayload.schemaId)) != keccak256(abi.encode(bytes32("12345678")))) {
       revert InvalidSchemaId();
     }
+    abi.decode(attestationPayload.attestationData, (address, bytes32, uint64));
   }
 }

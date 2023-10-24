@@ -275,6 +275,28 @@ pnpm module findby '{\"name\": \"Msg Sender Module\"}'
 pnpm schema findonebyid "0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e"
 
 pnpm schema findby '{\"description\": \"Gitcoin Passport Score\"}'
+
+pnpm schema simulateUpdateRouter "0x980978299e23B8F9B4D11542A83D92C83e781cb6"
+
+pnpm schema updateRouter "0x980978299e23B8F9B4D11542A83D92C83e781cb6"
+
+pnpm schema simulateCreate '{\"name\": \"sampleSchema\", \"description\": \"Example schema\", \"context\": \"Created by example\", \"schemaString\": \"bool isExample\"}'
+
+pnpm schema create '{\"name\": \"sampleSchema\", \"description\": \"Example schema\", \"context\": \"Created by example\", \"schemaString\": \"bool isExample\"}'
+
+pnpm schema simulateUpdateContext '{\"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"context\": \"New context\"}'
+
+pnpm schema updateContext '{\"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"context\": \"New context\"}'
+
+pnpm schema getIdFromSchemaString 'bool isExample'
+
+pnpm schema getSchema "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738"
+
+pnpm schema getSchemasNumber
+
+pnpm schema isRegistered "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738"
+
+pnpm schema getSchemaIds 0
 ```
 
 ## Other operations

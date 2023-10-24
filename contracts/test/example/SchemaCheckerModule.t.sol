@@ -28,7 +28,7 @@ contract SchemaCheckerModuleTest is Test {
       abi.encode(user),
       abi.encode(issuer, schemaId, issueDate)
     );
-    
+
     schemaCheckerModule.run(attestationPayload, bytes("0000"), user, 0);
   }
 
@@ -45,7 +45,6 @@ contract SchemaCheckerModuleTest is Test {
 
     vm.expectRevert(SchemaCheckerModule.InvalidSchemaId.selector);
     schemaCheckerModule.run(attestationPayload, bytes("0000"), user, 0);
-
   }
 
   function test_EcRecoverModule_supportsInterface() public {

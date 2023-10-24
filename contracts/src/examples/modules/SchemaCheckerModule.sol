@@ -19,7 +19,6 @@ contract SchemaCheckerModule is AbstractModule {
   /**
    * @notice This method is used to run the module's validation logic
    * @param attestationPayload - AttestationPayload containing the user address as `subject` and nonce as `attestationData`
-   * @param validationPayload - Payload encoded with abi.encode(uint256).toEthSignedMessageHash().sign(signer)
    */
   function run(
     AttestationPayload memory attestationPayload,

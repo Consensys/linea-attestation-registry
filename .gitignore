@@ -29,5 +29,8 @@ subgraph.yaml
 .latest.json
 .docker
 
+# SDK
+lib
+
 # Misc
 .DS_Store

@@ -6,7 +6,6 @@ import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts
 import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { AbstractPortal } from "./interface/AbstractPortal.sol";
 import { DefaultPortal } from "./DefaultPortal.sol";
-import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { Portal } from "./types/Structs.sol";
 import { IRouter } from "./interface/IRouter.sol";
 import { IPortal } from "./interface/IPortal.sol";
@@ -82,7 +81,6 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function removeIssuer(address issuer) public onlyOwner {
     issuers[issuer] = false;
-    SchemaRegistry(router.getSchemaRegistry()).updateMatchingSchemaIssuers(issuer, msg.sender);
   }
 
   /**

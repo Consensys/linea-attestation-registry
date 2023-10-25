@@ -38,8 +38,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   error SchemaStringMissing();
   /// @notice Error thrown when attempting to get a Schema that is not registered
   error SchemaNotRegistered();
-  /// @notice Error thrown when an invalid Issuer address is given
-  error IssuerInvalid();
 
   /// @notice Event emitted when a Schema is created and registered
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);

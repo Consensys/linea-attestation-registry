@@ -24,6 +24,8 @@ contract SchemaRegistry is OwnableUpgradeable {
   error RouterInvalid();
   /// @notice Error thrown when a non-issuer tries to call a method that can only be called by an issuer
   error OnlyIssuer();
+  /// @notice Error thrown when any address which is not a portal registry tries to call a method
+  error OnlyPortalRegistry();
   /// @notice Error thrown when a non-assigned issuer tries to call a method that can only be called by an assigned issuer
   error OnlyAssignedIssuer();
   /// @notice Error thrown when an invalid Issuer address is given
@@ -63,6 +65,16 @@ contract SchemaRegistry is OwnableUpgradeable {
   }
 
   /**
+   * @notice Checks if the caller is the portal registry.
+   * @param caller the caller address
+   */
+  modifier onlyPortalRegistry(address caller) {
+    bool isCallerPortalRegistry = router.getPortalRegistry() == caller;
+    if (!isCallerPortalRegistry) revert OnlyPortalRegistry();
+    _;
+  }
+
+  /**
    * @notice Changes the address for the Router
    * @dev Only the registry owner can call this method
    */
@@ -82,6 +94,21 @@ contract SchemaRegistry is OwnableUpgradeable {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (issuer == address(0)) revert IssuerInvalid();
     schemasIssuers[schemaId] = issuer;
+  }
+
+  /**
+   * @notice Updates issuer address for all schemas associated with old issuer address
+   * @param oldIssuer the address of old issuer
+   * @param newIssuer the address of new issuer
+   * @dev Finds all the schemaIds associated with old issuer and updates the mapping `schemasIssuers`
+   *      for schemaIds found with new issuer
+   */
+  function updateMatchingSchemaIssuers(address oldIssuer, address newIssuer) public onlyPortalRegistry(msg.sender) {
+    for (uint256 i = 0; i < schemaIds.length; i++) {
+      if (schemasIssuers[schemaIds[i]] == oldIssuer) {
+        schemasIssuers[schemaIds[i]] = newIssuer;
+      }
+    }
   }
 
   /**

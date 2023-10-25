@@ -10,6 +10,9 @@ import { AttestationPayload } from "../../types/Structs.sol";
  */
 contract SchemaCheckerModule is AbstractModule {
   error InvalidSchemaId();
+  /*
+   * @notice This is an example of how to check the attestation payload encoding/decoding, based on a "Profile Schema"
+   */
   struct Profile {
     address issuer;
     bytes32 schemaId;
@@ -17,6 +20,7 @@ contract SchemaCheckerModule is AbstractModule {
   }
 
   /**
+   * @inheritdoc AbstractModule
    * @notice This method is used to run the module's validation logic
    * @param attestationPayload - AttestationPayload containing the user address as `subject` and nonce as `attestationData`
    */

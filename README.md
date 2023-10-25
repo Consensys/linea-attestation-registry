@@ -26,7 +26,7 @@ the network.</h4>
 🔍
 [Testnet GraphQL API](https://graph-query.goerli.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  
 🔍 [Mainnet GraphQL API](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  
-🧱 Verax SDK - _Coming soon_  
+🧱 [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk) - **WIP**  
 🌍 Verax Explorer - _Coming soon_
 
 ## Repository Organisation
@@ -34,8 +34,8 @@ the network.</h4>
 ```
 .
 ├── contracts   # All smart contracts needed to run Verax
-├── explorer    # Explorer frontend to discover the main objects (Coming soon)
-├── sdk         # The verax-sdk to easily interact with the contracts and the subgraph
+├── explorer    # Explorer frontend to discover the main objects
+├── sdk         # The Verax SDK to easily interact with the contracts and the subgraph
 ├── subgraph    # The subgraph indexing Verax data
 ```
 

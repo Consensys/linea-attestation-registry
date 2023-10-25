@@ -1,4 +1,5 @@
 packages:
   - 'contracts'
+  - 'explorer'
   - 'subgraph'
   - 'sdk'

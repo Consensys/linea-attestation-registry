@@ -1,6 +1,6 @@
 {
-  "name": "linea-attestation-registry-sdk",
-  "version": "0.0.1",
+  "name": "@verax-attestation-registry/verax-sdk",
+  "version": "0.0.8",
   "description": "Verax Attestation Registry SDK to interact with the subgraph and the contracts",
   "keywords": [
     "linea-attestation-registry",
@@ -15,8 +15,31 @@
   "license": "MIT",
   "author": "Consensys",
   "type": "module",
+  "files": [
+    "lib/**/*"
+  ],
+  "types": "./lib/cjs/types/index.d.ts",
+  "main": "./lib/cjs/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/esm/types/src/VeraxSdk.d.ts",
+        "default": "./lib/esm/src/VeraxSdk.js"
+      },
+      "require": {
+        "types": "./lib/cjs/types/src/VeraxSdk.d.ts",
+        "default": "./lib/cjs/src/VeraxSdk.js"
+      }
+    }
+  },
   "scripts": {
     "attestation": "ts-node examples/attestation/index.ts",
+    "clean": "rm -rf ./lib",
+    "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs",
+    "build:esm": "tsc -p ./tsconfig.esm.json",
+    "build:cjs": "tsc -p ./tsconfig.cjs.json",
+    "prepack": "npm run build",
+    "publish:public": "pnpm publish --access public --no-git-checks",
     "module": "ts-node examples/module/index.ts",
     "portal": "ts-node examples/portal/index.ts",
     "schema": "ts-node examples/schema/index.ts",

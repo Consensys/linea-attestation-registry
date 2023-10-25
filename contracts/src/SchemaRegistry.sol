@@ -15,7 +15,7 @@ contract SchemaRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) private schemas;
-  /// @dev The list of Schemas, assigned to the respective issuers
+  /// @dev Associates a Schema ID with the address of the Issuer who created it
   mapping(bytes32 id => address issuer) private schemasIssuers;
   /// @dev The list of Schema IDs
   bytes32[] public schemaIds;
@@ -26,6 +26,8 @@ contract SchemaRegistry is OwnableUpgradeable {
   error OnlyIssuer();
   /// @notice Error thrown when a non-assigned issuer tries to call a method that can only be called by an assigned issuer
   error OnlyAssignedIssuer();
+  /// @notice Error thrown when an invalid Issuer address is given
+  error IssuerInvalid();
   /// @notice Error thrown when an identical Schema was already registered
   error SchemaAlreadyExists();
   /// @notice Error thrown when attempting to add a Schema without a name
@@ -34,8 +36,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   error SchemaStringMissing();
   /// @notice Error thrown when attempting to get a Schema that is not registered
   error SchemaNotRegistered();
-  /// @notice Error thrown when an invalid Issuer address is given
-  error IssuerInvalid();
 
   /// @notice Event emitted when a Schema is created and registered
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
@@ -72,13 +72,16 @@ contract SchemaRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Updates schema issuer, adds it if not present for historical schemas
-   * @dev Updates issuer for the given schemaId in the mapping schemaIssuers and adds the issuer if no record found.
+   * @notice Updates a given Schema's Issuer
+   * @param schemaId the Schema's ID
+   * @param issuer the address of the issuer who created the given Schema
+   * @dev Updates issuer for the given schemaId in the `schemaIssuers` mapping
+   *      The issuer must already be registered as an Issuer via the `PortalRegistry`
    */
-  function updateSchemaIssuer(bytes32 _schemaId, address _issuer) public onlyOwner {
-    if (!isRegistered(_schemaId)) revert SchemaNotRegistered();
-    if (_issuer == address(0)) revert IssuerInvalid();
-    schemasIssuers[_schemaId] = _issuer;
+  function updateSchemaIssuer(bytes32 schemaId, address issuer) public onlyOwner {
+    if (!isRegistered(schemaId)) revert SchemaNotRegistered();
+    if (issuer == address(0)) revert IssuerInvalid();
+    schemasIssuers[schemaId] = issuer;
   }
 
   /**
@@ -100,7 +103,8 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @param description the Schema description
    * @param context the Schema context
    * @param schemaString the string defining a Schema
-   * @dev the Schema is stored in a mapping, its ID is added to an array of IDs and an event is emitted
+   * @dev The Schema is stored in the `schemas` mapping, its ID is added to an array of IDs and an event is emitted
+   *      The caller is assigned as the creator of the Schema, via the `schemasIssuers` mapping
    */
   function createSchema(
     string memory name,
@@ -128,8 +132,9 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @param schemaId the schema ID
    * @param context the Schema context
    * @dev Retrieve the Schema with given ID and update its context with new value
+   *      The caller must be the creator of the given Schema (through the `schemaIssuers` mapping)
    */
-  function updateContext(bytes32 schemaId, string memory context) public onlyIssuers(msg.sender) {
+  function updateContext(bytes32 schemaId, string memory context) public {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (schemasIssuers[schemaId] != msg.sender) revert OnlyAssignedIssuer();
     schemas[schemaId].context = context;

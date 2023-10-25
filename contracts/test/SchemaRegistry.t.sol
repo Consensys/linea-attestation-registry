@@ -141,13 +141,6 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function test_updateContext_OnlyIssuer() public {
-    vm.expectRevert(SchemaRegistry.OnlyIssuer.selector);
-    vm.startPrank(makeAddr("InvalidIssuer"));
-    schemaRegistry.updateContext(expectedId, "New context");
-    vm.stopPrank();
-  }
-
   function test_updateContext_SchemaNotRegistered() public {
     vm.startPrank(user);
     vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);

@@ -7,6 +7,7 @@ import { CorrectModule } from "./mocks/MockModules.sol";
 import { Portal } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
+import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
 import { ValidPortalMock } from "./mocks/ValidPortalMock.sol";
 import { InvalidPortalMock } from "./mocks/InvalidPortalMock.sol";
@@ -18,6 +19,7 @@ contract PortalRegistryTest is Test {
   PortalRegistry public portalRegistry;
   address public moduleRegistryAddress;
   address public attestationRegistryAddress;
+  address public schemaRegistryAddress;
   string public expectedName = "Name";
   string public expectedDescription = "Description";
   string public expectedOwnerName = "Owner Name";
@@ -37,11 +39,13 @@ contract PortalRegistryTest is Test {
 
     moduleRegistryAddress = address(new ModuleRegistryMock());
     attestationRegistryAddress = address(new AttestationRegistryMock());
+    schemaRegistryAddress = address(new SchemaRegistryMock());
     vm.prank(address(0));
     portalRegistry.updateRouter(address(router));
 
     router.updateModuleRegistry(moduleRegistryAddress);
     router.updateAttestationRegistry(attestationRegistryAddress);
+    router.updateSchemaRegistry(schemaRegistryAddress);
     vm.prank(address(0));
     portalRegistry.setIssuer(user);
 

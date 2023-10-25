@@ -79,6 +79,21 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.updateSchemaIssuer(expectedId, address(0));
   }
 
+  function test_updateMatchingSchemaIssuers() public {
+    vm.prank(user);
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    vm.prank(portalRegistryAddress);
+    schemaRegistry.updateMatchingSchemaIssuers(user, address(2));
+  }
+
+  function test_updateMatchingSchemaIssuers_OnlyPortalRegistry() public {
+    vm.prank(user);
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    vm.prank(address(0));
+    vm.expectRevert(SchemaRegistry.OnlyPortalRegistry.selector);
+    schemaRegistry.updateMatchingSchemaIssuers(user, address(2));
+  }
+
   function test_getIdFromSchemaString() public {
     bytes32 id = schemaRegistry.getIdFromSchemaString(expectedString);
     assertEq(id, expectedId);

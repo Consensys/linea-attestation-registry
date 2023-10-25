@@ -26,4 +26,6 @@ contract SchemaRegistryMock {
   function isRegistered(bytes32 schemaId) public view returns (bool) {
     return schemas[schemaId];
   }
+
+  function updateMatchingSchemaIssuers(address oldIssuer, address newIssuer) public {}
 }

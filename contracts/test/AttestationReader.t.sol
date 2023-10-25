@@ -78,8 +78,20 @@ contract AttestationReaderTest is Test {
     testAttestationReader.updateEASRegistryAddress(address(0));
   }
 
-  function test_getAttestation_fromEAS(EASAttestation memory easAttestation) public {
-    vm.assume(easAttestation.schema.length != 0);
+  function test_getAttestation_fromEAS() public {
+    EASAttestation memory easAttestation = EASAttestation({
+      uid: keccak256(abi.encodePacked("uniqueID")),
+      schema: keccak256(abi.encodePacked("schemaID")),
+      time: uint64(block.timestamp),
+      expirationTime: uint64(block.timestamp + 1 weeks),
+      revocationTime: 0,
+      refUID: keccak256(abi.encodePacked("refUID")),
+      recipient: msg.sender,
+      attester: address(this),
+      revocable: true,
+      data: "Custom data"
+    });
+
     EASRegistryMock easRegistry = EASRegistryMock(easRegistryAddress);
     easRegistry.addAttestation(easAttestation);
 

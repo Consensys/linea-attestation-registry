@@ -54,8 +54,8 @@ export default class ModuleExamples {
       let params;
       if (argv !== "") params = JSON.parse(argv);
 
-      const moduleAddresses = params?.moduleAddresses
-        ? params.moduleAddresses
+      const modulesAddresses = params?.modulesAddresses
+        ? params.modulesAddresses
         : ["0x4bb8769e18f1518c35be8405d43d7cc07ecf501c"];
       const attestationPayload = params?.attestationPayload ?? {
         schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
@@ -68,12 +68,126 @@ export default class ModuleExamples {
 
       console.log(
         await this.veraxSdk.module.simulateRunModules(
-          moduleAddresses as Address[],
+          modulesAddresses as Address[],
           attestationPayload,
           validationPayloads,
           value,
         ),
       );
+    }
+
+    if (methodName.toLowerCase() == "runModules".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+
+      const modulesAddresses = params?.modulesAddresses
+        ? params.modulesAddresses
+        : ["0x4bb8769e18f1518c35be8405d43d7cc07ecf501c"];
+      const attestationPayload = params?.attestationPayload ?? {
+        schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+        expirationDate: 1693583329,
+        subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
+        attestationData: [{ isBuidler: true }],
+      };
+      const validationPayloads = params?.validationPayloads ?? [];
+      const value = params?.value ? (params.value as number) : 1;
+
+      console.log(
+        await this.veraxSdk.module.runModules(
+          modulesAddresses as Address[],
+          attestationPayload,
+          validationPayloads,
+          value,
+        ),
+      );
+    }
+
+    if (methodName.toLowerCase() == "simulateBulkRunModules".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+
+      const modulesAddresses = params?.modulesAddresses
+        ? params.modulesAddresses
+        : ["0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5"];
+      const attestationPayloads = params?.attestationPayloads ?? [
+        {
+          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+          expirationDate: 1693583329,
+          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
+          attestationData: [{ isBuidler: true }],
+        },
+        {
+          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+          expirationDate: 1693583329,
+          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
+          attestationData: [{ isBuidler: true }],
+        },
+      ];
+      const validationPayloads = params?.validationPayloads ?? [[""], [""]];
+
+      console.log(
+        await this.veraxSdk.module.simulateBulkRunModules(
+          modulesAddresses as Address[],
+          attestationPayloads,
+          validationPayloads,
+        ),
+      );
+    }
+
+    if (methodName.toLowerCase() == "bulkRunModules".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+
+      const modulesAddresses = params?.modulesAddresses
+        ? params.modulesAddresses
+        : ["0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5"];
+      const attestationPayloads = params?.attestationPayloads ?? [
+        {
+          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+          expirationDate: 1693583329,
+          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
+          attestationData: [{ isBuidler: true }],
+        },
+        {
+          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+          expirationDate: 1693583329,
+          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
+          attestationData: [{ isBuidler: true }],
+        },
+      ];
+      const validationPayloads = params?.validationPayloads ?? [[""], [""]];
+
+      console.log(
+        await this.veraxSdk.module.bulkRunModules(
+          modulesAddresses as Address[],
+          attestationPayloads,
+          validationPayloads,
+        ),
+      );
+    }
+
+    if (methodName.toLowerCase() == "isContractAddress".toLowerCase() || methodName == "") {
+      const contractAddress: Address = argv === "" ? "0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5" : (argv as Address);
+      console.log(await this.veraxSdk.module.isContractAddress(contractAddress));
+    }
+
+    if (methodName.toLowerCase() == "getModulesNumber".toLowerCase() || methodName == "") {
+      console.log(await this.veraxSdk.module.getModulesNumber());
+    }
+
+    if (methodName.toLowerCase() == "isRegistered".toLowerCase() || methodName == "") {
+      const moduleAddress: Address = argv === "" ? "0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5" : (argv as Address);
+      console.log(await this.veraxSdk.module.isRegistered(moduleAddress));
+    }
+
+    if (methodName.toLowerCase() == "getModuleAddress".toLowerCase() || methodName == "") {
+      const index: number = argv === "" ? 0 : (argv as unknown as number);
+      console.log(await this.veraxSdk.module.getModuleAddress(index));
+    }
+
+    if (methodName.toLowerCase() == "getModule".toLowerCase() || methodName == "") {
+      const moduleAddress: Address = argv === "" ? "0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5" : (argv as Address);
+      console.log(await this.veraxSdk.module.getModule(moduleAddress));
     }
   }
 }

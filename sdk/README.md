@@ -267,6 +267,32 @@ pnpm attestation balanceOfBatch '{\"accounts\": [\"0x828c9f04D1a07E3b0aBE12A9F82
 pnpm module findonebyid "0x4bb8769e18f1518c35be8405d43d7cc07ecf501c"
 
 pnpm module findby '{\"name\": \"Msg Sender Module\"}'
+
+pnpm module simulateUpdateRouter "0x980978299e23B8F9B4D11542A83D92C83e781cb6"
+
+pnpm module updateRouter "0x980978299e23B8F9B4D11542A83D92C83e781cb6"
+
+pnpm module simulateRegister '{\"name\": \"sampleModule\", \"description\": \"Example module\", \"moduleAddress\": \"0x4bb8769e18f1518c35be8405d43d7cc07ecf501c\"}'
+
+pnpm module register '{\"name\": \"sampleModule\", \"description\": \"Example module\", \"moduleAddress\": \"0x4bb8769e18f1518c35be8405d43d7cc07ecf501c\"}'
+
+pnpm module simulateRunModules '{\"modulesAddresses\": [\"0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5\"], \"attestationPayload\" : { \"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"expirationDate\": 1693583329, \"subject\": \"0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47\", \"attestationData\": [{ \"isBuidler\": true }]}, \"validationPayloads\":  [\"\"], \"value\": 1}'
+
+pnpm module runModules '{\"modulesAddresses\": [\"0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5\"], \"attestationPayload\" : { \"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"expirationDate\": 1693583329, \"subject\": \"0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47\", \"attestationData\": [{ \"isBuidler\": true }]}, \"validationPayloads\":  [\"\"], \"value\": 1}'
+
+pnpm module simulateBulkRunModules '{\"modulesAddresses\": [\"0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5\"], \"attestationPayloads\" : [{ \"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"expirationDate\": 1693583329, \"subject\": \"0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47\", \"attestationData\": [{ \"isBuidler\": true }]},{ \"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"expirationDate\": 1693583329, \"subject\": \"0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47\", \"attestationData\": [{ \"isBuidler\": true }]}], \"validationPayloads\":  [[\"\"], [\"\"]]}'
+
+pnpm module bulkRunModules '{\"modulesAddresses\": [\"0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5\"], \"attestationPayloads\" : [{ \"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"expirationDate\": 1693583329, \"subject\": \"0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47\", \"attestationData\": [{ \"isBuidler\": true }]},{ \"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"expirationDate\": 1693583329, \"subject\": \"0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47\", \"attestationData\": [{ \"isBuidler\": true }]}], \"validationPayloads\":  [[\"\"], [\"\"]]}'
+
+pnpm module isContractAddress "0x4bb8769e18f1518c35be8405d43d7cc07ecf501c"
+
+pnpm module getModulesNumber
+
+pnpm module isRegistered "0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5"
+
+pnpm module getModuleAddress 0
+
+pnpm module getModule "0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5"
 ```
 
 ### Schema examples

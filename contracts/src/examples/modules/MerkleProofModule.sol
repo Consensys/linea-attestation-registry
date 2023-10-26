@@ -23,7 +23,7 @@ contract MerkleProofModule is AbstractModule {
     bytes32[] memory proof = abi.decode(validationPayload, (bytes32[]));
     bytes32 hash = bytes32(attestationPayload.attestationData);
     /*
-     * @notice We send the a hardcoded third leaf to verify.
+     * @notice We send the hardcoded third leaf to verify.
      */
     uint index = 2;
     for (uint i = index + 1; i < proof.length; i++) {

@@ -37,7 +37,7 @@ contract MerkleProofModuleTest is Test {
     return hashes;
   }
 
-  function test_MerkleProofModule_MerkleProofVerifySuccess() public {
+  function test_MerkleProofModule_MerkleProofInvalidation() public {
     bytes32[] memory hashes = buildMerkleTree();
     // Replace by an invalid root node.
     hashes[hashes.length - 1] = bytes32("0");
@@ -53,7 +53,7 @@ contract MerkleProofModuleTest is Test {
     merkleProofModule.run(attestationPayload, proofData, user, 0);
   }
 
-  function test_MerkleProofModule_MerkleProofInvalidation() public {
+  function test_MerkleProofModule_MerkleProofVerifySuccess() public {
     bytes32[] memory hashes = buildMerkleTree();
     AttestationPayload memory attestationPayload = AttestationPayload(
       bytes32("1234"),

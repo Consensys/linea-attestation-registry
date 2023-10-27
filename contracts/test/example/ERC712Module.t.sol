@@ -74,6 +74,25 @@ contract ERC712ModuleTest is Test {
     erc712Module.run(attestationPayload, signature, not_signer, 0);
   }
 
+  function test_ERC712Module_invalidSignatureByWrongHash() public {
+    address receiver = makeAddr("receiver");
+
+    bytes32 hash = keccak256(abi.encode(signer, receiver, uint256(1234)));
+
+    (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPk, hash);
+    bytes memory signature = abi.encode(v, r, s);
+
+    address not_signer = makeAddr("not_origin_signer");
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32("12345678"),
+      0,
+      abi.encode(not_signer),
+      abi.encode(bytes32("0000"))
+    );
+    vm.expectRevert(ERC712Module.InvalidSignature.selector);
+    erc712Module.run(attestationPayload, signature, not_signer, 0);
+  }
+
   function test_ERC712Module_supportsInterface() public {
     bool isAbstractModuleSupported = erc712Module.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);

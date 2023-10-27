@@ -252,6 +252,8 @@ pnpm attestation isRevocable "0xBA5bBAe01509311f61Bac8A15dCB4B41bEd8Ecb5"
 
 pnpm attestation getAttestation "0x0000000000000000000000000000000000000000000000000000000000000001"
 
+pnpm attestation getAttestationWithDecodeObject "0x000000000000000000000000000000000000000000000000000000000000121f"
+
 pnpm attestation getVersionNumber
 
 pnpm attestation getAttestationIdCounter

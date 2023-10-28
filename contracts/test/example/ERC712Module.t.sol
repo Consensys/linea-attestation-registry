@@ -10,7 +10,8 @@ contract ERC712ModuleTest is Test {
   ERC712Module private erc712Module;
   address private signer;
   uint256 private signerPk;
-  bytes32 eip712DomainHash;
+  address private receiver;
+  bytes32 private eip712DomainHash;
   bytes32 constant DOMAIN_TYPE_HASH =
     keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
   bytes32 constant TXN_TYPE_HASH = keccak256("Transaction(address from,address to,uint256 value)");
@@ -20,13 +21,14 @@ contract ERC712ModuleTest is Test {
   function setUp() public {
     (signer, signerPk) = makeAddrAndKey("veraxSigner");
     address contractAddress = makeAddr("contract");
+    receiver = makeAddr("receiver");
     EIP712Domain memory domain = EIP712Domain({
       name: "tester",
       version: "1.0",
       chainId: uint256(1234),
       verifyingContract: contractAddress
     });
-    erc712Module = new ERC712Module(domain);
+    erc712Module = new ERC712Module(domain, signer, receiver);
 
     eip712DomainHash = keccak256(
       abi.encode(
@@ -42,8 +44,6 @@ contract ERC712ModuleTest is Test {
   }
 
   function test_ERC712Module_verifySuccess() public {
-    address receiver = makeAddr("receiver");
-
     bytes32 hashStruct = keccak256(abi.encode(TXN_TYPE_HASH, signer, receiver, uint256(1234)));
     bytes32 hash = keccak256(abi.encodePacked("\x19\x01", eip712DomainHash, hashStruct));
 

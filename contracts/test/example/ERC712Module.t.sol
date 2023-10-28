@@ -11,6 +11,9 @@ contract ERC712ModuleTest is Test {
   address private signer;
   uint256 private signerPk;
   bytes32 eip712DomainHash;
+  bytes32 constant DOMAIN_TYPE_HASH =
+    keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
+  bytes32 constant TXN_TYPE_HASH = keccak256("Transaction(address from,address to,uint256 value)");
 
   event ModuleRegistered(string name, string description, address moduleAddress);
 
@@ -27,6 +30,7 @@ contract ERC712ModuleTest is Test {
 
     eip712DomainHash = keccak256(
       abi.encode(
+        DOMAIN_TYPE_HASH,
         keccak256(bytes(domain.name)),
         keccak256(bytes(domain.version)),
         domain.chainId,
@@ -40,7 +44,7 @@ contract ERC712ModuleTest is Test {
   function test_ERC712Module_verifySuccess() public {
     address receiver = makeAddr("receiver");
 
-    bytes32 hashStruct = keccak256(abi.encode(signer, receiver, uint256(1234)));
+    bytes32 hashStruct = keccak256(abi.encode(TXN_TYPE_HASH, signer, receiver, uint256(1234)));
     bytes32 hash = keccak256(abi.encodePacked("\x19\x01", eip712DomainHash, hashStruct));
 
     (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPk, hash);
@@ -49,7 +53,7 @@ contract ERC712ModuleTest is Test {
     AttestationPayload memory attestationPayload = AttestationPayload(
       bytes32("12345678"),
       0,
-      abi.encode(signer),
+      bytes("subject"),
       abi.encode(hash)
     );
     erc712Module.run(attestationPayload, signature, signer, 0);
@@ -67,7 +71,7 @@ contract ERC712ModuleTest is Test {
     AttestationPayload memory attestationPayload = AttestationPayload(
       bytes32("12345678"),
       0,
-      abi.encode(not_signer),
+      bytes("subject"),
       abi.encode(hash)
     );
     vm.expectRevert(ERC712Module.InvalidSignature.selector);
@@ -86,7 +90,7 @@ contract ERC712ModuleTest is Test {
     AttestationPayload memory attestationPayload = AttestationPayload(
       bytes32("12345678"),
       0,
-      abi.encode(not_signer),
+      bytes("subject"),
       abi.encode(bytes32("0000"))
     );
     vm.expectRevert(ERC712Module.InvalidSignature.selector);

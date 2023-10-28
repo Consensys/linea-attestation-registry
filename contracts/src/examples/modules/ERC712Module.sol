@@ -23,18 +23,6 @@ contract ERC712Module is AbstractModule {
     domain = _domain;
   }
 
-  function hashDomain(EIP712Domain memory _domain) internal view returns (bytes32) {
-    return
-      keccak256(
-        abi.encode(
-          keccak256(bytes(_domain.name)),
-          keccak256(bytes(_domain.version)),
-          _domain.chainId,
-          _domain.verifyingContract
-        )
-      );
-  }
-
   function run(
     AttestationPayload memory attestationPayload,
     bytes memory validationPayload,

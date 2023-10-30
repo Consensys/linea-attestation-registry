@@ -2,9 +2,8 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { AbstractModule } from "../../src/interface/AbstractModule.sol";
-import { EIP712Domain, ERC712Module } from "../../src/examples/modules/ERC712Module.sol";
-import { AttestationPayload } from "../../src/types/Structs.sol";
+import { ERC712Module, EIP712Domain, AbstractModule } from "../../../src/examples/modules/ERC712Module.sol";
+import { AttestationPayload } from "../../../src/types/Structs.sol";
 
 contract ERC712ModuleTest is Test {
   ERC712Module private erc712Module;
@@ -12,9 +11,9 @@ contract ERC712ModuleTest is Test {
   uint256 private signerPk;
   address private receiver;
   bytes32 private eip712DomainHash;
-  bytes32 constant DOMAIN_TYPE_HASH =
+  bytes32 private constant DOMAIN_TYPE_HASH =
     keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
-  bytes32 constant TXN_TYPE_HASH = keccak256("Transaction(address from,address to,uint256 value)");
+  bytes32 private constant TXN_TYPE_HASH = keccak256("Transaction(address from,address to,uint256 value)");
 
   event ModuleRegistered(string name, string description, address moduleAddress);
 
@@ -43,7 +42,7 @@ contract ERC712ModuleTest is Test {
     vm.deal(contractAddress, 1 ether);
   }
 
-  function test_ERC712Module_verifySuccess() public {
+  function test_ERC712Module_verifySuccess() public view {
     bytes32 hashStruct = keccak256(abi.encode(TXN_TYPE_HASH, signer, receiver, uint256(1234)));
     bytes32 hash = keccak256(abi.encodePacked("\x19\x01", eip712DomainHash, hashStruct));
 
@@ -60,8 +59,6 @@ contract ERC712ModuleTest is Test {
   }
 
   function test_ERC712Module_invalidSignature() public {
-    address receiver = makeAddr("receiver");
-
     bytes32 hash = keccak256(abi.encode(signer, receiver, uint256(1234)));
 
     (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPk, hash);
@@ -79,8 +76,6 @@ contract ERC712ModuleTest is Test {
   }
 
   function test_ERC712Module_invalidSignatureByWrongHash() public {
-    address receiver = makeAddr("receiver");
-
     bytes32 hash = keccak256(abi.encode(signer, receiver, uint256(1234)));
 
     (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPk, hash);

@@ -8,7 +8,6 @@ import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { Attestation, AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
-import { uncheckedInc256 } from "../src/Common.sol";
 
 contract AttestationRegistryTest is Test {
   address public portal = makeAddr("portal");

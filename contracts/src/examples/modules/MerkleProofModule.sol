@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractModule } from "../../interface/AbstractModule.sol";
+import { AbstractModule } from "../../abstracts/AbstractModule.sol";
 import { AttestationPayload } from "../../types/Structs.sol";
 import { uncheckedInc256 } from "../../Common.sol";
 
@@ -20,14 +20,14 @@ contract MerkleProofModule is AbstractModule {
     bytes memory validationPayload,
     address /*txSender*/,
     uint256 /*value*/
-  ) public view override {
+  ) public pure override {
     bytes32[] memory proof = abi.decode(validationPayload, (bytes32[]));
     bytes32 hash = bytes32(attestationPayload.attestationData);
     /*
      * @notice We send the hardcoded third leaf to verify.
      */
-    uint index = 2;
-    for (uint i = index + 1; i < proof.length; i = uncheckedInc256(i)) {
+    uint256 index = 2;
+    for (uint256 i = index + 1; i < proof.length; i = uncheckedInc256(i)) {
       bytes32 proofElement = proof[i];
 
       if (index % 2 == 0) {
@@ -40,6 +40,7 @@ contract MerkleProofModule is AbstractModule {
         break;
       }
     }
+
     if (hash != proof[proof.length - 1]) {
       revert MerkelProofVerifyFailed();
     }

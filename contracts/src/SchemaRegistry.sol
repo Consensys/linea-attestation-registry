@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import { Schema } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
-import { IRouter } from "./interface/IRouter.sol";
+import { IRouter } from "./interfaces/IRouter.sol";
 import { uncheckedInc256 } from "./Common.sol";
 
 /**

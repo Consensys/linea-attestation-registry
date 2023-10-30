@@ -2,10 +2,10 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { AbstractPortal } from "../src/interface/AbstractPortal.sol";
+import { AbstractPortal } from "../src/abstracts/AbstractPortal.sol";
 import { DefaultPortal } from "../src/DefaultPortal.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
-import { CorrectModule } from "./mocks/MockModules.sol";
+import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";

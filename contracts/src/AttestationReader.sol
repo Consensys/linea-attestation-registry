@@ -2,11 +2,11 @@
 pragma solidity 0.8.21;
 
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
-import { Attestation as EASAttestation, IEAS } from "./interface/IEAS.sol";
+import { Attestation as EASAttestation, IEAS } from "./interfaces/IEAS.sol";
 import { Attestation } from "./types/Structs.sol";
 import { AttestationRegistry } from "./AttestationRegistry.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
-import { IRouter } from "./interface/IRouter.sol";
+import { IRouter } from "./interfaces/IRouter.sol";
 
 /**
  * @title Attestation Reader

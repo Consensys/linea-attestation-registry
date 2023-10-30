@@ -2,12 +2,12 @@
 pragma solidity 0.8.21;
 
 import { AttestationPayload, Module } from "./types/Structs.sol";
-import { AbstractModule } from "./interface/AbstractModule.sol";
+import { AbstractModule } from "./abstracts/AbstractModule.sol";
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
-import { IRouter } from "./interface/IRouter.sol";
+import { IRouter } from "./interfaces/IRouter.sol";
 import { uncheckedInc32 } from "./Common.sol";
 
 /**
@@ -103,8 +103,9 @@ contract ModuleRegistry is OwnableUpgradeable {
     // Check if moduleAddress is a smart contract address
     if (!isContractAddress(moduleAddress)) revert ModuleAddressInvalid();
     // Check if module has implemented AbstractModule
-    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId))
+    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId)) {
       revert ModuleInvalid();
+    }
     // Module address is used to identify uniqueness of the module
     if (bytes(modules[moduleAddress].name).length > 0) revert ModuleAlreadyExists();
 

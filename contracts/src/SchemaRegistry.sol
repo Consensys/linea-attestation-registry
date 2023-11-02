@@ -41,6 +41,8 @@ contract SchemaRegistry is OwnableUpgradeable {
 
   /// @notice Event emitted when a Schema is created and registered
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
+  /// @notice Event emitted when a Schema context is updated
+  event SchemaContextUpdated(bytes32 indexed id);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -158,13 +160,14 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @notice Updates the context of a given schema
    * @param schemaId the schema ID
    * @param context the Schema context
-   * @dev Retrieve the Schema with given ID and update its context with new value
+   * @dev Retrieve the Schema with given ID and update its context with new value and an event is emitted
    *      The caller must be the creator of the given Schema (through the `schemaIssuers` mapping)
    */
   function updateContext(bytes32 schemaId, string memory context) public {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (schemasIssuers[schemaId] != msg.sender) revert OnlyAssignedIssuer();
     schemas[schemaId].context = context;
+    emit SchemaContextUpdated(schemaId);
   }
 
   /**

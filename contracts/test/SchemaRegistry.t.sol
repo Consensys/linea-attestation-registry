@@ -20,6 +20,7 @@ contract SchemaRegistryTest is Test {
   address private unassignedUser = makeAddr("unassignedUser");
 
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
+  event SchemaContextUpdated(bytes32 indexed id);
   event Initialized(uint8 version);
 
   function setUp() public {
@@ -150,6 +151,8 @@ contract SchemaRegistryTest is Test {
 
     // update the context
     string memory newContext = "New context";
+    vm.expectEmit();
+    emit SchemaContextUpdated(expectedId);
     schemaRegistry.updateContext(expectedId, newContext);
     assertEq(schemaRegistry.getSchema(expectedId).context, newContext);
 

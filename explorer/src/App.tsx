@@ -36,7 +36,9 @@ function App() {
       setTxHash(hash);
     } catch (e) {
       console.log(e);
-      setError(`Oops, something went wrong: ${e.message}`);
+      if (e instanceof Error) {
+        setError(`Oops, something went wrong: ${e.message}`);
+      }
     }
   };
 

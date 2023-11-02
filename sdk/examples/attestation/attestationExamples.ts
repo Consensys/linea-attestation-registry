@@ -116,6 +116,12 @@ export default class AttestationExamples {
       console.log(await this.veraxSdk.attestation.getAttestation(attestationId));
     }
 
+    if (methodName.toLowerCase() == "getAttestationWithDecodeObject".toLowerCase() || methodName == "") {
+      const attestationId: string =
+        argv === "" ? "0x000000000000000000000000000000000000000000000000000000000000121f" : argv;
+      console.log(await this.veraxSdk.attestation.getAttestationWithDecodeObject(attestationId));
+    }
+
     if (methodName.toLowerCase() == "getVersionNumber".toLowerCase() || methodName == "") {
       console.log(await this.veraxSdk.attestation.getVersionNumber());
     }

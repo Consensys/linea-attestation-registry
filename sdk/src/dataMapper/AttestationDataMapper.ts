@@ -1,6 +1,6 @@
 import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
-import { Attestation, AttestationPayload } from "../types";
+import { Attestation, AttestationPayload, Schema, AttestationWithDecodeObject } from "../types";
 import { Attestation_filter, Attestation_orderBy } from "../../.graphclient";
 import { Constants } from "../utils/constants";
 import { handleSimulationError } from "../utils/simulationErrorHandler";
@@ -95,6 +95,21 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
   async getAttestation(attestationId: string) {
     return this.executeReadMethod("getAttestation", [attestationId]);
+  }
+
+  async getAttestationWithDecodeObject(attestationId: string) {
+    const attestation = await this.findOneById(attestationId);
+    if (!attestation) {
+      return null;
+    }
+    const attestationWithDecodeObject: AttestationWithDecodeObject = { ...attestation, decodeObject: {} };
+    const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
+    const splitSchema = schema.schema.split(",");
+    const schemaFields = splitSchema.map<string>((item) => item.trim().split(" ")[1]);
+    for (let i = 0; i < schemaFields.length; i++) {
+      attestationWithDecodeObject.decodeObject[schemaFields[i]] = attestation.decodedData[i];
+    }
+    return attestationWithDecodeObject;
   }
 
   async getVersionNumber() {

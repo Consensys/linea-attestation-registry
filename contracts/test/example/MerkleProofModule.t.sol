@@ -5,6 +5,7 @@ import { Test } from "forge-std/Test.sol";
 import { AbstractModule } from "../../src/interface/AbstractModule.sol";
 import { MerkleProofModule } from "../../src/examples/modules/MerkleProofModule.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
+import { uncheckedInc256 } from "../../src/Common.sol";
 
 contract MerkleProofModuleTest is Test {
   MerkleProofModule private merkleProofModule;
@@ -18,7 +19,7 @@ contract MerkleProofModuleTest is Test {
   function buildMerkleTree() private returns (bytes32[] memory) {
     bytes32[] memory hashes = new bytes32[](7);
     string[4] memory transactions = ["alice -> bob", "bob -> dave", "carol -> alice", "dave -> bob"];
-    for (uint i = 0; i < transactions.length; i++) {
+    for (uint i = 0; i < transactions.length; i = uncheckedInc256(i)) {
       hashes[i] = keccak256(abi.encodePacked(transactions[i]));
     }
 

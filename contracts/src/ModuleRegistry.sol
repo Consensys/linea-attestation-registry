@@ -8,6 +8,7 @@ import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts
 import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { IRouter } from "./interface/IRouter.sol";
+import { uncheckedInc32 } from "./Common.sol";
 
 /**
  * @title Module Registry
@@ -131,7 +132,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     if (modulesAddresses.length != validationPayloads.length) revert ModuleValidationPayloadMismatch();
 
     // For each module check if it is registered and call run method
-    for (uint32 i = 0; i < modulesAddresses.length; i++) {
+    for (uint32 i = 0; i < modulesAddresses.length; i = uncheckedInc32(i)) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
       AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayloads[i], tx.origin, value);
     }
@@ -150,7 +151,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
   ) public {
-    for (uint32 i = 0; i < attestationsPayloads.length; i++) {
+    for (uint32 i = 0; i < attestationsPayloads.length; i = uncheckedInc32(i)) {
       runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i], 0);
     }
   }

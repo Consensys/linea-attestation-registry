@@ -5,6 +5,7 @@ import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts
 import { Schema } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { IRouter } from "./interface/IRouter.sol";
+import { uncheckedInc256 } from "./Common.sol";
 
 /**
  * @title Schema Registry
@@ -106,7 +107,7 @@ contract SchemaRegistry is OwnableUpgradeable {
    *      for schemaIds found with new issuer
    */
   function updateMatchingSchemaIssuers(address oldIssuer, address newIssuer) public onlyPortalRegistry(msg.sender) {
-    for (uint256 i = 0; i < schemaIds.length; i++) {
+    for (uint256 i = 0; i < schemaIds.length; i = uncheckedInc256(i)) {
       if (schemasIssuers[schemaIds[i]] == oldIssuer) {
         schemasIssuers[schemaIds[i]] = newIssuer;
       }

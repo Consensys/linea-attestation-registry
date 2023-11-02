@@ -3,6 +3,7 @@ pragma solidity 0.8.21;
 
 import { AbstractPortal } from "../../interface/AbstractPortal.sol";
 import { AttestationPayload } from "../../types/Structs.sol";
+import { uncheckedInc256 } from "../../Common.sol";
 
 /**
  * @title EAS Portal
@@ -82,7 +83,7 @@ contract EASPortal is AbstractPortal {
    * @param attestationsRequests the EAS payloads to attest
    */
   function bulkAttest(AttestationRequest[] memory attestationsRequests) external payable {
-    for (uint256 i = 0; i < attestationsRequests.length; i++) {
+    for (uint256 i = 0; i < attestationsRequests.length; i = uncheckedInc256(i)) {
       attest(attestationsRequests[i]);
     }
   }

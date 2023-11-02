@@ -6,6 +6,7 @@ import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { IRouter } from "./interface/IRouter.sol";
+import { uncheckedInc256 } from "./Common.sol";
 
 /**
  * @title Attestation Registry
@@ -121,13 +122,13 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationsPayloads the attestations payloads to create attestations and register them
    */
   function bulkAttest(AttestationPayload[] calldata attestationsPayloads, address attester) public {
-    for (uint256 i = 0; i < attestationsPayloads.length; i++) {
+    for (uint256 i = 0; i < attestationsPayloads.length; i = uncheckedInc256(i)) {
       attest(attestationsPayloads[i], attester);
     }
   }
 
   function massImport(AttestationPayload[] calldata attestationsPayloads, address portal) public onlyOwner {
-    for (uint256 i = 0; i < attestationsPayloads.length; i++) {
+    for (uint256 i = 0; i < attestationsPayloads.length; i = uncheckedInc256(i)) {
       // Auto increment attestation counter
       attestationIdCounter++;
       bytes32 id = bytes32(abi.encode(attestationIdCounter));
@@ -177,7 +178,7 @@ contract AttestationRegistry is OwnableUpgradeable {
     address attester
   ) public {
     if (attestationIds.length != attestationPayloads.length) revert ArrayLengthMismatch();
-    for (uint256 i = 0; i < attestationIds.length; i++) {
+    for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
       replace(attestationIds[i], attestationPayloads[i], attester);
     }
   }
@@ -203,7 +204,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationIds the IDs of the attestations to revoke
    */
   function bulkRevoke(bytes32[] memory attestationIds) external {
-    for (uint256 i = 0; i < attestationIds.length; i++) {
+    for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
       revoke(attestationIds[i]);
     }
   }
@@ -287,7 +288,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   function balanceOfBatch(address[] memory accounts, uint256[] memory ids) public view returns (uint256[] memory) {
     if (accounts.length != ids.length) revert ArrayLengthMismatch();
     uint256[] memory result = new uint256[](accounts.length);
-    for (uint256 i = 0; i < accounts.length; i++) {
+    for (uint256 i = 0; i < accounts.length; i = uncheckedInc256(i)) {
       result[i] = balanceOf(accounts[i], ids[i]);
     }
     return result;

@@ -81,4 +81,6 @@ dataSources:
       eventHandlers:
         - event: SchemaCreated(indexed bytes32,string,string,string,string)
           handler: handleSchemaCreated
+        - event: SchemaContextUpdated(indexed bytes32)
+          handler: handleSchemaContextUpdated
       file: ./src/schema-registry.ts

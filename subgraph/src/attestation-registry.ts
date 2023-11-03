@@ -73,7 +73,10 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
       }
 
       // Add this decoded Array to the Attestation Entity
-      attestation.decodedData = tempStringArray;
+      attestation.decodedData =
+        tempStringArray.toString().length < 2000
+          ? tempStringArray
+          : [tempStringArray.toString().substring(0, 2000) + " ... TRUNCATED ..."];
     }
   }
 

@@ -35,7 +35,7 @@ export default class VeraxSdk {
 
   static DEFAULT_LINEA_MAINNET_FRONTEND: Conf = {
     ...VeraxSdk.DEFAULT_LINEA_MAINNET,
-    mode: SDKMode.BACKEND,
+    mode: SDKMode.FRONTEND,
   };
 
   static DEFAULT_LINEA_TESTNET: Conf = {
@@ -50,7 +50,7 @@ export default class VeraxSdk {
 
   static DEFAULT_LINEA_TESTNET_FRONTEND: Conf = {
     ...VeraxSdk.DEFAULT_LINEA_TESTNET,
-    mode: SDKMode.BACKEND,
+    mode: SDKMode.FRONTEND,
   };
 
   private readonly web3Client: PublicClient;

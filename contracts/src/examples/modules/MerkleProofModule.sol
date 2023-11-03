@@ -3,6 +3,7 @@ pragma solidity 0.8.21;
 
 import { AbstractModule } from "../../interface/AbstractModule.sol";
 import { AttestationPayload } from "../../types/Structs.sol";
+import { uncheckedInc256 } from "../../Common.sol";
 
 contract MerkleProofModule is AbstractModule {
   error MerkelProofVerifyFailed();
@@ -26,7 +27,7 @@ contract MerkleProofModule is AbstractModule {
      * @notice We send the hardcoded third leaf to verify.
      */
     uint index = 2;
-    for (uint i = index + 1; i < proof.length; i++) {
+    for (uint i = index + 1; i < proof.length; i = uncheckedInc256(i)) {
       bytes32 proofElement = proof[i];
 
       if (index % 2 == 0) {

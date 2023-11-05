@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity <0.9.0;
+pragma solidity ^0.8.15;
 
 import { AbstractModule } from "../../interface/AbstractModule.sol";
 import { AttestationPayload } from "../../types/Structs.sol";

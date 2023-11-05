@@ -6,8 +6,6 @@ import { AttestationPayload } from "../../types/Structs.sol";
 import { Delegatable } from "delegatable-sol/Delegatable.sol";
 import { SignedDelegation, Caveat, Delegation } from "delegatable-sol/TypesAndDecoders.sol";
 
-import "forge-std/console.sol";
-
 contract DelegatableModule is AbstractModule, Delegatable {
   error InvalidSignature();
 
@@ -25,10 +23,7 @@ contract DelegatableModule is AbstractModule, Delegatable {
     );
     Delegation memory delegation = Delegation({ delegate: mainIssuer, authority: authority, caveats: caveats });
     SignedDelegation memory signedDelegation = SignedDelegation({ delegation: delegation, signature: signature });
-    bytes32 sigHash = getDelegationTypedDataHash(delegation);
-    address recoverSigner = recover(sigHash, signedDelegation.signature);
     address signer = verifyDelegationSignature(signedDelegation);
-    console.logAddress(signer);
     if (signer != mainIssuer) {
       revert InvalidSignature();
     }

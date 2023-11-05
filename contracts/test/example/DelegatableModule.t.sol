@@ -5,9 +5,8 @@ import { Test } from "forge-std/Test.sol";
 import { AbstractModule } from "../../src/interface/AbstractModule.sol";
 import { DelegatableModule } from "../../src/examples/modules/DelegatableModule.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
-import { Caveat, DELEGATION_TYPEHASH, EIP712DOMAIN_TYPEHASH, EIP712Decoder, SignedDelegation, Delegation } from "delegatable-sol/TypesAndDecoders.sol";
-
-import "forge-std/console.sol";
+import { EIP712Decoder, SignedDelegation, Delegation } from "delegatable-sol/TypesAndDecoders.sol";
+import { Caveat, DELEGATION_TYPEHASH, EIP712DOMAIN_TYPEHASH } from "delegatable-sol/TypesAndDecoders.sol";
 
 contract DelegatableModuleTest is Test {
   DelegatableModule private delegatableModule;

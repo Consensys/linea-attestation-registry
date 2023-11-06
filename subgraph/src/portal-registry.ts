@@ -15,6 +15,7 @@ export function handlePortalRegistered(event: PortalRegisteredEvent): void {
   portal.modules = changetype<Bytes[]>(portalData.modules);
   portal.isRevocable = portalData.isRevocable;
   portal.ownerName = portalData.ownerName;
+  portal.attestationCounter = 0;
 
   portal.save();
 }

@@ -69,6 +69,7 @@ describe("handlePortalRegistered()", () => {
     assert.fieldEquals("Portal", portalAddress.toHexString(), "id", portalAddress.toHexString());
     assert.fieldEquals("Portal", portalAddress.toHexString(), "name", name);
     assert.fieldEquals("Portal", portalAddress.toHexString(), "description", description);
+    assert.fieldEquals("Portal", portalAddress.toHexString(), "attestationCounter", "0");
   });
 
   test("Should increment the portals Counter", () => {

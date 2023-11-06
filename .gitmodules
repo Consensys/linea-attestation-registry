@@ -10,3 +10,6 @@
     branch = "release-v4.9"
 	path = contracts/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "contracts/lib/delegatable-sol"]
+	path = contracts/lib/delegatable-sol
+	url = https://github.com/delegatable/delegatable-sol.git

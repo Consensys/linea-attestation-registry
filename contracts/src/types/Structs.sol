@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.21;
+pragma solidity ^0.8.15;
 
 struct AttestationPayload {
   bytes32 schemaId; // The identifier of the schema this attestation adheres to.

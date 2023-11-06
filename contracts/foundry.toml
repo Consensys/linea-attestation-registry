@@ -2,6 +2,9 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+remappings = [
+	"delegatable-sol/=lib/delegatable-sol/"
+]
 
 [rpc_endpoints]
 linea_goerli = "${LINEA_GOERLI_RPC_URL}"

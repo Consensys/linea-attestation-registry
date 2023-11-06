@@ -29,7 +29,7 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
       throw new Error(`Error(s) while fetching ${this.typeName}`);
     }
 
-    return data.data[`${this.typeName}`] as T;
+    return data?.data ? (data.data[`${this.typeName}`] as T) : undefined;
   }
 
   async findBy(first?: number, skip?: number, where?: TFilter, orderBy?: TOrder, orderDirection?: OrderDirection) {
@@ -52,7 +52,7 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
       throw new Error(`Error(s) while fetching ${this.typeName}s`);
     }
 
-    return data.data[`${this.typeName}s`] as T[];
+    return data?.data ? (data.data[`${this.typeName}s`] as T[]) : [];
   }
 
   async subgraphCall(query: string) {

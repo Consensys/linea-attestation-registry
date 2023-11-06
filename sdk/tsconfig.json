@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "target": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "CommonJS",
+    "target": "ES2021",
+    "moduleResolution": "Node",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,7 +14,9 @@
     "allowSyntheticDefaultImports": true,
     "outDir": "./lib",
     "sourceMap": true,
-    "noEmit": false
+    "noEmit": false,
+    "lib": ["ES2021", "DOM"],
+    "declarationDir": "./lib/types"
   },
   "ts-node": {
     "esm": true,

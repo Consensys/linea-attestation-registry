@@ -13,12 +13,12 @@ describe("SchemaDataMapper", () => {
 
       const result = await veraxSdk.schema.findOneById(schemaId);
 
-      expect(result).not.toBeNull();
-      expect(result.id).toEqual(schemaId);
-      expect(result.name).toEqual("Is a Contributor");
-      expect(result.description).toEqual("Define the list of contributors");
-      expect(result.context).toEqual("Contributors to a project");
-      expect(result.schema).toEqual("(bool isAContributor)");
+      expect(result).not.toBeUndefined();
+      expect(result?.id).toEqual(schemaId);
+      expect(result?.name).toEqual("Is a Contributor");
+      expect(result?.description).toEqual("Define the list of contributors");
+      expect(result?.context).toEqual("Contributors to a project");
+      expect(result?.schema).toEqual("(bool isAContributor)");
     });
   });
 

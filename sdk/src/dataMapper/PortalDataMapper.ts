@@ -22,6 +22,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async simulateAttest(portalAddress: Address, attestationPayload: AttestationPayload, validationPayloads: string[]) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    if (!matchingSchema) {
+      throw new Error("No matching Schema");
+    }
     const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
     return this.simulatePortalContract(portalAddress, "attest", [
       [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
@@ -43,6 +46,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
     for (const attestationPayload of attestationPayloads) {
       const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      if (!matchingSchema) {
+        throw new Error("No matching Schema");
+      }
       const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
 
       attestationPayloadsArg.push([
@@ -85,6 +91,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     validationPayloads: string[],
   ) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    if (!matchingSchema) {
+      throw new Error("No matching Schema");
+    }
     const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
     return this.simulatePortalContract(portalAddress, "replace", [
       attestationId,
@@ -113,6 +122,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
     for (const attestationPayload of attestationPayloads) {
       const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      if (!matchingSchema) {
+        throw new Error("No matching Schema");
+      }
       const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
       attestationPayloadsArg.push([
         attestationPayload.schemaId,

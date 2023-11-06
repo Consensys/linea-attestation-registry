@@ -2,4 +2,4 @@ import VeraxSdk from "../../src/VeraxSdk";
 
 const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET);
 
-console.log(await veraxSdk.utils.getModulesNumber());
+veraxSdk.utils.getModulesNumber().then((res) => console.log(res));

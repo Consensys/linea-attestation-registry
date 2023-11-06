@@ -2,12 +2,12 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { NFTPortal } from "../../src/examples/portals/NFTPortal.sol";
-import { Router } from "../../src/Router.sol";
-import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
-import { AttestationPayload } from "../../src/types/Structs.sol";
-import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
-import { ModuleRegistryMock } from "../mocks/ModuleRegistryMock.sol";
+import { NFTPortal } from "../../../src/examples/portals/NFTPortal.sol";
+import { Router } from "../../../src/Router.sol";
+import { AbstractPortal } from "../../../src/abstracts/AbstractPortal.sol";
+import { AttestationPayload } from "../../../src/types/Structs.sol";
+import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
+import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
 import { IERC721 } from "openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 

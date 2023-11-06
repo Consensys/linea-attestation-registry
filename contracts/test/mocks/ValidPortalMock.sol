@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
+import { AbstractPortal } from "../../src/abstracts/AbstractPortal.sol";
 
 contract ValidPortalMock is AbstractPortal {
   constructor(address[] memory modules, address router) AbstractPortal(modules, router) {}

@@ -4,12 +4,12 @@ pragma solidity 0.8.21;
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
-import { AbstractPortal } from "./interface/AbstractPortal.sol";
+import { AbstractPortal } from "./abstracts/AbstractPortal.sol";
 import { DefaultPortal } from "./DefaultPortal.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { Portal } from "./types/Structs.sol";
-import { IRouter } from "./interface/IRouter.sol";
-import { IPortal } from "./interface/IPortal.sol";
+import { IRouter } from "./interfaces/IRouter.sol";
+import { IPortal } from "./interfaces/IPortal.sol";
 
 /**
  * @title Portal Registry

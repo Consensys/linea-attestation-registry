@@ -2,11 +2,11 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { EASPortal } from "../../src/examples/portals/EASPortal.sol";
-import { Router } from "../../src/Router.sol";
-import { AbstractPortal } from "../../src/interface/AbstractPortal.sol";
-import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
-import { ModuleRegistryMock } from "../mocks/ModuleRegistryMock.sol";
+import { EASPortal } from "../../../src/examples/portals/EASPortal.sol";
+import { Router } from "../../../src/Router.sol";
+import { AbstractPortal } from "../../../src/abstracts/AbstractPortal.sol";
+import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
+import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
 import { ERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
 
 contract EASPortalTest is Test {

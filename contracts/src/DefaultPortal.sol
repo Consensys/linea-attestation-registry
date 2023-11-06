@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractPortal } from "./interface/AbstractPortal.sol";
+import { AbstractPortal } from "./abstracts/AbstractPortal.sol";
 
 /**
  * @title Default Portal

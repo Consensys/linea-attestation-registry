@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
-import { CorrectModule } from "./mocks/MockModules.sol";
+import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
 import { Portal } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";

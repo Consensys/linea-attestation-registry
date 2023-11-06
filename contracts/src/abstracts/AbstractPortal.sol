@@ -6,8 +6,8 @@ import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
 import { AttestationPayload } from "../types/Structs.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
-import { IRouter } from "../interface/IRouter.sol";
-import { IPortal } from "../interface/IPortal.sol";
+import { IRouter } from "../interfaces/IRouter.sol";
+import { IPortal } from "../interfaces/IPortal.sol";
 
 /**
  * @title Abstract Portal

@@ -10,6 +10,9 @@ import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/IE
  * @notice Defines the minimal Module interface
  */
 abstract contract AbstractModule is IERC165 {
+  /// @notice Error thrown when someone else than the portal's owner is trying to revoke
+  error OnlyPortalOwner();
+
   /**
    * @notice Executes the module's custom logic.
    * @param attestationPayload The incoming attestation data.

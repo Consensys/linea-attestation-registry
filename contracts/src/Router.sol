@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
-import { IRouter } from "./interface/IRouter.sol";
+import { IRouter } from "./interfaces/IRouter.sol";
 
 /**
  * @title Router

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["DOM", "ES2020"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "useUnknownInCatchVariables": false,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2020"
+  },
+  "exclude": ["**/__snapshots__/**", "**/test/**", "**/*.test.ts"]
+}

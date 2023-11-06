@@ -11,6 +11,7 @@ typechain-types
 generated
 build
 .graphclient
+snap
 
 # files
 *.env

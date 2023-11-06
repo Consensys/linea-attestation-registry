@@ -6,7 +6,7 @@ import {
 } from "../generated/AttestationRegistry/AttestationRegistry";
 import { newTypedMockEvent } from "matchstick-as/assembly/defaults";
 import { handleAttestationRegistered } from "../src/attestation-registry";
-import { Schema } from "../generated/schema";
+import { Portal, Schema } from "../generated/schema";
 
 const attestationRegistryAddress = Address.fromString("C765F28096F6121C2F2b82D35A4346280164428b");
 const attestationId = Bytes.fromHexString("0x00000000000000000000000000000000000000000000000000000000000010f5");
@@ -105,12 +105,37 @@ describe("handleAttestationRegistered()", () => {
     assert.entityCount("Attestation", 0);
     assert.entityCount("Counter", 0);
 
-    const attestationRegisteredEvent1 = createAttestationRegisteredEvent(attestationId);
+    const attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
 
-    handleAttestationRegistered(attestationRegisteredEvent1);
+    handleAttestationRegistered(attestationRegisteredEvent);
 
     assert.entityCount("Attestation", 1);
     assert.fieldEquals("Counter", "counter", "attestations", "1");
+  });
+
+  test("Should increment the attestations counter in portal", () => {
+    assert.entityCount("Attestation", 0);
+    assert.entityCount("Portal", 0);
+
+    const portalEntity = new Portal(portal.toHexString());
+    portalEntity.name = "name";
+    portalEntity.description = "description";
+    portalEntity.isRevocable = true;
+    portalEntity.modules = [];
+    portalEntity.ownerName = "ownerName";
+    portalEntity.ownerAddress = Address.fromString("e75be6f9418710fd516fa82afb3aad07e11a0f1b");
+    portalEntity.attestationCounter = 0;
+    portalEntity.save();
+
+    assert.entityCount("Portal", 1);
+    assert.fieldEquals("Portal", portal.toHexString(), "attestationCounter", "0");
+
+    const attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
+
+    handleAttestationRegistered(attestationRegisteredEvent);
+
+    assert.entityCount("Attestation", 1);
+    assert.fieldEquals("Portal", portal.toHexString(), "attestationCounter", "1");
   });
 
   test("Should decode a basic attestation data", () => {

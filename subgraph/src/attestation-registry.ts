@@ -2,7 +2,7 @@ import {
   AttestationRegistered as AttestationRegisteredEvent,
   AttestationRegistry,
 } from "../generated/AttestationRegistry/AttestationRegistry";
-import { Attestation, Counter, Schema } from "../generated/schema";
+import { Attestation, Counter, Portal, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
 
 export function handleAttestationRegistered(event: AttestationRegisteredEvent): void {
@@ -10,7 +10,7 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
   const attestation = new Attestation(event.params.attestationId.toHex());
 
-  incrementAttestationCount();
+  incrementAttestationCount(attestationData.portal.toHexString());
 
   attestation.schemaId = attestationData.schemaId;
   attestation.replacedBy = attestationData.replacedBy;
@@ -116,7 +116,7 @@ function valueToString(value: ethereum.Value): string {
   }
 }
 
-function incrementAttestationCount(): void {
+function incrementAttestationCount(portalAddress: string): void {
   let counter = Counter.load("counter");
 
   if (!counter) {
@@ -130,4 +130,17 @@ function incrementAttestationCount(): void {
   }
 
   counter.save();
+
+  // Increment attestation counter for corresponding portal
+  const portal = Portal.load(portalAddress);
+
+  if (portal) {
+    if (!portal.attestationCounter) {
+      portal.attestationCounter = 1;
+    } else {
+      portal.attestationCounter += 1;
+    }
+
+    portal.save();
+  }
 }

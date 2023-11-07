@@ -29,6 +29,8 @@ contract PortalRegistryTest is Test {
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address portalAddress);
+  event IssuerAdded(address issuerAddress);
+  event IssuerRemoved(address issuerAddress);
 
   function setUp() public {
     router = new Router();
@@ -74,6 +76,17 @@ contract PortalRegistryTest is Test {
     testPortalRegistry.updateRouter(address(0));
   }
 
+  function test_setIssuer() public {
+    vm.startPrank(address(0));
+    address issuerAddress = makeAddr("Issuer");
+    vm.expectEmit();
+    emit IssuerAdded(issuerAddress);
+    portalRegistry.setIssuer(issuerAddress);
+
+    bool isIssuer = portalRegistry.isIssuer(issuerAddress);
+    assertEq(isIssuer, true);
+  }
+
   function test_removeIssuer() public {
     vm.startPrank(address(0));
     address issuerAddress = makeAddr("Issuer");
@@ -82,6 +95,8 @@ contract PortalRegistryTest is Test {
     bool isIssuer = portalRegistry.isIssuer(issuerAddress);
     assertEq(isIssuer, true);
 
+    vm.expectEmit();
+    emit IssuerRemoved(issuerAddress);
     portalRegistry.removeIssuer(issuerAddress);
     bool isIssuerAfterRemoval = portalRegistry.isIssuer(issuerAddress);
     assertEq(isIssuerAfterRemoval, false);

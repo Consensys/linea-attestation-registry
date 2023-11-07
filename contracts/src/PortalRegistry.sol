@@ -46,6 +46,10 @@ contract PortalRegistry is OwnableUpgradeable {
 
   /// @notice Event emitted when a Portal registered
   event PortalRegistered(string name, string description, address portalAddress);
+  /// @notice Event emitted when a new issuer is added
+  event IssuerAdded(address issuerAddress);
+  /// @notice Event emitted when the issuer is removed
+  event IssuerRemoved(address issuerAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -74,6 +78,8 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function setIssuer(address issuer) public onlyOwner {
     issuers[issuer] = true;
+    // Emit event
+    emit IssuerAdded(issuer);
   }
 
   /**
@@ -83,6 +89,8 @@ contract PortalRegistry is OwnableUpgradeable {
   function removeIssuer(address issuer) public onlyOwner {
     issuers[issuer] = false;
     SchemaRegistry(router.getSchemaRegistry()).updateMatchingSchemaIssuers(issuer, msg.sender);
+    // Emit event
+    emit IssuerRemoved(issuer);
   }
 
   /**

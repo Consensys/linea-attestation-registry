@@ -48,3 +48,7 @@ type Counter @entity {
   portals: Int
   schemas: Int
 }
+
+type Issuer @entity {
+  id: ID!
+}

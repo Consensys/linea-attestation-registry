@@ -77,7 +77,7 @@ contract IndexerModule is AbstractModule {
    * @param subject The subject to retrieve attestation IDs for.
    * @return An array of attestation IDs.
    */
-  function getAttestationIdsBySubject(bytes memory subject) public view returns (bytes32[] memory) {
+  function getAttestationIdsBySubject(bytes memory subject) external view returns (bytes32[] memory) {
     return attestationIdsBySubject[subject];
   }
 
@@ -90,7 +90,7 @@ contract IndexerModule is AbstractModule {
   function getAttestationIdsBySubjectBySchema(
     bytes memory subject,
     bytes32 schemaId
-  ) public view returns (bytes32[] memory) {
+  ) external view returns (bytes32[] memory) {
     return attestationIdsBySubjectBySchema[subject][schemaId];
   }
 
@@ -99,7 +99,7 @@ contract IndexerModule is AbstractModule {
    * @param attester The attester to retrieve attestation IDs for.
    * @return An array of attestation IDs.
    */
-  function getAttestationIdsByAttester(address attester) public view returns (bytes32[] memory) {
+  function getAttestationIdsByAttester(address attester) external view returns (bytes32[] memory) {
     return attestationIdsByAttester[attester];
   }
 
@@ -108,7 +108,7 @@ contract IndexerModule is AbstractModule {
    * @param schema The schema to retrieve attestation IDs for.
    * @return An array of attestation IDs.
    */
-  function getAttestationIdsBySchema(bytes32 schema) public view returns (bytes32[] memory) {
+  function getAttestationIdsBySchema(bytes32 schema) external view returns (bytes32[] memory) {
     return attestationIdsBySchema[schema];
   }
 
@@ -117,7 +117,7 @@ contract IndexerModule is AbstractModule {
    * @param portal The portal to retrieve attestation IDs for.
    * @return An array of attestation IDs.
    */
-  function getAttestationIdsByPortal(address portal) public view returns (bytes32[] memory) {
+  function getAttestationIdsByPortal(address portal) external view returns (bytes32[] memory) {
     return attestationIdsByPortal[portal];
   }
 
@@ -130,7 +130,7 @@ contract IndexerModule is AbstractModule {
   function getAttestationIdsByPortalBySubject(
     address portal,
     bytes memory subject
-  ) public view returns (bytes32[] memory) {
+  ) external view returns (bytes32[] memory) {
     return attestationIdsByPortalBySubject[portal][subject];
   }
 
@@ -139,7 +139,7 @@ contract IndexerModule is AbstractModule {
    * @param attestationId The ID of the attestation to check.
    * @return The indexed status of the attestation.
    */
-  function getIndexedAttestationStatus(bytes32 attestationId) public view returns (bool) {
+  function getIndexedAttestationStatus(bytes32 attestationId) external view returns (bool) {
     return indexedAttestations[attestationId];
   }
 
@@ -164,7 +164,7 @@ contract IndexerModule is AbstractModule {
    * @param attestationPayload The payload of the attestation.
    * @return The built attestation.
    */
-  function _buildAttestation(AttestationPayload memory attestationPayload) public view returns (Attestation memory) {
+  function _buildAttestation(AttestationPayload memory attestationPayload) internal view returns (Attestation memory) {
     AttestationRegistry attestationRegistry = AttestationRegistry(router.getAttestationRegistry());
     return
       Attestation(

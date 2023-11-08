@@ -1,6 +1,8 @@
 import {
   AttestationRegistered as AttestationRegisteredEvent,
   AttestationRegistry,
+  AttestationReplaced,
+  AttestationRevoked,
 } from "../generated/AttestationRegistry/AttestationRegistry";
 import { Attestation, Counter, Portal, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
@@ -81,6 +83,27 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   }
 
   attestation.save();
+}
+
+export function handleAttestationRevoked(event: AttestationRevoked): void {
+  const attestationRegistryContract = AttestationRegistry.bind(event.address);
+  const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
+  const attestation = Attestation.load(event.params.attestationId.toHex());
+
+  if (attestation) {
+    attestation.revoked = true;
+    attestation.revocationDate = attestationData.revocationDate;
+    attestation.save();
+  }
+}
+
+export function handleAttestationReplaced(event: AttestationReplaced): void {
+  const attestation = Attestation.load(event.params.attestationId.toHex());
+
+  if (attestation) {
+    attestation.replacedBy = event.params.replacedBy;
+    attestation.save();
+  }
 }
 
 function valueToString(value: ethereum.Value): string {

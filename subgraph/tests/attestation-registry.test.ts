@@ -3,9 +3,15 @@ import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
   AttestationRegistered as AttestationRegisteredEvent,
   AttestationRegistry,
+  AttestationRevoked as AttestationRevokedEvent,
+  AttestationReplaced as AttestationReplacedEvent,
 } from "../generated/AttestationRegistry/AttestationRegistry";
 import { newTypedMockEvent } from "matchstick-as/assembly/defaults";
-import { handleAttestationRegistered } from "../src/attestation-registry";
+import {
+  handleAttestationRegistered,
+  handleAttestationReplaced,
+  handleAttestationRevoked,
+} from "../src/attestation-registry";
 import { Portal, Schema } from "../generated/schema";
 
 const attestationRegistryAddress = Address.fromString("C765F28096F6121C2F2b82D35A4346280164428b");
@@ -26,34 +32,7 @@ const attestationData = Bytes.fromHexString(
 
 describe("handleAttestationRegistered()", () => {
   beforeAll(() => {
-    const tupleArray: Array<ethereum.Value> = [
-      ethereum.Value.fromFixedBytes(attestationId),
-      ethereum.Value.fromFixedBytes(schemaId),
-      ethereum.Value.fromFixedBytes(replacedBy),
-      ethereum.Value.fromAddress(attester),
-      ethereum.Value.fromAddress(portal),
-      ethereum.Value.fromUnsignedBigInt(attestedDate),
-      ethereum.Value.fromUnsignedBigInt(expirationDate),
-      ethereum.Value.fromUnsignedBigInt(revocationDate),
-      ethereum.Value.fromUnsignedBigInt(version),
-      ethereum.Value.fromBoolean(revoked),
-      ethereum.Value.fromBytes(subject),
-      ethereum.Value.fromBytes(attestationData),
-    ];
-
-    // Convert it to the Tuple type
-    const tuple = changetype<ethereum.Tuple>(tupleArray);
-
-    // Create a tuple Value
-    const tupleValue = ethereum.Value.fromTuple(tuple);
-
-    createMockedFunction(
-      attestationRegistryAddress,
-      "getAttestation",
-      "getAttestation(bytes32):((bytes32,bytes32,bytes32,address,address,uint64,uint64,uint64,uint16,bool,bytes,bytes))",
-    )
-      .withArgs([ethereum.Value.fromFixedBytes(attestationId)])
-      .returns([tupleValue]);
+    mockGetAttestation(revoked, revocationDate);
   });
 
   afterEach(() => {
@@ -180,6 +159,97 @@ describe("handleAttestationRegistered()", () => {
   });
 });
 
+describe("handleAttestationRevokedEvent()", () => {
+  beforeAll(() => {
+    mockGetAttestation(revoked, revocationDate);
+  });
+
+  afterEach(() => {
+    clearStore();
+  });
+
+  test("Should update the Attestation entity with revocation flag and date", () => {
+    // Create attestation to be revoked
+    assert.entityCount("Attestation", 0);
+    const attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
+    handleAttestationRegistered(attestationRegisteredEvent);
+    assert.entityCount("Attestation", 1);
+    assert.fieldEquals("Attestation", attestationId.toHexString(), "revocationDate", revocationDate.toU64().toString());
+    assert.fieldEquals("Attestation", attestationId.toHexString(), "revoked", revoked.toString());
+
+    // Revoke the attestation
+    mockGetAttestation(true, BigInt.fromString("1234"));
+    const attestationRevokedEvent = createAttestationRevokedEvent(attestationId);
+    handleAttestationRevoked(attestationRevokedEvent);
+
+    assert.fieldEquals(
+      "Attestation",
+      attestationId.toHexString(),
+      "revocationDate",
+      BigInt.fromString("1234").toU64().toString(),
+    );
+    assert.fieldEquals("Attestation", attestationId.toHexString(), "revoked", "true");
+  });
+});
+
+describe("handleAttestationReplacedEvent()", () => {
+  beforeAll(() => {
+    mockGetAttestation(revoked, revocationDate);
+  });
+
+  afterEach(() => {
+    clearStore();
+  });
+
+  test("Should update the Attestation entity's replacedBy", () => {
+    // Create attestation to be replaced
+    assert.entityCount("Attestation", 0);
+    const attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
+    handleAttestationRegistered(attestationRegisteredEvent);
+    assert.entityCount("Attestation", 1);
+    assert.fieldEquals("Attestation", attestationId.toHexString(), "replacedBy", replacedBy.toHexString());
+
+    // Replace the attestation
+    const updatedReplacedBy = Bytes.fromHexString("0x0000000000000000000000000000000000000000000000000000000000000001");
+    const attestationReplacedEvent = createAttestationReplacedEvent(attestationId, updatedReplacedBy);
+    handleAttestationReplaced(attestationReplacedEvent);
+
+    assert.fieldEquals("Attestation", attestationId.toHexString(), "replacedBy", updatedReplacedBy.toHexString());
+  });
+});
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+function mockGetAttestation(revoked: boolean, revocationDate: BigInt): void {
+  const tupleArray: Array<ethereum.Value> = [
+    ethereum.Value.fromFixedBytes(attestationId),
+    ethereum.Value.fromFixedBytes(schemaId),
+    ethereum.Value.fromFixedBytes(replacedBy),
+    ethereum.Value.fromAddress(attester),
+    ethereum.Value.fromAddress(portal),
+    ethereum.Value.fromUnsignedBigInt(attestedDate),
+    ethereum.Value.fromUnsignedBigInt(expirationDate),
+    ethereum.Value.fromUnsignedBigInt(revocationDate),
+    ethereum.Value.fromUnsignedBigInt(version),
+    ethereum.Value.fromBoolean(revoked),
+    ethereum.Value.fromBytes(subject),
+    ethereum.Value.fromBytes(attestationData),
+  ];
+
+  // Convert it to the Tuple type
+  const tuple = changetype<ethereum.Tuple>(tupleArray);
+
+  // Create a tuple Value
+  const tupleValue = ethereum.Value.fromTuple(tuple);
+
+  createMockedFunction(
+    attestationRegistryAddress,
+    "getAttestation",
+    "getAttestation(bytes32):((bytes32,bytes32,bytes32,address,address,uint64,uint64,uint64,uint16,bool,bytes,bytes))",
+  )
+    .withArgs([ethereum.Value.fromFixedBytes(attestationId)])
+    .returns([tupleValue]);
+}
+
 function createAttestationRegisteredEvent(attestationId: Bytes): AttestationRegisteredEvent {
   const attestationRegisteredEvent = newTypedMockEvent<AttestationRegisteredEvent>();
   attestationRegisteredEvent.address = attestationRegistryAddress;
@@ -189,4 +259,30 @@ function createAttestationRegisteredEvent(attestationId: Bytes): AttestationRegi
   );
 
   return attestationRegisteredEvent;
+}
+
+function createAttestationRevokedEvent(attestationId: Bytes): AttestationRevokedEvent {
+  const attestationRevokedEvent = newTypedMockEvent<AttestationRevokedEvent>();
+  attestationRevokedEvent.address = attestationRegistryAddress;
+
+  attestationRevokedEvent.parameters.push(
+    new ethereum.EventParam("attestationId", ethereum.Value.fromBytes(attestationId)),
+  );
+
+  return attestationRevokedEvent;
+}
+
+function createAttestationReplacedEvent(attestationId: Bytes, updatedReplacedBy: Bytes): AttestationReplacedEvent {
+  const attestationReplacedEvent = newTypedMockEvent<AttestationReplacedEvent>();
+  attestationReplacedEvent.address = attestationRegistryAddress;
+
+  attestationReplacedEvent.parameters.push(
+    new ethereum.EventParam("attestationId", ethereum.Value.fromBytes(attestationId)),
+  );
+
+  attestationReplacedEvent.parameters.push(
+    new ethereum.EventParam("replacedBy", ethereum.Value.fromBytes(updatedReplacedBy)),
+  );
+
+  return attestationReplacedEvent;
 }

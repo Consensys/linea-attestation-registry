@@ -85,6 +85,16 @@ contract IndexerModuleTest is Test {
     assertEq(indexerModule.getIndexedAttestationStatus(attestationIds[1]), true);
   }
 
+  function test_indexAttestation_CannotBeIndexedTwice() public {
+    vm.expectEmit({ emitter: address(indexerModule) });
+    emit AttestationIndexed(bytes32(abi.encode(2)));
+    indexerModule.indexAttestation(bytes32(abi.encode(2)));
+    indexerModule.indexAttestation(bytes32(abi.encode(2)));
+
+    bytes32[] memory attestationIds = indexerModule.getAttestationIdsBySubject(payload1.subject);
+    assertEq(attestationIds.length, 2);
+  }
+
   function test_getAttestationIdsBySubject() public {
     bytes32[] memory attestationIds = indexerModule.getAttestationIdsBySubject(payload1.subject);
     assertEq(attestationIds[0], bytes32(abi.encode(1)));

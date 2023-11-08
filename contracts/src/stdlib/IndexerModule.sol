@@ -148,6 +148,9 @@ contract IndexerModule is AbstractModule {
    * @param attestation The attestation to index.
    */
   function _indexAttestation(Attestation memory attestation) internal {
+    if (indexedAttestations[attestation.attestationId]) {
+      return;
+    }
     attestationIdsBySubject[attestation.subject].push(attestation.attestationId);
     attestationIdsBySubjectBySchema[attestation.subject][attestation.schemaId].push(attestation.attestationId);
     attestationIdsByAttester[attestation.attester].push(attestation.attestationId);

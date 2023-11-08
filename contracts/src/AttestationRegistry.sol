@@ -6,7 +6,6 @@ import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { IRouter } from "./interface/IRouter.sol";
-import { uncheckedInc256 } from "./Common.sol";
 
 /**
  * @title Attestation Registry
@@ -20,6 +19,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   uint32 private attestationIdCounter;
 
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
+  mapping(bytes subject => bytes32[] attestationIds) private subjectToAttestations;
 
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
@@ -115,6 +115,7 @@ contract AttestationRegistry is OwnableUpgradeable {
       attestationPayload.attestationData
     );
     emit AttestationRegistered(id);
+    subjectToAttestations[attestationPayload.subject].push(id);
   }
 
   /**
@@ -122,13 +123,13 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationsPayloads the attestations payloads to create attestations and register them
    */
   function bulkAttest(AttestationPayload[] calldata attestationsPayloads, address attester) public {
-    for (uint256 i = 0; i < attestationsPayloads.length; i = uncheckedInc256(i)) {
+    for (uint256 i = 0; i < attestationsPayloads.length; i++) {
       attest(attestationsPayloads[i], attester);
     }
   }
 
   function massImport(AttestationPayload[] calldata attestationsPayloads, address portal) public onlyOwner {
-    for (uint256 i = 0; i < attestationsPayloads.length; i = uncheckedInc256(i)) {
+    for (uint256 i = 0; i < attestationsPayloads.length; i++) {
       // Auto increment attestation counter
       attestationIdCounter++;
       bytes32 id = bytes32(abi.encode(attestationIdCounter));
@@ -178,7 +179,7 @@ contract AttestationRegistry is OwnableUpgradeable {
     address attester
   ) public {
     if (attestationIds.length != attestationPayloads.length) revert ArrayLengthMismatch();
-    for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
+    for (uint256 i = 0; i < attestationIds.length; i++) {
       replace(attestationIds[i], attestationPayloads[i], attester);
     }
   }
@@ -204,7 +205,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attestationIds the IDs of the attestations to revoke
    */
   function bulkRevoke(bytes32[] memory attestationIds) external {
-    for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
+    for (uint256 i = 0; i < attestationIds.length; i++) {
       revoke(attestationIds[i]);
     }
   }
@@ -236,6 +237,20 @@ contract AttestationRegistry is OwnableUpgradeable {
   function getAttestation(bytes32 attestationId) public view returns (Attestation memory) {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
     return attestations[attestationId];
+  }
+
+  /**
+   * @notice Gets the attestations that issued to a specific subject
+   * @param subject the subject identifier
+   * @return attestations the attestations issued to a specific subject
+   */
+  function getAttestationBySubject(bytes memory subject) public view returns (Attestation[] memory) {
+    Attestation[] memory attestations = new Attestation[](subjectToAttestations[subject].length);
+    for (uint256 i = 0; i < subjectToAttestations[subject].length; i++) {
+      bytes32 attestationId = subjectToAttestations[subject][i];
+      attestations[i] = getAttestation(attestationId);
+    }
+    return attestations;
   }
 
   /**
@@ -288,7 +303,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   function balanceOfBatch(address[] memory accounts, uint256[] memory ids) public view returns (uint256[] memory) {
     if (accounts.length != ids.length) revert ArrayLengthMismatch();
     uint256[] memory result = new uint256[](accounts.length);
-    for (uint256 i = 0; i < accounts.length; i = uncheckedInc256(i)) {
+    for (uint256 i = 0; i < accounts.length; i++) {
       result[i] = balanceOf(accounts[i], ids[i]);
     }
     return result;

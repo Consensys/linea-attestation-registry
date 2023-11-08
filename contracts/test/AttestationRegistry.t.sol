@@ -8,7 +8,6 @@ import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { Attestation, AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
-import { uncheckedInc256 } from "../src/Common.sol";
 
 contract AttestationRegistryTest is Test {
   address public portal = makeAddr("portal");
@@ -82,6 +81,26 @@ contract AttestationRegistryTest is Test {
 
     Attestation memory registeredAttestation = attestationRegistry.getAttestation(attestation.attestationId);
     _assertAttestation(attestation, registeredAttestation);
+  }
+
+  function test_attest_getAttestationBySubject(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+
+    Attestation memory attestation = _createAttestation(attestationPayload, 1);
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered(attestation.attestationId);
+    vm.prank(portal);
+    attestationRegistry.attest(attestationPayload, attester);
+
+    Attestation[] memory registeredAttestations = attestationRegistry.getAttestationBySubject(
+      attestationPayload.subject
+    );
+    assertEq(registeredAttestations.length, 1);
+    _assertAttestation(attestation, registeredAttestations[0]);
   }
 
   function test_attest_SchemaNotRegistered(AttestationPayload memory attestationPayload) public {

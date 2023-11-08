@@ -113,6 +113,11 @@ contract IndexerModuleTest is Test {
     assertEq(attestationIds[0], bytes32(abi.encode(1)));
   }
 
+  function test_getAttestationByPortalBySubject() public {
+    bytes32[] memory attestationIds = indexerModule.getAttestationIdsByPortalBySubject(portalOwner, payload1.subject);
+    assertEq(attestationIds[0], bytes32(abi.encode(1)));
+  }
+
   function test_getIndexedAttestationStatus() public {
     bool status = indexerModule.getIndexedAttestationStatus(bytes32(abi.encode(1)));
     assertEq(status, true);

@@ -21,6 +21,7 @@ contract IndexerModule is AbstractModule {
   mapping(address attester => bytes32[] attestationIds) private attestationIdsByAttester;
   mapping(bytes32 schema => bytes32[] attestationIds) private attestationIdsBySchema;
   mapping(address portal => bytes32[] attestationIds) private attestationIdsByPortal;
+  mapping(address portal => mapping(bytes subject => bytes32[] attestationIds)) private attestationIdsByPortalBySubject;
   mapping(bytes32 attestationId => bool status) private indexedAttestations;
 
   /**
@@ -121,6 +122,19 @@ contract IndexerModule is AbstractModule {
   }
 
   /**
+   * @dev Returns the attestation IDs for a given portal and subject.
+   * @param portal The portal to retrieve attestation IDs for.
+   * @param subject The subject to retrieve attestation IDs for.
+   * @return An array of attestation IDs.
+   */
+  function getAttestationIdsByPortalBySubject(
+    address portal,
+    bytes memory subject
+  ) public view returns (bytes32[] memory) {
+    return attestationIdsByPortalBySubject[portal][subject];
+  }
+
+  /**
    * @dev Returns the indexed status of an attestation.
    * @param attestationId The ID of the attestation to check.
    * @return The indexed status of the attestation.
@@ -139,6 +153,7 @@ contract IndexerModule is AbstractModule {
     attestationIdsByAttester[attestation.attester].push(attestation.attestationId);
     attestationIdsBySchema[attestation.schemaId].push(attestation.attestationId);
     attestationIdsByPortal[attestation.portal].push(attestation.attestationId);
+    attestationIdsByPortalBySubject[attestation.portal][attestation.subject].push(attestation.attestationId);
     indexedAttestations[attestation.attestationId] = true;
 
     emit AttestationIndexed(attestation.attestationId);

@@ -1,8 +1,10 @@
 import {
   AttestationRegistered as AttestationRegisteredEvent,
   AttestationRegistry,
+  AttestationReplaced,
+  AttestationRevoked,
 } from "../generated/AttestationRegistry/AttestationRegistry";
-import { Attestation, Counter, Schema } from "../generated/schema";
+import { Attestation, Counter, Portal, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
 
 export function handleAttestationRegistered(event: AttestationRegisteredEvent): void {
@@ -10,7 +12,7 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
   const attestation = new Attestation(event.params.attestationId.toHex());
 
-  incrementAttestationCount();
+  incrementAttestationCount(attestationData.portal.toHexString());
 
   attestation.schemaId = attestationData.schemaId;
   attestation.replacedBy = attestationData.replacedBy;
@@ -83,6 +85,27 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   attestation.save();
 }
 
+export function handleAttestationRevoked(event: AttestationRevoked): void {
+  const attestationRegistryContract = AttestationRegistry.bind(event.address);
+  const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
+  const attestation = Attestation.load(event.params.attestationId.toHex());
+
+  if (attestation) {
+    attestation.revoked = true;
+    attestation.revocationDate = attestationData.revocationDate;
+    attestation.save();
+  }
+}
+
+export function handleAttestationReplaced(event: AttestationReplaced): void {
+  const attestation = Attestation.load(event.params.attestationId.toHex());
+
+  if (attestation) {
+    attestation.replacedBy = event.params.replacedBy;
+    attestation.save();
+  }
+}
+
 function valueToString(value: ethereum.Value): string {
   switch (value.kind) {
     case ethereum.ValueKind.ADDRESS:
@@ -116,7 +139,7 @@ function valueToString(value: ethereum.Value): string {
   }
 }
 
-function incrementAttestationCount(): void {
+function incrementAttestationCount(portalAddress: string): void {
   let counter = Counter.load("counter");
 
   if (!counter) {
@@ -130,4 +153,17 @@ function incrementAttestationCount(): void {
   }
 
   counter.save();
+
+  // Increment attestation counter for corresponding portal
+  const portal = Portal.load(portalAddress);
+
+  if (portal) {
+    if (!portal.attestationCounter) {
+      portal.attestationCounter = 1;
+    } else {
+      portal.attestationCounter += 1;
+    }
+
+    portal.save();
+  }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractPortal } from "../../interface/AbstractPortal.sol";
+import { AbstractPortal } from "../../abstracts/AbstractPortal.sol";
 import { AttestationPayload } from "../../types/Structs.sol";
 import { uncheckedInc256 } from "../../Common.sol";
 
@@ -62,7 +62,9 @@ contract EASPortal is AbstractPortal {
     super.attest(attestationPayload, validationPayload);
     // if refUID exists then create relationship attestation
     if (attestationRequest.data.refUID != 0) {
-      if (!attestationRegistry.isRegistered(attestationRequest.data.refUID)) revert ReferenceAttestationNotRegistered();
+      if (!attestationRegistry.isRegistered(attestationRequest.data.refUID)) {
+        revert ReferenceAttestationNotRegistered();
+      }
 
       uint32 attestationIdCounter = attestationRegistry.getAttestationIdCounter();
       bytes32 attestationId = bytes32(abi.encode(attestationIdCounter));

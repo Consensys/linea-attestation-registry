@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractModule } from "../../interface/AbstractModule.sol";
+import { AbstractModule } from "../../abstracts/AbstractModule.sol";
 import { AttestationPayload } from "../../types/Structs.sol";
 
 /**
@@ -16,8 +16,8 @@ struct EIP712Domain {
 
 contract ERC712Module is AbstractModule {
   EIP712Domain public domain;
-  address sender;
-  address receiver;
+  address public sender;
+  address public receiver;
 
   error InvalidSignature();
 
@@ -28,7 +28,7 @@ contract ERC712Module is AbstractModule {
   }
 
   function run(
-    AttestationPayload memory attestationPayload,
+    AttestationPayload memory /*attestationPayload*/,
     bytes memory validationPayload,
     address txSender,
     uint256 /*value*/

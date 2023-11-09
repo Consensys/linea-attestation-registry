@@ -1,12 +1,18 @@
 import { afterEach, assert, beforeAll, clearStore, createMockedFunction, describe, test } from "matchstick-as";
 import { Address, ethereum } from "@graphprotocol/graph-ts";
-import { PortalRegistered as PortalRegisteredEvent, PortalRegistry } from "../generated/PortalRegistry/PortalRegistry";
+import {
+  PortalRegistered as PortalRegisteredEvent,
+  IssuerAdded as IssuerAddedEvent,
+  IssuerRemoved as IssuerRemovedEvent,
+  PortalRegistry,
+} from "../generated/PortalRegistry/PortalRegistry";
 import { newTypedMockEvent } from "matchstick-as/assembly/defaults";
-import { handlePortalRegistered } from "../src/portal-registry";
+import { handleIssuerAdded, handleIssuerRemoved, handlePortalRegistered } from "../src/portal-registry";
 
 const portalRegistryAddress = Address.fromString("506f88a5Ca8D5F001f2909b029738A40042e42a6");
 const portalAddress = Address.fromString("f75be6f9418710fd516fa82afb3aad07e11a0f1b");
 const ownerAddress = Address.fromString("e75be6f9418710fd516fa82afb3aad07e11a0f1b");
+const issuerAddress = "f75be6f9418710fd516fa82afb3aad07e11a0f1b";
 const modules = [Address.zero()];
 const isRevocable = true;
 const name = "portal name";
@@ -69,6 +75,7 @@ describe("handlePortalRegistered()", () => {
     assert.fieldEquals("Portal", portalAddress.toHexString(), "id", portalAddress.toHexString());
     assert.fieldEquals("Portal", portalAddress.toHexString(), "name", name);
     assert.fieldEquals("Portal", portalAddress.toHexString(), "description", description);
+    assert.fieldEquals("Portal", portalAddress.toHexString(), "attestationCounter", "0");
   });
 
   test("Should increment the portals Counter", () => {
@@ -81,6 +88,52 @@ describe("handlePortalRegistered()", () => {
 
     assert.entityCount("Portal", 1);
     assert.fieldEquals("Counter", "counter", "portals", "1");
+  });
+});
+
+describe("handleIssuerAdded()", () => {
+  afterEach(() => {
+    clearStore();
+  });
+
+  test("Should create a new Issuer entity", () => {
+    assert.entityCount("Issuer", 0);
+    const issuerAddedEvent = newTypedMockEvent<IssuerAddedEvent>();
+    issuerAddedEvent.address = portalRegistryAddress;
+    issuerAddedEvent.parameters.push(
+      new ethereum.EventParam("issuerAddress", ethereum.Value.fromAddress(Address.fromString(issuerAddress))),
+    );
+
+    handleIssuerAdded(issuerAddedEvent);
+
+    assert.entityCount("Issuer", 1);
+    assert.fieldEquals("Issuer", portalAddress.toHexString(), "id", "0x" + issuerAddress);
+  });
+});
+
+describe("handleIssuerRemoved()", () => {
+  afterEach(() => {
+    clearStore();
+  });
+
+  test("Should remove the Issuer entity", () => {
+    // Add a new issuer to be removed
+    assert.entityCount("Issuer", 0);
+    const issuerAddedEvent = newTypedMockEvent<IssuerAddedEvent>();
+    issuerAddedEvent.address = portalRegistryAddress;
+    issuerAddedEvent.parameters.push(
+      new ethereum.EventParam("issuerAddress", ethereum.Value.fromAddress(Address.fromString(issuerAddress))),
+    );
+    handleIssuerAdded(issuerAddedEvent);
+    assert.entityCount("Issuer", 1);
+
+    const issuerRemovedEvent = newTypedMockEvent<IssuerRemovedEvent>();
+    issuerRemovedEvent.address = portalRegistryAddress;
+    issuerRemovedEvent.parameters.push(
+      new ethereum.EventParam("issuerAddress", ethereum.Value.fromAddress(Address.fromString(issuerAddress))),
+    );
+    handleIssuerRemoved(issuerRemovedEvent);
+    assert.entityCount("Issuer", 0);
   });
 });
 

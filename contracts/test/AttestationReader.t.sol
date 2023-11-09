@@ -9,7 +9,7 @@ import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { EASRegistryMock } from "./mocks/EASRegistryMock.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
-import { Attestation as EASAttestation } from "../src/interface/IEAS.sol";
+import { Attestation as EASAttestation } from "../src/interfaces/IEAS.sol";
 import { Router } from "../src/Router.sol";
 
 contract AttestationReaderTest is Test {

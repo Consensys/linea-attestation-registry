@@ -3,3 +3,4 @@ packages:
   - 'explorer'
   - 'subgraph'
   - 'sdk'
+  - 'snap/packages/*'

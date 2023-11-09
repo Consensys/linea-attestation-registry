@@ -5,7 +5,8 @@ import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts
 import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
-import { IRouter } from "./interface/IRouter.sol";
+import { IRouter } from "./interfaces/IRouter.sol";
+import { uncheckedInc256 } from "./Common.sol";
 
 /**
  * @title Attestation Registry
@@ -288,9 +289,12 @@ contract AttestationRegistry is OwnableUpgradeable {
   function balanceOf(address account, uint256 id) public view returns (uint256) {
     bytes32 attestationId = bytes32(abi.encode(id));
     Attestation memory attestation = attestations[attestationId];
-    if (attestation.subject.length > 20 && keccak256(attestation.subject) == keccak256(abi.encode(account))) return 1;
-    if (attestation.subject.length == 20 && keccak256(attestation.subject) == keccak256(abi.encodePacked(account)))
+    if (attestation.subject.length > 20 && keccak256(attestation.subject) == keccak256(abi.encode(account))) {
       return 1;
+    }
+    if (attestation.subject.length == 20 && keccak256(attestation.subject) == keccak256(abi.encodePacked(account))) {
+      return 1;
+    }
     return 0;
   }
 

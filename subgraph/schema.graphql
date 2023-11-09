@@ -1,49 +1,54 @@
 type Attestation @entity {
-    id: ID!
-    schemaId: Bytes!
-    replacedBy: Bytes!
-    attester: Bytes!
-    portal: Bytes!
-    attestedDate: BigInt!
-    expirationDate: BigInt!
-    revocationDate: BigInt!
-    version: BigInt!
-    revoked: Boolean!
-    subject: Bytes!
-    attestationData: Bytes!
-    schemaString: String
-    decodedData:[String!]
+  id: ID!
+  schemaId: Bytes!
+  replacedBy: Bytes!
+  attester: Bytes!
+  portal: Bytes!
+  attestedDate: BigInt!
+  expirationDate: BigInt!
+  revocationDate: BigInt!
+  version: BigInt!
+  revoked: Boolean!
+  subject: Bytes!
+  attestationData: Bytes!
+  schemaString: String
+  decodedData: [String!]
 }
 
 type Module @entity {
-    id: ID!
-    moduleAddress: Bytes!
-    name: String!
-    description: String!
+  id: ID!
+  moduleAddress: Bytes!
+  name: String!
+  description: String!
 }
 
 type Portal @entity {
-    id: ID!
-    ownerAddress: Bytes!
-    modules: [Bytes!]
-    isRevocable: Boolean!
-    name: String!
-    description: String!
-    ownerName: String!
+  id: ID!
+  ownerAddress: Bytes!
+  modules: [Bytes!]
+  isRevocable: Boolean!
+  name: String!
+  description: String!
+  ownerName: String!
+  attestationCounter: Int
 }
 
 type Schema @entity {
-    id: ID!
-    name: String!
-    description: String!
-    context: String!
-    schema: String!
+  id: ID!
+  name: String!
+  description: String!
+  context: String!
+  schema: String!
 }
 
-type Counter @entity{
-    id: ID!
-    attestations: Int
-    modules: Int
-    portals: Int
-    schemas: Int
+type Counter @entity {
+  id: ID!
+  attestations: Int
+  modules: Int
+  portals: Int
+  schemas: Int
+}
+
+type Issuer @entity {
+  id: ID!
 }

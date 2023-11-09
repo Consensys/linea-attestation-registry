@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { IPortal } from "../../src/interface/IPortal.sol";
+import { IPortal } from "../../src/interfaces/IPortal.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
 
 contract IPortalImplementation is IPortal {

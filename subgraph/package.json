@@ -25,7 +25,7 @@
     "deploy:goerli": "source .env && cp subgraph.goerli.yaml subgraph.yaml && pnpm run build:goerli && graph deploy --network linea-goerli --node $DEPLOY_ENDPOINT_GOERLI --headers \"{\\\"Authorization\\\": \\\"Basic $IPFS_IDENTIFIERS\\\"}\" --ipfs $IPFS_ENDPOINT --version-label v0.0.5 Consensys/linea-attestation-registry",
     "remove": "source .env && graph remove --node $DEPLOY_ENDPOINT_MAINNET Consensys/linea-attestation-registry",
     "remove:goerli": "source .env && graph remove --node $DEPLOY_ENDPOINT_GOERLI Consensys/linea-attestation-registry",
-    "test": "graph test",
+    "test": "pnpm run codegen:goerli && graph test",
     "test:coverage": "graph test -c",
     "test:docker": "graph test -d"
   },

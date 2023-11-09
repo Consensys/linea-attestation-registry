@@ -5,12 +5,14 @@ import {
   AttestationRegistry,
   AttestationRevoked as AttestationRevokedEvent,
   AttestationReplaced as AttestationReplacedEvent,
+  VersionUpdated as VersionUpdatedEvent,
 } from "../generated/AttestationRegistry/AttestationRegistry";
 import { newTypedMockEvent } from "matchstick-as/assembly/defaults";
 import {
   handleAttestationRegistered,
   handleAttestationReplaced,
   handleAttestationRevoked,
+  handleVersionUpdated,
 } from "../src/attestation-registry";
 import { Portal, Schema } from "../generated/schema";
 
@@ -215,6 +217,28 @@ describe("handleAttestationReplacedEvent()", () => {
     handleAttestationReplaced(attestationReplacedEvent);
 
     assert.fieldEquals("Attestation", attestationId.toHexString(), "replacedBy", updatedReplacedBy.toHexString());
+  });
+});
+
+describe("handleVersionUpdatedEvent()", () => {
+  afterEach(() => {
+    clearStore();
+  });
+
+  test("Should update the version entity with current version", () => {
+    // Handle version updated event with version 5
+    assert.entityCount("Versions", 0);
+    assert.entityCount("Version", 0);
+    const versionUpdatedEvent = newTypedMockEvent<VersionUpdatedEvent>();
+    versionUpdatedEvent.address = attestationRegistryAddress;
+    versionUpdatedEvent.block.timestamp = BigInt.fromString("2");
+    versionUpdatedEvent.parameters.push(
+      new ethereum.EventParam("version", ethereum.Value.fromUnsignedBigInt(BigInt.fromString("5"))),
+    );
+    handleVersionUpdated(versionUpdatedEvent);
+    assert.entityCount("Versions", 1);
+    assert.entityCount("Version", 1);
+    assert.fieldEquals("Versions", "versions", "current", "52");
   });
 });
 

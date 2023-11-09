@@ -52,3 +52,16 @@ type Counter @entity {
 type Issuer @entity {
   id: ID!
 }
+
+type Version @entity {
+  id: ID!
+  versionNumber: Int
+  timestamp: BigInt
+  versions: Versions!
+}
+
+type Versions @entity {
+  id: ID!
+  current: Version!
+  history: [Version!]! @derivedFrom(field: "versions")
+}

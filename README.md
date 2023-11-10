@@ -100,6 +100,25 @@ Verax offers 2 Schemas to cover most use cases, both on testnet and mainnet:
 - The **Relationship** Schema, with ID `0x41b8c81288eebbf173b2f54b9fb2f1d37f2caca51ef39e8f99299b53c2599a3a`
 - The **Named Graph Relationship** Schema with ID `0x8f83a0ef7871f63455a506f6bca0db98a88721764ae6dbde2afddd8e12e442b8`
 
+## Managing Off-chain Attestations
+
+To handle large payloads to attest and avoid increasing the gas cost for the attestation process, it is possible to host
+the attested payload off-chain. In this case, the on-chain attestation will only contain a link to the attested payload,
+based on a dedicated Schema called **Offchain**. It is available on both testnet and mainnet with ID
+`0xa288e257097a4bed4166c002cb6911713edacc88e30b6cb2b0104df9c365327d`.
+
+To use it, simply pass a payload with the following content:
+
+```json
+{
+  "schemaId": "0x41b8c81288eebbf173b2f54b9fb2f1d37f2caca51ef39e8f99299b53c2599a3b",
+  "uri": "https://example.com/payload/123"
+}
+```
+
+- `schemaId`: the ID of the Schema encoding the complete (off-chain) payload
+- `uri`: the link to the complete (off-chain) payload
+
 ## License
 
 [MIT](./LICENSE)

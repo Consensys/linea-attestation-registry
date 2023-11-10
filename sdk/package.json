@@ -61,7 +61,7 @@
     "@graphql-mesh/store": "^0.95.8",
     "@graphql-mesh/utils": "^0.95.8",
     "@whatwg-node/fetch": "^0.9.14",
-    "axios": "^1.5.1",
+    "axios": "^1.6.0",
     "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
     "viem": "^1.17.1"

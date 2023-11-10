@@ -147,8 +147,8 @@ importers:
         specifier: ^0.9.14
         version: 0.9.14
       axios:
-        specifier: ^1.5.1
-        version: 1.5.1
+        specifier: ^1.6.0
+        version: 1.6.0
       dotenv:
         specifier: ^16.3.1
         version: 16.3.1
@@ -7708,7 +7708,7 @@ packages:
     resolution: {integrity: sha512-JxeA111ifCIzXho2gFymhepufB0ElI1UMvFIMEfJLvRL7g7V69wSiN8v+OqZyqZTahiY32Rb+TwdhVjKF5Zu+A==}
     dependencies:
       '@openzeppelin/defender-base-client': 1.50.0(debug@4.3.4)
-      axios: 1.5.1(debug@4.3.4)
+      axios: 1.6.0(debug@4.3.4)
       ethers: 5.7.2
       lodash: 4.17.21
       node-fetch: 2.7.0
@@ -7724,7 +7724,7 @@ packages:
     dependencies:
       amazon-cognito-identity-js: 6.3.6
       async-retry: 1.3.3
-      axios: 1.5.1(debug@4.3.4)
+      axios: 1.6.0(debug@4.3.4)
       lodash: 4.17.21
       node-fetch: 2.7.0
     transitivePeerDependencies:
@@ -7746,7 +7746,7 @@ packages:
     dependencies:
       '@ethersproject/abi': 5.7.0
       '@openzeppelin/defender-sdk-base-client': 1.3.0
-      axios: 1.5.1(debug@4.3.4)
+      axios: 1.6.0(debug@4.3.4)
       lodash: 4.17.21
     transitivePeerDependencies:
       - debug
@@ -12012,8 +12012,8 @@ packages:
       - debug
     dev: true
 
-  /axios@1.5.1:
-    resolution: {integrity: sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==}
+  /axios@1.6.0:
+    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
     dependencies:
       follow-redirects: 1.15.3(debug@3.2.7)
       form-data: 4.0.0
@@ -12021,8 +12021,8 @@ packages:
     transitivePeerDependencies:
       - debug
 
-  /axios@1.5.1(debug@4.3.4):
-    resolution: {integrity: sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==}
+  /axios@1.6.0(debug@4.3.4):
+    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
     dependencies:
       follow-redirects: 1.15.3(debug@4.3.4)
       form-data: 4.0.0
@@ -15823,7 +15823,7 @@ packages:
         optional: true
     dependencies:
       '@solidity-parser/parser': 0.14.5
-      axios: 1.5.1
+      axios: 1.6.0
       cli-table3: 0.5.1
       colors: 1.4.0
       ethereum-cryptography: 1.2.0
@@ -18377,6 +18377,7 @@ packages:
   /iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+    requiresBuild: true
     dependencies:
       safer-buffer: 2.1.2
     dev: true

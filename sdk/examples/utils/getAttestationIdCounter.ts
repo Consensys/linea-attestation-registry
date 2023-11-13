@@ -2,4 +2,4 @@ import VeraxSdk from "../../src/VeraxSdk";
 
 const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET);
 
-console.log(await veraxSdk.utils.getAttestationIdCounter());
+veraxSdk.utils.getAttestationIdCounter().then((res) => console.log(res));

@@ -12,10 +12,11 @@ import { SDKMode } from "./utils/constants";
 let account: PrivateKeyAccount | Address;
 
 if (typeof window === "undefined") {
-  import("dotenv").then((dotenv) => {
-    dotenv.config({ path: "./.env" });
-    account = privateKeyToAccount(process.env.PRIVATE_KEY as Hex);
-  });
+  // TODO: return to a "module" setup instead of "CommonJS"
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const dotenv = require("dotenv");
+  dotenv.config({ path: "./.env" });
+  account = privateKeyToAccount(process.env.PRIVATE_KEY as Hex);
 } else {
   window.ethereum.request({ method: "eth_requestAccounts" }).then((result: Address[]) => {
     account = result[0];

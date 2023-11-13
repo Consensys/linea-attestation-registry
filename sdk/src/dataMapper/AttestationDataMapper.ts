@@ -1,6 +1,6 @@
 import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
-import { Attestation, AttestationPayload, Schema, AttestationWithDecodeObject } from "../types";
+import { Attestation, AttestationPayload, AttestationWithDecodeObject, Schema } from "../types";
 import { Attestation_filter, Attestation_orderBy } from "../../.graphclient";
 import { Constants } from "../utils/constants";
 import { handleSimulationError } from "../utils/simulationErrorHandler";
@@ -58,6 +58,9 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
     for (const attestationPayload of attestationPayloads) {
       const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      if (!matchingSchema) {
+        throw new Error("No matching Schema");
+      }
       const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
 
       attestationPayloadsArg.push([

@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-sdk",
-  "version": "0.0.9",
+  "version": "0.0.12",
   "description": "Verax Attestation Registry SDK to interact with the subgraph and the contracts",
   "keywords": [
     "linea-attestation-registry",
@@ -14,30 +14,16 @@
   "repository": "github.com/Consensys/linea-attestation-registry",
   "license": "MIT",
   "author": "Consensys",
-  "type": "module",
+  "type": "commonjs",
   "files": [
     "lib/**/*"
   ],
-  "types": "./lib/cjs/types/index.d.ts",
-  "main": "./lib/cjs/index.js",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./lib/esm/types/src/VeraxSdk.d.ts",
-        "default": "./lib/esm/src/VeraxSdk.js"
-      },
-      "require": {
-        "types": "./lib/cjs/types/src/VeraxSdk.d.ts",
-        "default": "./lib/cjs/src/VeraxSdk.js"
-      }
-    }
-  },
+  "types": "./lib/types/src/VeraxSdk.d.ts",
+  "main": "./lib/src/VeraxSdk.js",
   "scripts": {
     "attestation": "ts-node examples/attestation/index.ts",
     "clean": "rm -rf ./lib",
-    "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs",
-    "build:esm": "tsc -p ./tsconfig.esm.json",
-    "build:cjs": "tsc -p ./tsconfig.cjs.json",
+    "build": "pnpm run clean && tsc",
     "prepack": "npm run build",
     "publish:public": "pnpm publish --access public --no-git-checks",
     "module": "ts-node examples/module/index.ts",

@@ -13,14 +13,14 @@ describe("PortalDataMapper", () => {
 
       const result = await veraxSdk.portal.findOneById(portalId);
 
-      expect(result).not.toBeNull();
-      expect(result.id).toEqual(portalId);
-      expect(result.ownerAddress).toEqual("0xe02bd7a6c8aa401189aebb5bad755c2610940a73");
-      expect(result.modules).toEqual([]);
-      expect(result.isRevocable).toBeTruthy();
-      expect(result.name).toEqual("PADO Portal");
-      expect(result.description).toEqual("Portal of PADO");
-      expect(result.ownerName).toEqual("PADO");
+      expect(result).not.toBeUndefined();
+      expect(result?.id).toEqual(portalId);
+      expect(result?.ownerAddress).toEqual("0xe02bd7a6c8aa401189aebb5bad755c2610940a73");
+      expect(result?.modules).toEqual([]);
+      expect(result?.isRevocable).toBeTruthy();
+      expect(result?.name).toEqual("PADO Portal");
+      expect(result?.description).toEqual("Portal of PADO");
+      expect(result?.ownerName).toEqual("PADO");
     });
   });
 

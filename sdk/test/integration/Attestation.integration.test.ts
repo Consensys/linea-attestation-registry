@@ -13,21 +13,21 @@ describe("AttestationDataMapper", () => {
 
       const result = await veraxSdk.attestation.findOneById(attestationId);
 
-      expect(result).not.toBeNull();
-      expect(result.id).toEqual(attestationId);
-      expect(result.schemaId).toEqual("0xd1664d97bd195df77e3d5fe78c1737ab3adaa38bbe52a680d1aa30fa51f186ba");
-      expect(result.replacedBy).toEqual("0x0000000000000000000000000000000000000000000000000000000000000000");
-      expect(result.attester).toEqual("0x809e815596abeb3764abf81be2dc39fbbacc9949");
-      expect(result.portal).toEqual("0xb3c0e57d560f36697f5d727c2c6db4e0c8f87bd8");
-      expect(result.attestedDate).toEqual("1695398083");
-      expect(result.expirationDate).toEqual("1793835110");
-      expect(result.revocationDate).toEqual("0");
-      expect(result.version).toEqual("8");
-      expect(result.revoked).toBeFalsy();
-      expect(result.subject).toEqual("0x000000000000000000000000cb859f99f84ab770a50380680be94ad9331bcec5");
-      expect(result.attestationData).toEqual("0x0000000000000000000000000000000000000000000000000000000000000004");
-      expect(result.schemaString).toEqual("uint8");
-      expect(result.decodedData).toEqual(["0x4"]);
+      expect(result).not.toBeUndefined();
+      expect(result?.id).toEqual(attestationId);
+      expect(result?.schemaId).toEqual("0xd1664d97bd195df77e3d5fe78c1737ab3adaa38bbe52a680d1aa30fa51f186ba");
+      expect(result?.replacedBy).toEqual("0x0000000000000000000000000000000000000000000000000000000000000000");
+      expect(result?.attester).toEqual("0x809e815596abeb3764abf81be2dc39fbbacc9949");
+      expect(result?.portal).toEqual("0xb3c0e57d560f36697f5d727c2c6db4e0c8f87bd8");
+      expect(result?.attestedDate).toEqual("1695398083");
+      expect(result?.expirationDate).toEqual("1793835110");
+      expect(result?.revocationDate).toEqual("0");
+      expect(result?.version).toEqual("8");
+      expect(result?.revoked).toBeFalsy();
+      expect(result?.subject).toEqual("0x000000000000000000000000cb859f99f84ab770a50380680be94ad9331bcec5");
+      expect(result?.attestationData).toEqual("0x0000000000000000000000000000000000000000000000000000000000000004");
+      expect(result?.schemaString).toEqual("uint8");
+      expect(result?.decodedData).toEqual(["0x4"]);
     });
   });
 

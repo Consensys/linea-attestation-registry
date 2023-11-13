@@ -22,7 +22,6 @@ const config: HardhatUserConfig = {
     hardhat: {},
     "arbitrum-goerli": {
       url: "https://goerli-rollup.arbitrum.io/rpc",
-      chainId: 421613,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     arbitrum: {

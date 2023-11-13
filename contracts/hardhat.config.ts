@@ -51,8 +51,8 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      "arbitrum-goerli": process.env.ETHERSCAN_API_KEY ?? "KAFVN62ITWU9JZK5MZN9KC9DFX4VKM85BX",
-      arbitrum: process.env.ETHERSCAN_API_KEY ?? "KAFVN62ITWU9JZK5MZN9KC9DFX4VKM85BX",
+      "arbitrum-goerli": process.env.ETHERSCAN_API_KEY ?? "",
+      arbitrum: process.env.ETHERSCAN_API_KEY ?? "",
       "linea-goerli": process.env.ETHERSCAN_API_KEY ?? "",
       linea: process.env.ETHERSCAN_API_KEY ?? "",
       sepolia: process.env.ETHERSCAN_API_KEY ?? "",

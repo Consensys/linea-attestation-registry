@@ -5,7 +5,7 @@ import {
   AttestationRegistry,
   AttestationReplaced as AttestationReplacedEvent,
   AttestationRevoked as AttestationRevokedEvent,
-  VersionUpdated,
+  VersionUpdated as VersionUpdatedEvent,
 } from "../generated/AttestationRegistry/AttestationRegistry";
 import { newTypedMockEvent } from "matchstick-as/assembly/defaults";
 import {
@@ -34,7 +34,7 @@ const attestationData = Bytes.fromHexString(
 describe("AttestationRegistry", () => {
   describe("handleAttestationRegistered()", () => {
     beforeAll(() => {
-      mockGetAttestation(revoked, revocationDate);
+      mockGetAttestation();
     });
 
     afterEach(() => {
@@ -179,11 +179,63 @@ describe("AttestationRegistry", () => {
         "[0x27a601f7ff8707fedc3,0x46b6e50692c14c9a305313ac83125505d4cae04c2dcf8ab10ef00b30a11f0c1b,0x1a14f7aa7123c06c78dc6597173034e426dcf29b83cd3463759ede03f77a0d62,0x7a55b7f2e6539347ed9a3b4e3b64a6fa189b1329d42b2f9b307de464c689b435,0x0e42ff6e6ccd508026dcfe406954037d7218e77f71bc27801e942a0da0751289,0x58a53c348fb73da7b16582a7579c3fa2a19d77c39c7c2f11bbb7f45965d980b1,0xd691679f15de942fa26f5e67c6e166448d6ea6a078e28275fc8ae72b565f4232,0xefb9b8909e8b81cb6562781c2df17268b4885e59a56d76220afc9b0ea9e28acf,0x936e467101fc63fbaf52f122d8c8d992d077f30092b17a574b052713c25da524,0xb6894f6aec6e967fddc53781f52ebedcb87d239c0f2eacff08efc8d1fb2ace5e,0x0dd47b5ec2dddd454f30dda953d8cb6a10c8fee9ee493c402ae1d5f7f2218928,0x94b6bb10b48099ec28443297e491de6aa8660680b8a8c2e3777b121c1c21c8c4,0x5f91e2e6db228d0a37207b1baa2f574eeff4c3c6cbe7d8c77c6ce4b7b29b15cc,0x373748c21905af03cdd9715eafaaa1e3767698eb0a1e5c23c9b791c79063e9c6,0x7416442f83ff0b47ad707db1dfb3d26371d5f49adf968b4a1d75cc581a707719,0xe5fcf0fc9cc87eda9817593d1c583aeeb0638d42ae2415351237761253deb361,0x23201c20d07192e646f5db9ce7045f84a6c34ddadcbcc46d37358bbe5f410f05,0xd6ca663e0908f04407f42f320419cf53c74509ad38eb4dbd33628041f9683ad5,0xe9dde1acee073a6176fbb6b56bbecb9632f90d3668d8747b10d764e941e8eda7,0x60eb1630a7afb4a82b9776344110b1f142f80c821cb5bb0e50dc8d638f189774,0x3a4881df7788a68245fe14f01bb5933f8159a2a334fcc993a795a6bcf5217da5,0x718267ce9f14ff1408d81afde13229e4e4a49bc8d4cb078fba79ff836a05ad43,0x03de81bff7414f0b3deb92c653ac91edf5c0e825999a353d0eeac8673a0ab4a0,0xf5df7b578d482265b738efe9cb8f2e3f9049b704c6c1e4ea0e0a5981448d7f80,0x2c325a13b445bf98d683efd6685c9d089e8aed05c42a49ee0298889cd951692c,0x2022cfd3474905c46283d5a26dcda01d2de1da42c260c26cc0597d76e668e9c3,0xc3a8d570f9bd9f7ce721b61b7d748958be5f820e40aea187a710bb9c42f5d325,0xa5374e6f317bcdb36fcc1eb04bad69f6c3e4580dfcc1a79165664c4615b375c3,0xef33cd746de7bf0701e5951876ce16bbe4517c4acd92082aeb6b7f0fdd2f54d9,0xc007b57dbdec946a5c5400d10d73762dbcc585ea7fa590d13e6d1c9af671c6be,0x01e54d28e2a6271fb7a21ad52ba102153 ... TRUNCATED ...]",
       );
     });
+
+    test("Should decode an abi-encoded address subject", () => {
+      assert.entityCount("Attestation", 0);
+      let attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
+      mockGetAttestation(revoked, revocationDate, Bytes.fromHexString("0x809e815596abeb3764abf81be2dc39fbbacc9949"));
+
+      handleAttestationRegistered(attestationRegisteredEvent);
+
+      assert.entityCount("Attestation", 1);
+
+      assert.fieldEquals("Attestation", attestationId.toHexString(), "id", attestationId.toHexString());
+      assert.fieldEquals(
+        "Attestation",
+        attestationId.toHexString(),
+        "subject",
+        "0x809e815596abeb3764abf81be2dc39fbbacc9949",
+      );
+      assert.fieldEquals(
+        "Attestation",
+        attestationId.toHexString(),
+        "encodedSubject",
+        "0x809e815596abeb3764abf81be2dc39fbbacc9949",
+      );
+
+      attestationRegisteredEvent = createAttestationRegisteredEvent(
+        Bytes.fromHexString("0x00000000000000000000000000000000000000000000000000000000000010f6"),
+      );
+      mockGetAttestation(
+        revoked,
+        revocationDate,
+        Bytes.fromHexString("0x000000000000000000000000809e815596abeb3764abf81be2dc39fbbacc9949"),
+        Bytes.fromHexString("0x00000000000000000000000000000000000000000000000000000000000010f6"),
+      );
+
+      handleAttestationRegistered(attestationRegisteredEvent);
+
+      assert.entityCount("Attestation", 2);
+
+      assert.fieldEquals("Attestation", attestationId.toHexString(), "id", attestationId.toHexString());
+      assert.fieldEquals(
+        "Attestation",
+        "0x00000000000000000000000000000000000000000000000000000000000010f6",
+        "subject",
+        "0x809e815596abeb3764abf81be2dc39fbbacc9949",
+      );
+      assert.fieldEquals(
+        "Attestation",
+        "0x00000000000000000000000000000000000000000000000000000000000010f6",
+        "encodedSubject",
+        "0x000000000000000000000000809e815596abeb3764abf81be2dc39fbbacc9949",
+      );
+    });
   });
 
   describe("handleAttestationRevokedEvent()", () => {
     beforeAll(() => {
-      mockGetAttestation(revoked, revocationDate);
+      mockGetAttestation();
     });
 
     afterEach(() => {
@@ -221,7 +273,7 @@ describe("AttestationRegistry", () => {
 
   describe("handleAttestationReplacedEvent()", () => {
     beforeAll(() => {
-      mockGetAttestation(revoked, revocationDate);
+      mockGetAttestation();
     });
 
     afterEach(() => {
@@ -255,7 +307,7 @@ describe("AttestationRegistry", () => {
     test("Should update the RegistryVersion entity", () => {
       assert.entityCount("RegistryVersion", 0);
 
-      let versionUpdatedEvent = newTypedMockEvent<VersionUpdated>();
+      let versionUpdatedEvent = newTypedMockEvent<VersionUpdatedEvent>();
 
       versionUpdatedEvent.parameters.push(new ethereum.EventParam("version", ethereum.Value.fromI32(1)));
 
@@ -264,7 +316,7 @@ describe("AttestationRegistry", () => {
       assert.entityCount("RegistryVersion", 1);
       assert.fieldEquals("RegistryVersion", "registry-version", "versionNumber", "1");
 
-      versionUpdatedEvent = newTypedMockEvent<VersionUpdated>();
+      versionUpdatedEvent = newTypedMockEvent<VersionUpdatedEvent>();
 
       versionUpdatedEvent.parameters.push(new ethereum.EventParam("version", ethereum.Value.fromI32(2)));
 
@@ -276,22 +328,28 @@ describe("AttestationRegistry", () => {
   });
 });
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-function mockGetAttestation(revoked: boolean, revocationDate: BigInt): void {
+/* eslint-disable @typescript-eslint/ban-types */
+function mockGetAttestation(
+  overrideRevoked: boolean = revoked,
+  overrideRevocationDate: BigInt = revocationDate,
+  overrideSubject: Bytes = subject,
+  overrideAttestationId: Bytes = attestationId,
+): void {
   const tupleArray: Array<ethereum.Value> = [
-    ethereum.Value.fromFixedBytes(attestationId),
+    ethereum.Value.fromFixedBytes(overrideAttestationId),
     ethereum.Value.fromFixedBytes(schemaId),
     ethereum.Value.fromFixedBytes(replacedBy),
     ethereum.Value.fromAddress(attester),
     ethereum.Value.fromAddress(portal),
     ethereum.Value.fromUnsignedBigInt(attestedDate),
     ethereum.Value.fromUnsignedBigInt(expirationDate),
-    ethereum.Value.fromUnsignedBigInt(revocationDate),
+    ethereum.Value.fromUnsignedBigInt(overrideRevocationDate),
     ethereum.Value.fromUnsignedBigInt(version),
-    ethereum.Value.fromBoolean(revoked),
-    ethereum.Value.fromBytes(subject),
+    ethereum.Value.fromBoolean(overrideRevoked),
+    ethereum.Value.fromBytes(overrideSubject),
     ethereum.Value.fromBytes(attestationData),
   ];
+  /* eslint-enable @typescript-eslint/ban-types */
 
   // Convert it to the Tuple type
   const tuple = changetype<ethereum.Tuple>(tupleArray);
@@ -304,7 +362,7 @@ function mockGetAttestation(revoked: boolean, revocationDate: BigInt): void {
     "getAttestation",
     "getAttestation(bytes32):((bytes32,bytes32,bytes32,address,address,uint64,uint64,uint64,uint16,bool,bytes,bytes))",
   )
-    .withArgs([ethereum.Value.fromFixedBytes(attestationId)])
+    .withArgs([ethereum.Value.fromFixedBytes(overrideAttestationId)])
     .returns([tupleValue]);
 }
 

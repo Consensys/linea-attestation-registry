@@ -112,7 +112,7 @@ export function handleVersionUpdated(event: VersionUpdated): void {
   if (!versions) {
     versions = new Versions("versions");
   }
-  const version = new Version(`${event.params.version.toString().concat(event.block.timestamp.toString())}`);
+  const version = new Version(`${event.params.version.toString()}-${event.block.timestamp.toString()}`);
   version.versionNumber = event.params.version;
   version.timestamp = event.block.timestamp;
   version.versions = "versions";

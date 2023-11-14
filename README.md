@@ -22,7 +22,7 @@ the network.</h4>
 
 ## Links
 
-📚 [Official documentation](https://verax.gitbook.io/verax/)  
+📚 [Official documentation](https://docs.ver.ax/)  
 🔍
 [Testnet GraphQL API](https://graph-query.goerli.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  
 🔍 [Mainnet GraphQL API](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  

@@ -236,9 +236,12 @@ describe("handleVersionUpdatedEvent()", () => {
       new ethereum.EventParam("version", ethereum.Value.fromUnsignedBigInt(BigInt.fromString("5"))),
     );
     handleVersionUpdated(versionUpdatedEvent);
-    assert.entityCount("Versions", 1);
     assert.entityCount("Version", 1);
-    assert.fieldEquals("Versions", "versions", "current", "52");
+    assert.fieldEquals("Version", "52", "versionNumber", "5");
+    assert.fieldEquals("Version", "52", "timestamp", "2");
+    assert.entityCount("Versions", 1);
+    assert.fieldEquals("Versions", "versions", "currentVersion", "5");
+    assert.fieldEquals("Versions", "versions", "currentTimestamp", "2");
   });
 });
 

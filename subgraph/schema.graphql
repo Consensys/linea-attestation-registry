@@ -62,6 +62,7 @@ type Version @entity {
 
 type Versions @entity {
   id: ID!
-  current: Version!
+  currentVersion: Int
+  currentTimestamp: BigInt
   history: [Version!]! @derivedFrom(field: "versions")
 }

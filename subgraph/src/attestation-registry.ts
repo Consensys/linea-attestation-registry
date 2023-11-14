@@ -119,7 +119,8 @@ export function handleVersionUpdated(event: VersionUpdated): void {
   version.save();
 
   versions.history.load().push(version);
-  versions.current = version.id;
+  versions.currentVersion = event.params.version;
+  versions.currentTimestamp = event.block.timestamp;
   versions.save();
 }
 

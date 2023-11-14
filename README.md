@@ -1,12 +1,12 @@
 <h1 align="center">
   <br>
-  <a href="https://verax.gitbook.io/verax/"><img src="https://raw.githubusercontent.com/Consensys/linea-attestation-registry/dev/doc/verax-logo-circle.png" alt="Verax"></a>
+  <a href="https://docs.ver.ax/"><img src="https://raw.githubusercontent.com/Consensys/linea-attestation-registry/dev/doc/verax-logo-circle.png" alt="Verax"></a>
   <br>
   Verax Attestation Registry
   <br>
 </h1>
 
-<h4 align="center"><a href="https://verax.gitbook.io/verax/">Verax</a> is a shared registry for storing attestations of
+<h4 align="center"><a href="https://docs.ver.ax/">Verax</a> is a shared registry for storing attestations of
 public interest on EVM
 chains, designed to enhance data discoverability and consumption for dApps across
 the network.</h4>
@@ -22,7 +22,7 @@ the network.</h4>
 
 ## Links
 
-📚 [Official documentation](https://verax.gitbook.io/verax/)  
+📚 [Official documentation](https://docs.ver.ax/)  
 🔍
 [Testnet GraphQL API](https://graph-query.goerli.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  
 🔍 [Mainnet GraphQL API](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  
@@ -91,9 +91,8 @@ Here are the addresses on the 2 networks:
 ## Linking Attestations
 
 Verax Attestation Registry allows creating links ("relationships") between attestations.  
-🔗 Go to the
-[official documentation](https://verax.gitbook.io/verax/developer-guides/for-attestation-issuers/link-attestations) for
-more details
+🔗 Go to the [official documentation](https://docs.ver.ax/developer-guides/for-attestation-issuers/link-attestations)
+for more details
 
 Verax offers 2 Schemas to cover most use cases, both on testnet and mainnet:
 

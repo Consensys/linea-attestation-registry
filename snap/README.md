@@ -4,7 +4,7 @@
 
 This project leverages:
 
-1. the [Verax Attestation Registry](https://verax.gitbook.io/verax/)
+1. the [Verax Attestation Registry](https://docs.ver.ax/)
 2. the [MetaMask Snaps platform](https://docs.metamask.io/snaps/)
 
 ## How to run

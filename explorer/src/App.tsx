@@ -45,7 +45,7 @@ function App() {
   return (
     <>
       <div>
-        <a href="https://verax.gitbook.io/verax/" target="_blank">
+        <a href="https://docs.ver.ax/" target="_blank">
           <img src={veraxLogo} className="logo" alt="Verax logo" />
         </a>
       </div>

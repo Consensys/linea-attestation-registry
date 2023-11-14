@@ -3,14 +3,16 @@ import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
   AttestationRegistered as AttestationRegisteredEvent,
   AttestationRegistry,
-  AttestationRevoked as AttestationRevokedEvent,
   AttestationReplaced as AttestationReplacedEvent,
+  AttestationRevoked as AttestationRevokedEvent,
+  VersionUpdated as VersionUpdatedEvent,
 } from "../generated/AttestationRegistry/AttestationRegistry";
 import { newTypedMockEvent } from "matchstick-as/assembly/defaults";
 import {
   handleAttestationRegistered,
   handleAttestationReplaced,
   handleAttestationRevoked,
+  handleVersionUpdated,
 } from "../src/attestation-registry";
 import { Portal, Schema } from "../generated/schema";
 
@@ -215,6 +217,34 @@ describe("handleAttestationReplacedEvent()", () => {
     handleAttestationReplaced(attestationReplacedEvent);
 
     assert.fieldEquals("Attestation", attestationId.toHexString(), "replacedBy", updatedReplacedBy.toHexString());
+  });
+});
+
+describe("handleVersionUpdatedEvent()", () => {
+  afterEach(() => {
+    clearStore();
+  });
+
+  test("Should update the version entity with current version", () => {
+    // Handle version updated event with version 5
+    assert.entityCount("Version", 0);
+    assert.entityCount("Versions", 0);
+
+    const versionUpdatedEvent = newTypedMockEvent<VersionUpdatedEvent>();
+    versionUpdatedEvent.address = attestationRegistryAddress;
+    versionUpdatedEvent.block.timestamp = BigInt.fromString("123456789");
+    versionUpdatedEvent.parameters.push(
+      new ethereum.EventParam("version", ethereum.Value.fromUnsignedBigInt(BigInt.fromString("5"))),
+    );
+
+    handleVersionUpdated(versionUpdatedEvent);
+
+    assert.entityCount("Version", 1);
+    assert.fieldEquals("Version", "5-123456789", "versionNumber", "5");
+    assert.fieldEquals("Version", "5-123456789", "timestamp", "123456789");
+    assert.entityCount("Versions", 1);
+    assert.fieldEquals("Versions", "versions", "currentVersion", "5");
+    assert.fieldEquals("Versions", "versions", "currentTimestamp", "123456789");
   });
 });
 

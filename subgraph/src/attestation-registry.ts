@@ -3,9 +3,8 @@ import {
   AttestationRegistry,
   AttestationReplaced,
   AttestationRevoked,
-  VersionUpdated,
 } from "../generated/AttestationRegistry/AttestationRegistry";
-import { Attestation, Counter, Portal, Schema, Version, Versions } from "../generated/schema";
+import { Attestation, Counter, Portal, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
 
 export function handleAttestationRegistered(event: AttestationRegisteredEvent): void {
@@ -105,23 +104,6 @@ export function handleAttestationReplaced(event: AttestationReplaced): void {
     attestation.replacedBy = event.params.replacedBy;
     attestation.save();
   }
-}
-
-export function handleVersionUpdated(event: VersionUpdated): void {
-  let versions = Versions.load("versions");
-  if (!versions) {
-    versions = new Versions("versions");
-  }
-  const version = new Version(`${event.params.version.toString()}-${event.block.timestamp.toString()}`);
-  version.versionNumber = event.params.version;
-  version.timestamp = event.block.timestamp;
-  version.versions = "versions";
-  version.save();
-
-  versions.history.load().push(version);
-  versions.currentVersion = event.params.version;
-  versions.currentTimestamp = event.block.timestamp;
-  versions.save();
 }
 
 function valueToString(value: ethereum.Value): string {

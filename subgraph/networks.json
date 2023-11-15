@@ -34,5 +34,41 @@
       "address": "0x0f95dCec4c7a93F2637eb13b655F2223ea036B59",
       "startBlock": 346707
     }
+  },
+  "arbitrum-goerli": {
+    "AttestationRegistry": {
+      "address": "0xFEeE5646a93E8fF8035AB12A375eeE4EE4E834b3",
+      "startBlock": 54335728
+    },
+    "ModuleRegistry": {
+      "address": "0x0D9212976f37c96b060f23f9Da5f389cB7A958B7",
+      "startBlock": 54335866
+    },
+    "PortalRegistry": {
+      "address": "0xCF68336D3f34fb688C7708cb285B0F86DFC44dA8",
+      "startBlock": 54335949
+    },
+    "SchemaRegistry": {
+      "address": "0xAAce069f1026bAF1f86f05FC5e0934D2C3957528",
+      "startBlock": 54337444
+    }
+  },
+  "arbitrum-mainnet": {
+    "AttestationRegistry": {
+      "address": "0x335E9719e8eFE2a19A92E07BC4836160fC31cd7C",
+      "startBlock": 149974789
+    },
+    "ModuleRegistry": {
+      "address": "0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba",
+      "startBlock": 149974868
+    },
+    "PortalRegistry": {
+      "address": "0x4042D0A54f997EE3a1b0F51e4813654199BFd8bD",
+      "startBlock": 149974944
+    },
+    "SchemaRegistry": {
+      "address": "0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27",
+      "startBlock": 149975041
+    }
   }
 }

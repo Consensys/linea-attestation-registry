@@ -10,6 +10,7 @@ type Attestation @entity {
   version: BigInt!
   revoked: Boolean!
   subject: Bytes!
+  encodedSubject: Bytes!
   attestationData: Bytes!
   schemaString: String
   decodedData: [String!]
@@ -51,4 +52,10 @@ type Counter @entity {
 
 type Issuer @entity {
   id: ID!
+}
+
+type RegistryVersion @entity {
+  id: ID!
+  versionNumber: Int
+  timestamp: BigInt
 }

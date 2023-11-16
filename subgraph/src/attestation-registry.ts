@@ -3,8 +3,9 @@ import {
   AttestationRegistry,
   AttestationReplaced,
   AttestationRevoked,
+  VersionUpdated,
 } from "../generated/AttestationRegistry/AttestationRegistry";
-import { Attestation, Counter, Portal, Schema } from "../generated/schema";
+import { Attestation, Counter, Portal, RegistryVersion, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
 
 export function handleAttestationRegistered(event: AttestationRegisteredEvent): void {
@@ -23,8 +24,12 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   attestation.revocationDate = attestationData.revocationDate;
   attestation.version = BigInt.fromI32(attestationData.version);
   attestation.revoked = attestationData.revoked;
-  attestation.subject = attestationData.subject;
+  attestation.encodedSubject = attestationData.subject;
   attestation.attestationData = attestationData.attestationData;
+
+  // If the subject looks like an encoded address, decode it to an address
+  const tempSubject = ethereum.decode("address", attestationData.subject);
+  attestation.subject = tempSubject ? tempSubject.toAddress() : attestationData.subject;
 
   // Get matching Schema
   const schema = Schema.load(attestationData.schemaId.toHex());
@@ -104,6 +109,19 @@ export function handleAttestationReplaced(event: AttestationReplaced): void {
     attestation.replacedBy = event.params.replacedBy;
     attestation.save();
   }
+}
+
+export function handleVersionUpdated(event: VersionUpdated): void {
+  let registryVersion = RegistryVersion.load("registry-version");
+
+  if (!registryVersion) {
+    registryVersion = new RegistryVersion("registry-version");
+  }
+
+  registryVersion.versionNumber = event.params.version;
+  registryVersion.timestamp = event.block.timestamp;
+
+  registryVersion.save();
 }
 
 function valueToString(value: ethereum.Value): string {

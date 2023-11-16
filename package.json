@@ -20,8 +20,8 @@
   "scripts": {
     "lint": "eslint .",
     "prepare": "husky install",
-    "prettier:check": "prettier --check \"**/*.{json,md,svg,yml,sol,ts,graphql}\"",
-    "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol,ts,graphql}\""
+    "prettier:check": "prettier --check \"**/*.{json,md,svg,yml,sol,js,ts,graphql}\"",
+    "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol,js,ts,graphql}\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.10.0",

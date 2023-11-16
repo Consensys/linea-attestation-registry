@@ -25,6 +25,7 @@ export type Attestation = OnChainAttestation & {
   id: string;
   schemaString: string;
   decodedData: string[];
+  decodedPayload: object;
 };
 
 export type OnChainAttestation = {

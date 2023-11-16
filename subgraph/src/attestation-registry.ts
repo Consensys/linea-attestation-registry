@@ -1,8 +1,11 @@
 import {
   AttestationRegistered as AttestationRegisteredEvent,
   AttestationRegistry,
+  AttestationReplaced,
+  AttestationRevoked,
+  VersionUpdated,
 } from "../generated/AttestationRegistry/AttestationRegistry";
-import { Attestation, Counter, Schema } from "../generated/schema";
+import { Attestation, Counter, Portal, RegistryVersion, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
 
 export function handleAttestationRegistered(event: AttestationRegisteredEvent): void {
@@ -10,7 +13,7 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
   const attestation = new Attestation(event.params.attestationId.toHex());
 
-  incrementAttestationCount();
+  incrementAttestationCount(attestationData.portal.toHexString());
 
   attestation.schemaId = attestationData.schemaId;
   attestation.replacedBy = attestationData.replacedBy;
@@ -21,8 +24,12 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   attestation.revocationDate = attestationData.revocationDate;
   attestation.version = BigInt.fromI32(attestationData.version);
   attestation.revoked = attestationData.revoked;
-  attestation.subject = attestationData.subject;
+  attestation.encodedSubject = attestationData.subject;
   attestation.attestationData = attestationData.attestationData;
+
+  // If the subject looks like an encoded address, decode it to an address
+  const tempSubject = ethereum.decode("address", attestationData.subject);
+  attestation.subject = tempSubject ? tempSubject.toAddress() : attestationData.subject;
 
   // Get matching Schema
   const schema = Schema.load(attestationData.schemaId.toHex());
@@ -73,11 +80,48 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
       }
 
       // Add this decoded Array to the Attestation Entity
-      attestation.decodedData = tempStringArray;
+      attestation.decodedData =
+        tempStringArray.toString().length < 2000
+          ? tempStringArray
+          : [tempStringArray.toString().substring(0, 2000) + " ... TRUNCATED ..."];
     }
   }
 
   attestation.save();
+}
+
+export function handleAttestationRevoked(event: AttestationRevoked): void {
+  const attestationRegistryContract = AttestationRegistry.bind(event.address);
+  const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
+  const attestation = Attestation.load(event.params.attestationId.toHex());
+
+  if (attestation) {
+    attestation.revoked = true;
+    attestation.revocationDate = attestationData.revocationDate;
+    attestation.save();
+  }
+}
+
+export function handleAttestationReplaced(event: AttestationReplaced): void {
+  const attestation = Attestation.load(event.params.attestationId.toHex());
+
+  if (attestation) {
+    attestation.replacedBy = event.params.replacedBy;
+    attestation.save();
+  }
+}
+
+export function handleVersionUpdated(event: VersionUpdated): void {
+  let registryVersion = RegistryVersion.load("registry-version");
+
+  if (!registryVersion) {
+    registryVersion = new RegistryVersion("registry-version");
+  }
+
+  registryVersion.versionNumber = event.params.version;
+  registryVersion.timestamp = event.block.timestamp;
+
+  registryVersion.save();
 }
 
 function valueToString(value: ethereum.Value): string {
@@ -113,7 +157,7 @@ function valueToString(value: ethereum.Value): string {
   }
 }
 
-function incrementAttestationCount(): void {
+function incrementAttestationCount(portalAddress: string): void {
   let counter = Counter.load("counter");
 
   if (!counter) {
@@ -127,4 +171,17 @@ function incrementAttestationCount(): void {
   }
 
   counter.save();
+
+  // Increment attestation counter for corresponding portal
+  const portal = Portal.load(portalAddress);
+
+  if (portal) {
+    if (!portal.attestationCounter) {
+      portal.attestationCounter = 1;
+    } else {
+      portal.attestationCounter += 1;
+    }
+
+    portal.save();
+  }
 }

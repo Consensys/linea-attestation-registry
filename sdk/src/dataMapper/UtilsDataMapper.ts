@@ -15,7 +15,7 @@ export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unk
   }`;
 
   async getModulesNumber() {
-    return await this.web3Client.readContract({
+    return this.web3Client.readContract({
       abi: abiModuleRegistry,
       address: this.conf.moduleRegistryAddress,
       functionName: "getModulesNumber",
@@ -23,7 +23,7 @@ export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unk
   }
 
   async getPortalsCount() {
-    return await this.web3Client.readContract({
+    return this.web3Client.readContract({
       abi: abiPortalRegistry,
       address: this.conf.portalRegistryAddress,
       functionName: "getPortalsCount",
@@ -31,7 +31,7 @@ export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unk
   }
 
   async getSchemasNumber() {
-    return await this.web3Client.readContract({
+    return this.web3Client.readContract({
       abi: abiSchemaRegistry,
       address: this.conf.schemaRegistryAddress,
       functionName: "getSchemasNumber",
@@ -39,7 +39,7 @@ export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unk
   }
 
   async getVersionNumber() {
-    return await this.web3Client.readContract({
+    return this.web3Client.readContract({
       abi: abiAttestationRegistry,
       address: this.conf.attestationRegistryAddress,
       functionName: "getVersionNumber",
@@ -47,7 +47,7 @@ export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unk
   }
 
   async getAttestationIdCounter() {
-    return await this.web3Client.readContract({
+    return this.web3Client.readContract({
       abi: abiAttestationRegistry,
       address: this.conf.attestationRegistryAddress,
       functionName: "getAttestationIdCounter",

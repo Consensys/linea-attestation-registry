@@ -13,11 +13,11 @@ describe("ModuleDataMapper", () => {
 
       const result = await veraxSdk.module.findOneById(moduleId);
 
-      expect(result).not.toBeNull();
-      expect(result.id).toEqual(moduleId);
-      expect(result.moduleAddress).toEqual(moduleId);
-      expect(result.name).toEqual("Msg Sender Module");
-      expect(result.description).toEqual("Checks if attestation was sent from a specific address");
+      expect(result).not.toBeUndefined();
+      expect(result?.id).toEqual(moduleId);
+      expect(result?.moduleAddress).toEqual(moduleId);
+      expect(result?.name).toEqual("Msg Sender Module");
+      expect(result?.description).toEqual("Checks if attestation was sent from a specific address");
     });
   });
 

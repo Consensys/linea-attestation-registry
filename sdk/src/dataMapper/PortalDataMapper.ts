@@ -1,9 +1,12 @@
 import { AttestationPayload, Portal } from "../types";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
-import { Address, BaseError, ContractFunctionRevertedError, Hash } from "viem";
+import { Address } from "viem";
 import { encode } from "../utils/abiCoder";
 import { Portal_filter, Portal_orderBy } from "../../.graphclient";
+import { abiPortalRegistry } from "../abi/PortalRegistry";
+import { handleSimulationError } from "../utils/simulationErrorHandler";
+import { executeTransaction } from "../utils/transactionSender";
 
 export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filter, Portal_orderBy> {
   typeName = "portal";
@@ -19,33 +22,19 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async simulateAttest(portalAddress: Address, attestationPayload: AttestationPayload, validationPayloads: string[]) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
-    const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
-
-    try {
-      const { request } = await this.web3Client.simulateContract({
-        address: portalAddress,
-        abi: abiDefaultPortal,
-        functionName: "attest",
-        account: this.walletClient.account,
-        args: [
-          [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
-          validationPayloads,
-        ],
-      });
-
-      return request;
-    } catch (err) {
-      this.handleError(err);
+    if (!matchingSchema) {
+      throw new Error("No matching Schema");
     }
+    const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
+    return this.simulatePortalContract(portalAddress, "attest", [
+      [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
+      validationPayloads,
+    ]);
   }
 
   async attest(portalAddress: Address, attestationPayload: AttestationPayload, validationPayloads: string[]) {
     const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
+    return executeTransaction(this.walletClient, request);
   }
 
   async simulateBulkAttest(
@@ -57,6 +46,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
     for (const attestationPayload of attestationPayloads) {
       const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      if (!matchingSchema) {
+        throw new Error("No matching Schema");
+      }
       const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
 
       attestationPayloadsArg.push([
@@ -66,107 +58,185 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         attestationData,
       ]);
     }
-
-    try {
-      const { request } = await this.web3Client.simulateContract({
-        address: portalAddress,
-        abi: abiDefaultPortal,
-        functionName: "bulkAttest",
-        account: this.walletClient.account,
-        args: [attestationPayloadsArg, validationPayloads],
-      });
-
-      return request;
-    } catch (err) {
-      this.handleError(err);
-    }
+    return this.simulatePortalContract(portalAddress, "bulkAttest", [attestationPayloadsArg, validationPayloads]);
   }
 
   async bulkAttest(portalAddress: Address, attestationPayloads: AttestationPayload[], validationPayloads: string[][]) {
     const request = await this.simulateBulkAttest(portalAddress, attestationPayloads, validationPayloads);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
-  }
-
-  async replace() {
-    throw new Error("Not implemented");
+    return executeTransaction(this.walletClient, request);
   }
 
   async simulateRevoke(portalAddress: Address, attestationId: string) {
-    try {
-      const { request } = await this.web3Client.simulateContract({
-        address: portalAddress,
-        abi: abiDefaultPortal,
-        functionName: "revoke",
-        account: this.walletClient.account,
-        args: [attestationId],
-      });
-
-      return request;
-    } catch (err) {
-      this.handleError(err);
-    }
+    return this.simulatePortalContract(portalAddress, "revoke", [attestationId]);
   }
 
   async revoke(portalAddress: Address, attestationId: string) {
     const request = await this.simulateRevoke(portalAddress, attestationId);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
+    return executeTransaction(this.walletClient, request);
   }
 
   async simulateBulkRevoke(portalAddress: Address, attestationIds: string[]) {
-    try {
-      const { request } = await this.web3Client.simulateContract({
-        address: portalAddress,
-        abi: abiDefaultPortal,
-        functionName: "bulkRevoke",
-        account: this.walletClient.account,
-        args: [attestationIds],
-      });
-
-      return request;
-    } catch (err) {
-      this.handleError(err);
-    }
+    return this.simulatePortalContract(portalAddress, "bulkRevoke", [attestationIds]);
   }
 
   async bulkRevoke(portalAddress: Address, attestationIds: string[]) {
     const request = await this.simulateBulkRevoke(portalAddress, attestationIds);
-    const hash: Hash = await this.walletClient.writeContract(request);
-
-    console.log(`Transaction sent with hash ${hash}`);
-
-    return hash;
+    return executeTransaction(this.walletClient, request);
   }
 
-  async massImport() {
-    throw new Error("Not implemented");
-  }
-
-  async register() {
-    throw new Error("Not implemented");
-  }
-
-  async clone() {
-    throw new Error("Not implemented");
-  }
-
-  private handleError(err: unknown): never {
-    if (err instanceof BaseError) {
-      const revertError = err.walk((err) => err instanceof ContractFunctionRevertedError);
-      if (revertError instanceof ContractFunctionRevertedError) {
-        const errorName = revertError.data?.errorName ?? "";
-        console.error(`Failing with ${errorName}`);
-      }
+  async simulateReplace(
+    portalAddress: Address,
+    attestationId: string,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+  ) {
+    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    if (!matchingSchema) {
+      throw new Error("No matching Schema");
     }
-    console.error(err);
+    const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
+    return this.simulatePortalContract(portalAddress, "replace", [
+      attestationId,
+      [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
+      validationPayloads,
+    ]);
+  }
 
-    throw new Error("Simulation failed");
+  async replace(
+    portalAddress: Address,
+    attestationId: string,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+  ) {
+    const request = await this.simulateReplace(portalAddress, attestationId, attestationPayload, validationPayloads);
+    return executeTransaction(this.walletClient, request);
+  }
+
+  async simulateBulkReplace(
+    portalAddress: Address,
+    attestationIds: string[],
+    attestationPayloads: AttestationPayload[],
+    validationPayloads: string[][],
+  ) {
+    const attestationPayloadsArg = [];
+
+    for (const attestationPayload of attestationPayloads) {
+      const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      if (!matchingSchema) {
+        throw new Error("No matching Schema");
+      }
+      const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
+      attestationPayloadsArg.push([
+        attestationPayload.schemaId,
+        attestationPayload.expirationDate,
+        attestationPayload.subject,
+        attestationData,
+      ]);
+    }
+    return this.simulatePortalContract(portalAddress, "bulkReplace", [
+      attestationIds,
+      attestationPayloadsArg,
+      validationPayloads,
+    ]);
+  }
+
+  async bulkReplace(
+    portalAddress: Address,
+    attestationIds: string[],
+    attestationPayloads: AttestationPayload[],
+    validationPayloads: string[][],
+  ) {
+    const request = await this.simulateBulkReplace(
+      portalAddress,
+      attestationIds,
+      attestationPayloads,
+      validationPayloads,
+    );
+    return executeTransaction(this.walletClient, request);
+  }
+
+  async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
+    return this.simulatePortalRegistryContract("register", [id, name, description, isRevocable, ownerName]);
+  }
+
+  async register(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
+    const request = await this.simulateRegister(id, name, description, isRevocable, ownerName);
+    return executeTransaction(this.walletClient, request);
+  }
+
+  async simulateDeployDefaultPortal(
+    modules: Address[],
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+  ) {
+    return this.simulatePortalRegistryContract("deployDefaultPortal", [
+      modules,
+      name,
+      description,
+      isRevocable,
+      ownerName,
+    ]);
+  }
+
+  async deployDefaultPortal(
+    modules: Address[],
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+  ) {
+    const request = await this.simulateDeployDefaultPortal(modules, name, description, isRevocable, ownerName);
+    return executeTransaction(this.walletClient, request);
+  }
+
+  async getPortalByAddress(id: Address) {
+    return this.executePortalRegistryReadMethod("getPortalByAddress", [id]);
+  }
+
+  async isPortalRegistered(id: Address) {
+    return this.executePortalRegistryReadMethod("isRegistered", [id]);
+  }
+
+  private async executePortalRegistryReadMethod(functionName: string, args: unknown[]) {
+    return this.web3Client.readContract({
+      abi: abiPortalRegistry,
+      address: this.conf.portalRegistryAddress,
+      functionName,
+      args,
+    });
+  }
+
+  private async simulatePortalRegistryContract(functionName: string, args: unknown[]) {
+    try {
+      const { request } = await this.web3Client.simulateContract({
+        address: this.conf.portalRegistryAddress,
+        abi: abiPortalRegistry,
+        functionName,
+        account: this.walletClient.account,
+        args,
+      });
+
+      return request;
+    } catch (err) {
+      handleSimulationError(err);
+    }
+  }
+
+  private async simulatePortalContract(portalAddress: Address, functionName: string, args: unknown[]) {
+    try {
+      const { request } = await this.web3Client.simulateContract({
+        address: portalAddress,
+        abi: abiDefaultPortal,
+        functionName,
+        account: this.walletClient.account,
+        args,
+      });
+
+      return request;
+    } catch (err) {
+      handleSimulationError(err);
+    }
   }
 }

@@ -1,4 +1,4 @@
-## Verax Attestation Registry - Contracts
+# Verax Attestation Registry - Contracts
 
 Verax is mainly composed of a set of smart contracts that allows anyone to read and write attestations of any type and
 any subject.
@@ -164,37 +164,17 @@ Transaction hash: 0x15b25752da1dfd458b92069248825ce959f5be104f974d62b4ae95050710
 
 ## Verax contracts deployment
 
-### On the Linea Goerli testnet:
-
 1. Copy the `.env.example` file to a `.env` file
 2. Fill it with your Infura key
 3. Add your private key
-4. To verify the contracts on Etherscan, also add your Etherscan API key
-5. Deploy every contract via the `pnpm run deploy:all:goerli` command
+4. To verify the contracts on the dedicated explorer, also add your Etherscan/Lineascan/Arbiscan API key
+5. Deploy all contracts via the `pnpm run deploy NETWORK_NAME` command (replacing `NETWORK_NAME` with the name of the
+   targeted network)
 6. Note down the summarized addresses (proxies), and the total logs can be of interest too
 7. Gather the first list of issuers addresses
 8. Set the issuers via the PortalRegistry’s `setIssuers` method
 9. Deploy an instance of DefaultPortal via the PortalRegistry’s `deployDefaultPortal` method and note down its address
-10. Verify this contract via `npx hardhat verify --network linea-goerli ADDRESS`
-11. _Optional_: Deploy some valid modules via the `pnpm run deploy:CorrectModule:goerli` command and note down their
-    addresses
-12. _Optional_: Deploy an invalid module via the `pnpm run deploy:IncorrectModule:goerli` command and note down its
-    address
-
-### On the Linea mainnet:
-
-1. Copy the `.env.example` file to a `.env` file
-2. Fill it with your Infura key
-3. Add your private key
-4. To verify the contracts on Etherscan, also add your Etherscan API key
-5. Deploy every contract via the `pnpm run deploy:all` command
-6. Note down the summarized addresses (proxies), and the total logs can be of interest too
-7. Gather the first list of issuers addresses
-8. Set the issuers via the PortalRegistry’s `setIssuers` method
-9. Deploy an instance of DefaultPortal via the PortalRegistry’s `deployDefaultPortal` method and note down its address
-10. Verify this contract via `npx hardhat verify --network linea ADDRESS`
-11. _Optional_: Deploy some valid modules via the `pnpm run deploy:CorrectModule` command and note down their addresses
-12. _Optional_: Deploy an invalid module via the `pnpm run deploy:IncorrectModule` command and note down its address
+10. Verify this contract via `npx hardhat verify --network NETWORK_NAME ADDRESS`
 
 ## Verax contracts upgrade
 
@@ -206,8 +186,8 @@ Run `pnpm run check:upgradeability` to check if the local versions of the regist
 
 ### Check all registries implementations are upgradeable
 
-Run `pnpm run check:upgradeable:goerli` or `pnpm run check:upgradeable` to check if the already deployed registries are
-upgradable to the new local versions.
+Run `pnpm run check:upgradeable NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to check
+if the already deployed registries are upgradable to the new local versions.
 
 :warning: Note: this is a dynamic check, run against the already deployed contracts.
 
@@ -216,26 +196,19 @@ upgradable to the new local versions.
 :warning: Note: this script must only be run on a branch/commit corresponding to the version of the contracts deployed
 on the targeted network!.
 
-Run `pnpm run check:upgradeable:goerli` or `pnpm run check:upgradeable` to re-generate the network files describing the
-deployed contracts. This can be useful if the file was lost/modified since the last upgrade or the first deployment.
+Run `pnpm run check:upgradeable NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to
+re-generate the network files describing the deployed contracts. This can be useful if the file was lost/modified since
+the last upgrade or the first deployment.
 
 :warning: Note: the script will fail if a network file already contains one of the targeted proxy addresses.
 
-### On the Linea Goerli testnet:
+## Start upgrading
 
 1. Check that your `.env` file contains the address of all the proxies
-2. Upgrade only the implementations that changed since the last upgrade via the `pnpm run upgrade:all:goerli` command
-3. _Optional_: Upgrade all the implementations by forcing their re-deployment via the
-   `pnpm run upgrade:all:goerli:force` command
-
-:warning: Note: Forcing the redeployment of all the implementations is more expensive!
-
-### On the Linea mainnet:
-
-1. Check that your `.env` file contains the address of all the proxies
-2. Upgrade only the implementations that changed since the last upgrade via the `pnpm run upgrade:all` command
-3. _Optional_: Upgrade all the implementations by forcing their re-deployment via the `pnpm run upgrade:all:force`
+2. Upgrade only the implementations that changed since the last upgrade via the `pnpm run upgrade:all NETWORK_NAME`
    command
+3. _Optional_: Upgrade all the implementations by forcing their re-deployment via the
+   `pnpm run upgrade:all:force NETWORK_NAME` command
 
 :warning: Note: Forcing the redeployment of all the implementations is more expensive!
 

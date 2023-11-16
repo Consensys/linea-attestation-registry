@@ -15,19 +15,32 @@
   "license": "MIT",
   "author": "Consensys",
   "scripts": {
-    "build": "cp subgraph.mainnet.yaml subgraph.yaml && pnpm run codegen && graph build --network linea-mainnet",
-    "build:goerli": "cp subgraph.goerli.yaml subgraph.yaml && pnpm run codegen:goerli && graph build --network linea-goerli",
-    "codegen": "cp subgraph.mainnet.yaml subgraph.yaml && graph codegen",
-    "codegen:goerli": "cp subgraph.goerli.yaml subgraph.yaml && graph codegen",
-    "create": "source .env && graph create --node $DEPLOY_ENDPOINT_MAINNET Consensys/linea-attestation-registry",
-    "create:goerli": "source .env && graph create --node $DEPLOY_ENDPOINT_GOERLI Consensys/linea-attestation-registry",
-    "deploy": "source .env && cp subgraph.mainnet.yaml subgraph.yaml && pnpm run build && graph deploy --network linea-mainnet --node $DEPLOY_ENDPOINT_MAINNET --headers \"{\\\"Authorization\\\": \\\"Basic $IPFS_IDENTIFIERS\\\"}\" --ipfs $IPFS_ENDPOINT --version-label v0.0.1 Consensys/linea-attestation-registry",
-    "deploy:goerli": "source .env && cp subgraph.goerli.yaml subgraph.yaml && pnpm run build:goerli && graph deploy --network linea-goerli --node $DEPLOY_ENDPOINT_GOERLI --headers \"{\\\"Authorization\\\": \\\"Basic $IPFS_IDENTIFIERS\\\"}\" --ipfs $IPFS_ENDPOINT --version-label v0.0.5 Consensys/linea-attestation-registry",
-    "remove": "source .env && graph remove --node $DEPLOY_ENDPOINT_MAINNET Consensys/linea-attestation-registry",
-    "remove:goerli": "source .env && graph remove --node $DEPLOY_ENDPOINT_GOERLI Consensys/linea-attestation-registry"
+    "build:linea-mainnet": "cp subgraph.linea-mainnet.yaml subgraph.yaml && pnpm run codegen:linea-mainnet && graph build --network linea-mainnet",
+    "build:linea-goerli": "cp subgraph.linea-goerli.yaml subgraph.yaml && pnpm run codegen:linea-goerli && graph build --network linea-goerli",
+    "build:arbitrum-goerli": "cp subgraph.linea-goerli.yaml subgraph.yaml && pnpm run codegen:arbitrum-goerli && graph build --network arbitrum-goerli",
+    "build:arbitrum-mainnet": "cp subgraph.linea-goerli.yaml subgraph.yaml && pnpm run codegen:arbitrum-mainnet && graph build --network arbitrum-mainnet",
+    "codegen:linea-mainnet": "cp subgraph.linea-mainnet.yaml subgraph.yaml && graph codegen",
+    "codegen:linea-goerli": "cp subgraph.linea-goerli.yaml subgraph.yaml && graph codegen",
+    "codegen:arbitrum-goerli": "cp subgraph.linea-goerli.yaml subgraph.yaml && graph codegen",
+    "codegen:arbitrum-mainnet": "cp subgraph.linea-mainnet.yaml subgraph.yaml && graph codegen",
+    "create:linea-mainnet": "source .env && graph create --node $DEPLOY_ENDPOINT_LINEA_MAINNET Consensys/linea-attestation-registry",
+    "create:linea-goerli": "source .env && graph create --node $DEPLOY_ENDPOINT_LINEA_GOERLI Consensys/linea-attestation-registry",
+    "create:arbitrum-goerli": "source .env && graph create --node $DEPLOY_ENDPOINT_ARBITRUM_GOERLI Consensys/verax-arbitrum-goerli",
+    "create:arbitrum-mainnet": "source .env && graph create --node $DEPLOY_ENDPOINT_ARBITRUM_GOERLI Consensys/verax-arbitrum",
+    "deploy:linea-mainnet": "source .env && cp subgraph.linea-mainnet.yaml subgraph.yaml && pnpm run build:linea-mainnet && graph deploy --network linea-mainnet --node $DEPLOY_ENDPOINT_LINEA_MAINNET --headers \"{\\\"Authorization\\\": \\\"Basic $IPFS_IDENTIFIERS\\\"}\" --ipfs $IPFS_ENDPOINT --version-label v0.0.1 Consensys/linea-attestation-registry",
+    "deploy:linea-goerli": "source .env && cp subgraph.linea-goerli.yaml subgraph.yaml && pnpm run build:linea-goerli && graph deploy --network linea-goerli --node $DEPLOY_ENDPOINT_LINEA_GOERLI --headers \"{\\\"Authorization\\\": \\\"Basic $IPFS_IDENTIFIERS\\\"}\" --ipfs $IPFS_ENDPOINT --version-label v0.0.5 Consensys/linea-attestation-registry",
+    "deploy:arbitrum-goerli": "source .env && cp subgraph.arbitrum-goerli.yaml subgraph.yaml && pnpm run build:arbitrum-goerli && graph deploy --network arbitrum-goerli --node $DEPLOY_ENDPOINT_ARBITRUM_GOERLI --headers \"{\\\"Authorization\\\": \\\"Basic $IPFS_IDENTIFIERS\\\"}\" --ipfs $IPFS_ENDPOINT --version-label v0.0.5 Consensys/verax-arbitrum-goerli",
+    "deploy:arbitrum-mainnet": "source .env && cp subgraph.arbitrum-mainnet.yaml subgraph.yaml && pnpm run build:arbitrum-mainnet && graph deploy --network arbitrum-mainnet --node $DEPLOY_ENDPOINT_ARBITRUM_MAINNET --headers \"{\\\"Authorization\\\": \\\"Basic $IPFS_IDENTIFIERS\\\"}\" --ipfs $IPFS_ENDPOINT --version-label v0.0.5 Consensys/verax-arbitrum",
+    "remove:linea-mainnet": "source .env && graph remove --node $DEPLOY_ENDPOINT_LINEA_MAINNET Consensys/linea-attestation-registry",
+    "remove:linea-goerli": "source .env && graph remove --node $DEPLOY_ENDPOINT_LINEA_GOERLI Consensys/linea-attestation-registry",
+    "test": "pnpm run codegen:linea-goerli && graph test",
+    "test:coverage": "graph test -c",
+    "test:docker": "graph test -d"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "0.58.0",
-    "@graphprotocol/graph-ts": "0.31.0"
+    "@graphprotocol/graph-cli": "0.60.0",
+    "@graphprotocol/graph-ts": "0.31.0",
+    "assemblyscript": "0.19.10",
+    "matchstick-as": "0.6.0"
   }
 }

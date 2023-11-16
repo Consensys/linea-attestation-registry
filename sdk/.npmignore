@@ -1,0 +1,14 @@
+.graphclient
+!dist/.graphclient
+examples
+node_modules
+src
+!dist/src
+test
+.env
+.env.example
+.graphclientrc.yml
+.npmignore
+babel-jest.config.cjs
+jest.config.js
+tsconfig.json

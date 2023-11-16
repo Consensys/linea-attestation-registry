@@ -4,11 +4,12 @@ pragma solidity 0.8.21;
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
-import { AbstractPortal } from "./interface/AbstractPortal.sol";
+import { AbstractPortal } from "./abstracts/AbstractPortal.sol";
 import { DefaultPortal } from "./DefaultPortal.sol";
+import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { Portal } from "./types/Structs.sol";
-import { IRouter } from "./interface/IRouter.sol";
-import { IPortal } from "./interface/IPortal.sol";
+import { IRouter } from "./interfaces/IRouter.sol";
+import { IPortal } from "./interfaces/IPortal.sol";
 
 /**
  * @title Portal Registry
@@ -45,6 +46,10 @@ contract PortalRegistry is OwnableUpgradeable {
 
   /// @notice Event emitted when a Portal registered
   event PortalRegistered(string name, string description, address portalAddress);
+  /// @notice Event emitted when a new issuer is added
+  event IssuerAdded(address issuerAddress);
+  /// @notice Event emitted when the issuer is removed
+  event IssuerRemoved(address issuerAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -73,6 +78,8 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function setIssuer(address issuer) public onlyOwner {
     issuers[issuer] = true;
+    // Emit event
+    emit IssuerAdded(issuer);
   }
 
   /**
@@ -81,6 +88,9 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function removeIssuer(address issuer) public onlyOwner {
     issuers[issuer] = false;
+    SchemaRegistry(router.getSchemaRegistry()).updateMatchingSchemaIssuers(issuer, msg.sender);
+    // Emit event
+    emit IssuerRemoved(issuer);
   }
 
   /**

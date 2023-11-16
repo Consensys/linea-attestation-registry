@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "description": "An example Snap written in TypeScript.",
+  "proposedName": "Verax Checker Snap",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Consensys/cet-poc-initiative.git"
+  },
+  "source": {
+    "shasum": "JV5q5A/hKtTx3GDMAFxe4ESsaNIbJgjboZ7JR+maNnw=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/verax-logo-circle.svg",
+        "packageName": "verax-checker",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "endowment:network-access": {},
+    "endowment:transaction-insight": {}
+  },
+  "manifestVersion": "0.1"
+}

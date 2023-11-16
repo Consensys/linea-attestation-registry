@@ -1,16 +1,14 @@
-import { ModuleRegistered as ModuleRegisteredEvent, ModuleRegistry } from "../generated/ModuleRegistry/ModuleRegistry";
+import { ModuleRegistered as ModuleRegisteredEvent } from "../generated/ModuleRegistry/ModuleRegistry";
 import { Counter, Module } from "../generated/schema";
 
 export function handleModuleRegistered(event: ModuleRegisteredEvent): void {
-  const contract = ModuleRegistry.bind(event.address);
-  const moduleData = contract.modules(event.params.moduleAddress);
-  const module = new Module(event.params.moduleAddress.toHex());
+  const module = new Module(event.params.moduleAddress.toHexString());
 
   incrementModulesCount();
 
-  module.moduleAddress = moduleData.getModuleAddress();
-  module.name = moduleData.getName();
-  module.description = moduleData.getDescription();
+  module.moduleAddress = event.params.moduleAddress;
+  module.name = event.params.name;
+  module.description = event.params.description;
 
   module.save();
 }

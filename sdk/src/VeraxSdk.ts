@@ -3,14 +3,25 @@ import AttestationDataMapper from "./dataMapper/AttestationDataMapper";
 import SchemaDataMapper from "./dataMapper/SchemaDataMapper";
 import ModuleDataMapper from "./dataMapper/ModuleDataMapper";
 import PortalDataMapper from "./dataMapper/PortalDataMapper";
-import { createPublicClient, createWalletClient, custom, Hex, http, PublicClient, WalletClient } from "viem";
+import { Address, createPublicClient, createWalletClient, custom, Hex, http, PublicClient, WalletClient } from "viem";
 import UtilsDataMapper from "./dataMapper/UtilsDataMapper";
-import { privateKeyToAccount } from "viem/accounts";
-import dotenv from "dotenv";
+import { PrivateKeyAccount, privateKeyToAccount } from "viem/accounts";
 import { Conf } from "./types";
 import { SDKMode } from "./utils/constants";
 
-dotenv.config({ path: "./.env" });
+let account: PrivateKeyAccount | Address;
+
+if (typeof window === "undefined") {
+  // TODO: return to a "module" setup instead of "CommonJS"
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const dotenv = require("dotenv");
+  dotenv.config({ path: "./.env" });
+  account = privateKeyToAccount(process.env.PRIVATE_KEY as Hex);
+} else {
+  window.ethereum.request({ method: "eth_requestAccounts" }).then((result: Address[]) => {
+    account = result[0];
+  });
+}
 
 export default class VeraxSdk {
   static DEFAULT_LINEA_MAINNET: Conf = {
@@ -25,7 +36,7 @@ export default class VeraxSdk {
 
   static DEFAULT_LINEA_MAINNET_FRONTEND: Conf = {
     ...VeraxSdk.DEFAULT_LINEA_MAINNET,
-    mode: SDKMode.BACKEND,
+    mode: SDKMode.FRONTEND,
   };
 
   static DEFAULT_LINEA_TESTNET: Conf = {
@@ -40,7 +51,7 @@ export default class VeraxSdk {
 
   static DEFAULT_LINEA_TESTNET_FRONTEND: Conf = {
     ...VeraxSdk.DEFAULT_LINEA_TESTNET,
-    mode: SDKMode.BACKEND,
+    mode: SDKMode.FRONTEND,
   };
 
   private readonly web3Client: PublicClient;
@@ -62,11 +73,12 @@ export default class VeraxSdk {
       conf.mode === SDKMode.BACKEND
         ? createWalletClient({
             chain: conf.chain,
-            account: privateKeyToAccount(process.env.PRIVATE_KEY as Hex),
+            account,
             transport: http(),
           })
         : createWalletClient({
             chain: conf.chain,
+            account,
             transport: custom(window.ethereum),
           });
 

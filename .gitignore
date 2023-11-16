@@ -25,6 +25,12 @@ typechain-types
 build
 generated
 subgraph.yaml
+.bin
+.latest.json
+.docker
+
+# SDK
+lib
 
 # Misc
 .DS_Store

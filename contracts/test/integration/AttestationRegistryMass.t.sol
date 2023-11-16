@@ -73,16 +73,12 @@ contract AttestationRegistryMassTest is Test {
       bytes(abi.encode(uint8(4)))
     );
 
-    payloadsToAttest.push(attestationPayload);
-    payloadsToAttest.push(attestationPayload);
+    bytes[] memory validationPayload = new bytes[](1);
 
-    // Create validation payloads
-    bytes[] memory validationPayload1 = new bytes[](1);
-    bytes[] memory validationPayload2 = new bytes[](1);
-
-    validationPayloads = new bytes[][](2);
-    validationPayloads[0] = validationPayload1;
-    validationPayloads[1] = validationPayload2;
+    for (uint256 i = 0; i < 100; i++) {
+      payloadsToAttest.push(attestationPayload);
+      validationPayloads.push(validationPayload);
+    }
   }
 
   function test_bulkAttest() public {

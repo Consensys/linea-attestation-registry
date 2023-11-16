@@ -4,7 +4,8 @@ pragma solidity 0.8.21;
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 import { Schema } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
-import { IRouter } from "./interface/IRouter.sol";
+import { IRouter } from "./interfaces/IRouter.sol";
+import { uncheckedInc256 } from "./Common.sol";
 
 /**
  * @title Schema Registry
@@ -15,6 +16,8 @@ contract SchemaRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) private schemas;
+  /// @dev Associates a Schema ID with the address of the Issuer who created it
+  mapping(bytes32 id => address issuer) private schemasIssuers;
   /// @dev The list of Schema IDs
   bytes32[] public schemaIds;
 
@@ -22,6 +25,12 @@ contract SchemaRegistry is OwnableUpgradeable {
   error RouterInvalid();
   /// @notice Error thrown when a non-issuer tries to call a method that can only be called by an issuer
   error OnlyIssuer();
+  /// @notice Error thrown when any address which is not a portal registry tries to call a method
+  error OnlyPortalRegistry();
+  /// @notice Error thrown when a non-assigned issuer tries to call a method that can only be called by an assigned issuer
+  error OnlyAssignedIssuer();
+  /// @notice Error thrown when an invalid Issuer address is given
+  error IssuerInvalid();
   /// @notice Error thrown when an identical Schema was already registered
   error SchemaAlreadyExists();
   /// @notice Error thrown when attempting to add a Schema without a name
@@ -33,6 +42,8 @@ contract SchemaRegistry is OwnableUpgradeable {
 
   /// @notice Event emitted when a Schema is created and registered
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
+  /// @notice Event emitted when a Schema context is updated
+  event SchemaContextUpdated(bytes32 indexed id);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -57,12 +68,50 @@ contract SchemaRegistry is OwnableUpgradeable {
   }
 
   /**
+   * @notice Checks if the caller is the portal registry.
+   * @param caller the caller address
+   */
+  modifier onlyPortalRegistry(address caller) {
+    bool isCallerPortalRegistry = router.getPortalRegistry() == caller;
+    if (!isCallerPortalRegistry) revert OnlyPortalRegistry();
+    _;
+  }
+
+  /**
    * @notice Changes the address for the Router
    * @dev Only the registry owner can call this method
    */
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
     router = IRouter(_router);
+  }
+
+  /**
+   * @notice Updates a given Schema's Issuer
+   * @param schemaId the Schema's ID
+   * @param issuer the address of the issuer who created the given Schema
+   * @dev Updates issuer for the given schemaId in the `schemaIssuers` mapping
+   *      The issuer must already be registered as an Issuer via the `PortalRegistry`
+   */
+  function updateSchemaIssuer(bytes32 schemaId, address issuer) public onlyOwner {
+    if (!isRegistered(schemaId)) revert SchemaNotRegistered();
+    if (issuer == address(0)) revert IssuerInvalid();
+    schemasIssuers[schemaId] = issuer;
+  }
+
+  /**
+   * @notice Updates issuer address for all schemas associated with old issuer address
+   * @param oldIssuer the address of old issuer
+   * @param newIssuer the address of new issuer
+   * @dev Finds all the schemaIds associated with old issuer and updates the mapping `schemasIssuers`
+   *      for schemaIds found with new issuer
+   */
+  function updateMatchingSchemaIssuers(address oldIssuer, address newIssuer) public onlyPortalRegistry(msg.sender) {
+    for (uint256 i = 0; i < schemaIds.length; i = uncheckedInc256(i)) {
+      if (schemasIssuers[schemaIds[i]] == oldIssuer) {
+        schemasIssuers[schemaIds[i]] = newIssuer;
+      }
+    }
   }
 
   /**
@@ -84,7 +133,8 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @param description the Schema description
    * @param context the Schema context
    * @param schemaString the string defining a Schema
-   * @dev the Schema is stored in a mapping, its ID is added to an array of IDs and an event is emitted
+   * @dev The Schema is stored in the `schemas` mapping, its ID is added to an array of IDs and an event is emitted
+   *      The caller is assigned as the creator of the Schema, via the `schemasIssuers` mapping
    */
   function createSchema(
     string memory name,
@@ -103,6 +153,7 @@ contract SchemaRegistry is OwnableUpgradeable {
 
     schemas[schemaId] = Schema(name, description, context, schemaString);
     schemaIds.push(schemaId);
+    schemasIssuers[schemaId] = msg.sender;
     emit SchemaCreated(schemaId, name, description, context, schemaString);
   }
 
@@ -110,11 +161,14 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @notice Updates the context of a given schema
    * @param schemaId the schema ID
    * @param context the Schema context
-   * @dev Retrieve the Schema with given ID and update its context with new value
+   * @dev Retrieve the Schema with given ID and update its context with new value and an event is emitted
+   *      The caller must be the creator of the given Schema (through the `schemaIssuers` mapping)
    */
-  function updateContext(bytes32 schemaId, string memory context) public onlyIssuers(msg.sender) {
+  function updateContext(bytes32 schemaId, string memory context) public {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
+    if (schemasIssuers[schemaId] != msg.sender) revert OnlyAssignedIssuer();
     schemas[schemaId].context = context;
+    emit SchemaContextUpdated(schemaId);
   }
 
   /**

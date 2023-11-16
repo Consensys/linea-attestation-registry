@@ -1,19 +1,33 @@
-import { SchemaCreated as SchemaCreatedEvent, SchemaRegistry } from "../generated/SchemaRegistry/SchemaRegistry";
+import {
+  SchemaContextUpdated,
+  SchemaCreated as SchemaCreatedEvent,
+  SchemaRegistry,
+} from "../generated/SchemaRegistry/SchemaRegistry";
 import { Counter, Schema } from "../generated/schema";
 
 export function handleSchemaCreated(event: SchemaCreatedEvent): void {
-  const contract = SchemaRegistry.bind(event.address);
-  const schemaData = contract.getSchema(event.params.id);
-  const schema = new Schema(event.params.id.toHex());
+  const schema = new Schema(event.params.id.toHexString());
 
   incrementSchemasCount();
 
-  schema.name = schemaData.name;
-  schema.description = schemaData.description;
-  schema.context = schemaData.context;
-  schema.schema = schemaData.schema;
+  schema.name = event.params.name;
+  schema.description = event.params.description;
+  schema.context = event.params.context;
+  schema.schema = event.params.schemaString;
 
   schema.save();
+}
+
+export function handleSchemaContextUpdated(event: SchemaContextUpdated): void {
+  const schemaRegistryContract = SchemaRegistry.bind(event.address);
+  const newContext = schemaRegistryContract.getSchema(event.params.id).context;
+  // Get matching Schema
+  const schema = Schema.load(event.params.id.toHexString());
+
+  if (schema !== null) {
+    schema.context = newContext;
+    schema.save();
+  }
 }
 
 function incrementSchemasCount(): void {

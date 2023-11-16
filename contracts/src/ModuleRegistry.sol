@@ -2,12 +2,13 @@
 pragma solidity 0.8.21;
 
 import { AttestationPayload, Module } from "./types/Structs.sol";
-import { AbstractModule } from "./interface/AbstractModule.sol";
+import { AbstractModule } from "./abstracts/AbstractModule.sol";
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
-import { IRouter } from "./interface/IRouter.sol";
+import { IRouter } from "./interfaces/IRouter.sol";
+import { uncheckedInc32 } from "./Common.sol";
 
 /**
  * @title Module Registry
@@ -102,8 +103,9 @@ contract ModuleRegistry is OwnableUpgradeable {
     // Check if moduleAddress is a smart contract address
     if (!isContractAddress(moduleAddress)) revert ModuleAddressInvalid();
     // Check if module has implemented AbstractModule
-    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId))
+    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId)) {
       revert ModuleInvalid();
+    }
     // Module address is used to identify uniqueness of the module
     if (bytes(modules[moduleAddress].name).length > 0) revert ModuleAlreadyExists();
 
@@ -131,7 +133,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     if (modulesAddresses.length != validationPayloads.length) revert ModuleValidationPayloadMismatch();
 
     // For each module check if it is registered and call run method
-    for (uint32 i = 0; i < modulesAddresses.length; i++) {
+    for (uint32 i = 0; i < modulesAddresses.length; i = uncheckedInc32(i)) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
       AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayloads[i], tx.origin, value);
     }
@@ -150,7 +152,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
   ) public {
-    for (uint32 i = 0; i < attestationsPayloads.length; i++) {
+    for (uint32 i = 0; i < attestationsPayloads.length; i = uncheckedInc32(i)) {
       runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i], 0);
     }
   }

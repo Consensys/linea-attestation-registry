@@ -1,4 +1,6 @@
 packages:
   - 'contracts'
+  - 'explorer'
   - 'subgraph'
   - 'sdk'
+  - 'snap/packages/*'

@@ -3,10 +3,11 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
-import { CorrectModule } from "./mocks/MockModules.sol";
+import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
 import { Portal } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
+import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
 import { ValidPortalMock } from "./mocks/ValidPortalMock.sol";
 import { InvalidPortalMock } from "./mocks/InvalidPortalMock.sol";
@@ -18,6 +19,7 @@ contract PortalRegistryTest is Test {
   PortalRegistry public portalRegistry;
   address public moduleRegistryAddress;
   address public attestationRegistryAddress;
+  address public schemaRegistryAddress;
   string public expectedName = "Name";
   string public expectedDescription = "Description";
   string public expectedOwnerName = "Owner Name";
@@ -27,6 +29,8 @@ contract PortalRegistryTest is Test {
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address portalAddress);
+  event IssuerAdded(address issuerAddress);
+  event IssuerRemoved(address issuerAddress);
 
   function setUp() public {
     router = new Router();
@@ -37,11 +41,13 @@ contract PortalRegistryTest is Test {
 
     moduleRegistryAddress = address(new ModuleRegistryMock());
     attestationRegistryAddress = address(new AttestationRegistryMock());
+    schemaRegistryAddress = address(new SchemaRegistryMock());
     vm.prank(address(0));
     portalRegistry.updateRouter(address(router));
 
     router.updateModuleRegistry(moduleRegistryAddress);
     router.updateAttestationRegistry(attestationRegistryAddress);
+    router.updateSchemaRegistry(schemaRegistryAddress);
     vm.prank(address(0));
     portalRegistry.setIssuer(user);
 
@@ -70,6 +76,17 @@ contract PortalRegistryTest is Test {
     testPortalRegistry.updateRouter(address(0));
   }
 
+  function test_setIssuer() public {
+    vm.startPrank(address(0));
+    address issuerAddress = makeAddr("Issuer");
+    vm.expectEmit();
+    emit IssuerAdded(issuerAddress);
+    portalRegistry.setIssuer(issuerAddress);
+
+    bool isIssuer = portalRegistry.isIssuer(issuerAddress);
+    assertEq(isIssuer, true);
+  }
+
   function test_removeIssuer() public {
     vm.startPrank(address(0));
     address issuerAddress = makeAddr("Issuer");
@@ -78,6 +95,8 @@ contract PortalRegistryTest is Test {
     bool isIssuer = portalRegistry.isIssuer(issuerAddress);
     assertEq(isIssuer, true);
 
+    vm.expectEmit();
+    emit IssuerRemoved(issuerAddress);
     portalRegistry.removeIssuer(issuerAddress);
     bool isIssuerAfterRemoval = portalRegistry.isIssuer(issuerAddress);
     assertEq(isIssuerAfterRemoval, false);

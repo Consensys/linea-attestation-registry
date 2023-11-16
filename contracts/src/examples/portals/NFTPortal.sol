@@ -3,8 +3,9 @@ pragma solidity 0.8.21;
 
 import { IERC721, ERC721 } from "openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
 import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
-import { AbstractPortal } from "../../interface/AbstractPortal.sol";
+import { AbstractPortal } from "../../abstracts/AbstractPortal.sol";
 import { Attestation, AttestationPayload } from "../../types/Structs.sol";
+import { IPortal } from "../../interfaces/IPortal.sol";
 
 /**
  * @title NFT Portal
@@ -62,6 +63,7 @@ contract NFTPortal is AbstractPortal, ERC721 {
   function supportsInterface(bytes4 interfaceID) public pure virtual override(AbstractPortal, ERC721) returns (bool) {
     return
       interfaceID == type(AbstractPortal).interfaceId ||
+      interfaceID == type(IPortal).interfaceId ||
       interfaceID == type(IERC165).interfaceId ||
       interfaceID == type(IERC721).interfaceId;
   }

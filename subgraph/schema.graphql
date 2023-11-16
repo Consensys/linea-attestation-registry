@@ -10,6 +10,7 @@ type Attestation @entity {
   version: BigInt!
   revoked: Boolean!
   subject: Bytes!
+  encodedSubject: Bytes!
   attestationData: Bytes!
   schemaString: String
   decodedData: [String!]

@@ -24,8 +24,12 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   attestation.revocationDate = attestationData.revocationDate;
   attestation.version = BigInt.fromI32(attestationData.version);
   attestation.revoked = attestationData.revoked;
-  attestation.subject = attestationData.subject;
+  attestation.encodedSubject = attestationData.subject;
   attestation.attestationData = attestationData.attestationData;
+
+  // If the subject looks like an encoded address, decode it to an address
+  const tempSubject = ethereum.decode("address", attestationData.subject);
+  attestation.subject = tempSubject ? tempSubject.toAddress() : attestationData.subject;
 
   // Get matching Schema
   const schema = Schema.load(attestationData.schemaId.toHex());

@@ -1,38 +1,43 @@
 import { ethers, upgrades } from "hardhat";
 
 /*
- * This script aims to statically check if the registries contracts follow the rules for upgradability.
- * It validates implementation contracts without deploying them.
- * OpenZeppelin doc: https://docs.openzeppelin.com/upgrades-plugins/1.x/api-hardhat-upgrades#validate-implementation
- * Note: this does not run the check against the already deployed version of the registries.
+ * This script aims to dynamically check if the contracts are upgradeable.
+ * Validates a new implementation contract without deploying it and without actually upgrading to it.
+ * OpenZeppelin doc: https://docs.openzeppelin.com/upgrades-plugins/1.x/api-hardhat-upgrades#validate-upgrade
+ * Note: this does run the check against the already deployed version of the registries.
  */
 async function main() {
   console.log("Checking contracts for upgradeability...");
 
   console.log("Checking AttestationRegistry...");
+  const attestationRegistryProxyAddress = process.env.ATTESTATION_REGISTRY_ADDRESS ?? "";
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");
-  await upgrades.validateImplementation(AttestationRegistry);
-  console.log("AttestationRegistry OK");
+
+  await upgrades.validateUpgrade(attestationRegistryProxyAddress, AttestationRegistry, { kind: "transparent" });
 
   console.log("Checking ModuleRegistry...");
+  const moduleRegistryProxyAddress = process.env.MODULE_REGISTRY_ADDRESS ?? "";
   const ModuleRegistry = await ethers.getContractFactory("ModuleRegistry");
-  await upgrades.validateImplementation(ModuleRegistry);
-  console.log("ModuleRegistry OK");
+
+  await upgrades.validateUpgrade(moduleRegistryProxyAddress, ModuleRegistry, { kind: "transparent" });
 
   console.log("Checking PortalRegistry...");
+  const portalRegistryProxyAddress = process.env.PORTAL_REGISTRY_ADDRESS ?? "";
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
-  await upgrades.validateImplementation(PortalRegistry);
-  console.log("PortalRegistry OK");
+
+  await upgrades.validateUpgrade(portalRegistryProxyAddress, PortalRegistry, { kind: "transparent" });
 
   console.log("Checking SchemaRegistry...");
+  const schemaRegistryProxyAddress = process.env.SCHEMA_REGISTRY_ADDRESS ?? "";
   const SchemaRegistry = await ethers.getContractFactory("SchemaRegistry");
-  await upgrades.validateImplementation(SchemaRegistry);
-  console.log("SchemaRegistry OK");
+
+  await upgrades.validateUpgrade(schemaRegistryProxyAddress, SchemaRegistry, { kind: "transparent" });
 
   console.log("Checking AttestationReader...");
+  const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS ?? "";
   const AttestationReader = await ethers.getContractFactory("AttestationReader");
-  await upgrades.validateImplementation(AttestationReader);
-  console.log("AttestationReader OK");
+
+  await upgrades.validateUpgrade(attestationReaderProxyAddress, AttestationReader, { kind: "transparent" });
 
   console.log("All contracts are upgradeable!");
 }

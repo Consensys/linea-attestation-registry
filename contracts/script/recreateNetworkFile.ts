@@ -13,37 +13,67 @@ async function main() {
   const routerProxyAddress = process.env.ROUTER_ADDRESS ?? "";
   const Router = await ethers.getContractFactory("Router");
 
-  await upgrades.forceImport(routerProxyAddress, Router, { kind: "transparent" });
+  try {
+    await upgrades.forceImport(routerProxyAddress, Router, { kind: "transparent" });
+    console.log("✅ Router re-imported");
+  } catch (e) {
+    console.log("❌ Router already registered");
+  }
 
   console.log("Re-importing AttestationRegistry...");
   const attestationRegistryProxyAddress = process.env.ATTESTATION_REGISTRY_ADDRESS ?? "";
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");
 
-  await upgrades.forceImport(attestationRegistryProxyAddress, AttestationRegistry, { kind: "transparent" });
+  try {
+    await upgrades.forceImport(attestationRegistryProxyAddress, AttestationRegistry, { kind: "transparent" });
+    console.log("✅ AttestationRegistry re-imported");
+  } catch (e) {
+    console.log("❌ AttestationRegistry already registered");
+  }
 
   console.log("Re-importing ModuleRegistry...");
   const moduleRegistryProxyAddress = process.env.MODULE_REGISTRY_ADDRESS ?? "";
   const ModuleRegistry = await ethers.getContractFactory("ModuleRegistry");
 
-  await upgrades.forceImport(moduleRegistryProxyAddress, ModuleRegistry, { kind: "transparent" });
+  try {
+    await upgrades.forceImport(moduleRegistryProxyAddress, ModuleRegistry, { kind: "transparent" });
+    console.log("✅ ModuleRegistry re-imported");
+  } catch (e) {
+    console.log("❌ ModuleRegistry already registered");
+  }
 
   console.log("Re-importing PortalRegistry...");
   const portalRegistryProxyAddress = process.env.PORTAL_REGISTRY_ADDRESS ?? "";
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
 
-  await upgrades.forceImport(portalRegistryProxyAddress, PortalRegistry, { kind: "transparent" });
+  try {
+    await upgrades.forceImport(portalRegistryProxyAddress, PortalRegistry, { kind: "transparent" });
+    console.log("✅ PortalRegistry re-imported");
+  } catch (e) {
+    console.log("❌ PortalRegistry already registered");
+  }
 
   console.log("Re-importing SchemaRegistry...");
   const schemaRegistryProxyAddress = process.env.SCHEMA_REGISTRY_ADDRESS ?? "";
   const SchemaRegistry = await ethers.getContractFactory("SchemaRegistry");
 
-  await upgrades.forceImport(schemaRegistryProxyAddress, SchemaRegistry, { kind: "transparent" });
+  try {
+    await upgrades.forceImport(schemaRegistryProxyAddress, SchemaRegistry, { kind: "transparent" });
+    console.log("✅ SchemaRegistry re-imported");
+  } catch (e) {
+    console.log("❌ SchemaRegistry already registered");
+  }
 
   console.log("Re-importing AttestationReader...");
   const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS ?? "";
   const AttestationReader = await ethers.getContractFactory("AttestationReader");
 
-  await upgrades.forceImport(attestationReaderProxyAddress, AttestationReader, { kind: "transparent" });
+  try {
+    await upgrades.forceImport(attestationReaderProxyAddress, AttestationReader, { kind: "transparent" });
+    console.log("✅ AttestationReader re-imported");
+  } catch (e) {
+    console.log("❌ AttestationReader already registered");
+  }
 
   console.log("All contracts are re-imported and the network file is re-created!");
 }

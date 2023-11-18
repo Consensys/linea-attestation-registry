@@ -1,5 +1,5 @@
 {
-  "address": "0xCF68336D3f34fb688C7708cb285B0F86DFC44dA8",
+  "address": "0x132f450ff24380aACF3F8917FE9853763D837802",
   "abi": [
     {
       "inputs": [],
@@ -62,6 +62,32 @@
         }
       ],
       "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "issuerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "IssuerAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "issuerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "IssuerRemoved",
       "type": "event"
     },
     {

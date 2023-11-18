@@ -16,10 +16,10 @@ contract SchemaRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) private schemas;
-  /// @dev Associates a Schema ID with the address of the Issuer who created it
-  mapping(bytes32 id => address issuer) private schemasIssuers;
   /// @dev The list of Schema IDs
   bytes32[] public schemaIds;
+  /// @dev Associates a Schema ID with the address of the Issuer who created it
+  mapping(bytes32 id => address issuer) private schemasIssuers;
 
   /// @notice Error thrown when an invalid Router address is given
   error RouterInvalid();

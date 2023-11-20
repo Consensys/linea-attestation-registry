@@ -1,19 +1,30 @@
-import { useState } from "react";
-import veraxLogo from "./assets/verax-logo-circle.svg";
-import "./App.css";
-import { ConnectKitButton } from "connectkit";
-import VeraxSdk from "@verax-attestation-registry/verax-sdk";
+import { useState } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../src/components/ui/table';
+import veraxLogo from './assets/verax-logo-circle.svg';
+import './App.css';
+import { ConnectKitButton } from 'connectkit';
+import VeraxSdk from '@verax-attestation-registry/verax-sdk';
 
 function App() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [attestations, setAttestations] = useState<any[]>([]);
   const [attestationsCounter, setAttestationsCounter] = useState<number>(0);
-  const [txHash, setTxHash] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [txHash, setTxHash] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
   const getSomeAttestations = async () => {
     const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND);
-    setAttestations(await veraxSdk.attestation.findBy(2));
+    const modules = await veraxSdk.attestation.findBy(10, 0, { subject: '0x809e815596abeb3764abf81be2dc39fbbacc9949' });
+    console.log(modules);
+    setAttestations(modules);
   };
   const getAttestationCounter = async () => {
     const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND);
@@ -24,14 +35,14 @@ function App() {
     const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND);
     try {
       const hash = await veraxSdk.portal.attest(
-        "0xeea25bc2ec56cae601df33b8fc676673285e12cc",
+        '0xeea25bc2ec56cae601df33b8fc676673285e12cc',
         {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+          schemaId: '0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738',
           expirationDate: 1693583329,
-          subject: "0x068579b2398992629df8dDbcB048D26d863f7A70",
+          subject: '0x068579b2398992629df8dDbcB048D26d863f7A70',
           attestationData: [{ isBuidler: true }],
         },
-        [],
+        []
       );
       setTxHash(hash);
     } catch (e) {
@@ -44,13 +55,33 @@ function App() {
 
   return (
     <>
+      <Table>
+        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Invoice</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Method</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className="font-medium">INV001</TableCell>
+            <TableCell>Paid</TableCell>
+            <TableCell>Credit Card</TableCell>
+            <TableCell className="text-right">$250.00</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+
       <div>
         <a href="https://docs.ver.ax/" target="_blank">
           <img src={veraxLogo} className="logo" alt="Verax logo" />
         </a>
       </div>
       <h1>Verax Attestation Registry</h1>
-      <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div className="card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <ConnectKitButton />
       </div>
       <div className="card">
@@ -69,8 +100,8 @@ function App() {
       </div>
       <div className="card">
         <button onClick={createAnAttestation}>Create an attestation via a Portal</button>
-        {txHash !== "" && <p>{`Transaction with hash ${txHash} sent!`}</p>}
-        {error !== "" && <p style={{ color: "red" }}>{error}</p>}
+        {txHash !== '' && <p>{`Transaction with hash ${txHash} sent!`}</p>}
+        {error !== '' && <p style={{ color: 'red' }}>{error}</p>}
       </div>
       <p className="read-the-docs">Click on the Verax logo to learn more</p>
     </>

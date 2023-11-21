@@ -97,17 +97,17 @@ Here are the addresses on those networks:
   <summary>Arbitrum Testnet</summary>
 
 - Router =
-  [0xa75A9e735C38e622c54e0206Dc3c67Cb72e5d18f](https://goerli.arbiscan.io/address/0xa75A9e735C38e622c54e0206Dc3c67Cb72e5d18f)
+  [0x746390cB11913d8F93BDF8a974cFEC724039B3Cc](https://goerli.arbiscan.io/address/0x746390cB11913d8F93BDF8a974cFEC724039B3Cc)
 - AttestationRegistry =
-  [0x11a7126095DA0718cd404876a3dbed64B100af41](https://goerli.arbiscan.io/address/0x11a7126095DA0718cd404876a3dbed64B100af41)
+  [0xCD839595FdA5A8111d5E03D42d9D9af60ee67B66](https://goerli.arbiscan.io/address/0xCD839595FdA5A8111d5E03D42d9D9af60ee67B66)
 - ModuleRegistry =
-  [0x8580c2Ab2ae45669e0796645b12E50842f3fAF2A](https://goerli.arbiscan.io/address/0x8580c2Ab2ae45669e0796645b12E50842f3fAF2A)
+  [0x58EE79284bE65b217Db408A0991314f9Ae84348A](https://goerli.arbiscan.io/address/0x58EE79284bE65b217Db408A0991314f9Ae84348A)
 - PortalRegistry =
-  [0x132f450ff24380aACF3F8917FE9853763D837802](https://goerli.arbiscan.io/address/0x132f450ff24380aACF3F8917FE9853763D837802)
+  [0x7d6a914C1e33C141CB4a5e0095c1075E5649aFB2](https://goerli.arbiscan.io/address/0x7d6a914C1e33C141CB4a5e0095c1075E5649aFB2)
 - SchemaRegistry =
-  [0x7b6D73dE7Eae28294F8410891A1D60eA9ee9cEd7](https://goerli.arbiscan.io/address/0x7b6D73dE7Eae28294F8410891A1D60eA9ee9cEd7)
+  [0x129043e80e0B4C7da61a622df0912c31D3414AA7](https://goerli.arbiscan.io/address/0x129043e80e0B4C7da61a622df0912c31D3414AA7)
 - AttestationReader =
-  [0x3cd19Ee51AFE5F176B032cBa5dc213F7aD4bf5Ae](https://goerli.arbiscan.io/address/0x3cd19Ee51AFE5F176B032cBa5dc213F7aD4bf5Ae)
+  [0x055E7d488eCACf9f1B0B42659c331C037505D4a1](https://goerli.arbiscan.io/address/0x055E7d488eCACf9f1B0B42659c331C037505D4a1)
 
 </details>
 

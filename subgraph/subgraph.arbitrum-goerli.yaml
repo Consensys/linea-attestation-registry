@@ -7,7 +7,7 @@ dataSources:
     network: arbitrum-goerli
     source:
       abi: AttestationRegistry
-      address: "0x11a7126095DA0718cd404876a3dbed64B100af41"
+      address: "0xCD839595FdA5A8111d5E03D42d9D9af60ee67B66"
       startBlock: 54335728
     mapping:
       kind: ethereum/events
@@ -27,7 +27,7 @@ dataSources:
     network: arbitrum-goerli
     source:
       abi: ModuleRegistry
-      address: "0x8580c2Ab2ae45669e0796645b12E50842f3fAF2A"
+      address: "0x58EE79284bE65b217Db408A0991314f9Ae84348A"
       startBlock: 54335866
     mapping:
       kind: ethereum/events
@@ -47,7 +47,7 @@ dataSources:
     network: arbitrum-goerli
     source:
       abi: PortalRegistry
-      address: "0x132f450ff24380aACF3F8917FE9853763D837802"
+      address: "0x7d6a914C1e33C141CB4a5e0095c1075E5649aFB2"
       startBlock: 54335949
     mapping:
       kind: ethereum/events
@@ -67,7 +67,7 @@ dataSources:
     network: arbitrum-goerli
     source:
       abi: SchemaRegistry
-      address: "0x7b6D73dE7Eae28294F8410891A1D60eA9ee9cEd7"
+      address: "0x129043e80e0B4C7da61a622df0912c31D3414AA7"
       startBlock: 54337444
     mapping:
       kind: ethereum/events

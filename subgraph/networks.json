@@ -37,19 +37,19 @@
   },
   "arbitrum-goerli": {
     "AttestationRegistry": {
-      "address": "0xFEeE5646a93E8fF8035AB12A375eeE4EE4E834b3",
+      "address": "0xCD839595FdA5A8111d5E03D42d9D9af60ee67B66",
       "startBlock": 54335728
     },
     "ModuleRegistry": {
-      "address": "0x0D9212976f37c96b060f23f9Da5f389cB7A958B7",
+      "address": "0x58EE79284bE65b217Db408A0991314f9Ae84348A",
       "startBlock": 54335866
     },
     "PortalRegistry": {
-      "address": "0xCF68336D3f34fb688C7708cb285B0F86DFC44dA8",
+      "address": "0x7d6a914C1e33C141CB4a5e0095c1075E5649aFB2",
       "startBlock": 54335949
     },
     "SchemaRegistry": {
-      "address": "0xAAce069f1026bAF1f86f05FC5e0934D2C3957528",
+      "address": "0x129043e80e0B4C7da61a622df0912c31D3414AA7",
       "startBlock": 54337444
     }
   },

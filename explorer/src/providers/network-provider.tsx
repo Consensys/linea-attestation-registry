@@ -1,13 +1,16 @@
 import { INetwork, defaultChain } from '@/config';
+import VeraxSdk from '@verax-attestation-registry/verax-sdk';
 import React, { PropsWithChildren, createContext, useContext, useState } from 'react';
 
 interface IContextState {
+  sdk: VeraxSdk;
   network: INetwork;
   setNetwork: (params: INetwork) => void;
   // setNetwork: Dispatch<SetStateAction<INetwork>>;
 }
 
 const initialContextState: IContextState = {
+  sdk: new VeraxSdk(defaultChain.veraxEnv),
   network: defaultChain,
   setNetwork: () => undefined,
 };
@@ -20,15 +23,17 @@ export function useNetworkContext() {
 
 export const NetworkContextProvider: React.FC<PropsWithChildren> = ({ children }): JSX.Element => {
   const [network, setNetwork] = useState<INetwork>(defaultChain);
+  const [sdk, setSdk] = useState<VeraxSdk>(new VeraxSdk(defaultChain.veraxEnv));
 
   const setNetworkHandler = (params: INetwork) => {
-    console.log(params);
+    setSdk(new VeraxSdk(params.veraxEnv));
     return setNetwork(params);
   };
 
   return (
     <NetworkContext.Provider
       value={{
+        sdk,
         network,
         setNetwork: setNetworkHandler,
       }}

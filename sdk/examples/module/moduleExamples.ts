@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import VeraxSdk from "../../src/VeraxSdk";
+import { VeraxSdk } from "../../src/VeraxSdk";
 
 export default class ModuleExamples {
   private veraxSdk: VeraxSdk;

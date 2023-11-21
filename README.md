@@ -37,6 +37,7 @@ the network.</h4>
 ├── explorer    # Explorer frontend to discover the main objects
 ├── sdk         # The Verax SDK to easily interact with the contracts and the subgraph
 ├── subgraph    # The subgraph indexing Verax data
+├── website     # Verax website
 ```
 
 ## Contributing

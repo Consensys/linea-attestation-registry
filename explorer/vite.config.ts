@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react(), tsconfigPaths({ projects: ['./explorer'] })],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

@@ -19,7 +19,7 @@ if (typeof window === "undefined") {
   const dotenv = require("dotenv");
   dotenv.config({ path: "./.env" });
   account = privateKeyToAccount(process.env.PRIVATE_KEY as Hex);
-} else {
+} else if (typeof window.ethereum !== "undefined") {
   window.ethereum.request({ method: "eth_requestAccounts" }).then((result: Address[]) => {
     account = result[0];
   });
@@ -57,7 +57,7 @@ export class VeraxSdk {
   };
 
   private readonly web3Client: PublicClient;
-  private readonly walletClient: WalletClient;
+  private readonly walletClient: WalletClient | undefined;
 
   public attestation: AttestationDataMapper;
   public schema: SchemaDataMapper;
@@ -71,18 +71,22 @@ export class VeraxSdk {
       transport: http(),
     });
 
-    this.walletClient =
-      conf.mode === SDKMode.BACKEND
-        ? createWalletClient({
-            chain: conf.chain,
-            account,
-            transport: http(),
-          })
-        : createWalletClient({
-            chain: conf.chain,
-            account,
-            transport: custom(window.ethereum),
-          });
+    if (typeof account === "undefined") {
+      this.walletClient = undefined;
+    } else {
+      this.walletClient =
+        conf.mode === SDKMode.BACKEND
+          ? createWalletClient({
+              chain: conf.chain,
+              account,
+              transport: http(),
+            })
+          : createWalletClient({
+              chain: conf.chain,
+              account,
+              transport: custom(window.ethereum),
+            });
+    }
 
     this.attestation = new AttestationDataMapper(conf, this.web3Client, this.walletClient, this);
     this.schema = new SchemaDataMapper(conf, this.web3Client, this.walletClient, this);

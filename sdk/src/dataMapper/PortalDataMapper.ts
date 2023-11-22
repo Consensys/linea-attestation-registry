@@ -209,6 +209,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
   }
 
   private async simulatePortalRegistryContract(functionName: string, args: unknown[]) {
+    if (!this.walletClient) throw new Error("Account not available");
     try {
       const { request } = await this.web3Client.simulateContract({
         address: this.conf.portalRegistryAddress,
@@ -225,6 +226,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
   }
 
   private async simulatePortalContract(portalAddress: Address, functionName: string, args: unknown[]) {
+    if (!this.walletClient) throw new Error("Account not available");
     try {
       const { request } = await this.web3Client.simulateContract({
         address: portalAddress,

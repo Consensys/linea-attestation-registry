@@ -73,6 +73,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
   }
 
   private async simulateContract(functionName: string, args: unknown[]) {
+    if (!this.walletClient) throw new Error("Account not available");
     try {
       const { request } = await this.web3Client.simulateContract({
         address: this.conf.schemaRegistryAddress,

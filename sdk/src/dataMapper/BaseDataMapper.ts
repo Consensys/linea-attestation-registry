@@ -8,12 +8,12 @@ import axios from "axios";
 export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   protected readonly conf: Conf;
   protected readonly web3Client: PublicClient;
-  protected readonly walletClient: WalletClient;
+  protected readonly walletClient: WalletClient | undefined;
   protected readonly veraxSdk: VeraxSdk;
   protected abstract typeName: string;
   protected abstract gqlInterface: string;
 
-  constructor(_conf: Conf, _web3Client: PublicClient, _walletClient: WalletClient, _veraxSdk: VeraxSdk) {
+  constructor(_conf: Conf, _web3Client: PublicClient, _walletClient: WalletClient | undefined, _veraxSdk: VeraxSdk) {
     this.conf = _conf;
     this.web3Client = _web3Client;
     this.walletClient = _walletClient;

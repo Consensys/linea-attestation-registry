@@ -1,5 +1,5 @@
 {
-  "name": "linea-attestation-registry-explorer",
+  "name": "linea-attestation-registry-website",
   "version": "0.0.1",
   "description": "Verax Attestation Registry explorer",
   "keywords": [
@@ -22,10 +22,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@verax-attestation-registry/verax-sdk": "workspace:^",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@verax-attestation-registry/verax-sdk": "0.0.14",
+    "axios": "^1.6.1",
     "connectkit": "^1.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.19.0",
     "viem": "^1.18.9",
     "wagmi": "^1.4.6"
   },
@@ -39,6 +45,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
     "typescript": "^5.2.2",
-    "vite": "^4.5.0"
+    "vite": "^4.5.0",
+    "vite-plugin-radar": "^0.9.1"
   }
 }

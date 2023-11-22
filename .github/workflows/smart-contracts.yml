@@ -157,8 +157,43 @@ jobs:
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
-      - name: Check contracts upgradeability
-        run: pnpm run check:upgradeability:ci
+      - name: Check contracts implementations
+        run: pnpm run check:implementations
+
+      - name: Create Linea testnet env file
+        run: |
+          cp ./env/.env.linea-goerli .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Linea testnet
+        run: pnpm run check:upgradeability linea-goerli
+
+      - name: Create Linea mainnet env file
+        run: |
+          rm .env
+          cp ./env/.env.linea .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Linea mainnet
+        run: pnpm run check:upgradeability linea
+
+      - name: Create Arbitrum testnet env file
+        run: |
+          rm .env
+          cp ./env/.env.arbitrum-goerli .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Arbitrum testnet
+        run: pnpm run check:upgradeability arbitrum-goerli
+
+      - name: Create Arbitrum mainnet env file
+        run: |
+          rm .env
+          cp ./env/.env.arbitrum .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Arbitrum mainnet
+        run: pnpm run check:upgradeability arbitrum
 
       - name: Add upgradeability summary
         run: |

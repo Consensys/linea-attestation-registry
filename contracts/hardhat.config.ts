@@ -22,27 +22,25 @@ const config: HardhatUserConfig = {
     hardhat: {},
     "arbitrum-goerli": {
       url: "https://goerli-rollup.arbitrum.io/rpc",
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts:
+        process.env.PRIVATE_KEY_ARBITRUM_TESTNET !== undefined ? [process.env.PRIVATE_KEY_ARBITRUM_TESTNET] : [],
     },
     arbitrum: {
       url: "https://arb1.arbitrum.io/rpc",
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts:
+        process.env.PRIVATE_KEY_ARBITRUM_MAINNET !== undefined ? [process.env.PRIVATE_KEY_ARBITRUM_MAINNET] : [],
     },
     "linea-goerli": {
       url: `https://linea-goerli.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
     },
     linea: {
       url: `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
-    sepolia: {
-      url: `https://sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
     },
     "scroll-sepolia": {
-      url: "https://sepolia-rpc.scroll.io/" || "",
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      url: "https://sepolia-rpc.scroll.io/",
+      accounts: process.env.PRIVATE_KEY_SCROLL_TESTNET !== undefined ? [process.env.PRIVATE_KEY_SCROLL_TESTNET] : [],
     },
   },
   paths: {
@@ -50,11 +48,10 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      "arbitrum-goerli": process.env.ETHERSCAN_API_KEY ?? "",
-      arbitrum: process.env.ETHERSCAN_API_KEY ?? "",
-      "linea-goerli": process.env.ETHERSCAN_API_KEY ?? "",
-      linea: process.env.ETHERSCAN_API_KEY ?? "",
-      sepolia: process.env.ETHERSCAN_API_KEY ?? "",
+      "arbitrum-goerli": process.env.ARBISCAN_API_KEY ?? "",
+      arbitrum: process.env.ARBISCAN_API_KEY ?? "",
+      "linea-goerli": process.env.LINEASCAN_API_KEY ?? "",
+      linea: process.env.LINEASCAN_API_KEY ?? "",
       "scroll-sepolia": process.env.SCROLL_API_KEY ?? "",
     },
     customChains: [

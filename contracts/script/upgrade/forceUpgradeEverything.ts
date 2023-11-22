@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
 async function main() {
-  console.log(`START SCRIPT`);
+  console.log(`Force-upgrading all contracts...`);
 
   const routerProxyAddress = process.env.ROUTER_ADDRESS;
   if (!routerProxyAddress) {
@@ -182,7 +182,7 @@ async function main() {
   console.log(`SchemaRegistry = ${schemaProxyAddress}`);
   console.log(`AttestationReader = ${attestationReaderProxyAddress}`);
 
-  console.log(`END SCRIPT`);
+  console.log(`All contracts were force-upgraded!`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-sdk",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Verax Attestation Registry SDK to interact with the subgraph and the contracts",
   "keywords": [
     "linea-attestation-registry",
@@ -23,7 +23,7 @@
   "scripts": {
     "attestation": "ts-node examples/attestation/index.ts",
     "clean": "rm -rf ./lib",
-    "build": "pnpm run clean && tsc",
+    "build": "pnpm run clean && tsc --p ./tsconfig.build.json",
     "prepack": "npm run build",
     "publish:public": "pnpm publish --access public --no-git-checks",
     "module": "ts-node examples/module/index.ts",

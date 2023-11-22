@@ -32,7 +32,7 @@ var VeraxSdk = require("@verax-attestation-registry/verax-sdk");
 
 ```typescript
 // TypeScript
-import VeraxSdk from "@verax-attestation-registry/verax-sdk";
+import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 ```
 
 ### 2. Instantiate VeraxSdk

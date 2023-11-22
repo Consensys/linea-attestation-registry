@@ -9,6 +9,8 @@ import { PrivateKeyAccount, privateKeyToAccount } from "viem/accounts";
 import { Conf } from "./types";
 import { SDKMode } from "./utils/constants";
 
+export * from "./types";
+
 let account: PrivateKeyAccount | Address;
 
 if (typeof window === "undefined") {
@@ -23,7 +25,7 @@ if (typeof window === "undefined") {
   });
 }
 
-export default class VeraxSdk {
+export class VeraxSdk {
   static DEFAULT_LINEA_MAINNET: Conf = {
     chain: linea,
     mode: SDKMode.BACKEND,

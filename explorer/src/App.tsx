@@ -2,7 +2,7 @@ import { useState } from "react";
 import veraxLogo from "./assets/verax-logo-circle.svg";
 import "./App.css";
 import { ConnectKitButton } from "connectkit";
-import VeraxSdk from "@verax-attestation-registry/verax-sdk";
+import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 
 function App() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

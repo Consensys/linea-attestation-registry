@@ -1,4 +1,4 @@
-import VeraxSdk from "../../src/VeraxSdk";
+import { VeraxSdk } from "../../src/VeraxSdk";
 
 describe("ModuleDataMapper", () => {
   let veraxSdk: VeraxSdk;

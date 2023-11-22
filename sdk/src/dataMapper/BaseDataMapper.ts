@@ -1,7 +1,7 @@
 import { PublicClient, WalletClient } from "viem";
 import { Conf } from "../types";
 import { OrderDirection } from "../../.graphclient";
-import VeraxSdk from "../VeraxSdk";
+import { VeraxSdk } from "../VeraxSdk";
 import { stringifyWhereClause } from "../utils/graphClientHelper";
 import axios from "axios";
 

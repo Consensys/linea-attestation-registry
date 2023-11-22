@@ -10,6 +10,27 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { chains } from '@/config';
 import { useNetworkContext } from '@/providers/network-provider';
+import { APP_ROUTES } from '@/routes/constants';
+import { Link } from 'react-router-dom';
+
+const routes = [
+  {
+    name: 'Issuers',
+    path: APP_ROUTES.ISSUERS,
+  },
+  {
+    name: 'Attestations',
+    path: APP_ROUTES.ATTESTATIONS,
+  },
+  {
+    name: 'Schemas',
+    path: APP_ROUTES.SCHEMAS,
+  },
+  {
+    name: 'Modules',
+    path: APP_ROUTES.MODULES,
+  },
+]
 
 export const Header = ({ children }: PropsWithChildren) => {
   const { network, setNetwork } = useNetworkContext();
@@ -18,20 +39,23 @@ export const Header = ({ children }: PropsWithChildren) => {
     <div className="w-screen min-h-screen bg-gray-100 ">
       <div className="w-screen h-16 px-14 py-3border-b justify-between items-center inline-flex">
         <div className="justify-start items-center gap-12 flex">
-          <img src={logo} className="w-36 h-6 " alt="Verax logo" />
+          <Link to={APP_ROUTES.HOME}>
+            <img src={logo} className="w-36 h-6 cursor-pointer" alt="Verax logo" />
+          </Link>
           <div className="justify-start items-start gap-6 flex">
-            <div className="cursor-pointer justify-center items-center gap-2.5 flex">
-              <div className="text-neutral-900 text-base font-medium">Issuers</div>
-            </div>
-            <div className="cursor-pointer justify-center items-center gap-2.5 flex">
-              <div className="text-neutral-900 text-base font-normal">Attestations</div>
-            </div>
-            <div className="cursor-pointer justify-center items-center gap-2.5 flex">
-              <div className="text-neutral-900 text-base font-normal">Schemas</div>
-            </div>
-            <div className="cursor-pointer justify-center items-center gap-2.5 flex">
-              <div className="text-neutral-900 text-base font-normal">Modules</div>
-            </div>
+            {routes.map((route) => (
+              <div 
+                key={route.name} 
+                className="cursor-pointer justify-center items-center gap-2.5 flex"
+              >
+                <Link 
+                  to={route.path} 
+                  className="text-neutral-900 text-base font-medium"
+                >
+                  {route.name}
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
         <div className="justify-start items-start gap-8 flex">
@@ -42,7 +66,12 @@ export const Header = ({ children }: PropsWithChildren) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {chains.map((chain) => (
-                <DropdownMenuItem onClick={() => setNetwork(chain)}>{chain.name}</DropdownMenuItem>
+                <DropdownMenuItem 
+                  key={chain.name} 
+                  onClick={() => setNetwork(chain)}
+                >
+                  {chain.name}
+                </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>

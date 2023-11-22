@@ -1,24 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Main from './pages/Main';
-import './index.css';
-import { WagmiConfig } from 'wagmi';
-import { ConnectKitProvider } from 'connectkit';
+import { RouterProvider } from 'react-router-dom';
 
-import { Header } from './components/Header';
-import { config } from './config';
-import { NetworkContextProvider } from './providers/network-provider';
+import { router } from './routes';
+
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <NetworkContextProvider>
-      <WagmiConfig config={config}>
-        <ConnectKitProvider>
-          <Header>
-            <Main />
-          </Header>
-        </ConnectKitProvider>
-      </WagmiConfig>
-    </NetworkContextProvider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

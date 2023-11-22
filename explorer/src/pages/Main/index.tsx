@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useNetworkContext } from '@/providers/network-provider';
 import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
 
-function Main() {
+export const Main = () => {
   const [attestations, setAttestations] = useState<Attestation[]>([]);
   const { sdk } = useNetworkContext();
 
@@ -30,7 +30,7 @@ function Main() {
         </TableHeader>
         <TableBody>
           {attestations.map((attestation) => (
-            <TableRow>
+            <TableRow key={attestation.id}>
               <TableCell>{attestation.portal}</TableCell>
               <TableCell>{attestation.id}</TableCell>
               <TableCell>{attestation.schemaString}</TableCell>
@@ -43,5 +43,3 @@ function Main() {
     </>
   );
 }
-
-export default Main;

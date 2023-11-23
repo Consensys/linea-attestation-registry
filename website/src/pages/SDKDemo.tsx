@@ -1,44 +1,69 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./SDKDemo.css";
 import { ConnectKitButton } from "connectkit";
-import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
+import { Attestation, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
+import { useAccount, useNetwork } from "wagmi";
 
 function SDKDemo() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [attestations, setAttestations] = useState<any[]>([]);
+  const [attestations, setAttestations] = useState<Attestation[]>([]);
   const [attestationsCounter, setAttestationsCounter] = useState<number>(0);
   const [txHash, setTxHash] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [veraxSdk, setVeraxSdk] = useState<VeraxSdk>();
+
+  const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
+
+  useEffect(() => {
+    if (chain && address) {
+      const sdkConf = chain.id === 59144 ? VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND : VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND;
+      const sdk = new VeraxSdk(sdkConf, address);
+      setVeraxSdk(sdk);
+    }
+  }, [chain, address]);
+
+  const shortenHexString = (longString: string) => {
+    return `${longString.slice(0, 5)}...${longString.slice(longString.length - 4, longString.length)}`;
+  };
 
   const getSomeAttestations = async () => {
-    const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND);
-    setAttestations(await veraxSdk.attestation.findBy(2));
+    if (veraxSdk) {
+      setAttestations(await veraxSdk.attestation.findBy(2, 1234));
+    } else {
+      console.error("SDK not instantiated");
+    }
   };
 
   const getAttestationCounter = async () => {
-    const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND);
-    setAttestationsCounter((await veraxSdk.utils.getAttestationIdCounter()) as number);
+    if (veraxSdk) {
+      setAttestationsCounter((await veraxSdk.utils.getAttestationIdCounter()) as number);
+    } else {
+      console.error("SDK not instantiated");
+    }
   };
 
   const createAnAttestation = async () => {
-    const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND);
-    try {
-      const hash = await veraxSdk.portal.attest(
-        "0xeea25bc2ec56cae601df33b8fc676673285e12cc",
-        {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x068579b2398992629df8dDbcB048D26d863f7A70",
-          attestationData: [{ isBuidler: true }],
-        },
-        [],
-      );
-      setTxHash(hash);
-    } catch (e) {
-      console.log(e);
-      if (e instanceof Error) {
-        setError(`Oops, something went wrong: ${e.message}`);
+    if (veraxSdk) {
+      try {
+        const hash = await veraxSdk.portal.attest(
+          "0xeea25bc2ec56cae601df33b8fc676673285e12cc",
+          {
+            schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+            expirationDate: 1693583329,
+            subject: "0x068579b2398992629df8dDbcB048D26d863f7A70",
+            attestationData: [{ isBuidler: true }],
+          },
+          [],
+        );
+        setTxHash(hash);
+      } catch (e) {
+        console.log(e);
+        if (e instanceof Error) {
+          setError(`Oops, something went wrong: ${e.message}`);
+        }
       }
+    } else {
+      console.error("SDK not instantiated");
     }
   };
 
@@ -53,11 +78,12 @@ function SDKDemo() {
       <div className="card">
         <button onClick={getSomeAttestations}>Get 2 attestations from the subgraph</button>
         {attestations.length > 0 && (
-          <ul>
+          <>
             {attestations.map((attestation) => (
-              <li key={attestation.id}>{attestation.id}</li>
+              <pre
+                key={attestation.id}>ID = {shortenHexString(attestation.id)} - Subject = {shortenHexString(attestation.subject)}</pre>
             ))}
-          </ul>
+          </>
         )}
       </div>
 
@@ -67,7 +93,7 @@ function SDKDemo() {
       </div>
 
       <div className="card">
-        <button onClick={createAnAttestation}>Create an attestation via a Portal</button>
+        <button onClick={createAnAttestation} disabled={!isConnected}>Create an attestation via a Portal</button>
         {txHash !== "" && <p>{`Transaction with hash ${txHash} sent!`}</p>}
         {error !== "" && <p style={{ color: "red" }}>{error}</p>}
       </div>

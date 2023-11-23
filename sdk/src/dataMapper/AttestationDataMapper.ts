@@ -75,7 +75,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
   async updateRouter(routerAddress: Address) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateMassImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
@@ -101,7 +101,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
   async massImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
     const request = await this.simulateMassImport(portalAddress, attestationPayloads);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateIncrementVersionNumber() {
@@ -110,7 +110,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
   async incrementVersionNumber() {
     const request = await this.simulateIncrementVersionNumber();
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async isRegistered(attestationId: string) {
@@ -166,7 +166,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
   }
 
   private async simulateContract(functionName: string, args: unknown[]) {
-    if (!this.walletClient) throw new Error("Account not available");
+    if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({
         address: this.conf.attestationRegistryAddress,

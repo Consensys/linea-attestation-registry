@@ -13,11 +13,11 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   protected abstract typeName: string;
   protected abstract gqlInterface: string;
 
-  constructor(_conf: Conf, _web3Client: PublicClient, _walletClient: WalletClient | undefined, _veraxSdk: VeraxSdk) {
+  constructor(_conf: Conf, _web3Client: PublicClient, _veraxSdk: VeraxSdk, _walletClient?: WalletClient) {
     this.conf = _conf;
     this.web3Client = _web3Client;
-    this.walletClient = _walletClient;
     this.veraxSdk = _veraxSdk;
+    this.walletClient = _walletClient;
   }
 
   async findOneById(id: string) {

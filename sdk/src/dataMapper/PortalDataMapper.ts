@@ -34,7 +34,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async attest(portalAddress: Address, attestationPayload: AttestationPayload, validationPayloads: string[]) {
     const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateBulkAttest(
@@ -63,7 +63,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async bulkAttest(portalAddress: Address, attestationPayloads: AttestationPayload[], validationPayloads: string[][]) {
     const request = await this.simulateBulkAttest(portalAddress, attestationPayloads, validationPayloads);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateRevoke(portalAddress: Address, attestationId: string) {
@@ -72,7 +72,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async revoke(portalAddress: Address, attestationId: string) {
     const request = await this.simulateRevoke(portalAddress, attestationId);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateBulkRevoke(portalAddress: Address, attestationIds: string[]) {
@@ -81,7 +81,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async bulkRevoke(portalAddress: Address, attestationIds: string[]) {
     const request = await this.simulateBulkRevoke(portalAddress, attestationIds);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateReplace(
@@ -109,7 +109,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     validationPayloads: string[],
   ) {
     const request = await this.simulateReplace(portalAddress, attestationId, attestationPayload, validationPayloads);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateBulkReplace(
@@ -152,7 +152,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
       attestationPayloads,
       validationPayloads,
     );
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
@@ -161,7 +161,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
   async register(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
     const request = await this.simulateRegister(id, name, description, isRevocable, ownerName);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateDeployDefaultPortal(
@@ -188,7 +188,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     ownerName: string,
   ) {
     const request = await this.simulateDeployDefaultPortal(modules, name, description, isRevocable, ownerName);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async getPortalByAddress(id: Address) {
@@ -209,7 +209,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
   }
 
   private async simulatePortalRegistryContract(functionName: string, args: unknown[]) {
-    if (!this.walletClient) throw new Error("Account not available");
+    if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({
         address: this.conf.portalRegistryAddress,
@@ -226,7 +226,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
   }
 
   private async simulatePortalContract(portalAddress: Address, functionName: string, args: unknown[]) {
-    if (!this.walletClient) throw new Error("Account not available");
+    if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({
         address: portalAddress,

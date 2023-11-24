@@ -1,15 +1,15 @@
-import { useParams } from "react-router-dom";
-import useSWR from "swr";
-import { Attestation as AttestationProps } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { useParams } from 'react-router-dom';
+import useSWR from 'swr';
+import { Attestation as AttestationProps } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
 
-import { useNetworkContext } from "@/providers/network-provider";
-import { SWRKeys } from "@/interfaces/swr/enum";
-import { EMPTY_STRING } from "@/constants";
+import { useNetworkContext } from '@/providers/network-provider';
+import { SWRKeys } from '@/interfaces/swr/enum';
+import { EMPTY_STRING } from '@/constants';
 
-import { AttestationDates } from "./AttestationDates";
-import { AttestationInfo } from "./AttestationInfo";
-import { AttestationData } from "./AttestationData";
-import { RelatedAttestations } from "./RelatedAttestations";
+import { AttestationDates } from './AttestationDates';
+import { AttestationInfo } from './AttestationInfo';
+import { AttestationData } from './AttestationData';
+import { RelatedAttestations } from './RelatedAttestations';
 
 export const Attestation = () => {
   const { id } = useParams();
@@ -17,10 +17,10 @@ export const Attestation = () => {
 
   const { data: attestation, isLoading } = useSWR(
     SWRKeys.GET_ATTESTATION_BY_ID,
-    () => sdk.attestation.findOneById(id || EMPTY_STRING) as Promise<AttestationProps>,
+    () => sdk.attestation.findOneById(id || EMPTY_STRING) as Promise<AttestationProps>
   );
   //todo add loading
-  if(isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
   //todo add not found
   if (!attestation) return null;
 

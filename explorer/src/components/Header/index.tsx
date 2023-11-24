@@ -31,7 +31,7 @@ const routes = [
     name: 'Modules',
     path: APP_ROUTES.MODULES,
   },
-]
+];
 
 export const Header = () => {
   const { network, setNetwork } = useNetworkContext();
@@ -44,14 +44,8 @@ export const Header = () => {
         </Link>
         <div className="justify-start items-start gap-6 flex">
           {routes.map((route) => (
-            <div 
-              key={route.name} 
-              className="cursor-pointer justify-center items-center gap-2.5 flex"
-            >
-              <Link 
-                to={route.path} 
-                className="text-neutral-900 text-base font-medium"
-              >
+            <div key={route.name} className="cursor-pointer justify-center items-center gap-2.5 flex">
+              <Link to={route.path} className="text-neutral-900 text-base font-medium">
                 {route.name}
               </Link>
             </div>
@@ -66,10 +60,7 @@ export const Header = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {chains.map((chain) => (
-              <DropdownMenuItem 
-                key={chain.name} 
-                onClick={() => setNetwork(chain)}
-              >
+              <DropdownMenuItem key={chain.name} onClick={() => setNetwork(chain)}>
                 {chain.name}
               </DropdownMenuItem>
             ))}

@@ -1,7 +1,7 @@
-import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
 
 interface RelatedAttestationsProps {
-  attestation: Attestation
+  attestation: Attestation;
 }
 
 export const RelatedAttestations: React.FC<RelatedAttestationsProps> = () => {

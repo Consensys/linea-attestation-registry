@@ -1,7 +1,7 @@
-import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
 
 interface AttestationDataProps {
-  attestation: Attestation
+  attestation: Attestation;
 }
 
 export const AttestationData: React.FC<AttestationDataProps> = () => {
@@ -12,8 +12,7 @@ export const AttestationData: React.FC<AttestationDataProps> = () => {
           Attestation Data
         </div>
       </div>
-      <div className="flex flex-col w-[725px] items-start gap-[16px] p-[16px] relative flex-1 grow bg-[#fafafc] rounded-[8px] overflow-hidden border border-solid border-[#c0cddd]">
-      </div>
+      <div className="flex flex-col w-[725px] items-start gap-[16px] p-[16px] relative flex-1 grow bg-[#fafafc] rounded-[8px] overflow-hidden border border-solid border-[#c0cddd]"></div>
     </div>
   );
 };

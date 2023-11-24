@@ -1,13 +1,11 @@
-import {
-  createBrowserRouter,
-} from "react-router-dom";
+import { createBrowserRouter } from 'react-router-dom';
 
-import { Providers } from "@/providers";
-import { Main } from "@/pages/Main";
-import { Attestations } from "@/pages/Attestations";
-import { Attestation } from "@/pages/Attestation";
+import { Providers } from '@/providers';
+import { Main } from '@/pages/Main';
+import { Attestations } from '@/pages/Attestations';
+import { Attestation } from '@/pages/Attestation';
 
-import { APP_ROUTES } from "./constants";
+import { APP_ROUTES } from './constants';
 
 export const router = createBrowserRouter([
   {
@@ -16,16 +14,16 @@ export const router = createBrowserRouter([
     children: [
       {
         path: APP_ROUTES.HOME,
-        element: <Main />
+        element: <Main />,
       },
       {
         path: APP_ROUTES.ATTESTATIONS,
-        element: <Attestations />
+        element: <Attestations />,
       },
       {
         path: APP_ROUTES.ATTESTATION_BY_ID,
-        element: <Attestation />
+        element: <Attestation />,
       },
-    ]
+    ],
   },
 ]);

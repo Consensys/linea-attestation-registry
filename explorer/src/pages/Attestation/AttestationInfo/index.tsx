@@ -1,19 +1,19 @@
-import { toModuleById, toSchemaById } from "@/routes/constants";
-import { Attestation, Schema } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
-import { Link, useNavigate } from "react-router-dom";
-import { SWRKeys } from "@/interfaces/swr/enum";
-import { useNetworkContext } from "@/providers/network-provider";
-import useSWR from "swr";
+import { toModuleById, toSchemaById } from '@/routes/constants';
+import { Attestation, Schema } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
+import { Link, useNavigate } from 'react-router-dom';
+import { SWRKeys } from '@/interfaces/swr/enum';
+import { useNetworkContext } from '@/providers/network-provider';
+import useSWR from 'swr';
 
 const SchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
   const { sdk } = useNetworkContext();
 
   const { data: schema, isLoading } = useSWR(
     SWRKeys.GET_SCHEMA_BY_ID,
-    () => sdk.schema.findOneById(schemaId) as Promise<Schema>,
+    () => sdk.schema.findOneById(schemaId) as Promise<Schema>
   );
   //todo add loading
-  if(isLoading) return <p>Loading schema...</p>;
+  if (isLoading) return <p>Loading schema...</p>;
   //todo add not found
   if (!schema) return null;
 
@@ -21,9 +21,7 @@ const SchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
     <div className="flex flex-col w-full max-w-[475px] gap-[5px] p-[21px] rounded-[6px] border border-solid border-[#c5c5cc] items-start">
       <div className="flex flex-col gap-[16px] self-stretch w-full items-start">
         <div className="flex justify-between self-stretch w-full items-start">
-          <div className="w-fit font-normal text-[#606476] text-sm">
-            Schema
-          </div>
+          <div className="w-fit font-normal text-[#606476] text-sm">Schema</div>
           <Link to={toSchemaById(schemaId)} className="w-fit font-normal text-[#161517] text-sm tracking-[0] underline">
             View Details
           </Link>
@@ -36,13 +34,11 @@ const SchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
             {schema.description}
           </p>
         </div>
-        <div className="font-medium text-[#161517] text-sm self-stretch overflow-hidden text-ellipsis">
-          {schema.id}
-        </div>
+        <div className="font-medium text-[#161517] text-sm self-stretch overflow-hidden text-ellipsis">{schema.id}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const navigate = useNavigate();
@@ -54,16 +50,16 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     {
       title: 'PORTAL',
       value: attestation.portal,
-      get link() { 
-        return toModuleById(this.value)
-      }
+      get link() {
+        return toModuleById(this.value);
+      },
     },
     {
       title: 'SUBJECT',
-      value: attestation.subject
+      value: attestation.subject,
     },
-  ]
-  
+  ];
+
   return (
     <div className="inline-flex flex-col h-[477px] items-start gap-[32px] p-[24px] relative bg-[#f4f4f8] rounded-[12px]">
       <div className="inline-flex flex-col gap-[24px] items-start relative flex-[0_0_auto]">
@@ -73,7 +69,9 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
               {item.title.toUpperCase()}
             </div>
             <div
-              className={`relative w-fit [font-family:'Inter-Medium',Helvetica] font-medium text-[#161517] text-[16px] tracking-[0] whitespace-nowrap ${item.link ? "cursor-pointer hover:underline" : ""}`}
+              className={`relative w-fit [font-family:'Inter-Medium',Helvetica] font-medium text-[#161517] text-[16px] tracking-[0] whitespace-nowrap ${
+                item.link ? 'cursor-pointer hover:underline' : ''
+              }`}
               onClick={() => item.link && navigate(item.link)}
             >
               {item.value}
@@ -83,5 +81,5 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
       </div>
       <SchemaCard schemaId={attestation.schemaId} />
     </div>
-  )
-}
+  );
+};

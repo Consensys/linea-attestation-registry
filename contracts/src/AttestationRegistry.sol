@@ -323,16 +323,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @return The attestation ID
    */
   function generateAttestationId(uint256 id) public view returns (bytes32) {
-    // Convert the basic attestation ID to a bytes32 value
-    bytes32 originalCounterValue = bytes32(abi.encode(id));
-
-    // Clear the first byte of the original bytes32 to make room for the chain ID
-    bytes32 clearedCounterValue = (originalCounterValue << 8) >> 8;
-
-    // Shift the chain ID to the left by 240 bits to position it as the first byte
-    bytes32 shiftedChainPrefix = bytes32(chainPrefix) << 240;
-
-    // Combine the shifted chain ID and the cleared counter value to form the attestation ID
-    return shiftedChainPrefix | clearedCounterValue;
+    // Combine the chain prefix and the ID
+    return bytes32(abi.encode(chainPrefix + id));
   }
 }

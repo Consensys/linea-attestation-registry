@@ -17,7 +17,7 @@ contract AttestationRegistryTest is Test {
   AttestationRegistry public attestationRegistry;
   address public portalRegistryAddress;
   address public schemaRegistryAddress;
-  uint256 public initialChainPrefix = 3;
+  uint256 public initialChainPrefix = 0x0003000000000000000000000000000000000000000000000000000000000000;
 
   event Initialized(uint8 version);
   event AttestationRegistered(bytes32 indexed attestationId);
@@ -93,10 +93,10 @@ contract AttestationRegistryTest is Test {
     assertEq(chainPrefix, initialChainPrefix);
 
     vm.prank(address(0));
-    testAttestationRegistry.updateChainPrefix(1000000000000000000000000000000000000000000000000000000000000);
+    testAttestationRegistry.updateChainPrefix(0x0001000000000000000000000000000000000000000000000000000000000000);
 
     chainPrefix = testAttestationRegistry.getChainPrefix();
-    assertEq(chainPrefix, 1000000000000000000000000000000000000000000000000000000000000);
+    assertEq(chainPrefix, 0x0001000000000000000000000000000000000000000000000000000000000000);
   }
 
   function test_updateRouter_InvalidParameter() public {

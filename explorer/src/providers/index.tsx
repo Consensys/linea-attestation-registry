@@ -12,9 +12,10 @@ export const Providers = () => {
     <NetworkContextProvider>
       <WagmiConfig config={config}>
         <ConnectKitProvider>
-          <Header>
+          <div className="w-screen min-h-screen flex-col">
+            <Header />
             <Outlet />
-          </Header>
+          </div>
         </ConnectKitProvider>
       </WagmiConfig>
     </NetworkContextProvider>

@@ -1,12 +1,11 @@
-import { INetwork, defaultChain } from '@/config';
-import VeraxSdk from '@verax-attestation-registry/verax-sdk';
 import React, { PropsWithChildren, createContext, useContext, useState } from 'react';
+import VeraxSdk from '@verax-attestation-registry/verax-sdk';
+import { INetwork, defaultChain } from '@/config';
 
 interface IContextState {
   sdk: VeraxSdk;
   network: INetwork;
   setNetwork: (params: INetwork) => void;
-  // setNetwork: Dispatch<SetStateAction<INetwork>>;
 }
 
 const initialContextState: IContextState = {

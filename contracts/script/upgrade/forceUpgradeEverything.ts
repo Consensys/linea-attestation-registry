@@ -11,27 +11,27 @@ async function main() {
     throw new Error("Router proxy address not found");
   }
 
-  const attestationProxyAddress = process.env.ATTESTATION_REGISTRY_ADDRESS ?? "";
+  const attestationProxyAddress = process.env.ATTESTATION_REGISTRY_ADDRESS;
   if (!attestationProxyAddress) {
     throw new Error("Attestation proxy address not found");
   }
 
-  const moduleProxyAddress = process.env.MODULE_REGISTRY_ADDRESS ?? "";
+  const moduleProxyAddress = process.env.MODULE_REGISTRY_ADDRESS;
   if (!moduleProxyAddress) {
     throw new Error("Module proxy address not found");
   }
 
-  const portalProxyAddress = process.env.PORTAL_REGISTRY_ADDRESS ?? "";
+  const portalProxyAddress = process.env.PORTAL_REGISTRY_ADDRESS;
   if (!portalProxyAddress) {
     throw new Error("Portal proxy address not found");
   }
 
-  const schemaProxyAddress = process.env.SCHEMA_REGISTRY_ADDRESS ?? "";
+  const schemaProxyAddress = process.env.SCHEMA_REGISTRY_ADDRESS;
   if (!schemaProxyAddress) {
     throw new Error("Schema proxy address not found");
   }
 
-  const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS ?? "";
+  const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS;
   if (!attestationReaderProxyAddress) {
     throw new Error("Attestation reader proxy address not found");
   }

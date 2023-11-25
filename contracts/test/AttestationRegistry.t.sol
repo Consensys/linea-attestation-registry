@@ -8,6 +8,7 @@ import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { Attestation, AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
+import { AttestationRegistryHarness } from "./harness/AttestationRegistryHarness.sol";
 
 contract AttestationRegistryTest is Test {
   address public portal = makeAddr("portal");
@@ -15,6 +16,7 @@ contract AttestationRegistryTest is Test {
   address public attester = makeAddr("attester");
   Router public router;
   AttestationRegistry public attestationRegistry;
+  AttestationRegistryHarness public attestationRegistryHarness;
   address public portalRegistryAddress;
   address public schemaRegistryAddress;
   uint256 public initialChainPrefix = 0x0003000000000000000000000000000000000000000000000000000000000000;
@@ -31,6 +33,7 @@ contract AttestationRegistryTest is Test {
     router = new Router();
     router.initialize();
 
+    attestationRegistryHarness = new AttestationRegistryHarness();
     attestationRegistry = new AttestationRegistry();
     router.updateAttestationRegistry(address(attestationRegistry));
 
@@ -40,6 +43,8 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.updateRouter(address(router));
     vm.prank(address(0));
     attestationRegistry.updateChainPrefix(initialChainPrefix);
+    vm.prank(address(0));
+    attestationRegistryHarness.updateChainPrefix(initialChainPrefix);
 
     router.updatePortalRegistry(portalRegistryAddress);
     router.updateSchemaRegistry(schemaRegistryAddress);
@@ -52,9 +57,13 @@ contract AttestationRegistryTest is Test {
     address routerAddress = address(attestationRegistry.router());
     assertEq(routerAddress, address(router));
 
-    // Check Chain Prefix value
+    // Check Chain Prefix value in the tested contract
     uint256 chainPrefix = attestationRegistry.getChainPrefix();
     assertEq(chainPrefix, initialChainPrefix);
+
+    // Check Chain Prefix value in the harness contract
+    uint256 chainPrefixHarness = attestationRegistryHarness.getChainPrefix();
+    assertEq(chainPrefixHarness, initialChainPrefix);
 
     // Check AttestationRegistry address
     address testAttestationRegistry = address(router.getAttestationRegistry());
@@ -206,9 +215,9 @@ contract AttestationRegistryTest is Test {
     payloadsToAttest[1] = attestationsPayloads[1];
 
     vm.expectEmit(true, true, true, true);
-    emit AttestationRegistered(attestationRegistry.generateAttestationId(1));
+    emit AttestationRegistered(attestationRegistryHarness.exposed_generateAttestationId(1));
     vm.expectEmit(true, true, true, true);
-    emit AttestationRegistered(attestationRegistry.generateAttestationId(2));
+    emit AttestationRegistered(attestationRegistryHarness.exposed_generateAttestationId(2));
     vm.prank(address(0));
     attestationRegistry.massImport(payloadsToAttest, portal);
   }
@@ -224,7 +233,7 @@ contract AttestationRegistryTest is Test {
     vm.prank(portal);
     attestationRegistry.attest(attestationPayload, attester);
 
-    bytes32 attestationIdReplacing = attestationRegistry.generateAttestationId(2);
+    bytes32 attestationIdReplacing = attestationRegistryHarness.exposed_generateAttestationId(2);
 
     vm.prank(portal);
     vm.expectEmit(true, true, true, true);
@@ -287,7 +296,7 @@ contract AttestationRegistryTest is Test {
     bytes32[] memory attestationIds = new bytes32[](3);
     attestationIds[0] = attestation1.attestationId;
     attestationIds[1] = attestation2.attestationId;
-    attestationIds[2] = attestationRegistry.generateAttestationId((3));
+    attestationIds[2] = attestationRegistryHarness.exposed_generateAttestationId((3));
 
     vm.startPrank(portal);
     attestationRegistry.bulkAttest(payloadsToAttest, attester);
@@ -305,10 +314,10 @@ contract AttestationRegistryTest is Test {
     vm.startPrank(portal, attester);
     attestationRegistry.attest(attestationPayload, attester);
     // Assert initial state is a valid attestation
-    bytes32 attestationId = attestationRegistry.generateAttestationId((1));
+    bytes32 attestationId = attestationRegistryHarness.exposed_generateAttestationId((1));
     Attestation memory registeredAttestation = attestationRegistry.getAttestation(attestationId);
 
-    assertEq(registeredAttestation.attestationId, attestationRegistry.generateAttestationId(1));
+    assertEq(registeredAttestation.attestationId, attestationRegistryHarness.exposed_generateAttestationId(1));
     assertFalse(registeredAttestation.revoked);
     assertEq(registeredAttestation.revocationDate, 0);
     assertEq(registeredAttestation.portal, portal);
@@ -321,7 +330,7 @@ contract AttestationRegistryTest is Test {
 
     // Assert final state is a revoked attestation
     Attestation memory revokedAttestation = attestationRegistry.getAttestation(
-      attestationRegistry.generateAttestationId(1)
+      attestationRegistryHarness.exposed_generateAttestationId(1)
     );
     assertTrue(revokedAttestation.revoked);
     assertEq(revokedAttestation.revocationDate, block.timestamp);
@@ -336,7 +345,7 @@ contract AttestationRegistryTest is Test {
     vm.startPrank(portal, attester);
     attestationRegistry.attest(attestationPayload, attester);
 
-    bytes32 attestationIdToRevoke = attestationRegistry.generateAttestationId(1);
+    bytes32 attestationIdToRevoke = attestationRegistryHarness.exposed_generateAttestationId(1);
 
     vm.expectEmit();
     emit AttestationRevoked(attestationIdToRevoke);
@@ -349,7 +358,7 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_revoke_AttestationNotAttested() public {
-    bytes32 attestationIdToRevoke = attestationRegistry.generateAttestationId(1);
+    bytes32 attestationIdToRevoke = attestationRegistryHarness.exposed_generateAttestationId(1);
     vm.expectRevert(AttestationRegistry.AttestationNotAttested.selector);
     attestationRegistry.revoke(attestationIdToRevoke);
   }
@@ -364,7 +373,7 @@ contract AttestationRegistryTest is Test {
     vm.prank(portal);
     attestationRegistry.attest(attestationPayload, attester);
 
-    bytes32 attestationIdToRevoke = attestationRegistry.generateAttestationId(1);
+    bytes32 attestationIdToRevoke = attestationRegistryHarness.exposed_generateAttestationId(1);
     vm.expectRevert(AttestationRegistry.OnlyAttestingPortal.selector);
     vm.prank(user);
     attestationRegistry.revoke(attestationIdToRevoke);
@@ -390,7 +399,7 @@ contract AttestationRegistryTest is Test {
 
     attestationRegistry.attest(attestationPayload, attester);
 
-    bytes32 attestationIdToRevoke = attestationRegistry.generateAttestationId(1);
+    bytes32 attestationIdToRevoke = attestationRegistryHarness.exposed_generateAttestationId(1);
 
     vm.expectRevert(AttestationRegistry.AttestationNotRevocable.selector);
     attestationRegistry.revoke(attestationIdToRevoke);
@@ -419,9 +428,9 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.attest(attestationPayloads[1], attester);
     attestationRegistry.attest(attestationPayloads[2], attester);
 
-    bytes32 attestationId1 = attestationRegistry.generateAttestationId((1));
-    bytes32 attestationId2 = attestationRegistry.generateAttestationId((2));
-    bytes32 attestationId3 = attestationRegistry.generateAttestationId((3));
+    bytes32 attestationId1 = attestationRegistryHarness.exposed_generateAttestationId((1));
+    bytes32 attestationId2 = attestationRegistryHarness.exposed_generateAttestationId((2));
+    bytes32 attestationId3 = attestationRegistryHarness.exposed_generateAttestationId((3));
 
     // Assert initial state is a valid attestation
     Attestation memory registeredAttestation1 = attestationRegistry.getAttestation(attestationId1);
@@ -481,7 +490,7 @@ contract AttestationRegistryTest is Test {
   function test_isRegistered(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);
-    bool isRegistered = attestationRegistry.isRegistered(attestationRegistry.generateAttestationId(1));
+    bool isRegistered = attestationRegistry.isRegistered(attestationRegistryHarness.exposed_generateAttestationId(1));
     assertFalse(isRegistered);
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
     attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
@@ -512,7 +521,7 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_getAttestation_AttestationNotAttested() public {
-    bytes32 attestationIdNotAttested = attestationRegistry.generateAttestationId((1));
+    bytes32 attestationIdNotAttested = attestationRegistryHarness.exposed_generateAttestationId((1));
     vm.expectRevert(AttestationRegistry.AttestationNotAttested.selector);
     attestationRegistry.getAttestation(attestationIdNotAttested);
   }
@@ -637,10 +646,10 @@ contract AttestationRegistryTest is Test {
   }
 
   function test_attestationRegistry() public {
-    bytes32 attestationId = attestationRegistry.generateAttestationId(0);
+    bytes32 attestationId = attestationRegistryHarness.exposed_generateAttestationId(0);
     assertEq(attestationId, 0x0003000000000000000000000000000000000000000000000000000000000000);
 
-    attestationId = attestationRegistry.generateAttestationId(10);
+    attestationId = attestationRegistryHarness.exposed_generateAttestationId(10);
     assertEq(attestationId, 0x000300000000000000000000000000000000000000000000000000000000000a);
   }
 
@@ -653,7 +662,7 @@ contract AttestationRegistryTest is Test {
     schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
 
     Attestation memory attestation = Attestation(
-      attestationRegistry.generateAttestationId(id),
+      attestationRegistryHarness.exposed_generateAttestationId(id),
       attestationPayload.schemaId,
       bytes32(0),
       attester,

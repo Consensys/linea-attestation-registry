@@ -322,7 +322,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param id The attestation ID (coming after the chain prefix)
    * @return The attestation ID
    */
-  function generateAttestationId(uint256 id) public view returns (bytes32) {
+  function generateAttestationId(uint256 id) internal view returns (bytes32) {
     // Combine the chain prefix and the ID
     return bytes32(abi.encode(chainPrefix + id));
   }

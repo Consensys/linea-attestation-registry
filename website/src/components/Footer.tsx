@@ -31,13 +31,6 @@ function Navbar() {
         </li>
 
         <li className="social-icon__item">
-          <Link className="social-icon__link" to={"https://community.ver.ax"}
-                target={"_blank"}>
-            <FontAwesomeIcon icon={faDiscourse} />
-          </Link>
-        </li>
-
-        <li className="social-icon__item">
           <Link className="social-icon__link" to={"https://hey.xyz/u/verax"}
                 target={"_blank"}>
             <FontAwesomeIcon icon={faLeaf} />

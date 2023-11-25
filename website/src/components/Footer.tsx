@@ -1,6 +1,6 @@
 import "./Footer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDiscord, faDiscourse, faGithub, faTelegram } from "@fortawesome/free-brands-svg-icons";
+import { faDiscord, faGithub, faTelegram } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
 import { faBook, faLeaf } from "@fortawesome/free-solid-svg-icons";
 

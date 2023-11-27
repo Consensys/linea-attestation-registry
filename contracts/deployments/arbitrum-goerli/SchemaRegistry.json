@@ -1,5 +1,5 @@
 {
-  "address": "0xAAce069f1026bAF1f86f05FC5e0934D2C3957528",
+  "address": "0x129043e80e0B4C7da61a622df0912c31D3414AA7",
   "abi": [
     {
       "inputs": [],
@@ -8,7 +8,22 @@
     },
     {
       "inputs": [],
+      "name": "IssuerInvalid",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "OnlyAssignedIssuer",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "OnlyIssuer",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "OnlyPortalRegistry",
       "type": "error"
     },
     {
@@ -66,6 +81,19 @@
         }
       ],
       "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "id",
+          "type": "bytes32"
+        }
+      ],
+      "name": "SchemaContextUpdated",
       "type": "event"
     },
     {
@@ -319,11 +347,47 @@
       "inputs": [
         {
           "internalType": "address",
+          "name": "oldIssuer",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "newIssuer",
+          "type": "address"
+        }
+      ],
+      "name": "updateMatchingSchemaIssuers",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
           "name": "_router",
           "type": "address"
         }
       ],
       "name": "updateRouter",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "schemaId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "issuer",
+          "type": "address"
+        }
+      ],
+      "name": "updateSchemaIssuer",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

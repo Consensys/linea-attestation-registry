@@ -12,6 +12,7 @@ generated
 build
 .graphclient
 snap
+dist
 
 # files
 *.env

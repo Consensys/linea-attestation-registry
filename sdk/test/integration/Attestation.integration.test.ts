@@ -1,4 +1,4 @@
-import VeraxSdk from "../../src/VeraxSdk";
+import { VeraxSdk } from "../../src/VeraxSdk";
 
 describe("AttestationDataMapper", () => {
   let veraxSdk: VeraxSdk;
@@ -28,6 +28,7 @@ describe("AttestationDataMapper", () => {
       expect(result?.attestationData).toEqual("0x0000000000000000000000000000000000000000000000000000000000000004");
       expect(result?.schemaString).toEqual("uint8");
       expect(result?.decodedData).toEqual(["0x4"]);
+      expect(result?.decodedPayload).toEqual([4]);
     });
   });
 

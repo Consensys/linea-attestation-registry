@@ -22,7 +22,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
 
   async updateRouter(routerAddress: Address) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateCreate(name: string, description: string, context: string, schemaString: string) {
@@ -31,7 +31,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
 
   async create(name: string, description: string, context: string, schemaString: string) {
     const request = await this.simulateCreate(name, description, context, schemaString);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async simulateUpdateContext(schemaId: string, context: string) {
@@ -40,7 +40,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
 
   async updateContext(schemaId: string, context: string) {
     const request = await this.simulateUpdateContext(schemaId, context);
-    return executeTransaction(this.walletClient, request);
+    return executeTransaction(request, this.walletClient);
   }
 
   async getIdFromSchemaString(schema: string) {
@@ -73,6 +73,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
   }
 
   private async simulateContract(functionName: string, args: unknown[]) {
+    if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({
         address: this.conf.schemaRegistryAddress,

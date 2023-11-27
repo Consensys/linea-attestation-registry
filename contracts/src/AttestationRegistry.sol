@@ -21,6 +21,8 @@ contract AttestationRegistry is OwnableUpgradeable {
 
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
+  uint256 private chainPrefix;
+
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
   /// @notice Error thrown when an invalid Router address is given
@@ -83,6 +85,14 @@ contract AttestationRegistry is OwnableUpgradeable {
   }
 
   /**
+   * @notice Changes the chain prefix for the attestation IDs
+   * @dev Only the registry owner can call this method
+   */
+  function updateChainPrefix(uint256 _chainPrefix) public onlyOwner {
+    chainPrefix = _chainPrefix;
+  }
+
+  /**
    * @notice Registers an attestation to the AttestationRegistry
    * @param attestationPayload the attestation payload to create attestation and register it
    * @param attester the account address issuing the attestation
@@ -98,7 +108,8 @@ contract AttestationRegistry is OwnableUpgradeable {
     if (attestationPayload.attestationData.length == 0) revert AttestationDataFieldEmpty();
     // Auto increment attestation counter
     attestationIdCounter++;
-    bytes32 id = bytes32(abi.encode(attestationIdCounter));
+    // Generate the full attestation ID, padded with the chain prefix
+    bytes32 id = generateAttestationId(attestationIdCounter);
     // Create attestation
     attestations[id] = Attestation(
       id,
@@ -131,7 +142,8 @@ contract AttestationRegistry is OwnableUpgradeable {
     for (uint256 i = 0; i < attestationsPayloads.length; i = uncheckedInc256(i)) {
       // Auto increment attestation counter
       attestationIdCounter++;
-      bytes32 id = bytes32(abi.encode(attestationIdCounter));
+      // Generate the full attestation ID, padded with the chain prefix
+      bytes32 id = generateAttestationId(attestationIdCounter);
       // Create attestation
       attestations[id] = Attestation(
         id,
@@ -160,7 +172,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   function replace(bytes32 attestationId, AttestationPayload calldata attestationPayload, address attester) public {
     attest(attestationPayload, attester);
     revoke(attestationId);
-    bytes32 replacedBy = bytes32(abi.encode(attestationIdCounter));
+    bytes32 replacedBy = generateAttestationId(attestationIdCounter);
     attestations[attestationId].replacedBy = replacedBy;
 
     emit AttestationReplaced(attestationId, replacedBy);
@@ -257,11 +269,19 @@ contract AttestationRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Gets the attestation id counter
-   * @return The attestationIdCounter
+   * @notice Gets the attestation counter
+   * @return The attestation counter
    */
   function getAttestationIdCounter() public view returns (uint32) {
     return attestationIdCounter;
+  }
+
+  /**
+   * @notice Gets the chain prefix used to generate the attestation IDs
+   * @return The chain prefix
+   */
+  function getChainPrefix() public view returns (uint256) {
+    return chainPrefix;
   }
 
   /**
@@ -271,7 +291,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @return The _owner's balance of the attestations on a given attestation ID
    */
   function balanceOf(address account, uint256 id) public view returns (uint256) {
-    bytes32 attestationId = bytes32(abi.encode(id));
+    bytes32 attestationId = generateAttestationId(id);
     Attestation memory attestation = attestations[attestationId];
     if (attestation.subject.length > 20 && keccak256(attestation.subject) == keccak256(abi.encode(account))) {
       return 1;
@@ -295,5 +315,15 @@ contract AttestationRegistry is OwnableUpgradeable {
       result[i] = balanceOf(accounts[i], ids[i]);
     }
     return result;
+  }
+
+  /**
+   * @notice Generate an attestation ID, prefixed by the Verax chain identifier
+   * @param id The attestation ID (coming after the chain prefix)
+   * @return The attestation ID
+   */
+  function generateAttestationId(uint256 id) internal view returns (bytes32) {
+    // Combine the chain prefix and the ID
+    return bytes32(abi.encode(chainPrefix + id));
   }
 }

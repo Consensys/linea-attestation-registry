@@ -1,33 +1,30 @@
-import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
 import { bigintToNumber } from '@/utils/decodeUtils';
+import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
+
+import { displayAmountWithComma } from '@/utils/amountUtils';
 
 import { createDateListItem } from './utils';
 
 export const AttestationDates: React.FC<Attestation> = ({ ...attestation }) => {
+  const { attestedDate, expirationDate, revocationDate, id, revoked } = attestation;
   const list = [
-    createDateListItem('ATTESTED', attestation.attestedDate),
-    createDateListItem('EXPIRATION DATE', attestation.expirationDate),
+    createDateListItem('ATTESTED', attestedDate),
+    createDateListItem('EXPIRATION DATE', expirationDate),
     {
       title: 'REVOKED',
-      value: attestation.revoked ? 'YES' : 'NO',
+      value: revoked ? 'YES' : 'NO',
     },
-    createDateListItem('REVOCATION DATE', attestation.revocationDate),
+    createDateListItem('REVOCATION DATE', revocationDate),
   ];
 
   return (
-    <div className="flex items-center justify-between p-[24px] bg-[#f4f4f8] rounded-[12px]">
-      <div className="mt-[-1.00px] text-[32px] relative w-fit [font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#161517] tracking-[0] leading-[normal]">
-        #{bigintToNumber(attestation.id)}
-      </div>
-      <div className="gap-[40px] inline-flex items-start flex-[0_0_auto]">
+    <div className="flex items-center justify-between p-6 bg-[#f4f4f8] rounded-xl">
+      <div className="text-3xl w-fit font-semibold text-[#161517]">#{displayAmountWithComma(bigintToNumber(id))}</div>
+      <div className="gap-10 inline-flex items-start">
         {list.map((item) => (
-          <div key={item.title} className="inline-flex flex-col items-start gap-[8px] flex-[0_0_auto]">
-            <div className="relative w-fit mt-[-1.00px] [font-family:'Inter-Regular',Helvetica] font-normal text-[#606476] text-[12px] tracking-[0] leading-[normal]">
-              {item.title.toUpperCase()}
-            </div>
-            <div className="relative w-fit [font-family:'Inter-SemiBold',Helvetica] font-semibold text-[#161517] text-[16px] tracking-[0] leading-[normal] whitespace-nowrap">
-              {item.value}
-            </div>
+          <div key={item.title} className="inline-flex flex-col items-start gap-2">
+            <div className="w-fit font-normal text-[#606476] text-xs">{item.title.toUpperCase()}</div>
+            <div className="w-fit font-semibold text-[#161517] text-base">{item.value}</div>
           </div>
         ))}
       </div>

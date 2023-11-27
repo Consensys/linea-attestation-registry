@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import logo from '@/assets/logo/header-logo.svg';
-import arrow from '@/assets/arrow.svg';
+import arrow from '@/assets//icons/arrow.svg';
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -1,9 +1,10 @@
-import { toModuleById, toSchemaById } from '@/routes/constants';
+import useSWR from 'swr';
 import { Attestation, Schema } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import { toModuleById, toSchemaById } from '@/routes/constants';
 import { SWRKeys } from '@/interfaces/swr/enum';
 import { useNetworkContext } from '@/providers/network-provider';
-import useSWR from 'swr';
 
 const SchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
   const { sdk } = useNetworkContext();
@@ -18,21 +19,19 @@ const SchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
   if (!schema) return null;
 
   return (
-    <div className="flex flex-col w-full max-w-[475px] gap-[5px] p-[21px] rounded-[6px] border border-solid border-[#c5c5cc] items-start">
-      <div className="flex flex-col gap-[16px] self-stretch w-full items-start">
+    <div className="flex flex-col w-full max-w-[475px] gap-1 p-[1.3125rem] rounded-[0.375rem] border border-solid border-[#c5c5cc] items-start">
+      <div className="flex flex-col gap-4 self-stretch w-full items-start">
         <div className="flex justify-between self-stretch w-full items-start">
           <div className="w-fit font-normal text-[#606476] text-sm">Schema</div>
           <Link to={toSchemaById(schemaId)} className="w-fit font-normal text-[#161517] text-sm tracking-[0] underline">
             View Details
           </Link>
         </div>
-        <div className="inline-flex flex-col items-start gap-[8px]">
-          <div className="w-fit font-semibold text-[#161517] text-[20px] self-stretch overflow-hidden text-ellipsis">
+        <div className="inline-flex flex-col items-start gap-2">
+          <div className="w-fit font-semibold text-[#161517] text-xl self-stretch overflow-hidden text-ellipsis">
             {schema.name}
           </div>
-          <p className="w-fit font-normal text-[#606476] text-sm self-stretch overflow-hidden text-ellipsis">
-            {schema.description}
-          </p>
+          <p className="w-fit font-normal text-[#606476] text-sm self-stretch">{schema.description}</p>
         </div>
         <div className="font-medium text-[#161517] text-sm self-stretch overflow-hidden text-ellipsis">{schema.id}</div>
       </div>
@@ -41,7 +40,6 @@ const SchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
 };
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
-  const navigate = useNavigate();
   const list = [
     {
       title: 'ISSUED BY',
@@ -61,21 +59,25 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   ];
 
   return (
-    <div className="inline-flex flex-col h-[477px] items-start gap-[32px] p-[24px] relative bg-[#f4f4f8] rounded-[12px]">
-      <div className="inline-flex flex-col gap-[24px] items-start relative flex-[0_0_auto]">
+    <div className="inline-flex flex-col min-h-[477px] h-full items-start gap-8 p-6 bg-[#f4f4f8] rounded-xl">
+      <div className="inline-flex flex-col gap-6 items-start max-w-[475px]">
         {list.map((item) => (
-          <div key={item.title} className="inline-flex flex-col items-start gap-[8px] relative flex-[0_0_auto]">
-            <div className="relative w-fit mt-[-1.00px] [font-family:'Inter-Regular',Helvetica] font-normal text-[#676767] text-[12px] tracking-[0]">
-              {item.title.toUpperCase()}
-            </div>
-            <div
-              className={`relative w-fit [font-family:'Inter-Medium',Helvetica] font-medium text-[#161517] text-[16px] tracking-[0] whitespace-nowrap ${
-                item.link ? 'cursor-pointer hover:underline' : ''
-              }`}
-              onClick={() => item.link && navigate(item.link)}
-            >
-              {item.value}
-            </div>
+          <div key={item.title} className="inline-flex flex-col items-start gap-2 w-full overflow-hidden">
+            <div className="w-fit font-normal text-[#676767] text-xs">{item.title.toUpperCase()}</div>
+            {item.link ? (
+              <Link
+                to={item.link}
+                className="w-full font-medium text-[#161517] text-base whitespace-nowrap self-stretch overflow-hidden text-ellipsis cursor-pointer hover:underline"
+              >
+                {item.value}
+              </Link>
+            ) : (
+              <div
+                className={`w-full font-medium text-[#161517] text-base whitespace-nowrap self-stretch overflow-hidden text-ellipsis`}
+              >
+                {item.value}
+              </div>
+            )}
           </div>
         ))}
       </div>

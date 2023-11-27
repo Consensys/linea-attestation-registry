@@ -37,7 +37,7 @@ export const Header = () => {
   const { network, setNetwork } = useNetworkContext();
   console.log(network, 'network');
   return (
-    <div className="bg-gray-100 w-screen h-16 px-14 py-3border-b justify-between items-center inline-flex">
+    <div className="bg-gray-100 h-16 px-14 py-3border-b justify-between items-center inline-flex">
       <div className="justify-start items-center gap-12 flex">
         <Link to={APP_ROUTES.HOME}>
           <img src={logo} className="w-36 h-6 cursor-pointer" alt="Verax logo" />

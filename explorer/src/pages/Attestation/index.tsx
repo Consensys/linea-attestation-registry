@@ -25,7 +25,7 @@ export const Attestation = () => {
   if (isLoading) return <p>Loading...</p>;
   if (!attestation) return <NotFoundAttestation id={id || EMPTY_STRING} />;
   return (
-    <div className="justify-center mt-20 grid auto-rows-auto auto-cols-max gap-6 [&>div:first-child]:col-span-2 [&>div:nth-child(2)]:row-span-2 [&>div:nth-child(2)]:row-start-2 [&>div:nth-child(3)]:row-start-2 [&>div:nth-child(4)]:col-start-2 [&>div:nth-child(4)]:row-start-3">
+    <div className="justify-center my-20 grid auto-rows-auto auto-cols-max gap-6 [&>div:first-child]:col-span-2 [&>div:nth-child(2)]:row-span-2 [&>div:nth-child(2)]:row-start-2 [&>div:nth-child(3)]:row-start-2 [&>div:nth-child(4)]:col-start-2 [&>div:nth-child(4)]:row-start-3">
       <AttestationDates {...attestation} />
       <AttestationInfo {...attestation} />
       <AttestationData {...attestation} />

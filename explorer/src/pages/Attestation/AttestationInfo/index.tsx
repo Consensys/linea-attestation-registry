@@ -19,7 +19,7 @@ const SchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
   if (!schema) return null;
 
   return (
-    <div className="flex flex-col w-full max-w-[475px] gap-1 p-[1.3125rem] rounded-[0.375rem] border border-solid border-[#c5c5cc] items-start">
+    <div className="flex flex-col w-full max-w-[475px] gap-1 p-[1.3125rem] bg-[#F4F5F9] rounded-[0.375rem] items-start">
       <div className="flex flex-col gap-4 self-stretch w-full items-start">
         <div className="flex justify-between self-stretch w-full items-start">
           <div className="w-fit font-normal text-[#606476] text-sm">Schema</div>
@@ -59,7 +59,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   ];
 
   return (
-    <div className="inline-flex flex-col min-h-[477px] h-full items-start gap-8 p-6 bg-[#f4f4f8] rounded-xl">
+    <div className="inline-flex flex-col min-h-[477px] h-full items-start gap-8 p-6 special-border-3">
       <div className="inline-flex flex-col gap-6 items-start max-w-[475px]">
         {list.map((item) => (
           <div key={item.title} className="inline-flex flex-col items-start gap-2 w-full overflow-hidden">

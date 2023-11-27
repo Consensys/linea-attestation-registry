@@ -1,9 +1,9 @@
-import { bigintToNumber } from '@/utils/decodeUtils';
 import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
 
 import { displayAmountWithComma } from '@/utils/amountUtils';
 
 import { createDateListItem } from './utils';
+import { Hex, hexToNumber } from 'viem';
 
 export const AttestationDates: React.FC<Attestation> = ({ ...attestation }) => {
   const { attestedDate, expirationDate, revocationDate, id, revoked } = attestation;
@@ -18,8 +18,10 @@ export const AttestationDates: React.FC<Attestation> = ({ ...attestation }) => {
   ];
 
   return (
-    <div className="flex items-center justify-between p-6 bg-[#f4f4f8] rounded-xl">
-      <div className="text-3xl w-fit font-semibold text-[#161517]">#{displayAmountWithComma(bigintToNumber(id))}</div>
+    <div className="flex items-center justify-between p-6 special-border-3">
+      <div className="text-3xl w-fit font-semibold text-[#161517]">
+        #{displayAmountWithComma(hexToNumber(id as Hex))}
+      </div>
       <div className="gap-10 inline-flex items-start">
         {list.map((item) => (
           <div key={item.title} className="inline-flex flex-col items-start gap-2">

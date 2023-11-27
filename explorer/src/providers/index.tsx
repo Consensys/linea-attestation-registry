@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { ConnectKitProvider } from 'connectkit';
 
 import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import { config } from '@/config';
 
 import { NetworkContextProvider } from './network-provider';
@@ -12,9 +13,12 @@ export const Providers = () => {
     <NetworkContextProvider>
       <WagmiConfig config={config}>
         <ConnectKitProvider>
-          <div className="w-screen min-h-screen flex-col">
+          <div className="flex min-h-screen flex-col">
             <Header />
-            <Outlet />
+            <div className="flex-1">
+              <Outlet />
+            </div>
+            <Footer />
           </div>
         </ConnectKitProvider>
       </WagmiConfig>

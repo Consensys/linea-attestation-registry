@@ -4,10 +4,10 @@ import arrow from '@/assets/icons/arrow.svg';
 import archive from '@/assets/icons/archive.svg';
 import { APP_ROUTES } from '@/routes/constants';
 import { displayAmountWithComma } from '@/utils/amountUtils';
-import { bigintToNumber } from '@/utils/decodeUtils';
+import { Hex, hexToNumber } from 'viem';
 
 export const NotFoundAttestation: React.FC<{ id: string }> = ({ id }) => {
-  const decodedId = bigintToNumber(id);
+  const decodedId = hexToNumber(id as Hex);
   return (
     <section className="w-full flex justify-center px-4">
       <div className="flex flex-col max-w-[1200px] w-full h-[644px] items-center justify-center gap-6 border border-solid mt-8">

@@ -7,6 +7,7 @@ import { handleSimulationError } from "../utils/simulationErrorHandler";
 import { Address } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
 import { executeTransaction } from "../utils/transactionSender";
+import { getContent } from "../utils/ipfsClient";
 
 export default class AttestationDataMapper extends BaseDataMapper<
   Attestation,
@@ -34,8 +35,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
   override async findOneById(id: string) {
     const attestation = await super.findOneById(id);
     if (attestation !== undefined) {
-      const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
-      attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as `0x${string}`);
+      await this.enrichAttestation(attestation);
     }
     return attestation;
   }
@@ -48,12 +48,46 @@ export default class AttestationDataMapper extends BaseDataMapper<
     orderDirection?: OrderDirection,
   ) {
     const attestations = await super.findBy(first, skip, where, orderBy, orderDirection);
-    attestations.forEach(async (attestation) => {
-      const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
-      attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as `0x${string}`);
-    });
+    await Promise.all(
+      attestations.map(async (attestation) => {
+        await this.enrichAttestation(attestation);
+      }),
+    );
 
     return attestations;
+  }
+
+  private async enrichAttestation(attestation: Attestation) {
+    const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
+    attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as `0x${string}`);
+    // Check if data is stored offchain
+    if (attestation.schemaId === "0xa288e257097a4bed4166c002cb6911713edacc88e30b6cb2b0104df9c365327d") {
+      type OffchainData = { schemaId: string; uri: string };
+      attestation.offchainData = {
+        schemaId: (attestation.decodedPayload as OffchainData[])[0].schemaId,
+        uri: (attestation.decodedPayload as OffchainData[])[0].uri,
+      };
+      attestation.decodedPayload = {};
+      if (attestation.offchainData.uri.startsWith("ipfs://")) {
+        try {
+          const ipfsHash = attestation.offchainData.uri.split("//")[1];
+          const response = await getContent(ipfsHash);
+          if (response.toString().startsWith("0x")) {
+            const offchainDataSchema = (await this.veraxSdk.schema.getSchema(
+              attestation.offchainData.schemaId,
+            )) as Schema;
+            attestation.decodedPayload = decodeWithRetry(
+              offchainDataSchema.schema,
+              attestation.attestationData as `0x${string}`,
+            );
+          } else {
+            attestation.decodedPayload = response as unknown as object;
+          }
+        } catch (error) {
+          attestation.offchainData.error = (error as Error).message;
+        }
+      }
+    }
   }
 
   async getRelatedAttestations(id: string) {

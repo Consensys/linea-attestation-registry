@@ -27,6 +27,7 @@ export type Attestation = OnChainAttestation & {
   schemaString: string;
   decodedData: string[];
   decodedPayload: object;
+  offchainData?: { schemaId: string; uri: string; error?: string };
 };
 
 export type OnChainAttestation = {

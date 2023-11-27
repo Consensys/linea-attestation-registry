@@ -1,6 +1,6 @@
 import "./Footer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDiscord, faDiscourse, faGithub, faTelegram } from "@fortawesome/free-brands-svg-icons";
+import { faDiscord, faGithub, faTelegram } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
 import { faBook, faLeaf } from "@fortawesome/free-solid-svg-icons";
 
@@ -27,13 +27,6 @@ function Navbar() {
           <Link className="social-icon__link" to={"https://github.com/Consensys/linea-attestation-registry"}
                 target={"_blank"}>
             <FontAwesomeIcon icon={faGithub} />
-          </Link>
-        </li>
-
-        <li className="social-icon__item">
-          <Link className="social-icon__link" to={"https://community.ver.ax"}
-                target={"_blank"}>
-            <FontAwesomeIcon icon={faDiscourse} />
           </Link>
         </li>
 

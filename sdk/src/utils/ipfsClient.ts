@@ -5,6 +5,5 @@ export const getContent = async (ipfsHash: string): Promise<string> => {
   const ipfsGatewayUrl = `https://cloudflare-ipfs.com/ipfs/${ipfsHash}`;
   // Make a request to the IPFS gateway
   const response = await axios.get(ipfsGatewayUrl);
-  const content = response.data;
-  return content;
+  return response.data
 };

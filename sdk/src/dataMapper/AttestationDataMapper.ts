@@ -1,13 +1,13 @@
 import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
-import { Attestation, AttestationPayload, AttestationWithDecodeObject, Schema } from "../types";
+import { Attestation, AttestationPayload, AttestationWithDecodeObject, OffchainData, Schema } from "../types";
 import { Attestation_filter, Attestation_orderBy, OrderDirection } from "../../.graphclient";
 import { Constants } from "../utils/constants";
 import { handleSimulationError } from "../utils/simulationErrorHandler";
 import { Address } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
 import { executeTransaction } from "../utils/transactionSender";
-import { getContent } from "../utils/ipfsClient";
+import { getIPFSContent } from "../utils/ipfsClient";
 
 export default class AttestationDataMapper extends BaseDataMapper<
   Attestation,
@@ -61,8 +61,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
     const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
     attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as `0x${string}`);
     // Check if data is stored offchain
-    if (attestation.schemaId === "0xa288e257097a4bed4166c002cb6911713edacc88e30b6cb2b0104df9c365327d") {
-      type OffchainData = { schemaId: string; uri: string };
+    if (attestation.schemaId === Constants.OFFCHAIN_DATA_SCHEMA_ID) {
       attestation.offchainData = {
         schemaId: (attestation.decodedPayload as OffchainData[])[0].schemaId,
         uri: (attestation.decodedPayload as OffchainData[])[0].uri,
@@ -71,7 +70,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
       if (attestation.offchainData.uri.startsWith("ipfs://")) {
         try {
           const ipfsHash = attestation.offchainData.uri.split("//")[1];
-          const response = await getContent(ipfsHash);
+          const response = await getIPFSContent(ipfsHash);
           if (response.toString().startsWith("0x")) {
             const offchainDataSchema = (await this.veraxSdk.schema.getSchema(
               attestation.offchainData.schemaId,

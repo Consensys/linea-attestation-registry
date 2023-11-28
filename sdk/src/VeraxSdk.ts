@@ -45,7 +45,7 @@ export class VeraxSdk {
   static DEFAULT_ARBITRUM_TESTNET: Conf = {
     chain: arbitrumGoerli,
     mode: SDKMode.BACKEND,
-    subgraphUrl: "ADD_SUBGRAPH_URL_HERE",
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum-goerli",
     portalRegistryAddress: "0x7d6a914C1e33C141CB4a5e0095c1075E5649aFB2",
     moduleRegistryAddress: "0x58EE79284bE65b217Db408A0991314f9Ae84348A",
     schemaRegistryAddress: "0x129043e80e0B4C7da61a622df0912c31D3414AA7",
@@ -60,7 +60,7 @@ export class VeraxSdk {
   static DEFAULT_ARBITRUM: Conf = {
     chain: arbitrum,
     mode: SDKMode.BACKEND,
-    subgraphUrl: "ADD_SUBGRAPH_URL_HERE",
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum",
     portalRegistryAddress: "0x4042D0A54f997EE3a1b0F51e4813654199BFd8bD",
     moduleRegistryAddress: "0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba",
     schemaRegistryAddress: "0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27",

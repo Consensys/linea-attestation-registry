@@ -1,87 +1,52 @@
-import useSWR from 'swr';
-import { Attestation, Schema } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
-import { Link } from 'react-router-dom';
+import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
 
-import { toModuleById, toSchemaById } from '@/routes/constants';
-import { SWRKeys } from '@/interfaces/swr/enum';
-import { useNetworkContext } from '@/providers/network-provider';
+import { displayAmountWithComma } from '@/utils/amountUtils';
 
-const SchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
-  const { sdk } = useNetworkContext();
-
-  const { data: schema, isLoading } = useSWR(
-    SWRKeys.GET_SCHEMA_BY_ID,
-    () => sdk.schema.findOneById(schemaId) as Promise<Schema>
-  );
-  //todo add loading
-  if (isLoading) return <p>Loading schema...</p>;
-  //todo add not found
-  if (!schema) return null;
-
-  return (
-    <div className="flex flex-col w-full max-w-[475px] gap-1 p-[1.3125rem] bg-[#F4F5F9] rounded-[0.375rem] items-start">
-      <div className="flex flex-col gap-4 self-stretch w-full items-start">
-        <div className="flex justify-between self-stretch w-full items-start">
-          <div className="w-fit font-normal text-[#606476] text-sm">Schema</div>
-          <Link to={toSchemaById(schemaId)} className="w-fit font-normal text-[#161517] text-sm tracking-[0] underline">
-            View Details
-          </Link>
-        </div>
-        <div className="inline-flex flex-col items-start gap-2">
-          <div className="w-fit font-semibold text-[#161517] text-xl self-stretch overflow-hidden text-ellipsis">
-            {schema.name}
-          </div>
-          <p className="w-fit font-normal text-[#606476] text-sm self-stretch">{schema.description}</p>
-        </div>
-        <div className="font-medium text-[#161517] text-sm self-stretch overflow-hidden text-ellipsis">{schema.id}</div>
-      </div>
-    </div>
-  );
-};
+import { createDateListItem } from './utils';
+import { Hex, hexToNumber } from 'viem';
+import { toModuleById } from '@/routes/constants';
+import { cropString } from '@/utils/stringUtils';
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
+  const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
   const list = [
+    createDateListItem('ATTESTED', attestedDate),
+    createDateListItem('EXPIRATION DATE', expirationDate),
+    {
+      title: 'REVOKED',
+      value: revoked ? 'YES' : 'NO',
+    },
+    createDateListItem('REVOCATION DATE', revocationDate),
     {
       title: 'ISSUED BY',
-      value: attestation.attester,
+      value: cropString(attester),
     },
     {
       title: 'PORTAL',
-      value: attestation.portal,
-      get link() {
-        return toModuleById(this.value);
-      },
+      value: cropString(portal),
+      link: toModuleById(portal),
     },
     {
       title: 'SUBJECT',
-      value: attestation.subject,
+      value: cropString(subject),
     },
   ];
 
   return (
-    <div className="inline-flex flex-col min-h-[477px] h-full items-start gap-8 p-6 special-border-3">
-      <div className="inline-flex flex-col gap-6 items-start max-w-[475px]">
+    <div className="flex flex-col w-full items-start gap-6">
+      <div className="font-semibold text-[#2c4dc2] text-2xl whitespace-nowrap md:text-3xl">
+        #{displayAmountWithComma(hexToNumber(id as Hex))}
+      </div>
+      <div className="gap-6 flex flex-col items-start w-full md:flex-wrap md:h-[170px] md:content-between xl:flex-nowrap xl:h-auto">
         {list.map((item) => (
-          <div key={item.title} className="inline-flex flex-col items-start gap-2 w-full overflow-hidden">
-            <div className="w-fit font-normal text-[#676767] text-xs">{item.title.toUpperCase()}</div>
-            {item.link ? (
-              <Link
-                to={item.link}
-                className="w-full font-medium text-[#161517] text-base whitespace-nowrap self-stretch overflow-hidden text-ellipsis cursor-pointer hover:underline"
-              >
-                {item.value}
-              </Link>
-            ) : (
-              <div
-                className={`w-full font-medium text-[#161517] text-base whitespace-nowrap self-stretch overflow-hidden text-ellipsis`}
-              >
-                {item.value}
-              </div>
-            )}
+          <div key={item.title} className="inline-flex gap-2 w-full justify-between text-xs items-center md:w-auto">
+            <div className="min-w-[120px] font-normal text-[#606476]">{item.title.toUpperCase()}</div>
+            <div className="text-[#161517] whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base">
+              {item.value}
+            </div>
           </div>
         ))}
       </div>
-      <SchemaCard schemaId={attestation.schemaId} />
     </div>
   );
 };

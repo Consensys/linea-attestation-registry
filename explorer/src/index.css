@@ -101,11 +101,6 @@
   .scrollbar::-webkit-scrollbar-thumb:hover {
     opacity: 0.6;
   }
-
-  .special-border-3 {
-    border: 1px solid #DAD8EC;
-    border-radius: 12px;
-  }
 }
 
 a:hover {

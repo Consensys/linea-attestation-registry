@@ -22,11 +22,20 @@ the network.</h4>
 
 ## Links
 
-📚 [Official documentation](https://docs.ver.ax/)  
-🔍
-[Testnet GraphQL API](https://graph-query.goerli.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  
-🔍 [Mainnet GraphQL API](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  
+📚 [Official documentation](https://docs.ver.ax/)
+
+<details>
+  <summary>🔍 GraphQL APIs</summary>
+  
+- [Linea Testnet](https://graph-query.goerli.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
+- [Linea Mainnet](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
+- [Arbitrum Goerli](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum-goerli)
+- [Arbitrum Mainnet](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum)
+  
+</details>
+  
 🧱 [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk) - **WIP**  
+  
 🌍 Verax Explorer - _Coming soon_
 
 ## Repository Organisation

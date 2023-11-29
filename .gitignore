@@ -37,3 +37,5 @@ dist
 
 # Misc
 .DS_Store
+tracking.json
+source.json

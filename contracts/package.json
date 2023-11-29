@@ -27,6 +27,8 @@
     "deploy:post": "npx hardhat run script/deploy/postDeployment.ts --network",
     "encode": "npx hardhat run script/encode.ts",
     "lint": "pnpm solhint \"{script,src,test}/**/*.sol\"",
+    "massImport:prepare": "npx hardhat run script/massImport/prepareData.ts",
+    "massImport:attest": "npx hardhat run script/massImport/massImport.ts --network",
     "reimport": "npx hardhat run script/recreateNetworkFile.ts --network",
     "test": "forge test",
     "upgrade:": "npx hardhat run script/upgrade/upgradeEverything.ts --network",
@@ -42,5 +44,9 @@
     "hardhat": "^2.19.0",
     "solhint": "^3.6.2",
     "solhint-plugin-prettier": "^0.0.5"
+  },
+  "dependencies": {
+    "@consensys/linea-sdk": "^0.1.6",
+    "@types/node": "^20.9.0"
   }
 }

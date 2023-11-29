@@ -56,7 +56,11 @@ export const RelatedAttestations: React.FC<{ id: string; mutate: KeyedMutator<At
             <Link
               key={id}
               to={toAttestationById(id)}
-              onClick={() => mutate(sdk.attestation.findOneById(id))}
+              onClick={() => {
+                mutate(sdk.attestation.findOneById(id));
+                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+              }}
+              preventScrollReset
               className="py-2 justify-start items-center gap-2 inline-flex flex-shrink-0 lg:flex-col lg:items-start lg:w-[115px]"
             >
               <div className="text-gray-700 text-lg font-semibold">

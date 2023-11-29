@@ -19,6 +19,7 @@ export const Attestation = () => {
   const {
     data: attestation,
     isLoading,
+    isValidating,
     mutate,
   } = useSWR(
     SWRKeys.GET_ATTESTATION_BY_ID,
@@ -26,7 +27,7 @@ export const Attestation = () => {
   );
 
   //todo add loading
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading || isValidating) return <p>Loading...</p>;
   if (!attestation) return <NotFoundAttestation id={id || EMPTY_STRING} />;
   return (
     <div className="flex flex-col my-6 md:mt-8 md:mb-20 md:border md:rounded-3xl max-w-7xl md:border-zinc-200 md:mx-10 xl:flex-row xl:mx-auto">

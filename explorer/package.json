@@ -30,6 +30,7 @@
     "connectkit": "^1.5.3",
     "lucide-react": "^0.292.0",
     "react": "^18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
     "react-json-view": "^1.21.3",
     "react-router-dom": "^6.19.0",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@types/node": "^20.9.2",
     "@types/react": "^18.2.37",
+    "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",

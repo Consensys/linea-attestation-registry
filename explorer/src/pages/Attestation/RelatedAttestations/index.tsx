@@ -1,22 +1,15 @@
-import useSWR, { KeyedMutator } from 'swr';
+import { KeyedMutator } from 'swr';
 import { Link } from 'react-router-dom';
 import { EyeOffIcon } from 'lucide-react';
 import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
+import { Hex, hexToNumber } from 'viem';
 
-import { SWRKeys } from '@/interfaces/swr/enum';
 import { useNetworkContext } from '@/providers/network-provider';
 import { toAttestationById } from '@/routes/constants';
 import { displayAmountWithComma } from '@/utils/amountUtils';
-import { Hex, hexToNumber } from 'viem';
 
-export const RelatedAttestations: React.FC<{ id: string; mutate: KeyedMutator<Attestation> }> = ({ id, mutate }) => {
+export const RelatedAttestations: React.FC<{ mutate: KeyedMutator<Attestation> }> = ({ mutate }) => {
   const { sdk } = useNetworkContext();
-
-  const { data: relatedAttestations } = useSWR(
-    SWRKeys.GET_RELATED_ATTESTATION,
-    () => sdk.attestation.getRelatedAttestations(id) as Promise<Attestation[]>
-  );
-  console.log('relatedAttestations', relatedAttestations);
 
   const list = [
     {
@@ -42,11 +35,9 @@ export const RelatedAttestations: React.FC<{ id: string; mutate: KeyedMutator<At
   ];
   return (
     <div className="w-full flex-col justify-start items-start gap-4 inline-flex">
-      <div className="text-zinc-950 text-base font-semibold">Related Attestations</div>
-      {/* TODO: remove list and uncommented next line */}
-      {/* {!relatedAttestations || !relatedAttestations.length ? ( */}
+      <div className="text-text-primary text-base font-semibold">Related Attestations</div>
       {!list.length ? (
-        <div className="flex gap-2 text-base text-[#6d6f73] w-full justify-center mt-2">
+        <div className="flex gap-2 text-base text-text-tertiary w-full justify-center mt-2">
           <EyeOffIcon />
           Not Found
         </div>
@@ -63,10 +54,10 @@ export const RelatedAttestations: React.FC<{ id: string; mutate: KeyedMutator<At
               preventScrollReset
               className="py-2 justify-start items-center gap-2 inline-flex flex-shrink-0 lg:flex-col lg:items-start lg:w-[115px]"
             >
-              <div className="text-gray-700 text-lg font-semibold">
+              <div className="text-text-secondary text-lg font-semibold">
                 {displayAmountWithComma(hexToNumber(id as Hex))}
               </div>
-              <div className="text-slate-500 text-sm font-normal">{title}</div>
+              <div className="text-text-tertiary text-sm font-normal">{title}</div>
             </Link>
           ))}
         </div>

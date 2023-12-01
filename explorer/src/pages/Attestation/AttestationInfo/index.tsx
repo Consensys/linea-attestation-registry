@@ -34,14 +34,14 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
 
   return (
     <div className="flex flex-col w-full items-start gap-6">
-      <div className="font-semibold text-[#2c4dc2] text-2xl whitespace-nowrap md:text-3xl">
+      <div className="font-semibold text-text-blue text-2xl whitespace-nowrap md:text-3xl">
         #{displayAmountWithComma(hexToNumber(id as Hex))}
       </div>
       <div className="gap-6 flex flex-col items-start w-full md:flex-wrap md:h-[170px] md:content-between xl:flex-nowrap xl:h-auto">
         {list.map((item) => (
           <div key={item.title} className="inline-flex gap-2 w-full justify-between text-xs items-center md:w-auto">
-            <div className="min-w-[120px] font-normal text-[#606476]">{item.title.toUpperCase()}</div>
-            <div className="text-[#161517] whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base">
+            <div className="min-w-[120px] font-normal text-text-quaternary">{item.title.toUpperCase()}</div>
+            <div className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base">
               {item.value}
             </div>
           </div>

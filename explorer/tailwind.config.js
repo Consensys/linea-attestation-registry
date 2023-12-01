@@ -13,38 +13,28 @@ export default {
     },
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+        background: 'var(--surface-primary)',
+        borderCard: 'var(--border)',
+        surface: {
+          primary: 'var(--surface-primary)',
+          secondary: 'var(--surface-secondary)',
+          attestationData: 'var(--surface-attestation-data)',
         },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+        text: {
+          primary: 'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+          tertiary: 'var(--text-tertiary)',
+          quaternary: 'var(--text-quaternary)',
+          blue: 'var(--text-blue)',
         },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+        border: {
+          card: 'var(--border-card)',
+          table: 'var(--border-table)',
         },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+        indicator: {
+          blue: 'var(--indicator-blue)',
+          magenta: 'var(--indicator-magenta)',
+          green: 'var(--indicator-green)',
         },
       },
       borderRadius: {

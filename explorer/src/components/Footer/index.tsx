@@ -26,11 +26,11 @@ const list = [
 
 export const Footer: React.FC = () => {
   return (
-    <div className="flex flex-col justify-between items-center py-5 md:px-[60px] border-t-[1px] border-[#DAD8EC] md:flex-row gap-14 md:gap-0">
+    <div className="flex flex-col justify-between items-center py-5 md:px-[60px] border-t-[1px] border-border-table md:flex-row gap-14 md:gap-0">
       <Link to={APP_ROUTES.HOME}>
         <img src={verax} alt="verax" />
       </Link>
-      <div className="flex flex-col md:flex-row gap-6 md:gap-8 text-[#9096B2] text-sm">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8 text-text-quaternary text-sm">
         {list.map(({ title, logo, url }) => (
           <a href={url} target="_blank" className="flex justify-center self-center gap-2 hover:underline">
             {logo && <img src={logo} alt={title} className="!w-4 !h-4 self-center" />}

@@ -3,9 +3,11 @@ import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.gr
 import { Check, Copy, MinusCircle, PlusCircle } from 'lucide-react';
 import ReactJson from 'react-json-view';
 import { EyeOffIcon } from 'lucide-react';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
-import { getAttestationData } from './utils';
 import { HelperIndicator } from '@/components/HelperIndicator';
+import { EMPTY_STRING, THOUSAND } from '@/constants';
+import { getAttestationData } from './utils';
 
 export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -16,14 +18,12 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const { schemaString, decodedData } = attestation;
   const data = schemaString && decodedData ? getAttestationData(schemaString, decodedData) : null;
 
-  const handleCopy = () => {
-    if (!data || !Object.keys(data).length) return;
-    const stringToCopy = JSON.stringify(data, null, 2);
-    navigator.clipboard.writeText(stringToCopy);
+  const handleCopy = (text: string, result: boolean) => {
+    if (!result || !text) return;
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
-    }, 1000);
+    }, THOUSAND);
   };
   const Icon = copied ? Check : Copy;
 
@@ -48,24 +48,22 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
       <div className="self-stretch justify-between items-center inline-flex">
         <div className="h-[19px] justify-start items-center gap-2 flex">
           <HelperIndicator type="attestation" />
-          <div className="text-zinc-950 text-base font-semibold">Attestation Data</div>
+          <div className="text-text-primary text-base font-semibold">Attestation Data</div>
         </div>
-        <Icon
-          className="w-[21px] h-[21px] cursor-pointer hover:opacity-60"
-          color={copied ? '#1a9d37' : '#64687D'}
-          onClick={handleCopy}
-        />
+        <CopyToClipboard onCopy={handleCopy} text={data ? JSON.stringify(data, null, 2) : EMPTY_STRING}>
+          <Icon className="w-[21px] h-[21px] cursor-pointer hover:opacity-60" color={copied ? '#1a9d37' : '#64687D'} />
+        </CopyToClipboard>
       </div>
-      <div className="bg-[#F4F5F9] rounded-xl p-4 pe-3 w-full relative">
+      <div className="bg-surface-attestationData rounded-xl p-4 pe-3 w-full relative">
         {!data ? (
-          <div className="flex gap-2 text-base text-[#6d6f73] w-full justify-center h-[183px] items-center">
+          <div className="flex gap-2 text-base text-text-tertiary w-full justify-center h-[183px] items-center">
             <EyeOffIcon />
             Empty
           </div>
         ) : (
           <div
             ref={ref}
-            className="flex flex-col pe-1 items-start overflow-auto text-[#6d6f73] text-sm scrollbar transition-[height]"
+            className="flex flex-col pe-1 items-start overflow-auto text-text-tertiary text-sm scrollbar transition-[height]"
             style={{ height: isOpened ? heightDifference + 183 : 183 }}
           >
             <ReactJson
@@ -82,7 +80,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
         )}
         {heightDifference !== 0 && (
           <div
-            className="absolute cursor-pointer right-6 bottom-2 flex gap-1 items-center text-slate-400 text-sm font-semibold"
+            className="absolute cursor-pointer right-6 bottom-2 flex gap-1 items-center text-text-quaternary text-sm font-semibold"
             onClick={() => setIsOpened((prev) => !prev)}
           >
             {toggleButton.title}

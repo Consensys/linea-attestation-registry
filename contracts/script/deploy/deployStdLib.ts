@@ -102,7 +102,6 @@ async function main() {
   await registerECDSAModule.wait();
   console.log("ECDSAModule registered");
 
-  // Continue from your existing code
   const registerERC1271Module = await moduleRegistry.register(
     "ERC1271Module",
     "A standard library module deployed by Verax, allowing ERC1271 signature verification",

@@ -25,6 +25,7 @@
     "decode": "npx hardhat run script/decode.ts",
     "deploy": "npx hardhat run script/deploy/deployEverything.ts --network",
     "deploy:post": "npx hardhat run script/deploy/postDeployment.ts --network",
+    "deploy:stdlib": "npx hardhat run script/deploy/deployStdLib.ts --network",
     "encode": "npx hardhat run script/encode.ts",
     "lint": "pnpm solhint \"{script,src,test}/**/*.sol\"",
     "massImport:prepare": "npx hardhat run script/massImport/prepareData.ts",

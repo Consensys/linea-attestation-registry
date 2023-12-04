@@ -4,13 +4,6 @@ export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
       colors: {
         background: "var(--surface-primary)",
@@ -19,6 +12,7 @@ export default {
           primary: "var(--surface-primary)",
           secondary: "var(--surface-secondary)",
           attestationData: "var(--surface-attestation-data)",
+          magenta20: "var(--surface-magenta-20)",
         },
         text: {
           primary: "var(--text-primary)",
@@ -26,6 +20,7 @@ export default {
           tertiary: "var(--text-tertiary)",
           quaternary: "var(--text-quaternary)",
           blue: "var(--text-blue)",
+          magenta: "var(--text-magenta)",
         },
         border: {
           card: "var(--border-card)",
@@ -36,28 +31,30 @@ export default {
           magenta: "var(--indicator-magenta)",
           green: "var(--indicator-green)",
         },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: 0 },
-          to: { height: "var(--radix-accordion-content-height)" },
+        hover: {
+          lime20: "var(--hover-lime20)",
         },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: 0 },
+        button: {
+          primary: {
+            background: "var(--button-primary-background)",
+            text: "var(--button-primary-text)",
+            hover: "var(--button-primary-hover)",
+          },
+          secondary: {
+            background: "var(--button-secondary-background)",
+            text: "var(--button-secondary-text)",
+            hover: "var(--button-secondary-hover)",
+            border: "var(--button-secondary-border)",
+          },
         },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
       },
       transitionProperty: {
         height: "height",
+        spacing: "margin, padding, gap",
+      },
+      fontFamily: {
+        IBMPlexMono: ["IBM Plex Mono", "monospace"],
+        inter: ["Inter", "sans-serif"],
       },
     },
   },

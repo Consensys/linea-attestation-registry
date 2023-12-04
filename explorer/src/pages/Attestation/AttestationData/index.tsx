@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { Check, Copy, MinusCircle, PlusCircle } from "lucide-react";
 import ReactJson from "react-json-view";
 import { EyeOffIcon } from "lucide-react";
@@ -41,7 +41,8 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
     if (!heightDifference && ref.current && ref.current.scrollHeight > ref.current.clientHeight) {
       setHeightDifference(ref.current.scrollHeight - ref.current.clientHeight);
     }
-  }, [ref, heightDifference]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref]);
 
   return (
     <div className="w-full flex-col justify-start items-start gap-4 inline-flex">

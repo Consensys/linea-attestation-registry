@@ -1,22 +1,23 @@
-import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Attestation } from "@verax-attestation-registry/verax-sdk";
+import { Hex, hexToNumber } from "viem";
 
 import { displayAmountWithComma } from "@/utils/amountUtils";
 
-import { createDateListItem } from "./utils";
-import { Hex, hexToNumber } from "viem";
 import { toModuleById } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
+import { Link } from "@/components/Link";
+import { createDateListItem } from "./utils";
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
-  const list = [
-    createDateListItem("ATTESTED", attestedDate),
-    createDateListItem("EXPIRATION DATE", expirationDate),
+  const list: Array<{ title: string; value: string; link?: string }> = [
+    createDateListItem("ATTESTED", attestedDate.toString()),
+    createDateListItem("EXPIRATION DATE", expirationDate.toString()),
     {
       title: "REVOKED",
       value: revoked ? "YES" : "NO",
     },
-    createDateListItem("REVOCATION DATE", revocationDate),
+    createDateListItem("REVOCATION DATE", revocationDate?.toString()),
     {
       title: "ISSUED BY",
       value: cropString(attester),
@@ -41,9 +42,18 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
         {list.map((item) => (
           <div key={item.title} className="inline-flex gap-2 w-full justify-between text-xs items-center md:w-auto">
             <div className="min-w-[120px] font-normal text-text-quaternary">{item.title.toUpperCase()}</div>
-            <div className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base">
-              {item.value}
-            </div>
+            {item.link ? (
+              <Link
+                to={item.link}
+                className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline"
+              >
+                {item.value}
+              </Link>
+            ) : (
+              <div className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base">
+                {item.value}
+              </div>
+            )}
           </div>
         ))}
       </div>

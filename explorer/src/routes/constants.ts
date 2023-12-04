@@ -1,17 +1,26 @@
 const ID_ROUTE = ":id";
+export const CHAIN_ID_ROUTE = ":chainId";
 
 export const APP_ROUTES = {
-  HOME: "/",
-  ISSUERS: "/issuers",
-  ATTESTATIONS: "/attestations",
+  HOME: `/${CHAIN_ID_ROUTE}`,
+  get ISSUERS() {
+    return this.HOME + "/issuers";
+  },
+  get ATTESTATIONS() {
+    return this.HOME + "/attestations";
+  },
   get ATTESTATION_BY_ID() {
     return this.ATTESTATIONS + `/${ID_ROUTE}`;
   },
-  SCHEMAS: "/schemas",
+  get SCHEMAS() {
+    return this.HOME + "/schemas";
+  },
   get SCHEMA_BY_ID() {
     return this.SCHEMAS + `/${ID_ROUTE}`;
   },
-  MODULES: "/modules",
+  get MODULES() {
+    return this.HOME + "/modules";
+  },
   get MODULES_BY_ID() {
     return this.MODULES + `/${ID_ROUTE}`;
   },

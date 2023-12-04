@@ -1,16 +1,13 @@
-import { Chain, createConfig } from "wagmi";
+import { createConfig } from "wagmi";
 import { getDefaultConfig } from "connectkit";
 import { lineaTestnet, linea } from "wagmi/chains";
-import VeraxSdk from "@verax-attestation-registry/verax-sdk";
+
+import { INetwork } from "@/interfaces/config";
+
+import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import lineaMainnetIcon from "@/assets/networks/linea-mainnet.svg";
 import lineaTestnetIcon from "@/assets/networks/linea-testnet.svg";
-
-export interface INetwork {
-  name: string;
-  chain: Chain;
-  veraxEnv: typeof VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND;
-  img: string;
-}
+import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
 
 const chains: INetwork[] = [
   {
@@ -18,21 +15,25 @@ const chains: INetwork[] = [
     chain: linea,
     veraxEnv: VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND,
     img: lineaMainnetIcon,
+    network: "linea",
   },
   {
     name: "Linea Testnet",
     chain: lineaTestnet,
     veraxEnv: VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND,
     img: lineaTestnetIcon,
+    network: "linea-testnet",
   },
 ];
 
 const config = createConfig(
   getDefaultConfig({
+    autoConnect: true,
     infuraId: import.meta.env.VITE_INFURA_API_KEY,
     walletConnectProjectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "",
-    appName: "Verax Explorer",
     chains: chains.map((el) => el.chain),
+    appName: "Verax | Explorer",
+    appIcon: veraxColoredIcon,
   }),
 );
 

@@ -1,0 +1,16 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="Logo">
+    <rect id="BG" width="24" height="24" fill="#C4FF1C" />
+    <g id="V">
+      <rect id="Rectangle 9" x="14.3999" y="4.80005" width="4.8" height="9.6" fill="#111111" />
+      <path
+        id="Exclude"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M4.7998 14.4001L9.5998 19.2001H14.3998V14.4001L9.5998 9.6001V14.4001H4.7998Z"
+        fill="#111111"
+      />
+      <rect id="Rectangle 13" x="4.7998" y="4.80005" width="4.8" height="4.8" fill="#111111" />
+    </g>
+  </g>
+</svg>

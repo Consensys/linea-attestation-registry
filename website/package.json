@@ -22,34 +22,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD:explorer/package.json
-    "@radix-ui/react-dropdown-menu": "^2.0.6",
-    "@tanstack/react-table": "^8.10.7",
-    "@verax-attestation-registry/verax-sdk": "workspace:^",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.0.0",
-=======
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@verax-attestation-registry/verax-sdk": "0.0.15",
     "axios": "^1.6.1",
->>>>>>> a464ff0bb67bfecb1e815a72d6c269e50b559ffb:website/package.json
     "connectkit": "^1.5.3",
     "lucide-react": "^0.292.0",
     "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD:explorer/package.json
-    "react-json-view": "^1.21.3",
     "react-router-dom": "^6.19.0",
-    "swr": "^2.2.4",
-    "tailwind-merge": "^2.0.0",
-    "tailwindcss-animate": "^1.0.7",
-=======
-    "react-router-dom": "^6.19.0",
->>>>>>> a464ff0bb67bfecb1e815a72d6c269e50b559ffb:website/package.json
     "viem": "^1.18.9",
     "vite-tsconfig-paths": "^4.2.1",
     "wagmi": "^1.4.6"

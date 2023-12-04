@@ -1,7 +1,7 @@
 import { Chain, createConfig } from "wagmi";
 import { getDefaultConfig } from "connectkit";
 import { lineaTestnet, linea } from "wagmi/chains";
-import VeraxSdk from "@verax-attestation-registry/verax-sdk";
+import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import lineaMainnetIcon from "@/assets/networks/linea-mainnet.svg";
 import lineaTestnetIcon from "@/assets/networks/linea-testnet.svg";
 

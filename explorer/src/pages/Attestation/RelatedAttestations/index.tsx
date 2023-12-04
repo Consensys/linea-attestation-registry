@@ -1,7 +1,7 @@
 import { KeyedMutator } from "swr";
 import { Link } from "react-router-dom";
 import { EyeOffIcon } from "lucide-react";
-import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { Hex, hexToNumber } from "viem";
 
 import { NetworkContext } from "@/providers/network-provider";

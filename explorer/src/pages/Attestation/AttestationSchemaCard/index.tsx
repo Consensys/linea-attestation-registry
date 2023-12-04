@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { Schema } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Schema } from "@verax-attestation-registry/verax-sdk";
 import { Link } from "react-router-dom";
 
 import ArrowRight from "@/assets/icons/arrow-right.svg";

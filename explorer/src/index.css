@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --surface-primary: #FEFEFE;
+    --surface-secondary: #F4F5F9;
+    --surface-attestation-data: #2D4EC30D;
+
+    --indicator-blue: #2D4EC3;
+    --indicator-magenta: #D6247A;
+    --indicator-green: #41AC00;
+
+    --text-primary: #0D0D12;
+    --text-secondary: #3D3D51;
+    --text-tertiary: #656B87;
+    --text-quaternary: #9096B2;
+    --text-blue: #2D4EC3;
+
+    --border-card: #DAD8EC;
+    --border-table: #EAEAF3;
+
+    --scrollbar: #A4A8C2;
+  }
+}
+
+@layer base {
+  * {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    @apply bg-surface-primary;
+  }
+}
+
+@layer utilities {
+  .scrollbar {
+    scrollbar-width: 6px;
+    scrollbar-color: var(--surface-primary) var(--scrollbar);
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background-color: var(--surface-primary);
+    border-radius: 20px;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar);
+    border-radius: 20px;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    opacity: 0.6;
+  }
+}

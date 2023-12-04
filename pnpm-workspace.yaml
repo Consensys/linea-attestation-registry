@@ -4,3 +4,4 @@ packages:
   - 'sdk'
   - 'snap/packages/*'
   - 'website'
+  - 'explorer'

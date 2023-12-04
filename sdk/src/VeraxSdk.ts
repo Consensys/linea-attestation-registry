@@ -1,29 +1,17 @@
-import { linea, lineaTestnet } from "viem/chains";
+import { arbitrum, arbitrumGoerli, linea, lineaTestnet } from "viem/chains";
 import AttestationDataMapper from "./dataMapper/AttestationDataMapper";
 import SchemaDataMapper from "./dataMapper/SchemaDataMapper";
 import ModuleDataMapper from "./dataMapper/ModuleDataMapper";
 import PortalDataMapper from "./dataMapper/PortalDataMapper";
 import { Address, createPublicClient, createWalletClient, custom, Hex, http, PublicClient, WalletClient } from "viem";
 import UtilsDataMapper from "./dataMapper/UtilsDataMapper";
-import { PrivateKeyAccount, privateKeyToAccount } from "viem/accounts";
+import { privateKeyToAccount } from "viem/accounts";
 import { Conf } from "./types";
 import { SDKMode } from "./utils/constants";
 
-let account: PrivateKeyAccount | Address;
+export * from "./types";
 
-if (typeof window === "undefined") {
-  // TODO: return to a "module" setup instead of "CommonJS"
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const dotenv = require("dotenv");
-  dotenv.config({ path: "./.env" });
-  account = privateKeyToAccount(process.env.PRIVATE_KEY as Hex);
-} else {
-  window.ethereum.request({ method: "eth_requestAccounts" }).then((result: Address[]) => {
-    account = result[0];
-  });
-}
-
-export default class VeraxSdk {
+export class VeraxSdk {
   static DEFAULT_LINEA_MAINNET: Conf = {
     chain: linea,
     mode: SDKMode.BACKEND,
@@ -54,8 +42,38 @@ export default class VeraxSdk {
     mode: SDKMode.FRONTEND,
   };
 
+  static DEFAULT_ARBITRUM_TESTNET: Conf = {
+    chain: arbitrumGoerli,
+    mode: SDKMode.BACKEND,
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum-goerli",
+    portalRegistryAddress: "0x7d6a914C1e33C141CB4a5e0095c1075E5649aFB2",
+    moduleRegistryAddress: "0x58EE79284bE65b217Db408A0991314f9Ae84348A",
+    schemaRegistryAddress: "0x129043e80e0B4C7da61a622df0912c31D3414AA7",
+    attestationRegistryAddress: "0xCD839595FdA5A8111d5E03D42d9D9af60ee67B66",
+  };
+
+  static DEFAULT_ARBITRUM_TESTNET_FRONTEND: Conf = {
+    ...VeraxSdk.DEFAULT_ARBITRUM_TESTNET,
+    mode: SDKMode.FRONTEND,
+  };
+
+  static DEFAULT_ARBITRUM: Conf = {
+    chain: arbitrum,
+    mode: SDKMode.BACKEND,
+    subgraphUrl: "https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum",
+    portalRegistryAddress: "0x4042D0A54f997EE3a1b0F51e4813654199BFd8bD",
+    moduleRegistryAddress: "0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba",
+    schemaRegistryAddress: "0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27",
+    attestationRegistryAddress: "0x335E9719e8eFE2a19A92E07BC4836160fC31cd7C",
+  };
+
+  static DEFAULT_ARBITRUM_FRONTEND: Conf = {
+    ...VeraxSdk.DEFAULT_ARBITRUM,
+    mode: SDKMode.FRONTEND,
+  };
+
   private readonly web3Client: PublicClient;
-  private readonly walletClient: WalletClient;
+  private readonly walletClient: WalletClient | undefined;
 
   public attestation: AttestationDataMapper;
   public schema: SchemaDataMapper;
@@ -63,29 +81,30 @@ export default class VeraxSdk {
   public portal: PortalDataMapper;
   public utils: UtilsDataMapper;
 
-  constructor(conf: Conf) {
+  constructor(conf: Conf, publicAddress?: Address, privateKey?: Hex) {
     this.web3Client = createPublicClient({
       chain: conf.chain,
       transport: http(),
     });
 
-    this.walletClient =
-      conf.mode === SDKMode.BACKEND
-        ? createWalletClient({
-            chain: conf.chain,
-            account,
-            transport: http(),
-          })
-        : createWalletClient({
-            chain: conf.chain,
-            account,
-            transport: custom(window.ethereum),
-          });
+    if (conf.mode === SDKMode.BACKEND) {
+      this.walletClient = createWalletClient({
+        chain: conf.chain,
+        account: privateKey ? privateKeyToAccount(privateKey) : undefined,
+        transport: http(),
+      });
+    } else if (typeof window.ethereum !== "undefined") {
+      this.walletClient = createWalletClient({
+        chain: conf.chain,
+        account: publicAddress,
+        transport: custom(window.ethereum),
+      });
+    }
 
-    this.attestation = new AttestationDataMapper(conf, this.web3Client, this.walletClient, this);
-    this.schema = new SchemaDataMapper(conf, this.web3Client, this.walletClient, this);
-    this.module = new ModuleDataMapper(conf, this.web3Client, this.walletClient, this);
-    this.portal = new PortalDataMapper(conf, this.web3Client, this.walletClient, this);
-    this.utils = new UtilsDataMapper(conf, this.web3Client, this.walletClient, this);
+    this.attestation = new AttestationDataMapper(conf, this.web3Client, this, this.walletClient);
+    this.schema = new SchemaDataMapper(conf, this.web3Client, this, this.walletClient);
+    this.module = new ModuleDataMapper(conf, this.web3Client, this, this.walletClient);
+    this.portal = new PortalDataMapper(conf, this.web3Client, this, this.walletClient);
+    this.utils = new UtilsDataMapper(conf, this.web3Client, this, this.walletClient);
   }
 }

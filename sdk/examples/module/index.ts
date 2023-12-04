@@ -1,4 +1,4 @@
-import VeraxSdk from "../../src/VeraxSdk";
+import { VeraxSdk } from "../../src/VeraxSdk";
 import ModuleExamples from "./moduleExamples";
 
 let argv: string | null | undefined = process.argv[3] as string;

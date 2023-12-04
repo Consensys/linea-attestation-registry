@@ -22,7 +22,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
 
   async updateRouter(routerAddress: Address) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return await executeTransaction(this.walletClient, request);
+    return await executeTransaction(request, this.walletClient);
   }
 
   async simulateRegister(name: string, description: string, moduleAddress: Address) {
@@ -31,7 +31,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
 
   async register(name: string, description: string, moduleAddress: Address) {
     const request = await this.simulateRegister(name, description, moduleAddress);
-    return await executeTransaction(this.walletClient, request);
+    return await executeTransaction(request, this.walletClient);
   }
 
   async simulateRunModules(
@@ -60,7 +60,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     value: number,
   ) {
     const request = await this.simulateRunModules(modulesAddresses, attestationPayload, validationPayloads, value);
-    return await executeTransaction(this.walletClient, request);
+    return await executeTransaction(request, this.walletClient);
   }
 
   async simulateBulkRunModules(
@@ -96,7 +96,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     validationPayloads: string[][],
   ) {
     const request = await this.simulateBulkRunModules(modulesAddresses, attestationPayloads, validationPayloads);
-    return await executeTransaction(this.walletClient, request);
+    return await executeTransaction(request, this.walletClient);
   }
 
   async isContractAddress(contractAddress: Address) {
@@ -129,6 +129,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
   }
 
   private async simulateContract(functionName: string, args: unknown[]) {
+    if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({
         address: this.conf.moduleRegistryAddress,

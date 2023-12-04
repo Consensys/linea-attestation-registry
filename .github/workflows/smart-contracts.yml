@@ -125,25 +125,38 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
+          fetch-depth: 0
+
+      - id: check-changes
+        run: |
+          if [ -n "$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '^contracts/')" ]; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
 
       - name: Install Pnpm
+        if: steps.check-changes.outputs.changed == 'true'
         uses: pnpm/action-setup@v2
         with:
           version: 8
           run_install: false
 
       - name: Install Node.js
+        if: steps.check-changes.outputs.changed == 'true'
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: pnpm
 
       - name: Get pnpm store directory
+        if: steps.check-changes.outputs.changed == 'true'
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - uses: actions/cache@v3
+        if: steps.check-changes.outputs.changed == 'true'
         name: Setup pnpm cache
         with:
           path: ${{ env.STORE_PATH }}
@@ -152,15 +165,68 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
+        if: steps.check-changes.outputs.changed == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Install Foundry
+        if: steps.check-changes.outputs.changed == 'true'
         uses: foundry-rs/foundry-toolchain@v1
 
-      - name: Check contracts upgradeability
-        run: pnpm run check:upgradeability:ci
+      - name: Check contracts implementations
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:implementations
+
+      - name: Create Linea testnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          cp ./env/.env.linea-goerli .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Linea testnet
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability linea-goerli
+
+      - name: Create Linea mainnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.linea .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Linea mainnet
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability linea
+
+      - name: Create Arbitrum testnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.arbitrum-goerli .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Arbitrum testnet
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability arbitrum-goerli
+
+      - name: Create Arbitrum mainnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.arbitrum .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Arbitrum mainnet
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability arbitrum
 
       - name: Add upgradeability summary
+        if: steps.check-changes.outputs.changed == 'true'
         run: |
           echo "## Upgradeability check result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Contracts are upgradeable" >> $GITHUB_STEP_SUMMARY
+
+      - name: Add upgradeability summary
+        if: steps.check-changes.outputs.changed == 'false'
+        run: |
+          echo "## Upgradeability check result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ No change detected in the contracts" >> $GITHUB_STEP_SUMMARY

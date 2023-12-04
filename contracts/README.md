@@ -174,43 +174,44 @@ Transaction hash: 0x15b25752da1dfd458b92069248825ce959f5be104f974d62b4ae95050710
 7. Gather the first list of issuers addresses
 8. Set the issuers via the PortalRegistry’s `setIssuers` method
 9. Deploy an instance of DefaultPortal via the PortalRegistry’s `deployDefaultPortal` method and note down its address
-10. Verify this contract via `npx hardhat verify --network NETWORK_NAME ADDRESS`
+10. Verify this contract via `npx hardhat verify --network NETWORK_NAME ADDRESS` (replacing `NETWORK_NAME` with the name
+    of the targeted network and `ADDRESS` with the address of the freshly deployed `DefaultPortal`)
+11. Update the network files via `pnpm run reimport NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the
+    targeted network)
 
 ## Verax contracts upgrade
 
-### Check all registries implementations follow the upgradability rules
+### 1. Check all registries implementations follow the upgradeability rules
 
-Run `pnpm run check:upgradeability` to check if the local versions of the registries follow the upgradability rules.
+Run `pnpm run check:implementations` to check if the local versions of the registries follow the upgradeability rules.
 
 :warning: Note: this is a static check, not run against the already deployed contracts.
 
-### Check all registries implementations are upgradeable
+### 2. Check all registries implementations are upgradeable
 
-Run `pnpm run check:upgradeable NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to check
-if the already deployed registries are upgradable to the new local versions.
+Run `pnpm run check:upgradeability NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to
+check if the already deployed registries are upgradable to the new local versions.
 
 :warning: Note: this is a dynamic check, run against the already deployed contracts.
 
-### Recreate the network files
+## 3. Do upgrade
+
+1. Check that your `.env` file contains the address of all the proxies for the targeted network
+2. Upgrade only the implementations that changed since the last upgrade via the `pnpm run upgrade NETWORK_NAME` command
+3. _Optional_: Upgrade all the implementations by forcing their re-deployment via the
+   `pnpm run upgrade:force NETWORK_NAME` command
+
+:warning: Note: Forcing the redeployment of all the implementations is more expensive!
+
+### 4. Update the network files
 
 :warning: Note: this script must only be run on a branch/commit corresponding to the version of the contracts deployed
 on the targeted network!.
 
-Run `pnpm run check:upgradeable NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to
-re-generate the network files describing the deployed contracts. This can be useful if the file was lost/modified since
-the last upgrade or the first deployment.
+Run `pnpm run reimport NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to re-generate the
+network files describing the deployed contracts.
 
-:warning: Note: the script will fail if a network file already contains one of the targeted proxy addresses.
-
-## Start upgrading
-
-1. Check that your `.env` file contains the address of all the proxies
-2. Upgrade only the implementations that changed since the last upgrade via the `pnpm run upgrade:all NETWORK_NAME`
-   command
-3. _Optional_: Upgrade all the implementations by forcing their re-deployment via the
-   `pnpm run upgrade:all:force NETWORK_NAME` command
-
-:warning: Note: Forcing the redeployment of all the implementations is more expensive!
+:warning: Note: This step is mandatory to avoid being de-synchronized.
 
 ## Utils
 

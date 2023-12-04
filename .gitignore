@@ -32,5 +32,10 @@ subgraph.yaml
 # SDK
 lib
 
+# Website
+dist
+
 # Misc
 .DS_Store
+tracking.json
+source.json

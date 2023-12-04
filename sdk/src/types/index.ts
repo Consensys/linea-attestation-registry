@@ -1,4 +1,5 @@
-import { Address, Chain, EthereumProvider } from "viem";
+import { Address, Chain, EIP1193Provider } from "viem";
+import { SDKMode } from "../utils/constants";
 
 export interface Conf {
   chain: Chain;
@@ -26,7 +27,10 @@ export type Attestation = OnChainAttestation & {
   schemaString: string;
   decodedData: string[];
   decodedPayload: object;
+  offchainData?: OffchainData;
 };
+
+export type OffchainData = { schemaId: string; uri: string; error?: string };
 
 export type OnChainAttestation = {
   attestationId: string; // The unique identifier of the attestation.
@@ -71,6 +75,6 @@ export type OnChainModule = {
 
 declare global {
   interface Window {
-    ethereum: EthereumProvider;
+    ethereum: EIP1193Provider;
   }
 }

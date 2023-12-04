@@ -1,5 +1,6 @@
 import { ethers, run, upgrades } from "hardhat";
 import dotenv from "dotenv";
+import { getChainPrefix } from "../utils";
 
 dotenv.config({ path: "../.env" });
 
@@ -133,6 +134,13 @@ async function main() {
 
   console.log("Updating AttestationRegistry with the Router address...");
   await attestationRegistry.updateRouter(routerProxyAddress);
+  console.log("AttestationRegistry updated!");
+
+  console.log("Updating AttestationRegistry with the chain prefix...");
+  const network = await ethers.provider.getNetwork();
+  const chainPrefix = getChainPrefix(network.chainId);
+  console.log(`Chain prefix for chain ID ${network.chainId} is ${chainPrefix}`);
+  await attestationRegistry.updateChainPrefix(chainPrefix);
   console.log("AttestationRegistry updated!");
 
   console.log("Updating ModuleRegistry with the Router address...");

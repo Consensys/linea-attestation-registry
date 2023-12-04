@@ -19,19 +19,20 @@
   ],
   "scripts": {
     "build": "forge build",
-    "check:upgradeability": "npx hardhat run script/upgrade/checkUpgradeability.ts",
-    "check:upgradeability:ci": "cp .env.example .env && pnpm run check:upgradeability",
-    "check:upgradeable": "npx hardhat run script/upgrade/checkUpgradeable.ts --network",
+    "check:implementations": "npx hardhat run script/upgrade/checkImplementations.ts",
+    "check:upgradeability": "npx hardhat run script/upgrade/checkUpgradeability.ts --network",
     "clean": "rm -rf lcov.info coverage artifacts cache_hardhat cache out typechain-types",
     "decode": "npx hardhat run script/decode.ts",
-    "deploy:all": "npx hardhat run script/deploy/deployEverything.ts --network",
+    "deploy": "npx hardhat run script/deploy/deployEverything.ts --network",
     "deploy:post": "npx hardhat run script/deploy/postDeployment.ts --network",
     "encode": "npx hardhat run script/encode.ts",
     "lint": "pnpm solhint \"{script,src,test}/**/*.sol\"",
+    "massImport:prepare": "npx hardhat run script/massImport/prepareData.ts",
+    "massImport:attest": "npx hardhat run script/massImport/massImport.ts --network",
     "reimport": "npx hardhat run script/recreateNetworkFile.ts --network",
     "test": "forge test",
-    "upgrade:all": "npx hardhat run script/upgrade/upgradeEverything.ts --network",
-    "upgrade:all:force": "npx hardhat run script/upgrade/forceUpgradeEverything.ts --network"
+    "upgrade:": "npx hardhat run script/upgrade/upgradeEverything.ts --network",
+    "upgrade:force": "npx hardhat run script/upgrade/forceUpgradeEverything.ts --network"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.4",
@@ -43,5 +44,9 @@
     "hardhat": "^2.19.0",
     "solhint": "^3.6.2",
     "solhint-plugin-prettier": "^0.0.5"
+  },
+  "dependencies": {
+    "@consensys/linea-sdk": "^0.1.6",
+    "@types/node": "^20.9.0"
   }
 }

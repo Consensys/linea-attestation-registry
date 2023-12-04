@@ -22,11 +22,20 @@ the network.</h4>
 
 ## Links
 
-📚 [Official documentation](https://docs.ver.ax/)  
-🔍
-[Testnet GraphQL API](https://graph-query.goerli.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  
-🔍 [Mainnet GraphQL API](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)  
+📚 [Official documentation](https://docs.ver.ax/)
+
+<details>
+  <summary>🔍 GraphQL APIs</summary>
+  
+- [Linea Testnet](https://graph-query.goerli.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
+- [Linea Mainnet](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
+- [Arbitrum Goerli](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum-goerli)
+- [Arbitrum Mainnet](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum)
+  
+</details>
+  
 🧱 [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk) - **WIP**  
+  
 🌍 Verax Explorer - _Coming soon_
 
 ## Repository Organisation
@@ -37,6 +46,7 @@ the network.</h4>
 ├── explorer    # Explorer frontend to discover the main objects
 ├── sdk         # The Verax SDK to easily interact with the contracts and the subgraph
 ├── subgraph    # The subgraph indexing Verax data
+├── website     # Verax website
 ```
 
 ## Contributing
@@ -97,17 +107,17 @@ Here are the addresses on those networks:
   <summary>Arbitrum Testnet</summary>
 
 - Router =
-  [0x5f9df9EDC1F773e622cbD1F8C201c1560c1DF1a1](https://goerli.arbiscan.io/address/0x5f9df9EDC1F773e622cbD1F8C201c1560c1DF1a1)
+  [0x746390cB11913d8F93BDF8a974cFEC724039B3Cc](https://goerli.arbiscan.io/address/0x746390cB11913d8F93BDF8a974cFEC724039B3Cc)
 - AttestationRegistry =
-  [0xFEeE5646a93E8fF8035AB12A375eeE4EE4E834b3](https://goerli.arbiscan.io/address/0xFEeE5646a93E8fF8035AB12A375eeE4EE4E834b3)
+  [0xCD839595FdA5A8111d5E03D42d9D9af60ee67B66](https://goerli.arbiscan.io/address/0xCD839595FdA5A8111d5E03D42d9D9af60ee67B66)
 - ModuleRegistry =
-  [0x0D9212976f37c96b060f23f9Da5f389cB7A958B7](https://goerli.arbiscan.io/address/0x0D9212976f37c96b060f23f9Da5f389cB7A958B7)
+  [0x58EE79284bE65b217Db408A0991314f9Ae84348A](https://goerli.arbiscan.io/address/0x58EE79284bE65b217Db408A0991314f9Ae84348A)
 - PortalRegistry =
-  [0xCF68336D3f34fb688C7708cb285B0F86DFC44dA8](https://goerli.arbiscan.io/address/0xCF68336D3f34fb688C7708cb285B0F86DFC44dA8)
+  [0x7d6a914C1e33C141CB4a5e0095c1075E5649aFB2](https://goerli.arbiscan.io/address/0x7d6a914C1e33C141CB4a5e0095c1075E5649aFB2)
 - SchemaRegistry =
-  [0xAAce069f1026bAF1f86f05FC5e0934D2C3957528](https://goerli.arbiscan.io/address/0xAAce069f1026bAF1f86f05FC5e0934D2C3957528)
+  [0x129043e80e0B4C7da61a622df0912c31D3414AA7](https://goerli.arbiscan.io/address/0x129043e80e0B4C7da61a622df0912c31D3414AA7)
 - AttestationReader =
-  [0x628D6C3C9067AedD33404d827c2e9a4A4368dff3](https://goerli.arbiscan.io/address/0x628D6C3C9067AedD33404d827c2e9a4A4368dff3)
+  [0x055E7d488eCACf9f1B0B42659c331C037505D4a1](https://goerli.arbiscan.io/address/0x055E7d488eCACf9f1B0B42659c331C037505D4a1)
 
 </details>
 

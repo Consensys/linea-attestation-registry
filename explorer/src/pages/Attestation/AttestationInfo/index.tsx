@@ -1,4 +1,4 @@
-import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Attestation } from "@verax-attestation-registry/verax-sdk";
 
 import { displayAmountWithComma } from "@/utils/amountUtils";
 
@@ -10,13 +10,13 @@ import { cropString } from "@/utils/stringUtils";
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
   const list = [
-    createDateListItem("ATTESTED", attestedDate),
-    createDateListItem("EXPIRATION DATE", expirationDate),
+    createDateListItem("ATTESTED", attestedDate.toString()),
+    createDateListItem("EXPIRATION DATE", expirationDate.toString()),
     {
       title: "REVOKED",
       value: revoked ? "YES" : "NO",
     },
-    createDateListItem("REVOCATION DATE", revocationDate),
+    createDateListItem("REVOCATION DATE", revocationDate?.toString()),
     {
       title: "ISSUED BY",
       value: cropString(attester),

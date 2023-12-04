@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, createContext, useState } from "react";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
-import { INetwork, defaultChain } from "@/config";
+import { defaultChain } from "@/config";
+import { INetwork } from "@/interfaces/config";
 
 interface IContextState {
   sdk: VeraxSdk;

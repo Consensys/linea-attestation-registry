@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { Check, Copy, MinusCircle, PlusCircle } from "lucide-react";
 import ReactJson from "react-json-view";
 import { EyeOffIcon } from "lucide-react";

@@ -9,12 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { chains } from "@/config";
-import { NetworkContext } from "@/providers/network-provider";
-
 import { APP_ROUTES } from "@/routes/constants";
 
 import "./styles.css";
-import { useContext } from "react";
+import { useNetworkContext } from "@/providers/network-provider/context";
 
 const routes = [
   {
@@ -36,7 +34,7 @@ const routes = [
 ];
 
 export const Header = () => {
-  const { network, setNetwork } = useContext(NetworkContext);
+  const { network } = useNetworkContext();
   console.log(network, "network");
   return (
     <div className="bg-gray-100 h-16 px-14 py-3border-b justify-between items-center inline-flex">
@@ -62,7 +60,7 @@ export const Header = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {chains.map((chain) => (
-              <DropdownMenuItem key={chain.name} onClick={() => setNetwork(chain)}>
+              <DropdownMenuItem key={chain.name} onClick={() => console.log("set network")}>
                 {chain.name}
               </DropdownMenuItem>
             ))}

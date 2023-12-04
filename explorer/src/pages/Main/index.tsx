@@ -1,14 +1,14 @@
-import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Attestation } from "@verax-attestation-registry/verax-sdk";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { NetworkContext } from "@/providers/network-provider";
+import { useNetworkContext } from "@/providers/network-provider/context";
 
 import "./styles.css";
 
 export const Main = () => {
   const [attestations, setAttestations] = useState<Attestation[]>([]);
-  const { sdk } = useContext(NetworkContext);
+  const { sdk } = useNetworkContext();
 
   useEffect(() => {
     const getAttestations = async () => {

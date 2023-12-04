@@ -1,18 +1,16 @@
 import useSWR from "swr";
-import { Schema } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Schema } from "@verax-attestation-registry/verax-sdk";
 import { Link } from "react-router-dom";
 
 import ArrowRight from "@/assets/icons/arrow-right.svg";
 import { toSchemaById } from "@/routes/constants";
 import { SWRKeys } from "@/interfaces/swr/enum";
-import { NetworkContext } from "@/providers/network-provider";
-
 import { cropString } from "@/utils/stringUtils";
 import { HelperIndicator } from "@/components/HelperIndicator";
-import { useContext } from "react";
+import { useNetworkContext } from "@/providers/network-provider/context";
 
 export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
-  const { sdk } = useContext(NetworkContext);
+  const { sdk } = useNetworkContext();
 
   const { data: schema, isLoading } = useSWR(
     SWRKeys.GET_SCHEMA_BY_ID,

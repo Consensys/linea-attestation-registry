@@ -1,16 +1,10 @@
-import { Chain, createConfig } from "wagmi";
+import { createConfig } from "wagmi";
 import { getDefaultConfig } from "connectkit";
 import { lineaTestnet, linea } from "wagmi/chains";
-import VeraxSdk from "@verax-attestation-registry/verax-sdk";
+import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import lineaMainnetIcon from "@/assets/networks/linea-mainnet.svg";
 import lineaTestnetIcon from "@/assets/networks/linea-testnet.svg";
-
-export interface INetwork {
-  name: string;
-  chain: Chain;
-  veraxEnv: typeof VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND;
-  img: string;
-}
+import { INetwork } from "@/interfaces/config";
 
 const chains: INetwork[] = [
   {
@@ -18,12 +12,14 @@ const chains: INetwork[] = [
     chain: linea,
     veraxEnv: VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND,
     img: lineaMainnetIcon,
+    network: "linea",
   },
   {
     name: "Linea Testnet",
     chain: lineaTestnet,
     veraxEnv: VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND,
     img: lineaTestnetIcon,
+    network: "linea-testnet",
   },
 ];
 

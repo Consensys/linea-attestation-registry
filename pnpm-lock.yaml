@@ -756,10 +756,10 @@ packages:
       '@babel/helpers': 7.23.2
       '@babel/parser': 7.23.0
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.2
+      '@babel/traverse': 7.23.2(supports-color@5.5.0)
       '@babel/types': 7.23.0
       convert-source-map: 2.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -782,7 +782,7 @@ packages:
       '@babel/traverse': 7.23.4
       '@babel/types': 7.23.4
       convert-source-map: 2.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -910,7 +910,7 @@ packages:
       '@babel/core': 7.23.2
       '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -925,7 +925,7 @@ packages:
       '@babel/core': 7.23.3
       '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -3344,24 +3344,6 @@ packages:
       '@babel/parser': 7.23.0
       '@babel/types': 7.23.0
 
-  /@babel/traverse@7.23.2:
-    resolution: {integrity: sha512-azpe59SQ48qG6nu2CzcMLbxUudtN+dOM9kDbUqGq3HXUJRlo7i8fvPoxQUzYgLZ4cMVmuZgm8vvBpNeRhd6XSw==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/code-frame': 7.23.4
-      '@babel/generator': 7.23.4
-      '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-function-name': 7.23.0
-      '@babel/helper-hoist-variables': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.23.4
-      '@babel/types': 7.23.4
-      debug: 4.3.4(supports-color@8.1.1)
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /@babel/traverse@7.23.2(supports-color@5.5.0):
     resolution: {integrity: sha512-azpe59SQ48qG6nu2CzcMLbxUudtN+dOM9kDbUqGq3HXUJRlo7i8fvPoxQUzYgLZ4cMVmuZgm8vvBpNeRhd6XSw==}
     engines: {node: '>=6.9.0'}
@@ -3391,7 +3373,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.23.4
       '@babel/types': 7.23.4
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -3452,7 +3434,7 @@ packages:
       case: 1.6.3
     dev: true
 
-  /@chakra-ui/accordion@2.3.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react@18.2.0):
+  /@chakra-ui/accordion@2.3.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react@18.2.0):
     resolution: {integrity: sha512-FSXRm8iClFyU+gVaXisOSEw0/4Q+qZbFRiuhIAkVU6Boj0FxAMrlo9a8AV5TuF77rgaHytCdHk0Ng+cyUijrag==}
     peerDependencies:
       '@chakra-ui/system': '>=2.0.0'
@@ -3466,8 +3448,8 @@ packages:
       '@chakra-ui/react-use-merge-refs': 2.1.0(react@18.2.0)
       '@chakra-ui/shared-utils': 2.0.5
       '@chakra-ui/system': 2.6.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
-      '@chakra-ui/transition': 2.1.0(framer-motion@10.16.4)(react@18.2.0)
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      '@chakra-ui/transition': 2.1.0(framer-motion@10.16.12)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
     dev: true
 
@@ -3784,7 +3766,7 @@ packages:
       react: 18.2.0
     dev: true
 
-  /@chakra-ui/menu@2.2.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react@18.2.0):
+  /@chakra-ui/menu@2.2.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react@18.2.0):
     resolution: {integrity: sha512-lJS7XEObzJxsOwWQh7yfG4H8FzFPRP5hVPN/CL+JzytEINCSBvsCDHrYPQGp7jzpCi8vnTqQQGQe0f8dwnXd2g==}
     peerDependencies:
       '@chakra-ui/system': '>=2.0.0'
@@ -3806,12 +3788,12 @@ packages:
       '@chakra-ui/react-use-update-effect': 2.1.0(react@18.2.0)
       '@chakra-ui/shared-utils': 2.0.5
       '@chakra-ui/system': 2.6.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
-      '@chakra-ui/transition': 2.1.0(framer-motion@10.16.4)(react@18.2.0)
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      '@chakra-ui/transition': 2.1.0(framer-motion@10.16.12)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
     dev: true
 
-  /@chakra-ui/modal@2.3.1(@chakra-ui/system@2.6.1)(@types/react@18.2.37)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0):
+  /@chakra-ui/modal@2.3.1(@chakra-ui/system@2.6.1)(@types/react@18.2.37)(framer-motion@10.16.12)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-TQv1ZaiJMZN+rR9DK0snx/OPwmtaGH1HbZtlYt4W4s6CzyK541fxLRTjIXfEzIGpvNW+b6VFuFjbcR78p4DEoQ==}
     peerDependencies:
       '@chakra-ui/system': '>=2.0.0'
@@ -3827,9 +3809,9 @@ packages:
       '@chakra-ui/react-use-merge-refs': 2.1.0(react@18.2.0)
       '@chakra-ui/shared-utils': 2.0.5
       '@chakra-ui/system': 2.6.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
-      '@chakra-ui/transition': 2.1.0(framer-motion@10.16.4)(react@18.2.0)
+      '@chakra-ui/transition': 2.1.0(framer-motion@10.16.12)(react@18.2.0)
       aria-hidden: 1.2.3
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-remove-scroll: 2.5.7(@types/react@18.2.37)(react@18.2.0)
@@ -3883,7 +3865,7 @@ packages:
       react: 18.2.0
     dev: true
 
-  /@chakra-ui/popover@2.2.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react@18.2.0):
+  /@chakra-ui/popover@2.2.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react@18.2.0):
     resolution: {integrity: sha512-K+2ai2dD0ljvJnlrzesCDT9mNzLifE3noGKZ3QwLqd/K34Ym1W/0aL1ERSynrcG78NKoXS54SdEzkhCZ4Gn/Zg==}
     peerDependencies:
       '@chakra-ui/system': '>=2.0.0'
@@ -3902,7 +3884,7 @@ packages:
       '@chakra-ui/react-use-merge-refs': 2.1.0(react@18.2.0)
       '@chakra-ui/shared-utils': 2.0.5
       '@chakra-ui/system': 2.6.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
     dev: true
 
@@ -4170,7 +4152,7 @@ packages:
       react: 18.2.0
     dev: true
 
-  /@chakra-ui/react@2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.37)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0):
+  /@chakra-ui/react@2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.37)(framer-motion@10.16.12)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-UL9Rtj4DovP3+oVbI06gsdfyJJb+wmS2RYnGNXjW9tsjCyXxjlBw9TAUj0jyOfWe0+zd/4juL8+J+QCwmdhptg==}
     peerDependencies:
       '@emotion/react': ^11.0.0
@@ -4179,7 +4161,7 @@ packages:
       react: '>=18'
       react-dom: '>=18'
     dependencies:
-      '@chakra-ui/accordion': 2.3.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react@18.2.0)
+      '@chakra-ui/accordion': 2.3.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react@18.2.0)
       '@chakra-ui/alert': 2.2.1(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@chakra-ui/avatar': 2.3.0(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@chakra-ui/breadcrumb': 2.2.0(@chakra-ui/system@2.6.1)(react@18.2.0)
@@ -4200,11 +4182,11 @@ packages:
       '@chakra-ui/layout': 2.3.1(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@chakra-ui/live-region': 2.1.0(react@18.2.0)
       '@chakra-ui/media-query': 3.3.0(@chakra-ui/system@2.6.1)(react@18.2.0)
-      '@chakra-ui/menu': 2.2.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react@18.2.0)
-      '@chakra-ui/modal': 2.3.1(@chakra-ui/system@2.6.1)(@types/react@18.2.37)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
+      '@chakra-ui/menu': 2.2.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react@18.2.0)
+      '@chakra-ui/modal': 2.3.1(@chakra-ui/system@2.6.1)(@types/react@18.2.37)(framer-motion@10.16.12)(react-dom@18.2.0)(react@18.2.0)
       '@chakra-ui/number-input': 2.1.1(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@chakra-ui/pin-input': 2.1.0(@chakra-ui/system@2.6.1)(react@18.2.0)
-      '@chakra-ui/popover': 2.2.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react@18.2.0)
+      '@chakra-ui/popover': 2.2.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react@18.2.0)
       '@chakra-ui/popper': 3.1.0(react@18.2.0)
       '@chakra-ui/portal': 2.1.0(react-dom@18.2.0)(react@18.2.0)
       '@chakra-ui/progress': 2.2.0(@chakra-ui/system@2.6.1)(react@18.2.0)
@@ -4219,7 +4201,7 @@ packages:
       '@chakra-ui/stat': 2.1.1(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@chakra-ui/stepper': 2.3.1(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@chakra-ui/styled-system': 2.9.1
-      '@chakra-ui/switch': 2.1.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react@18.2.0)
+      '@chakra-ui/switch': 2.1.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react@18.2.0)
       '@chakra-ui/system': 2.6.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
       '@chakra-ui/table': 2.1.0(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@chakra-ui/tabs': 3.0.0(@chakra-ui/system@2.6.1)(react@18.2.0)
@@ -4227,14 +4209,14 @@ packages:
       '@chakra-ui/textarea': 2.1.1(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@chakra-ui/theme': 3.3.0(@chakra-ui/styled-system@2.9.1)
       '@chakra-ui/theme-utils': 2.0.20
-      '@chakra-ui/toast': 7.0.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
-      '@chakra-ui/tooltip': 2.3.0(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
-      '@chakra-ui/transition': 2.1.0(framer-motion@10.16.4)(react@18.2.0)
+      '@chakra-ui/toast': 7.0.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react-dom@18.2.0)(react@18.2.0)
+      '@chakra-ui/tooltip': 2.3.0(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react-dom@18.2.0)(react@18.2.0)
+      '@chakra-ui/transition': 2.1.0(framer-motion@10.16.12)(react@18.2.0)
       '@chakra-ui/utils': 2.0.15
       '@chakra-ui/visually-hidden': 2.2.0(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@emotion/react': 11.11.1(@types/react@18.2.37)(react@18.2.0)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.37)(react@18.2.0)
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
@@ -4345,7 +4327,7 @@ packages:
       lodash.mergewith: 4.6.2
     dev: true
 
-  /@chakra-ui/switch@2.1.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react@18.2.0):
+  /@chakra-ui/switch@2.1.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react@18.2.0):
     resolution: {integrity: sha512-cOHIhW5AlLZSFENxFEBYTBniqiduOowa1WdzslP1Fd0usBFaD5iAgOY1Fvr7xKhE8nmzzeMCkPB3XBvUSWnawQ==}
     peerDependencies:
       '@chakra-ui/system': '>=2.0.0'
@@ -4355,7 +4337,7 @@ packages:
       '@chakra-ui/checkbox': 2.3.1(@chakra-ui/system@2.6.1)(react@18.2.0)
       '@chakra-ui/shared-utils': 2.0.5
       '@chakra-ui/system': 2.6.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
     dev: true
 
@@ -4464,7 +4446,7 @@ packages:
       '@chakra-ui/theme-tools': 2.1.1(@chakra-ui/styled-system@2.9.1)
     dev: true
 
-  /@chakra-ui/toast@7.0.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0):
+  /@chakra-ui/toast@7.0.1(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-V5JUhw6RZxbGRTijvd5k4iEMLCfbzTLNWbZLZhRZk10YvFfAP5OYfRCm68zpE/t3orN/f+4ZLL3P+Wb4E7oSmw==}
     peerDependencies:
       '@chakra-ui/system': 2.6.1
@@ -4482,12 +4464,12 @@ packages:
       '@chakra-ui/styled-system': 2.9.1
       '@chakra-ui/system': 2.6.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
       '@chakra-ui/theme': 3.3.0(@chakra-ui/styled-system@2.9.1)
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /@chakra-ui/tooltip@2.3.0(@chakra-ui/system@2.6.1)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0):
+  /@chakra-ui/tooltip@2.3.0(@chakra-ui/system@2.6.1)(framer-motion@10.16.12)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-2s23f93YIij1qEDwIK//KtEu4LLYOslhR1cUhDBk/WUzyFR3Ez0Ee+HlqlGEGfGe9x77E6/UXPnSAKKdF/cpsg==}
     peerDependencies:
       '@chakra-ui/system': '>=2.0.0'
@@ -4504,19 +4486,19 @@ packages:
       '@chakra-ui/react-use-merge-refs': 2.1.0(react@18.2.0)
       '@chakra-ui/shared-utils': 2.0.5
       '@chakra-ui/system': 2.6.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(react@18.2.0)
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /@chakra-ui/transition@2.1.0(framer-motion@10.16.4)(react@18.2.0):
+  /@chakra-ui/transition@2.1.0(framer-motion@10.16.12)(react@18.2.0):
     resolution: {integrity: sha512-orkT6T/Dt+/+kVwJNy7zwJ+U2xAZ3EU7M3XCs45RBvUnZDr/u9vdmaM/3D/rOpmQJWgQBwKPJleUXrYWUagEDQ==}
     peerDependencies:
       framer-motion: '>=4.0.0'
       react: '>=18'
     dependencies:
       '@chakra-ui/shared-utils': 2.0.5
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
     dev: true
 
@@ -5074,7 +5056,7 @@ packages:
     engines: {node: ^10.12.0 || >=12.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       espree: 7.3.1
       globals: 13.23.0
       ignore: 4.0.6
@@ -5091,7 +5073,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       espree: 9.6.1
       globals: 13.23.0
       ignore: 5.2.4
@@ -5108,7 +5090,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       espree: 9.6.1
       globals: 13.23.0
       ignore: 5.2.4
@@ -5757,7 +5739,7 @@ packages:
       binary-install-raw: 0.0.13(debug@4.3.4)
       chalk: 3.0.0
       chokidar: 3.5.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       docker-compose: 0.23.19
       dockerode: 2.5.8
       fs-extra: 9.1.0
@@ -7148,7 +7130,7 @@ packages:
     dependencies:
       '@babel/parser': 7.23.0
       '@babel/plugin-syntax-import-assertions': 7.22.5(@babel/core@7.23.2)
-      '@babel/traverse': 7.23.2
+      '@babel/traverse': 7.23.2(supports-color@5.5.0)
       '@babel/types': 7.23.0
       '@graphql-tools/utils': 9.2.1(graphql@15.8.0)
       graphql: 15.8.0
@@ -7629,7 +7611,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 2.0.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -7640,7 +7622,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -8640,7 +8622,7 @@ packages:
     engines: {node: '>=16.0.0'}
     dependencies:
       '@chakra-ui/anatomy': 2.2.1
-      '@chakra-ui/react': 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.37)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
+      '@chakra-ui/react': 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.37)(framer-motion@10.16.12)(react-dom@18.2.0)(react@18.2.0)
       '@emotion/react': 11.11.1(@types/react@18.2.37)(react@18.2.0)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.37)(react@18.2.0)
       '@ethersproject/units': 5.7.0
@@ -8660,7 +8642,7 @@ packages:
       '@reduxjs/toolkit': 1.9.7(react-redux@8.1.3)(react@18.2.0)
       date-fns: 2.30.0
       fast-deep-equal: 3.1.3
-      framer-motion: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      framer-motion: 10.16.12(react-dom@18.2.0)(react@18.2.0)
       json-rpc-engine: 6.1.0
       json-rpc-middleware-stream: 4.2.3
       monaco-editor: 0.38.0
@@ -8798,7 +8780,7 @@ packages:
     engines: {node: '>=14.0.0'}
     dependencies:
       '@types/debug': 4.1.10
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       semver: 7.5.4
       superstruct: 1.0.3
     transitivePeerDependencies:
@@ -8810,7 +8792,7 @@ packages:
     dependencies:
       '@ethereumjs/tx': 4.2.0
       '@types/debug': 4.1.10
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       semver: 7.5.4
       superstruct: 1.0.3
     transitivePeerDependencies:
@@ -8824,7 +8806,7 @@ packages:
       '@ethereumjs/tx': 4.2.0
       '@noble/hashes': 1.3.2
       '@types/debug': 4.1.10
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       semver: 7.5.4
       superstruct: 1.0.3
     transitivePeerDependencies:
@@ -8838,7 +8820,7 @@ packages:
       '@noble/hashes': 1.3.2
       '@scure/base': 1.1.3
       '@types/debug': 4.1.10
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       pony-cause: 2.1.10
       semver: 7.5.4
       superstruct: 1.0.3
@@ -9066,7 +9048,7 @@ packages:
       '@nomicfoundation/ethereumjs-tx': 5.0.2
       '@nomicfoundation/ethereumjs-util': 9.0.2
       abstract-level: 1.0.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       ethereum-cryptography: 0.1.3
       level: 8.0.0
       lru-cache: 5.1.1
@@ -9107,7 +9089,7 @@ packages:
       '@nomicfoundation/ethereumjs-common': 4.0.2
       '@nomicfoundation/ethereumjs-tx': 5.0.2
       '@nomicfoundation/ethereumjs-util': 9.0.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       ethereum-cryptography: 0.1.3
       mcl-wasm: 0.7.9
       rustbn.js: 0.2.0
@@ -9128,7 +9110,7 @@ packages:
     dependencies:
       '@nomicfoundation/ethereumjs-common': 4.0.2
       '@nomicfoundation/ethereumjs-rlp': 5.0.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       ethereum-cryptography: 0.1.3
       ethers: 5.7.2
       js-sdsl: 4.4.2
@@ -9186,7 +9168,7 @@ packages:
       '@nomicfoundation/ethereumjs-trie': 6.0.2
       '@nomicfoundation/ethereumjs-tx': 5.0.2
       '@nomicfoundation/ethereumjs-util': 9.0.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       ethereum-cryptography: 0.1.3
       mcl-wasm: 0.7.9
       rustbn.js: 0.2.0
@@ -9220,7 +9202,7 @@ packages:
       ethers: ^6.1.0
       hardhat: ^2.0.0
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       ethers: 6.8.1
       hardhat: 2.19.0(ts-node@10.9.1)(typescript@5.2.2)
       lodash.isequal: 4.5.0
@@ -9295,7 +9277,7 @@ packages:
       '@ethersproject/address': 5.7.0
       cbor: 8.1.0
       chalk: 2.4.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       hardhat: 2.19.0(ts-node@10.9.1)(typescript@5.2.2)
       lodash.clonedeep: 4.5.0
       semver: 6.3.1
@@ -9539,7 +9521,7 @@ packages:
     dependencies:
       '@oclif/core': 2.15.0(@types/node@20.10.3)(typescript@5.2.2)
       chalk: 4.1.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -9631,7 +9613,7 @@ packages:
       '@openzeppelin/defender-sdk-deploy-client': 1.3.0(debug@4.3.4)
       '@openzeppelin/upgrades-core': 1.31.0
       chalk: 4.1.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       ethereumjs-util: 7.1.5
       ethers: 6.8.1
       hardhat: 2.19.0(ts-node@10.9.1)(typescript@5.2.2)
@@ -9651,7 +9633,7 @@ packages:
       cbor: 9.0.1
       chalk: 4.1.2
       compare-versions: 6.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       ethereumjs-util: 7.1.5
       minimist: 1.2.8
       proper-lockfile: 4.1.2
@@ -10257,7 +10239,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       extract-zip: 2.0.1
       progress: 2.0.3
       proxy-agent: 6.3.0
@@ -10274,7 +10256,7 @@ packages:
     engines: {node: '>=16.3.0'}
     hasBin: true
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       extract-zip: 2.0.1
       progress: 2.0.3
       proxy-agent: 6.3.0
@@ -10290,7 +10272,7 @@ packages:
     engines: {node: '>=16.3.0'}
     hasBin: true
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       extract-zip: 2.0.1
       progress: 2.0.3
       proxy-agent: 6.3.1
@@ -11297,7 +11279,7 @@ packages:
   /@solana/web3.js@1.87.6:
     resolution: {integrity: sha512-LkqsEBgTZztFiccZZXnawWa8qNCATEqE97/d0vIwjTclmVlc8pBpD1DmjfVHtZ1HS5fZorFlVhXfpwnCNDZfyg==}
     dependencies:
-      '@babel/runtime': 7.23.2
+      '@babel/runtime': 7.23.5
       '@noble/curves': 1.2.0
       '@noble/hashes': 1.3.2
       '@solana/buffer-layout': 4.0.1
@@ -12474,7 +12456,7 @@ packages:
       '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.32.0)(typescript@4.9.5)
       '@typescript-eslint/parser': 4.33.0(eslint@7.32.0)(typescript@4.9.5)
       '@typescript-eslint/scope-manager': 4.33.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 7.32.0
       functional-red-black-tree: 1.0.1
       ignore: 5.2.4
@@ -12502,7 +12484,7 @@ packages:
       '@typescript-eslint/scope-manager': 5.62.0
       '@typescript-eslint/type-utils': 5.62.0(eslint@8.53.0)(typescript@4.9.5)
       '@typescript-eslint/utils': 5.62.0(eslint@8.53.0)(typescript@4.9.5)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.53.0
       graphemer: 1.4.0
       ignore: 5.2.4
@@ -12531,7 +12513,7 @@ packages:
       '@typescript-eslint/type-utils': 6.10.0(eslint@8.53.0)(typescript@5.2.2)
       '@typescript-eslint/utils': 6.10.0(eslint@8.53.0)(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.10.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.53.0
       graphemer: 1.4.0
       ignore: 5.2.4
@@ -12560,7 +12542,7 @@ packages:
       '@typescript-eslint/type-utils': 6.13.1(eslint@8.55.0)(typescript@5.2.2)
       '@typescript-eslint/utils': 6.13.1(eslint@8.55.0)(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.13.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.55.0
       graphemer: 1.4.0
       ignore: 5.2.4
@@ -12603,7 +12585,7 @@ packages:
       '@typescript-eslint/scope-manager': 4.33.0
       '@typescript-eslint/types': 4.33.0
       '@typescript-eslint/typescript-estree': 4.33.0(typescript@4.9.5)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 7.32.0
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -12623,7 +12605,7 @@ packages:
       '@typescript-eslint/scope-manager': 5.62.0
       '@typescript-eslint/types': 5.62.0
       '@typescript-eslint/typescript-estree': 5.62.0(typescript@4.9.5)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.53.0
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -12644,7 +12626,7 @@ packages:
       '@typescript-eslint/types': 6.10.0
       '@typescript-eslint/typescript-estree': 6.10.0(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.10.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.53.0
       typescript: 5.2.2
     transitivePeerDependencies:
@@ -12665,7 +12647,7 @@ packages:
       '@typescript-eslint/types': 6.13.1
       '@typescript-eslint/typescript-estree': 6.13.1(typescript@5.2.2)
       '@typescript-eslint/visitor-keys': 6.13.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.55.0
       typescript: 5.2.2
     transitivePeerDependencies:
@@ -12716,7 +12698,7 @@ packages:
     dependencies:
       '@typescript-eslint/typescript-estree': 5.62.0(typescript@4.9.5)
       '@typescript-eslint/utils': 5.62.0(eslint@8.53.0)(typescript@4.9.5)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.53.0
       tsutils: 3.21.0(typescript@4.9.5)
       typescript: 4.9.5
@@ -12736,7 +12718,7 @@ packages:
     dependencies:
       '@typescript-eslint/typescript-estree': 6.10.0(typescript@5.2.2)
       '@typescript-eslint/utils': 6.10.0(eslint@8.53.0)(typescript@5.2.2)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.53.0
       ts-api-utils: 1.0.3(typescript@5.2.2)
       typescript: 5.2.2
@@ -12756,7 +12738,7 @@ packages:
     dependencies:
       '@typescript-eslint/typescript-estree': 6.13.1(typescript@5.2.2)
       '@typescript-eslint/utils': 6.13.1(eslint@8.55.0)(typescript@5.2.2)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       eslint: 8.55.0
       ts-api-utils: 1.0.3(typescript@5.2.2)
       typescript: 5.2.2
@@ -12795,7 +12777,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 4.33.0
       '@typescript-eslint/visitor-keys': 4.33.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.5.4
@@ -12816,7 +12798,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.62.0
       '@typescript-eslint/visitor-keys': 5.62.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.5.4
@@ -12837,7 +12819,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.10.0
       '@typescript-eslint/visitor-keys': 6.10.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.5.4
@@ -12858,7 +12840,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.13.1
       '@typescript-eslint/visitor-keys': 6.13.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.5.4
@@ -14046,7 +14028,7 @@ packages:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -14055,7 +14037,7 @@ packages:
     resolution: {integrity: sha512-o/zjMZRhJxny7OyEF+Op8X+efiELC7k7yOjMzgfzVqOzXqkBkWI79YoTdOtsuWd5BWhAGAuOY/Xa6xpiaWXiNg==}
     engines: {node: '>= 14'}
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -17050,6 +17032,7 @@ packages:
     dependencies:
       ms: 2.1.2
       supports-color: 8.1.1
+    dev: true
 
   /decamelize@1.2.0:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
@@ -17314,7 +17297,7 @@ packages:
     hasBin: true
     dependencies:
       address: 1.2.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -17435,7 +17418,7 @@ packages:
   /dns-over-http-resolver@1.2.3(node-fetch@3.3.2):
     resolution: {integrity: sha512-miDiVSI6KSNbi4SVifzO/reD8rMnxgrlnkrlkugOLQpWQTe2qMdHsZp5DmfKjxNE+/T3VAAYLQUZMv9SMr6+AA==}
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       native-fetch: 3.0.0(node-fetch@3.3.2)
       receptacle: 1.3.2
     transitivePeerDependencies:
@@ -17711,7 +17694,7 @@ packages:
     resolution: {integrity: sha512-aXPtgF1JS3RuuKcpSrBtimSjYvrbhKW9froICH4s0F3XQWLxsKNxqzG39nnvQZQnva4CMvUK63T7shevxRyYHw==}
     dependencies:
       '@socket.io/component-emitter': 3.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       engine.io-parser: 5.0.7
       ws: 8.2.3
       xmlhttprequest-ssl: 2.0.0
@@ -17742,7 +17725,7 @@ packages:
       base64id: 2.0.0
       cookie: 0.4.2
       cors: 2.8.5
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       engine.io-parser: 5.2.1
       ws: 8.11.0
     transitivePeerDependencies:
@@ -18296,7 +18279,7 @@ packages:
     dependencies:
       '@es-joy/jsdoccomment': 0.36.1
       comment-parser: 1.3.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       escape-string-regexp: 4.0.0
       eslint: 8.53.0
       esquery: 1.5.0
@@ -18544,7 +18527,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       doctrine: 3.0.0
       enquirer: 2.4.1
       escape-string-regexp: 4.0.0
@@ -18598,7 +18581,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
@@ -18645,7 +18628,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
@@ -19162,7 +19145,7 @@ packages:
     engines: {node: '>= 10.17.0'}
     hasBin: true
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
@@ -19561,7 +19544,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     dev: true
 
   /for-each@0.3.3:
@@ -19683,25 +19666,6 @@ packages:
       tslib: 2.6.2
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
-    dev: false
-
-  /framer-motion@10.16.4(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-p9V9nGomS3m6/CALXqv6nFGMuFOxbWsmaOrdmhyQimMIlLl3LC7h7l86wge/Js/8cRu5ktutS/zlzgR7eBOtFA==}
-    peerDependencies:
-      react: ^18.0.0
-      react-dom: ^18.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      tslib: 2.6.2
-    optionalDependencies:
-      '@emotion/is-prop-valid': 0.8.8
-    dev: true
 
   /framer-motion@6.5.1(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-o1BGqqposwi7cgDrtg0dNONhkmPsUFDaLcKXigzuTFC5x58mE8iyTazxSudFzmT6MEyJKfjjU8ItoMe3W+3fiw==}
@@ -20013,7 +19977,7 @@ packages:
       gatsby: ^4.0.0-next
     dependencies:
       '@babel/runtime': 7.23.2
-      '@babel/traverse': 7.23.2
+      '@babel/traverse': 7.23.2(supports-color@5.5.0)
       '@sindresorhus/slugify': 1.1.2
       chokidar: 3.5.3
       fs-exists-cached: 1.0.0
@@ -20189,7 +20153,7 @@ packages:
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/parser': 7.23.0
       '@babel/runtime': 7.23.2
-      '@babel/traverse': 7.23.2
+      '@babel/traverse': 7.23.2(supports-color@5.5.0)
       '@babel/types': 7.23.0
       '@builder.io/partytown': 0.5.4
       '@gatsbyjs/reach-router': 1.3.9(react-dom@18.2.0)(react@18.2.0)
@@ -20499,7 +20463,7 @@ packages:
     dependencies:
       basic-ftp: 5.0.3
       data-uri-to-buffer: 6.0.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       fs-extra: 8.1.0
     transitivePeerDependencies:
       - supports-color
@@ -21058,7 +21022,7 @@ packages:
       chalk: 2.4.2
       chokidar: 3.5.3
       ci-info: 2.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       enquirer: 2.4.1
       env-paths: 2.2.1
       ethereum-cryptography: 1.2.0
@@ -21307,7 +21271,7 @@ packages:
     dependencies:
       '@tootallnate/once': 2.0.0
       agent-base: 6.0.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -21317,7 +21281,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -21367,7 +21331,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -21377,7 +21341,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -21639,7 +21603,7 @@ packages:
     dependencies:
       '@ioredis/commands': 1.2.0
       cluster-key-slot: 1.1.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       denque: 2.1.0
       lodash.defaults: 4.2.0
       lodash.isarguments: 3.1.0
@@ -21686,7 +21650,7 @@ packages:
       any-signal: 2.1.2
       blob-to-it: 1.0.4
       browser-readablestream-to-it: 1.0.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       err-code: 3.0.1
       ipfs-core-types: 0.9.0(node-fetch@3.3.2)
       ipfs-unixfs: 6.0.9
@@ -21719,7 +21683,7 @@ packages:
       '@ipld/dag-pb': 2.1.18
       abort-controller: 3.0.0
       any-signal: 2.1.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       err-code: 3.0.1
       ipfs-core-types: 0.9.0(node-fetch@3.3.2)
       ipfs-core-utils: 0.13.0(node-fetch@3.3.2)
@@ -22341,7 +22305,7 @@ packages:
     resolution: {integrity: sha512-n3s8EwkdFIJCG3BPKBYvskgXGoy88ARzvegkitk60NxRdwltLOTaH7CUiMRXvwYorl0Q712iEjcWB+fK/MrWVw==}
     engines: {node: '>=10'}
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       istanbul-lib-coverage: 3.2.0
       source-map: 0.6.1
     transitivePeerDependencies:
@@ -24374,7 +24338,7 @@ packages:
   /micromark@2.11.4:
     resolution: {integrity: sha512-+WoovN/ppKolQOFIAajxi7Lu9kInbPxFuTBVEavFcL8eAfVstoc5MocPmqBeAdBOJV00uaVjegzH4+MA0DN/uA==}
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       parse-entities: 2.0.0
     transitivePeerDependencies:
       - supports-color
@@ -25530,7 +25494,7 @@ packages:
     dependencies:
       '@tootallnate/quickjs-emscripten': 0.23.0
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       get-uri: 6.0.2
       http-proxy-agent: 7.0.0
       https-proxy-agent: 7.0.2
@@ -26649,7 +26613,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       http-proxy-agent: 7.0.0
       https-proxy-agent: 7.0.2
       lru-cache: 7.18.3
@@ -26665,7 +26629,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       http-proxy-agent: 7.0.0
       https-proxy-agent: 7.0.2
       lru-cache: 7.18.3
@@ -26760,7 +26724,7 @@ packages:
       '@puppeteer/browsers': 1.4.6(typescript@4.9.5)
       chromium-bidi: 0.4.16(devtools-protocol@0.0.1147663)
       cross-fetch: 4.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       devtools-protocol: 0.0.1147663
       typescript: 4.9.5
       ws: 8.13.0
@@ -26778,7 +26742,7 @@ packages:
       '@puppeteer/browsers': 1.7.0
       chromium-bidi: 0.4.22(devtools-protocol@0.0.1159816)
       cross-fetch: 4.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       devtools-protocol: 0.0.1159816
       ws: 8.13.0
     transitivePeerDependencies:
@@ -28469,7 +28433,7 @@ packages:
     engines: {node: '>=10.0.0'}
     dependencies:
       '@socket.io/component-emitter': 3.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       engine.io-client: 6.2.3
       socket.io-parser: 4.2.4
     transitivePeerDependencies:
@@ -28483,7 +28447,7 @@ packages:
     engines: {node: '>=10.0.0'}
     dependencies:
       '@socket.io/component-emitter': 3.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -28494,7 +28458,7 @@ packages:
     dependencies:
       accepts: 1.3.8
       base64id: 2.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       engine.io: 6.5.4
       socket.io-adapter: 2.4.0
       socket.io-parser: 4.2.4
@@ -28509,7 +28473,7 @@ packages:
     engines: {node: '>= 10'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       socks: 2.7.1
     transitivePeerDependencies:
       - supports-color
@@ -28520,7 +28484,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       socks: 2.7.1
     transitivePeerDependencies:
       - supports-color
@@ -30066,7 +30030,7 @@ packages:
       typescript: '>=4.3.0'
     dependencies:
       '@types/prettier': 2.7.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       fs-extra: 7.0.1
       glob: 7.1.7
       js-sha3: 0.8.0
@@ -30200,7 +30164,7 @@ packages:
       chalk: 4.1.2
       cli-highlight: 2.1.11
       date-fns: 2.30.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       dotenv: 16.3.1
       glob: 8.1.0
       mkdirp: 2.1.6
@@ -30892,7 +30856,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
       globrex: 0.1.2
       tsconfck: 2.1.2(typescript@5.2.2)
       vite: 4.5.0(@types/node@20.10.3)
@@ -31003,7 +30967,7 @@ packages:
     dependencies:
       chalk: 4.1.2
       commander: 9.5.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true

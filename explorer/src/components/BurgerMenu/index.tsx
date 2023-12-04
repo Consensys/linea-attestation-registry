@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 import { slideBurgerMenuAnimation } from "@/constants/theme/animation";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 import { NavigationList } from "../NavigationList";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 export const BurgerMenu: React.FC<{ isOpened: boolean; setIsOpened: Dispatch<SetStateAction<boolean>> }> = ({
   isOpened,

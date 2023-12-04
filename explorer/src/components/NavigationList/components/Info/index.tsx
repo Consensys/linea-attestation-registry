@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { MoveUpRight } from "lucide-react";
+import { useState } from "react";
 
 import { INFO_LIST } from "@/constants/components";
 import useWindowDimensions from "@/hooks/useWindowDimensions";

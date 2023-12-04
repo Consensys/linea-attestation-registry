@@ -1,9 +1,9 @@
-import React, { PropsWithChildren, useCallback, useState } from "react";
-import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
-import { switchNetwork, Chain } from "@wagmi/core";
-import { useAccount, useNetwork } from "wagmi";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
+import { Chain, switchNetwork } from "@wagmi/core";
+import { FC, PropsWithChildren, useCallback, useState } from "react";
+import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { useSWRConfig } from "swr";
+import { useAccount, useNetwork } from "wagmi";
 
 import { defaultChain } from "@/config";
 import { INetwork } from "@/interfaces/config";
@@ -11,7 +11,7 @@ import { SWRKeys } from "@/interfaces/swr/enum";
 
 import { NetworkContext } from "./context";
 
-export const NetworkContextProvider: React.FC<PropsWithChildren> = ({ children }): JSX.Element => {
+export const NetworkContextProvider: FC<PropsWithChildren> = ({ children }): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
 

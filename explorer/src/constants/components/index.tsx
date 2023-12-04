@@ -1,9 +1,9 @@
+import gitbook from "@/assets/icons/gitbook.svg";
 import veraxIcon from "@/assets/logo/verax-icon.svg";
 import github from "@/assets/socials/github.svg";
-import gitbook from "@/assets/icons/gitbook.svg";
-import { APP_ROUTES } from "@/routes/constants";
-import { NavigationProps } from "@/interfaces/components";
 import { Info } from "@/components/NavigationList/components/Info";
+import { NavigationProps } from "@/interfaces/components";
+import { APP_ROUTES } from "@/routes/constants";
 
 export const DEFAULT_ROUTES: Array<NavigationProps> = [
   {

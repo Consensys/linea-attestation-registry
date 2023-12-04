@@ -1,8 +1,8 @@
 import { PropsWithChildren, useState } from "react";
 
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { BurgerMenu } from "@/components/BurgerMenu";
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
 
 export const Layout: React.FC<PropsWithChildren> = ({ children }): JSX.Element => {
   const [isBurgerOpened, setIsBurgerOpened] = useState<boolean>(false);

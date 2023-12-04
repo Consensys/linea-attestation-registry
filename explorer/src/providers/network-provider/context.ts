@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
+import { createContext, useContext } from "react";
 
 import { defaultChain } from "@/config";
 import { NetworkContextState } from "@/interfaces/provider";

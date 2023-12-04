@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
-import { Check, Copy, MinusCircle, PlusCircle } from "lucide-react";
+import { Check, Copy, EyeOffIcon, MinusCircle, PlusCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import ReactJson from "react-json-view";
-import { EyeOffIcon } from "lucide-react";
-import CopyToClipboard from "react-copy-to-clipboard";
 
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { EMPTY_STRING, THOUSAND } from "@/constants";
+
 import { getAttestationData } from "./utils";
 
 export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {

@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { EMPTY_STRING } from "@/constants";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 interface ListItemWithSubmenuProps {
   name: string;

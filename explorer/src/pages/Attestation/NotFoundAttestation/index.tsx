@@ -1,11 +1,11 @@
 import { ChevronDown } from "lucide-react";
 import { Hex, hexToNumber } from "viem";
 
-import { Link } from "@/components/Link";
 import archive from "@/assets/icons/archive.svg";
+import { Link } from "@/components/Link";
+import { BILLION } from "@/constants";
 import { APP_ROUTES } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
-import { BILLION } from "@/constants";
 import { removeCommas } from "@/utils/stringUtils";
 
 export const NotFoundAttestation: React.FC<{ id: string }> = ({ id }) => {

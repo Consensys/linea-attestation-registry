@@ -1,11 +1,11 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { Hex, hexToNumber } from "viem";
 
-import { displayAmountWithComma } from "@/utils/amountUtils";
-
-import { toModuleById } from "@/routes/constants";
-import { cropString } from "@/utils/stringUtils";
 import { Link } from "@/components/Link";
+import { toModuleById } from "@/routes/constants";
+import { displayAmountWithComma } from "@/utils/amountUtils";
+import { cropString } from "@/utils/stringUtils";
+
 import { createDateListItem } from "./utils";
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {

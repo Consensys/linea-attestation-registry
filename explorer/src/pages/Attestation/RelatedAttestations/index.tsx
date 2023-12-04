@@ -1,7 +1,7 @@
-import { Hex, hexToNumber } from "viem";
-import { KeyedMutator } from "swr";
-import { EyeOffIcon } from "lucide-react";
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
+import { EyeOffIcon } from "lucide-react";
+import { KeyedMutator } from "swr";
+import { Hex, hexToNumber } from "viem";
 
 import { Link } from "@/components/Link";
 import { useNetworkContext } from "@/providers/network-provider/context";

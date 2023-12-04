@@ -1,9 +1,9 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 
-import { Providers } from "@/providers";
-import { Home } from "@/pages/Home";
-import { Attestations } from "@/pages/Attestations";
 import { Attestation } from "@/pages/Attestation";
+import { Attestations } from "@/pages/Attestations";
+import { Home } from "@/pages/Home";
+import { Providers } from "@/providers";
 import { loaderNetworkProvider } from "@/providers/network-provider/loader";
 
 import { APP_ROUTES } from "./constants";

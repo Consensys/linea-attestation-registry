@@ -1,8 +1,8 @@
-import { Link } from "@/components/Link";
-import verax from "@/assets/logo/verax.svg";
 import hapi from "@/assets/logo/hapi.svg";
-import { APP_ROUTES } from "@/routes/constants";
+import verax from "@/assets/logo/verax.svg";
+import { Link } from "@/components/Link";
 import { INFO_LIST } from "@/constants/components";
+import { APP_ROUTES } from "@/routes/constants";
 
 export const Footer: React.FC = () => {
   return (

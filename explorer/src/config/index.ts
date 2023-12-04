@@ -1,13 +1,12 @@
-import { createConfig } from "wagmi";
-import { getDefaultConfig } from "connectkit";
-import { lineaTestnet, linea } from "wagmi/chains";
-
-import { INetwork } from "@/interfaces/config";
-
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
+import { getDefaultConfig } from "connectkit";
+import { createConfig } from "wagmi";
+import { linea, lineaTestnet } from "wagmi/chains";
+
+import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
 import lineaMainnetIcon from "@/assets/networks/linea-mainnet.svg";
 import lineaTestnetIcon from "@/assets/networks/linea-testnet.svg";
-import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
+import { INetwork } from "@/interfaces/config";
 
 const chains: INetwork[] = [
   {

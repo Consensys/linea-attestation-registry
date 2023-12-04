@@ -1,13 +1,13 @@
-import useSWR from "swr";
 import { Schema } from "@verax-attestation-registry/verax-sdk";
+import { ArrowRight } from "lucide-react";
+import useSWR from "swr";
 
+import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
-import { toSchemaById } from "@/routes/constants";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { toSchemaById } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
-import { HelperIndicator } from "@/components/HelperIndicator";
-import { ArrowRight } from "lucide-react";
 
 export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
   const { sdk } = useNetworkContext();

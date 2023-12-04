@@ -1,9 +1,8 @@
 import { ConnectKitButton } from "connectkit";
-import { Dispatch, SetStateAction } from "react";
 import { ChevronDown } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 
 import logo from "@/assets/logo/header-logo.svg";
-
 import { Link } from "@/components/Link";
 import {
   DropdownMenu,
@@ -12,13 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { chains } from "@/config";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { cropString } from "@/utils/stringUtils";
 
-import { NavigationList } from "../NavigationList";
 import { MenuButton } from "./components/MenuButtons";
+import { NavigationList } from "../NavigationList";
 import "./styles.css";
 
 interface HeaderProps {

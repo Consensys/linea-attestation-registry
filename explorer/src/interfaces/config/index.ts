@@ -1,5 +1,5 @@
-import { Chain } from "wagmi";
 import { Conf } from "@verax-attestation-registry/verax-sdk";
+import { Chain } from "wagmi";
 
 export interface INetwork {
   name: string;

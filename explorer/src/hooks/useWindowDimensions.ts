@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const MEDIA_WIDTHS = {
   sm: 640,
@@ -41,12 +41,12 @@ function getWindowDimensions(): WindowDimensions {
 const useWindowDimensions = () => {
   const [windowDimension, setWindowDimension] = useState<typeof initialDimensions>(getWindowDimensions());
 
-  useEffect(() => {
-    const handleResize = () => {
-      const dimension = getWindowDimensions();
-      if (JSON.stringify(dimension) !== JSON.stringify(windowDimension)) setWindowDimension(dimension);
-    };
+  const handleResize = () => {
+    const dimension = getWindowDimensions();
+    if (JSON.stringify(dimension) !== JSON.stringify(windowDimension)) setWindowDimension(dimension);
+  };
 
+  useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);

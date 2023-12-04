@@ -1,4 +1,4 @@
-import { TEN, ZERO_STRING, THOUSAND } from "@/constants";
+import { TEN, THOUSAND, ZERO_STRING } from "@/constants";
 import { ParseDateTimeProps } from "@/interfaces/date";
 
 const formatAmount = (amount: number) => {

@@ -1,18 +1,16 @@
-import useSWR from "swr";
 import { Schema } from "@verax-attestation-registry/verax-sdk";
-import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import useSWR from "swr";
 
-import ArrowRight from "@/assets/icons/arrow-right.svg";
-import { toSchemaById } from "@/routes/constants";
-import { SWRKeys } from "@/interfaces/swr/enum";
-import { NetworkContext } from "@/providers/network-provider";
-
-import { cropString } from "@/utils/stringUtils";
 import { HelperIndicator } from "@/components/HelperIndicator";
-import { useContext } from "react";
+import { Link } from "@/components/Link";
+import { SWRKeys } from "@/interfaces/swr/enum";
+import { useNetworkContext } from "@/providers/network-provider/context";
+import { toSchemaById } from "@/routes/constants";
+import { cropString } from "@/utils/stringUtils";
 
 export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
-  const { sdk } = useContext(NetworkContext);
+  const { sdk } = useNetworkContext();
 
   const { data: schema, isLoading } = useSWR(
     SWRKeys.GET_SCHEMA_BY_ID,
@@ -40,9 +38,12 @@ export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId
         </div>
         <div className="text-text-tertiary text-sm font-normal leading-tight">{schema.description}</div>
       </div>
-      <Link to={toSchemaById(schemaId)} className="flex gap-2 text-text-primary text-sm font-semibold">
+      <Link
+        to={toSchemaById(schemaId)}
+        className="flex gap-2 text-text-primary text-sm font-semibold hover:underline items-center"
+      >
         View Details
-        <img src={ArrowRight} alt="arrow-right" />
+        <ArrowRight width={16} height={16} />
       </Link>
     </div>
   );

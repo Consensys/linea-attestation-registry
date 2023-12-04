@@ -1,12 +1,3 @@
-<<<<<<< HEAD:explorer/src/main.tsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { RouterProvider } from 'react-router-dom';
-
-import { router } from './routes';
-
-import './index.css';
-=======
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
@@ -23,7 +14,6 @@ const config = createConfig(
     chains: [linea, lineaTestnet],
   }),
 );
->>>>>>> a464ff0bb67bfecb1e815a72d6c269e50b559ffb:website/src/main.tsx
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

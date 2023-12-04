@@ -1,0 +1,185 @@
+{
+  "address": "0xBF7b8F1AB43b68902439001Dc5120996B26bD14C",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_portalRegistry",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "ArrayLengthMismatch",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAttestationFee",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "OnlyPortalOwner",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "portal",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32[]",
+          "name": "schemaIds",
+          "type": "bytes32[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "attestationFees",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "FeesSet",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "portal",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "schemaId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "attestationFees",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "attestationFee",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "portalRegistry",
+      "outputs": [
+        {
+          "internalType": "contract PortalRegistry",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "bytes32",
+              "name": "schemaId",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint64",
+              "name": "expirationDate",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bytes",
+              "name": "subject",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "attestationData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct AttestationPayload",
+          "name": "_attestationPayload",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "run",
+      "outputs": [],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "portal",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "schemaIds",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_attestationFees",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "setFees",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "interfaceID",
+          "type": "bytes4"
+        }
+      ],
+      "name": "supportsInterface",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ]
+}

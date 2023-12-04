@@ -1,41 +1,43 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import logo from '@/assets/logo/header-logo.svg';
-import arrow from '@/assets//icons/arrow.svg';
+import logo from "@/assets/logo/header-logo.svg";
+import arrow from "@/assets//icons/arrow.svg";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { chains } from '@/config';
-import { useNetworkContext } from '@/providers/network-provider';
-import { APP_ROUTES } from '@/routes/constants';
+} from "@/components/ui/dropdown-menu";
+import { chains } from "@/config";
+import { NetworkContext } from "@/providers/network-provider";
 
-import './styles.css';
+import { APP_ROUTES } from "@/routes/constants";
+
+import "./styles.css";
+import { useContext } from "react";
 
 const routes = [
   {
-    name: 'Issuers',
+    name: "Issuers",
     path: APP_ROUTES.ISSUERS,
   },
   {
-    name: 'Attestations',
+    name: "Attestations",
     path: APP_ROUTES.ATTESTATIONS,
   },
   {
-    name: 'Schemas',
+    name: "Schemas",
     path: APP_ROUTES.SCHEMAS,
   },
   {
-    name: 'Modules',
+    name: "Modules",
     path: APP_ROUTES.MODULES,
   },
 ];
 
 export const Header = () => {
-  const { network, setNetwork } = useNetworkContext();
-  console.log(network, 'network');
+  const { network, setNetwork } = useContext(NetworkContext);
+  console.log(network, "network");
   return (
     <div className="bg-gray-100 h-16 px-14 py-3border-b justify-between items-center inline-flex">
       <div className="justify-start items-center gap-12 flex">

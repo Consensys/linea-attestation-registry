@@ -1,5 +1,5 @@
-import { TEN, ZERO_STRING, THOUSAND } from '@/constants';
-import { ParseDateTimeProps } from '@/interfaces/date';
+import { TEN, ZERO_STRING, THOUSAND } from "@/constants";
+import { ParseDateTimeProps } from "@/interfaces/date";
 
 const formatAmount = (amount: number) => {
   return amount < TEN ? `${ZERO_STRING}${amount}` : amount.toString();

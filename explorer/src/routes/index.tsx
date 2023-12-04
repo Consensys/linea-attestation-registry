@@ -1,11 +1,11 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from "react-router-dom";
 
-import { Providers } from '@/providers';
-import { Main } from '@/pages/Main';
-import { Attestations } from '@/pages/Attestations';
-import { Attestation } from '@/pages/Attestation';
+import { Providers } from "@/providers";
+import { Main } from "@/pages/Main";
+import { Attestations } from "@/pages/Attestations";
+import { Attestation } from "@/pages/Attestation";
 
-import { APP_ROUTES } from './constants';
+import { APP_ROUTES } from "./constants";
 
 export const router = createBrowserRouter([
   {

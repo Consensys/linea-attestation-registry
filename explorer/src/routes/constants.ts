@@ -1,21 +1,21 @@
-const ID_ROUTE = ':id';
+const ID_ROUTE = ":id";
 
 export const APP_ROUTES = {
-  HOME: '/',
-  ISSUERS: '/issuers',
-  ATTESTATIONS: '/attestations',
+  HOME: "/",
+  ISSUERS: "/issuers",
+  ATTESTATIONS: "/attestations",
   get ATTESTATION_BY_ID() {
     return this.ATTESTATIONS + `/${ID_ROUTE}`;
   },
-  SCHEMAS: '/schemas',
+  SCHEMAS: "/schemas",
   get SCHEMA_BY_ID() {
     return this.SCHEMAS + `/${ID_ROUTE}`;
   },
-  MODULES: '/modules',
+  MODULES: "/modules",
   get MODULES_BY_ID() {
     return this.MODULES + `/${ID_ROUTE}`;
   },
-  DEFAULT: '*',
+  DEFAULT: "*",
 } as const;
 
 export const toAttestationById = (id: string) => APP_ROUTES.ATTESTATION_BY_ID.replace(ID_ROUTE, id);

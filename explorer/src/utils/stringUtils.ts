@@ -1,4 +1,4 @@
-import { EMPTY_STRING } from '@/constants';
+import { EMPTY_STRING } from "@/constants";
 
 export const cropString = (query: string, step = 4, headFromIndex = 0) => {
   if (!query) return EMPTY_STRING;

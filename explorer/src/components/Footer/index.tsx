@@ -1,26 +1,26 @@
-import verax from '@/assets/logo/verax.svg';
-import veraxIcon from '@/assets/logo/verax-icon.svg';
-import github from '@/assets/socials/github.svg';
-import gitbook from '@/assets/icons/gitbook.svg';
-import hapi from '@/assets/logo/hapi.svg';
-import { Link } from 'react-router-dom';
-import { APP_ROUTES } from '@/routes/constants';
+import verax from "@/assets/logo/verax.svg";
+import veraxIcon from "@/assets/logo/verax-icon.svg";
+import github from "@/assets/socials/github.svg";
+import gitbook from "@/assets/icons/gitbook.svg";
+import hapi from "@/assets/logo/hapi.svg";
+import { Link } from "react-router-dom";
+import { APP_ROUTES } from "@/routes/constants";
 
 const list = [
   {
-    title: 'About',
+    title: "About",
     logo: veraxIcon,
-    url: 'https://ver.ax/',
+    url: "https://ver.ax/",
   },
   {
-    title: 'Github',
+    title: "Github",
     logo: github,
-    url: 'https://github.com/Consensys/linea-attestation-registry/tree/dev',
+    url: "https://github.com/Consensys/linea-attestation-registry/tree/dev",
   },
   {
-    title: 'Documentation',
+    title: "Documentation",
     logo: gitbook,
-    url: 'https://docs.ver.ax/verax-documentation/',
+    url: "https://docs.ver.ax/verax-documentation/",
   },
 ];
 
@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
           </a>
         ))}
       </div>
-      <Link to={'https://hapi.one/'} target="_blank">
+      <Link to={"https://hapi.one/"} target="_blank">
         <img src={hapi} alt="hapi" className="!h-[25px]" />
       </Link>
     </div>

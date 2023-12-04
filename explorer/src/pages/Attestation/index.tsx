@@ -1,20 +1,21 @@
-import useSWR from 'swr';
-import { useParams } from 'react-router-dom';
-import { Attestation as AttestationProps } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
+import useSWR from "swr";
+import { useParams } from "react-router-dom";
+import { Attestation as AttestationProps } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 
-import { useNetworkContext } from '@/providers/network-provider';
-import { SWRKeys } from '@/interfaces/swr/enum';
-import { EMPTY_STRING } from '@/constants';
+import { NetworkContext } from "@/providers/network-provider";
+import { SWRKeys } from "@/interfaces/swr/enum";
+import { EMPTY_STRING } from "@/constants";
 
-import { AttestationInfo } from './AttestationInfo';
-import { AttestationSchemaCard } from './AttestationSchemaCard';
-import { AttestationData } from './AttestationData';
-import { RelatedAttestations } from './RelatedAttestations';
-import { NotFoundAttestation } from './NotFoundAttestation';
+import { AttestationInfo } from "./AttestationInfo";
+import { AttestationSchemaCard } from "./AttestationSchemaCard";
+import { AttestationData } from "./AttestationData";
+import { RelatedAttestations } from "./RelatedAttestations";
+import { NotFoundAttestation } from "./NotFoundAttestation";
+import { useContext } from "react";
 
 export const Attestation = () => {
   const { id } = useParams();
-  const { sdk } = useNetworkContext();
+  const { sdk } = useContext(NetworkContext);
 
   const {
     data: attestation,
@@ -27,7 +28,7 @@ export const Attestation = () => {
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,
-    }
+    },
   );
 
   //todo add loading

@@ -1,13 +1,13 @@
-import { Hex, hexToNumber } from 'viem';
-import { Link } from 'react-router-dom';
+import { Hex, hexToNumber } from "viem";
+import { Link } from "react-router-dom";
 
-import arrow from '@/assets/icons/arrow.svg';
-import archive from '@/assets/icons/archive.svg';
-import { APP_ROUTES } from '@/routes/constants';
-import { displayAmountWithComma } from '@/utils/amountUtils';
-import { BILLION } from '@/constants';
+import arrow from "@/assets/icons/arrow.svg";
+import archive from "@/assets/icons/archive.svg";
+import { APP_ROUTES } from "@/routes/constants";
+import { displayAmountWithComma } from "@/utils/amountUtils";
+import { BILLION } from "@/constants";
 
-const removeCommas = (str: string) => str.replace(/,/g, '');
+const removeCommas = (str: string) => str.replace(/,/g, "");
 
 export const NotFoundAttestation: React.FC<{ id: string }> = ({ id }) => {
   const decodedId = hexToNumber(id as Hex);

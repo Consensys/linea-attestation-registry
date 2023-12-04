@@ -1,33 +1,33 @@
-import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
+import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 
-import { displayAmountWithComma } from '@/utils/amountUtils';
+import { displayAmountWithComma } from "@/utils/amountUtils";
 
-import { createDateListItem } from './utils';
-import { Hex, hexToNumber } from 'viem';
-import { toModuleById } from '@/routes/constants';
-import { cropString } from '@/utils/stringUtils';
+import { createDateListItem } from "./utils";
+import { Hex, hexToNumber } from "viem";
+import { toModuleById } from "@/routes/constants";
+import { cropString } from "@/utils/stringUtils";
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
   const list = [
-    createDateListItem('ATTESTED', attestedDate),
-    createDateListItem('EXPIRATION DATE', expirationDate),
+    createDateListItem("ATTESTED", attestedDate),
+    createDateListItem("EXPIRATION DATE", expirationDate),
     {
-      title: 'REVOKED',
-      value: revoked ? 'YES' : 'NO',
+      title: "REVOKED",
+      value: revoked ? "YES" : "NO",
     },
-    createDateListItem('REVOCATION DATE', revocationDate),
+    createDateListItem("REVOCATION DATE", revocationDate),
     {
-      title: 'ISSUED BY',
+      title: "ISSUED BY",
       value: cropString(attester),
     },
     {
-      title: 'PORTAL',
+      title: "PORTAL",
       value: cropString(portal),
       link: toModuleById(portal),
     },
     {
-      title: 'SUBJECT',
+      title: "SUBJECT",
       value: cropString(subject),
     },
   ];

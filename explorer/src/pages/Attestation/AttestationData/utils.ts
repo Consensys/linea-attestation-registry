@@ -1,4 +1,4 @@
-import { parseAbiParameters } from 'abitype';
+import { parseAbiParameters } from "abitype";
 
 type ArrayComponent = { type: string; components: ArrayComponent[] };
 type MergeArraysType = { [key: string]: string | boolean | MergeArraysType };

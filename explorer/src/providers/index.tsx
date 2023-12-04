@@ -1,12 +1,12 @@
-import { WagmiConfig } from 'wagmi';
-import { Outlet } from 'react-router-dom';
-import { ConnectKitProvider } from 'connectkit';
+import { WagmiConfig } from "wagmi";
+import { Outlet } from "react-router-dom";
+import { ConnectKitProvider } from "connectkit";
 
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { config } from '@/config';
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { config } from "@/config";
 
-import { NetworkContextProvider } from './network-provider';
+import { NetworkContextProvider } from "./network-provider";
 
 export const Providers = () => {
   return (

@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { Attestation } from '@verax-attestation-registry/verax-sdk/lib/types/.graphclient';
-import { Check, Copy, MinusCircle, PlusCircle } from 'lucide-react';
-import ReactJson from 'react-json-view';
-import { EyeOffIcon } from 'lucide-react';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import { useEffect, useRef, useState } from "react";
+import { Attestation } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Check, Copy, MinusCircle, PlusCircle } from "lucide-react";
+import ReactJson from "react-json-view";
+import { EyeOffIcon } from "lucide-react";
+import CopyToClipboard from "react-copy-to-clipboard";
 
-import { HelperIndicator } from '@/components/HelperIndicator';
-import { EMPTY_STRING, THOUSAND } from '@/constants';
-import { getAttestationData } from './utils';
+import { HelperIndicator } from "@/components/HelperIndicator";
+import { EMPTY_STRING, THOUSAND } from "@/constants";
+import { getAttestationData } from "./utils";
 
 export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -29,11 +29,11 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
 
   const toggleButton = isOpened
     ? {
-        title: 'View Less',
+        title: "View Less",
         Icon: MinusCircle,
       }
     : {
-        title: 'View More',
+        title: "View More",
         Icon: PlusCircle,
       };
 
@@ -41,7 +41,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
     if (!heightDifference && ref.current && ref.current.scrollHeight > ref.current.clientHeight) {
       setHeightDifference(ref.current.scrollHeight - ref.current.clientHeight);
     }
-  }, [ref]);
+  }, [ref, heightDifference]);
 
   return (
     <div className="w-full flex-col justify-start items-start gap-4 inline-flex">
@@ -51,7 +51,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
           <div className="text-text-primary text-base font-semibold">Attestation Data</div>
         </div>
         <CopyToClipboard onCopy={handleCopy} text={data ? JSON.stringify(data, null, 2) : EMPTY_STRING}>
-          <Icon className="w-[21px] h-[21px] cursor-pointer hover:opacity-60" color={copied ? '#1a9d37' : '#64687D'} />
+          <Icon className="w-[21px] h-[21px] cursor-pointer hover:opacity-60" color={copied ? "#1a9d37" : "#64687D"} />
         </CopyToClipboard>
       </div>
       <div className="bg-surface-attestationData rounded-xl p-4 pe-3 w-full relative">

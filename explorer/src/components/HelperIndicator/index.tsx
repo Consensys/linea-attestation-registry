@@ -1,15 +1,15 @@
-type HelperIndicatorType = 'schema' | 'portal' | 'attestation';
+type HelperIndicatorType = "schema" | "portal" | "attestation";
 
 const getIndicatorColorClass = (type: HelperIndicatorType): string => {
   switch (type) {
-    case 'schema':
-      return 'bg-indicator-magenta';
-    case 'attestation':
-      return 'bg-indicator-blue';
-    case 'portal':
-      return 'bg-indicator-green';
+    case "schema":
+      return "bg-indicator-magenta";
+    case "attestation":
+      return "bg-indicator-blue";
+    case "portal":
+      return "bg-indicator-green";
     default:
-      return 'bg-transparent';
+      return "bg-transparent";
   }
 };
 

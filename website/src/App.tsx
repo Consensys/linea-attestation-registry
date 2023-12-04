@@ -14,9 +14,9 @@ function App() {
         <Navbar />
       </header>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="*" element={<Home />} />
         <Route path="/sdk-demo" element={<SDKDemo />} />
-        <Route path="/poh" element={<Poh />} />
+        <Route path="/poh-linea" element={<Poh />} />
       </Routes>
       <footer>
         <Footer />

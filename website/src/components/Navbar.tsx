@@ -11,11 +11,6 @@ function Navbar() {
             <NavLink className="navbar-brand" to="/" end>
               Home
             </NavLink></li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/poh" end>
-              Linea POH
-            </NavLink>
-          </li>
         </ul>
       </div>
     </nav>

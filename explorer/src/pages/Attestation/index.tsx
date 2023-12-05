@@ -7,7 +7,6 @@ import { NotFoundPage } from "@/components/NotFoundPage";
 import { EMPTY_STRING } from "@/constants";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
-import { APP_ROUTES } from "@/routes/constants";
 
 import { AttestationData } from "./AttestationData";
 import { AttestationInfo } from "./AttestationInfo";
@@ -37,7 +36,7 @@ export const Attestation = () => {
   if (!attestation) return <NotFoundPage id={id} page="attestation" />;
   return (
     <div className="flex flex-col md:gap-4 max-w-[1200px] my-6 md:mt-2 md:mb-20 md:mx-10 xl:mx-auto">
-      <Back to={APP_ROUTES.ATTESTATIONS} className="ps-5 md:ps-0" />
+      <Back className="ps-5 md:ps-0" />
       <div className="flex flex-col md:border md:rounded-3xl md:border-border-card xl:flex-row">
         <div className="p-6 md:border-b md:border-border-card xl:w-full xl:max-w-[440px] xl:border-b-0 xl:border-e">
           <AttestationInfo {...attestation} />

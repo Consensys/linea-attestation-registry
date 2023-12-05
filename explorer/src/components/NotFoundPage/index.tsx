@@ -2,7 +2,6 @@ import { ChevronLeft } from "lucide-react";
 
 import archive from "@/assets/icons/archive.svg";
 import { Link } from "@/components/Link";
-import { APP_ROUTES } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 
 import { NotFoundPageProps } from "./interfaces";
@@ -25,7 +24,7 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({ id, page }) => {
           <span>hasn`t been found</span>
         </p>
         <Link
-          to={APP_ROUTES.ATTESTATIONS}
+          to={pageData.to}
           className="flex gap-2 border border-solid rounded-md px-4 py-3 border-button-secondary-border hover:border-button-secondary-hover"
         >
           <ChevronLeft width={24} height={24} />

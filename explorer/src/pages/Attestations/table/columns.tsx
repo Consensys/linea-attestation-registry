@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
-import { unix } from "moment";
+import moment from "moment";
 import { Address } from "viem";
 import { hexToNumber } from "viem/utils";
 
@@ -63,7 +63,7 @@ export const columns: ColumnDef<Attestation>[] = [
     header: () => <SortByDate />,
     cell: ({ row }) => {
       const timestamp: number = row.getValue("attestedDate");
-      return unix(timestamp).fromNow();
+      return moment.unix(timestamp).fromNow();
     },
   },
 ];

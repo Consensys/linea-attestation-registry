@@ -30,7 +30,7 @@ module.exports = {
     "quotes": [2, "double", { "avoidEscape": true }],
     // turn on errors for missing imports
     'import/no-unresolved': 'error',
-    // 'import/no-named-as-default-member': 'off',
+    'import/no-named-as-default-member': 'off',
     'import/order': [
       'error',
       {

@@ -48,6 +48,12 @@
   body {
     @apply bg-surface-primary;
   }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 @layer utilities {
@@ -74,4 +80,23 @@
   .scrollbar::-webkit-scrollbar-thumb:hover {
     opacity: 0.6;
   }
+}
+
+@layer components {
+
+  .sort-arrows path {
+    stroke: #B7B9D2;
+  }
+
+  .sort-arrows.desc path:nth-child(1),
+  .sort-arrows.desc path:nth-child(2) {
+    stroke: #9096B2;
+  }
+
+  .sort-arrows.asc path:nth-child(3),
+  .sort-arrows.asc path:nth-child(4) {
+    stroke: #9096B2;
+  }
+
+
 }

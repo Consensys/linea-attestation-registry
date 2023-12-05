@@ -103,6 +103,9 @@ importers:
       lucide-react:
         specifier: ^0.292.0
         version: 0.292.0(react@18.2.0)
+      moment:
+        specifier: ^2.29.4
+        version: 2.29.4
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -24776,7 +24779,6 @@ packages:
 
   /moment@2.29.4:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
-    dev: true
 
   /monaco-editor@0.38.0:
     resolution: {integrity: sha512-11Fkh6yzEmwx7O0YoLxeae0qEGFwmyPRlVxpg7oF9czOOCB/iCjdJrG5I67da5WiXK3YJCxoz9TJFE8Tfq/v9A==}

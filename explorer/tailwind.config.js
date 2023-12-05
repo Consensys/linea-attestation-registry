@@ -4,6 +4,13 @@ export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
         background: "var(--surface-primary)",
@@ -12,7 +19,6 @@ export default {
           primary: "var(--surface-primary)",
           secondary: "var(--surface-secondary)",
           attestationData: "var(--surface-attestation-data)",
-          magenta20: "var(--surface-magenta-20)",
         },
         text: {
           primary: "var(--text-primary)",

@@ -32,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
 
   return (
     <header className="px-5 md:px-14 xl:px-[60px] py-3 justify-between items-center inline-flex">
-      <div className="justify-start items-center gap-12 flex self-stretch">
+      <div className="justify-start items-center gap-6 flex self-stretch">
         <Link to={APP_ROUTES.HOME} className="shrink-0 hover:opacity-70">
           <img src={logo} className="h-6 xl:h-9 cursor-pointer" alt="Verax logo" />
         </Link>

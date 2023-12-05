@@ -57,7 +57,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
       </div>
       <div className="bg-surface-attestationData rounded-xl p-4 pe-3 w-full relative">
         {!data ? (
-          <div className="flex gap-2 text-base text-text-tertiary w-full justify-center h-[183px] items-center">
+          <div className="flex gap-2 text-base text-text-tertiary w-full justify-center h-[108px] items-center">
             <EyeOffIcon />
             Empty
           </div>
@@ -65,7 +65,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
           <div
             ref={ref}
             className="flex flex-col pe-1 items-start overflow-auto text-text-tertiary text-sm scrollbar transition-[height]"
-            style={{ height: isOpened ? heightDifference + 183 : 183 }}
+            style={{ height: isOpened ? heightDifference + 108 : 108 }}
           >
             <ReactJson
               src={data}

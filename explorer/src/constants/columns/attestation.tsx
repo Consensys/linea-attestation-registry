@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
+import moment from "moment";
 import { Address } from "viem";
 import { hexToNumber } from "viem/utils";
 
@@ -8,16 +9,15 @@ import { Link } from "@/components/Link";
 import { SortByDate } from "@/components/SortByDate";
 import { toAttestationById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
-import { getTimeAgo } from "@/utils/dateUtils";
 import { cropString } from "@/utils/stringUtils";
 
 import { links } from "../index";
 
 interface ColumnsProps {
-  sortByDate?: boolean;
+  sortByDate: boolean;
 }
 
-export const columns = ({ sortByDate = true }: ColumnsProps): ColumnDef<Attestation>[] => [
+export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
   {
     accessorKey: "id",
     header: () => (
@@ -57,7 +57,6 @@ export const columns = ({ sortByDate = true }: ColumnsProps): ColumnDef<Attestat
   {
     accessorKey: "subject",
     header: () => <p className="text-left">Subject</p>,
-    // TODO: add link to lineascan
     cell: ({ row }) => {
       const subject = row.getValue("subject") as string;
       return (
@@ -75,8 +74,8 @@ export const columns = ({ sortByDate = true }: ColumnsProps): ColumnDef<Attestat
     accessorKey: "attestedDate",
     header: () => (sortByDate ? <SortByDate /> : <p className="text-right">Issued</p>),
     cell: ({ row }) => {
-      const date: number = row.getValue("attestedDate");
-      return <p className="text-right">{getTimeAgo(date)}</p>;
+      const timestamp: number = row.getValue("attestedDate");
+      return <p className="text-right">{moment.unix(timestamp).fromNow()}</p>;
     },
   },
 ];

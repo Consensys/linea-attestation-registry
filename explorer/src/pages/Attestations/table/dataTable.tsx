@@ -1,5 +1,7 @@
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
 import { DataTableProps } from "../interfaces";
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {

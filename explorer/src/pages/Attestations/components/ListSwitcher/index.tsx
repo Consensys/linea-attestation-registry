@@ -1,5 +1,6 @@
-import { useAccount } from "wagmi";
 import { useSearchParams } from "react-router-dom";
+import { useAccount } from "wagmi";
+
 import { EQueryParams } from "@/enums/queryParams";
 
 export const ListSwitcher = () => {

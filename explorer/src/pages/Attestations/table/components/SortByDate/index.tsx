@@ -1,5 +1,6 @@
 import { ArrowDownUp } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
+
 import { EQueryParams } from "@/enums/queryParams";
 import { ETableSorting } from "@/enums/tableSorting";
 

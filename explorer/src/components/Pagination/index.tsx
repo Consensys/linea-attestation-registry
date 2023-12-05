@@ -1,9 +1,11 @@
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+
 import { CURRENT_PAGE_DEFAULT, ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
 import { EQueryParams } from "@/enums/queryParams";
 import { displayAmountWithComma } from "@/utils/amountUtils";
+
 import { IPaginationProps } from "./interface";
 
 export const Pagination = ({ itemsCount, handleSkip }: IPaginationProps) => {

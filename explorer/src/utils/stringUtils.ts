@@ -11,3 +11,5 @@ export const cropString = (query: string, step = 4, headFromIndex = 0) => {
   }
   return query;
 };
+
+export const removeCommas = (str: string) => str.replace(/,/g, "");

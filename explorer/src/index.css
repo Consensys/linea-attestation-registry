@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,6 +10,7 @@
     --surface-primary: #FEFEFE;
     --surface-secondary: #F4F5F9;
     --surface-attestation-data: #2D4EC30D;
+    --surface-magenta-20: #FAE8F1;
 
     --indicator-blue: #2D4EC3;
     --indicator-magenta: #D6247A;
@@ -17,17 +21,28 @@
     --text-tertiary: #656B87;
     --text-quaternary: #9096B2;
     --text-blue: #2D4EC3;
+    --text-magenta: #D6247A;
 
     --border-card: #DAD8EC;
     --border-table: #EAEAF3;
 
     --scrollbar: #A4A8C2;
+
+    --hover-lime20: #F3FFD2;
+
+    --button-primary-background: #C4FF1C;
+    --button-primary-text: #0D0D12;
+    --button-primary-hover: #AFED00;
+
+    --button-secondary-text: #0D0D12;
+    --button-secondary-hover: #6E7491;
+    --button-secondary-border: #DAD8EC;
   }
 }
 
 @layer base {
   * {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    @apply font-inter;
   }
 
   body {
@@ -65,10 +80,6 @@
   .scrollbar::-webkit-scrollbar-thumb:hover {
     opacity: 0.6;
   }
-}
-
-a:hover {
-  color: #535bf2;
 }
 
 @layer components {

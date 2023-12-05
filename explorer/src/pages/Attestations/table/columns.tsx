@@ -1,13 +1,15 @@
-import { Address } from "viem";
-import { hexToNumber } from "viem/utils";
-import { Link } from "react-router-dom";
 import { ColumnDef } from "@tanstack/react-table";
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
-import { cropString } from "@/utils/stringUtils";
-import { displayAmountWithComma } from "@/utils/amountUtils";
+import { Address } from "viem";
+import { hexToNumber } from "viem/utils";
+
 import { HelperIndicator } from "@/components/HelperIndicator";
+import { Link } from "@/components/Link";
 import { toAttestationById } from "@/routes/constants";
+import { displayAmountWithComma } from "@/utils/amountUtils";
 import { getTimeAgo } from "@/utils/dateUtils";
+import { cropString } from "@/utils/stringUtils";
+
 import { SortByDate } from "./components/SortByDate";
 
 export const columns: ColumnDef<Attestation>[] = [

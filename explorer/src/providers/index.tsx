@@ -1,8 +1,9 @@
-import { WagmiConfig } from "wagmi";
-import { Outlet } from "react-router-dom";
 import { ConnectKitProvider } from "connectkit";
+import { Outlet } from "react-router-dom";
+import { WagmiConfig } from "wagmi";
 
 import { config } from "@/config";
+import { Layout } from "@/pages/Layout";
 
 import { NetworkContextProvider } from "./network-provider";
 
@@ -11,7 +12,9 @@ export const Providers = () => {
     <WagmiConfig config={config}>
       <ConnectKitProvider>
         <NetworkContextProvider>
-          <Outlet />
+          <Layout>
+            <Outlet />
+          </Layout>
         </NetworkContextProvider>
       </ConnectKitProvider>
     </WagmiConfig>

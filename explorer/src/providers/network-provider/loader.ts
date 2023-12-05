@@ -1,6 +1,6 @@
+import { LoaderFunction, LoaderFunctionArgs, generatePath, redirect } from "react-router-dom";
+
 import { chains, defaultChain } from "@/config";
-import { redirect } from "react-router-dom";
-import { LoaderFunction, LoaderFunctionArgs, generatePath } from "react-router-dom";
 
 export const loaderNetworkProvider = (({ params }: LoaderFunctionArgs) => {
   const { chainId } = params;

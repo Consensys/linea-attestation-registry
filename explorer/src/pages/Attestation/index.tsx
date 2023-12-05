@@ -1,16 +1,16 @@
-import useSWR from "swr";
-import { useParams } from "react-router-dom";
 import { Attestation as AttestationProps } from "@verax-attestation-registry/verax-sdk";
+import { useParams } from "react-router-dom";
+import useSWR from "swr";
 
-import { SWRKeys } from "@/interfaces/swr/enum";
 import { EMPTY_STRING } from "@/constants";
+import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
+import { AttestationData } from "./AttestationData";
 import { AttestationInfo } from "./AttestationInfo";
 import { AttestationSchemaCard } from "./AttestationSchemaCard";
-import { AttestationData } from "./AttestationData";
-import { RelatedAttestations } from "./RelatedAttestations";
 import { NotFoundAttestation } from "./NotFoundAttestation";
+import { RelatedAttestations } from "./RelatedAttestations";
 
 export const Attestation = () => {
   const { id } = useParams();

@@ -4,4 +4,5 @@ export enum SWRKeys {
   GET_RELATED_ATTESTATION = "getRelatedAttestations",
   GET_ATTESTATION_LIST = "getAttestationList",
   GET_ATTESTATION_COUNT = "getAttestationCount",
+  GET_RECENT_ATTESTATION = "getRecentAttestations",
 }

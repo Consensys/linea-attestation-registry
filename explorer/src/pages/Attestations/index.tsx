@@ -1,15 +1,17 @@
+import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { useState } from "react";
-import useSWR from "swr";
 import { useSearchParams } from "react-router-dom";
-import { EQueryParams } from "@/enums/queryParams";
+import useSWR from "swr";
+
 import { Pagination } from "@/components/Pagination";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
-import { useNetworkContext } from "@/providers/network-provider/context";
-import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
-import { DataTable } from "./table/dataTable";
-import { columns } from "./table/columns";
-import { ListSwitcher } from "./components/ListSwitcher";
+import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
+import { useNetworkContext } from "@/providers/network-provider/context";
+
+import { ListSwitcher } from "./components/ListSwitcher";
+import { columns } from "./table/columns";
+import { DataTable } from "./table/dataTable";
 
 export const Attestations: React.FC = () => {
   const {

@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { ConnectKitButton } from "connectkit";
+import { ChevronDown } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 
 import logo from "@/assets/logo/header-logo.svg";
-import arrow from "@/assets//icons/arrow.svg";
+import { Link } from "@/components/Link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,67 +11,67 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { chains } from "@/config";
-import { APP_ROUTES } from "@/routes/constants";
-
-import "./styles.css";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { APP_ROUTES } from "@/routes/constants";
+import { cropString } from "@/utils/stringUtils";
 
-const routes = [
-  {
-    name: "Issuers",
-    path: APP_ROUTES.ISSUERS,
-  },
-  {
-    name: "Attestations",
-    path: APP_ROUTES.ATTESTATIONS,
-  },
-  {
-    name: "Schemas",
-    path: APP_ROUTES.SCHEMAS,
-  },
-  {
-    name: "Modules",
-    path: APP_ROUTES.MODULES,
-  },
-];
+import { MenuButton } from "./components/MenuButtons";
+import { NavigationList } from "../NavigationList";
+import "./styles.css";
 
-export const Header = () => {
-  const { network } = useNetworkContext();
-  console.log(network, "network");
+interface HeaderProps {
+  isOpened: boolean;
+  setIsOpened: Dispatch<SetStateAction<boolean>>;
+}
+
+export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
+  const { network, setNetwork } = useNetworkContext();
+  const screen = useWindowDimensions();
+  const isAdaptive = screen.sm || screen.md;
+
   return (
-    <div className="bg-gray-100 h-16 px-14 py-3border-b justify-between items-center inline-flex">
-      <div className="justify-start items-center gap-12 flex">
-        <Link to={APP_ROUTES.HOME}>
-          <img src={logo} className="w-36 h-6 cursor-pointer" alt="Verax logo" />
+    <header className="px-5 md:px-14 xl:px-[60px] py-3 justify-between items-center inline-flex">
+      <div className="justify-start items-center gap-12 flex self-stretch">
+        <Link to={APP_ROUTES.HOME} className="shrink-0 hover:opacity-70">
+          <img src={logo} className="h-6 xl:h-9 cursor-pointer" alt="Verax logo" />
         </Link>
-        <div className="justify-start items-start gap-6 flex">
-          {routes.map((route) => (
-            <div key={route.name} className="cursor-pointer justify-center items-center gap-2.5 flex">
-              <Link to={route.path} className="text-neutral-900 text-base font-medium">
-                {route.name}
-              </Link>
-            </div>
-          ))}
-        </div>
+        {!isAdaptive && <NavigationList />}
       </div>
-      <div className="justify-start items-start gap-8 flex">
+      <div className="justify-start items-center gap-4 flex">
         <DropdownMenu>
-          <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] h-12 p-2 rounded-md border border-gray-300 justify-start items-center gap-2 inline-flex">
+          <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] p-2 rounded-md outline-none hover:bg-hover-lime20 justify-start items-center gap-2 inline-flex">
             <img src={network.img} className="w-6 h-6 relative" alt="Linea logo" />
-            <img src={arrow} className="header-arrow w-6 h-6 relative" alt="arrow" />
+            <ChevronDown className="header-arrow w-6 h-6 relative" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="flex flex-col gap-2 bg-surface-primary">
             {chains.map((chain) => (
-              <DropdownMenuItem key={chain.name} onClick={() => console.log("set network")}>
+              <DropdownMenuItem
+                key={chain.name}
+                className="flex gap-2 focus:bg-hover-lime20 cursor-pointer"
+                onClick={() => setNetwork(chain)}
+              >
+                <img src={chain.img} className="w-6 h-6" alt={chain.name} />
                 {chain.name}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <div className="select-none cursor-pointer w-38 px-4 py-3 bg-slate-200 rounded-md">
-          <div className="text-gray-900 text-base font-semibold  leading-snug">Connect wallet</div>
-        </div>
+        <ConnectKitButton.Custom>
+          {({ isConnected, show, address }) => {
+            return (
+              <button
+                onClick={show}
+                className="cursor-pointer px-3 h-9 xl:h-12 xl:px-4 gap-2 rounded-md border border-button-secondary-border justify-center items-center inline-flex whitespace-nowrap hover:border-button-secondary-hover"
+              >
+                {address && isConnected ? cropString(address) : screen.sm ? "Connect" : "Connect Wallet"}
+                {!isAdaptive && <ChevronDown />}
+              </button>
+            );
+          }}
+        </ConnectKitButton.Custom>
+        {isAdaptive && <MenuButton isOpened={isOpened} onClick={() => setIsOpened((prev) => !prev)} />}
       </div>
-    </div>
+    </header>
   );
 };

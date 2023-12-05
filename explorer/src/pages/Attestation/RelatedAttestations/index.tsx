@@ -1,12 +1,12 @@
-import { KeyedMutator } from "swr";
-import { Link } from "react-router-dom";
-import { EyeOffIcon } from "lucide-react";
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
+import { EyeOffIcon } from "lucide-react";
+import { Link } from "react-router-dom";
+import { KeyedMutator } from "swr";
 import { Hex, hexToNumber } from "viem";
 
+import { useNetworkContext } from "@/providers/network-provider/context";
 import { toAttestationById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
-import { useNetworkContext } from "@/providers/network-provider/context";
 
 export const RelatedAttestations: React.FC<{ mutate: KeyedMutator<Attestation> }> = ({ mutate }) => {
   const { sdk } = useNetworkContext();

@@ -6,13 +6,18 @@ import { hexToNumber } from "viem/utils";
 
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
+import { SortByDate } from "@/components/SortByDate";
 import { toAttestationById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
-import { SortByDate } from "./components/SortByDate";
+import { links } from "../index";
 
-export const columns: ColumnDef<Attestation>[] = [
+interface ColumnsProps {
+  sortByDate: boolean;
+}
+
+export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
   {
     accessorKey: "id",
     header: () => (
@@ -24,10 +29,7 @@ export const columns: ColumnDef<Attestation>[] = [
     cell: ({ row }) => {
       const id = row.getValue("id");
       return (
-        <Link
-          to={toAttestationById(id as string)}
-          className="text-text-secondary hover:underline hover:text-text-secondary"
-        >
+        <Link to={toAttestationById(id as string)} className="hover:underline hover:text-text-quaternary">
           {displayAmountWithComma(hexToNumber(id as Address))}
         </Link>
       );
@@ -54,16 +56,26 @@ export const columns: ColumnDef<Attestation>[] = [
   },
   {
     accessorKey: "subject",
-    header: "Subject",
-    // TODO: add link to lineascan
-    cell: ({ row }) => cropString(row.getValue("subject")),
+    header: () => <p className="text-left">Subject</p>,
+    cell: ({ row }) => {
+      const subject = row.getValue("subject") as string;
+      return (
+        <a
+          href={`${links.lineascan.address}/${subject}`}
+          target="_blank"
+          className="hover:underline hover:text-text-quaternary"
+        >
+          {cropString(subject)}
+        </a>
+      );
+    },
   },
   {
     accessorKey: "attestedDate",
-    header: () => <SortByDate />,
+    header: () => (sortByDate ? <SortByDate /> : <p className="text-right">Issued</p>),
     cell: ({ row }) => {
       const timestamp: number = row.getValue("attestedDate");
-      return moment.unix(timestamp).fromNow();
+      return <p className="text-right">{moment.unix(timestamp).fromNow()}</p>;
     },
   },
 ];

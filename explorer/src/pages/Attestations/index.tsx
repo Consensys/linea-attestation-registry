@@ -3,15 +3,15 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 
+import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
+import { columns } from "@/constants/columns/attestation";
 import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
 import { ListSwitcher } from "./components/ListSwitcher";
-import { columns } from "./table/columns";
-import { DataTable } from "./table/dataTable";
 
 export const Attestations: React.FC = () => {
   const {
@@ -50,7 +50,7 @@ export const Attestations: React.FC = () => {
       <div>
         <ListSwitcher />
         {/* TODO: add skeleton for table */}
-        {attestationsList && <DataTable columns={columns} data={attestationsList} />}
+        {attestationsList && <DataTable columns={columns()} data={attestationsList} />}
         {attestationsCount && <Pagination itemsCount={attestationsCount} handleSkip={setSkip} />}
       </div>
     </div>

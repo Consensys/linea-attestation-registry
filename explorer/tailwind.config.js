@@ -19,6 +19,7 @@ export default {
           primary: "var(--surface-primary)",
           secondary: "var(--surface-secondary)",
           attestationData: "var(--surface-attestation-data)",
+          magenta20: "var(--surface-magenta-20)",
         },
         text: {
           primary: "var(--text-primary)",
@@ -61,6 +62,9 @@ export default {
       fontFamily: {
         IBMPlexMono: ["IBM Plex Mono", "monospace"],
         inter: ["Inter", "sans-serif"],
+      },
+      boxShadow: {
+        column: "3px 0px 10px 0px rgba(197,197,197,0.19)",
       },
     },
   },

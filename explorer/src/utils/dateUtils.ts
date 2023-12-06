@@ -1,4 +1,4 @@
-import { TEN, THOUSAND, ZERO_STRING } from "@/constants";
+import { EMPTY_STRING, TEN, THOUSAND, ZERO_STRING } from "@/constants";
 import { ParseDateTimeProps } from "@/interfaces/date";
 
 const formatAmount = (amount: number) => {
@@ -22,4 +22,25 @@ export const parseDateTime = (inputDate: string, isSeconds = false): ParseDateTi
       return `${this.day}/${this.month}/${this.year} ${this.hours}:${this.minutes} UTC`;
     },
   } as const;
+};
+
+export const getTimeAgo = (timestamp: number): string => {
+  const inputDateTime = new Date(timestamp * 1000);
+  const now = new Date();
+  const timeDifference = now.getTime() - inputDateTime.getTime();
+  const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+
+  if (hoursDifference < 24) {
+    return hoursDifference === 0
+      ? "Less than an hour ago"
+      : `${hoursDifference} hour${hoursDifference === 1 ? EMPTY_STRING : "s"} ago`;
+  }
+
+  const dd = String(inputDateTime.getDate()).padStart(2, ZERO_STRING);
+  const mm = String(inputDateTime.getMonth() + 1).padStart(2, ZERO_STRING);
+  const yyyy = inputDateTime.getFullYear();
+  const hours = String(inputDateTime.getHours()).padStart(2, ZERO_STRING);
+  const minutes = String(inputDateTime.getMinutes()).padStart(2, ZERO_STRING);
+
+  return `${dd}.${mm}.${yyyy}, ${hours}:${minutes}`;
 };

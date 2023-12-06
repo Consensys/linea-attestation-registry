@@ -1,21 +1,26 @@
 import { ChevronLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { EMPTY_STRING } from "@/constants";
 
-export interface BackProps {
+interface BackProps {
   className?: string;
 }
 
 export const Back: React.FC<BackProps> = ({ className }) => {
   const navigate = useNavigate();
+  const { state, pathname } = useLocation();
+  const backPath = pathname.split("/").slice(0, -1);
+  const { title, handler } = state?.from
+    ? { handler: () => navigate(-1), title: "Back" }
+    : { handler: () => navigate(backPath.join("/")), title: `Back to ${backPath.slice(-1)}` };
   return (
     <button
-      onClick={() => navigate(-1)}
+      onClick={() => handler()}
       className={`w-fit flex gap-2 text-text-tertiary hover:opacity-60 ${className || EMPTY_STRING}`}
     >
       <ChevronLeft width={24} height={24} />
-      Back
+      {title}
     </button>
   );
 };

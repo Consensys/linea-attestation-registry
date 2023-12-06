@@ -4,4 +4,4 @@ export interface NavigationProps {
   submenu?: JSX.Element;
 }
 
-export type Page = "schema" | "portal" | "attestation";
+export type Page = "schema" | "portal" | "attestation" | "module";

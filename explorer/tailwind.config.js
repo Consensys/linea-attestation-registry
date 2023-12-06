@@ -37,6 +37,7 @@ export default {
           blue: "var(--indicator-blue)",
           magenta: "var(--indicator-magenta)",
           green: "var(--indicator-green)",
+          orange: "var(--indicator-orange)",
         },
         hover: {
           lime20: "var(--hover-lime20)",

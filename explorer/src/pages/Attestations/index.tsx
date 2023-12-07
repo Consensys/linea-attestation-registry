@@ -1,6 +1,5 @@
 import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
@@ -10,6 +9,7 @@ import { columns } from "@/constants/columns/attestation";
 import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { getItemsByPage, pageBySearchParams } from "@/utils/paginationUtils";
 
 import { ListSwitcher } from "./components/ListSwitcher";
 
@@ -19,8 +19,16 @@ export const Attestations: React.FC = () => {
     network: { chain },
   } = useNetworkContext();
 
-  const [searchParams] = useSearchParams();
-  const [skip, setSkip] = useState<number>(ZERO);
+  const { data: attestationsCount } = useSWR(
+    `${SWRKeys.GET_ATTESTATION_COUNT}/${chain.id}`,
+    () => sdk.attestation.getAttestationIdCounter() as Promise<number>,
+  );
+
+  const totalItems = attestationsCount ?? ZERO;
+  const searchParams = new URLSearchParams(window.location.search);
+  const page = pageBySearchParams(searchParams, totalItems);
+
+  const [skip, setSkip] = useState<number>(getItemsByPage(page));
 
   const sortByDateDirection = searchParams.get(EQueryParams.SORT_BY_DATE);
   const attester = searchParams.get(EQueryParams.ATTESTER);
@@ -37,10 +45,9 @@ export const Attestations: React.FC = () => {
       ),
   );
 
-  const { data: attestationsCount } = useSWR(
-    `${SWRKeys.GET_ATTESTATION_COUNT}/${chain.id}`,
-    () => sdk.attestation.getAttestationIdCounter() as Promise<number>,
-  );
+  const handlePage = (retrievedPage: number) => {
+    setSkip(getItemsByPage(retrievedPage));
+  };
 
   return (
     <div className="container mt-5 md:mt-8">
@@ -51,7 +58,7 @@ export const Attestations: React.FC = () => {
         <ListSwitcher />
         {/* TODO: add skeleton for table */}
         {attestationsList && <DataTable columns={columns()} data={attestationsList} />}
-        {attestationsCount && <Pagination itemsCount={attestationsCount} handleSkip={setSkip} />}
+        {attestationsCount && <Pagination itemsCount={attestationsCount} handlePage={handlePage} />}
       </div>
     </div>
   );

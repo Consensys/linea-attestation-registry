@@ -15,6 +15,7 @@
     --indicator-blue: #2D4EC3;
     --indicator-magenta: #D6247A;
     --indicator-green: #41AC00;
+    --indicator-orange: #B93800;
 
     --text-primary: #0D0D12;
     --text-secondary: #3D3D51;
@@ -98,5 +99,34 @@
     stroke: #9096B2;
   }
 
+  .table-row-transition {
+    transition: all cubic-bezier(0, 0.52, 1, 1) .7s;
 
+    td:last-child {
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      transition: transform 0.5s;
+
+      &:after {
+        content: '\203A';
+        position: absolute;
+        opacity: 0;
+        top: 15px;
+        right: 0;
+        transition: 0.5s;
+        scale: 2;
+      }
+    }
+  }
+
+  .table-row-transition:hover {
+    td:last-child {
+      transform: translateX(-20px);
+
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
 }

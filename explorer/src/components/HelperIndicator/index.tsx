@@ -8,6 +8,8 @@ const getIndicatorColorClass = (type: Page): string => {
       return "bg-indicator-blue";
     case "portal":
       return "bg-indicator-green";
+    case "module":
+      return "bg-indicator-orange";
     default:
       return "bg-transparent";
   }

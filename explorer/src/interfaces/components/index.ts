@@ -3,3 +3,5 @@ export interface NavigationProps {
   route?: string;
   submenu?: JSX.Element;
 }
+
+export type Page = "schema" | "portal" | "attestation";

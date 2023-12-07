@@ -1,6 +1,6 @@
-type HelperIndicatorType = "schema" | "portal" | "attestation";
+import { Page } from "@/interfaces/components";
 
-const getIndicatorColorClass = (type: HelperIndicatorType): string => {
+const getIndicatorColorClass = (type: Page): string => {
   switch (type) {
     case "schema":
       return "bg-indicator-magenta";
@@ -13,7 +13,7 @@ const getIndicatorColorClass = (type: HelperIndicatorType): string => {
   }
 };
 
-export const HelperIndicator: React.FC<{ type: HelperIndicatorType }> = ({ type }) => {
+export const HelperIndicator: React.FC<{ type: Page }> = ({ type }) => {
   const indicatorColorClass = getIndicatorColorClass(type);
   return <div className={`w-[3.33px] h-[13.33px] ${indicatorColorClass} rounded-full`} />;
 };

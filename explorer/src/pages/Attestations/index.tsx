@@ -52,8 +52,12 @@ export const Attestations: React.FC = () => {
         <ListSwitcher showMyAttestations={showMyAttestations} setShowMyAttestation={setShowMyAttestation} />
         {/* TODO: add skeleton for table */}
         <MyAttestations showMyAttestations={showMyAttestations} attestationsList={attestationsList} />
-        {attestationsList && !showMyAttestations && <DataTable columns={columns} data={attestationsList} />}
-        {attestationsCount && <Pagination itemsCount={attestationsCount} handleSkip={setSkip} />}
+        {!showMyAttestations && (
+          <>
+            <DataTable columns={columns} data={attestationsList || []} />
+            {attestationsCount && <Pagination itemsCount={attestationsCount} handleSkip={setSkip} />}
+          </>
+        )}
       </div>
     </div>
   );

@@ -62,6 +62,9 @@ export default {
         IBMPlexMono: ["IBM Plex Mono", "monospace"],
         inter: ["Inter", "sans-serif"],
       },
+      boxShadow: {
+        column: "3px 0px 10px 0px rgba(197,197,197,0.19)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

@@ -1,6 +1,6 @@
-import gitbook from "@/assets/icons/gitbook.svg";
-import veraxIcon from "@/assets/logo/verax-icon.svg";
-import github from "@/assets/socials/github.svg";
+import GitbookIcon from "@/assets/icons/gitbook.svg";
+import VeraxIcon from "@/assets/logo/verax-icon.svg";
+import GithubIcon from "@/assets/socials/github.svg";
 import { Info } from "@/components/NavigationList/components/Info";
 import { NavigationProps } from "@/interfaces/components";
 import { APP_ROUTES } from "@/routes/constants";
@@ -31,17 +31,17 @@ export const DEFAULT_ROUTES: Array<NavigationProps> = [
 export const INFO_LIST = [
   {
     title: "About",
-    logo: veraxIcon,
+    logo: <VeraxIcon />,
     url: "https://ver.ax/",
   },
   {
     title: "Github",
-    logo: github,
+    logo: <GithubIcon />,
     url: "https://github.com/Consensys/linea-attestation-registry/tree/dev",
   },
   {
     title: "Documentation",
-    logo: gitbook,
+    logo: <GitbookIcon />,
     url: "https://docs.ver.ax/verax-documentation/",
   },
 ];

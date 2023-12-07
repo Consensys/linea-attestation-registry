@@ -2,7 +2,7 @@ import { ConnectKitButton } from "connectkit";
 import { ChevronDown } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
-import logo from "@/assets/logo/header-logo.svg";
+import VeraxLogo from "@/assets/logo/header-logo.svg";
 import { Link } from "@/components/Link";
 import {
   DropdownMenu,
@@ -32,16 +32,16 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
 
   return (
     <header className="px-5 md:px-14 xl:px-[60px] py-3 justify-between items-center inline-flex">
-      <div className="justify-start items-center gap-12 flex self-stretch">
+      <div className="justify-start items-center gap-6 flex self-stretch">
         <Link to={APP_ROUTES.HOME} className="shrink-0 hover:opacity-70">
-          <img src={logo} className="h-6 xl:h-9 cursor-pointer" alt="Verax logo" />
+          <VeraxLogo />
         </Link>
         {!isAdaptive && <NavigationList />}
       </div>
       <div className="justify-start items-center gap-4 flex">
         <DropdownMenu>
           <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] p-2 rounded-md outline-none hover:bg-hover-lime20 justify-start items-center gap-2 inline-flex">
-            <img src={network.img} className="w-6 h-6 relative" alt="Linea logo" />
+            {network.img}
             <ChevronDown className="header-arrow w-6 h-6 relative" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="flex flex-col gap-2 bg-surface-primary">
@@ -51,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
                 className="flex gap-2 focus:bg-hover-lime20 cursor-pointer"
                 onClick={() => setNetwork(chain)}
               >
-                <img src={chain.img} className="w-6 h-6" alt={chain.name} />
+                {chain.img}
                 {chain.name}
               </DropdownMenuItem>
             ))}

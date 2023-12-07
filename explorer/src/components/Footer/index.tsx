@@ -1,5 +1,5 @@
-import hapi from "@/assets/logo/hapi.svg";
-import verax from "@/assets/logo/verax.svg";
+import HapiLogo from "@/assets/logo/hapi.svg";
+import VeraxLogo from "@/assets/logo/verax.svg";
 import { Link } from "@/components/Link";
 import { INFO_LIST } from "@/constants/components";
 import { APP_ROUTES } from "@/routes/constants";
@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
   return (
     <footer className="flex flex-col justify-between items-center py-5 sm:px-8 md:px-[60px] border-t-[1px] border-border-table sm:flex-row gap-14 sm:gap-0 transition-spacing">
       <Link to={APP_ROUTES.HOME}>
-        <img src={verax} alt="verax" />
+        <VeraxLogo />
       </Link>
       <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 text-text-quaternary text-sm">
         {INFO_LIST.map(({ title, logo, url }) => (
@@ -16,15 +16,15 @@ export const Footer: React.FC = () => {
             key={title}
             href={url}
             target="_blank"
-            className="flex justify-center self-center gap-2 hover:underline hover:text-zinc-950"
+            className="flex justify-center items-center self-center gap-2 hover:underline hover:text-zinc-950"
           >
-            {logo && <img src={logo} alt={title} className="!w-4 !h-4 self-center" />}
+            {logo && logo}
             {title}
           </a>
         ))}
       </div>
       <a href={"https://hapi.one/"} target="_blank">
-        <img src={hapi} alt="hapi" className="!h-[25px]" />
+        <HapiLogo />
       </a>
     </footer>
   );

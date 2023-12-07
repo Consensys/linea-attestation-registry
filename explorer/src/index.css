@@ -120,7 +120,7 @@
     }
   }
 
-  .transitionTableRow:hover {
+  .table-row-transition:hover {
     td:last-child {
       transform: translateX(-20px);
 

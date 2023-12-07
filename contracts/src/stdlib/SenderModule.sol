@@ -8,8 +8,7 @@ import { PortalRegistry } from "../PortalRegistry.sol";
 /**
  * @title Sender Module
  * @author Consensys
- * @notice This contract is an example of a module, able to check if the transaction sender is a given address
- * @dev A module should not be initializable (to prevent it from being upgradeable)
+ * @notice This Module checks if the transaction sender is authorized for a specific Portal
  */
 contract SenderModule is AbstractModule {
   PortalRegistry public portalRegistry;
@@ -17,7 +16,7 @@ contract SenderModule is AbstractModule {
   mapping(address portal => mapping(address sender => bool authorized)) public authorizedSenders;
 
   /// @notice Error thrown when an array length mismatch occurs
-  error ArraylengthMismatch();
+  error ArrayLengthMismatch();
   /// @notice Error thrown when the transaction sender is not authorized
   error UnauthorizedSender();
 
@@ -43,7 +42,7 @@ contract SenderModule is AbstractModule {
     address[] memory senders,
     bool[] memory authorizedStatus
   ) public onlyPortalOwner(portal) {
-    if (senders.length != authorizedStatus.length) revert ArraylengthMismatch();
+    if (senders.length != authorizedStatus.length) revert ArrayLengthMismatch();
 
     for (uint256 i = 0; i < senders.length; i++) {
       authorizedSenders[portal][senders[i]] = authorizedStatus[i];
@@ -60,8 +59,6 @@ contract SenderModule is AbstractModule {
     address _txSender,
     uint256 /*_value*/
   ) public view override {
-    if (!authorizedSenders[msg.sender][_txSender]) {
-      revert UnauthorizedSender();
-    }
+    if (!authorizedSenders[_txSender][tx.origin]) revert UnauthorizedSender();
   }
 }

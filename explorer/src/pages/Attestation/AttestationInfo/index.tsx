@@ -35,7 +35,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
 
   return (
     <div className="flex flex-col w-full items-start gap-6">
-      <div className="font-semibold text-text-blue text-2xl whitespace-nowrap md:text-3xl">
+      <div className="font-semibold text-page-attestation text-2xl whitespace-nowrap md:text-3xl">
         #{displayAmountWithComma(hexToNumber(id as Hex))}
       </div>
       <div className="gap-6 flex flex-col items-start w-full md:flex-wrap md:h-[170px] md:content-between xl:flex-nowrap xl:h-auto">

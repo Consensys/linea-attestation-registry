@@ -26,18 +26,16 @@ export default {
           secondary: "var(--text-secondary)",
           tertiary: "var(--text-tertiary)",
           quaternary: "var(--text-quaternary)",
-          blue: "var(--text-blue)",
-          magenta: "var(--text-magenta)",
         },
         border: {
           card: "var(--border-card)",
           table: "var(--border-table)",
         },
-        indicator: {
-          blue: "var(--indicator-blue)",
-          magenta: "var(--indicator-magenta)",
-          green: "var(--indicator-green)",
-          orange: "var(--indicator-orange)",
+        page: {
+          attestation: "var(--indicator-blue)",
+          schema: "var(--indicator-magenta)",
+          portal: "var(--indicator-green)",
+          module: "var(--indicator-orange)",
         },
         hover: {
           lime20: "var(--hover-lime20)",

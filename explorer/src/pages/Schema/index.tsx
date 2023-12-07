@@ -31,7 +31,7 @@ export const Schema = () => {
       <div className="flex flex-col px-5 md:px-10 gap-6">
         <Back />
         <div className="flex flex-col gap-3">
-          <p className="text-text-magenta text-2xl not-italic font-semibold md:text-[2rem]">{schema.name}</p>
+          <p className="text-page-schema text-2xl not-italic font-semibold md:text-[2rem]">{schema.name}</p>
           <p className="text-text-quaternary text-base not-italic">{schema.description}</p>
         </div>
       </div>

@@ -28,7 +28,7 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({ id, page }) => {
           className="flex gap-2 border border-solid rounded-md px-4 py-3 border-button-secondary-border hover:border-button-secondary-hover"
         >
           <ChevronLeft width={24} height={24} />
-          Go Back
+          {`Go Back to ${page}s`}
         </Link>
       </div>
     </section>

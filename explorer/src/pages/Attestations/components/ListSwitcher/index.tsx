@@ -1,25 +1,19 @@
 import { useSearchParams } from "react-router-dom";
-import { useAccount } from "wagmi";
 
 import { EQueryParams } from "@/enums/queryParams";
 
-import { IListSwitcherProps } from "./interface";
+export const ListSwitcher: React.FC = () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const isMyAttestations = searchParams.get(EQueryParams.SHOW_MY_ATTESTATIONS);
 
-export const ListSwitcher: React.FC<IListSwitcherProps> = ({ showMyAttestations, setShowMyAttestation }) => {
-  const { address } = useAccount();
+  const [, setSearchParams] = useSearchParams();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const handleShowAttestations = (showMy?: boolean) => {
+    const currentSearchParams = new URLSearchParams();
 
-  const handleShowAttestations = () => {
-    const currentSearchParams = new URLSearchParams(searchParams);
-
-    if (address && showMyAttestations) {
-      setShowMyAttestation(false);
-      currentSearchParams.set(EQueryParams.ATTESTER, address);
-    } else {
-      setShowMyAttestation(true);
-      currentSearchParams.delete(EQueryParams.ATTESTER);
-    }
+    showMy
+      ? currentSearchParams.set(EQueryParams.SHOW_MY_ATTESTATIONS, "true")
+      : currentSearchParams.delete(EQueryParams.SHOW_MY_ATTESTATIONS);
 
     setSearchParams(currentSearchParams);
   };
@@ -27,19 +21,19 @@ export const ListSwitcher: React.FC<IListSwitcherProps> = ({ showMyAttestations,
   return (
     <div className="inline-flex bg-slate-100 gap-2 mb-6 rounded">
       <button
-        disabled={!showMyAttestations}
-        onClick={handleShowAttestations}
+        disabled={!isMyAttestations}
+        onClick={() => handleShowAttestations()}
         className={`h-[2.1875rem] px-3 rounded text-base font-medium ${
-          showMyAttestations ? "text-text-tertiary" : "text-white bg-gray-700"
+          isMyAttestations ? "text-text-tertiary" : "text-white bg-gray-700"
         }`}
       >
         All attestations
       </button>
       <button
-        disabled={showMyAttestations}
-        onClick={handleShowAttestations}
+        disabled={!!isMyAttestations}
+        onClick={() => handleShowAttestations(true)}
         className={`h-[2.1875rem] px-3 rounded text-base font-medium ${
-          showMyAttestations ? "text-white bg-gray-700" : "text-text-tertiary"
+          isMyAttestations ? "text-white bg-gray-700" : "text-text-tertiary"
         }`}
       >
         My attestations

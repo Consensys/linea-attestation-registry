@@ -5,4 +5,6 @@ export enum SWRKeys {
   GET_ATTESTATION_LIST = "getAttestationList",
   GET_ATTESTATION_COUNT = "getAttestationCount",
   GET_RECENT_ATTESTATION = "getRecentAttestations",
+  GET_MODULE_LIST = "getModuleList",
+  GET_MODULE_COUNT = "getModuleCount",
 }

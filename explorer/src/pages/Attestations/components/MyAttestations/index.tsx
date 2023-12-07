@@ -1,5 +1,6 @@
 import { ConnectKitButton } from "connectkit";
 import { useSearchParams } from "react-router-dom";
+import { useAccount } from "wagmi";
 
 import ArchiveIcon from "@/assets/icons/archive.svg";
 import { ButtonOutlined } from "@/components/Buttons";
@@ -10,12 +11,13 @@ import { IMyAttestations } from "./interface";
 import { columns } from "../../table/columns";
 import { DataTable } from "../../table/dataTable";
 
-export const MyAttestations: React.FC<IMyAttestations> = ({ showMyAttestations, attestationsList }) => {
+export const MyAttestations: React.FC<IMyAttestations> = ({ attestationsList }) => {
+  const { address } = useAccount();
   const [searchParams] = useSearchParams();
 
-  const attester = searchParams.get(EQueryParams.ATTESTER);
+  const isMyAttestations = searchParams.get(EQueryParams.SHOW_MY_ATTESTATIONS);
 
-  if (showMyAttestations && !attester)
+  if (!address && isMyAttestations)
     return (
       <InfoBlock
         icon={<ArchiveIcon />}
@@ -31,8 +33,8 @@ export const MyAttestations: React.FC<IMyAttestations> = ({ showMyAttestations, 
       />
     );
 
-  if (showMyAttestations && attester && !attestationsList?.length)
+  if (address && isMyAttestations && !attestationsList?.length)
     return <InfoBlock icon={<ArchiveIcon />} message="You don’t have any attestations yet" />;
 
-  return <>{showMyAttestations && attester && <DataTable columns={columns} data={attestationsList || []} />}</>;
+  return <>{address && isMyAttestations && <DataTable columns={columns} data={attestationsList || []} />}</>;
 };

@@ -1,5 +1,5 @@
-import HapiLogo from "@/assets/logo/hapi.svg";
-import VeraxLogo from "@/assets/logo/verax.svg";
+import HapiLogo from "@/assets/logo/hapi.svg?react";
+import VeraxLogo from "@/assets/logo/verax.svg?react";
 import { Link } from "@/components/Link";
 import { INFO_LIST } from "@/constants/components";
 import { APP_ROUTES } from "@/routes/constants";
@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
             key={title}
             href={url}
             target="_blank"
-            className="flex justify-center items-center self-center gap-2 hover:underline hover:text-zinc-950"
+            className="flex justify-center items-center self-center gap-2 hover:underline"
           >
             {logo && logo}
             {title}
@@ -24,7 +24,7 @@ export const Footer: React.FC = () => {
         ))}
       </div>
       <a href={"https://hapi.one/"} target="_blank">
-        <HapiLogo />
+        <HapiLogo className="!h-[25px]" />
       </a>
     </footer>
   );

@@ -4,8 +4,8 @@ import { createConfig } from "wagmi";
 import { linea, lineaTestnet } from "wagmi/chains";
 
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
-import LineaMainnetIcon from "@/assets/networks/linea-mainnet.svg";
-import LineaTestnetIcon from "@/assets/networks/linea-testnet.svg";
+import LineaMainnetIcon from "@/assets/networks/linea-mainnet.svg?react";
+import LineaTestnetIcon from "@/assets/networks/linea-testnet.svg?react";
 import { INetwork } from "@/interfaces/config";
 
 const chains: INetwork[] = [

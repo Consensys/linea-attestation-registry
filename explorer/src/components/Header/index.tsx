@@ -2,7 +2,7 @@ import { ConnectKitButton } from "connectkit";
 import { ChevronDown } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
-import VeraxLogo from "@/assets/logo/header-logo.svg";
+import VeraxLogo from "@/assets/logo/header-logo.svg?react";
 import { Link } from "@/components/Link";
 import {
   DropdownMenu,
@@ -34,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
     <header className="px-5 md:px-14 xl:px-[60px] py-3 justify-between items-center inline-flex">
       <div className="justify-start items-center gap-6 flex self-stretch">
         <Link to={APP_ROUTES.HOME} className="shrink-0 hover:opacity-70">
-          <VeraxLogo />
+          <VeraxLogo className="xl:h-9" />
         </Link>
         {!isAdaptive && <NavigationList />}
       </div>

@@ -27,6 +27,7 @@ export default {
           quaternary: "var(--text-quaternary)",
           blue: "var(--text-blue)",
           magenta: "var(--text-magenta)",
+          darkGrey: "var(--text-dark-grey)",
         },
         border: {
           card: "var(--border-card)",
@@ -52,6 +53,12 @@ export default {
             text: "var(--button-secondary-text)",
             hover: "var(--button-secondary-hover)",
             border: "var(--button-secondary-border)",
+            borderHover: "var(--button-secondary-border-hover)",
+          },
+          outlined: {
+            text: "var(--button-outlined-text)",
+            border: "var(--button-outlined-border)",
+            borderHover: "var(--button-secondary-border-hover)",
           },
         },
       },

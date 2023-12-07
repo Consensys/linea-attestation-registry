@@ -1,16 +1,22 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
+import { EQueryParams } from "@/enums/queryParams";
 import { displayAmountWithComma } from "@/utils/amountUtils";
-import { pageBySearchparams } from "@/utils/paginationUtils";
+import { pageBySearchParams } from "@/utils/paginationUtils";
 
 import { IPaginationProps } from "./interface";
 
 export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
-  const searchParams = new URLSearchParams(window.location.search);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = pageBySearchParams(searchParams, itemsCount);
 
-  const [currentPage, setCurrentPage] = useState<number>(pageBySearchparams(searchParams, itemsCount));
+  useEffect(() => {
+    handlePage(currentPage);
+  }, [currentPage, handlePage, searchParams]);
+
   const totalPages = Math.ceil(itemsCount / ITEMS_PER_PAGE_DEFAULT);
 
   const disablePrev = currentPage === 1;
@@ -20,9 +26,9 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages && inputRef && inputRef.current) {
-      setCurrentPage(newPage);
-      handlePage(newPage);
       inputRef.current.value = newPage.toString();
+      searchParams.set(EQueryParams.PAGE, newPage.toString());
+      setSearchParams(searchParams);
     }
   };
 

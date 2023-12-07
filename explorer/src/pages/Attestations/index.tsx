@@ -9,7 +9,7 @@ import { columns } from "@/constants/columns/attestation";
 import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
-import { getItemsByPage, pageBySearchparams } from "@/utils/paginationUtils";
+import { getItemsByPage, pageBySearchParams } from "@/utils/paginationUtils";
 
 import { ListSwitcher } from "./components/ListSwitcher";
 
@@ -24,9 +24,9 @@ export const Attestations: React.FC = () => {
     () => sdk.attestation.getAttestationIdCounter() as Promise<number>,
   );
 
-  const totalItems = attestationsCount ? attestationsCount : ZERO;
+  const totalItems = attestationsCount ?? ZERO;
   const searchParams = new URLSearchParams(window.location.search);
-  const page = pageBySearchparams(searchParams, totalItems);
+  const page = pageBySearchParams(searchParams, totalItems);
 
   const [skip, setSkip] = useState<number>(getItemsByPage(page));
 
@@ -47,8 +47,6 @@ export const Attestations: React.FC = () => {
 
   const handlePage = (retrievedPage: number) => {
     setSkip(getItemsByPage(retrievedPage));
-    searchParams.set(EQueryParams.PAGE, retrievedPage.toString());
-    window.history.pushState(null, "", `${window.location.pathname}?${searchParams}`);
   };
 
   return (

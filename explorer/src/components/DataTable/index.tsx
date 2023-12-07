@@ -21,7 +21,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                 return (
                   <TableHead
                     key={header.id}
-                    className="text-xs not-italic font-normal text-text-quaternary uppercase whitespace-nowrap shadow-column lg:shadow-none transition-shadow"
+                    className="text-xs not-italic font-normal text-text-quaternary uppercase whitespace-nowrap"
                   >
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
@@ -35,10 +35,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="whitespace-nowrap shadow-column lg:shadow-none transition-shadow text-text-secondary"
-                  >
+                  <TableCell key={cell.id} className="whitespace-nowrap text-text-secondary">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

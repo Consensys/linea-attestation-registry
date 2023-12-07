@@ -99,5 +99,34 @@
     stroke: #9096B2;
   }
 
+  .table-row-transition {
+    transition: all cubic-bezier(0, 0.52, 1, 1) .7s;
 
+    td:last-child {
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      transition: transform 0.5s;
+
+      &:after {
+        content: '\203A';
+        position: absolute;
+        opacity: 0;
+        top: 15px;
+        right: 0;
+        transition: 0.5s;
+        scale: 2;
+      }
+    }
+  }
+
+  .transitionTableRow:hover {
+    td:last-child {
+      transform: translateX(-20px);
+
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
 }

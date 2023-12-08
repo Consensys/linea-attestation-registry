@@ -36,6 +36,8 @@
     --button-secondary-text: #0D0D12;
     --button-secondary-hover: #6E7491;
     --button-secondary-border: #DAD8EC;
+
+    --skeleton: #D7D7D8;
   }
 }
 
@@ -78,6 +80,14 @@
 
   .scrollbar::-webkit-scrollbar-thumb:hover {
     opacity: 0.6;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 

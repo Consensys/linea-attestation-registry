@@ -1,11 +1,12 @@
 import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
-import { columns } from "@/constants/columns/attestation";
+import { attestationColonsOption, columns, skeletonAttestations } from "@/constants/columns/attestation";
+import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -33,7 +34,7 @@ export const Attestations: React.FC = () => {
   const sortByDateDirection = searchParams.get(EQueryParams.SORT_BY_DATE);
   const attester = searchParams.get(EQueryParams.ATTESTER);
 
-  const { data: attestationsList } = useSWR(
+  const { data: attestationsList, isLoading } = useSWR(
     `${SWRKeys.GET_ATTESTATION_LIST}/${skip}/${attester}/${sortByDateDirection}/${chain.id}`,
     () =>
       sdk.attestation.findBy(
@@ -49,6 +50,11 @@ export const Attestations: React.FC = () => {
     setSkip(getItemsByPage(retrievedPage));
   };
 
+  const columnsSkeletonRef = useRef(columnsSkeleton(columns(), attestationColonsOption));
+  const data = isLoading
+    ? { columns: columnsSkeletonRef.current, list: skeletonAttestations() }
+    : { columns: columns(), list: attestationsList || [] };
+
   return (
     <div className="container mt-5 md:mt-8">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 md:mb-8 gap-6 md:gap-0">
@@ -56,8 +62,7 @@ export const Attestations: React.FC = () => {
       </div>
       <div>
         <ListSwitcher />
-        {/* TODO: add skeleton for table */}
-        {attestationsList && <DataTable columns={columns()} data={attestationsList} />}
+        <DataTable columns={data.columns} data={data.list} />
         {attestationsCount && <Pagination itemsCount={attestationsCount} handlePage={handlePage} />}
       </div>
     </div>

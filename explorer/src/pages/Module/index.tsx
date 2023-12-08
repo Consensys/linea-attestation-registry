@@ -8,6 +8,8 @@ import { EMPTY_STRING, links } from "@/constants";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
+import { ModuleLoadingSkeleton } from "./components/ModuleLoadingSkeleton";
+
 export const Module = () => {
   const { id } = useParams();
   const { sdk } = useNetworkContext();
@@ -21,9 +23,9 @@ export const Module = () => {
     revalidateOnFocus: false,
   });
 
-  //todo add loading
-  if (isLoading || isValidating) return <p>Loading...</p>;
+  if (isLoading || isValidating) return <ModuleLoadingSkeleton />;
   if (!module) return <NotFoundPage page="module" id={id} />;
+
   return (
     <section className="flex flex-col gap-6 w-full mb-10 md:mb-20 xl:max-w-[1200px] xl:m-auto">
       <div className="flex flex-col px-5 md:px-10 gap-6">

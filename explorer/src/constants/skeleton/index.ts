@@ -1,0 +1,2 @@
+export const ATTESTATION_INFO_AMOUNT = 7;
+export const RELATED_ATTESTATIONS_AMOUNT = 5;

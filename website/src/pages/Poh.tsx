@@ -1,55 +1,96 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Poh.css";
 import { ConnectKitButton } from "connectkit";
 import axios from "axios";
 import { useAccount } from "wagmi";
+import { Link } from "react-router-dom";
+
+type IssuerAttestation = {
+  validated: boolean;
+  issuerName: string;
+  issuerSlugName: string;
+  issuerDescription: string;
+  issuerWebsiteUrl: string;
+  issuerLogoUrl: string;
+  group: number;
+};
+
+type POHResponse = {
+  poh: boolean;
+  attestations: IssuerAttestation[];
+};
 
 function Poh() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [poh, setPoh] = useState<any[]>();
+  const [pohGroupA, setPohGroupA] = useState<IssuerAttestation[]>();
+  const [pohGroupB, setPohGroupB] = useState<IssuerAttestation[]>();
   const [isPoh, setIsPoh] = useState<boolean>();
   const [didCallPoh, setDidCallPoh] = useState<boolean>(false);
 
   const { address, isConnected } = useAccount();
 
-  const getMyPoh = async () => {
-    const { data } = await axios.get(
-      `https://linea-xp-poh-api.dev.linea.build/poh/${address}`,
-      {
+  const initPage = () => {
+    setDidCallPoh(false);
+    setIsPoh(false);
+    setPohGroupA(undefined);
+    setPohGroupB(undefined);
+  };
+
+  useEffect(() => {
+    const getMyPoh = async () => {
+      const { data } = await axios.get<POHResponse>(`https://linea-xp-poh-api.linea.build/poh/${address}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
       });
-    setDidCallPoh(true);
-    setIsPoh(data.poh);
-    setPoh(data.attestations);
+      setDidCallPoh(true);
+      setIsPoh(data.poh);
+      setPohGroupA(data.attestations.filter((attestation) => attestation.group === 1));
+      setPohGroupB(data.attestations.filter((attestation) => attestation.group === 2));
+    };
+
+    isConnected && address ? getMyPoh() : initPage();
+  }, [isConnected, address]);
+
+  const displayPohGroup = (pohGroup?: IssuerAttestation[]) => {
+    return (
+      <>
+        {pohGroup?.map((poh) => (
+          <div key={poh.issuerSlugName} className="card">
+            <Link to={poh.issuerWebsiteUrl} target={"_blank"}>
+              {poh.issuerName}
+            </Link>
+            {poh.validated ? ` ✅` : ` ❌`}
+          </div>
+        ))}
+      </>
+    );
   };
 
   return (
     <>
       <h1>Linea - POH</h1>
-      <p>To check your Proof-of-Humanity status: connect your wallet then click on "Get my POH status".</p>
+      {!didCallPoh && <p>To check your Proof-of-Humanity status, please connect your wallet.</p>}
       <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <ConnectKitButton />
       </div>
 
-      {isConnected &&
-        <div className="card">
-          <button onClick={getMyPoh}>Get my POH status</button>
-        </div>
-      }
+      {didCallPoh && (
+        <>
+          <div className="card">Global POH status {isPoh ? ` ✅` : ` ❌`}</div>
 
-      {didCallPoh &&
-        <div className="card">
-          POH status: {isPoh ? `✅` : `❌`}
-        </div>
-      }
-
-      {poh?.map((poh, index) => (<div key={`${poh.issuerSlugName}-${index}`} className="card">
-        {poh.issuerName}: {poh.validated ? `✅` : `❌`}
-      </div>))
-      }
+          <div className="responsive-two-column-grid">
+            <div>
+              <div className="card">Group 1</div>
+              {displayPohGroup(pohGroupA)}
+            </div>
+            <div>
+              <div className="card">Group 2</div>
+              {displayPohGroup(pohGroupB)}
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

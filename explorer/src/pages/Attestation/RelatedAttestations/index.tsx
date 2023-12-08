@@ -1,9 +1,9 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { EyeOffIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 import { KeyedMutator } from "swr";
 import { Hex, hexToNumber } from "viem";
 
-import { Link } from "@/components/Link";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { toAttestationById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";

@@ -9,6 +9,9 @@ export const APP_ROUTES = {
   get ATTESTATIONS() {
     return this.HOME + "/attestations";
   },
+  get MY_ATTESTATIONS() {
+    return this.ATTESTATIONS + "/my_attestations";
+  },
   get ATTESTATION_BY_ID() {
     return this.ATTESTATIONS + `/${ID_ROUTE}`;
   },

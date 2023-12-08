@@ -2301,7 +2301,7 @@
             "label": "router",
             "offset": 0,
             "slot": "101",
-            "type": "t_contract(IRouter)7410",
+            "type": "t_contract(IRouter)7517",
             "contract": "AttestationReader",
             "src": "src/AttestationReader.sol:17"
           },
@@ -2309,7 +2309,7 @@
             "label": "easRegistry",
             "offset": 0,
             "slot": "102",
-            "type": "t_contract(IEAS)7361",
+            "type": "t_contract(IEAS)7468",
             "contract": "AttestationReader",
             "src": "src/AttestationReader.sol:18"
           }
@@ -2331,11 +2331,11 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_contract(IEAS)7361": {
+          "t_contract(IEAS)7468": {
             "label": "contract IEAS",
             "numberOfBytes": "20"
           },
-          "t_contract(IRouter)7410": {
+          "t_contract(IRouter)7517": {
             "label": "contract IRouter",
             "numberOfBytes": "20"
           },
@@ -3304,7 +3304,7 @@
             "label": "router",
             "offset": 0,
             "slot": "101",
-            "type": "t_contract(IRouter)7410",
+            "type": "t_contract(IRouter)7517",
             "contract": "ModuleRegistry",
             "src": "src/ModuleRegistry.sol:19"
           },
@@ -3312,7 +3312,7 @@
             "label": "modules",
             "offset": 0,
             "slot": "102",
-            "type": "t_mapping(t_address,t_struct(Module)8807_storage)",
+            "type": "t_mapping(t_address,t_struct(Module)8914_storage)",
             "contract": "ModuleRegistry",
             "src": "src/ModuleRegistry.sol:21"
           },
@@ -3346,11 +3346,11 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_contract(IRouter)7410": {
+          "t_contract(IRouter)7517": {
             "label": "contract IRouter",
             "numberOfBytes": "20"
           },
-          "t_mapping(t_address,t_struct(Module)8807_storage)": {
+          "t_mapping(t_address,t_struct(Module)8914_storage)": {
             "label": "mapping(address => struct Module)",
             "numberOfBytes": "32"
           },
@@ -3358,7 +3358,7 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(Module)8807_storage": {
+          "t_struct(Module)8914_storage": {
             "label": "struct Module",
             "members": [
               {
@@ -3782,7 +3782,7 @@
             "label": "router",
             "offset": 0,
             "slot": "101",
-            "type": "t_contract(IRouter)7410",
+            "type": "t_contract(IRouter)7517",
             "contract": "SchemaRegistry",
             "src": "src/SchemaRegistry.sol:16"
           },
@@ -3790,7 +3790,7 @@
             "label": "schemas",
             "offset": 0,
             "slot": "102",
-            "type": "t_mapping(t_bytes32,t_struct(Schema)8784_storage)",
+            "type": "t_mapping(t_bytes32,t_struct(Schema)8891_storage)",
             "contract": "SchemaRegistry",
             "src": "src/SchemaRegistry.sol:18"
           },
@@ -3836,7 +3836,7 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRouter)7410": {
+          "t_contract(IRouter)7517": {
             "label": "contract IRouter",
             "numberOfBytes": "20"
           },
@@ -3844,7 +3844,7 @@
             "label": "mapping(bytes32 => address)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_bytes32,t_struct(Schema)8784_storage)": {
+          "t_mapping(t_bytes32,t_struct(Schema)8891_storage)": {
             "label": "mapping(bytes32 => struct Schema)",
             "numberOfBytes": "32"
           },
@@ -3852,7 +3852,7 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(Schema)8784_storage": {
+          "t_struct(Schema)8891_storage": {
             "label": "struct Schema",
             "members": [
               {
@@ -3945,7 +3945,7 @@
             "label": "router",
             "offset": 0,
             "slot": "101",
-            "type": "t_contract(IRouter)7410",
+            "type": "t_contract(IRouter)7517",
             "contract": "AttestationRegistry",
             "src": "src/AttestationRegistry.sol:17"
           },
@@ -3969,7 +3969,7 @@
             "label": "attestations",
             "offset": 0,
             "slot": "102",
-            "type": "t_mapping(t_bytes32,t_struct(Attestation)8775_storage)",
+            "type": "t_mapping(t_bytes32,t_struct(Attestation)8882_storage)",
             "contract": "AttestationRegistry",
             "src": "src/AttestationRegistry.sol:22"
           },
@@ -4007,15 +4007,15 @@
             "label": "bytes",
             "numberOfBytes": "32"
           },
-          "t_contract(IRouter)7410": {
+          "t_contract(IRouter)7517": {
             "label": "contract IRouter",
             "numberOfBytes": "20"
           },
-          "t_mapping(t_bytes32,t_struct(Attestation)8775_storage)": {
+          "t_mapping(t_bytes32,t_struct(Attestation)8882_storage)": {
             "label": "mapping(bytes32 => struct Attestation)",
             "numberOfBytes": "32"
           },
-          "t_struct(Attestation)8775_storage": {
+          "t_struct(Attestation)8882_storage": {
             "label": "struct Attestation",
             "members": [
               {
@@ -4168,7 +4168,7 @@
             "label": "router",
             "offset": 0,
             "slot": "101",
-            "type": "t_contract(IRouter)7410",
+            "type": "t_contract(IRouter)7706",
             "contract": "PortalRegistry",
             "src": "src/PortalRegistry.sol:20"
           },
@@ -4176,7 +4176,7 @@
             "label": "portals",
             "offset": 0,
             "slot": "102",
-            "type": "t_mapping(t_address,t_struct(Portal)8800_storage)",
+            "type": "t_mapping(t_address,t_struct(Portal)9096_storage)",
             "contract": "PortalRegistry",
             "src": "src/PortalRegistry.sol:22"
           },
@@ -4218,7 +4218,7 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_contract(IRouter)7410": {
+          "t_contract(IRouter)7706": {
             "label": "contract IRouter",
             "numberOfBytes": "20"
           },
@@ -4226,7 +4226,7 @@
             "label": "mapping(address => bool)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_address,t_struct(Portal)8800_storage)": {
+          "t_mapping(t_address,t_struct(Portal)9096_storage)": {
             "label": "mapping(address => struct Portal)",
             "numberOfBytes": "32"
           },
@@ -4234,7 +4234,184 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(Portal)8800_storage": {
+          "t_struct(Portal)9096_storage": {
+            "label": "struct Portal",
+            "members": [
+              {
+                "label": "id",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "ownerAddress",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "modules",
+                "type": "t_array(t_address)dyn_storage",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "isRevocable",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "name",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "description",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "ownerName",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "6"
+              }
+            ],
+            "numberOfBytes": "224"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {}
+      }
+    },
+    "4354fba979d8af67ae201159e1b7f7c6048ac523a759db0e2d448b58a54cde2a": {
+      "address": "0x179Ff9a17ff079f5BEA2e6Cab69927CE2efd3309",
+      "txHash": "0xa256c5d91fe83b1f303754b97b3605074588b1282cd5b4e97714dfb0a193a0f3",
+      "layout": {
+        "solcVersion": "0.8.21",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "openzeppelin-contracts-upgradeable/contracts/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "openzeppelin-contracts-upgradeable/contracts/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "router",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_contract(IRouter)7517",
+            "contract": "PortalRegistry",
+            "src": "src/PortalRegistry.sol:21"
+          },
+          {
+            "label": "portals",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_mapping(t_address,t_struct(Portal)8907_storage)",
+            "contract": "PortalRegistry",
+            "src": "src/PortalRegistry.sol:23"
+          },
+          {
+            "label": "issuers",
+            "offset": 0,
+            "slot": "103",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "PortalRegistry",
+            "src": "src/PortalRegistry.sol:25"
+          },
+          {
+            "label": "portalAddresses",
+            "offset": 0,
+            "slot": "104",
+            "type": "t_array(t_address)dyn_storage",
+            "contract": "PortalRegistry",
+            "src": "src/PortalRegistry.sol:27"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(IRouter)7517": {
+            "label": "contract IRouter",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(Portal)8907_storage)": {
+            "label": "mapping(address => struct Portal)",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Portal)8907_storage": {
             "label": "struct Portal",
             "members": [
               {

@@ -64,14 +64,14 @@ contract SenderModuleTest is Test {
   function test_run() public {
     vm.startPrank(user1, user1);
     senderModule.setAuthorizedSenders(portal, senders, authorizedStatus);
-    senderModule.run(attestationPayload, "", portal, 0);
+    senderModule.run(attestationPayload, abi.encode(address(portal)), user1, 0);
     vm.stopPrank();
   }
 
   function test_run_UnauthorizedSender() public {
     vm.startPrank(portal);
     vm.expectRevert(SenderModule.UnauthorizedSender.selector);
-    senderModule.run(attestationPayload, "", user2, 0);
+    senderModule.run(attestationPayload, abi.encode(address(makeAddr("randomAddr"))), user2, 0);
     vm.stopPrank();
   }
 }

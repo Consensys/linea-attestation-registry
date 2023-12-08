@@ -55,10 +55,15 @@ contract SenderModule is AbstractModule {
    */
   function run(
     AttestationPayload memory /*_attestationPayload*/,
-    bytes memory /*_validationPayload*/,
+    bytes memory _validationPayload,
     address _txSender,
     uint256 /*_value*/
   ) public view override {
-    if (!authorizedSenders[_txSender][tx.origin]) revert UnauthorizedSender();
+    address portalAddress = address(0);
+
+    if (_validationPayload.length == 32) portalAddress = abi.decode(_validationPayload, (address));
+    if (_validationPayload.length == 20) portalAddress = address(uint160(bytes20(_validationPayload)));
+
+    if (!authorizedSenders[portalAddress][_txSender]) revert UnauthorizedSender();
   }
 }

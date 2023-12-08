@@ -100,6 +100,7 @@ contract IssuersPortalTest is Test {
     );
 
     bytes[] memory validationPayload = new bytes[](2);
+    validationPayload[0] = abi.encode(address(issuersPortal));
 
     vm.prank(address(0), address(0));
     vm.expectEmit(address(attestationRegistry));

@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import dotenv from "dotenv";
 import { SchemaRegistry } from "../../typechain-types";
-import { AddressLike, EventLog } from "ethers";
+import { EventLog } from "ethers";
 
 dotenv.config({ path: "../.env" });
 
@@ -68,7 +68,7 @@ async function main() {
   console.log("Deploying Issuers Portal...");
   const portalRegistry = await ethers.getContractAt("PortalRegistry", portalRegistryAddress);
   const deploymentTx = await portalRegistry.deployDefaultPortal(
-    [senderModuleAddress, issuersModuleAddress] as AddressLike[],
+    [senderModuleAddress, issuersModuleAddress],
     "Issuers Portal",
     "Portal of Issuers",
     true,
@@ -76,16 +76,17 @@ async function main() {
   );
 
   const txReceipt = await deploymentTx.wait();
+  console.log("txReceipt.logs", txReceipt?.logs);
 
-  const portalRegisteredEvent = txReceipt?.logs?.filter((log) => {
-    return log instanceof EventLog && log.eventName == "PortalRegistered";
-  });
+  const portalRegisteredEvent = txReceipt?.logs?.find((log) => {
+    return log instanceof EventLog && log.fragment.name === "PortalRegistered";
+  }) as EventLog;
 
-  const issuersPortalAddress = portalRegisteredEvent?.[0].topics[3];
-
-  if (!issuersPortalAddress) {
+  if (!portalRegisteredEvent) {
     throw new Error("Issuers Portal deployment failed!");
   }
+
+  const issuersPortalAddress = portalRegisteredEvent?.args[2];
 
   console.log(`IssuersPortal successfully deployed at ${issuersPortalAddress}`);
 

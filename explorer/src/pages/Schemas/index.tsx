@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
-import { columns, schemaColonsOption, skeletonSchemas } from "@/constants/columns/schema";
+import { columns, schemaColumnsOption, skeletonSchemas } from "@/constants/columns/schema";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -35,7 +35,7 @@ export const Schemas: React.FC = () => {
     setSkip(getItemsByPage(retrievedPage));
   };
 
-  const columnsSkeletonRef = useRef(columnsSkeleton(columns(), schemaColonsOption));
+  const columnsSkeletonRef = useRef(columnsSkeleton(columns(), schemaColumnsOption));
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonSchemas() }
     : { columns: columns(), list: schemasList || [] };

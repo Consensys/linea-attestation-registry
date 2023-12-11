@@ -7,7 +7,7 @@ import { hexToNumber } from "viem/utils";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { SortByDate } from "@/components/SortByDate";
-import { ColonsOptions } from "@/interfaces/components";
+import { ColumnsOptions } from "@/interfaces/components";
 import { toAttestationById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
@@ -103,7 +103,7 @@ export const skeletonAttestations = (itemPerPage = ITEMS_PER_PAGE_DEFAULT): Arra
     })),
   );
 
-export const attestationColonsOption: ColonsOptions = {
+export const attestationColumnsOption: ColumnsOptions = {
   0: {
     width: 67,
   },

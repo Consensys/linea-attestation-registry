@@ -1,8 +1,8 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { ColonsOptions } from "@/interfaces/components";
+import { ColumnsOptions } from "@/interfaces/components";
 import { randomNumber } from "@/utils/amountUtils";
 
-export const columnsSkeleton = <ColumnType,>(value: ColumnType[], options: ColonsOptions): ColumnType[] =>
+export const columnsSkeleton = <ColumnType,>(value: ColumnType[], options: ColumnsOptions): ColumnType[] =>
   value.map((column, index) => {
     const element = options[index];
     return {

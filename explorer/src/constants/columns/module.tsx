@@ -3,7 +3,7 @@ import { Module } from "@verax-attestation-registry/verax-sdk";
 
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
-import { ColonsOptions } from "@/interfaces/components";
+import { ColumnsOptions } from "@/interfaces/components";
 import { toModuleById } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
 
@@ -60,7 +60,7 @@ export const skeletonModules = (itemPerPage = ITEMS_PER_PAGE_DEFAULT): Array<Mod
     })),
   );
 
-export const moduleColonsOption: ColonsOptions = {
+export const moduleColumnsOption: ColumnsOptions = {
   0: {
     minWidth: 111,
     maxWidth: 171,

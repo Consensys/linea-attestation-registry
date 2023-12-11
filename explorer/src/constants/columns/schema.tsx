@@ -3,7 +3,7 @@ import { Schema } from "@verax-attestation-registry/verax-sdk";
 
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
-import { ColonsOptions } from "@/interfaces/components";
+import { ColumnsOptions } from "@/interfaces/components";
 import { toSchemaById } from "@/routes/constants";
 
 import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "..";
@@ -65,7 +65,7 @@ export const skeletonSchemas = (itemPerPage = ITEMS_PER_PAGE_DEFAULT): Array<Sch
     })),
   );
 
-export const schemaColonsOption: ColonsOptions = {
+export const schemaColumnsOption: ColumnsOptions = {
   0: {
     width: 200,
   },

@@ -6,7 +6,7 @@ export interface NavigationProps {
 
 export type Page = "schema" | "portal" | "attestation" | "module";
 
-export type ColonsOptions = Record<
+export type ColumnsOptions = Record<
   number,
   Partial<{ width: number; minWidth: number; maxWidth: number; isRandomWidth: boolean }>
 >;

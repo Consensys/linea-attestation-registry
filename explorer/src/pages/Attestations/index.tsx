@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
-import { attestationColonsOption, columns, skeletonAttestations } from "@/constants/columns/attestation";
+import { attestationColumnsOption, columns, skeletonAttestations } from "@/constants/columns/attestation";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
@@ -48,7 +48,7 @@ export const Attestations: React.FC = () => {
     setSkip(getItemsByPage(retrievedPage));
   };
 
-  const columnsSkeletonRef = useRef(columnsSkeleton(columns(), attestationColonsOption));
+  const columnsSkeletonRef = useRef(columnsSkeleton(columns(), attestationColumnsOption));
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations() }
     : { columns: columns(), list: attestationsList || [] };

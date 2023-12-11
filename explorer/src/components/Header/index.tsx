@@ -1,4 +1,5 @@
 import { ConnectKitButton } from "connectkit";
+import { t } from "i18next";
 import { ChevronDown } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
@@ -64,7 +65,11 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
                 onClick={show}
                 className="cursor-pointer px-3 h-9 xl:h-12 xl:px-4 gap-2 rounded-md border border-button-secondary-border justify-center items-center inline-flex whitespace-nowrap hover:border-button-secondary-hover"
               >
-                {address && isConnected ? cropString(address) : screen.sm ? "Connect" : "Connect Wallet"}
+                {address && isConnected
+                  ? cropString(address)
+                  : screen.sm
+                    ? t("common.actions.connect")
+                    : t("common.actions.connectWallet")}
                 {!isAdaptive && <ChevronDown />}
               </button>
             );

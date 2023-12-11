@@ -1,5 +1,6 @@
 import { Route, createHashRouter, createRoutesFromElements } from "react-router-dom";
 
+import "@/config/translation";
 import { Attestation } from "@/pages/Attestation";
 import { Attestations } from "@/pages/Attestations";
 import { Home } from "@/pages/Home";

@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
@@ -17,7 +18,7 @@ export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId })
   );
   return (
     <div className="flex flex-col gap-6 w-full px-5 md:px-10">
-      <p>Recent attestations</p>
+      <div className="text-text-primary text-xl font-semibold">{t("attestation.recent")}</div>
       {/* todo add loading */}
       {isLoading ? (
         <p>Loading...</p>

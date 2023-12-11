@@ -1,3 +1,5 @@
+import { t } from "i18next";
+
 import GitbookIcon from "@/assets/icons/gitbook.svg?react";
 import VeraxIcon from "@/assets/logo/verax-icon.svg?react";
 import GithubIcon from "@/assets/socials/github.svg?react";
@@ -7,40 +9,40 @@ import { APP_ROUTES } from "@/routes/constants";
 
 export const DEFAULT_ROUTES: Array<NavigationProps> = [
   {
-    name: "Issuers",
+    name: t("common.routes.issuers"),
     route: APP_ROUTES.ISSUERS,
   },
   {
-    name: "Attestations",
+    name: t("common.routes.attestations"),
     route: APP_ROUTES.ATTESTATIONS,
   },
   {
-    name: "Schemas",
+    name: t("common.routes.schemas"),
     route: APP_ROUTES.SCHEMAS,
   },
   {
-    name: "Modules",
+    name: t("common.routes.modules"),
     route: APP_ROUTES.MODULES,
   },
   {
-    name: "Info",
+    name: t("common.routes.info.title"),
     submenu: <Info />,
   },
 ];
 
 export const INFO_LIST = [
   {
-    title: "About",
+    title: t("common.routes.info.about"),
     logo: <VeraxIcon className="!w-4 !h-4" />,
     url: "https://ver.ax/",
   },
   {
-    title: "Github",
+    title: t("common.routes.info.github"),
     logo: <GithubIcon className="!w-4 !h-4" />,
     url: "https://github.com/Consensys/linea-attestation-registry/tree/dev",
   },
   {
-    title: "Documentation",
+    title: t("common.routes.info.documentation"),
     logo: <GitbookIcon className="!w-4 !h-4" />,
     url: "https://docs.ver.ax/verax-documentation/",
   },

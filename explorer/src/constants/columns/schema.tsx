@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Schema } from "@verax-attestation-registry/verax-sdk";
+import { t } from "i18next";
 
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
@@ -11,7 +12,7 @@ export const columns = (): ColumnDef<Schema>[] => [
     header: () => (
       <div className="flex items-center gap-2.5">
         <HelperIndicator type="schema" />
-        Schema Name
+        {t("schema.list.columns.name")}
       </div>
     ),
     cell: ({ row }) => {
@@ -27,7 +28,7 @@ export const columns = (): ColumnDef<Schema>[] => [
   },
   {
     accessorKey: "description",
-    header: () => "Schema Description",
+    header: () => t("schema.list.columns.description"),
     cell: ({ row }) => {
       const description = row.getValue("description") as string;
       return <p className="max-w-[300px] overflow-hidden text-ellipsis">{description}</p>;
@@ -35,7 +36,6 @@ export const columns = (): ColumnDef<Schema>[] => [
   },
   {
     accessorKey: "context",
-    header: () => "Context",
     cell: ({ row }) => {
       const context = row.getValue("context") as string;
       return <p className="max-w-[300px] overflow-hidden text-ellipsis">{context}</p>;
@@ -43,7 +43,7 @@ export const columns = (): ColumnDef<Schema>[] => [
   },
   {
     accessorKey: "schema",
-    header: () => <p className="text-left pl-2">Schema</p>,
+    header: () => <p className="text-left md:pl-2">{t("schema.list.columns.schema")}</p>,
     cell: ({ row }) => {
       const schema = row.getValue("schema") as string;
       return <p className="max-w-[300px] overflow-hidden text-ellipsis text-left w-full">{schema}</p>;

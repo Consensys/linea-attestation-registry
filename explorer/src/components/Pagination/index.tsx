@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -67,7 +68,7 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           className={`flex text-base font-semibold ${disablePrev && "opacity-40"}`}
         >
           <ChevronLeft />
-          <span className="hidden md:inline-block">Previous</span>
+          <span className="hidden md:inline-block">{t("common.actions.previous")}</span>
         </button>
       </div>
       <div className="flex items-center gap-3">
@@ -90,7 +91,7 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           disabled={disableNext}
           className={`flex text-base font-semibold ${disableNext && "opacity-40"}`}
         >
-          <span className="hidden md:inline-block">Next</span> <ChevronRight />
+          <span className="hidden md:inline-block">{t("common.actions.next")}</span> <ChevronRight />
         </button>
         <button
           type="button"

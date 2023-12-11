@@ -41,7 +41,7 @@
     --button-outlined-text: #0C0C11;
     --button-outlined-border: #DAD8EC;
     --button-outlined-border-hover: #0C0C11;
-    
+
     --skeleton: #D7D7D8;
   }
 }
@@ -90,6 +90,7 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;

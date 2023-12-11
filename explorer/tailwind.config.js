@@ -20,6 +20,7 @@ export default {
           primary: "var(--surface-primary)",
           secondary: "var(--surface-secondary)",
           attestationData: "var(--surface-attestation-data)",
+          magenta20: "var(--surface-magenta-20)",
         },
         text: {
           primary: "var(--text-primary)",

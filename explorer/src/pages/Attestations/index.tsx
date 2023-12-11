@@ -1,11 +1,12 @@
 import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
-import { columns } from "@/constants/columns/attestation";
+import { attestationColumnsOption, columns, skeletonAttestations } from "@/constants/columns/attestation";
+import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -31,7 +32,7 @@ export const Attestations: React.FC = () => {
 
   const [skip, setSkip] = useState<number>(getItemsByPage(page));
 
-  const { data: attestationsList } = useSWR(
+  const { data: attestationsList, isLoading } = useSWR(
     `${SWRKeys.GET_ATTESTATION_LIST}/${skip}/${sortByDateDirection}/${chain.id}`,
     () =>
       sdk.attestation.findBy(
@@ -47,10 +48,14 @@ export const Attestations: React.FC = () => {
     setSkip(getItemsByPage(retrievedPage));
   };
 
+  const columnsSkeletonRef = useRef(columnsSkeleton(columns(), attestationColumnsOption));
+  const data = isLoading
+    ? { columns: columnsSkeletonRef.current, list: skeletonAttestations() }
+    : { columns: columns(), list: attestationsList || [] };
+
   return (
     <TitleAndSwitcher>
-      {/* TODO: add skeleton for table */}
-      <DataTable columns={columns()} data={attestationsList || []} />
+      <DataTable columns={data.columns} data={data.list} />
       {attestationsCount && <Pagination itemsCount={attestationsCount} handlePage={handlePage} />}
     </TitleAndSwitcher>
   );

@@ -4,7 +4,10 @@ import { t } from "i18next";
 
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
+import { ColumnsOptions } from "@/interfaces/components";
 import { toSchemaById } from "@/routes/constants";
+
+import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "..";
 
 export const columns = (): ColumnDef<Schema>[] => [
   {
@@ -50,3 +53,29 @@ export const columns = (): ColumnDef<Schema>[] => [
     },
   },
 ];
+
+export const skeletonSchemas = (itemPerPage = ITEMS_PER_PAGE_DEFAULT): Array<Schema> =>
+  Array.from(
+    Array(itemPerPage).map((_, index) => ({
+      id: index.toString(),
+      name: EMPTY_STRING,
+      description: EMPTY_STRING,
+      context: EMPTY_STRING,
+      schema: EMPTY_STRING,
+    })),
+  );
+
+export const schemaColumnsOption: ColumnsOptions = {
+  0: {
+    width: 200,
+  },
+  1: {
+    width: 300,
+  },
+  2: {
+    width: 282,
+  },
+  3: {
+    width: 200,
+  },
+};

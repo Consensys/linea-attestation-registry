@@ -8,11 +8,12 @@ import { hexToNumber } from "viem/utils";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { SortByDate } from "@/components/SortByDate";
+import { ColumnsOptions } from "@/interfaces/components";
 import { toAttestationById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
-import { links } from "../index";
+import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT, links } from "../index";
 
 interface ColumnsProps {
   sortByDate: boolean;
@@ -80,3 +81,45 @@ export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): Colu
     },
   },
 ];
+
+export const skeletonAttestations = (itemPerPage = ITEMS_PER_PAGE_DEFAULT): Array<Attestation> =>
+  Array.from(
+    Array(itemPerPage).map((_, index) => ({
+      id: index.toString(),
+      schemaString: EMPTY_STRING,
+      decodedData: [EMPTY_STRING],
+      decodedPayload: [EMPTY_STRING],
+      attestationId: EMPTY_STRING,
+      schemaId: EMPTY_STRING,
+      replacedBy: EMPTY_STRING,
+      attester: `0x${index}`,
+      portal: `0x${index}`,
+      attestedDate: 0,
+      expirationDate: 0,
+      revocationDate: 0,
+      version: 0,
+      revoked: false,
+      subject: EMPTY_STRING,
+      attestationData: EMPTY_STRING,
+    })),
+  );
+
+export const attestationColumnsOption: ColumnsOptions = {
+  0: {
+    width: 67,
+  },
+  1: {
+    width: 100,
+  },
+  2: {
+    minWidth: 100,
+    maxWidth: 220,
+    isRandomWidth: true,
+  },
+  3: {
+    width: 135,
+  },
+  4: {
+    width: 78,
+  },
+};

@@ -10,6 +10,8 @@ import { useNetworkContext } from "@/providers/network-provider/context";
 import { toSchemaById } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
 
+import { AttestationSchemaCardSkeleton } from "../AttestationLoadingSkeleton";
+
 export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
   const { sdk } = useNetworkContext();
 
@@ -21,9 +23,7 @@ export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId
       revalidateOnFocus: false,
     },
   );
-  //todo add loading
-  if (isLoading) return <p>Loading schema...</p>;
-  //todo add not found
+  if (isLoading) return <AttestationSchemaCardSkeleton />;
   if (!schema) return null;
 
   return (

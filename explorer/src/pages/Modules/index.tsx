@@ -1,11 +1,12 @@
 import { t } from "i18next";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
-import { columns } from "@/constants/columns/module";
+import { columns, moduleColumnsOption, skeletonModules } from "@/constants/columns/module";
+import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { getItemsByPage, pageBySearchParams } from "@/utils/paginationUtils";
@@ -26,13 +27,18 @@ export const Modules: React.FC = () => {
 
   const [skip, setSkip] = useState<number>(getItemsByPage(page));
 
-  const { data: modulesList } = useSWR(`${SWRKeys.GET_MODULE_LIST}/${skip}/${chain.id}`, () =>
+  const { data: modulesList, isLoading } = useSWR(`${SWRKeys.GET_MODULE_LIST}/${skip}/${chain.id}`, () =>
     sdk.module.findBy(ITEMS_PER_PAGE_DEFAULT, skip),
   );
 
   const handlePage = (retrievedPage: number) => {
     setSkip(getItemsByPage(retrievedPage));
   };
+
+  const columnsSkeletonRef = useRef(columnsSkeleton(columns(), moduleColumnsOption));
+  const data = isLoading
+    ? { columns: columnsSkeletonRef.current, list: skeletonModules() }
+    : { columns: columns(), list: modulesList || [] };
 
   return (
     <div className="container mt-5 md:mt-8">
@@ -42,8 +48,7 @@ export const Modules: React.FC = () => {
         </h1>
       </div>
       <div>
-        {/* TODO: add skeleton for table */}
-        {modulesList && <DataTable columns={columns()} data={modulesList} />}
+        <DataTable columns={data.columns} data={data.list} />
         {Boolean(modulesCount) && <Pagination itemsCount={totalItems} handlePage={handlePage} />}
       </div>
     </div>

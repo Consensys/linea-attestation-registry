@@ -4,7 +4,7 @@ import { useState } from "react";
 import { INFO_LIST } from "@/constants/components";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 
-const DesktopLink: React.FC<{ title: string; logo: string; url: string }> = ({ title, logo, url }) => {
+const DesktopLink: React.FC<{ title: string; logo: JSX.Element; url: string }> = ({ title, logo, url }) => {
   const [show, setShow] = useState<boolean>(false);
   return (
     <a
@@ -15,7 +15,7 @@ const DesktopLink: React.FC<{ title: string; logo: string; url: string }> = ({ t
       onMouseLeave={() => setShow(false)}
       className="w-52 rounded px-2 py-[10px] flex gap-2 items-center text-text-tertiary hover:bg-hover-lime20 hover:text-text-primary"
     >
-      <img src={logo} alt={title} className="!w-4 !h-4 shrink-0" />
+      {logo}
       <span className="flex-1">{title}</span>
       <MoveUpRight width={16} height={16} className={`${show ? "visible" : "invisible"}`} />
     </a>
@@ -38,7 +38,7 @@ export const Info: React.FC = () => {
             target="_blank"
             className="w-fit rounded px-2 py-[10px] ms-4 flex gap-2 items-center text-xl text-text-tertiary hover:underline hover:text-text-primary"
           >
-            <img src={items.logo} alt={items.title} className="!w-[18px] !h-[18px] shrink-0" />
+            {items.logo}
             <span>{items.title}</span>
           </a>
         ),

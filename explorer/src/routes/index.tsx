@@ -4,6 +4,7 @@ import "@/config/translation";
 import { Attestation } from "@/pages/Attestation";
 import { Attestations } from "@/pages/Attestations";
 import { Home } from "@/pages/Home";
+import { Module } from "@/pages/Module";
 import { Modules } from "@/pages/Modules";
 import { MyAttestations } from "@/pages/MyAttestations";
 import { Schema } from "@/pages/Schema";
@@ -24,6 +25,7 @@ export const router = createHashRouter(
       <Route path={APP_ROUTES.SCHEMAS} element={<Schemas />} />
       <Route path={APP_ROUTES.SCHEMA_BY_ID} element={<Schema />} />
       <Route path={APP_ROUTES.MODULES} element={<Modules />} />
+      <Route path={APP_ROUTES.MODULES_BY_ID} element={<Module />} />
       <Route path={APP_ROUTES.DEFAULT} element={<NotFoundPage />} />
     </Route>,
   ),

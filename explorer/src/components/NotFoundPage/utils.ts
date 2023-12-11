@@ -37,10 +37,10 @@ export const getNotFoundPageData = <PageType extends Page>(
         to: APP_ROUTES.SCHEMAS,
       };
     }
-    case "portal": {
+    case "module": {
       return {
         ...props,
-        title: "Portal",
+        title: "Module",
         to: APP_ROUTES.MODULES,
       };
     }

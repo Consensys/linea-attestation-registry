@@ -15,29 +15,29 @@ export default {
       colors: {
         background: "var(--surface-primary)",
         borderCard: "var(--border)",
+        skeleton: "var(--skeleton)",
         surface: {
           primary: "var(--surface-primary)",
           secondary: "var(--surface-secondary)",
           attestationData: "var(--surface-attestation-data)",
+          magenta20: "var(--surface-magenta-20)",
         },
         text: {
           primary: "var(--text-primary)",
           secondary: "var(--text-secondary)",
           tertiary: "var(--text-tertiary)",
           quaternary: "var(--text-quaternary)",
-          blue: "var(--text-blue)",
-          magenta: "var(--text-magenta)",
           darkGrey: "var(--text-dark-grey)",
         },
         border: {
           card: "var(--border-card)",
           table: "var(--border-table)",
         },
-        indicator: {
-          blue: "var(--indicator-blue)",
-          magenta: "var(--indicator-magenta)",
-          green: "var(--indicator-green)",
-          orange: "var(--indicator-orange)",
+        page: {
+          attestation: "var(--indicator-blue)",
+          schema: "var(--indicator-magenta)",
+          portal: "var(--indicator-green)",
+          module: "var(--indicator-orange)",
         },
         hover: {
           lime20: "var(--hover-lime20)",

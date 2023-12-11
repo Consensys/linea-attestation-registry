@@ -10,10 +10,7 @@ const resources = {
   },
 };
 
-type TranslationKeys = `${keyof typeof en}`;
-
 i18n.use(initReactI18next).init({
-  debug: true,
   fallbackLng: "en",
   interpolation: {
     escapeValue: false,
@@ -23,5 +20,4 @@ i18n.use(initReactI18next).init({
   resources,
 });
 
-export type ITranslationKeys = TranslationKeys | `${TranslationKeys}.${string}`;
 export default i18n;

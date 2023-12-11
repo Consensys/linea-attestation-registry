@@ -12,10 +12,13 @@ import { cropString } from "@/utils/stringUtils";
 import { AttestationSchemaCardSkeleton } from "../AttestationLoadingSkeleton";
 
 export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
-  const { sdk } = useNetworkContext();
+  const {
+    sdk,
+    network: { chain },
+  } = useNetworkContext();
 
   const { data: schema, isLoading } = useSWR(
-    SWRKeys.GET_SCHEMA_BY_ID,
+    `${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}/${chain.id}`,
     () => sdk.schema.findOneById(schemaId) as Promise<Schema>,
     {
       shouldRetryOnError: false,

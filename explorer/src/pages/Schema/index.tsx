@@ -13,15 +13,23 @@ import { SchemaLoadingSkeleton } from "./components/SchemaLoadingSkeleton";
 
 export const Schema = () => {
   const { id } = useParams();
-  const { sdk } = useNetworkContext();
+  const {
+    sdk,
+    network: { chain },
+  } = useNetworkContext();
 
   const {
     data: schema,
     isLoading,
     isValidating,
-  } = useSWR(SWRKeys.GET_SCHEMA_BY_ID, () => sdk.schema.findOneById(id || EMPTY_STRING) as Promise<SchemaProps>, {
-    shouldRetryOnError: false,
-  });
+  } = useSWR(
+    `${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`,
+    () => sdk.schema.findOneById(id || EMPTY_STRING) as Promise<SchemaProps>,
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+    },
+  );
 
   if (isLoading || isValidating) return <SchemaLoadingSkeleton />;
   if (!schema) return <NotFoundPage page="schema" id={id} />;

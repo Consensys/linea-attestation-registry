@@ -16,7 +16,10 @@ import { RelatedAttestations } from "./components/RelatedAttestations";
 
 export const Attestation = () => {
   const { id } = useParams();
-  const { sdk } = useNetworkContext();
+  const {
+    sdk,
+    network: { chain },
+  } = useNetworkContext();
 
   const {
     data: attestation,
@@ -24,7 +27,7 @@ export const Attestation = () => {
     isValidating,
     mutate,
   } = useSWR(
-    SWRKeys.GET_ATTESTATION_BY_ID,
+    `${SWRKeys.GET_ATTESTATION_BY_ID}/${id}/${chain.id}`,
     () => sdk.attestation.findOneById(id || EMPTY_STRING) as Promise<AttestationProps>,
     {
       shouldRetryOnError: false,
@@ -34,6 +37,7 @@ export const Attestation = () => {
 
   if (isLoading || isValidating) return <AttestationLoadingSkeleton />;
   if (!attestation) return <NotFoundPage id={id} page="attestation" />;
+
   return (
     <div className="flex flex-col md:gap-4 max-w-[1200px] my-6 md:mt-2 md:mb-20 md:mx-10 xl:mx-auto">
       <Back className="ps-5 md:ps-0" />

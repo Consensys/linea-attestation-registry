@@ -55,7 +55,6 @@ export const Attestations: React.FC = () => {
 
   return (
     <TitleAndSwitcher>
-      {/* TODO: add skeleton for table */}
       <DataTable columns={data.columns} data={data.list} />
       {attestationsCount && <Pagination itemsCount={attestationsCount} handlePage={handlePage} />}
     </TitleAndSwitcher>

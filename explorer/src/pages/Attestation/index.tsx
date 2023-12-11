@@ -8,10 +8,11 @@ import { EMPTY_STRING } from "@/constants";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
-import { AttestationData } from "./AttestationData";
-import { AttestationInfo } from "./AttestationInfo";
-import { AttestationSchemaCard } from "./AttestationSchemaCard";
-import { RelatedAttestations } from "./RelatedAttestations";
+import { AttestationData } from "./components/AttestationData";
+import { AttestationInfo } from "./components/AttestationInfo";
+import { AttestationLoadingSkeleton } from "./components/AttestationLoadingSkeleton";
+import { AttestationSchemaCard } from "./components/AttestationSchemaCard";
+import { RelatedAttestations } from "./components/RelatedAttestations";
 
 export const Attestation = () => {
   const { id } = useParams();
@@ -31,8 +32,7 @@ export const Attestation = () => {
     },
   );
 
-  //todo add loading
-  if (isLoading || isValidating) return <p>Loading...</p>;
+  if (isLoading || isValidating) return <AttestationLoadingSkeleton />;
   if (!attestation) return <NotFoundPage id={id} page="attestation" />;
   return (
     <div className="flex flex-col md:gap-4 max-w-[1200px] my-6 md:mt-2 md:mb-20 md:mx-10 xl:mx-auto">

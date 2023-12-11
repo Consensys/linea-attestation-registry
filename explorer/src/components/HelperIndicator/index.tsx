@@ -1,21 +1,21 @@
 import { Page } from "@/interfaces/components";
 
-const getIndicatorColorClass = (type: Page): string => {
-  switch (type) {
+const getIndicatorColorClass = (page: Page): string => {
+  switch (page) {
     case "schema":
-      return "bg-indicator-magenta";
+      return "bg-page-schema";
     case "attestation":
-      return "bg-indicator-blue";
+      return "bg-page-attestation";
     case "portal":
-      return "bg-indicator-green";
+      return "bg-page-portal";
     case "module":
-      return "bg-indicator-orange";
+      return "bg-page-module";
     default:
       return "bg-transparent";
   }
 };
 
 export const HelperIndicator: React.FC<{ type: Page }> = ({ type }) => {
-  const indicatorColorClass = getIndicatorColorClass(type);
-  return <div className={`w-[3.33px] h-[13.33px] ${indicatorColorClass} rounded-full`} />;
+  const indicatorColor = getIndicatorColorClass(type);
+  return <div className={`w-[3.33px] h-[13.33px] ${indicatorColor} rounded-full`} />;
 };

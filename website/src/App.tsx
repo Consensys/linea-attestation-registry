@@ -7,7 +7,6 @@ import Navbar from "./components/Navbar.tsx";
 import Footer from "./components/Footer.tsx";
 
 function App() {
-
   return (
     <HashRouter>
       <header>
@@ -16,7 +15,7 @@ function App() {
       <Routes>
         <Route path="*" element={<Home />} />
         <Route path="/sdk-demo" element={<SDKDemo />} />
-        <Route path="/poh-linea" element={<Poh />} />
+        <Route path="/linea-poh" element={<Poh />} />
       </Routes>
       <footer>
         <Footer />

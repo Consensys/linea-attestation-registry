@@ -21,6 +21,7 @@
     --text-secondary: #3D3D51;
     --text-tertiary: #656B87;
     --text-quaternary: #9096B2;
+    --text-dark-grey: #646A86;
 
     --border-card: #DAD8EC;
     --border-table: #EAEAF3;
@@ -37,6 +38,10 @@
     --button-secondary-hover: #6E7491;
     --button-secondary-border: #DAD8EC;
 
+    --button-outlined-text: #0C0C11;
+    --button-outlined-border: #DAD8EC;
+    --button-outlined-border-hover: #0C0C11;
+    
     --skeleton: #D7D7D8;
   }
 }

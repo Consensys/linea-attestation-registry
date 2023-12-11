@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
-
   return (
     <nav className="navbar navbar-light">
       <div className="container">
@@ -10,7 +9,13 @@ function Navbar() {
           <li className="nav-item">
             <NavLink className="navbar-brand" to="/" end>
               Home
-            </NavLink></li>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink className="navbar-brand" to="/linea-poh" end>
+              Linea POH
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>

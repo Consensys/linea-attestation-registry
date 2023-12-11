@@ -17,7 +17,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
-    "dev": "pnpm i && vite --force",
+    "dev": "vite --force",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -26,7 +26,8 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@verax-attestation-registry/verax-sdk": "0.0.15",
+    "@lens-protocol/widgets-react": "^2.1.0",
+    "@verax-attestation-registry/verax-sdk": "1.0.0",
     "axios": "^1.6.1",
     "connectkit": "^1.5.3",
     "react": "^18.2.0",
@@ -45,7 +46,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
     "typescript": "^5.2.2",
-    "vite": "^4.5.0",
+    "vite": "^4.5.1",
     "vite-plugin-radar": "^0.9.1"
   }
 }

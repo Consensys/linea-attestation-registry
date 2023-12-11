@@ -10,6 +10,7 @@ import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { Portal } from "./types/Structs.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
 import { IPortal } from "./interfaces/IPortal.sol";
+import { uncheckedInc256 } from "./Common.sol";
 
 /**
  * @title Portal Registry
@@ -44,12 +45,14 @@ contract PortalRegistry is OwnableUpgradeable {
   /// @notice Error thrown when attempting to get a Portal that is not registered
   error PortalNotRegistered();
 
-  /// @notice Event emitted when a Portal registered
+  /// @notice Event emitted when a Portal is registered
   event PortalRegistered(string name, string description, address portalAddress);
   /// @notice Event emitted when a new issuer is added
   event IssuerAdded(address issuerAddress);
   /// @notice Event emitted when the issuer is removed
   event IssuerRemoved(address issuerAddress);
+  /// @notice Event emitted when a Portal is revoked
+  event PortalRevoked(address portalAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -153,6 +156,33 @@ contract PortalRegistry is OwnableUpgradeable {
 
     // Emit event
     emit PortalRegistered(name, description, id);
+  }
+
+  /**
+   * @notice Revokes a Portal from the PortalRegistry
+   * @param id the portal address
+   * @dev Only the registry owner can call this method
+   */
+  function revoke(address id) public onlyOwner {
+    if (!isRegistered(id)) revert PortalNotRegistered();
+
+    portals[id] = Portal(address(0), address(0), new address[](0), false, "", "", "");
+
+    uint256 portalAddressIndex;
+    for (uint256 i = 0; i < portalAddresses.length; i = uncheckedInc256(i)) {
+      if (portalAddresses[i] == id) {
+        portalAddressIndex = i;
+      }
+    }
+
+    if (portalAddressIndex >= portalAddresses.length) {
+      revert PortalNotRegistered();
+    }
+
+    portalAddresses[portalAddressIndex] = portalAddresses[portalAddresses.length - 1];
+    portalAddresses.pop();
+
+    emit PortalRevoked(id);
   }
 
   /**

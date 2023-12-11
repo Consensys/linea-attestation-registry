@@ -1,44 +1,31 @@
-import { useSearchParams } from "react-router-dom";
-import { useAccount } from "wagmi";
+import { NavLink } from "@/components/NavLink";
+import { APP_ROUTES } from "@/routes/constants";
 
-import { EQueryParams } from "@/enums/queryParams";
-
-export const ListSwitcher = () => {
-  const { address } = useAccount();
-
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const attester = searchParams.get(EQueryParams.ATTESTER);
-
-  const handleAttester = (address?: string) => {
-    const currentSearchParams = new URLSearchParams(searchParams);
-    address
-      ? currentSearchParams.set(EQueryParams.ATTESTER, address)
-      : currentSearchParams.delete(EQueryParams.ATTESTER);
-
-    setSearchParams(currentSearchParams);
-  };
-
+export const ListSwitcher: React.FC = () => {
   return (
-    <div className="inline-flex bg-slate-100 gap-2 mb-6 rounded">
-      <button
-        disabled={Boolean(!attester)}
-        onClick={() => handleAttester()}
-        className={`h-[2.1875rem] px-3 rounded text-base font-medium ${
-          attester ? "text-text-tertiary" : "text-white bg-gray-700"
-        }`}
+    <div className="inline-flex bg-surface-secondary gap-2 mb-6 rounded">
+      <NavLink
+        end
+        to={APP_ROUTES.ATTESTATIONS}
+        className={({ isActive }) =>
+          `flex items-center h-[2.1875rem] px-3 rounded text-base font-medium ${
+            isActive ? "text-white bg-text-secondary" : "text-text-tertiary"
+          }`
+        }
       >
         All attestations
-      </button>
-      <button
-        disabled={!address || Boolean(attester)}
-        onClick={() => handleAttester(address)}
-        className={`h-[2.1875rem] px-3 rounded text-base font-medium ${
-          attester ? "text-white bg-gray-700" : "text-text-tertiary"
-        }`}
+      </NavLink>
+      <NavLink
+        end
+        to={APP_ROUTES.MY_ATTESTATIONS}
+        className={({ isActive }) =>
+          `flex items-center h-[2.1875rem] px-3 rounded text-base font-medium ${
+            isActive ? "text-white bg-text-secondary" : "text-text-tertiary"
+          }`
+        }
       >
         My attestations
-      </button>
+      </NavLink>
     </div>
   );
 };

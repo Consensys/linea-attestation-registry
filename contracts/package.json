@@ -32,7 +32,7 @@
     "massImport:attest": "npx hardhat run script/massImport/massImport.ts --network",
     "reimport": "npx hardhat run script/recreateNetworkFile.ts --network",
     "test": "forge test",
-    "upgrade:": "npx hardhat run script/upgrade/upgradeEverything.ts --network",
+    "upgrade": "npx hardhat run script/upgrade/upgradeEverything.ts --network",
     "upgrade:force": "npx hardhat run script/upgrade/forceUpgradeEverything.ts --network"
   },
   "devDependencies": {

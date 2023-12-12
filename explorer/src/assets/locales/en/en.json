@@ -10,7 +10,9 @@
       "backTo": "Back to {{to}}",
       "goBackTo": "Go Back to {{to}}s",
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "learnMore": "Learn More",
+      "getStarted": "Get Started"
     },
     "messages": {
       "empty": "Empty",
@@ -29,6 +31,20 @@
         "github": "Github",
         "documentation": "Documentation"
       }
+    },
+    "inputPlaceholder": {
+      "search": "Search by ID, name, description"
+    }
+  },
+  "home": {
+    "title": "Boost your Dapps with Verax Explorer",
+    "subtitle": "The Ultimate Public Attestation Registry",
+    "issuers": {
+      "title": "Explore Issuers"
+    },
+    "info": {
+      "issueYourAttestation": "Want to issue your own attestation?",
+      "aboutVerax": "Want to know more about Verax?"
     }
   },
   "attestation": {

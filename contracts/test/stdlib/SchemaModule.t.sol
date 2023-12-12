@@ -48,7 +48,7 @@ contract SchemaModuleTest is Test {
 
   function test_setAuthorizedSchemaIds_ArrayLengthMismatch() public {
     vm.prank(user);
-    vm.expectRevert(SchemaModule.ArraylengthMismatch.selector);
+    vm.expectRevert(SchemaModule.ArrayLengthMismatch.selector);
     schemaModule.setAuthorizedSchemaIds(portal, new bytes32[](1), new bool[](2));
   }
 

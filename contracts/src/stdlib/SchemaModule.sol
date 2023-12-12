@@ -17,7 +17,7 @@ contract SchemaModule is AbstractModule {
   mapping(address portal => mapping(bytes32 schemaId => bool authorized)) public authorizedSchemaIds;
 
   /// @notice Error thrown when an array length mismatch occurs
-  error ArraylengthMismatch();
+  error ArrayLengthMismatch();
   /// @notice Error thrown when a schemaId is not authorized by the module
   error SchemaNotAuthorized();
 
@@ -45,7 +45,7 @@ contract SchemaModule is AbstractModule {
     bytes32[] memory schemaIds,
     bool[] memory authorizedStatus
   ) public onlyPortalOwner(portal) {
-    if (schemaIds.length != authorizedStatus.length) revert ArraylengthMismatch();
+    if (schemaIds.length != authorizedStatus.length) revert ArrayLengthMismatch();
 
     for (uint256 i = 0; i < schemaIds.length; i++) {
       authorizedSchemaIds[portal][schemaIds[i]] = authorizedStatus[i];

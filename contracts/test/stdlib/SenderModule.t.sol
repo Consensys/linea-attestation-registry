@@ -21,13 +21,12 @@ contract SenderModuleTest is Test {
 
   function setUp() public {
     vm.startPrank(user1);
-    // Initialize your FeeModule and AttestationPayload here
+
     portalRegistry = new PortalRegistryMock();
     senderModule = new SenderModule(address(portalRegistry));
 
     attestationPayload = AttestationPayload(bytes32("schema1"), 0, new bytes(0), new bytes(0));
 
-    // register portal
     portalRegistry.register(address(portal), "portal", "portal", false, "portal");
 
     senders = new address[](2);
@@ -51,7 +50,7 @@ contract SenderModuleTest is Test {
   function test_setAuthorizedSenders_ArrayLengthMismatch() public {
     bool[] memory wrongLengthStatus = new bool[](1);
     vm.prank(user1);
-    vm.expectRevert(SenderModule.ArraylengthMismatch.selector);
+    vm.expectRevert(SenderModule.ArrayLengthMismatch.selector);
     senderModule.setAuthorizedSenders(portal, senders, wrongLengthStatus);
   }
 
@@ -63,16 +62,16 @@ contract SenderModuleTest is Test {
   }
 
   function test_run() public {
-    vm.prank(user1);
+    vm.startPrank(user1, user1);
     senderModule.setAuthorizedSenders(portal, senders, authorizedStatus);
-    vm.prank(portal);
-    senderModule.run(attestationPayload, "", user1, 0);
+    senderModule.run(attestationPayload, abi.encode(address(portal)), user1, 0);
+    vm.stopPrank();
   }
 
   function test_run_UnauthorizedSender() public {
     vm.startPrank(portal);
     vm.expectRevert(SenderModule.UnauthorizedSender.selector);
-    senderModule.run(attestationPayload, "", user2, 0);
+    senderModule.run(attestationPayload, abi.encode(address(makeAddr("randomAddr"))), user2, 0);
     vm.stopPrank();
   }
 }

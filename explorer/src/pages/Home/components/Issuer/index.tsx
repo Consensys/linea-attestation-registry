@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 
-import IssuerIcon from "@/assets/icons/issuer.svg?react";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { CHAIN_ID_ROUTE, toIssuerById } from "@/routes/constants";
 
@@ -11,6 +10,7 @@ export const Issuer: React.FC<IIssuerProps> = ({ issuer }) => {
   const {
     network: { network },
   } = useNetworkContext();
+  const IssuerLogo = issuer.logo;
 
   return (
     <div
@@ -19,8 +19,9 @@ export const Issuer: React.FC<IIssuerProps> = ({ issuer }) => {
       onClick={() => navigate(toIssuerById(issuer.id).replace(CHAIN_ID_ROUTE, network))}
     >
       <div className="flex items-center gap-3 text-xl md:text-2xl font-semibold text-blackDefault">
-        {/* TODO: logo should be dynamic */}
-        <IssuerIcon className="w-auto h-[2.5rem] md:h-[3rem]" />
+        <div className="w-[2.5rem] h-[2.5rem] md:w-[3rem] md:h-[3rem] flex items-center justify-center">
+          <IssuerLogo className="w-full h-auto max-w-[2.5rem] md:max-w-[3rem] max-h-[2.5rem] md:max-h-[3rem]" />
+        </div>
         {issuer.name}
       </div>
       {/* TODO: uncomment when data will be available */}

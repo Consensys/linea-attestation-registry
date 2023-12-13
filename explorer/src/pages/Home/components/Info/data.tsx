@@ -9,7 +9,7 @@ export const infoData = [
     title: t("home.info.issueYourAttestation"),
     button: {
       name: t("common.actions.getStarted"),
-      url: "https://github.com/Consensys/linea-attestation-registry/tree/dev",
+      url: "https://github.com/Consensys/linea-attestation-registry",
     },
     additionalClass: "bg-surface-secondary",
   },

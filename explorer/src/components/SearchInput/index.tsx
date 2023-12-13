@@ -12,7 +12,7 @@ export const SearchInput: React.FC = () => {
   const [value, setValue] = useState<string>(search || EMPTY_STRING);
   const navigate = useNavigate();
   const handleSearch = () => {
-    // todo if (!value) return;
+    if (!value) return;
     navigate(toSearch(value));
   };
 
@@ -25,7 +25,12 @@ export const SearchInput: React.FC = () => {
         className="text-base w-full outline-none"
         onKeyDown={(event) => event.key === keyboard.enter && handleSearch()}
       />
-      <div className="p-1.5 bg-surface-secondary text-text-darkGrey rounded cursor-pointer" onClick={handleSearch}>
+      <div
+        className={`p-1.5 bg-surface-secondary text-text-darkGrey rounded ${
+          !value ? "cursor-not-allowed" : "cursor-pointer"
+        }`}
+        onClick={handleSearch}
+      >
         <Search className="w-5 h-5" />
       </div>
     </div>

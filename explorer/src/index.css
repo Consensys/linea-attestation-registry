@@ -20,7 +20,7 @@
     --text-primary: #0D0D12;
     --text-secondary: #3D3D51;
     --text-tertiary: #656B87;
-    --text-quaternary: #9096B2;
+    --text-quaternary: var(--grey-400);
     --text-dark-grey: #646A86;
 
     --border-card: #DAD8EC;
@@ -43,6 +43,8 @@
     --button-outlined-border-hover: #0C0C11;
 
     --skeleton: #D7D7D8;
+
+    --grey-400: #9096B2;
   }
 }
 
@@ -105,12 +107,12 @@
 
   .sort-arrows.desc path:nth-child(1),
   .sort-arrows.desc path:nth-child(2) {
-    stroke: #9096B2;
+    stroke: var(--grey-400);
   }
 
   .sort-arrows.asc path:nth-child(3),
   .sort-arrows.asc path:nth-child(4) {
-    stroke: #9096B2;
+    stroke: var(--grey-400);
   }
 
   .table-row-transition {

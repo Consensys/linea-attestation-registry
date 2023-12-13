@@ -16,6 +16,7 @@ export default {
         background: "var(--surface-primary)",
         borderCard: "var(--border)",
         skeleton: "var(--skeleton)",
+        grey400: "var(--grey-400)",
         surface: {
           primary: "var(--surface-primary)",
           secondary: "var(--surface-secondary)",

@@ -13,8 +13,8 @@ export const BurgerMenu: React.FC<{ isOpened: boolean; setIsOpened: Dispatch<Set
   const screen = useWindowDimensions();
 
   useEffect(() => {
-    if (screen.xl || screen.lg) setIsOpened(false);
-  }, [screen.xl, screen.lg, setIsOpened]);
+    if (screen.xl) setIsOpened(false);
+  }, [screen.xl, setIsOpened]);
 
   return (
     <AnimatePresence>

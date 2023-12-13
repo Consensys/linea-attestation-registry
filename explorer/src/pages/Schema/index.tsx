@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { EMPTY_STRING } from "@/constants";
+import { urlRegex } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
@@ -33,6 +34,7 @@ export const Schema = () => {
 
   if (isLoading || isValidating) return <SchemaLoadingSkeleton />;
   if (!schema) return <NotFoundPage page="schema" id={id} />;
+  const isContextURL = urlRegex.test(schema.context);
   return (
     <section className="flex flex-col gap-6 w-full mb-10 md:mb-20 xl:max-w-[1200px] xl:m-auto">
       <div className="flex flex-col px-5 md:px-10 gap-6">
@@ -47,9 +49,11 @@ export const Schema = () => {
         <div className="flex flex-col gap-2">
           <p className="text-xs text-text-quaternary not-italic font-normal">CONTEXT</p>
           <a
-            href={schema.context}
+            href={isContextURL ? schema.context : undefined}
             target="_blank"
-            className="cursor-pointer hover:underline overflow-hidden text-ellipsis sm:max-w-[320px]"
+            className={`${
+              isContextURL && "cursor-pointer hover:underline"
+            } overflow-hidden text-ellipsis sm:max-w-[320px] whitespace-nowrap`}
           >
             {schema.context}
           </a>

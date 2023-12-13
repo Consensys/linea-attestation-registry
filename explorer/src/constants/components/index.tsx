@@ -2,7 +2,7 @@ import GitbookIcon from "@/assets/icons/gitbook.svg?react";
 import VeraxIcon from "@/assets/logo/verax-icon.svg?react";
 import GithubIcon from "@/assets/socials/github.svg?react";
 import { Info } from "@/components/NavigationList/components/Info";
-import { NavigationProps } from "@/interfaces/components";
+import { NavigationProps, SearchElementProps } from "@/interfaces/components";
 import { APP_ROUTES } from "@/routes/constants";
 
 export const DEFAULT_ROUTES: Array<NavigationProps> = [
@@ -45,3 +45,11 @@ export const INFO_LIST = [
     url: "https://docs.ver.ax/verax-documentation/",
   },
 ];
+
+export const DEFAULT_SEARCH_ELEMENTS: SearchElementProps = {
+  attestation: { count: 0, loaded: false },
+  schema: { count: 0, loaded: false },
+  module: { count: 0, loaded: false },
+  //todo add SearchPortal
+  portal: { count: 0, loaded: true },
+};

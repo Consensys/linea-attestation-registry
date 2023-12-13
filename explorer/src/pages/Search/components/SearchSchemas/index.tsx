@@ -40,7 +40,7 @@ export const SearchSchemas: React.FC<{ getSearchData: SearchDataFunction }> = ({
           )
         : [];
 
-      const listBySchemaString = parsedString.schemaString
+      const listBySchemaString = parsedString.schema
         ? await schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { schema_contains: parsedString.schema })
         : [];
 

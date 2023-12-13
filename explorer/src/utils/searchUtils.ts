@@ -1,4 +1,4 @@
-import { COMMA_AND_SPACE_STRING, COMMA_STRING, EMPTY_STRING, SPACE_STRING } from "@/constants";
+import { COMMA_STRING, EMPTY_STRING, SPACE_STRING } from "@/constants";
 import { convertSchemaRegex, regexEthAddress, schemaRegex, schemaStringRegex, urlRegex } from "@/constants/regex";
 import { ResultParseSearch } from "@/interfaces/components";
 
@@ -15,14 +15,14 @@ const extractSchema = (search: string) => {
   const matchingSchemaString = search.match(schemaStringRegex);
 
   if (matchingSchema && !matchingSchemaString) {
-    const schema = matchingSchema.join(COMMA_AND_SPACE_STRING);
+    const schema = matchingSchema.join(COMMA_STRING);
     return {
       schema,
       schemaString: schema.match(convertSchemaRegex)?.join(COMMA_STRING),
     };
   }
   return {
-    schema: matchingSchema?.join(COMMA_AND_SPACE_STRING),
+    schema: matchingSchema?.join(COMMA_STRING),
     schemaString: matchingSchemaString?.[0],
   };
 };

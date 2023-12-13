@@ -1,6 +1,5 @@
 export const EMPTY_STRING = "";
 export const SPACE_STRING = " ";
-export const COMMA_AND_SPACE_STRING = ", ";
 export const COMMA_STRING = ",";
 export const DASH = "-";
 export const ZERO_STRING = "0";

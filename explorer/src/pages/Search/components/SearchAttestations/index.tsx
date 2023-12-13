@@ -49,8 +49,8 @@ export const SearchAttestations: React.FC<{ getSearchData: SearchDataFunction }>
 
       const result = [
         ...(listByIds || []),
-        ...(listByAddress.attestationResults || []),
-        ...(listByAddress.subjectResults || []),
+        ...(listByAddress?.attestationResults || []),
+        ...(listByAddress?.subjectResults || []),
         ...(listBySchemaString || []),
       ];
       return result;

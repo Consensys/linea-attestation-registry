@@ -7,16 +7,21 @@
 
 @layer base {
   :root {
+    --black-default: #0C0C11;
+
     --surface-primary: #FEFEFE;
     --surface-secondary: #F4F5F9;
+    --surface-dark-grey: #EAEAF3;
     --surface-attestation-data: #2D4EC30D;
     --surface-magenta-20: #FAE8F1;
+    --surface-lime: #C4FF1C;
 
     --indicator-blue: #2D4EC3;
     --indicator-magenta: #D6247A;
     --indicator-green: #41AC00;
     --indicator-orange: #B93800;
 
+    --text-input: #0C0C11;
     --text-primary: #0D0D12;
     --text-secondary: #3D3D51;
     --text-tertiary: #656B87;
@@ -25,10 +30,16 @@
 
     --border-card: #DAD8EC;
     --border-table: #EAEAF3;
+    --border-input: #C2DA98;
+    --border-input-focus: #9096B2;
 
     --scrollbar: #A4A8C2;
 
     --hover-lime20: #F3FFD2;
+
+    --button-primary-black-background: #0C0C11;
+    --button-primary-black-text: #FEFEFE;
+    --button-primary-black-hover: #3D3D50;
 
     --button-primary-background: #C4FF1C;
     --button-primary-text: #0D0D12;
@@ -98,6 +109,17 @@
 }
 
 @layer components {
+  .button-primary-lime {
+    @apply text-button-primary-text bg-button-primary-background hover:bg-button-primary-hover;
+  }
+
+  .button-primary-black {
+    @apply text-button-primaryBlack-text bg-button-primaryBlack-background hover:bg-button-primaryBlack-hover;
+  }
+
+  .button-outlined {
+    @apply border-button-outlined-border border text-button-outlined-text text-base hover:border-button-outlined-borderHover;
+  }
 
   .sort-arrows path {
     stroke: #B7B9D2;

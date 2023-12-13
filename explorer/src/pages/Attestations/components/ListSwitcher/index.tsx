@@ -1,3 +1,5 @@
+import { t } from "i18next";
+
 import { NavLink } from "@/components/NavLink";
 import { APP_ROUTES } from "@/routes/constants";
 
@@ -13,7 +15,7 @@ export const ListSwitcher: React.FC = () => {
           }`
         }
       >
-        All attestations
+        {t("attestation.list.switch.all")}
       </NavLink>
       <NavLink
         end
@@ -24,7 +26,7 @@ export const ListSwitcher: React.FC = () => {
           }`
         }
       >
-        My attestations
+        {t("attestation.list.switch.my")}
       </NavLink>
     </div>
   );

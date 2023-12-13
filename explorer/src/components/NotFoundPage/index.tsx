@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { ChevronLeft } from "lucide-react";
 
 import archive from "@/assets/icons/archive.svg";
@@ -21,14 +22,14 @@ export const NotFoundPage: React.FC<NotFoundPageProps> = ({ id, page }) => {
               {decodedId}
             </span>
           )}
-          <span>hasn`t been found</span>
+          <span>{t("common.messages.hasntBeenFound")}</span>
         </p>
         <Link
           to={pageData.to}
           className="flex gap-2 border border-solid rounded-md px-4 py-3 border-button-secondary-border hover:border-button-secondary-hover"
         >
           <ChevronLeft width={24} height={24} />
-          {`Go Back to ${page}s`}
+          {t("common.actions.goBackTo", { to: page })}
         </Link>
       </div>
     </section>

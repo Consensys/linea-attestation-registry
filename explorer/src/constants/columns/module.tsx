@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Module } from "@verax-attestation-registry/verax-sdk";
+import { t } from "i18next";
 
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
@@ -15,7 +16,7 @@ export const columns = (): ColumnDef<Module>[] => [
     header: () => (
       <div className="flex items-center gap-2.5">
         <HelperIndicator type="module" />
-        Module Name
+        {t("module.list.columns.name")}
       </div>
     ),
     cell: ({ row }) => {
@@ -29,12 +30,12 @@ export const columns = (): ColumnDef<Module>[] => [
   },
   {
     accessorKey: "description",
-    header: () => "Module Description",
+    header: () => t("module.list.columns.description"),
     cell: ({ row }) => <p className="max-w-[400px] overflow-hidden text-ellipsis">{row.original.description}</p>,
   },
   {
     accessorKey: "moduleAddress",
-    header: () => <p className="text-right">Contract Address</p>,
+    header: () => <p className="text-right">{t("module.list.columns.contractAddress")}</p>,
     cell: ({ row }) => {
       const address = row.original.moduleAddress;
       return (

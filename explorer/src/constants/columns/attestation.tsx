@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
+import { t } from "i18next";
 import moment from "moment";
 import { Address } from "viem";
 import { hexToNumber } from "viem/utils";
@@ -24,7 +25,7 @@ export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): Colu
     header: () => (
       <div className="flex items-center gap-2.5">
         <HelperIndicator type="attestation" />
-        Attestation ID
+        {t("attestation.list.columns.id")}
       </div>
     ),
     cell: ({ row }) => {
@@ -41,7 +42,7 @@ export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): Colu
     header: () => (
       <div className="flex items-center gap-2.5">
         <HelperIndicator type="portal" />
-        Portal
+        {t("attestation.list.columns.portal")}
       </div>
     ),
     cell: ({ row }) => cropString(row.getValue("portal")),
@@ -51,13 +52,13 @@ export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): Colu
     header: () => (
       <div className="flex items-center gap-2.5">
         <HelperIndicator type="schema" />
-        Schema
+        {t("attestation.list.columns.schema")}
       </div>
     ),
   },
   {
     accessorKey: "subject",
-    header: () => <p className="text-left">Subject</p>,
+    header: () => <p className="text-left">{t("attestation.list.columns.subject")}</p>,
     cell: ({ row }) => {
       const subject = row.getValue("subject") as string;
       return (
@@ -73,7 +74,7 @@ export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): Colu
   },
   {
     accessorKey: "attestedDate",
-    header: () => (sortByDate ? <SortByDate /> : <p className="text-right">Issued</p>),
+    header: () => (sortByDate ? <SortByDate /> : <p className="text-right">{t("attestation.list.columns.issued")}</p>),
     cell: ({ row }) => {
       const timestamp: number = row.getValue("attestedDate");
       return <p className="text-right">{moment.unix(timestamp).fromNow()}</p>;

@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { ChevronLeft } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -12,8 +13,8 @@ export const Back: React.FC<BackProps> = ({ className }) => {
   const { state, pathname } = useLocation();
   const backPath = pathname.split("/").slice(0, -1);
   const { title, handler } = state?.from
-    ? { handler: () => navigate(-1), title: "Back" }
-    : { handler: () => navigate(backPath.join("/")), title: `Back to ${backPath.slice(-1)}` };
+    ? { handler: () => navigate(-1), title: t("common.actions.back") }
+    : { handler: () => navigate(backPath.join("/")), title: t("common.actions.backTo", { to: backPath.slice(-1) }) };
   return (
     <button
       onClick={() => handler()}

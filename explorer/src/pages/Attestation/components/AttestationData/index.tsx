@@ -1,4 +1,5 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
+import { t } from "i18next";
 import { Check, Copy, EyeOffIcon, MinusCircle, PlusCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -31,11 +32,11 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
 
   const toggleButton = isOpened
     ? {
-        title: "View Less",
+        title: t("common.actions.less"),
         Icon: MinusCircle,
       }
     : {
-        title: "View More",
+        title: t("common.actions.more"),
         Icon: PlusCircle,
       };
 
@@ -51,7 +52,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
       <div className="self-stretch justify-between items-center inline-flex">
         <div className="h-[19px] justify-start items-center gap-2 flex">
           <HelperIndicator type="attestation" />
-          <div className="text-text-primary text-base font-semibold">Attestation Data</div>
+          <div className="text-text-primary text-base font-semibold">{t("attestation.data")}</div>
         </div>
         <CopyToClipboard onCopy={handleCopy} text={data ? JSON.stringify(data, null, 2) : EMPTY_STRING}>
           <Icon className="w-[21px] h-[21px] cursor-pointer hover:opacity-60" color={copied ? "#1a9d37" : "#64687D"} />
@@ -61,7 +62,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
         {!data ? (
           <div className="flex gap-2 text-base text-text-tertiary w-full justify-center h-[108px] items-center">
             <EyeOffIcon />
-            Empty
+            {t("common.messages.empty")}
           </div>
         ) : (
           <div

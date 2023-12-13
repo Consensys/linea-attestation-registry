@@ -1,4 +1,5 @@
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { t } from "i18next";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -48,7 +49,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="w-full h-24 !text-center text-text-secondary">
-                No results.
+                {t("common.messages.noResults")}
               </TableCell>
             </TableRow>
           )}

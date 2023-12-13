@@ -1,4 +1,5 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
+import { t } from "i18next";
 import { Hex, hexToNumber } from "viem";
 
 import { Link } from "@/components/Link";
@@ -11,24 +12,24 @@ import { createDateListItem } from "./utils";
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
   const list: Array<{ title: string; value: string; link?: string }> = [
-    createDateListItem("ATTESTED", attestedDate.toString()),
-    createDateListItem("EXPIRATION DATE", expirationDate.toString()),
+    createDateListItem(t("attestation.info.attested"), attestedDate.toString()),
+    createDateListItem(t("attestation.info.expirationDate"), expirationDate.toString()),
     {
-      title: "REVOKED",
-      value: revoked ? "YES" : "NO",
+      title: t("attestation.info.revoked.title"),
+      value: revoked ? t("attestation.info.revoked.yes") : t("attestation.info.revoked.no"),
     },
-    createDateListItem("REVOCATION DATE", revocationDate?.toString()),
+    createDateListItem(t("attestation.info.revocationDate"), revocationDate?.toString()),
     {
-      title: "ISSUED BY",
+      title: t("attestation.info.issuedBy"),
       value: cropString(attester),
     },
     {
-      title: "PORTAL",
+      title: t("attestation.info.portal"),
       value: cropString(portal),
       link: toModuleById(portal),
     },
     {
-      title: "SUBJECT",
+      title: t("attestation.info.subject"),
       value: cropString(subject),
     },
   ];

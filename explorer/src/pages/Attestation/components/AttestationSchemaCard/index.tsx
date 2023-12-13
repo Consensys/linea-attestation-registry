@@ -1,4 +1,5 @@
 import { Schema } from "@verax-attestation-registry/verax-sdk";
+import { t } from "i18next";
 import { ArrowRight } from "lucide-react";
 import useSWR from "swr";
 
@@ -29,7 +30,7 @@ export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId
     <div className="w-full flex-col justify-start items-start gap-4 inline-flex">
       <header className="justify-start items-center gap-2 inline-flex">
         <HelperIndicator type="schema" />
-        <div className="text-text-primary text-base font-semibold">Schema</div>
+        <div className="text-text-primary text-base font-semibold">{t("schema.title")}</div>
       </header>
       <div className="w-full flex-col justify-start items-start gap-3 flex">
         <div className="w-full justify-between items-start inline-flex text-text-secondary text-base font-medium">
@@ -42,7 +43,7 @@ export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId
         to={toSchemaById(schemaId)}
         className="flex gap-2 text-text-primary text-sm font-semibold hover:underline items-center"
       >
-        View Details
+        {t("common.actions.details")}
         <ArrowRight width={16} height={16} />
       </Link>
     </div>

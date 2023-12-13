@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { Hex, hexToNumber } from "viem";
 
 import { BILLION, EMPTY_STRING } from "@/constants";
@@ -15,7 +16,7 @@ export const getNotFoundPageData = <PageType extends Page>(
       if (!data)
         return {
           ...props,
-          title: "Attestation",
+          title: t("attestation.title"),
           to: APP_ROUTES.ATTESTATIONS,
         };
       const decodedId = hexToNumber(data as Hex);
@@ -23,7 +24,7 @@ export const getNotFoundPageData = <PageType extends Page>(
         !isNaN(decodedId) &&
         removeCommas(BILLION.toLocaleString()).length > removeCommas(decodedId.toLocaleString()).length;
       return {
-        title: showId ? "Attestation ID" : "Attestation",
+        title: showId ? t("attestation.list.columns.id") : t("attestation.title"),
         id: decodedId,
         showId: showId,
         to: APP_ROUTES.ATTESTATIONS,
@@ -32,7 +33,7 @@ export const getNotFoundPageData = <PageType extends Page>(
     case "schema": {
       return {
         ...props,
-        title: "Schema",
+        title: t("schema.title"),
         to: APP_ROUTES.SCHEMAS,
       };
     }

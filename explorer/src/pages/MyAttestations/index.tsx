@@ -1,5 +1,6 @@
 import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { ConnectKitButton } from "connectkit";
+import { t } from "i18next";
 import { ArchiveIcon, Check, Copy, Wallet } from "lucide-react";
 import { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -69,12 +70,12 @@ export const MyAttestations: React.FC = () => {
       {!address && (
         <InfoBlock
           icon={<ArchiveIcon />}
-          message="Connect wallet to see your attestations"
+          message={t("attestation.messages.attestationsConnectWallet")}
           buttonComponent={
             <ConnectKitButton.Custom>
               {({ show }) => {
                 if (!show) return <></>;
-                return <ButtonOutlined name="Connect Wallet" handler={show} />;
+                return <ButtonOutlined name={t("common.actions.connectWallet")} handler={show} />;
               }}
             </ConnectKitButton.Custom>
           }
@@ -82,7 +83,7 @@ export const MyAttestations: React.FC = () => {
       )}
 
       {address && !attestationsList?.length && (
-        <InfoBlock icon={<ArchiveIcon />} message="You don’t have any attestations yet" />
+        <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.emptyList")} />
       )}
 
       {address && <DataTable columns={columns()} data={attestationsList || []} />}

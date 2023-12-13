@@ -1,4 +1,5 @@
 import { Schema as SchemaProps } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { t } from "i18next";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
@@ -37,7 +38,7 @@ export const Schema = () => {
       <hr className="bg-border-card" />
       <div className="flex flex-col gap-6 px-5 md:px-10 xl:flex-row xl:justify-between">
         <div className="flex flex-col gap-2">
-          <p className="text-xs text-text-quaternary not-italic font-normal">CONTEXT</p>
+          <p className="text-xs text-text-quaternary not-italic font-normal uppercase">{t("schema.context")}</p>
           <a
             href={schema.context}
             target="_blank"
@@ -47,7 +48,7 @@ export const Schema = () => {
           </a>
         </div>
         <div className="flex flex-col gap-2 xl:max-w-[600px] w-full">
-          <p className="text-xs text-text-quaternary not-italic font-normal">RAW SCHEMA</p>
+          <p className="text-xs text-text-quaternary not-italic font-normal uppercase">{t("schema.rawSchema")}</p>
           <div className="flex h-[113px] md:h-[131px] px-4 py-2 md:p-4 rounded-xl bg-surface-magenta20 text-text-tertiary md:text-base">
             {schema.schema && (
               <div className="scrollbar overflow-auto font-IBMPlexMono">{schema.schema.replace(/,/g, ", ")}</div>

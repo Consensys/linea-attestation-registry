@@ -6,8 +6,8 @@
   "scripts": {
     "lint": "eslint .",
     "prepare": "husky install",
-    "prettier:check": "prettier --check \"**/*.{json,yml,sol,js}\"",
-    "prettier:write": "prettier --write \"**/*.{json,yml,sol,js}\""
+    "prettier:check": "prettier --check \"**/*.{json,yml,md,sol,js}\"",
+    "prettier:write": "prettier --write \"**/*.{json,yml,md,sol,js}\""
   },
   "author": "",
   "license": "ISC",

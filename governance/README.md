@@ -1,6 +1,7 @@
 # Verax Voting NFT
 
-This is simple SBT / non-transferable erc-721 NFT that is intended to infer voting rights to participants in Verax governance.
+This is simple SBT / non-transferable erc-721 NFT that is intended to infer voting rights to participants in Verax
+governance.
 
 This is a JavaScript HardHat project that uses OpenZeppellin contracts as a dependency.
 

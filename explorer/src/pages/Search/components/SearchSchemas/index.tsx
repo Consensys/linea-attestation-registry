@@ -1,65 +1,32 @@
+import { t } from "i18next";
 import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
-import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { columns } from "@/constants/columns/schema";
+import { EQueryParams } from "@/enums/queryParams";
 import { SearchDataFunction } from "@/interfaces/components";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { parseSearch } from "@/utils/searchUtils";
 
+import { loadSchemaList } from "./loadSchemaList";
 import { SearchWrapper } from "../SearchWrapper";
 
 export const SearchSchemas: React.FC<{ getSearchData: SearchDataFunction }> = ({ getSearchData }) => {
-  const { search } = useParams();
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get(EQueryParams.SEARCH_QUERY);
+
   const {
     sdk: { schema },
     network: { chain },
   } = useNetworkContext();
   const parsedString = useMemo(() => parseSearch(search), [search]);
 
-  const { data: schemasList } = useSWR(
+  const { data: schemaList } = useSWR(
     `${SWRKeys.GET_SCHEMAS_LIST}/${SWRKeys.SEARCH}/${search}/${chain.id}`,
-    async () => {
-      const [listByName, listByDescription] = parsedString.nameOrDescription
-        ? await Promise.all([
-            schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-              name_contains: parsedString.nameOrDescription,
-            }),
-            schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-              description_contains: parsedString.nameOrDescription,
-            }),
-          ])
-        : [];
-
-      const [listByIds] = parsedString.schemasIds
-        ? await Promise.all(
-            parsedString.schemasIds.map((id) => schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { id })),
-          )
-        : [];
-
-      const listBySchemaString = parsedString.schema
-        ? await schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { schema_contains: parsedString.schema })
-        : [];
-
-      const [listByContext] = parsedString.urls
-        ? await Promise.all(
-            parsedString.urls.map((url) => schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { context_contains: url })),
-          )
-        : [];
-
-      const result = [
-        ...(listByIds || []),
-        ...listBySchemaString,
-        ...(listByName || []),
-        ...(listByDescription || []),
-        ...(listByContext || []),
-      ];
-
-      return result;
-    },
+    async () => loadSchemaList(schema, parsedString),
     {
       shouldRetryOnError: false,
       revalidateAll: false,
@@ -68,10 +35,10 @@ export const SearchSchemas: React.FC<{ getSearchData: SearchDataFunction }> = ({
     },
   );
 
-  if (!schemasList || !schemasList.length) return null;
+  if (!schemaList || !schemaList.length) return null;
   return (
-    <SearchWrapper title="Schemas" items={schemasList.length}>
-      <DataTable columns={columns()} data={schemasList} />
+    <SearchWrapper title={t("schema.title")} items={schemaList.length}>
+      <DataTable columns={columns()} data={schemaList} />
     </SearchWrapper>
   );
 };

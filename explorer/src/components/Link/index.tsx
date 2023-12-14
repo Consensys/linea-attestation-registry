@@ -1,16 +1,16 @@
 import { PropsWithChildren } from "react";
-import { LinkProps, Link as RouterLink, useLocation } from "react-router-dom";
+import { LinkProps, Link as RouterLink, generatePath, useLocation } from "react-router-dom";
 
 import { useNetworkContext } from "@/providers/network-provider/context";
-import { CHAIN_ID_ROUTE } from "@/routes/constants";
 
 export const Link: React.FC<PropsWithChildren & LinkProps> = ({ children, ...props }) => {
   const {
     network: { network },
   } = useNetworkContext();
   const { pathname } = useLocation();
+  const path = generatePath(props.to.toString(), { chainId: network });
   return (
-    <RouterLink {...props} to={props.to.toString().replace(CHAIN_ID_ROUTE, network)} state={{ from: pathname }}>
+    <RouterLink {...props} to={path} state={{ from: pathname }}>
       {children}
     </RouterLink>
   );

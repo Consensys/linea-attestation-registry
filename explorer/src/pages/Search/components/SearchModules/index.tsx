@@ -1,19 +1,23 @@
+import { t } from "i18next";
 import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
-import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { columns } from "@/constants/columns/module";
+import { EQueryParams } from "@/enums/queryParams";
 import { SearchDataFunction } from "@/interfaces/components";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { parseSearch } from "@/utils/searchUtils";
 
+import { loadModuleList } from "./loadModuleList";
 import { SearchWrapper } from "../SearchWrapper";
 
 export const SearchModules: React.FC<{ getSearchData: SearchDataFunction }> = ({ getSearchData }) => {
-  const { search } = useParams();
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get(EQueryParams.SEARCH_QUERY);
+
   const {
     sdk: { module },
     network: { chain },
@@ -22,26 +26,7 @@ export const SearchModules: React.FC<{ getSearchData: SearchDataFunction }> = ({
 
   const { data: moduleList } = useSWR(
     `${SWRKeys.GET_MODULE_LIST}/${SWRKeys.SEARCH}/${search}/${chain.id}`,
-    async () => {
-      const [listByName, listByDescription] = parsedString.nameOrDescription
-        ? await Promise.all([
-            module.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-              name_starts_with: parsedString.nameOrDescription,
-            }),
-            module.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-              description_starts_with: parsedString.nameOrDescription,
-            }),
-          ])
-        : [];
-
-      const [listByIds] = parsedString.address
-        ? await Promise.all(parsedString.address.map((id) => module.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { id })))
-        : [];
-
-      const result = [...(listByIds || []), ...(listByName || []), ...(listByDescription || [])];
-
-      return result;
-    },
+    async () => loadModuleList(module, parsedString),
     {
       shouldRetryOnError: false,
       revalidateAll: false,
@@ -52,7 +37,7 @@ export const SearchModules: React.FC<{ getSearchData: SearchDataFunction }> = ({
 
   if (!moduleList || !moduleList.length) return null;
   return (
-    <SearchWrapper title="Module" items={moduleList.length}>
+    <SearchWrapper title={t("module.title")} items={moduleList.length}>
       <DataTable columns={columns()} data={moduleList} />
     </SearchWrapper>
   );

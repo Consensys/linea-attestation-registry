@@ -32,7 +32,7 @@ const removeSubstringFromArray = (inputString: string, substringsToRemove: Array
   return inputString.replace(regex, EMPTY_STRING).trim();
 };
 
-export const parseSearch = (search: string | undefined): Partial<ResultParseSearch> => {
+export const parseSearch = (search: string | null): Partial<ResultParseSearch> => {
   if (!search) return {};
 
   const splittedSearchBySpace = search.split(SPACE_STRING);

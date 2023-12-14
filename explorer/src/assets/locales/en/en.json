@@ -18,7 +18,10 @@
       "empty": "Empty",
       "notFound": "Not Found",
       "noResults": "No Results",
-      "hasntBeenFound": "hasn`t been found"
+      "hasntBeenFound": "hasn`t been found",
+      "searchNotFound": "Nothing found on <bold>“{{search}}”</bold> search request",
+      "searchFound": "<bold>{{count}}</bold> results found on <bold>“{{search}}”</bold> search request",
+      "pageNotFount": "Nothing found on <bold>“{{search}}”</bold> search request"
     },
     "routes": {
       "issuers": "Issuers",
@@ -92,6 +95,7 @@
     }
   },
   "module": {
+    "title": "Module",
     "list": {
       "title": "Explore Modules",
       "columns": {

@@ -1,6 +1,5 @@
 const ID_ROUTE = ":id";
 export const CHAIN_ID_ROUTE = ":chainId";
-export const SEARCH_ROUTE = ":search";
 
 export const APP_ROUTES = {
   HOME: `/${CHAIN_ID_ROUTE}`,
@@ -32,7 +31,7 @@ export const APP_ROUTES = {
     return this.MODULES + `/${ID_ROUTE}`;
   },
   get SEARCH() {
-    return this.HOME + `/search/${SEARCH_ROUTE}`;
+    return this.HOME + "/search";
   },
   DEFAULT: "*",
 } as const;
@@ -41,5 +40,3 @@ export const toAttestationById = (id: string) => APP_ROUTES.ATTESTATION_BY_ID.re
 export const toSchemaById = (id: string) => APP_ROUTES.SCHEMA_BY_ID.replace(ID_ROUTE, id);
 export const toModuleById = (id: string) => APP_ROUTES.MODULES_BY_ID.replace(ID_ROUTE, id);
 export const toIssuerById = (id: string) => APP_ROUTES.ISSUER_BY_ID.replace(ID_ROUTE, id);
-
-export const toSearch = (search: string) => APP_ROUTES.SEARCH.replace(SEARCH_ROUTE, search);

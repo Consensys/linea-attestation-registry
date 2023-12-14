@@ -16,8 +16,8 @@ export const ListItemWithSubmenu: React.FC<ListItemWithSubmenuProps> = ({ name, 
 
   return (
     <div
-      onMouseEnter={() => !isAdaptive && setShowSubmenu(true)}
-      onMouseLeave={() => !isAdaptive && setShowSubmenu(false)}
+      onMouseEnter={() => setShowSubmenu(true)}
+      onMouseLeave={() => setShowSubmenu(false)}
       className="relative flex self-stretch flex-col gap-2 xl:gap-0 xl:flex-row"
     >
       <div

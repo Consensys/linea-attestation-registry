@@ -5,12 +5,15 @@ import { useState } from "react";
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { EMPTY_STRING } from "@/constants";
+import { keyboard } from "@/constants/keyboard";
+import { useHandleSearch } from "@/hooks/useHandleSearch";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 export const TitleSearch: React.FC = () => {
   const { sm } = useWindowDimensions();
 
   const [searchQuery, setSearchQuery] = useState<string>(EMPTY_STRING);
+  const handleSearch = useHandleSearch();
 
   return (
     <div className="flex flex-col items-center justify-center h-[24.125rem] lg:h-[23rem] md:h-[22.375rem] bg-surface-lime rounded-[1.375rem] lg:rounded-[2.25rem] md:rounded-[2rem] mt-5 md:mt-6 gap-10 px-4 md:px-10">
@@ -28,11 +31,11 @@ export const TitleSearch: React.FC = () => {
           onChange={(event) => setSearchQuery(event.target.value)}
           placeholder={t("common.inputPlaceholder.search")}
           className="h-11 md:h-14 px-3 py-2 bg-surface-primary rounded-lg border-2 md:border-border-input border-surface-primary outline-none focus:border-border-inputFocus md:flex-1 placeholder:italic placeholder:text-text-quaternary text-text-input font-normal"
+          onKeyDown={(event) => event.key === keyboard.enter && handleSearch(searchQuery)}
         />
         <Button
           name="Search"
-          //TODO: add handler
-          handler={() => console.log(searchQuery)}
+          handler={() => handleSearch(searchQuery)}
           iconRight={<Search />}
           buttonType={EButtonType.PRIMARY_BLACK}
           height="h-12 md:h-14"

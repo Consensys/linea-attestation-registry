@@ -62,16 +62,14 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
           </DropdownMenu>
           <ConnectKitButton.Custom>
             {({ isConnected, show, address }) => {
+              const titleByScreen = screen.sm ? t("common.actions.connect") : t("common.actions.connectWallet");
+              const title = address && isConnected ? cropString(address) : titleByScreen;
               return (
                 <button
                   onClick={show}
                   className="cursor-pointer px-3 h-9 xl:h-12 xl:px-4 gap-2 rounded-md border border-button-secondary-border justify-center items-center inline-flex whitespace-nowrap hover:border-button-secondary-hover"
                 >
-                  {address && isConnected
-                    ? cropString(address)
-                    : screen.sm
-                      ? t("common.actions.connect")
-                      : t("common.actions.connectWallet")}
+                  {title}
                   {!isAdaptive && <ChevronDown />}
                 </button>
               );

@@ -1,35 +1,39 @@
+import { t } from "i18next";
 import { Search } from "lucide-react";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { EMPTY_STRING } from "@/constants";
 import { keyboard } from "@/constants/keyboard";
-import { useNavigate } from "@/hooks/useNavigate";
-import { toSearch } from "@/routes/constants";
+import { EQueryParams } from "@/enums/queryParams";
+import { useHandleSearch } from "@/hooks/useHandleSearch";
 
 export const SearchInput: React.FC = () => {
-  const { search } = useParams();
-  const [value, setValue] = useState<string>(search || EMPTY_STRING);
-  const navigate = useNavigate();
-  const handleSearch = () => {
-    if (!value) return;
-    navigate(toSearch(value));
-  };
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get(EQueryParams.SEARCH_QUERY);
+  const [searchQuery, setSearchQuery] = useState<string>(search || EMPTY_STRING);
+  const handleSearch = useHandleSearch();
+
+  useEffect(() => {
+    if (!search && searchQuery) setSearchQuery(EMPTY_STRING);
+    if (search) setSearchQuery(search);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   return (
-    <div className="w-full md:max-w-[370px] xl:min-w-[auto] h-12 p-2 bg-white rounded-md border border-border-card justify-between items-center inline-flex">
+    <div className="w-full md:max-w-[370px] xl:min-w-[auto] h-12 p-2 bg-white rounded-md border border-border-card justify-between items-center inline-flex focus-within:border-border-inputFocus">
       <input
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
-        placeholder="Search by ID, name, description"
-        className="text-base w-full outline-none"
-        onKeyDown={(event) => event.key === keyboard.enter && handleSearch()}
+        value={searchQuery}
+        onChange={(event) => setSearchQuery(event.target.value)}
+        placeholder={t("common.inputPlaceholder.search")}
+        className="text-base w-full outline-none placeholder:italic placeholder:text-text-quaternary text-text-input"
+        onKeyDown={(event) => event.key === keyboard.enter && handleSearch(searchQuery)}
       />
       <div
         className={`p-1.5 bg-surface-secondary text-text-darkGrey rounded ${
-          !value ? "cursor-not-allowed" : "cursor-pointer"
+          !searchQuery ? "cursor-not-allowed" : "cursor-pointer"
         }`}
-        onClick={handleSearch}
+        onClick={() => handleSearch(searchQuery)}
       >
         <Search className="w-5 h-5" />
       </div>

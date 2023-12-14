@@ -49,15 +49,17 @@ export const Schema = () => {
       <div className="flex flex-col gap-6 px-5 md:px-10 xl:flex-row xl:justify-between">
         <div className="flex flex-col gap-2">
           <p className="text-xs text-text-quaternary not-italic font-normal uppercase">{t("schema.context")}</p>
-          <a
-            href={isContextURL ? schema.context : undefined}
-            target="_blank"
-            className={`${
-              isContextURL && "cursor-pointer hover:underline"
-            } overflow-hidden text-ellipsis sm:max-w-[320px] whitespace-nowrap`}
-          >
-            {schema.context}
-          </a>
+          {isContextURL ? (
+            <a
+              href={schema.context}
+              target="_blank"
+              className="cursor-pointer hover:underline overflow-hidden text-ellipsis sm:max-w-[320px] whitespace-nowrap"
+            >
+              {schema.context}
+            </a>
+          ) : (
+            <p className="overflow-hidden text-ellipsis sm:max-w-[320px] whitespace-nowrap">{schema.context}</p>
+          )}
         </div>
         <div className="flex flex-col gap-2 xl:max-w-[600px] w-full">
           <p className="text-xs text-text-quaternary not-italic font-normal uppercase">{t("schema.rawSchema")}</p>

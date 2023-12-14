@@ -27,7 +27,7 @@ export const Info: React.FC = () => {
   const isAdaptive = !screen.xl;
 
   return (
-    <div className="flex flex-col gap-2 text-sm xl:bg-surface-primary xl:absolute xl:border xl: border-border-card xl:rounded-xl xl:p-2 xl:-left-[15px] xl:top-[40px]">
+    <div className="flex flex-col gap-2 text-sm xl:bg-surface-primary xl:absolute xl:border xl: border-border-card xl:rounded-xl xl:p-2 xl:-left-[15px] xl:top-[40px] xl:z-10">
       {INFO_LIST.map((items) =>
         !isAdaptive ? (
           <DesktopLink key={items.title} {...items} />

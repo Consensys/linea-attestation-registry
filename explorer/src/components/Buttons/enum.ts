@@ -2,4 +2,6 @@ export enum EButtonType {
   OUTLINED,
   PRIMARY_BLACK,
   PRIMARY_LIME,
+  PRIMARY_WHITE,
+  TRANSPARENT,
 }

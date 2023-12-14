@@ -71,7 +71,7 @@ export const issuersData: IIssuer[] = [
     logo: Orange,
     description:
       "Orange is a reputation minting protocol that aggregates data and models to generate comprehensive trust proofs in the form of VCs and NFTs.",
-    landingPage: "TBD",
+    landingPage: null,
   },
   {
     id: "9",

@@ -3,5 +3,5 @@ export interface IIssuer {
   name: string;
   logo: React.FC<React.SVGProps<SVGSVGElement>>;
   description: string;
-  landingPage: string;
+  landingPage: string | null;
 }

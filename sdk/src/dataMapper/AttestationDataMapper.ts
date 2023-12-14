@@ -60,6 +60,11 @@ export default class AttestationDataMapper extends BaseDataMapper<
   private async enrichAttestation(attestation: Attestation) {
     const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
     attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as `0x${string}`);
+
+    attestation.attestedDate = Number(attestation.attestedDate);
+    attestation.expirationDate = Number(attestation.expirationDate);
+    attestation.revocationDate = Number(attestation.revocationDate);
+
     // Check if data is stored offchain
     if (attestation.schemaId === Constants.OFFCHAIN_DATA_SCHEMA_ID) {
       attestation.offchainData = {

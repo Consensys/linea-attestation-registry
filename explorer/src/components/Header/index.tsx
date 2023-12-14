@@ -2,6 +2,7 @@ import { ConnectKitButton } from "connectkit";
 import { t } from "i18next";
 import { ChevronDown } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
+import { useLocation } from "react-router-dom";
 
 import VeraxLogo from "@/assets/logo/verax-logo.svg?react";
 import { Link } from "@/components/Link";
@@ -28,9 +29,13 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
+  const location = useLocation();
+
   const { network, setNetwork } = useNetworkContext();
   const screen = useWindowDimensions();
   const isAdaptive = !screen.xl;
+  const isHomePage = location.pathname === `/${network.network}`;
+
   return (
     <header className="px-5 md:px-14 xl:px-[60px] py-3 inline-flex flex-col gap-5">
       <div className="justify-between items-center inline-flex gap-4">
@@ -41,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
           {!isAdaptive && <NavigationList />}
         </div>
         <div className="justify-end items-center gap-4 flex flex-1">
-          {!screen.sm && <SearchInput />}
+          {!screen.sm && !isHomePage && <SearchInput />}
           <DropdownMenu>
             <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] p-2 rounded-md outline-none hover:bg-hover-lime20 justify-start items-center gap-2 inline-flex">
               {network.img}
@@ -78,7 +83,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
           {isAdaptive && <MenuButton isOpened={isOpened} onClick={() => setIsOpened((prev) => !prev)} />}
         </div>
       </div>
-      {screen.sm && <SearchInput />}
+      {screen.sm && !isHomePage && <SearchInput />}
     </header>
   );
 };

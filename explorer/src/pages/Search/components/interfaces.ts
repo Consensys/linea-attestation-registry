@@ -10,4 +10,5 @@ export interface SearchWrapperProps extends PropsWithChildren {
 export interface SearchComponentProps {
   getSearchData: SearchDataFunction;
   parsedString: Partial<ResultParseSearch>;
+  search: string;
 }

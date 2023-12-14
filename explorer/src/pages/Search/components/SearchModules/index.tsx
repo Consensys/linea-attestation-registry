@@ -1,10 +1,8 @@
 import { t } from "i18next";
-import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
 import { columns } from "@/constants/columns/module";
-import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
@@ -12,10 +10,7 @@ import { loadModuleList } from "./loadModuleList";
 import { SearchComponentProps } from "../interfaces";
 import { SearchWrapper } from "../SearchWrapper";
 
-export const SearchModules: React.FC<SearchComponentProps> = ({ getSearchData, parsedString }) => {
-  const [searchParams] = useSearchParams();
-  const search = searchParams.get(EQueryParams.SEARCH_QUERY);
-
+export const SearchModules: React.FC<SearchComponentProps> = ({ getSearchData, parsedString, search }) => {
   const {
     sdk: { module },
     network: { chain },

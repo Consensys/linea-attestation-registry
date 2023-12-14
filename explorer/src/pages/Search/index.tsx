@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 
 import archive from "@/assets/icons/archive.svg";
 import { InfoBlock } from "@/components/InfoBlock";
+import { EMPTY_STRING } from "@/constants";
 import { DEFAULT_SEARCH_ELEMENTS } from "@/constants/components";
 import { EQueryParams } from "@/enums/queryParams";
 import { Page, SearchElementProps } from "@/interfaces/components";
@@ -46,14 +47,17 @@ export const Search = () => {
           </p>
           <div className="flex flex-col gap-12 w-full">
             <SearchAttestations
+              search={search || EMPTY_STRING}
               parsedString={parsedString}
               getSearchData={(count, loaded) => updateSearchElement("attestation", count, loaded)}
             />
             <SearchSchemas
+              search={search || EMPTY_STRING}
               parsedString={parsedString}
               getSearchData={(count, loaded) => updateSearchElement("schema", count, loaded)}
             />
             <SearchModules
+              search={search || EMPTY_STRING}
               parsedString={parsedString}
               getSearchData={(count, loaded) => updateSearchElement("module", count, loaded)}
             />

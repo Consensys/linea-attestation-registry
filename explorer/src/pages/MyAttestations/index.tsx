@@ -7,7 +7,8 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import useSWR from "swr";
 import { useAccount } from "wagmi";
 
-import { ButtonOutlined } from "@/components/Buttons";
+import { Button } from "@/components/Buttons";
+import { EButtonType } from "@/components/Buttons/enum";
 import { DataTable } from "@/components/DataTable";
 import { InfoBlock } from "@/components/InfoBlock";
 import { THOUSAND } from "@/constants";
@@ -75,7 +76,9 @@ export const MyAttestations: React.FC = () => {
             <ConnectKitButton.Custom>
               {({ show }) => {
                 if (!show) return <></>;
-                return <ButtonOutlined name={t("common.actions.connectWallet")} handler={show} />;
+                return (
+                  <Button name={t("common.actions.connectWallet")} handler={show} buttonType={EButtonType.OUTLINED} />
+                );
               }}
             </ConnectKitButton.Custom>
           }

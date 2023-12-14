@@ -13,17 +13,21 @@ export default {
     },
     extend: {
       colors: {
+        blackDefault: "var(--black-default)",
         background: "var(--surface-primary)",
         borderCard: "var(--border)",
         skeleton: "var(--skeleton)",
         grey400: "var(--grey-400)",
         surface: {
+          lime: "var(--surface-lime)",
           primary: "var(--surface-primary)",
           secondary: "var(--surface-secondary)",
+          darkGrey: "var(--surface-dark-grey)",
           attestationData: "var(--surface-attestation-data)",
           magenta20: "var(--surface-magenta-20)",
         },
         text: {
+          input: "var(--text-input)",
           primary: "var(--text-primary)",
           secondary: "var(--text-secondary)",
           tertiary: "var(--text-tertiary)",
@@ -33,6 +37,8 @@ export default {
         border: {
           card: "var(--border-card)",
           table: "var(--border-table)",
+          input: "var(--border-input)",
+          inputFocus: "var(--border-input-focus)",
         },
         page: {
           attestation: "var(--indicator-blue)",
@@ -48,6 +54,11 @@ export default {
             background: "var(--button-primary-background)",
             text: "var(--button-primary-text)",
             hover: "var(--button-primary-hover)",
+          },
+          primaryBlack: {
+            background: "var(--button-primary-black-background)",
+            text: "var(--button-primary-black-text)",
+            hover: "var(--button-primary-black-hover)",
           },
           secondary: {
             background: "var(--button-secondary-background)",

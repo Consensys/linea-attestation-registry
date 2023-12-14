@@ -3,6 +3,7 @@ import { Route, createHashRouter, createRoutesFromElements } from "react-router-
 import { Attestation } from "@/pages/Attestation";
 import { Attestations } from "@/pages/Attestations";
 import { Home } from "@/pages/Home";
+import { Issuer } from "@/pages/Issuer";
 import { Module } from "@/pages/Module";
 import { Modules } from "@/pages/Modules";
 import { MyAttestations } from "@/pages/MyAttestations";
@@ -19,6 +20,7 @@ export const router = createHashRouter(
   createRoutesFromElements(
     <Route element={<Providers />} loader={loaderNetworkProvider}>
       <Route path={APP_ROUTES.HOME} element={<Home />} />
+      <Route path={APP_ROUTES.ISSUER_BY_ID} element={<Issuer />} />
       <Route path={APP_ROUTES.ATTESTATIONS} element={<Attestations />} />
       <Route path={APP_ROUTES.MY_ATTESTATIONS} element={<MyAttestations />} />
       <Route path={APP_ROUTES.ATTESTATION_BY_ID} element={<Attestation />} />

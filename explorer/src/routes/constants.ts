@@ -7,6 +7,9 @@ export const APP_ROUTES = {
   get ISSUERS() {
     return this.HOME + "/issuers";
   },
+  get ISSUER_BY_ID() {
+    return this.ISSUERS + `/${ID_ROUTE}`;
+  },
   get ATTESTATIONS() {
     return this.HOME + "/attestations";
   },
@@ -37,5 +40,6 @@ export const APP_ROUTES = {
 export const toAttestationById = (id: string) => APP_ROUTES.ATTESTATION_BY_ID.replace(ID_ROUTE, id);
 export const toSchemaById = (id: string) => APP_ROUTES.SCHEMA_BY_ID.replace(ID_ROUTE, id);
 export const toModuleById = (id: string) => APP_ROUTES.MODULES_BY_ID.replace(ID_ROUTE, id);
+export const toIssuerById = (id: string) => APP_ROUTES.ISSUER_BY_ID.replace(ID_ROUTE, id);
 
 export const toSearch = (search: string) => APP_ROUTES.SEARCH.replace(SEARCH_ROUTE, search);

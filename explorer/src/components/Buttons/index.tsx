@@ -1,13 +1,25 @@
 import { IButtonsProps } from "./interface";
+import { getButtonExtraClassName } from "./utils";
 
-export const ButtonOutlined: React.FC<IButtonsProps> = ({ name, handler, disabled = false }) => {
+export const Button: React.FC<IButtonsProps> = ({
+  name,
+  handler,
+  buttonType,
+  disabled = false,
+  iconLeft,
+  iconRight,
+  height = "h-12",
+}) => {
   return (
     <button
       onClick={handler}
       disabled={disabled}
-      className="h-12 px-4 py-3 rounded-md border border-button-outlined-border justify-center items-center gap-2 inline-flex text-button-outlined-text text-base font-semibold hover:border-button-outlined-borderHover disabled:opacity-40"
+      className={`${height} px-4 py-3 flex justify-center items-center gap-2 rounded-md disabled:opacity-40 font-semibold 
+      ${getButtonExtraClassName(buttonType)}`}
     >
+      {iconLeft && iconLeft}
       {name}
+      {iconRight && iconRight}
     </button>
   );
 };

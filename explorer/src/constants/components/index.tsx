@@ -9,10 +9,6 @@ import { APP_ROUTES } from "@/routes/constants";
 
 export const DEFAULT_ROUTES: Array<NavigationProps> = [
   {
-    name: t("common.routes.issuers"),
-    route: APP_ROUTES.ISSUERS,
-  },
-  {
     name: t("common.routes.attestations"),
     route: APP_ROUTES.ATTESTATIONS,
   },

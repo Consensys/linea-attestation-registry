@@ -1,13 +1,8 @@
 import { COMMA_STRING, EMPTY_STRING, SPACE_STRING } from "@/constants";
-import {
-  convertSchemaRegex,
-  ethAddressLength,
-  regexEthAddress,
-  schemaRegex,
-  schemaStringRegex,
-  urlRegex,
-} from "@/constants/regex";
+import { convertSchemaRegex, regexEthAddress, schemaRegex, schemaStringRegex, urlRegex } from "@/constants/regex";
 import { ResultParseSearch } from "@/interfaces/components";
+
+const filterByRegex = (arr: string[], regex: RegExp): string[] => arr.filter((str) => regex.test(str));
 
 const filterByNumber = (arr: string[]): string[] =>
   arr.filter((str) => {
@@ -42,15 +37,14 @@ export const parseSearch = (search: string | null): Partial<ResultParseSearch> =
 
   const splittedSearchBySpace = search.split(SPACE_STRING);
 
-  const startsWith0x = splittedSearchBySpace.filter((str) => regexEthAddress.by0x.test(str));
+  const startsWith0x = filterByRegex(splittedSearchBySpace, regexEthAddress.by0x);
   const attestationIds = filterByNumber(startsWith0x);
   const startsWith0xWithoutNumber = startsWith0x.filter((str) => !attestationIds.includes(str));
 
-  const defaultAddresses = startsWith0xWithoutNumber.filter((str) => str.length === ethAddressLength[42]);
-  const longAddresses = startsWith0xWithoutNumber.filter((str) => str.length === ethAddressLength[66]);
+  const defaultAddresses = filterByRegex(startsWith0xWithoutNumber, regexEthAddress.byNumberOfChar[42]);
+  const longAddresses = filterByRegex(startsWith0xWithoutNumber, regexEthAddress.byNumberOfChar[64]);
 
-  const urls = splittedSearchBySpace.filter((str) => urlRegex.test(str));
-
+  const urls = filterByRegex(splittedSearchBySpace, urlRegex);
   const allStrings = [...urls, ...defaultAddresses, ...longAddresses, ...attestationIds];
   const searchWithoutUrlsAddressIds = removeSubstringFromArray(search, allStrings);
 

@@ -2,6 +2,7 @@ import AttestationDataMapper from "@verax-attestation-registry/verax-sdk/lib/typ
 
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { ResultParseSearch } from "@/interfaces/components";
+import { isNotNullOrUndefined } from "@/utils";
 
 export const loadAttestationList = async (
   attestation: AttestationDataMapper,
@@ -21,11 +22,11 @@ export const loadAttestationList = async (
       )
     : [];
 
-  const [listByIds] = parsedString.attestationIds
-    ? await Promise.all(
-        parsedString.attestationIds.map((id) => attestation.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { id })),
-      )
-    : [];
+  const listByIds = (
+    parsedString.attestationIds
+      ? await Promise.all(parsedString.attestationIds.map((id) => attestation.findOneById(id)))
+      : []
+  ).filter(isNotNullOrUndefined);
 
   const listBySchemaString = parsedString.schemaString
     ? await attestation.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { schemaString: parsedString.schemaString })

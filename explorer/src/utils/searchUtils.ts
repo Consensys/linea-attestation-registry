@@ -1,8 +1,13 @@
 import { COMMA_STRING, EMPTY_STRING, SPACE_STRING } from "@/constants";
-import { convertSchemaRegex, regexEthAddress, schemaRegex, schemaStringRegex, urlRegex } from "@/constants/regex";
+import {
+  convertSchemaRegex,
+  ethAddressLength,
+  regexEthAddress,
+  schemaRegex,
+  schemaStringRegex,
+  urlRegex,
+} from "@/constants/regex";
 import { ResultParseSearch } from "@/interfaces/components";
-
-const filterByRegex = (arr: string[], regex: RegExp): string[] => arr.filter((str) => regex.test(str));
 
 const filterByNumber = (arr: string[]): string[] =>
   arr.filter((str) => {
@@ -37,14 +42,15 @@ export const parseSearch = (search: string | null): Partial<ResultParseSearch> =
 
   const splittedSearchBySpace = search.split(SPACE_STRING);
 
-  const startsWith0x = filterByRegex(splittedSearchBySpace, regexEthAddress.by0x);
+  const startsWith0x = splittedSearchBySpace.filter((str) => regexEthAddress.by0x.test(str));
   const attestationIds = filterByNumber(startsWith0x);
   const startsWith0xWithoutNumber = startsWith0x.filter((str) => !attestationIds.includes(str));
 
-  const defaultAddresses = filterByRegex(startsWith0xWithoutNumber, regexEthAddress.byNumberOfChar[42]);
-  const longAddresses = filterByRegex(startsWith0xWithoutNumber, regexEthAddress.byNumberOfChar[66]);
+  const defaultAddresses = startsWith0xWithoutNumber.filter((str) => str.length === ethAddressLength[42]);
+  const longAddresses = startsWith0xWithoutNumber.filter((str) => str.length === ethAddressLength[66]);
 
-  const urls = filterByRegex(splittedSearchBySpace, urlRegex);
+  const urls = splittedSearchBySpace.filter((str) => urlRegex.test(str));
+
   const allStrings = [...urls, ...defaultAddresses, ...longAddresses, ...attestationIds];
   const searchWithoutUrlsAddressIds = removeSubstringFromArray(search, allStrings);
 
@@ -59,7 +65,7 @@ export const parseSearch = (search: string | null): Partial<ResultParseSearch> =
     address: defaultAddresses.length ? defaultAddresses : undefined,
     attestationIds: attestationIds.length ? attestationIds : undefined,
     schemasIds: longAddresses.length ? longAddresses : undefined,
-    nameOrDescription: searchWithoutSchema.trimStart(),
+    nameOrDescription: searchWithoutSchema ? searchWithoutSchema.trimStart() : undefined,
     urls: urls.length ? urls : undefined,
     schema,
     schemaString,

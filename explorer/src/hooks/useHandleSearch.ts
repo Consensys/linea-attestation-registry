@@ -1,4 +1,4 @@
-import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
+import { createSearchParams, generatePath, useNavigate } from "react-router-dom";
 
 import { EQueryParams } from "@/enums/queryParams";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -8,12 +8,13 @@ export const useHandleSearch = () => {
   const {
     network: { network },
   } = useNetworkContext();
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   return (search: string) => {
     if (!search) return;
-    searchParams.set(EQueryParams.SEARCH_QUERY, search);
     const pathname = generatePath(APP_ROUTES.SEARCH, { chainId: network });
-    navigate({ pathname, search: `?${searchParams.toString()}` });
+    navigate({
+      pathname,
+      search: `?${createSearchParams({ [EQueryParams.SEARCH_QUERY]: search })}`,
+    });
   };
 };

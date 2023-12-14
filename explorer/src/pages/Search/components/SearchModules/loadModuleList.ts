@@ -2,6 +2,7 @@ import ModuleDataMapper from "@verax-attestation-registry/verax-sdk/lib/types/sr
 
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { ResultParseSearch } from "@/interfaces/components";
+import { isNotNullOrUndefined } from "@/utils";
 
 export const loadModuleList = async (module: ModuleDataMapper, parsedString: Partial<ResultParseSearch>) => {
   const [listByName, listByDescription] = parsedString.nameOrDescription
@@ -15,9 +16,9 @@ export const loadModuleList = async (module: ModuleDataMapper, parsedString: Par
       ])
     : [];
 
-  const [listByIds] = parsedString.address
-    ? await Promise.all(parsedString.address.map((id) => module.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { id })))
-    : [];
+  const listByIds = (
+    parsedString.address ? await Promise.all(parsedString.address.map((id) => module.findOneById(id))) : []
+  ).filter(isNotNullOrUndefined);
 
   const result = [...(listByIds || []), ...(listByName || []), ...(listByDescription || [])];
 

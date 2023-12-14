@@ -1,9 +1,9 @@
 export const regexEthAddress = {
-  byNumberOfChar: {
-    42: /^0x[a-fA-F0-9]{40}$/gm,
-    66: /^0x[a-fA-F0-9]{64}$/gm,
-  },
   by0x: /^0x/,
+};
+export const ethAddressLength = {
+  42: 42,
+  66: 66,
 };
 
 export const urlRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+)(\/[^\s]*)?$/;

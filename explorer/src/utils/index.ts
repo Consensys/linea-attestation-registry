@@ -6,3 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export default cn;
+
+export function isNotNullOrUndefined<T extends object>(input: null | undefined | T): input is T {
+  return input !== null && input !== undefined;
+}

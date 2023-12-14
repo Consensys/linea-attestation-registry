@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
 
 import issuerBG from "@/assets/backgrounds/issuer-bg.jpeg";
@@ -7,7 +6,7 @@ import { EButtonType } from "@/components/Buttons/enum";
 
 import { IBannerProps } from "./interface";
 
-export const Banner: React.FC<IBannerProps> = ({ name, landingPage, logo }) => {
+export const Banner: React.FC<IBannerProps> = ({ name, CTALink, CTATitle, logo }) => {
   const IssuerLogo = logo;
 
   return (
@@ -19,10 +18,10 @@ export const Banner: React.FC<IBannerProps> = ({ name, landingPage, logo }) => {
           {name}
         </div>
       </div>
-      {landingPage && (
+      {CTALink && (
         <Button
-          name={t("common.actions.learnMore")}
-          handler={() => window.open(landingPage, "_blank")}
+          name={CTATitle}
+          handler={() => window.open(CTALink, "_blank")}
           buttonType={EButtonType.PRIMARY_WHITE}
           iconRight={<ArrowUpRight />}
         />

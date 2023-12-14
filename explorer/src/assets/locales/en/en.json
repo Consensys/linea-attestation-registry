@@ -1,5 +1,9 @@
 {
   "common": {
+    "yes": "Yes",
+    "no": "No",
+    "id": "Id",
+    "revocable": "Revocable",
     "actions": {
       "less": "View Less",
       "more": "View More",
@@ -112,6 +116,12 @@
         "description": "Schema Description",
         "schema": "Schema"
       }
+    }
+  },
+  "issuer": {
+    "portals": {
+      "title": "Portals",
+      "ownerAddress": "Owner address"
     }
   }
 }

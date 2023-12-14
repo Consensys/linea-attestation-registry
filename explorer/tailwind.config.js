@@ -38,6 +38,7 @@ export default {
         },
         border: {
           card: "var(--border-card)",
+          cardHover: "var(--border-card-hover)",
           table: "var(--border-table)",
           input: "var(--border-input)",
           inputFocus: "var(--border-input-focus)",

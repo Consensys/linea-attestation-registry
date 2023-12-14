@@ -21,7 +21,7 @@ export const TitleSearch: React.FC = () => {
         </div>
         {!sm && <div>{t("home.subtitle")}</div>}
       </h1>
-      <div className="flex flex-col md:flex-row w-full gap-2">
+      <div className="flex flex-col md:flex-row w-full gap-2 max-w-[57.6875rem]">
         <input
           type="text"
           value={searchQuery}

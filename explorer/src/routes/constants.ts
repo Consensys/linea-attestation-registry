@@ -30,6 +30,9 @@ export const APP_ROUTES = {
   get MODULES_BY_ID() {
     return this.MODULES + `/${ID_ROUTE}`;
   },
+  get PORTAL_BY_ID() {
+    return this.HOME + `/portals/${ID_ROUTE}`;
+  },
   DEFAULT: "*",
 } as const;
 
@@ -37,3 +40,4 @@ export const toAttestationById = (id: string) => APP_ROUTES.ATTESTATION_BY_ID.re
 export const toSchemaById = (id: string) => APP_ROUTES.SCHEMA_BY_ID.replace(ID_ROUTE, id);
 export const toModuleById = (id: string) => APP_ROUTES.MODULES_BY_ID.replace(ID_ROUTE, id);
 export const toIssuerById = (id: string) => APP_ROUTES.ISSUER_BY_ID.replace(ID_ROUTE, id);
+export const toPortalById = (id: string) => APP_ROUTES.PORTAL_BY_ID.replace(ID_ROUTE, id);

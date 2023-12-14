@@ -10,6 +10,7 @@ export const Info: React.FC = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-[2.0625rem] mb-14 md:mb-[4.5rem]">
       {infoData.map((info) => (
         <div
+          key={info.title}
           className={`flex flex-col items-center justify-center gap-6 px-10 h-[23.4375rem] lg:h-[29.5625rem] rounded-3xl ${info.additionalClass}`}
         >
           {info.icon}

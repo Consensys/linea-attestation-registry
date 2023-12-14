@@ -5,21 +5,21 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const hre = require("hardhat");
+require("dotenv").config();
+
+const { CONTRACT_OWNER } = process.env;
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
-  console.log("Deploying contracts with the account:", deployer.address);
+  const veraxVotingNFT = await hre.ethers.deployContract("VeraxVotingNFT", [CONTRACT_OWNER]);
 
-  const VeraxGovernance = await ethers.getContractFactory("VeraxGovernance");
-  const veraxGovernance = await VeraxGovernance.deploy();
+  await veraxVotingNFT.waitForDeployment();
 
-  console.log("VeraxGovernance address:", veraxGovernance.address);
+  console.log(`Deployed contract at ${veraxVotingNFT.target}`);
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
-
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

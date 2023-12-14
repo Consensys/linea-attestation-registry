@@ -1,25 +1,26 @@
 {
-  "name": "arbnftvrx",
+  "name": "votingnft",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint .",
+    "prepare": "husky install",
+    "prettier:check": "prettier --check \"**/*.{json,yml,sol,js}\"",
+    "prettier:write": "prettier --write \"**/*.{json,yml,sol,js}\""
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.2.3",
-    "@nomiclabs/hardhat-etherscan": "^3.1.7",
-    "@nomiclabs/hardhat-waffle": "^2.0.6",
-    "@openzeppelin/contracts-upgradeable": "^5.0.0",
-    "chai": "^4.3.10",
-    "ethereum-waffle": "^4.0.10",
-    "ethers": "^5.7.2",
-    "hardhat": "^2.19.1"
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.0.0",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.19.2",
+    "prettier": "^3.1.1",
+    "prettier-plugin-solidity": "^1.2.0"
   },
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "@openzeppelin/contracts": "^5.0.1",
+    "@openzeppelin/contracts-upgradeable": "^5.0.1"
   }
 }

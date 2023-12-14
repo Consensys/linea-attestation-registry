@@ -1,20 +1,36 @@
-require("@nomiclabs/hardhat-waffle");
-require('@nomiclabs/hardhat-etherscan');
-require('dotenv').config();
+require("@nomicfoundation/hardhat-toolbox");
+require("@openzeppelin/hardhat-upgrades");
+require("dotenv").config();
 
-const { DEPLOYER_PRIVATE_KEY, ARBITRUM_RPC_URL } = process.env;
+const { PRIVATE_KEY, LINEASCAN_API_KEY, ARBITRUM_MAINNET_PRIVATE_KEY, ARBITRUM_API_KEY } = process.env;
 
+/** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.20",
   networks: {
-    arbitrum: {
-      url: ARBITRUM_RPC_URL, // Make sure this is correctly set in your .env file
-      accounts: [`0x${DEPLOYER_PRIVATE_KEY}`] // Ensure the private key is set in .env
-    }
+    linea_testnet: {
+      url: `https://rpc.goerli.linea.build/`,
+      accounts: [PRIVATE_KEY],
+    },
+    arbitrum_one: {
+      url: "https://arb1.arbitrum.io/rpc",
+      accounts: [ARBITRUM_MAINNET_PRIVATE_KEY],
+    },
   },
   etherscan: {
     apiKey: {
-      arbitrumOne: "3E2SGKYV7FDHHCWTPMPCV74Y88MDXY8T1Y" // Use the correct network name here
-    }
-  }
+      linea_testnet: LINEASCAN_API_KEY,
+      arbitrumOne: ARBITRUM_API_KEY,
+    },
+    customChains: [
+      {
+        network: "linea_testnet",
+        chainId: 59140,
+        urls: {
+          apiURL: "https://api-testnet.lineascan.build/api",
+          browserURL: "https://goerli.lineascan.build/address",
+        },
+      },
+    ],
+  },
 };

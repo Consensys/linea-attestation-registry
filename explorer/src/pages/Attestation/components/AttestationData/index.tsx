@@ -18,8 +18,8 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const [isOpened, setIsOpened] = useState(false);
   const [heightDifference, setHeightDifference] = useState<number>(0);
 
-  const { schemaString, decodedData } = attestation;
-  const data = schemaString && decodedData ? getAttestationData(schemaString, decodedData) : null;
+  const { decodedData, decodedPayload } = attestation;
+  const data = getAttestationData(decodedPayload ?? decodedData);
 
   const handleCopy = (text: string, result: boolean) => {
     if (!result || !text) return;
@@ -71,7 +71,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
             style={{ height: isOpened ? heightDifference + 108 : 108 }}
           >
             <ReactJson
-              src={data}
+              src={JSON.parse(data)}
               name={false}
               displayObjectSize={false}
               displayDataTypes={false}

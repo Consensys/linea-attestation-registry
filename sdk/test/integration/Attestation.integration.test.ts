@@ -19,9 +19,9 @@ describe("AttestationDataMapper", () => {
       expect(result?.replacedBy).toEqual("0x0000000000000000000000000000000000000000000000000000000000000000");
       expect(result?.attester).toEqual("0x809e815596abeb3764abf81be2dc39fbbacc9949");
       expect(result?.portal).toEqual("0xb3c0e57d560f36697f5d727c2c6db4e0c8f87bd8");
-      expect(result?.attestedDate).toEqual("1695398083");
-      expect(result?.expirationDate).toEqual("1793835110");
-      expect(result?.revocationDate).toEqual("0");
+      expect(result?.attestedDate).toEqual(1695398083);
+      expect(result?.expirationDate).toEqual(1793835110);
+      expect(result?.revocationDate).toEqual(0);
       expect(result?.version).toEqual("8");
       expect(result?.revoked).toBeFalsy();
       expect(result?.subject).toEqual("0xcb859f99f84ab770a50380680be94ad9331bcec5");

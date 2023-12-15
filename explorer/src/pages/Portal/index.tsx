@@ -5,8 +5,10 @@ import useSWR from "swr";
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { EMPTY_STRING } from "@/constants";
+import { regexEthAddress } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { isValidId } from "@/utils/stringUtils";
 
 import { PortalLoadingSkeleton } from "./components/PortalLoadingSkeleton";
 import { PortalModules } from "./components/PortalModules";
@@ -22,10 +24,16 @@ export const Portal = () => {
     data: portal,
     isLoading,
     isValidating,
-  } = useSWR(`${SWRKeys.GET_PORTAL_BY_ID}/${id}/${chain.id}`, () => sdk.portal.findOneById(id || EMPTY_STRING), {
-    shouldRetryOnError: false,
-    revalidateOnFocus: false,
-  });
+  } = useSWR(
+    `${SWRKeys.GET_PORTAL_BY_ID}/${id}/${chain.id}`,
+    async () => {
+      if (id && isValidId(id, regexEthAddress.byNumberOfChar[42])) return sdk.portal.findOneById(id || EMPTY_STRING);
+    },
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+    },
+  );
 
   if (isLoading || isValidating) return <PortalLoadingSkeleton />;
   if (!portal) return <NotFoundPage page="portal" id={id} />;

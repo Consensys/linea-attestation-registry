@@ -3,9 +3,11 @@ import useSWR from "swr";
 
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
-import { EMPTY_STRING, links } from "@/constants";
+import { links } from "@/constants";
+import { regexEthAddress } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { isValidId } from "@/utils/stringUtils";
 
 import { ModuleLoadingSkeleton } from "./components/ModuleLoadingSkeleton";
 
@@ -20,10 +22,16 @@ export const Module = () => {
     data: module,
     isLoading,
     isValidating,
-  } = useSWR(`${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`, () => sdk.module.findOneById(id || EMPTY_STRING), {
-    shouldRetryOnError: false,
-    revalidateOnFocus: false,
-  });
+  } = useSWR(
+    `${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`,
+    async () => {
+      if (id && isValidId(id, regexEthAddress.byNumberOfChar[42])) return sdk.module.findOneById(id);
+    },
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+    },
+  );
 
   if (isLoading || isValidating) return <ModuleLoadingSkeleton />;
   if (!module) return <NotFoundPage page="module" id={id} />;

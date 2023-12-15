@@ -19,7 +19,7 @@ export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId
 
   const { data: schema, isLoading } = useSWR(
     `${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}/${chain.id}`,
-    () => sdk.schema.findOneById(schemaId),
+    async () => sdk.schema.findOneById(schemaId),
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,

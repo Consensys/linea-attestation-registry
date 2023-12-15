@@ -9,7 +9,7 @@ import { useNetworkContext } from "@/providers/network-provider/context";
 import { toAttestationById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 
-export const RelatedAttestations: React.FC<{ mutate: KeyedMutator<Attestation> }> = ({ mutate }) => {
+export const RelatedAttestations: React.FC<{ mutate: KeyedMutator<Attestation | undefined> }> = ({ mutate }) => {
   const { sdk } = useNetworkContext();
 
   const list = [

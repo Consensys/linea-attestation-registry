@@ -1,10 +1,8 @@
-import { Attestation as AttestationProps } from "@verax-attestation-registry/verax-sdk";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
-import { EMPTY_STRING } from "@/constants";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
@@ -28,7 +26,9 @@ export const Attestation = () => {
     mutate,
   } = useSWR(
     `${SWRKeys.GET_ATTESTATION_BY_ID}/${id}/${chain.id}`,
-    () => sdk.attestation.findOneById(id || EMPTY_STRING) as Promise<AttestationProps>,
+    async () => {
+      if (id && !Number.isNaN(Number(id))) return sdk.attestation.findOneById(id);
+    },
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,

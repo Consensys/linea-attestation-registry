@@ -42,7 +42,7 @@ export const NetworkContextProvider: FC<PropsWithChildren> = ({ children }): JSX
     if (!isSuccess) return;
 
     const path = location.pathname.replace(network.network, params.network);
-    navigate(path);
+    navigate(path, { state: { from: location.pathname } });
     setSdk(new VeraxSdk(params.veraxEnv));
     setNetwork(params);
   };

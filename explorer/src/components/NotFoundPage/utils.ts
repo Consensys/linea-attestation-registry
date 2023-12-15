@@ -1,5 +1,4 @@
 import { t } from "i18next";
-import { Hex, hexToNumber } from "viem";
 
 import { BILLION, EMPTY_STRING } from "@/constants";
 import { Page } from "@/interfaces/components";
@@ -19,7 +18,7 @@ export const getNotFoundPageData = <PageType extends Page>(
           title: t("attestation.title"),
           to: APP_ROUTES.ATTESTATIONS,
         };
-      const decodedId = hexToNumber(data as Hex);
+      const decodedId = Number(data);
       const showId =
         !isNaN(decodedId) &&
         removeCommas(BILLION.toLocaleString()).length > removeCommas(decodedId.toLocaleString()).length;

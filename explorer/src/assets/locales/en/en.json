@@ -126,5 +126,15 @@
       "title": "Portals",
       "ownerAddress": "Owner address"
     }
+  },
+  "portal": {
+    "title": "Portal",
+    "id": "id",
+    "ownerAddress": "Owner Address",
+    "revokable": {
+      "title": "Revokable",
+      "yes": "Yes",
+      "no": "No"
+    }
   }
 }

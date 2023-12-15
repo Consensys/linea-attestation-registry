@@ -1,12 +1,10 @@
-import { Schema as SchemaProps } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { t } from "i18next";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
-import { EMPTY_STRING } from "@/constants";
-import { urlRegex } from "@/constants/regex";
+import { regexEthAddress, urlRegex } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
@@ -26,7 +24,9 @@ export const Schema = () => {
     isValidating,
   } = useSWR(
     `${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`,
-    () => sdk.schema.findOneById(id || EMPTY_STRING) as Promise<SchemaProps>,
+    async () => {
+      if (id && regexEthAddress.byNumberOfChar[64].test(id)) return sdk.schema.findOneById(id);
+    },
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,

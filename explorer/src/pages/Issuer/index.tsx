@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { APP_ROUTES } from "@/routes/constants";
 
@@ -10,12 +10,13 @@ import { issuersData } from "../Home/data";
 export const Issuer: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { name, description, CTALink, CTATitle, logo, keywords, address } =
     issuersData.find((issuer) => issuer.address === id) || {};
 
   if (!name || !description || !logo || !keywords || !address || !CTATitle) {
-    navigate(APP_ROUTES.HOME);
+    navigate(APP_ROUTES.HOME, { state: { from: location.pathname } });
     return null;
   }
 

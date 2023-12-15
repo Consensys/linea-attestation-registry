@@ -1,4 +1,3 @@
-import { Attestation as AttestationProps } from "@verax-attestation-registry/verax-sdk";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
@@ -28,7 +27,7 @@ export const Attestation = () => {
     mutate,
   } = useSWR(
     `${SWRKeys.GET_ATTESTATION_BY_ID}/${id}/${chain.id}`,
-    () => sdk.attestation.findOneById(id || EMPTY_STRING) as Promise<AttestationProps>,
+    () => sdk.attestation.findOneById(id || EMPTY_STRING),
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,

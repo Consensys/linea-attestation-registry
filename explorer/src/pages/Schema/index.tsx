@@ -1,4 +1,3 @@
-import { Schema as SchemaProps } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { t } from "i18next";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
@@ -24,14 +23,10 @@ export const Schema = () => {
     data: schema,
     isLoading,
     isValidating,
-  } = useSWR(
-    `${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`,
-    () => sdk.schema.findOneById(id || EMPTY_STRING) as Promise<SchemaProps>,
-    {
-      shouldRetryOnError: false,
-      revalidateOnFocus: false,
-    },
-  );
+  } = useSWR(`${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`, () => sdk.schema.findOneById(id || EMPTY_STRING), {
+    shouldRetryOnError: false,
+    revalidateOnFocus: false,
+  });
 
   if (isLoading || isValidating) return <SchemaLoadingSkeleton />;
   if (!schema) return <NotFoundPage page="schema" id={id} />;

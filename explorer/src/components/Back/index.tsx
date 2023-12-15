@@ -14,7 +14,10 @@ export const Back: React.FC<BackProps> = ({ className }) => {
   const backPath = pathname.split("/").slice(0, -1);
   const { title, handler } = state?.from
     ? { handler: () => navigate(-1), title: t("common.actions.back") }
-    : { handler: () => navigate(backPath.join("/")), title: t("common.actions.backTo", { to: backPath.slice(-1) }) };
+    : {
+        handler: () => navigate(backPath.join("/"), { state: { from: pathname } }),
+        title: t("common.actions.backTo", { to: backPath.slice(-1) }),
+      };
   return (
     <button
       onClick={() => handler()}

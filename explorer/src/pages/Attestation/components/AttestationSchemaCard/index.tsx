@@ -1,4 +1,3 @@
-import { Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import { ArrowRight } from "lucide-react";
 import useSWR from "swr";
@@ -20,7 +19,7 @@ export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId
 
   const { data: schema, isLoading } = useSWR(
     `${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}/${chain.id}`,
-    () => sdk.schema.findOneById(schemaId) as Promise<Schema>,
+    () => sdk.schema.findOneById(schemaId),
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,

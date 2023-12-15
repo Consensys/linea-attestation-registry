@@ -1,4 +1,3 @@
-import { Module as ModuleProps } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
@@ -21,14 +20,10 @@ export const Module = () => {
     data: module,
     isLoading,
     isValidating,
-  } = useSWR(
-    `${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`,
-    () => sdk.module.findOneById(id || EMPTY_STRING) as Promise<ModuleProps>,
-    {
-      shouldRetryOnError: false,
-      revalidateOnFocus: false,
-    },
-  );
+  } = useSWR(`${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`, () => sdk.module.findOneById(id || EMPTY_STRING), {
+    shouldRetryOnError: false,
+    revalidateOnFocus: false,
+  });
 
   if (isLoading || isValidating) return <ModuleLoadingSkeleton />;
   if (!module) return <NotFoundPage page="module" id={id} />;

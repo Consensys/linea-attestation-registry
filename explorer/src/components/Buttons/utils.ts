@@ -8,5 +8,7 @@ export const getButtonExtraClassName = (buttonType: EButtonType) => {
       return "button-primary-black";
     case EButtonType.PRIMARY_LIME:
       return "button-primary-lime";
+    case EButtonType.PRIMARY_WHITE:
+      return "button-primary-white";
   }
 };

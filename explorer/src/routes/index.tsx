@@ -7,6 +7,7 @@ import { Issuer } from "@/pages/Issuer";
 import { Module } from "@/pages/Module";
 import { Modules } from "@/pages/Modules";
 import { MyAttestations } from "@/pages/MyAttestations";
+import { Portal } from "@/pages/Portal";
 import { Schema } from "@/pages/Schema";
 import { Schemas } from "@/pages/Schemas";
 import { Providers } from "@/providers";
@@ -27,6 +28,7 @@ export const router = createHashRouter(
       <Route path={APP_ROUTES.SCHEMA_BY_ID} element={<Schema />} />
       <Route path={APP_ROUTES.MODULES} element={<Modules />} />
       <Route path={APP_ROUTES.MODULES_BY_ID} element={<Module />} />
+      <Route path={APP_ROUTES.PORTAL_BY_ID} element={<Portal />} />
       <Route path={APP_ROUTES.DEFAULT} element={<NotFoundPage />} />
     </Route>,
   ),

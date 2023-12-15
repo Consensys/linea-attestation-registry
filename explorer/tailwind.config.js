@@ -13,6 +13,7 @@ export default {
     },
     extend: {
       colors: {
+        whiteDefault: "var(--white-default)",
         blackDefault: "var(--black-default)",
         background: "var(--surface-primary)",
         borderCard: "var(--border)",
@@ -22,6 +23,7 @@ export default {
           primary: "var(--surface-primary)",
           secondary: "var(--surface-secondary)",
           darkGrey: "var(--surface-dark-grey)",
+          lightBlack: "var(--surface-light-black)",
           attestationData: "var(--surface-attestation-data)",
           magenta20: "var(--surface-magenta-20)",
         },
@@ -32,9 +34,11 @@ export default {
           tertiary: "var(--text-tertiary)",
           quaternary: "var(--text-quaternary)",
           darkGrey: "var(--text-dark-grey)",
+          darkBlue: "var(--text-dark-blue)",
         },
         border: {
           card: "var(--border-card)",
+          cardHover: "var(--border-card-hover)",
           table: "var(--border-table)",
           input: "var(--border-input)",
           inputFocus: "var(--border-input-focus)",
@@ -53,6 +57,11 @@ export default {
             background: "var(--button-primary-background)",
             text: "var(--button-primary-text)",
             hover: "var(--button-primary-hover)",
+          },
+          primaryWhite: {
+            background: "var(--button-primary-white-background)",
+            text: "var(--button-primary-white-text)",
+            hover: "var(--button-primary-white-hover)",
           },
           primaryBlack: {
             background: "var(--button-primary-black-background)",

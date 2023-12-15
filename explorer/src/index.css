@@ -7,11 +7,13 @@
 
 @layer base {
   :root {
+    --white-default: #FEFEFE;
     --black-default: #0C0C11;
 
     --surface-primary: #FEFEFE;
     --surface-secondary: #F4F5F9;
     --surface-dark-grey: #EAEAF3;
+    --surface-light-black: #19192C;
     --surface-attestation-data: #2D4EC30D;
     --surface-magenta-20: #FAE8F1;
     --surface-lime: #C4FF1C;
@@ -27,8 +29,10 @@
     --text-tertiary: #656B87;
     --text-quaternary: #9096B2;
     --text-dark-grey: #646A86;
+    --text-dark-blue: #3D3D50;
 
     --border-card: #DAD8EC;
+    --border-card-hover: #6E7491;
     --border-table: #EAEAF3;
     --border-input: #C2DA98;
     --border-input-focus: #9096B2;
@@ -36,6 +40,10 @@
     --scrollbar: #A4A8C2;
 
     --hover-lime20: #F3FFD2;
+
+    --button-primary-white-background: #FEFEFE;
+    --button-primary-white-text: #0C0C11;
+    --button-primary-white-hover: #F4F5F9;
 
     --button-primary-black-background: #0C0C11;
     --button-primary-black-text: #FEFEFE;
@@ -109,6 +117,10 @@
 }
 
 @layer components {
+  .button-primary-white {
+    @apply text-button-primaryWhite-text bg-button-primaryWhite-background hover:bg-button-primaryWhite-hover;
+  }
+
   .button-primary-lime {
     @apply text-button-primary-text bg-button-primary-background hover:bg-button-primary-hover;
   }

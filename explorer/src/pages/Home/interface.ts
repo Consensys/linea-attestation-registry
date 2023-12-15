@@ -1,7 +1,11 @@
+import { Address } from "viem";
+
 export interface IIssuer {
-  id: string;
+  address: Address;
   name: string;
   logo: React.FC<React.SVGProps<SVGSVGElement>>;
+  keywords: string[];
+  CTALink?: string;
+  CTATitle: string;
   description: string;
-  landingPage: string;
 }

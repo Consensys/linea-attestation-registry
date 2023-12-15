@@ -1,5 +1,7 @@
 import { Page } from "@/interfaces/components";
 
+import { IHelperIndicatorProps } from "./interface";
+
 const getIndicatorColorClass = (page: Page): string => {
   switch (page) {
     case "schema":
@@ -15,7 +17,8 @@ const getIndicatorColorClass = (page: Page): string => {
   }
 };
 
-export const HelperIndicator: React.FC<{ type: Page }> = ({ type }) => {
+export const HelperIndicator: React.FC<IHelperIndicatorProps> = ({ type, sizeClass = "w-[3.33px] h-[13.33px]" }) => {
   const indicatorColor = getIndicatorColorClass(type);
-  return <div className={`w-[3.33px] h-[13.33px] ${indicatorColor} rounded-full`} />;
+
+  return <div className={`${sizeClass} ${indicatorColor} rounded-full`} />;
 };

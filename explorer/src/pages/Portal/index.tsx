@@ -8,7 +8,6 @@ import { EMPTY_STRING } from "@/constants";
 import { regexEthAddress } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
-import { isValidId } from "@/utils/stringUtils";
 
 import { PortalLoadingSkeleton } from "./components/PortalLoadingSkeleton";
 import { PortalModules } from "./components/PortalModules";
@@ -27,7 +26,7 @@ export const Portal = () => {
   } = useSWR(
     `${SWRKeys.GET_PORTAL_BY_ID}/${id}/${chain.id}`,
     async () => {
-      if (id && isValidId(id, regexEthAddress.byNumberOfChar[42])) return sdk.portal.findOneById(id || EMPTY_STRING);
+      if (id && regexEthAddress.byNumberOfChar[42].test(id)) return sdk.portal.findOneById(id || EMPTY_STRING);
     },
     {
       shouldRetryOnError: false,

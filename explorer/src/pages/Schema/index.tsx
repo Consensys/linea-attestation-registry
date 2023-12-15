@@ -7,7 +7,6 @@ import { NotFoundPage } from "@/components/NotFoundPage";
 import { regexEthAddress, urlRegex } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
-import { isValidId } from "@/utils/stringUtils";
 
 import { RecentAttestations } from "./components/RecentAttestations";
 import { SchemaLoadingSkeleton } from "./components/SchemaLoadingSkeleton";
@@ -26,7 +25,7 @@ export const Schema = () => {
   } = useSWR(
     `${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`,
     async () => {
-      if (id && isValidId(id, regexEthAddress.byNumberOfChar[64])) return sdk.schema.findOneById(id);
+      if (id && regexEthAddress.byNumberOfChar[64].test(id)) return sdk.schema.findOneById(id);
     },
     {
       shouldRetryOnError: false,

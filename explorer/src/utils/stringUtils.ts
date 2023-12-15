@@ -13,7 +13,3 @@ export const cropString = (query: string, step = 4, headFromIndex = 0) => {
 };
 
 export const removeCommas = (str: string) => str.replace(/,/g, "");
-
-export const isValidId = (id: string, regex: RegExp) => {
-  return regex.test(id);
-};

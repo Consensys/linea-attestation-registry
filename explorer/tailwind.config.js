@@ -18,6 +18,7 @@ export default {
         background: "var(--surface-primary)",
         borderCard: "var(--border)",
         skeleton: "var(--skeleton)",
+        grey400: "var(--grey-400)",
         surface: {
           lime: "var(--surface-lime)",
           primary: "var(--surface-primary)",

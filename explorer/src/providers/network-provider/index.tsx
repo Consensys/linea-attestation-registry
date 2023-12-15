@@ -2,12 +2,10 @@ import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { Chain, switchNetwork } from "@wagmi/core";
 import { FC, PropsWithChildren, useCallback, useState } from "react";
 import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
-import { useSWRConfig } from "swr";
 import { useAccount, useNetwork } from "wagmi";
 
 import { defaultChain } from "@/config";
 import { INetwork } from "@/interfaces/config";
-import { SWRKeys } from "@/interfaces/swr/enum";
 
 import { NetworkContext } from "./context";
 
@@ -15,20 +13,12 @@ export const NetworkContextProvider: FC<PropsWithChildren> = ({ children }): JSX
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { mutate } = useSWRConfig();
-
   const { isConnected } = useAccount();
   const { chain: currentChain } = useNetwork();
   const retrievedNetwork = useLoaderData() as INetwork;
 
   const [network, setNetwork] = useState<INetwork>(retrievedNetwork);
   const [sdk, setSdk] = useState<VeraxSdk>(new VeraxSdk(defaultChain.veraxEnv));
-
-  const updateContractData = () => {
-    mutate(SWRKeys.GET_ATTESTATION_BY_ID);
-    mutate(SWRKeys.GET_RELATED_ATTESTATION);
-    mutate(SWRKeys.GET_SCHEMA_BY_ID);
-  };
 
   const switchUserNetwork = useCallback(
     async (pendingChain: Chain, currentChainId?: number) => {
@@ -54,7 +44,6 @@ export const NetworkContextProvider: FC<PropsWithChildren> = ({ children }): JSX
     const path = location.pathname.replace(network.network, params.network);
     navigate(path);
     setSdk(new VeraxSdk(params.veraxEnv));
-    updateContractData();
     setNetwork(params);
   };
 

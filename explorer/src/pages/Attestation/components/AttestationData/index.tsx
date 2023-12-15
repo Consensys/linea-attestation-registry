@@ -7,10 +7,12 @@ import ReactJson from "react-json-view";
 
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { EMPTY_STRING, THOUSAND } from "@/constants";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 import { getAttestationData } from "./utils";
 
 export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
+  const screen = useWindowDimensions();
   const ref = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
@@ -85,7 +87,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
             className="absolute cursor-pointer right-6 bottom-2 flex gap-1 items-center text-text-quaternary text-sm font-semibold"
             onClick={() => setIsOpened((prev) => !prev)}
           >
-            {toggleButton.title}
+            {(screen.md || screen.lg || screen.xl) && toggleButton.title}
             <toggleButton.Icon width={16} height={16} />
           </div>
         )}

@@ -30,6 +30,9 @@ export const APP_ROUTES = {
   get MODULES_BY_ID() {
     return this.MODULES + `/${ID_ROUTE}`;
   },
+  get SEARCH() {
+    return this.HOME + "/search";
+  },
   get PORTAL_BY_ID() {
     return this.HOME + `/portals/${ID_ROUTE}`;
   },

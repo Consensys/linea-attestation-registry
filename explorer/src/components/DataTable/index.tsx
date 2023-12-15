@@ -34,7 +34,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+                className="table-row-transition hover:bg-hover-lime20"
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="whitespace-nowrap text-text-secondary">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -44,7 +48,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 !text-center text-text-secondary">
+              <TableCell colSpan={columns.length} className="w-full h-24 !text-center text-text-secondary">
                 {t("common.messages.noResults")}
               </TableCell>
             </TableRow>

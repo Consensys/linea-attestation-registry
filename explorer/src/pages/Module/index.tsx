@@ -12,16 +12,23 @@ import { ModuleLoadingSkeleton } from "./components/ModuleLoadingSkeleton";
 
 export const Module = () => {
   const { id } = useParams();
-  const { sdk } = useNetworkContext();
+  const {
+    sdk,
+    network: { chain },
+  } = useNetworkContext();
 
   const {
     data: module,
     isLoading,
     isValidating,
-  } = useSWR(SWRKeys.GET_SCHEMA_BY_ID, () => sdk.module.findOneById(id || EMPTY_STRING) as Promise<ModuleProps>, {
-    shouldRetryOnError: false,
-    revalidateOnFocus: false,
-  });
+  } = useSWR(
+    `${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`,
+    () => sdk.module.findOneById(id || EMPTY_STRING) as Promise<ModuleProps>,
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+    },
+  );
 
   if (isLoading || isValidating) return <ModuleLoadingSkeleton />;
   if (!module) return <NotFoundPage page="module" id={id} />;

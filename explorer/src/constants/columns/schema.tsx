@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 
+import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { ColumnsOptions } from "@/interfaces/components";
@@ -49,7 +50,9 @@ export const columns = (): ColumnDef<Schema>[] => [
     header: () => <p className="text-left md:pl-2">{t("schema.list.columns.schema")}</p>,
     cell: ({ row }) => {
       const schema = row.getValue("schema") as string;
-      return <p className="max-w-[300px] overflow-hidden text-ellipsis text-left w-full">{schema}</p>;
+      const id = row.original.id;
+
+      return <TdHandler value={schema} to={toSchemaById(id)} isTextLeft />;
     },
   },
 ];

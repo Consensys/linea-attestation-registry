@@ -146,36 +146,4 @@
   .sort-arrows.asc path:nth-child(4) {
     stroke: #9096B2;
   }
-
-  .table-row-transition {
-    transition: all cubic-bezier(0, 0.52, 1, 1) 1s;
-
-    td:last-child {
-      display: flex;
-      justify-content: flex-end;
-      position: relative;
-      transition: transform .5s;
-
-      &:after {
-        content: '\203A';
-        position: absolute;
-        opacity: 0;
-        top: 15px;
-        right: 15px;
-        transition: 0.5s;
-        scale: 2;
-      }
-    }
-  }
-
-  .table-row-transition:hover {
-    td:last-child {
-      transform: translateX(-20px);
-
-      &:after {
-        right: 5px;
-        opacity: 1;
-      }
-    }
-  }
 }

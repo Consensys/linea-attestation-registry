@@ -1,5 +1,6 @@
 import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
@@ -8,6 +9,8 @@ import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
 import { attestationColumnsOption, columns, skeletonAttestations } from "@/constants/columns/attestation";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { EQueryParams } from "@/enums/queryParams";
+// import { ETableSorting } from "@/enums/tableSorting";
+import { ETableSorting } from "@/enums/tableSorting";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { getItemsByPage, pageBySearchParams } from "@/utils/paginationUtils";
@@ -25,8 +28,9 @@ export const Attestations: React.FC = () => {
     () => sdk.attestation.getAttestationIdCounter() as Promise<number>,
   );
 
+  const [searchParams] = useSearchParams();
+
   const totalItems = attestationsCount ?? ZERO;
-  const searchParams = new URLSearchParams(window.location.search);
   const page = pageBySearchParams(searchParams, totalItems);
   const sortByDateDirection = searchParams.get(EQueryParams.SORT_BY_DATE);
 
@@ -40,7 +44,7 @@ export const Attestations: React.FC = () => {
         skip,
         undefined,
         "attestedDate",
-        sortByDateDirection as OrderDirection,
+        (sortByDateDirection as OrderDirection) || ETableSorting.DESC,
       ),
   );
 
@@ -49,6 +53,7 @@ export const Attestations: React.FC = () => {
   };
 
   const columnsSkeletonRef = useRef(columnsSkeleton(columns(), attestationColumnsOption));
+
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations() }
     : { columns: columns(), list: attestationsList || [] };

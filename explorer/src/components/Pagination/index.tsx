@@ -75,11 +75,10 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
         <input
           type="number"
           ref={inputRef}
-          key={currentPage}
           defaultValue={currentPage}
           onBlur={blurHandler}
           onChange={(event) => changePage(event.target.value)}
-          className="w-12 h-8 px-2 border text-xs font-semibold text-zinc-950 text-center outline-none border-slate-200 focus:border-slate-400 rounded-lg"
+          className="w-16 h-8 px-2 border text-xs font-semibold text-zinc-950 text-center outline-none border-slate-200 focus:border-slate-400 rounded-lg"
         />
         <span className="text-slate-500 text-xs font-normal">{`of ${displayAmountWithComma(totalPages)}`}</span>
       </div>

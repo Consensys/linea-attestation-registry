@@ -9,7 +9,6 @@ import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
 import { attestationColumnsOption, columns, skeletonAttestations } from "@/constants/columns/attestation";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { EQueryParams } from "@/enums/queryParams";
-// import { ETableSorting } from "@/enums/tableSorting";
 import { ETableSorting } from "@/enums/tableSorting";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";

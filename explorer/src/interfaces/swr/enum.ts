@@ -9,5 +9,8 @@ export enum SWRKeys {
   GET_RECENT_ATTESTATION = "getRecentAttestations",
   GET_MODULE_LIST = "getModuleList",
   GET_MODULE_COUNT = "getModuleCount",
+  SEARCH = "search",
   GET_PORTALS_BY_ISSUER = "getPortalsByIssuer",
+  GET_PORTAL_BY_ID = "getPortalByID",
+  GET_PORTAL_MODULE_LIST = "getPortalModuleList",
 }

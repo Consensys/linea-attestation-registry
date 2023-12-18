@@ -24,10 +24,10 @@ const DesktopLink: React.FC<{ title: string; logo: JSX.Element; url: string }> =
 
 export const Info: React.FC = () => {
   const screen = useWindowDimensions();
-  const isAdaptive = screen.sm || screen.md;
+  const isAdaptive = !screen.xl;
 
   return (
-    <div className="flex flex-col gap-2 text-sm lg:bg-surface-primary lg:absolute lg:border lg: border-border-card lg:rounded-xl lg:p-2 lg:top-[30px] lg:-left-[15px] xl:top-[40px]">
+    <div className="flex flex-col gap-2 text-sm xl:bg-surface-primary xl:absolute xl:border xl: border-border-card xl:rounded-xl xl:p-2 xl:-left-[15px] xl:top-[40px] xl:z-10">
       {INFO_LIST.map((items) =>
         !isAdaptive ? (
           <DesktopLink key={items.title} {...items} />

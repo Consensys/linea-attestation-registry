@@ -1,10 +1,8 @@
-import { Attestation as AttestationProps } from "@verax-attestation-registry/verax-sdk";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
-import { EMPTY_STRING } from "@/constants";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
@@ -16,7 +14,10 @@ import { RelatedAttestations } from "./components/RelatedAttestations";
 
 export const Attestation = () => {
   const { id } = useParams();
-  const { sdk } = useNetworkContext();
+  const {
+    sdk,
+    network: { chain },
+  } = useNetworkContext();
 
   const {
     data: attestation,
@@ -24,8 +25,10 @@ export const Attestation = () => {
     isValidating,
     mutate,
   } = useSWR(
-    SWRKeys.GET_ATTESTATION_BY_ID,
-    () => sdk.attestation.findOneById(id || EMPTY_STRING) as Promise<AttestationProps>,
+    `${SWRKeys.GET_ATTESTATION_BY_ID}/${id}/${chain.id}`,
+    async () => {
+      if (id && !Number.isNaN(Number(id))) return sdk.attestation.findOneById(id);
+    },
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,
@@ -34,6 +37,7 @@ export const Attestation = () => {
 
   if (isLoading || isValidating) return <AttestationLoadingSkeleton />;
   if (!attestation) return <NotFoundPage id={id} page="attestation" />;
+
   return (
     <div className="flex flex-col md:gap-4 max-w-[1200px] my-6 md:mt-2 md:mb-20 md:mx-10 xl:mx-auto">
       <Back className="ps-5 md:ps-0" />

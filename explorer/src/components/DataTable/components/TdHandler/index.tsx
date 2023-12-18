@@ -11,16 +11,16 @@ export const TdHandler: React.FC<ITdHandler> = ({ value, valueUrl, to, isTextLef
         <a
           href={valueUrl}
           target="_blank"
-          className={`hover:underline hover:text-text-quaternary translate-x-${
-            isTextLeft ? 0 : 5
-          } group-hover:translate-x-${isTextLeft ? 5 : 0} transition max-w-[300px] overflow-hidden text-ellipsis`}
+          className={`hover:underline hover:text-text-quaternary ${isTextLeft ? "translate-x-0" : "translate-x-5"} ${
+            isTextLeft ? "group-hover:translate-x-5" : "group-hover:translate-x-0"
+          } transition max-w-[300px] overflow-hidden text-ellipsis`}
         >
           {value}
         </a>
       ) : (
         <p
-          className={`w-full text-${isTextLeft ? "left" : "right"} translate-x-${isTextLeft ? 0 : 5} group-hover:${
-            isTextLeft ? "-translate-x-5" : "translate-x-0"
+          className={`w-full text-${isTextLeft ? "left" : "right"} ${isTextLeft ? "translate-x-0" : "translate-x-5"} ${
+            isTextLeft ? "group-hover:-translate-x-5" : "group-hover:translate-x-0"
           } transition max-w-[300px] overflow-hidden text-ellipsis`}
         >
           {value}

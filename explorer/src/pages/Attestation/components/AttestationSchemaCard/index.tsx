@@ -1,4 +1,3 @@
-import { Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import { ArrowRight } from "lucide-react";
 import useSWR from "swr";
@@ -13,11 +12,14 @@ import { cropString } from "@/utils/stringUtils";
 import { AttestationSchemaCardSkeleton } from "../AttestationLoadingSkeleton";
 
 export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId }) => {
-  const { sdk } = useNetworkContext();
+  const {
+    sdk,
+    network: { chain },
+  } = useNetworkContext();
 
   const { data: schema, isLoading } = useSWR(
-    SWRKeys.GET_SCHEMA_BY_ID,
-    () => sdk.schema.findOneById(schemaId) as Promise<Schema>,
+    `${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}/${chain.id}`,
+    async () => sdk.schema.findOneById(schemaId),
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,

@@ -1,10 +1,10 @@
-import { Module as ModuleProps } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
-import { EMPTY_STRING, links } from "@/constants";
+import { links } from "@/constants";
+import { regexEthAddress } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
@@ -12,16 +12,25 @@ import { ModuleLoadingSkeleton } from "./components/ModuleLoadingSkeleton";
 
 export const Module = () => {
   const { id } = useParams();
-  const { sdk } = useNetworkContext();
+  const {
+    sdk,
+    network: { chain },
+  } = useNetworkContext();
 
   const {
     data: module,
     isLoading,
     isValidating,
-  } = useSWR(SWRKeys.GET_SCHEMA_BY_ID, () => sdk.module.findOneById(id || EMPTY_STRING) as Promise<ModuleProps>, {
-    shouldRetryOnError: false,
-    revalidateOnFocus: false,
-  });
+  } = useSWR(
+    `${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`,
+    async () => {
+      if (id && regexEthAddress.byNumberOfChar[42].test(id)) return sdk.module.findOneById(id);
+    },
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+    },
+  );
 
   if (isLoading || isValidating) return <ModuleLoadingSkeleton />;
   if (!module) return <NotFoundPage page="module" id={id} />;

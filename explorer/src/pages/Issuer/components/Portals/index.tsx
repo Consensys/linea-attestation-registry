@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useSWR from "swr";
 
 import { Button } from "@/components/Buttons";
@@ -18,6 +18,7 @@ export const Portals: React.FC<IPortalProps> = ({ address }) => {
     network: { network },
   } = useNetworkContext();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { data: portals } = useSWR(`${SWRKeys.GET_PORTALS_BY_ISSUER}/${address}`, () =>
     sdk.portal.findBy(undefined, undefined, { ownerAddress: address }),
@@ -57,12 +58,14 @@ export const Portals: React.FC<IPortalProps> = ({ address }) => {
               {additionalInfo.map((info) => (
                 <div className="flex flex-col gap-1 md:gap-2" key={info.value}>
                   <div className="text-xs font-normal uppercase text-text-quaternary">{info.title}</div>
-                  <div className="text-sm font-medium text-darkBlue">{info.value}</div>
+                  <div className="text-sm font-medium text-darkBlue break-all">{info.value}</div>
                 </div>
               ))}
               <Button
                 name={t("common.actions.more")}
-                handler={() => navigate(toPortalById(id).replace(CHAIN_ID_ROUTE, network))}
+                handler={() =>
+                  navigate(toPortalById(id).replace(CHAIN_ID_ROUTE, network), { state: { from: location.pathname } })
+                }
                 buttonType={EButtonType.TRANSPARENT}
                 iconRight={<ArrowRight />}
               />

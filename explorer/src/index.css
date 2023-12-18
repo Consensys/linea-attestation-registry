@@ -9,6 +9,7 @@
   :root {
     --white-default: #FEFEFE;
     --black-default: #0C0C11;
+    --jumbotron: #CFDE6A;
 
     --surface-primary: #FEFEFE;
     --surface-secondary: #F4F5F9;
@@ -49,9 +50,9 @@
     --button-primary-black-text: #FEFEFE;
     --button-primary-black-hover: #3D3D50;
 
-    --button-primary-background: #C4FF1C;
+    --button-primary-background: #CFDE6A;
     --button-primary-text: #0D0D12;
-    --button-primary-hover: #AFED00;
+    --button-primary-hover: #BAC66A;
 
     --button-secondary-text: #0D0D12;
     --button-secondary-hover: #6E7491;
@@ -119,6 +120,13 @@
 }
 
 @layer components {
+  .button-small {
+    svg {
+      width: 1rem;
+      height: auto;
+    }
+  }
+
   .button-primary-white {
     @apply text-button-primaryWhite-text bg-button-primaryWhite-background hover:bg-button-primaryWhite-hover;
   }

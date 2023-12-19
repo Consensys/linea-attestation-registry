@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
+import { Dispatch, SetStateAction } from "react";
+
+import { EMPTY_STRING } from "@/constants";
 
 interface MenuButtonProps {
   isOpened: boolean;
   className?: string;
   color?: string;
-  onClick: () => void;
+  setIsOpened: Dispatch<SetStateAction<boolean>>;
 }
 
-export const MenuButton: React.FC<MenuButtonProps> = ({ isOpened, onClick, className, color = "#64687D" }) => {
+export const MenuButton: React.FC<MenuButtonProps> = ({ isOpened, setIsOpened, className, color = "#64687D" }) => {
   const variant = isOpened ? "opened" : "closed";
   const top = {
     closed: {
@@ -50,6 +53,15 @@ export const MenuButton: React.FC<MenuButtonProps> = ({ isOpened, onClick, class
   const unitHeight = 4;
   const unitWidth = (unitHeight * (width as number)) / (height as number);
 
+  const handler = () => {
+    setIsOpened((prev) => {
+      const newState = !prev;
+      document.documentElement.className = newState ? "scroll-lock" : EMPTY_STRING;
+      document.body.className = newState ? "scroll-lock" : EMPTY_STRING;
+      return newState;
+    });
+  };
+
   return (
     <motion.svg
       viewBox={`0 0 ${unitWidth} ${unitHeight}`}
@@ -58,7 +70,7 @@ export const MenuButton: React.FC<MenuButtonProps> = ({ isOpened, onClick, class
       preserveAspectRatio="none"
       width={width}
       height={height}
-      onClick={onClick}
+      onClick={handler}
       cursor="pointer"
       className={className}
     >

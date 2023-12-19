@@ -1,6 +1,5 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
-import { getDefaultConfig } from "connectkit";
-import { createConfig } from "wagmi";
+import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
 import { linea, lineaTestnet } from "wagmi/chains";
 
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
@@ -25,16 +24,24 @@ const chains: INetwork[] = [
   },
 ];
 
-const config = createConfig(
-  getDefaultConfig({
-    autoConnect: true,
-    infuraId: import.meta.env.VITE_INFURA_API_KEY,
-    walletConnectProjectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "",
-    chains: chains.map((el) => el.chain),
-    appName: "Verax | Explorer",
-    appIcon: veraxColoredIcon,
-  }),
-);
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
+
+const config = defaultWagmiConfig({
+  projectId,
+  chains: chains.map((el) => el.chain),
+  metadata: {
+    name: "Verax | Explorer",
+    description: "Web3Modal Example",
+    url: "https://web3modal.com",
+    icons: [veraxColoredIcon],
+  },
+});
+
+createWeb3Modal({
+  projectId,
+  chains: chains.map((el) => el.chain),
+  wagmiConfig: config,
+});
 
 const defaultChain = chains[0];
 

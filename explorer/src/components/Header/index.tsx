@@ -1,8 +1,9 @@
-import { ConnectKitButton } from "connectkit";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { t } from "i18next";
 import { ChevronDown } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { useLocation } from "react-router-dom";
+import { useAccount } from "wagmi";
 
 import VeraxLogo from "@/assets/logo/verax-logo.svg?react";
 import { Link } from "@/components/Link";
@@ -30,11 +31,16 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
   const location = useLocation();
+  const { address, isConnected } = useAccount();
+  const { open } = useWeb3Modal();
 
   const { network, setNetwork } = useNetworkContext();
   const screen = useWindowDimensions();
   const isAdaptive = !screen.xl;
   const isHomePage = location.pathname === `/${network.network}`;
+
+  const titleByScreen = screen.sm ? t("common.actions.connect") : t("common.actions.connectWallet");
+  const title = address && isConnected ? cropString(address) : titleByScreen;
 
   return (
     <header className="px-5 md:px-14 xl:px-[60px] py-3 inline-flex flex-col gap-5">
@@ -65,22 +71,14 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <ConnectKitButton.Custom>
-            {({ isConnected, show, address }) => {
-              const titleByScreen = screen.sm ? t("common.actions.connect") : t("common.actions.connectWallet");
-              const title = address && isConnected ? cropString(address) : titleByScreen;
-              return (
-                <button
-                  onClick={show}
-                  className="cursor-pointer px-3 h-9 xl:h-12 xl:px-4 gap-2 rounded-md border border-button-secondary-border justify-center items-center inline-flex whitespace-nowrap hover:border-button-secondary-hover"
-                >
-                  {title}
-                  {!isAdaptive && <ChevronDown />}
-                </button>
-              );
-            }}
-          </ConnectKitButton.Custom>
-          {isAdaptive && <MenuButton isOpened={isOpened} onClick={() => setIsOpened((prev) => !prev)} />}
+          <button
+            onClick={() => open()}
+            className="cursor-pointer px-3 h-9 xl:h-12 xl:px-4 gap-2 rounded-md border border-button-secondary-border justify-center items-center inline-flex whitespace-nowrap hover:border-button-secondary-hover"
+          >
+            {title}
+            {!isAdaptive && <ChevronDown />}
+          </button>
+          {isAdaptive && <MenuButton isOpened={isOpened} setIsOpened={setIsOpened} />}
         </div>
       </div>
       {screen.sm && !isHomePage && <SearchInput />}

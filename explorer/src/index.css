@@ -108,6 +108,14 @@
     opacity: 0.6;
   }
 
+  .no-vertical-scrollbar {
+    scrollbar-width: 0;
+  }
+
+  .no-vertical-scrollbar::-webkit-scrollbar {
+    width: 0px;
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -115,6 +123,10 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  .scroll-lock {
+    @apply touch-none overflow-hidden overscroll-contain;
   }
 }
 

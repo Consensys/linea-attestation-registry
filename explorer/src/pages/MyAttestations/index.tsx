@@ -1,5 +1,5 @@
 import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
-import { ConnectKitButton } from "connectkit";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { t } from "i18next";
 import { ArchiveIcon, Check, Copy, Wallet } from "lucide-react";
 import { useState } from "react";
@@ -27,6 +27,8 @@ export const MyAttestations: React.FC = () => {
     network: { chain },
   } = useNetworkContext();
   const { address } = useAccount();
+  const { open } = useWeb3Modal();
+
   const { sm } = useWindowDimensions();
 
   const [copied, setCopied] = useState<boolean>(false);
@@ -73,14 +75,7 @@ export const MyAttestations: React.FC = () => {
           icon={<ArchiveIcon />}
           message={t("attestation.messages.attestationsConnectWallet")}
           buttonComponent={
-            <ConnectKitButton.Custom>
-              {({ show }) => {
-                if (!show) return <></>;
-                return (
-                  <Button name={t("common.actions.connectWallet")} handler={show} buttonType={EButtonType.OUTLINED} />
-                );
-              }}
-            </ConnectKitButton.Custom>
+            <Button name={t("common.actions.connectWallet")} handler={() => open()} buttonType={EButtonType.OUTLINED} />
           }
         />
       )}

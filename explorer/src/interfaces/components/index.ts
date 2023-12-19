@@ -1,3 +1,9 @@
+export interface IInfoListItem {
+  title: string;
+  logo: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  url: string;
+}
+
 export interface NavigationProps {
   name: string;
   route?: string;

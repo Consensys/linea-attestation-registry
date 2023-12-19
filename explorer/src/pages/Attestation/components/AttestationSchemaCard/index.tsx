@@ -37,7 +37,9 @@ export const AttestationSchemaCard: React.FC<{ schemaId: string }> = ({ schemaId
       <div className="w-full flex-col justify-start items-start gap-3 flex">
         <div className="w-full justify-between items-start inline-flex text-text-secondary text-base font-medium">
           <div>{schema.name}</div>
-          <div>{cropString(schema.id)}</div>
+          <Link to={toSchemaById(schemaId)} className="hover:underline">
+            {cropString(schema.id)}
+          </Link>
         </div>
         <div className="text-text-tertiary text-sm font-normal leading-tight">{schema.description}</div>
       </div>

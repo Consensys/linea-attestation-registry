@@ -9,8 +9,8 @@ export const SchemaLoadingSkeleton = () => {
           <Skeleton className="w-full max-w-[300px] h-8 rounded-3xl" />
           <Skeleton className="w-full max-w-[250px] h-6 rounded-3xl" />
         </div>
+        <hr className="bg-border-card" />
       </div>
-      <hr className="bg-border-card" />
       <div className="flex flex-col gap-6 px-5 md:px-10 xl:flex-row xl:justify-between">
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2">

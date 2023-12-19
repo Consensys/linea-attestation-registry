@@ -10,6 +10,7 @@
     --white-default: #FEFEFE;
     --black-default: #0C0C11;
     --jumbotron: #CFDE6A;
+    --jumbotron-dark: #EEF2D2;
 
     --surface-primary: #FEFEFE;
     --surface-secondary: #F4F5F9;
@@ -120,6 +121,10 @@
 }
 
 @layer components {
+  .svg-dark-blue path, .svg-dark-blue rect {
+    fill: #3D3D50;
+  }
+
   .button-small {
     svg {
       width: 1rem;

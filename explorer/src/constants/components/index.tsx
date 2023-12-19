@@ -4,7 +4,7 @@ import GitbookIcon from "@/assets/icons/gitbook.svg?react";
 import VeraxIcon from "@/assets/logo/verax-icon.svg?react";
 import GithubIcon from "@/assets/socials/github.svg?react";
 import { Info } from "@/components/NavigationList/components/Info";
-import { NavigationProps, SearchElementProps } from "@/interfaces/components";
+import { IInfoListItem, NavigationProps, SearchElementProps } from "@/interfaces/components";
 import { APP_ROUTES } from "@/routes/constants";
 
 export const DEFAULT_ROUTES: Array<NavigationProps> = [
@@ -26,20 +26,20 @@ export const DEFAULT_ROUTES: Array<NavigationProps> = [
   },
 ];
 
-export const INFO_LIST = [
+export const INFO_LIST: IInfoListItem[] = [
   {
     title: t("common.routes.info.about"),
-    logo: <VeraxIcon className="!w-4 !h-4" />,
+    logo: VeraxIcon,
     url: "https://ver.ax/",
   },
   {
     title: t("common.routes.info.github"),
-    logo: <GithubIcon className="!w-4 !h-4" />,
+    logo: GithubIcon,
     url: "https://github.com/Consensys/linea-attestation-registry/tree/dev",
   },
   {
     title: t("common.routes.info.documentation"),
-    logo: <GitbookIcon className="!w-4 !h-4" />,
+    logo: GitbookIcon,
     url: "https://docs.ver.ax/verax-documentation/",
   },
 ];

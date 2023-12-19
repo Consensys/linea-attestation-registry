@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
         <div className="justify-end items-center gap-4 flex flex-1">
           {!screen.sm && !isHomePage && <SearchInput />}
           <DropdownMenu>
-            <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] p-2 rounded-md outline-none hover:bg-hover-lime20 justify-start items-center gap-2 inline-flex">
+            <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] p-2 rounded-md outline-none hover:bg-jumbotronDark justify-start items-center gap-2 inline-flex transition">
               {network.img}
               <ChevronDown className="header-arrow w-6 h-6 relative" />
             </DropdownMenuTrigger>
@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
               {chains.map((chain) => (
                 <DropdownMenuItem
                   key={chain.name}
-                  className="flex gap-2 focus:bg-hover-lime20 cursor-pointer"
+                  className="flex gap-2 focus:bg-jumbotronDark cursor-pointer transition"
                   onClick={() => setNetwork(chain)}
                 >
                   {chain.img}

@@ -24,7 +24,7 @@ export const columns = (): ColumnDef<Schema>[] => [
       const id = row.original.id;
 
       return (
-        <Link to={toSchemaById(id)} className="hover:underline hover:text-text-quaternary">
+        <Link to={toSchemaById(id)} className="hover:underline">
           {name}
         </Link>
       );

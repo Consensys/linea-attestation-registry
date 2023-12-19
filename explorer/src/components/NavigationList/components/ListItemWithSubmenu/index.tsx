@@ -22,7 +22,7 @@ export const ListItemWithSubmenu: React.FC<ListItemWithSubmenuProps> = ({ name, 
     >
       <div
         className={`flex gap-1 items-center text-text-tertiary text-xl xl:text-base font-medium ${
-          showSubmenu ? "cursor-pointer underline !text-text-primary" : EMPTY_STRING
+          showSubmenu ? "cursor-pointer !text-text-primary" : EMPTY_STRING
         }`}
       >
         {name}

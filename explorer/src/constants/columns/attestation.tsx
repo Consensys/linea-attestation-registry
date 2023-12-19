@@ -32,7 +32,7 @@ export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): Colu
     cell: ({ row }) => {
       const id = row.getValue("id");
       return (
-        <Link to={toAttestationById(id as string)} className="hover:underline hover:text-text-quaternary">
+        <Link to={toAttestationById(id as string)} className="hover:underline">
           {displayAmountWithComma(hexToNumber(id as Address))}
         </Link>
       );
@@ -63,11 +63,7 @@ export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): Colu
     cell: ({ row }) => {
       const subject = row.getValue("subject") as string;
       return (
-        <a
-          href={`${links.lineascan.address}/${subject}`}
-          target="_blank"
-          className="hover:underline hover:text-text-quaternary"
-        >
+        <a href={`${links.lineascan.address}/${subject}`} target="_blank" className="hover:underline">
           {cropString(subject)}
         </a>
       );

@@ -70,7 +70,7 @@ export const MyAttestations: React.FC = () => {
         </div>
       )}
       {/* TODO: add skeleton for table */}
-      {!address && (
+      {!address ? (
         <InfoBlock
           icon={<ArchiveIcon />}
           message={t("attestation.messages.attestationsConnectWallet")}
@@ -78,13 +78,11 @@ export const MyAttestations: React.FC = () => {
             <Button name={t("common.actions.connectWallet")} handler={() => open()} buttonType={EButtonType.OUTLINED} />
           }
         />
-      )}
-
-      {address && !attestationsList?.length && (
+      ) : !attestationsList || !attestationsList.length ? (
         <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.emptyList")} />
+      ) : (
+        <DataTable columns={columns()} data={attestationsList} />
       )}
-
-      {address && <DataTable columns={columns()} data={attestationsList || []} />}
     </TitleAndSwitcher>
   );
 };

@@ -31,8 +31,8 @@ const config = defaultWagmiConfig({
   chains: chains.map((el) => el.chain),
   metadata: {
     name: "Verax | Explorer",
-    description: "Web3Modal Example",
-    url: "https://web3modal.com",
+    description: "Verax | Explorer",
+    url: "https://ver.ax",
     icons: [veraxColoredIcon],
   },
 });

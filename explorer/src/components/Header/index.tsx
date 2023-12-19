@@ -20,9 +20,12 @@ import { APP_ROUTES } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
 
 import { MenuButton } from "./components/MenuButtons";
+import { Button } from "../Buttons";
+import { EButtonType } from "../Buttons/enum";
 import { NavigationList } from "../NavigationList";
-import "./styles.css";
 import { SearchInput } from "../SearchInput";
+
+import "./styles.css";
 
 interface HeaderProps {
   isOpened: boolean;
@@ -71,13 +74,13 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <button
-            onClick={() => open()}
-            className="cursor-pointer px-3 h-9 xl:h-12 xl:px-4 gap-2 rounded-md border border-button-secondary-border justify-center items-center inline-flex whitespace-nowrap hover:border-button-secondary-hover"
-          >
-            {title}
-            {!isAdaptive && <ChevronDown />}
-          </button>
+          <Button
+            name={title}
+            handler={() => open()}
+            buttonType={EButtonType.OUTLINED}
+            iconRight={isConnected && !isAdaptive ? <ChevronDown /> : undefined}
+            className="whitespace-nowrap"
+          />
           {isAdaptive && <MenuButton isOpened={isOpened} setIsOpened={setIsOpened} />}
         </div>
       </div>

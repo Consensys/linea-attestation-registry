@@ -10,6 +10,7 @@ export const Button: React.FC<IButtonsProps> = ({
   iconLeft,
   iconRight,
   height = "h-12",
+  className,
 }) => {
   return (
     <button
@@ -20,7 +21,7 @@ export const Button: React.FC<IButtonsProps> = ({
           ? "px-0 py-0 rounded-none border-b border-transparent hover:border-blackDefault"
           : "px-4 py-3"
       } flex justify-center items-center gap-2 rounded-md disabled:opacity-40 font-semibold 
-      ${getButtonExtraClassName(buttonType)}`}
+      ${getButtonExtraClassName(buttonType)} ${className}`}
     >
       {iconLeft && iconLeft}
       {name}

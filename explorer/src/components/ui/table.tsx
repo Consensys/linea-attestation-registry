@@ -4,7 +4,7 @@ import { cn } from "@/utils";
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="relative w-full overflow-auto no-scrollbar">
+    <div className="relative w-full overflow-auto no-scrollbar rounded-3xl">
       <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
     </div>
   ),
@@ -34,7 +34,11 @@ TableFooter.displayName = "TableFooter";
 
 const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableRowElement>>(
   ({ className, ...props }, ref) => (
-    <tr ref={ref} className={cn("border-b data-[state=selected]:bg-muted whitespace-nowrap", className)} {...props} />
+    <tr
+      ref={ref}
+      className={cn("border-b data-[state=selected]:bg-muted whitespace-nowrap group", className)}
+      {...props}
+    />
   ),
 );
 TableRow.displayName = "TableRow";

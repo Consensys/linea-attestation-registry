@@ -5,6 +5,7 @@ import moment from "moment";
 import { Address } from "viem";
 import { hexToNumber } from "viem/utils";
 
+import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { SortByDate } from "@/components/SortByDate";
@@ -99,7 +100,9 @@ export const columns = ({ sortByDate = true, sdk }: Partial<ColumnsProps> = {}):
     header: () => (sortByDate ? <SortByDate /> : <p className="text-right">{t("attestation.list.columns.issued")}</p>),
     cell: ({ row }) => {
       const timestamp: number = row.getValue("attestedDate");
-      return <p className="text-right">{moment.unix(timestamp).fromNow()}</p>;
+      const id = row.original.id;
+
+      return <TdHandler value={moment.unix(timestamp).fromNow()} to={toAttestationById(id)} />;
     },
   },
 ];

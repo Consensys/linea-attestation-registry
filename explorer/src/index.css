@@ -9,6 +9,7 @@
   :root {
     --white-default: #FEFEFE;
     --black-default: #0C0C11;
+    --jumbotron: #CFDE6A;
     --jumbotron-dark: #EEF2D2;
 
     --surface-primary: #FEFEFE;
@@ -50,9 +51,9 @@
     --button-primary-black-text: #FEFEFE;
     --button-primary-black-hover: #3D3D50;
 
-    --button-primary-background: #C4FF1C;
+    --button-primary-background: #CFDE6A;
     --button-primary-text: #0D0D12;
-    --button-primary-hover: #AFED00;
+    --button-primary-hover: #BAC66A;
 
     --button-secondary-text: #0D0D12;
     --button-secondary-hover: #6E7491;
@@ -120,6 +121,13 @@
 }
 
 @layer components {
+  .button-small {
+    svg {
+      width: 1rem;
+      height: auto;
+    }
+  }
+
   .button-primary-white {
     @apply text-button-primaryWhite-text bg-button-primaryWhite-background hover:bg-button-primaryWhite-hover;
   }
@@ -148,37 +156,5 @@
   .sort-arrows.asc path:nth-child(3),
   .sort-arrows.asc path:nth-child(4) {
     stroke: var(--grey-400);
-  }
-
-  .table-row-transition {
-    transition: all cubic-bezier(0, 0.52, 1, 1) 1s;
-
-    td:last-child {
-      display: flex;
-      justify-content: flex-end;
-      position: relative;
-      transition: transform .5s;
-
-      &:after {
-        content: '\203A';
-        position: absolute;
-        opacity: 0;
-        top: 15px;
-        right: 15px;
-        transition: 0.5s;
-        scale: 2;
-      }
-    }
-  }
-
-  .table-row-transition:hover {
-    td:last-child {
-      transform: translateX(-20px);
-
-      &:after {
-        right: 5px;
-        opacity: 1;
-      }
-    }
   }
 }

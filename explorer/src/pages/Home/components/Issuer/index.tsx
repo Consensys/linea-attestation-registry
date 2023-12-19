@@ -1,12 +1,12 @@
 import { t } from "i18next";
 import { ArrowUpRight, ChevronRight } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { generatePath, useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { Chips } from "@/components/Chips";
 import { useNetworkContext } from "@/providers/network-provider/context";
-import { CHAIN_ID_ROUTE, toIssuerById } from "@/routes/constants";
+import { APP_ROUTES } from "@/routes/constants";
 
 import { IIssuerProps } from "./interface";
 
@@ -52,7 +52,7 @@ export const Issuer: React.FC<IIssuerProps> = ({ issuer }) => {
           isSmall
           name={t("common.actions.details")}
           handler={() =>
-            navigate(toIssuerById(issuer.address).replace(CHAIN_ID_ROUTE, network), {
+            navigate(generatePath(APP_ROUTES.ISSUER_BY_ID, { chainId: network, id: issuer.address }), {
               state: { from: location.pathname },
             })
           }

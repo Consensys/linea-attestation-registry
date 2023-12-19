@@ -15,6 +15,7 @@ export default {
       colors: {
         whiteDefault: "var(--white-default)",
         blackDefault: "var(--black-default)",
+        jumbotronDark: "var(--jumbotron-dark)",
         background: "var(--surface-primary)",
         borderCard: "var(--border)",
         skeleton: "var(--skeleton)",

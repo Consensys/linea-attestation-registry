@@ -51,7 +51,7 @@ export const Attestations: React.FC = () => {
   const columnsSkeletonRef = useRef(columnsSkeleton(columns(), attestationColumnsOption));
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations() }
-    : { columns: columns(), list: attestationsList || [] };
+    : { columns: columns({ sdk }), list: attestationsList || [] };
 
   return (
     <TitleAndSwitcher>

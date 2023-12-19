@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Attestation } from "@verax-attestation-registry/verax-sdk";
+import { Attestation, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import moment from "moment";
 import { Address } from "viem";
@@ -9,7 +9,9 @@ import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { SortByDate } from "@/components/SortByDate";
 import { ColumnsOptions } from "@/interfaces/components";
-import { toAttestationById } from "@/routes/constants";
+import { SWRKeys } from "@/interfaces/swr/enum";
+import { SWRCell } from "@/pages/Attestations/components/SWRCell";
+import { toAttestationById, toPortalById, toSchemaById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
@@ -17,9 +19,10 @@ import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT, links } from "../index";
 
 interface ColumnsProps {
   sortByDate: boolean;
+  sdk: VeraxSdk;
 }
 
-export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
+export const columns = ({ sortByDate = true, sdk }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
   {
     accessorKey: "id",
     header: () => (
@@ -45,16 +48,35 @@ export const columns = ({ sortByDate = true }: Partial<ColumnsProps> = {}): Colu
         {t("attestation.list.columns.portal")}
       </div>
     ),
-    cell: ({ row }) => cropString(row.getValue("portal")),
+    cell: ({ row }) => {
+      if (!sdk) return null;
+
+      const portalId = row.getValue("portal") as string;
+      const fetcher = () => sdk.portal.findOneById(portalId || EMPTY_STRING);
+
+      return (
+        <SWRCell swrKey={`${SWRKeys.GET_PORTAL_BY_ID}/${portalId}`} fetcher={fetcher} to={toPortalById(portalId)} />
+      );
+    },
   },
   {
-    accessorKey: "schemaString",
+    accessorKey: "schemaId",
     header: () => (
       <div className="flex items-center gap-2.5">
         <HelperIndicator type="schema" />
         {t("attestation.list.columns.schema")}
       </div>
     ),
+    cell: ({ row }) => {
+      if (!sdk) return null;
+
+      const schemaId = row.getValue("schemaId") as string;
+      const fetcher = () => sdk.schema.findOneById(schemaId || EMPTY_STRING);
+
+      return (
+        <SWRCell swrKey={`${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}`} fetcher={fetcher} to={toSchemaById(schemaId)} />
+      );
+    },
   },
   {
     accessorKey: "subject",

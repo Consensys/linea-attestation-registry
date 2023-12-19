@@ -43,10 +43,9 @@
     }
   },
   "home": {
-    "title": "Boost your Dapps with Verax Explorer",
-    "subtitle": "The Ultimate Public Attestation Registry",
+    "title": "Verax is an open source, public registry for storing attestations",
     "issuers": {
-      "title": "Explore Issuers"
+      "title": "Explore the Verax Ecosystem"
     },
     "info": {
       "issueYourAttestation": "Want to issue your own attestation?",

@@ -9,4 +9,5 @@ export interface IButtonsProps {
   iconRight?: JSX.Element;
   height?: string;
   className?: string;
+  isSmall?: boolean;
 }

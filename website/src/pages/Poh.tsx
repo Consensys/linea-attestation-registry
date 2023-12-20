@@ -52,14 +52,22 @@ function Poh() {
     isConnected && address ? getMyPoh() : initPage();
   }, [isConnected, address]);
 
+  const displayName = (name: string) => {
+    return name === "Testnet Voyage NFT" ? "Testnet Voyage NFT original recipient" : name;
+  };
+
   const displayPohGroup = (pohGroup?: IssuerAttestation[]) => {
     return (
       <>
         {pohGroup?.map((poh) => (
           <div key={poh.issuerSlugName} className="card">
-            <Link to={poh.issuerWebsiteUrl} target={"_blank"}>
-              {poh.issuerName}
-            </Link>
+            {poh.issuerWebsiteUrl !== "" ? (
+              <Link to={poh.issuerWebsiteUrl} target={"_blank"}>
+                {displayName(poh.issuerName)}
+              </Link>
+            ) : (
+              <>{displayName(poh.issuerName)}</>
+            )}
             {poh.validated ? ` ✅` : ` ❌`}
           </div>
         ))}
@@ -77,15 +85,30 @@ function Poh() {
 
       {didCallPoh && (
         <>
-          <div className="card">Global POH status {isPoh ? ` ✅` : ` ❌`}</div>
+          <div className="card">
+            <p style={{ margin: 0 }}>
+              Proof of Humanity for the Linea DeFi Voyage uses Verax as the underlying infrastructure.
+            </p>
+            <p style={{ margin: 0 }}>In order to be able to verify your humanity:</p>
+            <p style={{ margin: 0 }}>a. Receive ONE attestation from a partner of Group 1</p>
+            <p style={{ margin: 0 }}>b. Receive TWO attestations from partners of Group 2</p>
+          </div>
+
+          <div className="card" style={{ padding: 0 }}>
+            <h2>Global POH status {isPoh ? ` ✅` : ` ❌`}</h2>
+          </div>
 
           <div className="responsive-two-column-grid">
             <div>
-              <div className="card">Group 1</div>
+              <div className="card" style={{ padding: 0 }}>
+                <h2>Group 1</h2>
+              </div>
               {displayPohGroup(pohGroupA)}
             </div>
             <div>
-              <div className="card">Group 2</div>
+              <div className="card" style={{ padding: 0 }}>
+                <h2>Group 2</h2>
+              </div>
               {displayPohGroup(pohGroupB)}
             </div>
           </div>

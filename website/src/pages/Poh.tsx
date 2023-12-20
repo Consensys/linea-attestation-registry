@@ -67,13 +67,17 @@ export const Poh: FunctionComponent<PohProps> = ({ title }) => {
     return name === "Testnet Voyage NFT" ? "Testnet Voyage NFT original recipient" : name;
   };
 
+  const getLink = (link: string) => {
+    return link === "https://nomis.cc/linea" ? "https://nomis.cc/linea-voyage" : link;
+  };
+
   const displayPohGroup = (pohGroup?: IssuerAttestation[]) => {
     return (
       <>
         {pohGroup?.map((poh) => (
           <div key={poh.issuerSlugName} className="card">
             {poh.issuerWebsiteUrl !== "" ? (
-              <Link to={poh.issuerWebsiteUrl} target={"_blank"}>
+              <Link to={getLink(poh.issuerWebsiteUrl)} target={"_blank"}>
                 {displayName(poh.issuerName)}
               </Link>
             ) : (

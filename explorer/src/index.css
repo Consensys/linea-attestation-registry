@@ -133,6 +133,10 @@
 }
 
 @layer components {
+  .svg-dark-blue path, .svg-dark-blue rect {
+    fill: #3D3D50;
+  }
+
   .button-small {
     svg {
       width: 1rem;

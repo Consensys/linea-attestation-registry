@@ -21,7 +21,9 @@ export const Back: React.FC<BackProps> = ({ className }) => {
   return (
     <button
       onClick={() => handler()}
-      className={`w-fit flex gap-2 text-text-tertiary hover:opacity-60 ${className || EMPTY_STRING}`}
+      className={`w-fit font-semibold flex gap-2 text-text-tertiary hover:opacity-60 transition ${
+        className || EMPTY_STRING
+      }`}
     >
       <ChevronLeft width={24} height={24} />
       {title}

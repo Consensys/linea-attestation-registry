@@ -23,7 +23,7 @@ export const columns = (): ColumnDef<Module>[] => [
     cell: ({ row }) => {
       const { name, id } = row.original;
       return (
-        <Link to={toModuleById(id)} className="hover:underline hover:text-text-quaternary">
+        <Link to={toModuleById(id)} className="hover:underline">
           {name}
         </Link>
       );

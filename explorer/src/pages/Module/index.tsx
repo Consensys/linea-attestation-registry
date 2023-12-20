@@ -43,8 +43,8 @@ export const Module = () => {
           <p className="text-page-module text-2xl not-italic font-semibold md:text-[2rem]">{module.name}</p>
           <p className="text-text-quaternary text-base not-italic">{module.description}</p>
         </div>
+        <hr className="bg-border-card" />
       </div>
-      <hr className="bg-border-card" />
       <div className="flex flex-col gap-2 px-5 md:px-10">
         <p className="text-xs text-text-quaternary not-italic font-normal">CONTEXT</p>
         <a

@@ -3,9 +3,12 @@ import { useState } from "react";
 
 import { INFO_LIST } from "@/constants/components";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { IInfoListItem } from "@/interfaces/components";
 
-const DesktopLink: React.FC<{ title: string; logo: JSX.Element; url: string }> = ({ title, logo, url }) => {
+const DesktopLink: React.FC<IInfoListItem> = ({ title, logo, url }) => {
   const [show, setShow] = useState<boolean>(false);
+  const Logo = logo;
+
   return (
     <a
       key={title}
@@ -13,9 +16,9 @@ const DesktopLink: React.FC<{ title: string; logo: JSX.Element; url: string }> =
       target="_blank"
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
-      className="w-52 rounded px-2 py-[10px] flex gap-2 items-center text-text-tertiary hover:bg-hover-lime20 hover:text-text-primary"
+      className="w-52 rounded px-2 py-[10px] flex gap-2 items-center text-text-tertiary hover:bg-jumbotronDark hover:text-text-primary text-base font-medium transition group"
     >
-      {logo}
+      <Logo className="group-hover:svg-dark-blue [&>path]:transition [&>rect]:transition [&>g>path]:transition" />
       <span className="flex-1">{title}</span>
       <MoveUpRight width={16} height={16} className={`${show ? "visible" : "invisible"}`} />
     </a>
@@ -28,21 +31,22 @@ export const Info: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-2 text-sm xl:bg-surface-primary xl:absolute xl:border xl: border-border-card xl:rounded-xl xl:p-2 xl:-left-[15px] xl:top-[40px] xl:z-10">
-      {INFO_LIST.map((items) =>
-        !isAdaptive ? (
-          <DesktopLink key={items.title} {...items} />
-        ) : (
+      {INFO_LIST.map((items) => {
+        if (!isAdaptive) return <DesktopLink key={items.title} {...items} />;
+        const Logo = items.logo;
+
+        return (
           <a
             key={items.title}
             href={items.url}
             target="_blank"
-            className="w-fit rounded px-2 py-[10px] ms-4 flex gap-2 items-center text-xl text-text-tertiary hover:underline hover:text-text-primary"
+            className="w-fit rounded px-2 py-[10px] ms-4 flex gap-2 items-center text-xl font-medium text-text-tertiary hover:text-text-primary group"
           >
-            {items.logo}
+            <Logo className="h-6 w-auto group-hover:svg-dark-blue [&>path]:transition [&>rect]:transition [&>g>path]:transition" />
             <span>{items.title}</span>
           </a>
-        ),
-      )}
+        );
+      })}
     </div>
   );
 };

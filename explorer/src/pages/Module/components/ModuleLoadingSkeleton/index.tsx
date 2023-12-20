@@ -9,8 +9,8 @@ export const ModuleLoadingSkeleton = () => {
           <Skeleton className="w-full max-w-[300px] h-8 rounded-3xl" />
           <Skeleton className="w-full max-w-[250px] h-6 rounded-3xl" />
         </div>
+        <hr className="bg-border-card" />
       </div>
-      <hr className="bg-border-card" />
       <div className="flex flex-col gap-2 px-5 md:px-10">
         <Skeleton className="w-[70px] h-4 rounded-3xl" />
         <Skeleton className="w-full max-w-[400px] h-6 rounded-3xl" />

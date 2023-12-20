@@ -3,7 +3,8 @@ import { t } from "i18next";
 import { Hex, hexToNumber } from "viem";
 
 import { Link } from "@/components/Link";
-import { toModuleById } from "@/routes/constants";
+import { links } from "@/constants";
+import { toPortalById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
@@ -11,7 +12,7 @@ import { createDateListItem } from "./utils";
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
-  const list: Array<{ title: string; value: string; link?: string }> = [
+  const list: Array<{ title: string; value: string; to?: string; link?: string }> = [
     createDateListItem(t("attestation.info.attested"), attestedDate.toString()),
     createDateListItem(t("attestation.info.expirationDate"), expirationDate.toString()),
     {
@@ -22,15 +23,17 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     {
       title: t("attestation.info.issuedBy"),
       value: cropString(attester),
+      link: `${links.lineascan.address}/${attester}`,
     },
     {
       title: t("attestation.info.portal"),
       value: cropString(portal),
-      link: toModuleById(portal),
+      to: toPortalById(portal),
     },
     {
       title: t("attestation.info.subject"),
       value: cropString(subject),
+      link: `${links.lineascan.address}/${subject}`,
     },
   ];
 
@@ -43,14 +46,26 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
         {list.map((item) => (
           <div key={item.title} className="inline-flex gap-2 w-full justify-between text-xs items-center md:w-auto">
             <div className="min-w-[120px] font-normal text-text-quaternary">{item.title.toUpperCase()}</div>
-            {item.link ? (
+            {item.to && (
               <Link
-                to={item.link}
+                to={item.to}
                 className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline"
               >
                 {item.value}
               </Link>
-            ) : (
+            )}
+
+            {item.link && (
+              <a
+                href={item.link}
+                target="_blank"
+                className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline"
+              >
+                {item.value}
+              </a>
+            )}
+
+            {!item.to && !item.link && (
               <div className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base">
                 {item.value}
               </div>

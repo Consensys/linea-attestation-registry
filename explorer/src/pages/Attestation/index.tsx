@@ -10,7 +10,6 @@ import { AttestationData } from "./components/AttestationData";
 import { AttestationInfo } from "./components/AttestationInfo";
 import { AttestationLoadingSkeleton } from "./components/AttestationLoadingSkeleton";
 import { AttestationSchemaCard } from "./components/AttestationSchemaCard";
-import { RelatedAttestations } from "./components/RelatedAttestations";
 
 export const Attestation = () => {
   const { id } = useParams();
@@ -23,7 +22,6 @@ export const Attestation = () => {
     data: attestation,
     isLoading,
     isValidating,
-    mutate,
   } = useSWR(
     `${SWRKeys.GET_ATTESTATION_BY_ID}/${id}/${chain.id}`,
     async () => {
@@ -48,7 +46,8 @@ export const Attestation = () => {
         <div className="flex flex-col p-6 gap-12 w-full">
           <AttestationSchemaCard schemaId={attestation.schemaId} />
           <AttestationData {...attestation} />
-          <RelatedAttestations mutate={mutate} />
+          {/* TODO: uncomment when correct data will be available */}
+          {/* <RelatedAttestations mutate={mutate} /> */}
         </div>
       </div>
     </div>

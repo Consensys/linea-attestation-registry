@@ -59,8 +59,8 @@ export const Portal = () => {
           <p className="text-page-portal text-2xl not-italic font-semibold md:text-[2rem]">{portal.name}</p>
           <p className="text-text-quaternary text-base not-italic">{portal.description}</p>
         </div>
+        <hr className="bg-border-card" />
       </div>
-      <hr className="bg-border-card" />
       <div className="flex flex-col gap-6 px-5 md:px-10 xl:flex-row xl:justify-between">
         {list.map(({ title, subtitle }) => (
           <div key={title} className="flex flex-col gap-2">

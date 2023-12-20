@@ -7,7 +7,7 @@ import { infoData } from "./data";
 
 export const Info: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-[2.0625rem] mb-14 md:mb-[4.5rem]">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-[2.0625rem]">
       {infoData.map((info) => (
         <div
           key={info.title}

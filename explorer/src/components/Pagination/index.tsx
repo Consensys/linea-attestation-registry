@@ -49,7 +49,7 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
   };
 
   return (
-    <div className="flex justify-between items-center mt-8 mb-24">
+    <div className="flex justify-between items-center mt-8">
       <div className="flex gap-3">
         <button
           type="button"

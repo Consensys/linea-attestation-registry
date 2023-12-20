@@ -50,7 +50,7 @@ export const MyAttestations: React.FC = () => {
       sdk.attestation.findBy(
         undefined,
         undefined,
-        { attester: address },
+        { subject: address },
         "attestedDate",
         sortByDateDirection as OrderDirection,
       ),

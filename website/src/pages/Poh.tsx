@@ -1,9 +1,14 @@
+import type { FunctionComponent } from "react";
 import { useEffect, useState } from "react";
 import "./Poh.css";
 import { ConnectKitButton } from "connectkit";
 import axios from "axios";
 import { useAccount } from "wagmi";
 import { Link } from "react-router-dom";
+
+export type PohProps = {
+  title: string;
+};
 
 type IssuerAttestation = {
   validated: boolean;
@@ -20,7 +25,7 @@ type POHResponse = {
   attestations: IssuerAttestation[];
 };
 
-function Poh() {
+export const Poh: FunctionComponent<PohProps> = ({ title }) => {
   const [pohGroupA, setPohGroupA] = useState<IssuerAttestation[]>();
   const [pohGroupB, setPohGroupB] = useState<IssuerAttestation[]>();
   const [isPoh, setIsPoh] = useState<boolean>();
@@ -34,6 +39,10 @@ function Poh() {
     setPohGroupA(undefined);
     setPohGroupB(undefined);
   };
+
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
 
   useEffect(() => {
     const getMyPoh = async () => {
@@ -116,6 +125,6 @@ function Poh() {
       )}
     </>
   );
-}
+};
 
 export default Poh;

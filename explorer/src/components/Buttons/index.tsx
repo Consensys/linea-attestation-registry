@@ -10,6 +10,7 @@ export const Button: React.FC<IButtonsProps> = ({
   iconLeft,
   iconRight,
   height = "h-12",
+  className,
   isSmall = false,
 }) => {
   return (
@@ -20,8 +21,8 @@ export const Button: React.FC<IButtonsProps> = ({
         buttonType === EButtonType.TRANSPARENT
           ? "px-0 py-0 rounded-none border-b border-transparent hover:border-blackDefault"
           : "px-4 py-3"
-      } flex justify-center items-center gap-2 rounded-md disabled:opacity-40 font-semibold transition
-      ${getButtonExtraClassName(buttonType)}`}
+      } flex justify-center items-center gap-2 rounded-md disabled:opacity-40 font-semibold 
+      transition ${getButtonExtraClassName(buttonType)} ${className}`}
     >
       {iconLeft && iconLeft}
       {name}

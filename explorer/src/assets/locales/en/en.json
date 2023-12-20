@@ -20,6 +20,7 @@
     },
     "messages": {
       "empty": "Empty",
+      "notDecoded": "Not Decoded",
       "notFound": "Not Found",
       "noResults": "No Results",
       "hasntBeenFound": "hasn`t been found",

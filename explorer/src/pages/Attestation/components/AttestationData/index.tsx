@@ -1,6 +1,6 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
-import { Check, Copy, EyeOffIcon, MinusCircle, PlusCircle } from "lucide-react";
+import { Check, Copy, EyeOffIcon, Minus, Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ReactJson from "react-json-view";
@@ -9,7 +9,7 @@ import { HelperIndicator } from "@/components/HelperIndicator";
 import { EMPTY_STRING, THOUSAND } from "@/constants";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 
-import { getAttestationData } from "./utils";
+import { getAttestationData, isDecodedData } from "./utils";
 
 export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const screen = useWindowDimensions();
@@ -19,7 +19,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const [heightDifference, setHeightDifference] = useState<number>(0);
 
   const { decodedData, decodedPayload } = attestation;
-  const data = getAttestationData(decodedPayload ?? decodedData);
+  const data = isDecodedData(decodedPayload, decodedData) ? getAttestationData(decodedPayload ?? decodedData) : null;
 
   const handleCopy = (text: string, result: boolean) => {
     if (!result || !text) return;
@@ -33,12 +33,13 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const toggleButton = isOpened
     ? {
         title: t("common.actions.less"),
-        Icon: MinusCircle,
+        Icon: Minus,
       }
     : {
         title: t("common.actions.more"),
-        Icon: PlusCircle,
+        Icon: Plus,
       };
+  const toggleButtonSize = screen.sm ? 24 : 16;
 
   useEffect(() => {
     if (!heightDifference && ref.current && ref.current.scrollHeight > ref.current.clientHeight) {
@@ -58,22 +59,23 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
           <Icon className="w-[21px] h-[21px] cursor-pointer hover:opacity-60" color={copied ? "#1a9d37" : "#64687D"} />
         </CopyToClipboard>
       </div>
-      <div className="bg-surface-attestationData rounded-xl p-4 pe-3 w-full relative">
+      <div className="bg-surface-attestationData rounded-xl p-4 pe-3 pb-2 w-full relative">
         {!data ? (
           <div className="flex gap-2 text-base text-text-tertiary w-full justify-center h-[108px] items-center">
             <EyeOffIcon />
-            {t("common.messages.empty")}
+            {t("common.messages.notDecoded")}
           </div>
         ) : (
           <div
             ref={ref}
-            className="flex flex-col pe-1 items-start overflow-auto text-text-tertiary text-sm scrollbar transition-[height]"
+            className={`flex flex-col pe-1 items-start overflow-auto text-text-tertiary text-sm scrollbar transition-[height] ${
+              screen.sm ? "no-vertical-scrollbar" : EMPTY_STRING
+            }`}
             style={{ height: isOpened ? heightDifference + 108 : 108 }}
           >
             <ReactJson
               src={JSON.parse(data)}
               name={false}
-              displayObjectSize={false}
               displayDataTypes={false}
               collapsed={false}
               enableClipboard={false}
@@ -84,11 +86,17 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
         )}
         {heightDifference !== 0 && (
           <div
-            className="absolute cursor-pointer right-6 bottom-2 flex gap-1 items-center text-text-quaternary text-sm font-semibold"
+            className={`absolute cursor-pointer flex gap-1 items-center text-text-quaternary text-sm font-semibold ${
+              screen.sm ? "right-2 bottom-6" : "right-6 bottom-2"
+            }`}
             onClick={() => setIsOpened((prev) => !prev)}
           >
-            {(screen.md || screen.lg || screen.xl) && toggleButton.title}
-            <toggleButton.Icon width={16} height={16} />
+            {!screen.sm && toggleButton.title}
+            <toggleButton.Icon
+              className="bg-surface-darkGrey rounded-full"
+              width={toggleButtonSize}
+              height={toggleButtonSize}
+            />
           </div>
         )}
       </div>

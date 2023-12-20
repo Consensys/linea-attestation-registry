@@ -13,9 +13,9 @@ function App() {
         <Navbar />
       </header>
       <Routes>
-        <Route path="*" element={<Home />} />
-        <Route path="/sdk-demo" element={<SDKDemo />} />
-        <Route path="/linea-poh" element={<Poh />} />
+        <Route path="*" element={<Home title={"Verax Attestation Registry"} />} />
+        <Route path="/sdk-demo" element={<SDKDemo title={"Verax | SDK Demo"} />} />
+        <Route path="/linea-poh" element={<Poh title={"Verax | Linea POH"} />} />
       </Routes>
       <footer>
         <Footer />

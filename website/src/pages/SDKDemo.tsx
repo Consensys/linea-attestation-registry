@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { type FunctionComponent, useEffect, useState } from "react";
 import "./SDKDemo.css";
 import { ConnectKitButton } from "connectkit";
 import { Attestation, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { useAccount, useNetwork } from "wagmi";
 
-function SDKDemo() {
+export type SDKDemoProps = {
+  title: string;
+};
+
+export const SDKDemo: FunctionComponent<SDKDemoProps> = ({ title }) => {
   const [attestations, setAttestations] = useState<Attestation[]>([]);
   const [attestationsCounter, setAttestationsCounter] = useState<number>(0);
   const [txHash, setTxHash] = useState<string>("");
@@ -15,8 +19,13 @@ function SDKDemo() {
   const { chain } = useNetwork();
 
   useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  useEffect(() => {
     if (chain && address) {
-      const sdkConf = chain.id === 59144 ? VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND : VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND;
+      const sdkConf =
+        chain.id === 59144 ? VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND : VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND;
       const sdk = new VeraxSdk(sdkConf, address);
       setVeraxSdk(sdk);
     }
@@ -67,7 +76,6 @@ function SDKDemo() {
     }
   };
 
-
   return (
     <>
       <h1>Verax - SDK Demo</h1>
@@ -80,8 +88,9 @@ function SDKDemo() {
         {attestations.length > 0 && (
           <>
             {attestations.map((attestation) => (
-              <pre
-                key={attestation.id}>ID = {shortenHexString(attestation.id)} - Subject = {shortenHexString(attestation.subject)}</pre>
+              <pre key={attestation.id}>
+                ID = {shortenHexString(attestation.id)} - Subject = {shortenHexString(attestation.subject)}
+              </pre>
             ))}
           </>
         )}
@@ -93,12 +102,14 @@ function SDKDemo() {
       </div>
 
       <div className="card">
-        <button onClick={createAnAttestation} disabled={!isConnected}>Create an attestation via a Portal</button>
+        <button onClick={createAnAttestation} disabled={!isConnected}>
+          Create an attestation via a Portal
+        </button>
         {txHash !== "" && <p>{`Transaction with hash ${txHash} sent!`}</p>}
         {error !== "" && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </>
   );
-}
+};
 
 export default SDKDemo;

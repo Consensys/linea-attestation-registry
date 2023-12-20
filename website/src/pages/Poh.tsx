@@ -5,6 +5,8 @@ import { ConnectKitButton } from "connectkit";
 import axios from "axios";
 import { useAccount } from "wagmi";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export type PohProps = {
   title: string;
@@ -76,8 +78,12 @@ export const Poh: FunctionComponent<PohProps> = ({ title }) => {
               </Link>
             ) : (
               <>{displayName(poh.issuerName)}</>
+            )}{" "}
+            {poh.validated ? (
+              <FontAwesomeIcon size={"lg"} color={"green"} icon={faCheck} />
+            ) : (
+              <FontAwesomeIcon size={"lg"} color={"red"} icon={faXmark} />
             )}
-            {poh.validated ? ` ✅` : ` ❌`}
           </div>
         ))}
       </>
@@ -104,7 +110,14 @@ export const Poh: FunctionComponent<PohProps> = ({ title }) => {
           </div>
 
           <div className="card" style={{ padding: 0 }}>
-            <h2>Global POH status {isPoh ? ` ✅` : ` ❌`}</h2>
+            <h2>
+              Global POH status{" "}
+              {isPoh ? (
+                <FontAwesomeIcon size={"lg"} color={"green"} icon={faCheck} />
+              ) : (
+                <FontAwesomeIcon size={"lg"} color={"red"} icon={faXmark} />
+              )}
+            </h2>
           </div>
 
           <div className="responsive-two-column-grid">

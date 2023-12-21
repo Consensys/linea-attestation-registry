@@ -17,7 +17,7 @@
       "startBlock": 1454671
     }
   },
-  "linea-mainnet": {
+  "linea": {
     "AttestationRegistry": {
       "address": "0x3de3893aa4Cdea029e84e75223a152FD08315138",
       "startBlock": 346695

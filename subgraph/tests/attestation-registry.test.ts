@@ -59,7 +59,7 @@ describe("AttestationRegistry", () => {
       assert.bytesEquals(result.attestationData, attestationData);
     });
 
-    test("Should create a new Attestation entity", () => {
+    test("Should create a new Attestation entity and audit data", () => {
       assert.entityCount("Attestation", 0);
 
       const attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
@@ -90,6 +90,11 @@ describe("AttestationRegistry", () => {
       assert.fieldEquals("Attestation", attestationId.toHexString(), "revoked", revoked.toString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "subject", subject.toHexString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "attestationData", attestationData.toHexString());
+
+      assert.entityCount("AuditInformation", 1);
+      assert.fieldEquals("AuditInformation", attestationId.toHexString(), "id", attestationId.toHexString());
+
+      assert.entityCount("Audit", 1);
     });
 
     test("Should increment the attestations Counter", () => {

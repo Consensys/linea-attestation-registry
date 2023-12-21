@@ -1,9 +1,9 @@
 import { afterEach, assert, beforeAll, clearStore, createMockedFunction, describe, test } from "matchstick-as";
 import { Address, ethereum } from "@graphprotocol/graph-ts";
 import {
-  PortalRegistered as PortalRegisteredEvent,
   IssuerAdded as IssuerAddedEvent,
   IssuerRemoved as IssuerRemovedEvent,
+  PortalRegistered as PortalRegisteredEvent,
   PortalRegistry,
 } from "../generated/PortalRegistry/PortalRegistry";
 import { newTypedMockEvent } from "matchstick-as/assembly/defaults";
@@ -63,7 +63,7 @@ describe("handlePortalRegistered()", () => {
     assert.stringEquals(result.ownerName, ownerName);
   });
 
-  test("Should create a new Portal entity", () => {
+  test("Should create a new Portal entity and audit data", () => {
     assert.entityCount("Portal", 0);
 
     const portalRegisteredEvent = createPortalRegisteredEvent(portalAddress, name, description);
@@ -76,6 +76,26 @@ describe("handlePortalRegistered()", () => {
     assert.fieldEquals("Portal", portalAddress.toHexString(), "name", name);
     assert.fieldEquals("Portal", portalAddress.toHexString(), "description", description);
     assert.fieldEquals("Portal", portalAddress.toHexString(), "attestationCounter", "0");
+
+    assert.entityCount("AuditInformation", 1);
+    assert.fieldEquals("AuditInformation", portalAddress.toHexString(), "id", portalAddress.toHexString());
+
+    assert.entityCount("Audit", 1);
+  });
+
+  test("Should remove Portal entity", () => {
+    assert.entityCount("Portal", 0);
+
+    const portalRegisteredEvent = createPortalRegisteredEvent(portalAddress, name, description);
+
+    handlePortalRegistered(portalRegisteredEvent);
+
+    assert.entityCount("Portal", 1);
+
+    // TODO: call handlePortalRevoked
+    // handleRevoked
+
+    assert.entityCount("Portal", 0);
   });
 
   test("Should increment the portals Counter", () => {
@@ -96,7 +116,7 @@ describe("handleIssuerAdded()", () => {
     clearStore();
   });
 
-  test("Should create a new Issuer entity", () => {
+  test("Should create a new Issuer entity and audit data", () => {
     assert.entityCount("Issuer", 0);
     const issuerAddedEvent = newTypedMockEvent<IssuerAddedEvent>();
     issuerAddedEvent.address = portalRegistryAddress;
@@ -108,6 +128,11 @@ describe("handleIssuerAdded()", () => {
 
     assert.entityCount("Issuer", 1);
     assert.fieldEquals("Issuer", portalAddress.toHexString(), "id", "0x" + issuerAddress);
+
+    assert.entityCount("AuditInformation", 1);
+    assert.fieldEquals("AuditInformation", portalAddress.toHexString(), "id", portalAddress.toHexString());
+
+    assert.entityCount("Audit", 1);
   });
 });
 

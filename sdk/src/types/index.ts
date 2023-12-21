@@ -24,7 +24,6 @@ export type AttestationWithDecodeObject = Attestation & {
 
 export type Attestation = OnChainAttestation & {
   id: string;
-  schemaString: string;
   decodedData: string[];
   decodedPayload: object;
   offchainData?: OffchainData;
@@ -34,7 +33,7 @@ export type OffchainData = { schemaId: string; uri: string; error?: string };
 
 export type OnChainAttestation = {
   attestationId: string; // The unique identifier of the attestation.
-  schemaId: string; // The identifier of the schema this attestation adheres to.
+  schema: string; // The identifier of the schema this attestation adheres to.
   replacedBy: string | null; // Whether the attestation was replaced by a new one.
   attester: Address; // The address issuing the attestation to the subject.
   portal: Address; // The id of the portal that created the attestation.

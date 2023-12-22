@@ -5,7 +5,7 @@
 
     color-scheme: dark;
     color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
+    background-color: #121212;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -55,4 +55,75 @@ button:hover {
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
+}
+
+@font-face {
+  font-family: "Atyp Display";
+  src: url(./assets/fonts/AtypDisplay-Light.woff2) format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Atyp Display";
+  src: url(./assets/fonts/AtypDisplay-Regular.woff2) format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Atyp Display";
+  src: url(./assets/fonts/AtypDisplay-Medium.woff2) format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Atyp Display";
+  src: url(./assets/fonts/AtypDisplay-Semibold.woff2) format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Atyp Display";
+  src: url(./assets/fonts/AtypDisplay-Bold.woff2) format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: "Atyp Text";
+  src: url(./assets/fonts/AtypText-Light.woff2) format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Atyp Text";
+  src: url(./assets/fonts/AtypText-Regular.woff2) format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Atyp Text";
+  src: url(./assets/fonts/AtypText-Medium.woff2) format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Atyp Text";
+  src: url(./assets/fonts/AtypText-Semibold.woff2) format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Atyp Text";
+  src: url(./assets/fonts/AtypText-Bold.woff2) format("woff2");
+  font-weight: 700;
+  font-style: normal;
 }

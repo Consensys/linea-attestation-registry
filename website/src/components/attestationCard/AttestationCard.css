@@ -1,0 +1,69 @@
+.attestation_card {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #505050;
+  background-color: #1d1d1d;
+  border-radius: 2px;
+  padding: 3.5rem 1.5rem;
+  position: relative;
+}
+
+.attestation_card-validated {
+  border-color: #c1ff14;
+}
+
+.attestation_card::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  height: 0.625rem;
+  width: 0.625rem;
+  background-color: #505050;
+  border-radius: 50%;
+  content: "";
+  transform: translate(50%, -50%);
+  transition: all 0.25s ease-in-out;
+}
+
+.attestation_card-validated::after {
+  background-color: #c1ff14;
+}
+
+.attestation_card-logo {
+  aspect-ratio: 16 / 9;
+}
+
+.attestation_card-logo:not(.static-image) {
+  background: #000;
+  display: flex;
+  border: 1px solid #505050;
+  border-radius: 2px;
+}
+
+.attestation_card-logo img {
+  width: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  height: 100%;
+}
+
+.attestation_card-logo:not(.static-image) img {
+  max-height: 80%;
+  margin: auto;
+}
+
+.attestation_card-name {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  font-size: 0.875rem;
+  color: #c0c0c0;
+  display: flex;
+  align-items: center;
+  text-align: right;
+}
+
+.attestation_card-name svg {
+  margin-left: 8px;
+}

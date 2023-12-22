@@ -12,7 +12,7 @@ export const Home: FunctionComponent<HomeProps> = ({ title }) => {
   }, [title]);
 
   return (
-    <>
+    <div className="container">
       <div>
         <a href="https://docs.ver.ax/" target="_blank">
           <img src={veraxLogo} className="logo" alt="Verax logo" />
@@ -24,7 +24,7 @@ export const Home: FunctionComponent<HomeProps> = ({ title }) => {
         Verax is a shared registry for storing attestations of public interest on EVM chains,
         <br /> designed to enhance data discoverability and consumption for dApps across the network.{" "}
       </p>
-    </>
+    </div>
   );
 };
 

@@ -1,6 +1,4 @@
 #root {
-    max-width: 1280px;
-    margin: 0 auto;
     text-align: center;
 }
 
@@ -40,4 +38,34 @@
 
 .read-the-docs {
     color: #888;
+}
+
+.container {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+
+    @media (min-width: 640px) {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+
+    @media (min-width: 768px) {
+        margin-left: 3rem;
+        margin-right: 3rem;
+    }
+
+    @media (min-width: 1280px) {
+        margin-left: 4rem;
+        margin-right: 4rem;
+    }
+
+    @media (min-width: 1252px) {
+        max-width: 1252px;
+    }
+
+    @media (min-width: 1320px) {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
 }

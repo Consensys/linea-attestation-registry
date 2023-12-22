@@ -4,6 +4,7 @@ import { Check, Copy, EyeOffIcon, Minus, Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ReactJson from "react-json-view";
+import { useTernaryDarkMode } from "usehooks-ts";
 
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { EMPTY_STRING, THOUSAND } from "@/constants";
@@ -17,6 +18,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const [copied, setCopied] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
   const [heightDifference, setHeightDifference] = useState<number>(0);
+  const { isDarkMode } = useTernaryDarkMode();
 
   const { decodedData, decodedPayload } = attestation;
   const data = isDecodedData(decodedPayload, decodedData) ? getAttestationData(decodedPayload ?? decodedData) : null;
@@ -53,22 +55,28 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
       <div className="self-stretch justify-between items-center inline-flex">
         <div className="h-[19px] justify-start items-center gap-2 flex">
           <HelperIndicator type="attestation" />
-          <div className="text-text-primary text-base font-semibold">{t("attestation.data")}</div>
+          <div className="text-text-primary dark:text-whiteDefault text-base font-semibold">
+            {t("attestation.data")}
+          </div>
         </div>
         <CopyToClipboard onCopy={handleCopy} text={data ? JSON.stringify(data, null, 2) : EMPTY_STRING}>
-          <Icon className="w-[21px] h-[21px] cursor-pointer hover:opacity-60" color={copied ? "#1a9d37" : "#64687D"} />
+          <Icon
+            className={`w-[21px] h-[21px] cursor-pointer hover:opacity-60 ${
+              copied ? "text-greenDefault dark:text-greenDark" : "text-greyDefault dark:text-text-secondaryDark"
+            }`}
+          />
         </CopyToClipboard>
       </div>
-      <div className="bg-surface-attestationData rounded-xl p-4 pe-3 pb-2 w-full relative">
+      <div className="bg-surface-attestationData dark:bg-surface-attestationDataDark rounded-xl p-4 pe-3 pb-2 w-full relative">
         {!data ? (
-          <div className="flex gap-2 text-base text-text-tertiary w-full justify-center h-[108px] items-center">
+          <div className="flex gap-2 text-base text-text-tertiary dark:text-tertiary w-full justify-center h-[108px] items-center">
             <EyeOffIcon />
             {t("common.messages.notDecoded")}
           </div>
         ) : (
           <div
             ref={ref}
-            className={`flex flex-col pe-1 items-start overflow-auto text-text-tertiary text-sm scrollbar transition-[height] ${
+            className={`flex flex-col pe-1 items-start overflow-auto text-text-tertiary dark:text-tertiary text-sm scrollbar transition-[height] ${
               screen.sm ? "no-vertical-scrollbar" : EMPTY_STRING
             }`}
             style={{ height: isOpened ? heightDifference + 108 : 108 }}
@@ -81,6 +89,8 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
               enableClipboard={false}
               quotesOnKeys={false}
               sortKeys={true}
+              theme={isDarkMode ? "hopscotch" : "rjv-default"}
+              style={{ backgroundColor: isDarkMode ? "#12172C" : "#EAEAF3" }}
             />
           </div>
         )}

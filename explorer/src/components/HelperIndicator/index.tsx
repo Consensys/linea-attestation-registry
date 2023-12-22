@@ -5,13 +5,13 @@ import { IHelperIndicatorProps } from "./interface";
 const getIndicatorColorClass = (page: Page): string => {
   switch (page) {
     case "schema":
-      return "bg-page-schema";
+      return "bg-page-schema dark:bg-page-schemaDark";
     case "attestation":
-      return "bg-page-attestation";
+      return "bg-page-attestation dark:bg-page-attestationDark";
     case "portal":
-      return "bg-page-portal";
+      return "bg-page-portal dark:bg-page-portalDark";
     case "module":
-      return "bg-page-module";
+      return "bg-page-module dark:bg-page-moduleDark";
     default:
       return "bg-transparent";
   }

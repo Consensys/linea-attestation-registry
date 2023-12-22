@@ -3,9 +3,12 @@ import { t } from "i18next";
 import { ChevronDown } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { useLocation } from "react-router-dom";
+import { useTernaryDarkMode } from "usehooks-ts";
 import { useAccount } from "wagmi";
 
+import VeraxLogoDarkMode from "@/assets/logo/verax-logo-dark-mode.svg?react";
 import VeraxLogo from "@/assets/logo/verax-logo.svg?react";
+import { LightDarkModeSwitcher } from "@/components/LightDarkModeSwitcher";
 import { Link } from "@/components/Link";
 import {
   DropdownMenu,
@@ -36,6 +39,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
   const location = useLocation();
   const { address, isConnected } = useAccount();
   const { open } = useWeb3Modal();
+  const { isDarkMode } = useTernaryDarkMode();
 
   const { network, setNetwork } = useNetworkContext();
   const screen = useWindowDimensions();
@@ -50,25 +54,26 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
       <div className="justify-between items-center inline-flex gap-4">
         <div className="justify-start items-center gap-6 flex self-stretch">
           <Link to={APP_ROUTES.HOME} className="shrink-0 hover:opacity-70">
-            <VeraxLogo />
+            {isDarkMode ? <VeraxLogoDarkMode /> : <VeraxLogo />}
           </Link>
           {!isAdaptive && <NavigationList />}
         </div>
         <div className="justify-end items-center gap-4 flex flex-1">
           {!screen.sm && !isHomePage && <SearchInput />}
+          <LightDarkModeSwitcher />
           <DropdownMenu>
-            <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] p-2 rounded-md outline-none hover:bg-jumbotronDark justify-start items-center gap-2 inline-flex transition">
-              {network.img}
+            <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] p-2 rounded-md outline-none hover:bg-jumbotronLight dark:hover:bg-jumbotronDark justify-start items-center gap-2 inline-flex transition dark:text-whiteDefault">
+              {isDarkMode && network.imgDark ? network.imgDark : network.img}
               <ChevronDown className="header-arrow w-6 h-6 relative" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="flex flex-col gap-2 bg-surface-primary">
+            <DropdownMenuContent className="flex flex-col gap-2 bg-surface-primary dark:bg-blackDefault dark:border-border-cardDark">
               {chains.map((chain) => (
                 <DropdownMenuItem
                   key={chain.name}
-                  className="flex gap-2 focus:bg-jumbotronDark cursor-pointer transition"
+                  className="flex gap-2 focus:bg-jumbotronLight dark:focus:bg-jumbotronDark dark:text-whiteDefault cursor-pointer transition"
                   onClick={() => setNetwork(chain)}
                 >
-                  {chain.img}
+                  {isDarkMode && chain.imgDark ? chain.imgDark : chain.img}
                   {chain.name}
                 </DropdownMenuItem>
               ))}

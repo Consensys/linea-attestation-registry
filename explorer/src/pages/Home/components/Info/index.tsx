@@ -11,10 +11,10 @@ export const Info: React.FC = () => {
       {infoData.map((info) => (
         <div
           key={info.title}
-          className={`flex flex-col items-center justify-center gap-6 px-10 h-[18.75rem] lg:h-[23.375rem] rounded-3xl text-center ${info.additionalClass}`}
+          className={`flex flex-col items-center justify-center gap-6 px-10 h-[18.75rem] lg:h-[23.375rem] rounded-3xl text-center dark:text-whiteDefault ${info.additionalClass}`}
         >
           {info.icon}
-          <div className="text-xl md:text-2xl font-semibold">{info.title}</div>
+          <div className="text-xl md:text-2xl font-semibold dark:text-whiteDefault">{info.title}</div>
           <Button
             name={info.button.name}
             handler={() => window.open(info.button.url, "_blank")}

@@ -30,7 +30,7 @@ export const Search = () => {
   const notFound = isLoaded && count === 0;
 
   return (
-    <section className="container flex flex-col items-start gap-10">
+    <section className="container flex flex-col items-start gap-10 lg:mt-16 md:mt-8 mt-5">
       {notFound ? (
         <InfoBlock
           icon={<img src={archive} alt="archive" />}
@@ -42,7 +42,7 @@ export const Search = () => {
         />
       ) : (
         <>
-          <p className="text-text-tertiary text-base [&>strong]:text-text-primary break-word">
+          <p className="text-text-tertiary text-base dark:text-tertiary [&>strong]:text-text-primary dark:[&>strong]:text-text-secondaryDark break-word">
             <Trans i18nKey="common.messages.searchFound" values={{ count, search }} components={{ bold: <strong /> }} />
           </p>
           <div className="flex flex-col gap-12 w-full">

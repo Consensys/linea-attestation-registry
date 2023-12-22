@@ -39,7 +39,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
 
   return (
     <div className="flex flex-col w-full items-start gap-6">
-      <div className="font-semibold text-page-attestation text-2xl whitespace-nowrap md:text-3xl">
+      <div className="font-semibold text-page-attestation dark:text-page-attestationDark text-2xl whitespace-nowrap md:text-3xl">
         #{displayAmountWithComma(hexToNumber(id as Hex))}
       </div>
       <div className="gap-6 flex flex-col items-start w-full md:flex-wrap md:h-[170px] md:content-between xl:flex-nowrap xl:h-auto">
@@ -49,7 +49,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
             {item.to && (
               <Link
                 to={item.to}
-                className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline"
+                className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline"
               >
                 {item.value}
               </Link>
@@ -59,14 +59,14 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
               <a
                 href={item.link}
                 target="_blank"
-                className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline"
+                className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline"
               >
                 {item.value}
               </a>
             )}
 
             {!item.to && !item.link && (
-              <div className="text-text-secondary whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base">
+              <div className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base">
                 {item.value}
               </div>
             )}

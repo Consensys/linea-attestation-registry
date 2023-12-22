@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import { Dispatch, SetStateAction } from "react";
 
-import { EMPTY_STRING } from "@/constants";
-
 interface MenuButtonProps {
   isOpened: boolean;
   className?: string;
@@ -53,11 +51,15 @@ export const MenuButton: React.FC<MenuButtonProps> = ({ isOpened, setIsOpened, c
   const unitHeight = 4;
   const unitWidth = (unitHeight * (width as number)) / (height as number);
 
+  const toggleScrollLock = (state: boolean) => {
+    document.documentElement.classList.toggle("scroll-lock", state);
+    document.body.classList.toggle("scroll-lock", state);
+  };
+
   const handler = () => {
     setIsOpened((prev) => {
       const newState = !prev;
-      document.documentElement.className = newState ? "scroll-lock" : EMPTY_STRING;
-      document.body.className = newState ? "scroll-lock" : EMPTY_STRING;
+      toggleScrollLock(newState);
       return newState;
     });
   };

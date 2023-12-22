@@ -12,13 +12,13 @@ import { SearchWrapper } from "../SearchWrapper";
 
 export const SearchAttestations: React.FC<SearchComponentProps> = ({ getSearchData, parsedString, search }) => {
   const {
-    sdk: { attestation },
+    sdk,
     network: { chain },
   } = useNetworkContext();
 
   const { data } = useSWR(
     `${SWRKeys.GET_ATTESTATION_LIST}/${SWRKeys.SEARCH}/${search}/${chain.id}`,
-    async () => loadAttestationList(attestation, parsedString),
+    async () => loadAttestationList(sdk.attestation, parsedString),
     {
       shouldRetryOnError: false,
       revalidateAll: false,
@@ -30,7 +30,7 @@ export const SearchAttestations: React.FC<SearchComponentProps> = ({ getSearchDa
   if (!data || !data.length) return null;
   return (
     <SearchWrapper title={t("attestation.title")} items={data.length}>
-      <DataTable columns={columns()} data={data} />
+      <DataTable columns={columns({ sdk })} data={data} />
     </SearchWrapper>
   );
 };

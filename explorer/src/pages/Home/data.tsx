@@ -4,8 +4,10 @@ import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
 import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
+import PadoDark from "@/assets/issuers/pado-dark.svg?react";
 import Pado from "@/assets/issuers/pado.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
+import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
 
 import { IIssuer } from "./interface";
@@ -35,6 +37,7 @@ export const issuersData: IIssuer[] = [
   {
     name: "PADO Labs",
     logo: Pado,
+    logoDark: PadoDark,
     keywords: ["zk-attestations"],
     description:
       "PADO is a zkAttestation protocol, dedicated to bringing Internet data into web3 smart contracts, expanding the capabilities of smart contracts, and enabling the monetization of personal data within data flows under privacy protection.",
@@ -45,6 +48,7 @@ export const issuersData: IIssuer[] = [
   {
     name: "zkPass",
     logo: ZkPass,
+    logoDark: ZkPassDark,
     keywords: ["zk-attestations"],
     description:
       "Generating a zero-knowledge proof based on an HTTPS Web Session that represents your IRL assets and identity, right in the browser locally, and no API authorization is required.",

@@ -11,7 +11,7 @@ export const TdHandler: React.FC<ITdHandler> = ({ value, valueUrl, to, isTextLef
         <a
           href={valueUrl}
           target="_blank"
-          className={`hover:underline hover:text-text-quaternary ${isTextLeft ? "translate-x-0" : "translate-x-5"} ${
+          className={`hover:underline ${isTextLeft ? "translate-x-0" : "translate-x-5"} ${
             isTextLeft ? "group-hover:translate-x-5" : "group-hover:translate-x-0"
           } transition max-w-[300px] overflow-hidden text-ellipsis`}
         >

@@ -61,11 +61,15 @@ export const MyAttestations: React.FC = () => {
   return (
     <TitleAndSwitcher>
       {address && (
-        <div className="flex items-center text-text-secondary text-base font-medium gap-3 mb-6">
-          <Wallet />
+        <div className="flex items-center text-text-secondary dark:text-text-secondaryDark text-base font-medium gap-3 mb-6">
+          <Wallet className="w-4 text-greyDefault" />
           <div>{sm ? cropString(address) : address}</div>
           <CopyToClipboard onCopy={handleCopy} text={address}>
-            <CopyIcon className="cursor-pointer hover:opacity-60" color={copied ? "#1a9d37" : "#64687D"} />
+            <CopyIcon
+              className={`w-4 cursor-pointer hover:opacity-60 transition ${
+                copied ? "text-greenDefault dark:text-greenDark" : "text-greyDefault dark:text-text-secondaryDark"
+              } `}
+            />
           </CopyToClipboard>
         </div>
       )}

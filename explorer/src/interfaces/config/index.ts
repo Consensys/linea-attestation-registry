@@ -6,5 +6,6 @@ export interface INetwork {
   chain: Chain;
   veraxEnv: Conf;
   img: JSX.Element;
+  imgDark?: JSX.Element;
   network: string;
 }

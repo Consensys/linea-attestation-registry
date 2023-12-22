@@ -28,7 +28,7 @@ export const Portals: React.FC<IPortalProps> = ({ address }) => {
 
   return (
     <div className="flex flex-col gap-6 md:gap-8">
-      <div className="flex items-center text-2xl md:text-[2rem] font-semibold gap-2">
+      <div className="flex items-center text-2xl md:text-[2rem] font-semibold gap-2 dark:text-whiteDefault">
         <HelperIndicator type="portal" sizeClass="w-1 md:w-[0.375rem] h-4 md:h-6" /> {t("issuer.portals.title")}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-[1.875rem]">
@@ -50,15 +50,19 @@ export const Portals: React.FC<IPortalProps> = ({ address }) => {
 
           return (
             <div
-              className="flex flex-col gap-4 md:gap-6 p-4 md:p-6 rounded-xl border border-border-card hover:border-border-cardHover items-start"
+              className="flex flex-col gap-4 md:gap-6 p-4 md:p-6 rounded-xl border border-border-card dark:border-border-cardDark hover:border-border-cardHover dark:hover:border-border-cardHoverDark items-start transition"
               key={id}
             >
-              <div className="text-xl md:text-2xl font-semibold">{name}</div>
-              <div className="text-sm font-normal text-text-darkGrey">{description}</div>
+              <div className="text-xl md:text-2xl font-semibold dark:text-whiteDefault">{name}</div>
+              <div className="text-sm font-normal text-text-darkGrey dark:text-tertiary">{description}</div>
               {additionalInfo.map((info) => (
                 <div className="flex flex-col gap-1 md:gap-2" key={info.value}>
-                  <div className="text-xs font-normal uppercase text-text-quaternary">{info.title}</div>
-                  <div className="text-sm font-medium text-darkBlue break-all">{info.value}</div>
+                  <div className="text-xs font-normal uppercase text-text-quaternary dark:text-tertiary">
+                    {info.title}
+                  </div>
+                  <div className="text-sm font-medium text-darkBlue break-all dark:text-text-secondaryDark">
+                    {info.value}
+                  </div>
                 </div>
               ))}
               <Button

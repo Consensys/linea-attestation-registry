@@ -1,5 +1,6 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
+import { ArrowUpRight } from "lucide-react";
 import { Hex, hexToNumber } from "viem";
 
 import { Link } from "@/components/Link";
@@ -64,9 +65,10 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
               <a
                 href={item.link}
                 target="_blank"
-                className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline"
+                className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline flex items-center gap-2"
               >
                 {item.value}
+                <ArrowUpRight width="1rem" height="auto" />
               </a>
             )}
 

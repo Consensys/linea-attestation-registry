@@ -7,6 +7,7 @@ import { attestationColumnsOption, columns, skeletonAttestations } from "@/const
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { APP_ROUTES } from "@/routes/constants";
 
 export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId }) => {
   const {
@@ -35,7 +36,7 @@ export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId })
       <p className="text-xl not-italic font-semibold text-text-primary dark:text-whiteDefault">
         {t("attestation.recent")}
       </p>
-      <DataTable columns={data.columns} data={data.list} />
+      <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.ATTESTATION_BY_ID} />
     </div>
   );
 };

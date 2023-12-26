@@ -8,6 +8,7 @@ import { columns, moduleColumnsOption, skeletonModules } from "@/constants/colum
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { APP_ROUTES } from "@/routes/constants";
 import { isNotNullOrUndefined } from "@/utils";
 
 export const PortalModules: React.FC<{ portalModules: Array<Address> }> = ({ portalModules }) => {
@@ -33,7 +34,7 @@ export const PortalModules: React.FC<{ portalModules: Array<Address> }> = ({ por
   return (
     <div className="flex flex-col gap-6 w-full px-5 md:px-10">
       <p className="text-xl not-italic font-semibold text-text-primary dark:text-whiteDefault">{t("module.title")}</p>
-      <DataTable columns={data.columns} data={data.list} />
+      <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.PORTAL_BY_ID} />
     </div>
   );
 };

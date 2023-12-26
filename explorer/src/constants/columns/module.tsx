@@ -27,7 +27,7 @@ export const columns = ({ chainId }: Partial<ColumnsProps> = {}): ColumnDef<Modu
     cell: ({ row }) => {
       const { name, id } = row.original;
       return (
-        <Link to={toModuleById(id)} className="hover:underline">
+        <Link to={toModuleById(id)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
           {name}
         </Link>
       );

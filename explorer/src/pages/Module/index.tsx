@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
@@ -52,9 +53,10 @@ export const Module = () => {
         <a
           href={`${links[chain.id].address}/${module.moduleAddress}`}
           target="_blank"
-          className="cursor-pointer hover:underline overflow-hidden text-ellipsis sm:w-fit dark:text-text-secondaryDark"
+          className="cursor-pointer hover:underline overflow-hidden text-ellipsis sm:w-fit dark:text-text-secondaryDark flex items-center gap-2"
         >
           {module.moduleAddress}
+          <ArrowUpRight height="1rem" width="auto" />
         </a>
       </div>
     </section>

@@ -17,6 +17,7 @@ import { EQueryParams } from "@/enums/queryParams";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { APP_ROUTES } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
 
 import { TitleAndSwitcher } from "../Attestations/components/TitleAndSwitcher";
@@ -85,7 +86,11 @@ export const MyAttestations: React.FC = () => {
       ) : !attestationsList || !attestationsList.length ? (
         <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.emptyList")} />
       ) : (
-        <DataTable columns={columns({ sdk, chainId: chain.id })} data={attestationsList} />
+        <DataTable
+          columns={columns({ sdk, chainId: chain.id })}
+          data={attestationsList}
+          link={APP_ROUTES.ATTESTATION_BY_ID}
+        />
       )}
     </TitleAndSwitcher>
   );

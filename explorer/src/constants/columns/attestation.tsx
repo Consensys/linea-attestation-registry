@@ -36,7 +36,7 @@ export const columns = ({ sortByDate = true, sdk, chainId }: Partial<ColumnsProp
     cell: ({ row }) => {
       const id = row.getValue("id");
       return (
-        <Link to={toAttestationById(id as string)} className="hover:underline">
+        <Link to={toAttestationById(id as string)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
           {displayAmountWithComma(hexToNumber(id as Address))}
         </Link>
       );
@@ -88,7 +88,12 @@ export const columns = ({ sortByDate = true, sdk, chainId }: Partial<ColumnsProp
       if (!chainId) return cropString(subject);
 
       return (
-        <a href={`${links[chainId].address}/${subject}`} target="_blank" className="hover:underline">
+        <a
+          href={`${links[chainId].address}/${subject}`}
+          onClick={(e) => e.stopPropagation()}
+          target="_blank"
+          className="hover:underline"
+        >
           {cropString(subject)}
         </a>
       );

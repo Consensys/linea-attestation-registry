@@ -5,6 +5,7 @@ import { DataTable } from "@/components/DataTable";
 import { columns } from "@/constants/columns/module";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { APP_ROUTES } from "@/routes/constants";
 
 import { loadModuleList } from "./loadModuleList";
 import { SearchComponentProps } from "../interfaces";
@@ -30,7 +31,7 @@ export const SearchModules: React.FC<SearchComponentProps> = ({ getSearchData, p
   if (!data || !data.length) return null;
   return (
     <SearchWrapper title={t("module.title")} items={data.length}>
-      <DataTable columns={columns({ chainId: chain.id })} data={data} />
+      <DataTable columns={columns({ chainId: chain.id })} data={data} link={APP_ROUTES.MODULES_BY_ID} />
     </SearchWrapper>
   );
 };

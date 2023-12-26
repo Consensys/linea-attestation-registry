@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
         </div>
         <div className="justify-end items-center gap-4 flex flex-1">
           {!screen.sm && !isHomePage && <SearchInput />}
-          <LightDarkModeSwitcher />
+          {!isAdaptive && <LightDarkModeSwitcher />}
           <DropdownMenu>
             <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] p-2 rounded-md outline-none hover:bg-jumbotronLight dark:hover:bg-jumbotronDark justify-start items-center gap-2 inline-flex transition dark:text-whiteDefault">
               {isDarkMode && network.imgDark ? network.imgDark : network.img}

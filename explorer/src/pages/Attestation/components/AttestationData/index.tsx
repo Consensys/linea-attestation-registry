@@ -103,7 +103,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
           >
             {!screen.sm && toggleButton.title}
             <toggleButton.Icon
-              className="bg-surface-darkGrey rounded-full"
+              className="bg-surface-darkGrey dark:bg-surface-darkGreyDark rounded-full"
               width={toggleButtonSize}
               height={toggleButtonSize}
             />

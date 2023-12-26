@@ -85,7 +85,7 @@ export const MyAttestations: React.FC = () => {
       ) : !attestationsList || !attestationsList.length ? (
         <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.emptyList")} />
       ) : (
-        <DataTable columns={columns()} data={attestationsList} />
+        <DataTable columns={columns({ sdk, chainId: chain.id })} data={attestationsList} />
       )}
     </TitleAndSwitcher>
   );

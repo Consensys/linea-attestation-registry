@@ -11,7 +11,11 @@ import { cropString } from "@/utils/stringUtils";
 
 import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT, links } from "../index";
 
-export const columns = (): ColumnDef<Module>[] => [
+interface ColumnsProps {
+  chainId: number;
+}
+
+export const columns = ({ chainId }: Partial<ColumnsProps> = {}): ColumnDef<Module>[] => [
   {
     accessorKey: "name",
     header: () => (
@@ -43,7 +47,7 @@ export const columns = (): ColumnDef<Module>[] => [
 
       return (
         <TdHandler
-          valueUrl={`${links.lineascan.address}/${address}`}
+          valueUrl={chainId ? `${links[chainId].address}/${address}` : "#"}
           value={cropString(address)}
           to={toModuleById(id)}
         />

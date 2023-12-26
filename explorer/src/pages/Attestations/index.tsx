@@ -55,7 +55,7 @@ export const Attestations: React.FC = () => {
 
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations() }
-    : { columns: columns({ sdk }), list: attestationsList || [] };
+    : { columns: columns({ sdk, chainId: chain.id }), list: attestationsList || [] };
 
   return (
     <TitleAndSwitcher>

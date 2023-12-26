@@ -30,7 +30,7 @@ export const SearchAttestations: React.FC<SearchComponentProps> = ({ getSearchDa
   if (!data || !data.length) return null;
   return (
     <SearchWrapper title={t("attestation.title")} items={data.length}>
-      <DataTable columns={columns({ sdk })} data={data} />
+      <DataTable columns={columns({ sdk, chainId: chain.id })} data={data} />
     </SearchWrapper>
   );
 };

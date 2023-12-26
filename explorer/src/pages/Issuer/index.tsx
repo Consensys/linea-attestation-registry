@@ -21,7 +21,7 @@ export const Issuer: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col px-5 md:px-14 xl:px-[60px] gap-14 md:gap-12 mt-5 md:mt-6">
+    <div className="flex flex-col gap-14 md:gap-12 mt-5 md:mt-6 container">
       <Banner name={name} CTALink={CTALink} CTATitle={CTATitle} logo={logo} />
       <Description description={description} keywords={keywords} />
       <Portals address={address} />

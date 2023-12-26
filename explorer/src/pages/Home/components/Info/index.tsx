@@ -11,7 +11,7 @@ export const Info: React.FC = () => {
       {infoData.map((info) => (
         <div
           key={info.title}
-          className={`flex flex-col items-center justify-center gap-6 px-10 h-[18.75rem] lg:h-[23.375rem] rounded-3xl text-center dark:text-whiteDefault ${info.additionalClass}`}
+          className={`flex flex-col items-center justify-center gap-6 px-10 h-[16.625rem] lg:h-[14.8125rem] rounded-3xl text-center dark:text-whiteDefault ${info.additionalClass}`}
         >
           {info.icon}
           <div className="text-xl md:text-2xl font-semibold dark:text-whiteDefault">{info.title}</div>

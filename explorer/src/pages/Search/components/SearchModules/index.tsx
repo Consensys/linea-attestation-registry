@@ -30,7 +30,7 @@ export const SearchModules: React.FC<SearchComponentProps> = ({ getSearchData, p
   if (!data || !data.length) return null;
   return (
     <SearchWrapper title={t("module.title")} items={data.length}>
-      <DataTable columns={columns()} data={data} />
+      <DataTable columns={columns({ chainId: chain.id })} data={data} />
     </SearchWrapper>
   );
 };

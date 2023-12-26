@@ -50,7 +50,7 @@ export const Module = () => {
       <div className="flex flex-col gap-2 px-5 md:px-10">
         <p className="text-xs text-text-quaternary not-italic font-normal">CONTEXT</p>
         <a
-          href={`${links.lineascan.address}/${module.moduleAddress}`}
+          href={`${links[chain.id].address}/${module.moduleAddress}`}
           target="_blank"
           className="cursor-pointer hover:underline overflow-hidden text-ellipsis sm:w-fit dark:text-text-secondaryDark"
         >

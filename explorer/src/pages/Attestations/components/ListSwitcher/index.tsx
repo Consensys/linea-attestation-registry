@@ -8,6 +8,7 @@ export const ListSwitcher: React.FC = () => {
       {options.map((option) => (
         <NavLink
           end
+          key={option.text}
           to={option.to}
           className={({ isActive }) =>
             `flex items-center h-[2.1875rem] px-3 rounded text-base font-medium ${

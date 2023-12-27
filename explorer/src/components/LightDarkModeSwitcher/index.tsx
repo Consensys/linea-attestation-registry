@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { Moon, Sun, SunMoon } from "lucide-react";
 import { useEffect } from "react";
 import { useTernaryDarkMode } from "usehooks-ts";
@@ -9,25 +10,51 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export const LightDarkModeSwitcher = () => {
-  const { isDarkMode, ternaryDarkMode, setTernaryDarkMode } = useTernaryDarkMode();
+import { ILightDarkModeSwitcher } from "./interface";
 
+export const LightDarkModeSwitcher: React.FC<ILightDarkModeSwitcher> = ({ isMobile }) => {
+  const { isDarkMode, ternaryDarkMode, setTernaryDarkMode, toggleTernaryDarkMode } = useTernaryDarkMode();
   const theme: (typeof ternaryDarkMode)[] = ["light", "dark", "system"];
 
-  const getThemeIcon = (mode: typeof ternaryDarkMode, width = "w-6 ") => {
+  const getThemeIcon = (mode: typeof ternaryDarkMode, width = "1.5rem") => {
     switch (mode) {
       case "light":
-        return <Sun className={width} />;
+        return <Sun width={width} height="auto" />;
       case "dark":
-        return <Moon className={width} />;
+        return <Moon width={width} height="auto" />;
       case "system":
-        return <SunMoon className={width} />;
+        return <SunMoon width={width} height="auto" />;
+    }
+  };
+
+  const getPredictedThemeDetails = (mode: typeof ternaryDarkMode) => {
+    switch (mode) {
+      case "light":
+        return { label: t("theme.system"), icon: <SunMoon width="1rem" height="auto" /> };
+      case "system":
+        return { label: t("theme.dark"), icon: <Moon width="1rem" height="auto" /> };
+      case "dark":
+        return { label: t("theme.light"), icon: <Sun width="1rem" height="auto" /> };
     }
   };
 
   useEffect(() => {
     isDarkMode ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark");
   }, [isDarkMode]);
+
+  if (isMobile) {
+    const { label, icon } = getPredictedThemeDetails(ternaryDarkMode);
+
+    return (
+      <div
+        onClick={toggleTernaryDarkMode}
+        className="flex items-center gap-2 text-base font-semibold text-text-darkGrey cursor-pointer"
+      >
+        {t("theme.switch", { mode: label })}
+        {icon}
+      </div>
+    );
+  }
 
   return (
     <DropdownMenu>
@@ -41,7 +68,7 @@ export const LightDarkModeSwitcher = () => {
             className="flex gap-2 focus:bg-jumbotronLight dark:focus:bg-jumbotronDark dark:text-whiteDefault cursor-pointer transition capitalize"
             onClick={() => setTernaryDarkMode(mode)}
           >
-            {getThemeIcon(mode, "w-4")}
+            {getThemeIcon(mode, "1rem")}
             {mode}
           </DropdownMenuItem>
         ))}

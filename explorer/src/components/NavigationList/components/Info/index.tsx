@@ -40,7 +40,11 @@ export const Info: React.FC = () => {
             key={items.title}
             href={items.url}
             target="_blank"
-            className="w-fit rounded px-2 py-[10px] ms-4 flex gap-2 items-center text-xl font-medium text-text-tertiary hover:text-text-primary group"
+            className={`w-fit rounded px-2 py-[10px] ms-4 flex gap-2 items-center text-xl font-medium ${
+              isAdaptive
+                ? "dark:text-tertiary dark:hover:text-whiteDefault"
+                : "text-text-tertiary hover:text-text-primary"
+            } group`}
           >
             <Logo className="h-6 w-auto group-hover:svg-dark-blue [&>path]:transition [&>rect]:transition [&>g>path]:transition" />
             <span>{items.title}</span>

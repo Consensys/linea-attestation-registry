@@ -43,6 +43,12 @@
       "search": "Search by ID, name, description"
     }
   },
+  "theme": {
+    "switch": "Switch to {{mode}} Mode",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
   "home": {
     "title": "Verax is an open source, public registry for storing attestations",
     "issuers": {

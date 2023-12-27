@@ -24,6 +24,6 @@ export const links: { [key: number]: { trx?: string; address: string } } = {
     address: "https://arbiscan.io/address",
   },
   [arbitrumGoerli.id]: {
-    address: "https://arbiscan.io/address",
+    address: "https://testnet.arbiscan.io/",
   },
 };

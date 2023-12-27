@@ -40,17 +40,19 @@ export const Module = () => {
       <div className="flex flex-col px-5 md:px-10 gap-6">
         <Back />
         <div className="flex flex-col gap-3">
-          <p className="text-page-module text-2xl not-italic font-semibold md:text-[2rem]">{module.name}</p>
+          <p className="text-page-module dark:text-page-moduleDark text-2xl not-italic font-semibold md:text-[2rem]">
+            {module.name}
+          </p>
           <p className="text-text-quaternary text-base not-italic">{module.description}</p>
         </div>
-        <hr className="bg-border-card" />
+        <hr className="border-border-card dark:border-border-cardDark" />
       </div>
       <div className="flex flex-col gap-2 px-5 md:px-10">
         <p className="text-xs text-text-quaternary not-italic font-normal">CONTEXT</p>
         <a
           href={`${links.lineascan.address}/${module.moduleAddress}`}
           target="_blank"
-          className="cursor-pointer hover:underline overflow-hidden text-ellipsis sm:w-fit"
+          className="cursor-pointer hover:underline overflow-hidden text-ellipsis sm:w-fit dark:text-text-secondaryDark"
         >
           {module.moduleAddress}
         </a>

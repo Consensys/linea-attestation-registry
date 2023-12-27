@@ -3,6 +3,7 @@ import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
 import { linea, lineaTestnet } from "wagmi/chains";
 
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
+import LineaMainnetIconDark from "@/assets/networks/linea-mainnet-dark.svg?react";
 import LineaMainnetIcon from "@/assets/networks/linea-mainnet.svg?react";
 import LineaTestnetIcon from "@/assets/networks/linea-testnet.svg?react";
 import { INetwork } from "@/interfaces/config";
@@ -13,6 +14,7 @@ const chains: INetwork[] = [
     chain: linea,
     veraxEnv: VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND,
     img: <LineaMainnetIcon />,
+    imgDark: <LineaMainnetIconDark />,
     network: "linea",
   },
   {

@@ -21,7 +21,7 @@ export const Back: React.FC<BackProps> = ({ className }) => {
   return (
     <button
       onClick={() => handler()}
-      className={`w-fit font-semibold flex gap-2 text-text-tertiary hover:opacity-60 transition ${
+      className={`w-fit font-semibold flex gap-2 text-text-tertiary dark:text-tertiary hover:opacity-60 transition ${
         className || EMPTY_STRING
       }`}
     >

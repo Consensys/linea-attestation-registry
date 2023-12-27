@@ -29,7 +29,9 @@ export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId })
 
   return (
     <div className="flex flex-col gap-6 w-full px-5 md:px-10">
-      <p className="text-xl not-italic font-semibold text-text-primary">{t("attestation.recent")}</p>
+      <p className="text-xl not-italic font-semibold text-text-primary dark:text-whiteDefault">
+        {t("attestation.recent")}
+      </p>
       <DataTable columns={data.columns} data={data.list} />
     </div>
   );

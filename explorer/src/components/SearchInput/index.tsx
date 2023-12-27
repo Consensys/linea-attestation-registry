@@ -21,16 +21,16 @@ export const SearchInput: React.FC = () => {
   }, [search]);
 
   return (
-    <div className="w-full md:max-w-[370px] xl:min-w-[auto] h-12 p-2 bg-white rounded-md border border-border-card justify-between items-center inline-flex focus-within:border-border-inputFocus">
+    <div className="w-full md:max-w-[370px] xl:min-w-[auto] h-12 p-2 bg-white dark:bg-transparent rounded-md border border-border-card dark:border-border-cardDark justify-between items-center inline-flex focus-within:border-border-inputFocus">
       <input
         value={searchQuery}
         onChange={(event) => setSearchQuery(event.target.value)}
         placeholder={t("common.inputPlaceholder.search")}
-        className="text-base w-full outline-none placeholder:italic placeholder:text-text-quaternary text-text-input"
+        className="dark:bg-transparent text-base w-full outline-none placeholder:italic placeholder:text-text-quaternary text-text-input dark:text-whiteDefault"
         onKeyDown={(event) => event.key === keyboard.enter && handleSearch(searchQuery)}
       />
       <div
-        className={`p-1.5 bg-surface-secondary text-text-darkGrey rounded ${
+        className={`p-1.5 bg-surface-secondary dark:bg-surface-secondaryDark text-text-darkGrey dark:text-text-quaternary rounded ${
           !searchQuery ? "cursor-not-allowed" : "cursor-pointer"
         }`}
         onClick={() => handleSearch(searchQuery)}

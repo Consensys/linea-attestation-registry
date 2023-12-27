@@ -16,8 +16,8 @@ export const NavigationList: React.FC<{ setIsOpened?: Dispatch<SetStateAction<bo
               to={route}
               className={({ isActive }) =>
                 `${
-                  isActive ? "text-text-primary" : "text-text-tertiary"
-                } text-xl xl:text-base font-medium hover:text-text-primary transition`
+                  isActive ? "text-text-primary dark:text-whiteDefault" : "text-text-tertiary dark:text-tertiary"
+                } text-xl xl:text-base font-medium hover:text-text-primary dark:hover:text-whiteDefault transition`
               }
             >
               {name}

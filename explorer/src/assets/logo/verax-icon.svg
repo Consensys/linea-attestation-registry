@@ -1,10 +1,4 @@
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="10.0894" y="2" width="4.0446" height="8.0892" fill="#9096B2" />
-  <path
-    fill-rule="evenodd"
-    clip-rule="evenodd"
-    d="M2 10.0893L6.0446 14.1339H10.0892V10.0893L6.0446 6.04468V10.0893H2Z"
-    fill="#9096B2"
-  />
-  <rect x="2" y="2" width="4.0446" height="4.0446" fill="#9096B2" />
+  <path d="M5.06011 2.40698H1.6084L4.80443 9.82178L6.59421 5.8587L5.06011 2.40698Z" fill="#9096B2" />
+  <path d="M14.3925 2.40698H11.1965L6.53027 13.5931H9.66238L14.3925 2.40698Z" fill="#9096B2" />
 </svg>

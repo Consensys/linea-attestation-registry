@@ -56,7 +56,9 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           aria-label="First"
           onClick={handleFirstPage}
           disabled={disablePrev}
-          className={`${disablePrev && "opacity-40"}`}
+          className={`${
+            disablePrev && "opacity-40 hover:opacity-40"
+          } dark:text-whiteDefault hover:opacity-60 transition`}
         >
           <ChevronsLeft />
         </button>
@@ -65,7 +67,9 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           aria-label="Previous"
           onClick={handlePreviousPage}
           disabled={disablePrev}
-          className={`flex text-base font-semibold ${disablePrev && "opacity-40"}`}
+          className={`flex text-base font-semibold ${
+            disablePrev && "opacity-40 hover:opacity-40"
+          } dark:text-whiteDefault hover:opacity-60 transition`}
         >
           <ChevronLeft />
           <span className="hidden md:inline-block">{t("common.actions.previous")}</span>
@@ -78,7 +82,7 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           defaultValue={currentPage}
           onBlur={blurHandler}
           onChange={(event) => changePage(event.target.value)}
-          className="w-16 h-8 px-2 border text-xs font-semibold text-zinc-950 text-center outline-none border-slate-200 focus:border-slate-400 rounded-lg"
+          className="w-16 h-8 px-2 border text-xs font-semibold dark:bg-transparent text-text-primary dark:text-whiteDefault text-center outline-none border-border-table dark:border-greyDark focus:border-border-inputFocus dark:focus:border-border-inputFocus rounded-lg transition"
         />
         <span className="text-slate-500 text-xs font-normal">{`of ${displayAmountWithComma(totalPages)}`}</span>
       </div>
@@ -88,7 +92,9 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           aria-label="Next"
           onClick={handleNextPage}
           disabled={disableNext}
-          className={`flex text-base font-semibold ${disableNext && "opacity-40"}`}
+          className={`flex text-base font-semibold ${
+            disableNext && "opacity-40 hover:opacity-40"
+          } dark:text-whiteDefault hover:opacity-60 transition`}
         >
           <span className="hidden md:inline-block">{t("common.actions.next")}</span> <ChevronRight />
         </button>
@@ -97,7 +103,9 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           aria-label="Last"
           onClick={handleLastPage}
           disabled={disableNext}
-          className={`${disableNext && "opacity-40"}`}
+          className={`${
+            disableNext && "opacity-40 hover:opacity-40"
+          } dark:text-whiteDefault hover:opacity-60 transition`}
         >
           <ChevronsRight />
         </button>

@@ -13,7 +13,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   });
 
   return (
-    <div className="rounded-3xl border border-border-table">
+    <div className="rounded-3xl border border-border-table dark:border-blueDark">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -37,7 +37,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="table-row-transition hover:bg-jumbotronDark"
+                className="table-row-transition hover:bg-jumbotronLight dark:hover:bg-jumbotronDark"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="whitespace-nowrap text-text-secondary">

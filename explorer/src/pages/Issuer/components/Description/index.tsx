@@ -21,7 +21,7 @@ export const Description: React.FC<IDescriptionProps> = ({ description, keywords
             <div className="text-base font-normal text-text-darkGrey">Schemas</div>
           </div>
         </div> */}
-      <div className="text-base font-normal text-text-darkGrey">{description}</div>
+      <div className="text-base font-normal text-text-darkGrey dark:text-tertiary">{description}</div>
     </div>
   );
 };

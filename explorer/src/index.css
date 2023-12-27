@@ -9,33 +9,52 @@
   :root {
     --white-default: #FEFEFE;
     --black-default: #0C0C11;
+    --blue-dark: #3D3D50;
+    --grey-default: #64687D;
+    --grey-dark: #3D3D50;
+    --green-default: #1a9d37;
+    --green-dark: #7CFF2C;
     --jumbotron: #CFDE6A;
-    --jumbotron-dark: #EEF2D2;
+    --jumbotron-light: #EEF2D2;
+    --jumbotron-dark: #474C2C;
+    --tertiary: #A4A8C2;
 
     --surface-primary: #FEFEFE;
     --surface-secondary: #F4F5F9;
+    --surface-secondary-dark: #272832;
     --surface-dark-grey: #EAEAF3;
+    --surface-dark-grey-dark: #3D3D51;
     --surface-light-black: #19192C;
-    --surface-attestation-data: #2D4EC30D;
+    --surface-attestation-data: #EAEAF3;
+    --surface-attestation-data-dark: #12172C;
     --surface-magenta-20: #FAE8F1;
+    --surface-magenta-20-dark: #351227;
     --surface-lime: #C4FF1C;
 
     --indicator-blue: #2D4EC3;
+    --indicator-blue-dark: #476FFF;
     --indicator-magenta: #D6247A;
+    --indicator-magenta-dark: #FF3898;
     --indicator-green: #41AC00;
+    --indicator-green-dark: #7CFF2C;
     --indicator-orange: #B93800;
+    --indicator-orange-dark: #DE4300;
 
     --text-input: #0C0C11;
     --text-primary: #0D0D12;
     --text-secondary: #3D3D51;
+    --text-secondary-dark: #EAEAF3;
     --text-tertiary: #656B87;
     --text-quaternary: #9096B2;
     --text-dark-grey: #646A86;
     --text-dark-blue: #3D3D50;
 
     --border-card: #DAD8EC;
+    --border-card-dark: #5E5E77;
     --border-card-hover: #6E7491;
+    --border-card-dark-hover: #6E7490;
     --border-table: #EAEAF3;
+    --border-table-dark: #3D3D51;
     --border-input: #C2DA98;
     --border-input-focus: #9096B2;
 
@@ -46,6 +65,7 @@
     --button-primary-white-background: #FEFEFE;
     --button-primary-white-text: #0C0C11;
     --button-primary-white-hover: #F4F5F9;
+    --button-primary-white-dark-hover: #DAD8EC;
 
     --button-primary-black-background: #0C0C11;
     --button-primary-black-text: #FEFEFE;
@@ -54,6 +74,7 @@
     --button-primary-background: #CFDE6A;
     --button-primary-text: #0D0D12;
     --button-primary-hover: #BAC66A;
+    --button-primary-dark-hover: #B0BB67;
 
     --button-secondary-text: #0D0D12;
     --button-secondary-hover: #6E7491;
@@ -61,7 +82,9 @@
 
     --button-outlined-text: #0C0C11;
     --button-outlined-border: #DAD8EC;
+    --button-outlined-border-dark: #5E5E77;
     --button-outlined-border-hover: #0C0C11;
+    --button-outlined-border-dark-hover: #9096B2;
 
     --skeleton: #D7D7D8;
 
@@ -76,6 +99,10 @@
 
   body {
     @apply bg-surface-primary;
+  }
+
+  html.dark body {
+    background-color: var(--black-default);
   }
 
   input[type="number"]::-webkit-inner-spin-button,
@@ -137,6 +164,10 @@
     fill: #3D3D50;
   }
 
+  .svg-white path, .svg-white rect {
+    fill: #FEFEFE;
+  }
+
   .button-small {
     svg {
       width: 1rem;
@@ -145,11 +176,11 @@
   }
 
   .button-primary-white {
-    @apply text-button-primaryWhite-text bg-button-primaryWhite-background hover:bg-button-primaryWhite-hover;
+    @apply text-button-primaryWhite-text bg-button-primaryWhite-background hover:bg-button-primaryWhite-hover dark:hover:bg-button-primaryWhite-hover;
   }
 
   .button-primary-lime {
-    @apply text-button-primary-text bg-button-primary-background hover:bg-button-primary-hover;
+    @apply text-button-primary-text bg-button-primary-background hover:bg-button-primary-hover dark:hover:bg-button-primary-hoverDark;
   }
 
   .button-primary-black {
@@ -157,7 +188,7 @@
   }
 
   .button-outlined {
-    @apply border-button-outlined-border border text-button-outlined-text text-base hover:border-button-outlined-borderHover;
+    @apply border-button-outlined-border dark:border-button-outlined-borderDark border text-button-outlined-text dark:text-whiteDefault text-base hover:border-button-outlined-borderHover dark:hover:border-button-outlined-borderDarkHover;
   }
 
   .sort-arrows path {

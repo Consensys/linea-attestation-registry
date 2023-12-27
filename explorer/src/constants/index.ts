@@ -18,7 +18,7 @@ export const links: { [key: number]: { trx?: string; address: string } } = {
     address: "https://lineascan.build/address",
   },
   [lineaTestnet.id]: {
-    address: "https://goerli.lineascan.build/",
+    address: "https://goerli.lineascan.build/address",
   },
   [arbitrum.id]: {
     address: "https://arbiscan.io/address",

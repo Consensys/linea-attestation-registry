@@ -11,6 +11,7 @@ export const TdHandler: React.FC<ITdHandler> = ({ value, valueUrl, to, isTextLef
         <a
           href={valueUrl}
           target="_blank"
+          onClick={(e) => e.stopPropagation()}
           className={`hover:underline ${isTextLeft ? "translate-x-0" : "translate-x-5"} ${
             isTextLeft ? "group-hover:translate-x-5" : "group-hover:translate-x-0"
           } transition max-w-[300px] overflow-hidden text-ellipsis`}
@@ -26,7 +27,7 @@ export const TdHandler: React.FC<ITdHandler> = ({ value, valueUrl, to, isTextLef
           {value}
         </p>
       )}
-      <Link to={to}>
+      <Link to={to} onClick={(e) => e.stopPropagation()}>
         <ChevronRight className="w-5 opacity-0 group-hover:opacity-100 transition" />
       </Link>
     </div>

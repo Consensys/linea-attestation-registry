@@ -12,7 +12,7 @@ export const SWRCell: React.FC<{ swrKey: string; fetcher: () => Promise<Schema |
   const { data } = useSWR(swrKey, fetcher);
 
   return (
-    <Link className="hover:underline hover:text-text-quaternary transition" to={to}>
+    <Link className="hover:underline transition" to={to} onClick={(e) => e.stopPropagation()}>
       {data?.name || EMPTY_STRING}
     </Link>
   );

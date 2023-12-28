@@ -12,6 +12,7 @@ import { EQueryParams } from "@/enums/queryParams";
 import { ETableSorting } from "@/enums/tableSorting";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { APP_ROUTES } from "@/routes/constants";
 import { getItemsByPage, pageBySearchParams } from "@/utils/paginationUtils";
 
 import { TitleAndSwitcher } from "./components/TitleAndSwitcher";
@@ -55,11 +56,11 @@ export const Attestations: React.FC = () => {
 
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations() }
-    : { columns: columns({ sdk }), list: attestationsList || [] };
+    : { columns: columns({ sdk, chainId: chain.id }), list: attestationsList || [] };
 
   return (
     <TitleAndSwitcher>
-      <DataTable columns={data.columns} data={data.list} />
+      <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.ATTESTATION_BY_ID} />
       {attestationsCount && <Pagination itemsCount={attestationsCount} handlePage={handlePage} />}
     </TitleAndSwitcher>
   );

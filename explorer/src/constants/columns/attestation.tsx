@@ -21,9 +21,10 @@ import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT, links } from "../index";
 interface ColumnsProps {
   sortByDate: boolean;
   sdk: VeraxSdk;
+  chainId: number;
 }
 
-export const columns = ({ sortByDate = true, sdk }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
+export const columns = ({ sortByDate = true, sdk, chainId }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
   {
     accessorKey: "id",
     header: () => (
@@ -35,7 +36,7 @@ export const columns = ({ sortByDate = true, sdk }: Partial<ColumnsProps> = {}):
     cell: ({ row }) => {
       const id = row.getValue("id");
       return (
-        <Link to={toAttestationById(id as string)} className="hover:underline">
+        <Link to={toAttestationById(id as string)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
           {displayAmountWithComma(hexToNumber(id as Address))}
         </Link>
       );
@@ -84,8 +85,15 @@ export const columns = ({ sortByDate = true, sdk }: Partial<ColumnsProps> = {}):
     header: () => <p className="text-left">{t("attestation.list.columns.subject")}</p>,
     cell: ({ row }) => {
       const subject = row.getValue("subject") as string;
+      if (!chainId) return cropString(subject);
+
       return (
-        <a href={`${links.lineascan.address}/${subject}`} target="_blank" className="hover:underline">
+        <a
+          href={`${links[chainId].address}/${subject}`}
+          onClick={(e) => e.stopPropagation()}
+          target="_blank"
+          className="hover:underline"
+        >
           {cropString(subject)}
         </a>
       );

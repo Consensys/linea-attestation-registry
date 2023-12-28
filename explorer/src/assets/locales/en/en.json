@@ -43,10 +43,17 @@
       "search": "Search by ID, name, description"
     }
   },
+  "theme": {
+    "switch": "Switch to {{mode}} Mode",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
   "home": {
     "title": "Verax is an open source, public registry for storing attestations",
     "issuers": {
-      "title": "Explore the Verax Ecosystem"
+      "title": "Explore the ways of getting the attestation",
+      "description": "Find out how you can get attestations from the following providers that you can use across the ecosystem"
     },
     "info": {
       "issueYourAttestation": "Want to issue your own attestation?",

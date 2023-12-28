@@ -9,6 +9,7 @@ import { columns, moduleColumnsOption, skeletonModules } from "@/constants/colum
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { APP_ROUTES } from "@/routes/constants";
 import { getItemsByPage, pageBySearchParams } from "@/utils/paginationUtils";
 
 export const Modules: React.FC = () => {
@@ -38,7 +39,7 @@ export const Modules: React.FC = () => {
   const columnsSkeletonRef = useRef(columnsSkeleton(columns(), moduleColumnsOption));
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonModules() }
-    : { columns: columns(), list: modulesList || [] };
+    : { columns: columns({ chainId: chain.id }), list: modulesList || [] };
 
   return (
     <div className="container mt-5 md:mt-8">
@@ -48,7 +49,7 @@ export const Modules: React.FC = () => {
         </h1>
       </div>
       <div>
-        <DataTable columns={data.columns} data={data.list} />
+        <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.MODULES_BY_ID} />
         {Boolean(modulesCount) && <Pagination itemsCount={totalItems} handlePage={handlePage} />}
       </div>
     </div>

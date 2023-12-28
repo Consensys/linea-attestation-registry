@@ -9,6 +9,7 @@ import { columns, schemaColumnsOption, skeletonSchemas } from "@/constants/colum
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { APP_ROUTES } from "@/routes/constants";
 import { getItemsByPage, pageBySearchParams } from "@/utils/paginationUtils";
 
 export const Schemas: React.FC = () => {
@@ -49,7 +50,7 @@ export const Schemas: React.FC = () => {
         </h1>
       </div>
       <div>
-        <DataTable columns={data.columns} data={data.list} />
+        <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.SCHEMA_BY_ID} />
         {Boolean(schemasCount) && <Pagination itemsCount={totalItems} handlePage={handlePage} />}
       </div>
     </div>

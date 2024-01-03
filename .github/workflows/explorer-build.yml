@@ -1,4 +1,4 @@
-name: SDK
+name: Build explorer
 
 on:
   pull_request:
@@ -13,16 +13,16 @@ on:
       - release/*
 
 jobs:
-  test-sdk:
+  build-explorer:
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: sdk
+        working-directory: explorer
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Pnpm
         uses: pnpm/action-setup@v2
@@ -52,13 +52,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run the unit tests
-        run: pnpm run test:unit:ci
+      - name: Build
+        run: pnpm run build
 
-      - name: Run the integration tests
-        run: pnpm run test:integration:ci
-
-      - name: Add test summary
+      - name: Add build summary
         run: |
-          echo "## Tests result" >> $GITHUB_STEP_SUMMARY
+          echo "## Explorer build result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

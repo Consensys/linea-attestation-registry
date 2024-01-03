@@ -1,31 +1,19 @@
-name: Deploy website
+name: Deploy production explorer
 
 on:
-  push:
-    branches: ["dev"]
-    paths:
-      - website/**
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  workflow_dispatch:
 
 jobs:
-  deploy-website:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  deploy-explorer-prod:
+    if:
+      github.actor == 'alainncls' || github.actor  == 'satyajeetkolhapure' || github.actor  == 'orbmis' ||
+      github.actor  == '0xEillo' || github.actor  == 'ars9' || github.actor  == 'Solniechniy'
 
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: website
+        working-directory: explorer
 
     steps:
       - name: Check out the repo
@@ -61,20 +49,19 @@ jobs:
 
       - name: Build
         run: pnpm run build
+        env:
+          VITE_WALLETCONNECT_PROJECT_ID: ${{ secrets.VITE_WALLETCONNECT_PROJECT_ID }}
+          VITE_INFURA_API_KEY: ${{ secrets.VITE_INFURA_API_KEY }}
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - name: Deploy explorer to Netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         with:
-          path: "./website/dist"
+          args: deploy --dir=./explorer/dist --filter explorer --prod
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
-
-      - name: Add website deployment summary
+      - name: Add explorer deployment summary
         run: |
-          echo "## Website deployment result" >> $GITHUB_STEP_SUMMARY
+          echo "## Explorer production deployment result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

@@ -1,6 +1,5 @@
 import { t } from "i18next";
 import { Moon, Sun, SunMoon } from "lucide-react";
-import { useEffect } from "react";
 import { useTernaryDarkMode } from "usehooks-ts";
 
 import {
@@ -13,7 +12,7 @@ import {
 import { ILightDarkModeSwitcher } from "./interface";
 
 export const LightDarkModeSwitcher: React.FC<ILightDarkModeSwitcher> = ({ isMobile }) => {
-  const { isDarkMode, ternaryDarkMode, setTernaryDarkMode, toggleTernaryDarkMode } = useTernaryDarkMode();
+  const { ternaryDarkMode, setTernaryDarkMode, toggleTernaryDarkMode } = useTernaryDarkMode();
   const theme: (typeof ternaryDarkMode)[] = ["light", "dark", "system"];
 
   const getThemeIcon = (mode: typeof ternaryDarkMode, width = "1.5rem") => {
@@ -37,10 +36,6 @@ export const LightDarkModeSwitcher: React.FC<ILightDarkModeSwitcher> = ({ isMobi
         return { label: t("theme.light"), icon: <Sun width="1rem" height="auto" /> };
     }
   };
-
-  useEffect(() => {
-    isDarkMode ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark");
-  }, [isDarkMode]);
 
   if (isMobile) {
     const { label, icon } = getPredictedThemeDetails(ternaryDarkMode);

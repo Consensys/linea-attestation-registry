@@ -1,14 +1,14 @@
 import { type FunctionComponent, useEffect, useState } from "react";
 import "./SDKDemo.css";
-import { ConnectKitButton } from "connectkit";
 import { Attestation, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { useAccount, useNetwork } from "wagmi";
+import ConnectWallet from "../components/ConnectWallet.tsx";
 
 export type SDKDemoProps = {
   title: string;
 };
 
-export const SDKDemo: FunctionComponent<SDKDemoProps> = ({ title }) => {
+const SDKDemo: FunctionComponent<SDKDemoProps> = ({ title }) => {
   const [attestations, setAttestations] = useState<Attestation[]>([]);
   const [attestationsCounter, setAttestationsCounter] = useState<number>(0);
   const [txHash, setTxHash] = useState<string>("");
@@ -32,7 +32,7 @@ export const SDKDemo: FunctionComponent<SDKDemoProps> = ({ title }) => {
   }, [chain, address]);
 
   const shortenHexString = (longString: string) => {
-    return `${longString.slice(0, 5)}...${longString.slice(longString.length - 4, longString.length)}`;
+    return `${longString.slice(0, 6)}••••${longString.slice(longString.length - 4, longString.length)}`;
   };
 
   const getSomeAttestations = async () => {
@@ -80,7 +80,7 @@ export const SDKDemo: FunctionComponent<SDKDemoProps> = ({ title }) => {
     <>
       <h1>Verax - SDK Demo</h1>
       <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <ConnectKitButton />
+        <ConnectWallet />
       </div>
 
       <div className="card">

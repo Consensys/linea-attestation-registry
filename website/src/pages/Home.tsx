@@ -6,7 +6,7 @@ export type HomeProps = {
   title: string;
 };
 
-export const Home: FunctionComponent<HomeProps> = ({ title }) => {
+const Home: FunctionComponent<HomeProps> = ({ title }) => {
   useEffect(() => {
     document.title = title;
   }, [title]);

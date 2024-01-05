@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
+import React from "react";
 
-function Navbar() {
+const Navbar: React.FC = () => {
   return (
     <nav className="navbar navbar-light">
       <div className="container">
@@ -16,10 +17,15 @@ function Navbar() {
               Linea POH
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink className="navbar-brand" to="/sdk-demo" end>
+              SDK Demo
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;

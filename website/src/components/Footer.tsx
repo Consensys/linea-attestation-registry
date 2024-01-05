@@ -4,35 +4,35 @@ import { faDiscord, faGithub, faTelegram } from "@fortawesome/free-brands-svg-ic
 import { Link } from "react-router-dom";
 import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { FollowOnLens } from "@lens-protocol/widgets-react";
+import React from "react";
 
-function Navbar() {
-
+const Footer: React.FC = () => {
   return (
     <ul className="social-icon">
       <li className="social-icon__item">
-        <Link className="social-icon__link" to={"https://discord.gg/Sq4EmYdBEk"}
-              target={"_blank"}>
+        <Link className="social-icon__link" to={"https://discord.gg/Sq4EmYdBEk"} target={"_blank"}>
           <FontAwesomeIcon icon={faDiscord} />
         </Link>
       </li>
 
       <li className="social-icon__item">
-        <Link className="social-icon__link" to={"https://t.me/+C94-EJOoVjVhM2U0"}
-              target={"_blank"}>
+        <Link className="social-icon__link" to={"https://t.me/+C94-EJOoVjVhM2U0"} target={"_blank"}>
           <FontAwesomeIcon icon={faTelegram} />
         </Link>
       </li>
 
       <li className="social-icon__item">
-        <Link className="social-icon__link" to={"https://github.com/Consensys/linea-attestation-registry"}
-              target={"_blank"}>
+        <Link
+          className="social-icon__link"
+          to={"https://github.com/Consensys/linea-attestation-registry"}
+          target={"_blank"}
+        >
           <FontAwesomeIcon icon={faGithub} />
         </Link>
       </li>
 
       <li className="social-icon__item">
-        <Link className="social-icon__link" to={"https://docs.ver.ax"}
-              target={"_blank"}>
+        <Link className="social-icon__link" to={"https://docs.ver.ax"} target={"_blank"}>
           <FontAwesomeIcon icon={faBook} />
         </Link>
       </li>
@@ -42,6 +42,6 @@ function Navbar() {
       </li>
     </ul>
   );
-}
+};
 
-export default Navbar;
+export default Footer;

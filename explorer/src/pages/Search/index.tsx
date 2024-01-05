@@ -35,7 +35,7 @@ export const Search = () => {
         <InfoBlock
           icon={<img src={archive} alt="archive" />}
           message={
-            <span className="break-all [&>strong]:text-text-primary">
+            <span className="break-all [&>strong]:text-text-primary dark:[&>strong]:text-text-secondaryDark">
               <Trans i18nKey="common.messages.searchNotFound" values={{ search }} components={{ bold: <strong /> }} />
             </span>
           }

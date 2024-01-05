@@ -13,7 +13,7 @@ on:
       - release/*
 
 jobs:
-  test:
+  test-subgraph:
     runs-on: ubuntu-latest
 
     defaults:

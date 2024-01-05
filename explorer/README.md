@@ -1,6 +1,6 @@
 # Verax Attestation Registry - Explorer
 
-This package manages the explorer of Verax Attestation Registry, soon to be released.
+This package manages the explorer of Verax Attestation Registry, hosted at [explorer.ver.ax](https://explorer.ver.ax).
 
 ## Getting Started
 

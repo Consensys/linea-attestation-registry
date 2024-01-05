@@ -1,4 +1,3 @@
----
 name: New version releaser
 
 on:
@@ -7,8 +6,8 @@ on:
 jobs:
   release:
     if:
-      github.actor == 'alainncls' || github.actor  == 'fdemiramon' || github.actor  == 'satyajeetkolhapure' ||
-      github.actor  == 'orbmis' || github.actor  == '0xEillo'
+      github.actor == 'alainncls' || github.actor  == 'satyajeetkolhapure' || github.actor  == 'orbmis' ||
+      github.actor  == '0xEillo'
 
     runs-on: ubuntu-latest
 

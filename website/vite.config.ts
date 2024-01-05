@@ -17,7 +17,7 @@ export default defineConfig({
   },
   build: {
     commonjsOptions: {
-      include: [/.js$/],
+      include: [/@verax-attestation-registry\/verax-sdk/, /node_modules/],
     },
   },
 });

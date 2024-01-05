@@ -8,7 +8,7 @@ import { keyboard } from "@/constants/keyboard";
 import { EQueryParams } from "@/enums/queryParams";
 import { useHandleSearch } from "@/hooks/useHandleSearch";
 
-export const SearchInput: React.FC = () => {
+export const SearchInput: React.FC<{ className?: string }> = ({ className }) => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get(EQueryParams.SEARCH_QUERY);
   const [searchQuery, setSearchQuery] = useState<string>(search || EMPTY_STRING);
@@ -21,7 +21,9 @@ export const SearchInput: React.FC = () => {
   }, [search]);
 
   return (
-    <div className="w-full md:max-w-[370px] xl:min-w-[auto] h-12 p-2 bg-white dark:bg-transparent rounded-md border border-border-card dark:border-border-cardDark justify-between items-center inline-flex focus-within:border-border-inputFocus">
+    <div
+      className={`w-full md:max-w-[370px] xl:min-w-[auto] h-12 p-2 bg-white dark:bg-transparent rounded-md border border-border-card dark:border-border-cardDark justify-between items-center inline-flex focus-within:border-border-inputFocus ${className}`}
+    >
       <input
         value={searchQuery}
         onChange={(event) => setSearchQuery(event.target.value)}

@@ -53,7 +53,11 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
       <div className="justify-between items-center inline-flex gap-4">
         <div className="justify-start items-center gap-6 flex self-stretch">
           <Link to={APP_ROUTES.HOME} className="shrink-0 hover:opacity-70">
-            {isDarkMode ? <VeraxLogoDarkMode /> : <VeraxLogo />}
+            {isDarkMode ? (
+              <VeraxLogoDarkMode className="w-[76.434px] h-6 sm:h-auto sm:w-auto" />
+            ) : (
+              <VeraxLogo className="w-[76.434px] h-6 sm:h-auto sm:w-auto" />
+            )}
           </Link>
           {!isAdaptive && <NavigationList />}
         </div>
@@ -81,14 +85,14 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
           <ConnectKitButton.Custom>
             {({ isConnected, show }) => {
               if (!show) return <></>;
-
               return (
                 <Button
                   name={title}
                   handler={show}
                   buttonType={EButtonType.OUTLINED}
                   iconRight={isConnected && !isAdaptive ? <ChevronDown /> : undefined}
-                  className="whitespace-nowrap"
+                  isSmall={screen.sm}
+                  className="whitespace-nowrap h-9 sm:h-auto !px-3 sm:!px-4"
                 />
               );
             }}

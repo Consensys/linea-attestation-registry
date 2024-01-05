@@ -12,7 +12,7 @@ export const CURRENT_PAGE_DEFAULT = 1;
 export const THOUSAND = 1e3;
 export const BILLION = 1e9;
 
-export const links: { [key: number]: { trx?: string; address: string } } = {
+export const links: Record<number, { trx?: string; address: string }> = {
   [linea.id]: {
     trx: "https://lineascan.build/trx",
     address: "https://lineascan.build/address",
@@ -27,3 +27,5 @@ export const links: { [key: number]: { trx?: string; address: string } } = {
     address: "https://testnet.arbiscan.io/address",
   },
 };
+
+export const veraxLink = "https://ver.ax";

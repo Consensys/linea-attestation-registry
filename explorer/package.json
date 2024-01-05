@@ -17,9 +17,11 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
+    "build:netlify": "pnpm run build && pnpm run redirect",
     "dev": "vite",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "redirect": "touch dist/_redirects && echo '/*  /index.html  200' >> dist/_redirects"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.0.6",

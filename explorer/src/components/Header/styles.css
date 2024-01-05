@@ -1,0 +1,17 @@
+.DropdownMenuTrigger {
+  >.header-arrow {
+    transition-duration: 0.4s;
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.DropdownMenuTrigger[data-state='open'] {
+  >.header-arrow {
+    transition-duration: 0.4s;
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+}

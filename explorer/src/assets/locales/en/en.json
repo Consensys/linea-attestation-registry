@@ -1,0 +1,145 @@
+{
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "id": "Id",
+    "revocable": "Revocable",
+    "actions": {
+      "less": "View Less",
+      "more": "View More",
+      "details": "View Details",
+      "connect": "Connect",
+      "connectWallet": "Connect Wallet",
+      "back": "Back",
+      "backTo": "Back to {{to}}",
+      "goBackTo": "Go Back to {{to}}s",
+      "previous": "Previous",
+      "next": "Next",
+      "learnMore": "Learn More",
+      "getStarted": "Get Started"
+    },
+    "messages": {
+      "empty": "Empty",
+      "notDecoded": "Not Decoded",
+      "notFound": "Not Found",
+      "noResults": "No Results",
+      "hasntBeenFound": "hasn`t been found",
+      "searchNotFound": "Nothing found on <bold>“{{search}}”</bold> search request",
+      "searchFound": "<bold>{{count}}</bold> results found on <bold>“{{search}}”</bold> search request"
+    },
+    "routes": {
+      "issuers": "Issuers",
+      "attestations": "Attestations",
+      "schemas": "Schemas",
+      "modules": "Modules",
+      "info": {
+        "title": "Info",
+        "about": "About",
+        "github": "Github",
+        "documentation": "Documentation"
+      }
+    },
+    "inputPlaceholder": {
+      "search": "Search by ID, name, description"
+    }
+  },
+  "theme": {
+    "switch": "Switch to {{mode}} Mode",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
+  "home": {
+    "title": "Your Reputation Under Your Control",
+    "description": "Explore the ecosystem to find out how you can unlock your data from across the web and share it with the world on your own terms",
+    "exploreEcosystem": "or explore the ecosystem",
+    "info": {
+      "issueYourAttestation": "Want to issue your own attestation?",
+      "aboutVerax": "Want to know more about Verax?"
+    }
+  },
+  "attestation": {
+    "title": "Attestation",
+    "list": {
+      "title": "Explore Attestations",
+      "switch": {
+        "all": "All attestations",
+        "my": "My attestations"
+      },
+      "columns": {
+        "id": "Attestation ID",
+        "portal": "Portal",
+        "schema": "Schema",
+        "subject": "Subject",
+        "issued": "Issued"
+      }
+    },
+    "data": "Attestation Data",
+    "recent": "Recent attestations",
+    "info": {
+      "attested": "Attested",
+      "expirationDate": "Expiration date",
+      "revoked": {
+        "title": "Revoked",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "revocationDate": "Revocation date",
+      "issuedBy": "Issued by",
+      "portal": "Portal",
+      "subject": "Subject"
+    },
+    "related": {
+      "title": "Related Attestations",
+      "attestationVerification": "Attestation Verification",
+      "aspectProfessionalProfile": "Aspect Professional Profile",
+      "web3Profile": "Web3 Profile",
+      "proofOfPersonator": "Proof of Personator",
+      "reviewer": "Reviewer"
+    },
+    "messages": {
+      "attestationsConnectWallet": "Connect wallet to see your attestations",
+      "emptyList": "You don’t have any attestations yet"
+    }
+  },
+  "module": {
+    "title": "Module",
+    "list": {
+      "title": "Explore Modules",
+      "columns": {
+        "name": "Module Name",
+        "description": "Module Description",
+        "contractAddress": "Contract Address"
+      }
+    }
+  },
+  "schema": {
+    "title": "Schema",
+    "context": "Context",
+    "rawSchema": "Raw Schema",
+    "list": {
+      "title": "Explore Schemas",
+      "columns": {
+        "name": "Schema Name",
+        "description": "Schema Description",
+        "schema": "Schema"
+      }
+    }
+  },
+  "issuer": {
+    "portals": {
+      "title": "Portals",
+      "ownerAddress": "Owner address"
+    }
+  },
+  "portal": {
+    "title": "Portal",
+    "id": "id",
+    "ownerAddress": "Owner Address",
+    "revokable": {
+      "title": "Revokable",
+      "yes": "Yes",
+      "no": "No"
+    }
+  }
+}

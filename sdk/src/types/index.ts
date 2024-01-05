@@ -27,7 +27,10 @@ export type Attestation = OnChainAttestation & {
   schemaString: string;
   decodedData: string[];
   decodedPayload: object;
+  offchainData?: OffchainData;
 };
+
+export type OffchainData = { schemaId: string; uri: string; error?: string };
 
 export type OnChainAttestation = {
   attestationId: string; // The unique identifier of the attestation.

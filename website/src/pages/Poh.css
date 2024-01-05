@@ -1,0 +1,12 @@
+/* container */
+.responsive-two-column-grid {
+    display: block;
+}
+
+/* tablet breakpoint */
+@media (min-width: 768px) {
+    .responsive-two-column-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}

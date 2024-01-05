@@ -1,5 +1,6 @@
 import { Address } from "viem";
 import { VeraxSdk } from "../../src/VeraxSdk";
+import { Attestation_filter } from "../../.graphclient";
 
 export default class AttestationExamples {
   private veraxSdk: VeraxSdk;
@@ -16,15 +17,9 @@ export default class AttestationExamples {
     }
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
-      console.log(
-        await this.veraxSdk.attestation.findBy(
-          2,
-          0,
-          { attester_not: "0x809e815596AbEB3764aBf81BE2DC39fBBAcc9949" },
-          "attestedDate",
-          "desc",
-        ),
-      );
+      const filter: Attestation_filter | undefined =
+        argv !== "" ? JSON.parse(argv) : { attester_not: "0x809e815596AbEB3764aBf81BE2DC39fBBAcc9949" };
+      console.log(await this.veraxSdk.attestation.findBy(2, 0, filter, "attestedDate", "desc"));
     }
 
     if (methodName.toLowerCase() == "getRelatedAttestations".toLowerCase() || methodName == "") {

@@ -29,6 +29,6 @@
       "path": "sdk"
     }
   ],
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "**/*.json"],
   "exclude": ["node_modules", "typechain-types"]
 }

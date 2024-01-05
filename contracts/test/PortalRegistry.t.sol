@@ -31,6 +31,7 @@ contract PortalRegistryTest is Test {
   event PortalRegistered(string name, string description, address portalAddress);
   event IssuerAdded(address issuerAddress);
   event IssuerRemoved(address issuerAddress);
+  event PortalRevoked(address portalAddress);
 
   function setUp() public {
     router = new Router();
@@ -104,7 +105,7 @@ contract PortalRegistryTest is Test {
   }
 
   function test_register() public {
-    // Register a portal implmenting AbstractPortal
+    // Register a portal implementing AbstractPortal
     vm.expectEmit();
     emit PortalRegistered(expectedName, expectedDescription, address(validPortalMock));
     vm.prank(user);
@@ -188,6 +189,58 @@ contract PortalRegistryTest is Test {
     vm.expectRevert(PortalRegistry.PortalInvalid.selector);
     vm.prank(user);
     portalRegistry.register(address(invalidPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
+  }
+
+  function test_revoke() public {
+    address portalAddress = address(iPortalImplementation);
+    vm.expectEmit();
+    emit PortalRegistered("IPortalImplementation", "IPortalImplementation description", portalAddress);
+    vm.prank(user);
+    portalRegistry.register(
+      portalAddress,
+      "IPortalImplementation",
+      "IPortalImplementation description",
+      true,
+      expectedOwnerName
+    );
+
+    uint256 portalCount = portalRegistry.getPortalsCount();
+    assertEq(portalCount, 1);
+
+    Portal memory expectedPortal = Portal(
+      portalAddress,
+      user,
+      new address[](0),
+      true,
+      "IPortalImplementation",
+      "IPortalImplementation description",
+      expectedOwnerName
+    );
+
+    Portal memory registeredPortal = portalRegistry.getPortalByAddress(portalAddress);
+    _assertPortal(registeredPortal, expectedPortal);
+
+    vm.prank(address(0));
+    emit PortalRevoked(portalAddress);
+    portalRegistry.revoke(portalAddress);
+
+    portalCount = portalRegistry.getPortalsCount();
+    assertEq(portalCount, 0);
+
+    vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
+    portalRegistry.getPortalByAddress(portalAddress);
+  }
+
+  function test_revoke_OnlyOwner() public {
+    vm.prank(makeAddr("randomAddress"));
+    vm.expectRevert("Ownable: caller is not the owner");
+    portalRegistry.revoke(address(validPortalMock));
+  }
+
+  function test_revoke_NotRegistered() public {
+    vm.prank(address(0));
+    vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
+    portalRegistry.revoke(makeAddr("randomAddress"));
   }
 
   function test_deployDefaultPortal() public {

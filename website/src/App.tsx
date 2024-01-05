@@ -7,16 +7,15 @@ import Navbar from "./components/Navbar.tsx";
 import Footer from "./components/Footer.tsx";
 
 function App() {
-
   return (
     <HashRouter>
       <header>
         <Navbar />
       </header>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/sdk-demo" element={<SDKDemo />} />
-        <Route path="/poh" element={<Poh />} />
+        <Route path="*" element={<Home title={"Verax Attestation Registry"} />} />
+        <Route path="/sdk-demo" element={<SDKDemo title={"Verax | SDK Demo"} />} />
+        <Route path="/linea-poh" element={<Poh />} />
       </Routes>
       <footer>
         <Footer />

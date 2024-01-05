@@ -1,4 +1,4 @@
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { ConnectKitButton } from "connectkit";
 import { t } from "i18next";
 import { ChevronDown } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
@@ -38,7 +38,6 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
   const location = useLocation();
   const { address, isConnected } = useAccount();
-  const { open } = useWeb3Modal();
   const { isDarkMode } = useTernaryDarkMode();
 
   const { network, setNetwork } = useNetworkContext();
@@ -83,14 +82,21 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button
-            name={title}
-            handler={() => open()}
-            buttonType={EButtonType.OUTLINED}
-            iconRight={isConnected && !isAdaptive ? <ChevronDown /> : undefined}
-            isSmall={screen.sm}
-            className="whitespace-nowrap h-9 sm:h-auto !px-3 sm:!px-4"
-          />
+          <ConnectKitButton.Custom>
+            {({ isConnected, show }) => {
+              if (!show) return <></>;
+              return (
+                <Button
+                  name={title}
+                  handler={show}
+                  buttonType={EButtonType.OUTLINED}
+                  iconRight={isConnected && !isAdaptive ? <ChevronDown /> : undefined}
+                  isSmall={screen.sm}
+                  className="whitespace-nowrap h-9 sm:h-auto !px-3 sm:!px-4"
+                />
+              );
+            }}
+          </ConnectKitButton.Custom>
           {isAdaptive && <MenuButton isOpened={isOpened} setIsOpened={setIsOpened} />}
         </div>
       </div>

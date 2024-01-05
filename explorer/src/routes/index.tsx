@@ -1,4 +1,4 @@
-import { Route, createHashRouter, createRoutesFromElements } from "react-router-dom";
+import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 
 import { Attestation } from "@/pages/Attestation";
 import { Attestations } from "@/pages/Attestations";
@@ -17,7 +17,7 @@ import { loaderNetworkProvider } from "@/providers/network-provider/loader";
 import { APP_ROUTES } from "./constants";
 import { NotFoundPage } from "./NotFoundPage";
 
-export const router = createHashRouter(
+export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<Providers />} loader={loaderNetworkProvider}>
       <Route path={APP_ROUTES.HOME} element={<Home />} />

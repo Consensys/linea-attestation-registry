@@ -65,7 +65,7 @@ jobs:
 
       - name: Build
         if: steps.check-changes.outputs.changed == 'true'
-        run: pnpm run build
+        run: pnpm run build:netlify
         env:
           VITE_WALLETCONNECT_PROJECT_ID: ${{ secrets.VITE_WALLETCONNECT_PROJECT_ID }}
           VITE_INFURA_API_KEY: ${{ secrets.VITE_INFURA_API_KEY }}

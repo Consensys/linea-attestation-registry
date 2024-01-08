@@ -8,10 +8,10 @@ export const loadSchemaList = async (schema: SchemaDataMapper, parsedString: Par
   const [listByName, listByDescription] = parsedString.nameOrDescription
     ? await Promise.all([
         schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-          name_contains: parsedString.nameOrDescription,
+          name_contains_nocase: parsedString.nameOrDescription,
         }),
         schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-          description_contains: parsedString.nameOrDescription,
+          description_contains_nocase: parsedString.nameOrDescription,
         }),
       ])
     : [];

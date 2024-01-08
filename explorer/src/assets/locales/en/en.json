@@ -140,6 +140,14 @@
       "title": "Revokable",
       "yes": "Yes",
       "no": "No"
+    },
+    "list": {
+      "title": "Explore Portals",
+      "columns": {
+        "name": "Portal Name",
+        "description": "Portal Description",
+        "owner": "Owner Address"
+      }
     }
   }
 }

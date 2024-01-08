@@ -27,7 +27,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@lens-protocol/widgets-react": "^2.1.0",
-    "@verax-attestation-registry/verax-sdk": "1.0.2",
+    "@verax-attestation-registry/verax-sdk": "1.1.0",
     "@web3modal/wagmi": "^3.5.0",
     "axios": "^1.6.1",
     "react": "^18.2.0",

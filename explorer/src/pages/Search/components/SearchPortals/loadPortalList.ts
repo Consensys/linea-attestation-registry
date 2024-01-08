@@ -8,10 +8,10 @@ export const loadPortalList = async (portal: PortalDataMapper, parsedString: Par
   const [listByName, listByDescription] = parsedString.nameOrDescription
     ? await Promise.all([
         portal.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-          name_starts_with_nocase: parsedString.nameOrDescription,
+          name_contains_nocase: parsedString.nameOrDescription,
         }),
         portal.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-          description_starts_with_nocase: parsedString.nameOrDescription,
+          description_contains_nocase: parsedString.nameOrDescription,
         }),
       ])
     : [];

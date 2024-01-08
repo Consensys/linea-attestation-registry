@@ -1,5 +1,6 @@
 import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
+import { Trans } from "react-i18next";
 
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
@@ -24,7 +25,7 @@ export const Jumbotron: React.FC = () => {
             iconRight={<ArrowUpRight />}
           />
           <p className="text-text-tertiary text-base not-italic font-normal leading-[140%]">
-            {t("home.exploreEcosystem")}
+            <Trans i18nKey="home.exploreEcosystem" components={{ bold: <strong /> }} />
           </p>
         </div>
       </div>

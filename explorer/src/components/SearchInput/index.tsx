@@ -8,7 +8,7 @@ import { keyboard } from "@/constants/keyboard";
 import { EQueryParams } from "@/enums/queryParams";
 import { useHandleSearch } from "@/hooks/useHandleSearch";
 
-export const SearchInput: React.FC<{ className?: string }> = ({ className }) => {
+export const SearchInput: React.FC<{ className?: string; height?: string }> = ({ className, height = "h-12" }) => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get(EQueryParams.SEARCH_QUERY);
   const [searchQuery, setSearchQuery] = useState<string>(search || EMPTY_STRING);
@@ -22,7 +22,7 @@ export const SearchInput: React.FC<{ className?: string }> = ({ className }) => 
 
   return (
     <div
-      className={`w-full md:max-w-[370px] xl:min-w-[auto] h-12 p-2 bg-white dark:bg-transparent rounded-md border border-border-card dark:border-border-cardDark justify-between items-center inline-flex focus-within:border-border-inputFocus ${className}`}
+      className={`w-full md:max-w-[370px] xl:min-w-[auto] ${height} p-2 bg-white dark:bg-transparent rounded-md border border-border-card dark:border-border-cardDark justify-between items-center inline-flex focus-within:border-border-inputFocus ${className}`}
     >
       <input
         value={searchQuery}

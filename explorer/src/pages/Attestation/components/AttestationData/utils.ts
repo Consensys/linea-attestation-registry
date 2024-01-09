@@ -1,4 +1,5 @@
 export const getAttestationData = (decodedPayload: unknown): string => {
+  decodedPayload = Array.isArray(decodedPayload) && decodedPayload.length === 1 ? decodedPayload[0] : decodedPayload;
   return JSON.stringify(decodedPayload, (_key, value) => (typeof value === "bigint" ? value.toString() : value));
 };
 

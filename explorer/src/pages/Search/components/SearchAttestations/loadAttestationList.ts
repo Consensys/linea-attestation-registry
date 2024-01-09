@@ -32,11 +32,14 @@ export const loadAttestationList = async (
     ? await attestation.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { schemaString: parsedString.schemaString })
     : [];
 
-  const result = [
+  const results = [
     ...(listByIds || []),
     ...(listByAddress?.[0] || []),
     ...(listByAddress?.[1] || []),
     ...(listBySchemaString || []),
   ];
-  return result;
+
+  const uniqueResults = [...new Map(results.map((result) => [result.id, result])).values()];
+
+  return uniqueResults;
 };

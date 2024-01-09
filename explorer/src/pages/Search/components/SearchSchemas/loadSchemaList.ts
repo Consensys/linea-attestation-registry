@@ -30,7 +30,7 @@ export const loadSchemaList = async (schema: SchemaDataMapper, parsedString: Par
       )
     : [];
 
-  const result = [
+  const results = [
     ...(listByIds || []),
     ...listBySchemaString,
     ...(listByName || []),
@@ -38,5 +38,7 @@ export const loadSchemaList = async (schema: SchemaDataMapper, parsedString: Par
     ...(listByContext || []),
   ];
 
-  return result;
+  const uniqueResults = [...new Map(results.map((result) => [result.id, result])).values()];
+
+  return uniqueResults;
 };

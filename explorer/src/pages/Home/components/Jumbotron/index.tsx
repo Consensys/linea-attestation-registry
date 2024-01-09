@@ -9,7 +9,7 @@ import { veraxLink } from "@/constants";
 export const Jumbotron: React.FC = () => {
   return (
     <div className="w-full flex flex-col gap-6 relative">
-      <p className="self-stretch text-text-primary text-2xl not-italic font-medium leading-[102%] tracking-[-0.96px] md:text-4xl lg:text-[2.75rem] md:font-semibold dark:text-whiteDefault">
+      <p className="self-stretch text-text-primary text-[2rem] font-medium leading-[110%] lg:leading-[3rem] md:text-4xl lg:text-[2.75rem] md:font-semibold dark:text-whiteDefault">
         {t("home.title")}
       </p>
       <p className="self-stretch text-text-tertiary text-base not-italic font-normal leading-[140%] max-w-[32.5rem]">

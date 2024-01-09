@@ -20,7 +20,9 @@ export const loadModuleList = async (module: ModuleDataMapper, parsedString: Par
     parsedString.address ? await Promise.all(parsedString.address.map((id) => module.findOneById(id))) : []
   ).filter(isNotNullOrUndefined);
 
-  const result = [...(listByIds || []), ...(listByName || []), ...(listByDescription || [])];
+  const results = [...(listByIds || []), ...(listByName || []), ...(listByDescription || [])];
 
-  return result;
+  const uniqueResults = [...new Map(results.map((result) => [result.id, result])).values()];
+
+  return uniqueResults;
 };

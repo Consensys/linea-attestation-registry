@@ -1,5 +1,6 @@
 import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
+import { Trans } from "react-i18next";
 
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
@@ -22,13 +23,17 @@ export const Jumbotron: React.FC = () => {
             handler={() => window.open(veraxLink, "_blank")}
             buttonType={EButtonType.PRIMARY_LIME}
             iconRight={<ArrowUpRight />}
+            height="h-10"
           />
           <p className="text-text-tertiary text-base not-italic font-normal leading-[140%]">
-            {t("home.exploreEcosystem")}
+            <Trans i18nKey="home.exploreEcosystem" components={{ bold: <strong /> }} />
           </p>
         </div>
       </div>
-      <SearchInput className="md:max-w-full lg:absolute lg:w-[30rem] lg:bottom-0 lg:right-0 xl:w-[35.5625rem]" />
+      <SearchInput
+        className="pl-2 pr-1 py-2 md:max-w-full lg:absolute lg:w-[30rem] lg:bottom-0 lg:right-0 xl:w-[35.5625rem]"
+        height="h-10"
+      />
     </div>
   );
 };

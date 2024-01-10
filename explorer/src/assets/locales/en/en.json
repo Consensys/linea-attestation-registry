@@ -52,7 +52,7 @@
   "home": {
     "title": "Your Reputation Under Your Control",
     "description": "Explore the ecosystem to find out how you can unlock your data from across the web and share it with the world on your own terms",
-    "exploreEcosystem": "or explore the ecosystem",
+    "exploreEcosystem": "or <bold>explore the ecosystem...</bold>",
     "info": {
       "issueYourAttestation": "Want to issue your own attestation?",
       "aboutVerax": "Want to know more about Verax?"
@@ -140,6 +140,14 @@
       "title": "Revokable",
       "yes": "Yes",
       "no": "No"
+    },
+    "list": {
+      "title": "Explore Portals",
+      "columns": {
+        "name": "Portal Name",
+        "description": "Portal Description",
+        "owner": "Owner Address"
+      }
     }
   }
 }

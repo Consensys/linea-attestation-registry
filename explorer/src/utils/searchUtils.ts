@@ -65,3 +65,7 @@ export const parseSearch = (search: string | null): Partial<ResultParseSearch> =
     schemaString,
   };
 };
+
+export const uniqMap = <T>(array: T[], by: keyof T): T[] => [
+  ...new Map(array.map((result) => [result[by], result])).values(),
+];

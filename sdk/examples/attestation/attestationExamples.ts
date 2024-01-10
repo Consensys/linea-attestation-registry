@@ -9,7 +9,7 @@ export default class AttestationExamples {
     this.veraxSdk = _veraxSdk;
   }
 
-  async run(argv: string, methodName: string = "") {
+  async run(argv: string, methodName: string = "", waitForConfirmation = false) {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
       const attestationId: string =
         argv === "" ? "0x00000000000000000000000000000000000000000000000000000000000007b5" : argv;
@@ -35,7 +35,7 @@ export default class AttestationExamples {
 
     if (methodName.toLowerCase() == "updateRouter".toLowerCase() || methodName == "") {
       const routerAddress: Address = argv === "" ? "0x736c78b2f2cBf4F921E8551b2acB6A5Edc9177D5" : (argv as Address);
-      console.log(await this.veraxSdk.attestation.updateRouter(routerAddress));
+      console.log(await this.veraxSdk.attestation.updateRouter(routerAddress, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "simulateMassImport".toLowerCase() || methodName == "") {
@@ -83,7 +83,7 @@ export default class AttestationExamples {
           attestationData: [{ isBuidler: true }],
         },
       ];
-      console.log(await this.veraxSdk.attestation.massImport(portalAddress, attestationPayloads));
+      console.log(await this.veraxSdk.attestation.massImport(portalAddress, attestationPayloads, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "simulateIncrementVersionNumber".toLowerCase() || methodName == "") {
@@ -91,7 +91,7 @@ export default class AttestationExamples {
     }
 
     if (methodName.toLowerCase() == "incrementVersionNumber".toLowerCase() || methodName == "") {
-      console.log(await this.veraxSdk.attestation.incrementVersionNumber());
+      console.log(await this.veraxSdk.attestation.incrementVersionNumber(waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "isRegistered".toLowerCase() || methodName == "") {

@@ -20,18 +20,18 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     return await this.simulateContract("updateRouter", [routerAddress]);
   }
 
-  async updateRouter(routerAddress: Address) {
+  async updateRouter(routerAddress: Address, waitForConfirmation: boolean = false) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return await executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateRegister(name: string, description: string, moduleAddress: Address) {
     return await this.simulateContract("register", [name, description, moduleAddress]);
   }
 
-  async register(name: string, description: string, moduleAddress: Address) {
+  async register(name: string, description: string, moduleAddress: Address, waitForConfirmation: boolean = false) {
     const request = await this.simulateRegister(name, description, moduleAddress);
-    return await executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateRunModules(
@@ -58,9 +58,10 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
     value: number,
+    waitForConfirmation: boolean = false,
   ) {
     const request = await this.simulateRunModules(modulesAddresses, attestationPayload, validationPayloads, value);
-    return await executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateBulkRunModules(
@@ -94,9 +95,10 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     modulesAddresses: Address[],
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
+    waitForConfirmation: boolean = false,
   ) {
     const request = await this.simulateBulkRunModules(modulesAddresses, attestationPayloads, validationPayloads);
-    return await executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async isContractAddress(contractAddress: Address) {

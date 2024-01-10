@@ -111,9 +111,9 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return this.simulateContract("updateRouter", [routerAddress]);
   }
 
-  async updateRouter(routerAddress: Address) {
+  async updateRouter(routerAddress: Address, waitForConfirmation: boolean = false) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateMassImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
@@ -137,18 +137,22 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return this.simulateContract("massImport", [attestationPayloadsArg, portalAddress]);
   }
 
-  async massImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
+  async massImport(
+    portalAddress: Address,
+    attestationPayloads: AttestationPayload[],
+    waitForConfirmation: boolean = false,
+  ) {
     const request = await this.simulateMassImport(portalAddress, attestationPayloads);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateIncrementVersionNumber() {
     return this.simulateContract("incrementVersionNumber", []);
   }
 
-  async incrementVersionNumber() {
+  async incrementVersionNumber(waitForConfirmation: boolean = false) {
     const request = await this.simulateIncrementVersionNumber();
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async isRegistered(attestationId: string) {

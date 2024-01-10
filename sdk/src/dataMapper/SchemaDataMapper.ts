@@ -1,4 +1,4 @@
-import { Address } from "viem";
+import { Address, TransactionReceipt } from "viem";
 import { Schema_filter, Schema_orderBy } from "../../.graphclient";
 import { Schema } from "../types";
 import BaseDataMapper from "./BaseDataMapper";
@@ -20,27 +20,36 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
     return this.simulateContract("updateRouter", [routerAddress]);
   }
 
-  async updateRouter(routerAddress: Address) {
+  async updateRouter(
+    routerAddress: Address,
+    waitForConfirmation: boolean = false,
+  ): Promise<Partial<TransactionReceipt>> {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateCreate(name: string, description: string, context: string, schemaString: string) {
     return this.simulateContract("createSchema", [name, description, context, schemaString]);
   }
 
-  async create(name: string, description: string, context: string, schemaString: string) {
+  async create(
+    name: string,
+    description: string,
+    context: string,
+    schemaString: string,
+    waitForConfirmation: boolean = false,
+  ) {
     const request = await this.simulateCreate(name, description, context, schemaString);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateUpdateContext(schemaId: string, context: string) {
     return this.simulateContract("updateContext", [schemaId, context]);
   }
 
-  async updateContext(schemaId: string, context: string) {
+  async updateContext(schemaId: string, context: string, waitForConfirmation: boolean = false) {
     const request = await this.simulateUpdateContext(schemaId, context);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async getIdFromSchemaString(schema: string) {

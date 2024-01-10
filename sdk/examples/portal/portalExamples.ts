@@ -8,7 +8,7 @@ export default class PortalExamples {
     this.veraxSdk = _veraxSdk;
   }
 
-  async run(argv: string, methodName: string = "") {
+  async run(argv: string, methodName: string = "", waitForConfirmation = false) {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
       const portalId: string = argv === "" ? "0x1495341ab1019798dd08976f4a3e5ab0e095510b" : argv;
       console.log(await this.veraxSdk.portal.findOneById(portalId));
@@ -47,7 +47,9 @@ export default class PortalExamples {
         attestationData: [{ isBuidler: true }],
       };
       const validationPayloads = params?.validationPayloads ?? [];
-      console.log(await this.veraxSdk.portal.attest(portalAddress, attestationPayload, validationPayloads));
+      console.log(
+        await this.veraxSdk.portal.attest(portalAddress, attestationPayload, validationPayloads, waitForConfirmation),
+      );
     }
 
     if (methodName.toLowerCase() == "simulateBulkAttest".toLowerCase() || methodName == "") {
@@ -99,7 +101,14 @@ export default class PortalExamples {
         },
       ];
       const validationPayloads = params?.validationPayloads ?? [[], []];
-      console.log(await this.veraxSdk.portal.bulkAttest(portalAddress, attestationPayloads, validationPayloads));
+      console.log(
+        await this.veraxSdk.portal.bulkAttest(
+          portalAddress,
+          attestationPayloads,
+          validationPayloads,
+          waitForConfirmation,
+        ),
+      );
     }
 
     if (methodName.toLowerCase() == "revoke" || methodName == "") {
@@ -110,7 +119,7 @@ export default class PortalExamples {
         : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
       const attestationId =
         params?.attestationId ?? "0x0000000000000000000000000000000000000000000000000000000000000001";
-      console.log(await this.veraxSdk.portal.revoke(portalAddress, attestationId));
+      console.log(await this.veraxSdk.portal.revoke(portalAddress, attestationId, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "simulateRevoke".toLowerCase() || methodName == "") {
@@ -147,7 +156,7 @@ export default class PortalExamples {
         "0x00000000000000000000000000000000000000000000000000000000000010a0",
         "0x00000000000000000000000000000000000000000000000000000000000010a1",
       ];
-      console.log(await this.veraxSdk.portal.bulkRevoke(portalAddress, attestationIds));
+      console.log(await this.veraxSdk.portal.bulkRevoke(portalAddress, attestationIds, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "simulateReplace".toLowerCase() || methodName == "") {
@@ -195,7 +204,13 @@ export default class PortalExamples {
       };
       const validationPayloads = params?.validationPayloads ?? [];
       console.log(
-        await this.veraxSdk.portal.replace(portalAddress, attestationId, attestationPayload, validationPayloads),
+        await this.veraxSdk.portal.replace(
+          portalAddress,
+          attestationId,
+          attestationPayload,
+          validationPayloads,
+          waitForConfirmation,
+        ),
       );
     }
 
@@ -266,7 +281,13 @@ export default class PortalExamples {
       ];
       const validationPayloads = params?.validationPayloads ?? [[], []];
       console.log(
-        await this.veraxSdk.portal.bulkReplace(portalAddress, attestationIds, attestationPayloads, validationPayloads),
+        await this.veraxSdk.portal.bulkReplace(
+          portalAddress,
+          attestationIds,
+          attestationPayloads,
+          validationPayloads,
+          waitForConfirmation,
+        ),
       );
     }
 
@@ -293,7 +314,9 @@ export default class PortalExamples {
         isRevocable: true,
         ownerName: "test",
       };
-      console.log(await this.veraxSdk.portal.register(id, name, description, isRevocable, ownerName));
+      console.log(
+        await this.veraxSdk.portal.register(id, name, description, isRevocable, ownerName, waitForConfirmation),
+      );
     }
 
     if (methodName.toLowerCase() == "simulateDeployDefaultPortal".toLowerCase() || methodName == "") {
@@ -321,7 +344,16 @@ export default class PortalExamples {
         isRevocable: true,
         ownerName: "test",
       };
-      console.log(await this.veraxSdk.portal.deployDefaultPortal(modules, name, description, isRevocable, ownerName));
+      console.log(
+        await this.veraxSdk.portal.deployDefaultPortal(
+          modules,
+          name,
+          description,
+          isRevocable,
+          ownerName,
+          waitForConfirmation,
+        ),
+      );
     }
 
     if (methodName.toLowerCase() == "getPortalByAddress".toLowerCase() || methodName == "") {

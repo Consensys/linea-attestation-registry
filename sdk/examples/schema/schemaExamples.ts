@@ -8,7 +8,7 @@ export default class SchemaExamples {
     this.veraxSdk = _veraxSdk;
   }
 
-  async run(argv: string, methodName: string = "") {
+  async run(argv: string, methodName: string = "", waitForConfirmation = false) {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
       const schemaId: string =
         argv === "" ? "0x01f031da36192c34057c764239eb77bb6ec8ebfb808f72a7bb172f37a5bec31f" : argv;
@@ -26,7 +26,7 @@ export default class SchemaExamples {
 
     if (methodName.toLowerCase() == "updateRouter".toLowerCase() || methodName == "") {
       const routerAddress: Address = argv === "" ? "0x736c78b2f2cBf4F921E8551b2acB6A5Edc9177D5" : (argv as Address);
-      console.log(await this.veraxSdk.schema.updateRouter(routerAddress));
+      console.log(await this.veraxSdk.schema.updateRouter(routerAddress, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "simulateCreate".toLowerCase() || methodName == "") {
@@ -50,7 +50,7 @@ export default class SchemaExamples {
         context: "test",
         schemaString: "(bool isBuidler)",
       };
-      console.log(await this.veraxSdk.schema.create(name, description, context, schemaString));
+      console.log(await this.veraxSdk.schema.create(name, description, context, schemaString, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "simulateUpdateContext".toLowerCase() || methodName == "") {
@@ -70,7 +70,7 @@ export default class SchemaExamples {
         schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
         context: "new context",
       };
-      console.log(await this.veraxSdk.schema.updateContext(schemaId, context));
+      console.log(await this.veraxSdk.schema.updateContext(schemaId, context, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "getIdFromSchemaString".toLowerCase() || methodName == "") {

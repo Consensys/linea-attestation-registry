@@ -3,7 +3,7 @@ import SchemaDataMapper from "@verax-attestation-registry/verax-sdk/lib/types/sr
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { ResultParseSearch } from "@/interfaces/components";
 import { isNotNullOrUndefined } from "@/utils";
-import { uniqMapById } from "@/utils/searchUtils";
+import { uniqMap } from "@/utils/searchUtils";
 
 export const loadSchemaList = async (schema: SchemaDataMapper, parsedString: Partial<ResultParseSearch>) => {
   const [listByName, listByDescription] = parsedString.nameOrDescription
@@ -39,5 +39,5 @@ export const loadSchemaList = async (schema: SchemaDataMapper, parsedString: Par
     ...(listByContext || []),
   ];
 
-  return uniqMapById(results);
+  return uniqMap(results, "id");
 };

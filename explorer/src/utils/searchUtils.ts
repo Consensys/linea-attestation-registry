@@ -66,6 +66,6 @@ export const parseSearch = (search: string | null): Partial<ResultParseSearch> =
   };
 };
 
-export const uniqMapById = <T extends { id: string }>(array: T[]): T[] => [
-  ...new Map(array.map((result) => [result.id, result])).values(),
+export const uniqMap = <T>(array: T[], by: keyof T): T[] => [
+  ...new Map(array.map((result) => [result[by], result])).values(),
 ];

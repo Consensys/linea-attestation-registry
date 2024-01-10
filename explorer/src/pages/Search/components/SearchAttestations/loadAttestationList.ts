@@ -3,6 +3,7 @@ import AttestationDataMapper from "@verax-attestation-registry/verax-sdk/lib/typ
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { ResultParseSearch } from "@/interfaces/components";
 import { isNotNullOrUndefined } from "@/utils";
+import { uniqMapById } from "@/utils/searchUtils";
 
 export const loadAttestationList = async (
   attestation: AttestationDataMapper,
@@ -39,7 +40,5 @@ export const loadAttestationList = async (
     ...(listBySchemaString || []),
   ];
 
-  const uniqueResults = [...new Map(results.map((result) => [result.id, result])).values()];
-
-  return uniqueResults;
+  return uniqMapById(results);
 };

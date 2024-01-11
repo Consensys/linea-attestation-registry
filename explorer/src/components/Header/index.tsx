@@ -6,8 +6,10 @@ import { useLocation } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";
 import { useAccount } from "wagmi";
 
-import VeraxLogoDarkMode from "@/assets/logo/verax-logo-dark-mode.svg?react";
-import VeraxLogo from "@/assets/logo/verax-logo.svg?react";
+import BetaDark from "@/assets/logo/beta-dark.svg?react";
+import BetaLight from "@/assets/logo/beta-light-strong.svg?react";
+import VeraxLogoDarkMode from "@/assets/logo/verax-logo-dark.svg?react";
+import VeraxLogo from "@/assets/logo/verax-logo-light.svg?react";
 import { LightDarkModeSwitcher } from "@/components/LightDarkModeSwitcher";
 import { Link } from "@/components/Link";
 import {
@@ -54,9 +56,15 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
         <div className="justify-start items-center gap-6 flex self-stretch">
           <Link to={APP_ROUTES.HOME} className="shrink-0 hover:opacity-70">
             {isDarkMode ? (
-              <VeraxLogoDarkMode className="w-[76.434px] h-6 sm:h-auto sm:w-auto" />
+              <div className="flex gap-1 sm:gap-2 items-center">
+                <VeraxLogoDarkMode className="w-[76.434px] h-6 sm:h-auto sm:w-auto" />
+                <BetaDark className="mt-1 w-[21px] h-[10px] sm:w-auto sm:h-auto" />
+              </div>
             ) : (
-              <VeraxLogo className="w-[76.434px] h-6 sm:h-auto sm:w-auto" />
+              <div className="flex gap-1 sm:gap-2 items-center">
+                <VeraxLogo className="w-[76.434px] h-6 sm:h-auto sm:w-auto" />
+                <BetaLight className="mt-1 w-[21px] h-[10px] sm:w-auto sm:h-auto" />
+              </div>
             )}
           </Link>
           {!isAdaptive && <NavigationList />}

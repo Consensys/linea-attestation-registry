@@ -17,9 +17,8 @@ export async function executeTransaction(
     console.log(`Transaction sent with hash ${hash}`);
 
     if (waitForConfirmation) {
-      // Wait for the transaction to be mined and confirmed
-      const receipt = await publicClient.waitForTransactionReceipt({ hash });
-      return receipt;
+      // Wait for the transaction to be confirmed
+      return await publicClient.waitForTransactionReceipt({ hash });
     }
 
     return { transactionHash: hash };

@@ -15,6 +15,11 @@ const Navbar: React.FC = () => {
             </NavLink>
           </li>
           <li className="nav-item">
+            <NavLink className="navbar-brand" to="/tutorials" end>
+              Tutorials
+            </NavLink>
+          </li>
+          <li className="nav-item">
             <a className={"navbar-brand"} href={"https://explorer.ver.ax"} target={"_blank"}>
               Explorer <FontAwesomeIcon icon={faArrowUpRightFromSquare} size={"xs"} />
             </a>

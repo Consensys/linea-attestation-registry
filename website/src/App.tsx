@@ -1,24 +1,28 @@
 import "./App.css";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home.tsx";
-import SDKDemo from "./pages/SDKDemo.tsx";
 import Navbar from "./components/Navbar.tsx";
 import Footer from "./components/Footer.tsx";
+import Tutorials from "./pages/Tutorials.tsx";
 
 function App() {
   return (
-    <HashRouter>
-      <header>
-        <Navbar />
-      </header>
-      <Routes>
-        <Route path="*" element={<Home title={"Verax Attestation Registry"} />} />
-        <Route path="/sdk-demo" element={<SDKDemo title={"Verax | SDK Demo"} />} />
-      </Routes>
-      <footer>
-        <Footer />
-      </footer>
-    </HashRouter>
+    <div className={"global-container"}>
+      <HashRouter>
+        <header>
+          <Navbar />
+        </header>
+        <div className={"global-body"}>
+          <Routes>
+            <Route path="*" element={<Home title={"Verax Attestation Registry"} />} />
+            <Route path="/tutorials" element={<Tutorials title={"Verax | Tutorials"} />} />
+          </Routes>
+        </div>
+        <footer>
+          <Footer />
+        </footer>
+      </HashRouter>
+    </div>
   );
 }
 

@@ -1,10 +1,11 @@
 import { type FunctionComponent, useState } from "react";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { useAccount } from "wagmi";
+import { Address } from "@wagmi/core";
 
 export type SDKDemoProps = {
   veraxSdk: VeraxSdk;
-  getTxHash: (hash: `0x${string}`) => void;
+  getTxHash: (hash: Address) => void;
 };
 
 const CreatePortal: FunctionComponent<SDKDemoProps> = ({ veraxSdk, getTxHash }) => {

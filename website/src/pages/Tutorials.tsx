@@ -5,7 +5,7 @@ import ConnectWallet from "../components/ConnectWallet.tsx";
 import IssueAttestation from "../components/IssueAttestation.tsx";
 import AttestationPreview from "../components/AttestationPreview.tsx";
 import { waitForTransactionReceipt } from "viem/actions";
-import { getPublicClient } from "@wagmi/core";
+import { Address, getPublicClient } from "@wagmi/core";
 import CreateSchema from "../components/CreateSchema.tsx";
 import CreatePortal from "../components/CreatePortal.tsx";
 import { decodeEventLog, parseAbi } from "viem";
@@ -16,8 +16,8 @@ export type SDKDemoProps = {
 
 const Tutorials: FunctionComponent<SDKDemoProps> = ({ title }) => {
   const [veraxSdk, setVeraxSdk] = useState<VeraxSdk>();
-  const [schemaId, setSchemaId] = useState<`0x${string}`>();
-  const [portalId, setPortalId] = useState<`0x${string}`>();
+  const [schemaId, setSchemaId] = useState<Address>();
+  const [portalId, setPortalId] = useState<Address>();
   const [attestationId, setAttestationId] = useState<string>();
 
   const { address, isConnected } = useAccount();
@@ -36,14 +36,14 @@ const Tutorials: FunctionComponent<SDKDemoProps> = ({ title }) => {
     }
   }, [chain, address]);
 
-  const handleSchemaTx = async (hash: `0x${string}`) => {
+  const handleSchemaTx = async (hash: Address) => {
     const receipt = await waitForTransactionReceipt(getPublicClient(), {
       hash,
     });
     setSchemaId(receipt.logs[0].topics[1]);
   };
 
-  const handlePortalTx = async (hash: `0x${string}`) => {
+  const handlePortalTx = async (hash: Address) => {
     const receipt = await waitForTransactionReceipt(getPublicClient(), {
       hash,
     });
@@ -55,7 +55,7 @@ const Tutorials: FunctionComponent<SDKDemoProps> = ({ title }) => {
     setPortalId(decodedLogs.args.portalAddress);
   };
 
-  const handleAttestationTx = async (hash: `0x${string}`) => {
+  const handleAttestationTx = async (hash: Address) => {
     const receipt = await waitForTransactionReceipt(getPublicClient(), {
       hash,
     });

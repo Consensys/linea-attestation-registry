@@ -9,6 +9,7 @@ import { displayAmountWithComma } from "@/utils/amountUtils";
 import { pageBySearchParams } from "@/utils/paginationUtils";
 
 import { IPaginationProps } from "./interface";
+import { PerPageSelector } from "./PerPageSelector";
 
 export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,6 +38,7 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
   const handleLastPage = () => handlePageChange(totalPages);
   const handlePreviousPage = () => handlePageChange(currentPage - 1);
   const handleNextPage = () => handlePageChange(currentPage + 1);
+  // const [itemsPerPage, setItemsPerPage] = useState();
 
   const changePage = (inputPage: string) => {
     const page = Number(inputPage);
@@ -84,7 +86,10 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           onChange={(event) => changePage(event.target.value)}
           className="w-16 h-8 px-2 border text-xs font-semibold dark:bg-transparent text-text-primary dark:text-whiteDefault text-center outline-none border-border-table dark:border-greyDark focus:border-border-inputFocus dark:focus:border-border-inputFocus rounded-lg transition"
         />
+        {/* TODO: add i18n constant */}
         <span className="text-slate-500 text-xs font-normal">{`of ${displayAmountWithComma(totalPages)}`}</span>
+        <PerPageSelector />
+        <span className="hidden md:inline-block text-slate-500 text-xs font-normal">per page</span>
       </div>
       <div className="flex gap-3">
         <button

@@ -9,6 +9,7 @@ import Pado from "@/assets/issuers/pado.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
+import Automata from "@/assets/issuers/automata.svg?react";
 
 import { IIssuer } from "./interface";
 
@@ -104,5 +105,35 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://0xscore.pro/linea-attestation",
     CTATitle: "Go To 0xScore",
     address: "0x04636DdD2feF7e9DB42a24821E489AD071749fEA",
+  },
+  {
+    name: "Aspecta",
+    logo: ZeroXScore,
+    keywords: ["reputation", "builder profile"],
+    description:
+      "Aspecta is an identity-centric hub for builder reputation, creation, and opportunity. We build an AI-powered identity for builders to demonstrate skills, experiences, and opinions based on GitHub and other data resources‘ insights.",
+    CTALink: "https://aspecta.id/campaign/builders-voyage",
+    CTATitle: "Go To Aspecta",
+    address: "0x36933bd4288648d95a8275e663003ae7efd2199d",
+  },
+  {
+    name: "Automata Network",
+    logo: Automata,
+    keywords: ["Proof of Machinehood", "Machine Attestation"],
+    description:
+      "Automata is a modular attestation layer that powers Proof of Machinehood. PoM is hardware-based attestation that provides verifiable claims about the identity, configuration and operational attributes of computing devices, which creates a viable framework for applications to be constructed upon an enduring bedrock of collective agency and data dignity.",
+    CTALink: "https://pom.ata.network",
+    CTATitle: "Go To Automata",
+    address: "0x0000000000000000000000000000000000000000",
+  },
+  {
+    name: "Reclaim Protocol",
+    logo: ZeroXScore,
+    keywords: ["zk-attestations"],
+    description:
+      "Reclaim Protocol unlocks unlimited possibilities by making HTTPS verifiable in zero knowledge",
+    CTALink: "https://www.reclaimprotocol.org",
+    CTATitle: "Go To Automata",
+    address: "0x0000000000000000000000000000000000000000",
   },
 ];

@@ -88,5 +88,23 @@
       "address": "0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27",
       "startBlock": 149975041
     }
+  },
+  "arbitrum-nova": {
+    "AttestationRegistry": {
+      "address": "0xB9Cf26ED827Eb4A7079e8dedB0ea93D932A2e3e8",
+      "startBlock": 38935000
+    },
+    "ModuleRegistry": {
+      "address": "0x46F7471cd2C1d69Cb5e62c1a34F3fCAf81304Fc3",
+      "startBlock": 38935000
+    },
+    "PortalRegistry": {
+      "address": "0xADc8da3d3388dEe74C7134fC4AEe1cF866Da5d38",
+      "startBlock": 38935000
+    },
+    "SchemaRegistry": {
+      "address": "0x9b5BABcEbf0E8550da1eCDe5674783179B6557FB",
+      "startBlock": 38935000
+    }
   }
 }

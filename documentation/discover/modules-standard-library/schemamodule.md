@@ -1,8 +1,7 @@
 ---
 description: >-
-  Description of the official SchemaModule contract. This module aims to provide
-  a standard way of checking if the Schema ID used in an attestation request is
-  authorized for a given portal.
+  Description of the official SchemaModule contract. This module aims to provide a standard way of checking if the
+  Schema ID used in an attestation request is authorized for a given portal.
 ---
 
 # SchemaModule
@@ -13,19 +12,22 @@ description: >-
 
 ## When to use this module?
 
-An Issuer might want to restrict the Schemas with which an attestation can be issued through his portal. To avoid re-developing this feature for each portal, Verax proposes a standard module to that effect.
+An Issuer might want to restrict the Schemas with which an attestation can be issued through his portal. To avoid
+re-developing this feature for each portal, Verax proposes a standard module to that effect.
 
-Once this module is set for a portal, any attestation request going through the portal will need to use an authorized Schema.
+Once this module is set for a portal, any attestation request going through the portal will need to use an authorized
+Schema.
 
-The list of authorized Schema may change over time, that's why the issuer can add and/or remove authorized Schemas easily via this module.
+The list of authorized Schema may change over time, that's why the issuer can add and/or remove authorized Schemas
+easily via this module.
 
-{% hint style="info" %}
-Only the address identified as the 'owner' of a portal can edit the list of authorized Schemas for his portal.
-{% endhint %}
+{% hint style="info" %} Only the address identified as the 'owner' of a portal can edit the list of authorized Schemas
+for his portal. {% endhint %}
 
 ## When not to use this module?
 
-If the logic of your authorization mechanism goes beyond "Schema 0x... is/isn't authorized", you'll probably need a custom module to enforce your rules.
+If the logic of your authorization mechanism goes beyond "Schema 0x... is/isn't authorized", you'll probably need a
+custom module to enforce your rules.
 
 ## How to use this module?
 

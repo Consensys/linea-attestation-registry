@@ -1,8 +1,7 @@
 ---
 description: >-
-  Description of the official SenderModule contract. This module aims to provide
-  a standard way of checking if the sender of an attestation creation
-  transaction is authorized for a given portal.
+  Description of the official SenderModule contract. This module aims to provide a standard way of checking if the
+  sender of an attestation creation transaction is authorized for a given portal.
 ---
 
 # SenderModule
@@ -13,19 +12,22 @@ description: >-
 
 ## When to use this module?
 
-An Issuer might want to restrict the addresses able to issue an attestation through his portal. To avoid re-developing an access-based portal, Verax proposes a standard module to that effect.
+An Issuer might want to restrict the addresses able to issue an attestation through his portal. To avoid re-developing
+an access-based portal, Verax proposes a standard module to that effect.
 
-Once this module is set for a portal, any attestation payload going through the portal will need to come from an authorized sender.
+Once this module is set for a portal, any attestation payload going through the portal will need to come from an
+authorized sender.
 
-The list of authorized senders may change over time, that's why the issuer can add and/or remove authorized addresses easily via this module.
+The list of authorized senders may change over time, that's why the issuer can add and/or remove authorized addresses
+easily via this module.
 
-{% hint style="info" %}
-Only the address identified as the 'owner' of a portal can edit the list of authorized senders for his portal.
-{% endhint %}
+{% hint style="info" %} Only the address identified as the 'owner' of a portal can edit the list of authorized senders
+for his portal. {% endhint %}
 
 ## When not to use this module?
 
-If the logic of your authorization mechanism goes beyond "address 0x... is/isn't authorized", you'll probably need a custom module to enforce your rules.
+If the logic of your authorization mechanism goes beyond "address 0x... is/isn't authorized", you'll probably need a
+custom module to enforce your rules.
 
 ## How to use this module?
 

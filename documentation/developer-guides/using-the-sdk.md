@@ -14,7 +14,7 @@ npm i --save @verax-attestation-registry/verax-sdk
 yarn add @verax-attestation-registry/verax-sdk
 ```
 
-***
+---
 
 ## Getting Started <a href="#user-content-getting-started" id="user-content-getting-started"></a>
 
@@ -70,7 +70,7 @@ const myVeraxConfiguration = {
 const veraxSdk = new VeraxSdk(myVeraxConfiguration);
 ```
 
-***
+---
 
 ## Read and write objects <a href="#user-content-read-and-write-objects" id="user-content-read-and-write-objects"></a>
 
@@ -91,17 +91,25 @@ const utilsDataMapper = veraxSdk.utils; // Utils
 Each DataMapper comes with the method `findOneById` to get one object by Id.
 
 {% code fullWidth="true" %}
+
 ```javascript
 const myPortal = await portalDataMapper.findOneById("0x34798a866f52949208e67fb57ad36244024c50c0");
 
-const mySchema = await schemaDataMapper.findOneById("0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e");
+const mySchema = await schemaDataMapper.findOneById(
+  "0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e",
+);
 
 const myModule = await moduleDataMapper.findOneById("0x4bb8769e18f1518c35be8405d43d7cc07ecf501c");
 
-const mySchema = await schemaDataMapper.findOneById("0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e");
+const mySchema = await schemaDataMapper.findOneById(
+  "0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e",
+);
 
-const myAttestation = await attestationDataMapper.findOneById("0x000000000000000000000000000000000000000000000000000000000000109b");
+const myAttestation = await attestationDataMapper.findOneById(
+  "0x000000000000000000000000000000000000000000000000000000000000109b",
+);
 ```
+
 {% endcode %}
 
 ### 3. Read content (list / many objects) <a href="#user-content-3-read-content-list--many-objects" id="user-content-3-read-content-list--many-objects"></a>
@@ -132,9 +140,11 @@ const myAttestations = await this.veraxSdk.attestation.findBy(10, 0, filter, "at
 
 ### 4. Write content <a href="#user-content-4-write-content" id="user-content-4-write-content"></a>
 
-Each dataMapper comes with write methods, that may vary depending on the class. See the detail of write method per class dataMapper.
+Each dataMapper comes with write methods, that may vary depending on the class. See the detail of write method per class
+dataMapper.
 
 {% code fullWidth="true" %}
+
 ```javascript
 const portalAddress = "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
 const attestationPayload = {
@@ -146,18 +156,19 @@ const attestationPayload = {
 const validationPayloads = [];
 const newAttestation = await this.veraxSdk.portal.attest(portalAddress, attestationPayload, validationPayloads));
 ```
+
 {% endcode %}
 
-***
+---
 
 ## Other operations <a href="#user-content-other-operations" id="user-content-other-operations"></a>
 
 \[Work in progress] The class `veraxSdk.utils` extends the capabilities:
 
-* precompute the id of an attestation
-* encode decode payload
+- precompute the id of an attestation
+- encode decode payload
 
-***
+---
 
 ## CLI Examples
 

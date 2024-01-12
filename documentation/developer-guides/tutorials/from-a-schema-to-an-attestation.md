@@ -1,14 +1,13 @@
 ---
-description: This tutorial aims to create a Schema, a Portal and issue an Attestation via the Verax SDK in a frontend application.
+description:
+  This tutorial aims to create a Schema, a Portal and issue an Attestation via the Verax SDK in a frontend application.
 ---
 
-{% hint style="warning" %}
-To go through this tutorial, you must be allow-listed as an Issuer.
-You can reach out to us via our [**Discord server**](https://discord.gg/Sq4EmYdBEk).
-{% endhint %}
+{% hint style="warning" %} To go through this tutorial, you must be allow-listed as an Issuer. You can reach out to us
+via our [**Discord server**](https://discord.gg/Sq4EmYdBEk). {% endhint %}
 
-For this tutorial, we will aim to issue an attestation that the user has completed … the tutorial.
-To that end, we'll go with a basic Vite/React setup.
+For this tutorial, we will aim to issue an attestation that the user has completed … the tutorial. To that end, we'll go
+with a basic Vite/React setup.
 
 The 5 steps of the tutorial are as follows:
 
@@ -19,9 +18,9 @@ The 5 steps of the tutorial are as follows:
 5. Issue an Attestation
 6. Display the Attestation
 
-The webapp created for this tutorial can be found [on our website](https://ver.ax/#/tutorials).
-The code for this web application can be
-found [on GitHub](https://github.com/Consensys/linea-attestation-registry/blob/dev/website/src/pages/Tutorials.tsx).
+The webapp created for this tutorial can be found [on our website](https://ver.ax/#/tutorials). The code for this web
+application can be found
+[on GitHub](https://github.com/Consensys/linea-attestation-registry/blob/dev/website/src/pages/Tutorials.tsx).
 
 ## 1. Connect a wallet
 
@@ -41,7 +40,7 @@ npm i @verax-attestation-registry/verax-sdk
 Now, let's import the Verax SDK and instantiate it:
 
 ```typescript
-import {VeraxSdk} from "@verax-attestation-registry/verax-sdk";
+import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 
 const sdkConf = chain.id === 59144 ? VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND : VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND;
 const veraxSdk = new VeraxSdk(sdkConf, address);
@@ -60,23 +59,23 @@ and the subgraph GraphQL API).
 ## Create a Schema
 
 First, we need to define the Schema representing the content that will be attested by our dApp.  
-A Schema is a Solidity-typed string defining a structure. We strongly encourage the developers to follow the
-format `(type fieldName)` where `type` is a Solidity type and `fieldName` is a name for the field.
+A Schema is a Solidity-typed string defining a structure. We strongly encourage the developers to follow the format
+`(type fieldName)` where `type` is a Solidity type and `fieldName` is a name for the field.
 
 In our case, we want to attest that a user has completed the tutorial. Let's declare a Schema string for that:
 
 ```typescript
-const SCHEMA = '(bool hasCompletedTutorial)';
+const SCHEMA = "(bool hasCompletedTutorial)";
 ```
 
 Let's use Verax's SDK to create a Schema on-chain:
 
 ```typescript
 await veraxSdk.schema.create(
-    "Tutorial Schema",
-    "This Schema is used for the tutorial",
-    "https://ver.ax/#/tutorials",
-    SCHEMA,
+  "Tutorial Schema",
+  "This Schema is used for the tutorial",
+  "https://ver.ax/#/tutorials",
+  SCHEMA,
 );
 ```
 
@@ -119,11 +118,11 @@ We are going to use the second option, as it is the simplest and fastest one.
 
 ```typescript
 const hash = await veraxSdk.portal.deployDefaultPortal(
-    [],
-    "Tutorial Portal",
-    "This Portal is used for the tutorial",
-    true,
-    "Verax Tutorial",
+  [],
+  "Tutorial Portal",
+  "This Portal is used for the tutorial",
+  true,
+  "Verax Tutorial",
 );
 ```
 
@@ -144,14 +143,14 @@ Now that we have a Schema and a Portal, we can finally issue an Attestation!
 
 ```typescript
 const hash = await veraxSdk.portal.attest(
-    portalId,
-    {
-        schemaId,
-        expirationDate: Math.floor(Date.now() / 1000) + 2592000,
-        subject: address,
-        attestationData: [{hasCompletedTutorial: true}],
-    },
-    [],
+  portalId,
+  {
+    schemaId,
+    expirationDate: Math.floor(Date.now() / 1000) + 2592000,
+    subject: address,
+    attestationData: [{ hasCompletedTutorial: true }],
+  },
+  [],
 );
 ```
 
@@ -159,15 +158,15 @@ The `attest` method takes three arguments:
 
 1. The ID of the Portal (its Ethereum address)
 2. The Attestation payload:
-    1. The ID of the Schema it follows
-    2. The expiration date of the Attestation (timestamp in seconds, in our case 30 days from now)
-    3. The subject of the Attestation (the entity that was attested, in our case, the Ethereum address of the connected user)
-    4. The data of the Attestation, as an array of objects matching the Schema
+   1. The ID of the Schema it follows
+   2. The expiration date of the Attestation (timestamp in seconds, in our case 30 days from now)
+   3. The subject of the Attestation (the entity that was attested, in our case, the Ethereum address of the connected
+      user)
+   4. The data of the Attestation, as an array of objects matching the Schema
 3. The payload to validate the attestation through the Modules (empty in our case, as we don't use any)
 
 This method will register the Attestation on-chain, on the `AttestationRegistry` contract and return the hash of the
-corresponding
-transaction that was emitted.
+corresponding transaction that was emitted.
 
 ## Display the Attestation
 
@@ -181,14 +180,12 @@ The `getAttestation` method takes one argument:
 
 1. The ID of the Attestation
 
-This method will return the Attestation, which was registered on-chain, indexed by the subgraph and decoded by the
-SDK.
+This method will return the Attestation, which was registered on-chain, indexed by the subgraph and decoded by the SDK.
 
 ## Conclusion
 
-This example is basic, but it shows how easy it is to integrate Verax into your dApp thanks to the Verax
-SDK.
+This example is basic, but it shows how easy it is to integrate Verax into your dApp thanks to the Verax SDK.
 
-The webapp created for this tutorial can be found [on our website](https://ver.ax/#/tutorials).
-The code for this web application can be
-found [on GitHub](https://github.com/Consensys/linea-attestation-registry/blob/dev/website/src/pages/Tutorials.tsx).
+The webapp created for this tutorial can be found [on our website](https://ver.ax/#/tutorials). The code for this web
+application can be found
+[on GitHub](https://github.com/Consensys/linea-attestation-registry/blob/dev/website/src/pages/Tutorials.tsx).

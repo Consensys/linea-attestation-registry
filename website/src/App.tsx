@@ -1,7 +1,6 @@
 import "./App.css";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home.tsx";
-import Poh from "./pages/Poh.tsx";
 import SDKDemo from "./pages/SDKDemo.tsx";
 import Navbar from "./components/Navbar.tsx";
 import Footer from "./components/Footer.tsx";
@@ -15,7 +14,6 @@ function App() {
       <Routes>
         <Route path="*" element={<Home title={"Verax Attestation Registry"} />} />
         <Route path="/sdk-demo" element={<SDKDemo title={"Verax | SDK Demo"} />} />
-        <Route path="/linea-poh" element={<Poh />} />
       </Routes>
       <footer>
         <Footer />

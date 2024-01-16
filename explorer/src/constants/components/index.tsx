@@ -3,6 +3,8 @@ import { t } from "i18next";
 import GitbookIcon from "@/assets/icons/gitbook.svg?react";
 import VeraxIcon from "@/assets/logo/verax-icon.svg?react";
 import GithubIcon from "@/assets/socials/github.svg?react";
+import LensIcon from "@/assets/socials/lens.svg?react";
+import TwitterXIcon from "@/assets/socials/twitter-x.svg?react";
 import { Info } from "@/components/NavigationList/components/Info";
 import { IInfoListItem, NavigationProps, SearchElementProps } from "@/interfaces/components";
 import { APP_ROUTES } from "@/routes/constants";
@@ -31,6 +33,16 @@ export const INFO_LIST: IInfoListItem[] = [
     title: t("common.routes.info.about"),
     logo: VeraxIcon,
     url: "https://ver.ax/",
+  },
+  {
+    title: t("common.routes.info.twitter"),
+    logo: TwitterXIcon,
+    url: "https://twitter.com/VeraxRegistry",
+  },
+  {
+    title: t("common.routes.info.lens"),
+    logo: LensIcon,
+    url: "https://share.lens.xyz/u/lens/verax.lens",
   },
   {
     title: t("common.routes.info.github"),

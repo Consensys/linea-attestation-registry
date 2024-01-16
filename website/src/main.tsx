@@ -17,14 +17,14 @@ const metadata = {
   url: "https://ver.ax",
 };
 
-const chains = [linea, lineaTestnet, arbitrum, arbitrumGoerli, mainnet];
+const chains = [lineaTestnet, linea, arbitrum, arbitrumGoerli, mainnet];
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
 
 createWeb3Modal({
   wagmiConfig,
   projectId,
   chains,
-  defaultChain: linea,
+  defaultChain: lineaTestnet,
   chainImages: {
     59144: LineaMainnetIcon,
     59140: LineaTestnetIcon,

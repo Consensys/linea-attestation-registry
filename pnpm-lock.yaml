@@ -514,6 +514,9 @@ importers:
       '@verax-attestation-registry/verax-sdk':
         specifier: 1.1.0
         version: 1.1.0(@babel/core@7.23.3)(@envelop/core@4.0.3)(@graphql-mesh/types@0.93.2)(@graphql-tools/delegate@10.0.3)(@graphql-tools/merge@9.0.0)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@10.0.1)(@types/node@20.10.3)(graphql-tag@2.12.6)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(tslib@2.6.2)(typescript@5.2.2)(zod@3.22.4)
+      '@wagmi/core':
+        specifier: ^1.4.7
+        version: 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
       '@web3modal/wagmi':
         specifier: ^3.5.0
         version: 3.5.4(@types/react@18.2.37)(@wagmi/core@1.4.7)(typescript@5.2.2)(viem@1.18.9)
@@ -526,6 +529,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-json-view:
+        specifier: ^1.21.3
+        version: 1.21.3(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
       react-router-dom:
         specifier: ^6.19.0
         version: 6.19.0(react-dom@18.2.0)(react@18.2.0)

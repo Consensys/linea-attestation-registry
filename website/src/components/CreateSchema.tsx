@@ -1,11 +1,12 @@
 import { type FunctionComponent, useEffect, useState } from "react";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { useAccount } from "wagmi";
+import { Address } from "@wagmi/core";
 
 export type SDKDemoProps = {
   veraxSdk: VeraxSdk;
-  getTxHash: (hash: `0x${string}`) => void;
-  getSchemaId: (schemaId: `0x${string}`) => void;
+  getTxHash: (hash: Address) => void;
+  getSchemaId: (schemaId: Address) => void;
 };
 
 const SCHEMA = "(bool hasCompletedTutorial)";
@@ -20,7 +21,7 @@ const CreateSchema: FunctionComponent<SDKDemoProps> = ({ veraxSdk, getTxHash, ge
 
   useEffect(() => {
     const fetchSchema = async () => {
-      const schemaId = (await veraxSdk.schema.getIdFromSchemaString(SCHEMA)) as `0x${string}`;
+      const schemaId = (await veraxSdk.schema.getIdFromSchemaString(SCHEMA)) as Address;
       const alreadyExists = (await veraxSdk.schema.getSchema(schemaId)) as boolean;
       setSchemaId(schemaId);
       setSchemaExists(alreadyExists);

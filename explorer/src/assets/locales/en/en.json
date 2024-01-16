@@ -35,6 +35,8 @@
       "info": {
         "title": "Info",
         "about": "About",
+        "twitter": "Twitter",
+        "lens": "Lens",
         "github": "Github",
         "documentation": "Documentation"
       }

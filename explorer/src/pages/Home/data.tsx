@@ -10,6 +10,8 @@ import Trusta from "@/assets/issuers/trusta.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
 import Automata from "@/assets/issuers/automata.svg?react";
+import Aspecta from "@/assets/issuers/aspecta.svg?react";
+import Reclaim from "@/assets/issuers/reclaim.svg?react";
 
 import { IIssuer } from "./interface";
 
@@ -108,7 +110,7 @@ export const issuersData: IIssuer[] = [
   },
   {
     name: "Aspecta",
-    logo: ZeroXScore,
+    logo: Aspecta,
     keywords: ["reputation", "builder profile"],
     description:
       "Aspecta is an identity-centric hub for builder reputation, creation, and opportunity. We build an AI-powered identity for builders to demonstrate skills, experiences, and opinions based on GitHub and other data resources‘ insights.",
@@ -128,12 +130,12 @@ export const issuersData: IIssuer[] = [
   },
   {
     name: "Reclaim Protocol",
-    logo: ZeroXScore,
+    logo: Reclaim,
     keywords: ["zk-attestations"],
     description:
-      "Reclaim Protocol unlocks unlimited possibilities by making HTTPS verifiable in zero knowledge",
-    CTALink: "https://www.reclaimprotocol.org",
-    CTATitle: "Go To Automata",
-    address: "0x0000000000000000000000000000000000000000",
+      "Reclaim Protocol bridges web2 and web3 by allowing users to manage their personal data. Interoperable technology enables the secure extraction and moving of any piece of personal information. Anything visible in the UI of a web service can be seamlessly transformed into anonymous zero-knowledge proof. The main areas of interest for Reclaim include user data enrichment, Sybil resistance for web3, proof-of-humanity methodologies, and web2 commercial use cases.",
+    CTALink: "https://reclaimprotocol.org",
+    CTATitle: "Go To Reclaim Protocol",
+    address: "0xc15718EEC68DbCA02C4B4215B87beef46C3106d5",
   },
 ];

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+  width="200"
+  height="200"
+  viewBox="0 0 200 200"
+  fill="none"
+  version="1.1"
+  id="svg4"
+  sodipodi:docname="Subtract.svg"
+  inkscape:version="1.2.2 (b0a84865, 2022-12-01)"
+  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg"
+>
+  <defs id="defs8" />
+  <sodipodi:namedview
+    id="namedview6"
+    pagecolor="#ffffff"
+    bordercolor="#000000"
+    borderopacity="0.25"
+    inkscape:showpageshadow="2"
+    inkscape:pageopacity="0.0"
+    inkscape:pagecheckerboard="0"
+    inkscape:deskcolor="#d1d1d1"
+    showgrid="false"
+    inkscape:zoom="1.18"
+    inkscape:cx="102.9661"
+    inkscape:cy="102.54237"
+    inkscape:window-width="1396"
+    inkscape:window-height="522"
+    inkscape:window-x="0"
+    inkscape:window-y="25"
+    inkscape:window-maximized="0"
+    inkscape:current-layer="svg4"
+  />
+  <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M1 0C0.447715 0 0 0.447714 0 0.999999V191.244L20.8186 95.921C20.9365 95.3814 21.4797 94.944 22.032 94.944H49.032C49.5843 94.944 49.9365 95.3814 49.8186 95.921L27.0877 200H62.0877L67.5355 175.056C67.6534 174.516 67.3012 174.079 66.7489 174.079H39.7489C39.1966 174.079 38.8444 173.641 38.9623 173.102L44.7233 146.723C44.8412 146.184 45.3844 145.746 45.9367 145.746H72.9367C73.489 145.746 74.0322 145.309 74.1501 144.77L85.032 94.944C85.7391 91.7066 83.6259 89.0822 80.3122 89.0822H58.3122C57.7599 89.0822 57.4078 88.6448 57.5256 88.1052L63.2866 61.727C63.4045 61.1874 63.9477 60.75 64.5 60.75H109.5C116.127 60.75 120.354 65.9989 118.94 72.4737L103.15 144.77C103.032 145.309 102.489 145.746 101.937 145.746H76.3509C75.7986 145.746 75.2554 146.184 75.1375 146.723L69.3765 173.102C69.2587 173.641 69.6109 174.079 70.1631 174.079H95.7489C96.3012 174.079 96.6534 174.516 96.5355 175.056L91.0877 200H199C199.552 200 200 199.552 200 199V1C200 0.447715 199.552 0 199 0H1ZM29.5 60.75C28.9477 60.75 28.4045 61.1874 28.2866 61.727L22.5256 88.1052C22.4078 88.6448 22.7599 89.0822 23.3122 89.0822H50.3122C50.8645 89.0822 51.4078 88.6448 51.5256 88.1052L57.2866 61.727C57.4045 61.1874 57.0523 60.75 56.5 60.75H29.5Z"
+    fill="#0000EE"
+    id="path2"
+  />
+</svg>

@@ -1,4 +1,6 @@
 import ZeroXScore from "@/assets/issuers/0xscore.svg?react";
+import Aspecta from "@/assets/issuers/aspecta.svg?react";
+import Automata from "@/assets/issuers/automata.svg?react";
 import Clique from "@/assets/issuers/clique.svg?react";
 import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
@@ -6,12 +8,10 @@ import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
 import PadoDark from "@/assets/issuers/pado-dark.svg?react";
 import Pado from "@/assets/issuers/pado.svg?react";
+import Reclaim from "@/assets/issuers/reclaim.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
-import Automata from "@/assets/issuers/automata.svg?react";
-import Aspecta from "@/assets/issuers/aspecta.svg?react";
-import Reclaim from "@/assets/issuers/reclaim.svg?react";
 
 import { IIssuer } from "./interface";
 

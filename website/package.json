@@ -28,10 +28,12 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@lens-protocol/widgets-react": "^2.1.0",
     "@verax-attestation-registry/verax-sdk": "1.1.0",
+    "@wagmi/core": "^1.4.7",
     "@web3modal/wagmi": "^3.5.0",
     "axios": "^1.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-json-view": "^1.21.3",
     "react-router-dom": "^6.19.0",
     "viem": "^1.18.9",
     "wagmi": "^1.4.6"

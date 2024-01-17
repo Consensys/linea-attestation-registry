@@ -4,6 +4,16 @@
     text-align: center;
 }
 
+.global-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.global-body {
+    flex: 1;
+}
+
 .logo {
     height: 6em;
     padding: 1.5em;

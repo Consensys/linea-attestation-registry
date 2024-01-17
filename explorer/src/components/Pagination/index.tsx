@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
@@ -13,7 +13,10 @@ import { PerPageSelector } from "./PerPageSelector";
 
 export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = pageBySearchParams(searchParams, itemsCount);
+  const [itemsPerPage, setItemsPerPage] = useState<string | number>(
+    Number(searchParams.get(EQueryParams.ITEMS_PER_PAGE)) || ITEMS_PER_PAGE_DEFAULT,
+  );
+  const currentPage = pageBySearchParams(searchParams, itemsCount, Number(itemsPerPage));
 
   useEffect(() => {
     handlePage(currentPage);
@@ -23,6 +26,8 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
 
   const disablePrev = currentPage === 1;
   const disableNext = currentPage === totalPages;
+
+  const itemsPerPageValues = [ITEMS_PER_PAGE_DEFAULT, 20, 50, 100];
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -34,11 +39,16 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
     }
   };
 
+  const handleItemsPerPage = (val: number | string) => {
+    setItemsPerPage(val);
+    searchParams.set(EQueryParams.ITEMS_PER_PAGE, String(val));
+    setSearchParams(searchParams);
+  };
+
   const handleFirstPage = () => handlePageChange(1);
   const handleLastPage = () => handlePageChange(totalPages);
   const handlePreviousPage = () => handlePageChange(currentPage - 1);
   const handleNextPage = () => handlePageChange(currentPage + 1);
-  // const [itemsPerPage, setItemsPerPage] = useState();
 
   const changePage = (inputPage: string) => {
     const page = Number(inputPage);
@@ -88,8 +98,10 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
         />
         {/* TODO: add i18n constant */}
         <span className="text-slate-500 text-xs font-normal">{`of ${displayAmountWithComma(totalPages)}`}</span>
-        <PerPageSelector />
-        <span className="hidden md:inline-block text-slate-500 text-xs font-normal">per page</span>
+        <PerPageSelector onChange={handleItemsPerPage} values={itemsPerPageValues} value={itemsPerPage} />
+        <span className="hidden md:inline-block text-slate-500 text-xs font-normal">
+          {t("common.messages.perPage")}per page
+        </span>
       </div>
       <div className="flex gap-3">
         <button

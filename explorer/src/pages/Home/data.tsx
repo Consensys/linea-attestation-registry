@@ -134,7 +134,7 @@ export const issuersData: IIssuer[] = [
     keywords: ["zk-attestations"],
     description:
       "Reclaim Protocol bridges web2 and web3 by allowing users to manage their personal data. Interoperable technology enables the secure extraction and moving of any piece of personal information. Anything visible in the UI of a web service can be seamlessly transformed into anonymous zero-knowledge proof. The main areas of interest for Reclaim include user data enrichment, Sybil resistance for web3, proof-of-humanity methodologies, and web2 commercial use cases.",
-    CTALink: "https://reclaimprotocol.org",
+    CTALink: "https://publish-credentials.reclaimprotocol.org/create-credential",
     CTATitle: "Go To Reclaim Protocol",
     address: "0xc15718EEC68DbCA02C4B4215B87beef46C3106d5",
   },

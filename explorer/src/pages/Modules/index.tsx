@@ -7,6 +7,7 @@ import { Pagination } from "@/components/Pagination";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
 import { columns, moduleColumnsOption, skeletonModules } from "@/constants/columns/module";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
+import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
@@ -25,20 +26,22 @@ export const Modules: React.FC = () => {
   const totalItems = modulesCount ? Number(modulesCount) : ZERO;
   const searchParams = new URLSearchParams(window.location.search);
   const page = pageBySearchParams(searchParams, totalItems);
+  const itemsPerPage = Number(searchParams.get(EQueryParams.ITEMS_PER_PAGE)) || ITEMS_PER_PAGE_DEFAULT;
 
-  const [skip, setSkip] = useState<number>(getItemsByPage(page));
+  const [skip, setSkip] = useState<number>(getItemsByPage(page, itemsPerPage));
 
-  const { data: modulesList, isLoading } = useSWR(`${SWRKeys.GET_MODULE_LIST}/${skip}/${chain.id}`, () =>
-    sdk.module.findBy(ITEMS_PER_PAGE_DEFAULT, skip),
+  const { data: modulesList, isLoading } = useSWR(
+    `${SWRKeys.GET_MODULE_LIST}/${itemsPerPage}/${skip}/${chain.id}`,
+    () => sdk.module.findBy(itemsPerPage, skip),
   );
 
   const handlePage = (retrievedPage: number) => {
-    setSkip(getItemsByPage(retrievedPage));
+    setSkip(getItemsByPage(retrievedPage, itemsPerPage));
   };
 
   const columnsSkeletonRef = useRef(columnsSkeleton(columns(), moduleColumnsOption));
   const data = isLoading
-    ? { columns: columnsSkeletonRef.current, list: skeletonModules() }
+    ? { columns: columnsSkeletonRef.current, list: skeletonModules(itemsPerPage) }
     : { columns: columns({ chainId: chain.id }), list: modulesList || [] };
 
   return (

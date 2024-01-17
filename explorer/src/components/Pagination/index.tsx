@@ -22,7 +22,7 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
     handlePage(currentPage);
   }, [currentPage, handlePage, searchParams]);
 
-  const totalPages = Math.ceil(itemsCount / ITEMS_PER_PAGE_DEFAULT);
+  const totalPages = Math.ceil(itemsCount / Number(itemsPerPage));
 
   const disablePrev = currentPage === 1;
   const disableNext = currentPage === totalPages;
@@ -96,11 +96,10 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           onChange={(event) => changePage(event.target.value)}
           className="w-16 h-8 px-2 border text-xs font-semibold dark:bg-transparent text-text-primary dark:text-whiteDefault text-center outline-none border-border-table dark:border-greyDark focus:border-border-inputFocus dark:focus:border-border-inputFocus rounded-lg transition"
         />
-        {/* TODO: add i18n constant */}
         <span className="text-slate-500 text-xs font-normal">{`of ${displayAmountWithComma(totalPages)}`}</span>
         <PerPageSelector onChange={handleItemsPerPage} values={itemsPerPageValues} value={itemsPerPage} />
         <span className="hidden md:inline-block text-slate-500 text-xs font-normal">
-          {t("common.messages.perPage")}per page
+          {t("common.messages.perPage")}
         </span>
       </div>
       <div className="flex gap-3">

@@ -2,10 +2,11 @@ import { type FunctionComponent, useEffect, useState } from "react";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { useAccount } from "wagmi";
 import { Address } from "@wagmi/core";
+import { Hex } from "viem";
 
 export type SDKDemoProps = {
   veraxSdk: VeraxSdk;
-  getTxHash: (hash: Address) => void;
+  getTxHash: (hash: Hex) => void;
   getSchemaId: (schemaId: Address) => void;
 };
 
@@ -35,14 +36,18 @@ const CreateSchema: FunctionComponent<SDKDemoProps> = ({ veraxSdk, getTxHash, ge
 
   const createSchema = async () => {
     try {
-      const hash = await veraxSdk.schema.create(
+      const receipt = await veraxSdk.schema.create(
         "Tutorial Schema",
         "This Schema is used for the tutorial",
         "https://ver.ax/#/tutorials",
         SCHEMA,
       );
-      setTxHash(hash);
-      getTxHash(hash);
+      if (receipt.transactionHash) {
+        setTxHash(receipt.transactionHash);
+        getTxHash(receipt.transactionHash);
+      } else {
+        setError(`Oops, something went wrong!`);
+      }
     } catch (e) {
       console.log(e);
       if (e instanceof Error) {

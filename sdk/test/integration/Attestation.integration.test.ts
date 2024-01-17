@@ -22,7 +22,7 @@ describe("AttestationDataMapper", () => {
       expect(result?.attestedDate).toEqual(1695398083);
       expect(result?.expirationDate).toEqual(1793835110);
       expect(result?.revocationDate).toEqual(0);
-      expect(result?.version).toEqual("8");
+      expect(result?.version).toEqual(8);
       expect(result?.revoked).toBeFalsy();
       expect(result?.subject).toEqual("0xcb859f99f84ab770a50380680be94ad9331bcec5");
       expect(result?.attestationData).toEqual("0x0000000000000000000000000000000000000000000000000000000000000004");

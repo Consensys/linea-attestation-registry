@@ -2,10 +2,11 @@ import { type FunctionComponent, useState } from "react";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { useAccount } from "wagmi";
 import { Address } from "@wagmi/core";
+import { Hex } from "viem";
 
 export type SDKDemoProps = {
   veraxSdk: VeraxSdk;
-  getTxHash: (hash: Address) => void;
+  getTxHash: (hash: Hex) => void;
   schemaId: Address;
   portalId: Address;
 };
@@ -19,7 +20,7 @@ const IssueAttestation: FunctionComponent<SDKDemoProps> = ({ veraxSdk, getTxHash
   const issueAttestation = async () => {
     if (address) {
       try {
-        const hash = await veraxSdk.portal.attest(
+        const receipt = await veraxSdk.portal.attest(
           portalId,
           {
             schemaId,
@@ -29,8 +30,12 @@ const IssueAttestation: FunctionComponent<SDKDemoProps> = ({ veraxSdk, getTxHash
           },
           [],
         );
-        setTxHash(hash);
-        getTxHash(hash);
+        if (receipt.transactionHash) {
+          setTxHash(receipt.transactionHash);
+          getTxHash(receipt.transactionHash);
+        } else {
+          setError(`Oops, something went wrong!`);
+        }
       } catch (e) {
         console.log(e);
         if (e instanceof Error) {

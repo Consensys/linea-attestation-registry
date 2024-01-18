@@ -85,14 +85,14 @@ importers:
         specifier: ^8.10.7
         version: 8.10.7(react-dom@18.2.0)(react@18.2.0)
       '@verax-attestation-registry/verax-sdk':
-        specifier: 1.1.0
-        version: 1.1.0(@babel/core@7.23.3)(@envelop/core@4.0.3)(@graphql-mesh/types@0.93.2)(@graphql-tools/delegate@10.0.3)(@graphql-tools/merge@9.0.0)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@10.0.1)(@types/node@20.10.3)(graphql-tag@2.12.6)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(tslib@2.6.2)(typescript@5.2.2)(zod@3.22.4)
+        specifier: 1.1.1
+        version: 1.1.1(@babel/core@7.23.3)(@envelop/core@4.0.3)(@graphql-mesh/types@0.93.2)(@graphql-tools/delegate@10.0.3)(@graphql-tools/merge@9.0.0)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@10.0.1)(@types/node@20.10.3)(graphql-tag@2.12.6)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(tslib@2.6.2)(typescript@5.2.2)
       '@wagmi/core':
         specifier: ^1.4.7
-        version: 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
+        version: 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)
       abitype:
         specifier: ^0.10.3
-        version: 0.10.3(typescript@5.2.2)(zod@3.22.4)
+        version: 0.10.3(typescript@5.2.2)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -152,7 +152,7 @@ importers:
         version: 4.2.1(typescript@5.2.2)(vite@4.5.1)
       wagmi:
         specifier: ^1.4.6
-        version: 1.4.7(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
+        version: 1.4.7(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)
     devDependencies:
       '@types/node':
         specifier: ^20.9.2
@@ -512,11 +512,11 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0(react@18.2.0)
       '@verax-attestation-registry/verax-sdk':
-        specifier: 1.1.0
-        version: 1.1.0(@babel/core@7.23.3)(@envelop/core@4.0.3)(@graphql-mesh/types@0.93.2)(@graphql-tools/delegate@10.0.3)(@graphql-tools/merge@9.0.0)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@10.0.1)(@types/node@20.10.3)(graphql-tag@2.12.6)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(tslib@2.6.2)(typescript@5.2.2)(zod@3.22.4)
+        specifier: 1.1.1
+        version: 1.1.1(@babel/core@7.23.3)(@envelop/core@4.0.3)(@graphql-mesh/types@0.93.2)(@graphql-tools/delegate@10.0.3)(@graphql-tools/merge@9.0.0)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@10.0.1)(@types/node@20.10.3)(graphql-tag@2.12.6)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(tslib@2.6.2)(typescript@5.2.2)
       '@wagmi/core':
         specifier: ^1.4.7
-        version: 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
+        version: 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)
       '@web3modal/wagmi':
         specifier: ^3.5.0
         version: 3.5.4(@types/react@18.2.37)(@wagmi/core@1.4.7)(typescript@5.2.2)(viem@1.18.9)
@@ -540,7 +540,7 @@ importers:
         version: 1.18.9(typescript@5.2.2)(zod@3.22.4)
       wagmi:
         specifier: ^1.4.6
-        version: 1.4.7(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
+        version: 1.4.7(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)
     devDependencies:
       '@types/react':
         specifier: ^18.2.37
@@ -11327,10 +11327,10 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@safe-global/safe-apps-provider@0.17.1(typescript@5.2.2)(zod@3.22.4):
+  /@safe-global/safe-apps-provider@0.17.1(typescript@5.2.2):
     resolution: {integrity: sha512-lYfRqrbbK1aKU1/UGkYWc/X7PgySYcumXKc5FB2uuwAs2Ghj8uETuW5BrwPqyjBknRxutFbTv+gth/JzjxAhdQ==}
     dependencies:
-      '@safe-global/safe-apps-sdk': 8.0.0(typescript@5.2.2)(zod@3.22.4)
+      '@safe-global/safe-apps-sdk': 8.0.0(typescript@5.2.2)
       events: 3.3.0
     transitivePeerDependencies:
       - bufferutil
@@ -11339,7 +11339,7 @@ packages:
       - zod
     dev: false
 
-  /@safe-global/safe-apps-sdk@8.0.0(typescript@5.2.2)(zod@3.22.4):
+  /@safe-global/safe-apps-sdk@8.0.0(typescript@5.2.2):
     resolution: {integrity: sha512-gYw0ki/EAuV1oSyMxpqandHjnthZjYYy+YWpTAzf8BqfXM3ItcZLpjxfg+3+mXW8HIO+3jw6T9iiqEXsqHaMMw==}
     dependencies:
       '@safe-global/safe-gateway-typescript-sdk': 3.13.2
@@ -11351,7 +11351,7 @@ packages:
       - zod
     dev: false
 
-  /@safe-global/safe-apps-sdk@8.1.0(typescript@5.2.2)(zod@3.22.4):
+  /@safe-global/safe-apps-sdk@8.1.0(typescript@5.2.2):
     resolution: {integrity: sha512-XJbEPuaVc7b9n23MqlF6c+ToYIS3f7P2Sel8f3cSBQ9WORE4xrSuvhMpK9fDSFqJ7by/brc+rmJR/5HViRr0/w==}
     dependencies:
       '@safe-global/safe-gateway-typescript-sdk': 3.13.2
@@ -13334,8 +13334,8 @@ packages:
       wonka: 6.3.4
     dev: false
 
-  /@verax-attestation-registry/verax-sdk@1.1.0(@babel/core@7.23.3)(@envelop/core@4.0.3)(@graphql-mesh/types@0.93.2)(@graphql-tools/delegate@10.0.3)(@graphql-tools/merge@9.0.0)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@10.0.1)(@types/node@20.10.3)(graphql-tag@2.12.6)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(tslib@2.6.2)(typescript@5.2.2)(zod@3.22.4):
-    resolution: {integrity: sha512-baPftHIT3nKQ+MKOzy+El6i9Hrb2W54Cm9BzMTeYSiGygTt11QAP/52J2nxTcsChoCI9Yo87oeaCuZXFvHXplg==}
+  /@verax-attestation-registry/verax-sdk@1.1.1(@babel/core@7.23.3)(@envelop/core@4.0.3)(@graphql-mesh/types@0.93.2)(@graphql-tools/delegate@10.0.3)(@graphql-tools/merge@9.0.0)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@10.0.1)(@types/node@20.10.3)(graphql-tag@2.12.6)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(tslib@2.6.2)(typescript@5.2.2):
+    resolution: {integrity: sha512-3SX2rSHh/UAdrzn7IAvIc0RxfClI0I3Yk6+WQN7FWtoYMww8SS4Zv4nm8eGQYXucK5PNJtMpBGBoR2SRHvha9A==}
     dependencies:
       '@graphprotocol/client-cli': 3.0.0(@babel/core@7.23.3)(@envelop/core@4.0.3)(@graphql-mesh/cross-helpers@0.4.1)(@graphql-mesh/store@0.95.8)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.95.8)(@graphql-tools/delegate@10.0.3)(@graphql-tools/merge@9.0.0)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@10.0.1)(@types/node@20.10.3)(graphql-tag@2.12.6)(graphql@16.8.1)(react-native@0.72.6)
       '@graphql-mesh/cache-localforage': 0.95.8(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.95.8)(graphql@16.8.1)(tslib@2.6.2)
@@ -13483,7 +13483,7 @@ packages:
     requiresBuild: true
     dev: false
 
-  /@wagmi/connectors@3.1.5(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4):
+  /@wagmi/connectors@3.1.5(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9):
     resolution: {integrity: sha512-aE4rWZbivqWa9HqjiLDPtwROH2b1Az+lBVMeZ3o/aFxGNGNEkdrSAMOUG15/UFy3VnN6HqGOtTobOBZ10JhfNQ==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -13494,13 +13494,13 @@ packages:
     dependencies:
       '@coinbase/wallet-sdk': 3.7.2
       '@ledgerhq/connect-kit-loader': 1.1.2
-      '@safe-global/safe-apps-provider': 0.17.1(typescript@5.2.2)(zod@3.22.4)
-      '@safe-global/safe-apps-sdk': 8.1.0(typescript@5.2.2)(zod@3.22.4)
+      '@safe-global/safe-apps-provider': 0.17.1(typescript@5.2.2)
+      '@safe-global/safe-apps-sdk': 8.1.0(typescript@5.2.2)
       '@walletconnect/ethereum-provider': 2.10.2(@walletconnect/modal@2.6.2)
       '@walletconnect/legacy-provider': 2.0.0
       '@walletconnect/modal': 2.6.2(@types/react@18.2.37)(react@18.2.0)
       '@walletconnect/utils': 2.10.2
-      abitype: 0.8.7(typescript@5.2.2)(zod@3.22.4)
+      abitype: 0.8.7(typescript@5.2.2)
       eventemitter3: 4.0.7
       typescript: 5.2.2
       viem: 1.18.9(typescript@5.2.2)(zod@3.22.4)
@@ -13526,7 +13526,7 @@ packages:
       - zod
     dev: false
 
-  /@wagmi/core@1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4):
+  /@wagmi/core@1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9):
     resolution: {integrity: sha512-PiOIGni8ArQoPmuDylHX38zMt2nPnTYRIluIqiduKyGCM61X/tf10a0rafUMOOphDPudZu1TacNDhCSeoh/LEA==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -13535,8 +13535,8 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@wagmi/connectors': 3.1.5(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
-      abitype: 0.8.7(typescript@5.2.2)(zod@3.22.4)
+      '@wagmi/connectors': 3.1.5(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)
+      abitype: 0.8.7(typescript@5.2.2)
       eventemitter3: 4.0.7
       typescript: 5.2.2
       viem: 1.18.9(typescript@5.2.2)(zod@3.22.4)
@@ -14264,7 +14264,7 @@ packages:
       vue:
         optional: true
     dependencies:
-      '@wagmi/core': 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
+      '@wagmi/core': 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)
       '@web3modal/polyfills': 3.5.4
       '@web3modal/scaffold': 3.5.4(@types/react@18.2.37)(react@18.2.0)
       '@web3modal/scaffold-react': 3.5.4(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
@@ -14544,7 +14544,7 @@ packages:
     resolution: {integrity: sha512-LEyx4aLEC3x6T0UguF6YILf+ntvmOaWsVfENmIW0E9H09vKlLDGelMjjSm0jkDHALj8A8quZ/HapKNigzwge+Q==}
     dev: true
 
-  /abitype@0.10.3(typescript@5.2.2)(zod@3.22.4):
+  /abitype@0.10.3(typescript@5.2.2):
     resolution: {integrity: sha512-tRN+7XIa7J9xugdbRzFv/95ka5ivR/sRe01eiWvM0HWWjHuigSZEACgKa0sj4wGuekTDtghCx+5Izk/cOi78pQ==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -14556,10 +14556,9 @@ packages:
         optional: true
     dependencies:
       typescript: 5.2.2
-      zod: 3.22.4
     dev: false
 
-  /abitype@0.8.7(typescript@5.2.2)(zod@3.22.4):
+  /abitype@0.8.7(typescript@5.2.2):
     resolution: {integrity: sha512-wQ7hV8Yg/yKmGyFpqrNZufCxbszDe5es4AZGYPBitocfSqXtjrTG9JMWFcc4N30ukl2ve48aBTwt7NJxVQdU3w==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -14569,7 +14568,6 @@ packages:
         optional: true
     dependencies:
       typescript: 5.2.2
-      zod: 3.22.4
     dev: false
 
   /abitype@0.9.8(typescript@5.2.2)(zod@3.22.4):
@@ -17117,7 +17115,7 @@ packages:
       resize-observer-polyfill: 1.5.1
       styled-components: 5.3.11(@babel/core@7.23.3)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
       viem: 1.18.9(typescript@5.2.2)(zod@3.22.4)
-      wagmi: 1.4.7(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
+      wagmi: 1.4.7(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)
     transitivePeerDependencies:
       - '@babel/core'
       - react-is
@@ -32318,7 +32316,7 @@ packages:
     hasBin: true
     dev: true
 
-  /wagmi@1.4.7(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4):
+  /wagmi@1.4.7(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9):
     resolution: {integrity: sha512-/k8gA9S6RnwU6Qroxs630jAFvRIx+DSKpCP1owgAEGWc7D2bAJHljwRSCRTGENz48HyJ4V3R7KYV1yImxPvM3A==}
     peerDependencies:
       react: '>=17.0.0'
@@ -32331,8 +32329,8 @@ packages:
       '@tanstack/query-sync-storage-persister': 4.36.1
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)
       '@tanstack/react-query-persist-client': 4.36.1(@tanstack/react-query@4.36.1)
-      '@wagmi/core': 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
-      abitype: 0.8.7(typescript@5.2.2)(zod@3.22.4)
+      '@wagmi/core': 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)
+      abitype: 0.8.7(typescript@5.2.2)
       react: 18.2.0
       typescript: 5.2.2
       use-sync-external-store: 1.2.0(react@18.2.0)

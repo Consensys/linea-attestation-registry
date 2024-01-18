@@ -1,30 +1,35 @@
 import { type FunctionComponent, useState } from "react";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { useAccount } from "wagmi";
-import { Address } from "@wagmi/core";
+import { Hex } from "viem";
 
 export type SDKDemoProps = {
   veraxSdk: VeraxSdk;
-  getTxHash: (hash: Address) => void;
+  getTxHash: (hash: Hex) => void;
 };
 
 const CreatePortal: FunctionComponent<SDKDemoProps> = ({ veraxSdk, getTxHash }) => {
-  const [txHash, setTxHash] = useState<string>("");
+  const [txHash, setTxHash] = useState<Hex>();
   const [error, setError] = useState<string>("");
 
   const { isConnected } = useAccount();
 
   const createPortal = async () => {
     try {
-      const hash = await veraxSdk.portal.deployDefaultPortal(
+      const receipt = await veraxSdk.portal.deployDefaultPortal(
         [],
         "Tutorial Portal",
         "This Portal is used for the tutorial",
         true,
         "Verax Tutorial",
       );
-      setTxHash(hash);
-      getTxHash(hash);
+
+      if (receipt.transactionHash) {
+        setTxHash(receipt.transactionHash);
+        getTxHash(receipt.transactionHash);
+      } else {
+        setError(`Oops, something went wrong!`);
+      }
     } catch (e) {
       console.log(e);
       if (e instanceof Error) {
@@ -35,10 +40,10 @@ const CreatePortal: FunctionComponent<SDKDemoProps> = ({ veraxSdk, getTxHash }) 
 
   return (
     <>
-      <button onClick={createPortal} disabled={!isConnected && txHash !== ""}>
+      <button onClick={createPortal} disabled={!isConnected || !txHash}>
         Send transaction
       </button>
-      {txHash !== "" && <p>{`Transaction with hash ${txHash} sent!`}</p>}
+      {txHash && <p>{`Transaction with hash ${txHash} sent!`}</p>}
       {error !== "" && <p style={{ color: "red" }}>{error}</p>}
     </>
   );

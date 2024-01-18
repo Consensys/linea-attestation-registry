@@ -7,6 +7,7 @@ import { Pagination } from "@/components/Pagination";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
 import { columns, schemaColumnsOption, skeletonSchemas } from "@/constants/columns/schema";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
+import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
@@ -26,21 +27,25 @@ export const Schemas: React.FC = () => {
   const totalItems = schemasCount ? Number(schemasCount) : ZERO;
   const searchParams = new URLSearchParams(window.location.search);
   const page = pageBySearchParams(searchParams, totalItems);
+  const itemsPerPage = Number(searchParams.get(EQueryParams.ITEMS_PER_PAGE)) || ITEMS_PER_PAGE_DEFAULT;
 
-  const [skip, setSkip] = useState<number>(getItemsByPage(page));
+  const [skip, setSkip] = useState<number>(getItemsByPage(page, itemsPerPage));
 
-  const { data: schemasList, isLoading } = useSWR(`${SWRKeys.GET_SCHEMAS_LIST}/${skip}/${chain.id}`, () =>
-    sdk.schema.findBy(ITEMS_PER_PAGE_DEFAULT, skip),
+  const { data: schemasList, isLoading } = useSWR(
+    `${SWRKeys.GET_SCHEMAS_LIST}/${itemsPerPage}/${skip}/${chain.id}`,
+    () => sdk.schema.findBy(itemsPerPage, skip),
   );
 
   const handlePage = (retrievedPage: number) => {
-    setSkip(getItemsByPage(retrievedPage));
+    setSkip(getItemsByPage(retrievedPage, itemsPerPage));
   };
 
   const columnsSkeletonRef = useRef(columnsSkeleton(columns(), schemaColumnsOption));
   const data = isLoading
-    ? { columns: columnsSkeletonRef.current, list: skeletonSchemas() }
+    ? { columns: columnsSkeletonRef.current, list: skeletonSchemas(itemsPerPage) }
     : { columns: columns(), list: schemasList || [] };
+
+  console.log("skip: ", skip, page);
 
   return (
     <div className="container mt-5 md:mt-8">

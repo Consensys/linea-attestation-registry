@@ -6,9 +6,9 @@
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
 >
-  <rect x="0.00848389" width="418.983" height="400" fill="url(#pattern0)" />
+  <rect x="0.00848389" width="418.983" height="400" fill="url(#automata)" />
   <defs>
-    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+    <pattern id="automata" patternContentUnits="objectBoundingBox" width="1" height="1">
       <use xlink:href="#image0_216_923" transform="matrix(0.000244141 0 0 0.000255727 0 -0.000713401)" />
     </pattern>
     <image

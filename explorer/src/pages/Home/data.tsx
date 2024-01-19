@@ -126,7 +126,7 @@ export const issuersData: IIssuer[] = [
       "Automata is a modular attestation layer that powers Proof of Machinehood. PoM is hardware-based attestation that provides verifiable claims about the identity, configuration and operational attributes of computing devices, which creates a viable framework for applications to be constructed upon an enduring bedrock of collective agency and data dignity.",
     CTALink: "https://pom.ata.network",
     CTATitle: "Go To Automata",
-    address: "0x0000000000000000000000000000000000000000",
+    address: "0x95d06B395F04dc1bBD0CE9fcC501D7044ea25DAd",
   },
   {
     name: "Reclaim Protocol",

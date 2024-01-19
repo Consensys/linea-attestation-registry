@@ -40,7 +40,7 @@ const CreatePortal: FunctionComponent<SDKDemoProps> = ({ veraxSdk, getTxHash }) 
 
   return (
     <>
-      <button onClick={createPortal} disabled={!isConnected || !txHash}>
+      <button onClick={createPortal} disabled={!isConnected}>
         Send transaction
       </button>
       {txHash && <p>{`Transaction with hash ${txHash} sent!`}</p>}

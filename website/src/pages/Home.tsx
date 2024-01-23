@@ -1,5 +1,4 @@
 import veraxLogo from "../assets/verax-logo-circle.svg";
-import "./Home.css";
 import { type FunctionComponent, useEffect } from "react";
 
 export type HomeProps = {

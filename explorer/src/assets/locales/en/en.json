@@ -16,7 +16,8 @@
       "previous": "Previous",
       "next": "Next",
       "learnMore": "Learn More",
-      "getStarted": "Get Started"
+      "getStarted": "Get Started",
+      "viewMyAttestations": "View My Attestations"
     },
     "messages": {
       "empty": "Empty",
@@ -25,7 +26,8 @@
       "noResults": "No Results",
       "hasntBeenFound": "hasn`t been found",
       "searchNotFound": "Nothing found on <bold>“{{search}}”</bold> search request",
-      "searchFound": "<bold>{{count}}</bold> results found on <bold>“{{search}}”</bold> search request"
+      "searchFound": "<bold>{{count}}</bold> results found on <bold>“{{search}}”</bold> search request",
+      "perPage": "per page"
     },
     "routes": {
       "issuers": "Issuers",
@@ -35,6 +37,8 @@
       "info": {
         "title": "Info",
         "about": "About",
+        "twitter": "Twitter",
+        "lens": "Lens",
         "github": "Github",
         "documentation": "Documentation"
       }

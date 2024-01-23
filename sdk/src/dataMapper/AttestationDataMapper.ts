@@ -65,6 +65,8 @@ export default class AttestationDataMapper extends BaseDataMapper<
     attestation.expirationDate = Number(attestation.expirationDate);
     attestation.revocationDate = Number(attestation.revocationDate);
 
+    attestation.version = Number(attestation.version);
+
     // Check if data is stored offchain
     if (attestation.schemaId === Constants.OFFCHAIN_DATA_SCHEMA_ID) {
       attestation.offchainData = {

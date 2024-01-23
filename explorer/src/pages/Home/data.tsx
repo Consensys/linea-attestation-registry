@@ -1,4 +1,6 @@
 import ZeroXScore from "@/assets/issuers/0xscore.svg?react";
+import Aspecta from "@/assets/issuers/aspecta.svg?react";
+import Automata from "@/assets/issuers/automata.svg?react";
 import Clique from "@/assets/issuers/clique.svg?react";
 import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
@@ -6,6 +8,8 @@ import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
 import PadoDark from "@/assets/issuers/pado-dark.svg?react";
 import Pado from "@/assets/issuers/pado.svg?react";
+import Reclaim from "@/assets/issuers/reclaim.svg?react";
+import RubyScore from "@/assets/issuers/rubyscore.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
@@ -80,7 +84,7 @@ export const issuersData: IIssuer[] = [
     logo: Nomis,
     keywords: ["reputation", "wallet score"],
     description:
-      "Nomis is an Identity and Reputation Protocol that leverages users onchain activity to assign Reputation Scores to their wallets. It serves as the Layer for Web3 Personalization, enabling users to create, develop and leverage their onchain Reputation.",
+      "Nomis is an Identity and Reputation Protocol that leverages users on-chain activity to assign Reputation Scores to their wallets. It serves as the Layer for Web3 Personalization, enabling users to create, develop and leverage their on-chain Reputation.",
     CTALink: "https://nomis.cc/linea-voyage",
     CTATitle: "Go To Nomis",
     address: "0x8535156C75750d79ee0D9829c5D4Ae6f5D9DbCB5",
@@ -104,5 +108,45 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://0xscore.pro/linea-attestation",
     CTATitle: "Go To 0xScore",
     address: "0x04636DdD2feF7e9DB42a24821E489AD071749fEA",
+  },
+  {
+    name: "Aspecta",
+    logo: Aspecta,
+    keywords: ["reputation", "builder profile"],
+    description:
+      "Aspecta is an identity-centric hub for builder reputation, creation, and opportunity. We build an AI-powered identity for builders to demonstrate skills, experiences, and opinions based on GitHub and other data resources‘ insights.",
+    CTALink: "https://aspecta.id/campaign/builders-voyage",
+    CTATitle: "Go To Aspecta",
+    address: "0x36933bd4288648d95a8275e663003ae7efd2199d",
+  },
+  {
+    name: "Automata Network",
+    logo: Automata,
+    keywords: ["Proof of Machinehood", "Machine Attestation"],
+    description:
+      "Automata is a modular attestation layer that powers Proof of Machinehood. PoM is hardware-based attestation that provides verifiable claims about the identity, configuration and operational attributes of computing devices, which creates a viable framework for applications to be constructed upon an enduring bedrock of collective agency and data dignity.",
+    CTALink: "https://pom.ata.network",
+    CTATitle: "Go To Automata",
+    address: "0x95d06B395F04dc1bBD0CE9fcC501D7044ea25DAd",
+  },
+  {
+    name: "Reclaim Protocol",
+    logo: Reclaim,
+    keywords: ["zk-attestations"],
+    description:
+      "Reclaim Protocol bridges web2 and web3 by allowing users to manage their personal data. Interoperable technology enables the secure extraction and moving of any piece of personal information. Anything visible in the UI of a web service can be seamlessly transformed into anonymous zero-knowledge proof. The main areas of interest for Reclaim include user data enrichment, Sybil resistance for web3, proof-of-humanity methodologies, and web2 commercial use cases.",
+    CTALink: "https://publish-credentials.reclaimprotocol.org/create-credential",
+    CTATitle: "Go To Reclaim Protocol",
+    address: "0xc15718EEC68DbCA02C4B4215B87beef46C3106d5",
+  },
+  {
+    name: "RubyScore",
+    logo: RubyScore,
+    keywords: ["reputation", "wallet score"],
+    description:
+      "RubyScore - Onchain ranking protocol. We conduct a comprehensive ranking of the entire Layer 2 to help users understand their position among all participants and evaluate their wallets based on various parameters.",
+    CTALink: "https://rubyscore.io/attestation",
+    CTATitle: "Go To RubyScore",
+    address: "0xb9cc0bb020cf55197c4c3d826ac87cadba51f272",
   },
 ];

@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar: React.FC = () => {
   return (
@@ -13,14 +15,24 @@ const Navbar: React.FC = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="navbar-brand" to="/linea-poh" end>
-              Linea POH
+            <NavLink className="navbar-brand" to="/tutorials" end>
+              Tutorials
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="navbar-brand" to="/sdk-demo" end>
-              SDK Demo
-            </NavLink>
+            <a className={"navbar-brand"} href={"https://explorer.ver.ax"} target={"_blank"}>
+              Explorer <FontAwesomeIcon icon={faArrowUpRightFromSquare} size={"xs"} />
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className={"navbar-brand"} href={"https://docs.ver.ax"} target={"_blank"}>
+              Documentation <FontAwesomeIcon icon={faArrowUpRightFromSquare} size={"xs"} />
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className={"navbar-brand"} href={"https://poh.linea.build"} target={"_blank"}>
+              Linea POH <FontAwesomeIcon icon={faArrowUpRightFromSquare} size={"xs"} />
+            </a>
           </li>
         </ul>
       </div>

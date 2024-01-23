@@ -14,7 +14,6 @@ interface PerPageSelectorProps {
 }
 
 export const PerPageSelector: React.FC<PerPageSelectorProps> = ({ onChange, values, value }) => {
-
   return (
     <div>
       <DropdownMenu>

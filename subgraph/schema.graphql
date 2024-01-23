@@ -40,6 +40,7 @@ type Schema @entity {
   description: String!
   context: String!
   schema: String!
+  attestationCounter: Int
 }
 
 type Counter @entity {

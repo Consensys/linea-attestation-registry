@@ -14,6 +14,7 @@ export function handleSchemaCreated(event: SchemaCreatedEvent): void {
   schema.description = event.params.description;
   schema.context = event.params.context;
   schema.schema = event.params.schemaString;
+  schema.attestationCounter = 0;
 
   schema.save();
 }

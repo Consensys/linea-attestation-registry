@@ -13,7 +13,7 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
   const attestation = new Attestation(event.params.attestationId.toHex());
 
-  incrementAttestationCount(attestationData.portal.toHexString());
+  incrementAttestationCount(attestationData.portal.toHexString(), attestationData.schemaId.toHex());
 
   attestation.schemaId = attestationData.schemaId;
   attestation.replacedBy = attestationData.replacedBy;
@@ -157,7 +157,7 @@ function valueToString(value: ethereum.Value): string {
   }
 }
 
-function incrementAttestationCount(portalAddress: string): void {
+function incrementAttestationCount(portalAddress: string, schemaId: string): void {
   let counter = Counter.load("counter");
 
   if (!counter) {
@@ -183,5 +183,18 @@ function incrementAttestationCount(portalAddress: string): void {
     }
 
     portal.save();
+  }
+
+  // Increment attestation counter for corresponding schema
+  const schema = Schema.load(schemaId);
+
+  if (schema) {
+    if (!schema.attestationCounter) {
+      schema.attestationCounter = 1;
+    } else {
+      schema.attestationCounter += 1;
+    }
+
+    schema.save();
   }
 }

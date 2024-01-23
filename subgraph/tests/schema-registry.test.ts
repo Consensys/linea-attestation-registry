@@ -35,6 +35,7 @@ describe("handleSchemaCreated()", () => {
     assert.fieldEquals("Schema", schemaId, "description", schemaDescription);
     assert.fieldEquals("Schema", schemaId, "context", schemaContext);
     assert.fieldEquals("Schema", schemaId, "schema", schemaString);
+    assert.fieldEquals("Schema", schemaId, "attestationCounter", "0");
   });
 
   test("Should increment the schemas Counter", () => {

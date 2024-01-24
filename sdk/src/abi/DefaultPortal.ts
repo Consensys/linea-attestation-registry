@@ -16,61 +16,6 @@ export const abiDefaultPortal = [
     type: "constructor",
   },
   {
-    inputs: [],
-    name: "OnlyPortalOwner",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "AlreadyRevoked",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "ArrayLengthMismatch",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "AttestationDataFieldEmpty",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "AttestationNotAttested",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "AttestationNotRevocable",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "AttestationSubjectFieldEmpty",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "OnlyAttestingPortal",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "OnlyPortal",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "RouterInvalid",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "SchemaNotRegistered",
-    type: "error",
-  },
-  {
     inputs: [
       {
         components: [

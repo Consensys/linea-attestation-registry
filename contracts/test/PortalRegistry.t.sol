@@ -265,6 +265,17 @@ contract PortalRegistryTest is Test {
     portalRegistry.getPortalByAddress(address(validPortalMock));
   }
 
+  function test_getPortalOwnerAddress() public {
+    vm.prank(user);
+    portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
+    assertEq(portalRegistry.getPortalOwnerAddress(address(validPortalMock)), user);
+  }
+
+  function test_getPortalOwnerAddress_PortalNotRegistered() public {
+    vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
+    portalRegistry.getPortalOwnerAddress(address(validPortalMock));
+  }
+
   function test_isRegistered() public {
     assertEq(portalRegistry.isRegistered(address(validPortalMock)), false);
     vm.prank(user);

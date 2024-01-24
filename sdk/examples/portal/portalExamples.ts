@@ -365,6 +365,15 @@ export default class PortalExamples {
       console.log(await this.veraxSdk.portal.getPortalByAddress(portalAddress));
     }
 
+    if (methodName.toLowerCase() == "getPortalOwnerAddress".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const portalAddress = params?.portalAddress
+        ? (params.portalAddress as Address)
+        : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
+      console.log(await this.veraxSdk.portal.getPortalOwnerAddress(portalAddress));
+    }
+
     if (methodName.toLowerCase() == "isPortalRegistered".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);

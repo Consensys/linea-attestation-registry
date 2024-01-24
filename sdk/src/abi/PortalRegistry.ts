@@ -66,6 +66,32 @@ export const abiPortalRegistry = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "address",
+        name: "issuerAddress",
+        type: "address",
+      },
+    ],
+    name: "IssuerAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "issuerAddress",
+        type: "address",
+      },
+    ],
+    name: "IssuerRemoved",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "previousOwner",
@@ -104,6 +130,19 @@ export const abiPortalRegistry = [
       },
     ],
     name: "PortalRegistered",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "portalAddress",
+        type: "address",
+      },
+    ],
+    name: "PortalRevoked",
     type: "event",
   },
   {
@@ -190,6 +229,25 @@ export const abiPortalRegistry = [
         internalType: "struct Portal",
         name: "",
         type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "id",
+        type: "address",
+      },
+    ],
+    name: "getPortalOwnerAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",
@@ -315,6 +373,19 @@ export const abiPortalRegistry = [
   {
     inputs: [],
     name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "id",
+        type: "address",
+      },
+    ],
+    name: "revoke",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

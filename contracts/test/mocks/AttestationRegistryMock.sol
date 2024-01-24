@@ -45,7 +45,7 @@ contract AttestationRegistryMock {
   function replace(
     bytes32 /*attestationId*/,
     AttestationPayload calldata /*attestationPayload*/,
-    address /*attester*/
+    address /*replacer*/
   ) public {
     emit AttestationRegistered();
     emit AttestationReplaced();
@@ -54,14 +54,14 @@ contract AttestationRegistryMock {
   function bulkReplace(
     bytes32[] calldata /*attestationId*/,
     AttestationPayload[] calldata /*attestationPayload*/,
-    address /*attester*/
+    address /*replacer*/
   ) public {}
 
-  function revoke(bytes32 attestationId) public {
+  function revoke(bytes32 attestationId, address /*revoker*/) public {
     emit AttestationRevoked(attestationId);
   }
 
-  function bulkRevoke(bytes32[] memory attestationIds) public {
+  function bulkRevoke(bytes32[] memory attestationIds, address /*revoker*/) public {
     emit BulkAttestationsRevoked(attestationIds);
   }
 

@@ -135,7 +135,7 @@ contract DefaultPortalTest is Test {
     defaultPortal.bulkReplace(attestationIds, payloadsToAttest, validationPayloads);
   }
 
-  function test_revoke_byPortalOwner() public {
+  function test_revoke() public {
     // Create attestation payload
     AttestationPayload memory attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
@@ -154,33 +154,8 @@ contract DefaultPortalTest is Test {
     defaultPortal.attest(attestationPayload, validationPayload);
 
     // Revoke the attestation as portal owner
-    vm.prank(portalOwner);
     vm.expectEmit(true, true, true, true);
     emit AttestationRevoked(bytes32(abi.encode(1)));
-    defaultPortal.revoke(bytes32(abi.encode(1)));
-  }
-
-  function test_revokeFail_OnlyOwner() public {
-    // Create attestation payload
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32(uint256(1)),
-      uint64(block.timestamp + 1 days),
-      bytes("subject"),
-      new bytes(1)
-    );
-
-    // Create validation payload
-    bytes[] memory validationPayload = new bytes[](2);
-
-    // Do register the attestation
-    vm.prank(makeAddr("attester"));
-    vm.expectEmit(true, true, true, true);
-    emit AttestationRegistered();
-    defaultPortal.attest(attestationPayload, validationPayload);
-
-    // Revoke the attestation as a random user
-    vm.prank(makeAddr("random"));
-    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
     defaultPortal.revoke(bytes32(abi.encode(1)));
   }
 

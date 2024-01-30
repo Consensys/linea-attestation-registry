@@ -1,17 +1,39 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="0; URL='https://www.ver.ax" />
-  <link rel="icon" type="image/svg+xml" href="src/assets/verax-logo-circle.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verax Attestation Registry</title>
-</head>
-<body style="width: 100%; background: #000; height: 100%; overflow: hidden">
-  <!--
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-  -->
-  <div style="position: absolute; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); font: 2em arial; color: #fff;">loading...</div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0; URL='https://www.ver.ax" />
+    <link rel="icon" type="image/svg+xml" href="src/assets/verax-logo-circle.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Verax Attestation Registry</title>
+
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      body {
+        background: linear-gradient(to bottom, #2d2d2d, #000000) no-repeat;
+        background-size: 100% 100%;
+      }
+
+      #loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        font: 1.5em arial;
+        color: rgba(255, 255, 255, 0.61);
+        letter-spacing: 1px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="loader">loading...</div>
+  </body>
 </html>

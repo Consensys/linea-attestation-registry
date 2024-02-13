@@ -4,7 +4,6 @@ import { FC, PropsWithChildren, useCallback, useState } from "react";
 import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { useAccount, useNetwork } from "wagmi";
 
-import { defaultChain } from "@/config";
 import { INetwork } from "@/interfaces/config";
 
 import { NetworkContext } from "./context";
@@ -18,7 +17,7 @@ export const NetworkContextProvider: FC<PropsWithChildren> = ({ children }): JSX
   const retrievedNetwork = useLoaderData() as INetwork;
 
   const [network, setNetwork] = useState<INetwork>(retrievedNetwork);
-  const [sdk, setSdk] = useState<VeraxSdk>(new VeraxSdk(defaultChain.veraxEnv));
+  const [sdk, setSdk] = useState<VeraxSdk>(new VeraxSdk(network.veraxEnv));
 
   const switchUserNetwork = useCallback(
     async (pendingChain: Chain, currentChainId?: number) => {

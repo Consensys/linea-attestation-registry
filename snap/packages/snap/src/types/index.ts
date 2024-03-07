@@ -1,4 +1,4 @@
-export type Attestation = {
+export type RawAttestation = {
   id: string;
   schemaId: string;
   replacedBy: string;
@@ -13,6 +13,14 @@ export type Attestation = {
   attestationData: string;
   schemaString: string;
   decodedData: string;
+};
+
+export type Attestation = {
+  id: string;
+  content: string;
+  from: string;
+  attestationDate: number;
+  expiryDate: number;
 };
 
 export type Portal = {
@@ -31,4 +39,21 @@ export type Schema = {
   description: string;
   context: string;
   schema: string;
+};
+
+export type Captions = {
+  locale: string;
+  noAttestations: string;
+  detail: {
+    caption: string;
+    from: string;
+    attestedOn: string;
+    expiry: string;
+    content: string;
+  };
+};
+
+export type SnapState = {
+  captions?: Captions;
+  attestations?: Attestation[];
 };

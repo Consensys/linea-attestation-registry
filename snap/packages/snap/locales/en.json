@@ -1,0 +1,11 @@
+{
+  "detail": {
+    "caption": "{count} Attestations found",
+    "from": "From",
+    "attestedOn": "Attested On",
+    "expiry": "Expiry",
+    "content": "Content"
+  },
+  "locale": "en",
+  "noAttestations": "No attestation found"
+}

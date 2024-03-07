@@ -3,6 +3,6 @@ packages:
   - 'explorer'
   - 'governance'
   - 'sdk'
-  - 'snap/packages/*'
+  - 'snap/packages/**'
   - 'subgraph'
   - 'website'

@@ -1,5 +1,5 @@
-import { resolve } from 'path';
 import type { SnapConfig } from '@metamask/snaps-cli';
+import { resolve } from 'path';
 
 const config: SnapConfig = {
   bundler: 'webpack',

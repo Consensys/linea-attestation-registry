@@ -4,6 +4,7 @@ pragma solidity 0.8.21;
 import { Test } from "forge-std/Test.sol";
 import { ModuleRegistry } from "../src/ModuleRegistry.sol";
 import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
+import { CorrectModuleV2 } from "./mocks/CorrectModuleV2Mock.sol";
 import { IncorrectModule } from "./mocks/IncorrectModuleMock.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
@@ -147,11 +148,33 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
+  function test_runModulesV2() public {
+    // Register 2 modules
+    address[] memory moduleAddresses = new address[](2);
+    moduleAddresses[0] = address(new CorrectModuleV2());
+    moduleAddresses[1] = address(new CorrectModuleV2());
+    vm.startPrank(user);
+    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
+    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
+    vm.stopPrank();
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+
+    moduleRegistry.runModulesV2(
+      moduleAddresses,
+      attestationPayload,
+      validationPayload,
+      0,
+      address(makeAddr("initialCaller")),
+      address(makeAddr("attester"))
+    );
+  }
+
   function test_runModules_ModuleValidationPayloadMismatch() public {
     // Register 2 modules
     address[] memory moduleAddresses = new address[](2);
-    moduleAddresses[0] = address(new CorrectModule());
-    moduleAddresses[1] = address(new CorrectModule());
+    moduleAddresses[0] = address(new CorrectModuleV2());
+    moduleAddresses[1] = address(new CorrectModuleV2());
     vm.startPrank(user);
     moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
     moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
@@ -164,6 +187,30 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
+  function test_runModuleV2s_ModuleValidationPayloadMismatch() public {
+    // Register 2 modules
+    address[] memory moduleAddresses = new address[](2);
+    moduleAddresses[0] = address(new CorrectModuleV2());
+    moduleAddresses[1] = address(new CorrectModuleV2());
+    vm.startPrank(user);
+    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
+    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
+    vm.stopPrank();
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](1);
+
+    vm.expectRevert(ModuleRegistry.ModuleValidationPayloadMismatch.selector);
+    moduleRegistry.runModulesV2(
+      moduleAddresses,
+      attestationPayload,
+      validationPayload,
+      0,
+      address(makeAddr("initialCaller")),
+      address(makeAddr("attester"))
+    );
+  }
+
   function test_runModules_withoutModule() public {
     // Register a module
     address[] memory moduleAddresses = new address[](0);
@@ -172,6 +219,23 @@ contract ModuleRegistryTest is Test {
     bytes[] memory validationPayload = new bytes[](0);
 
     moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
+  }
+
+  function test_runModulesV2_withoutModule() public {
+    // Register a module
+    address[] memory moduleAddresses = new address[](0);
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](0);
+
+    moduleRegistry.runModulesV2(
+      moduleAddresses,
+      attestationPayload,
+      validationPayload,
+      0,
+      address(makeAddr("initialCaller")),
+      address(makeAddr("attester"))
+    );
   }
 
   function test_runModules_ModuleNotRegistered() public {
@@ -186,6 +250,27 @@ contract ModuleRegistryTest is Test {
     // execute runModules
     vm.expectRevert(ModuleRegistry.ModuleNotRegistered.selector);
     moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
+  }
+
+  function test_runModulesV2_ModuleNotRegistered() public {
+    // Create 2 modules without registration
+    address[] memory moduleAddresses = new address[](2);
+    moduleAddresses[0] = address(new CorrectModuleV2());
+    moduleAddresses[1] = address(new CorrectModuleV2());
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+
+    // execute runModules
+    vm.expectRevert(ModuleRegistry.ModuleNotRegistered.selector);
+    moduleRegistry.runModulesV2(
+      moduleAddresses,
+      attestationPayload,
+      validationPayload,
+      0,
+      address(makeAddr("initialCaller")),
+      address(makeAddr("attester"))
+    );
   }
 
   function test_bulkRunModules() public {
@@ -210,6 +295,37 @@ contract ModuleRegistryTest is Test {
     attestationPayloads[1] = attestationPayload;
 
     moduleRegistry.bulkRunModules(moduleAddresses, attestationPayloads, validationPayloads);
+    vm.stopPrank();
+  }
+
+  function test_bulkRunModulesV2() public {
+    // Register 2 modules
+    address[] memory moduleAddresses = new address[](2);
+    moduleAddresses[0] = address(new CorrectModuleV2());
+    moduleAddresses[1] = address(new CorrectModuleV2());
+    vm.startPrank(user);
+    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
+    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
+
+    // Create validation payloads
+    bytes[] memory validationPayload1 = new bytes[](2);
+    bytes[] memory validationPayload2 = new bytes[](2);
+
+    bytes[][] memory validationPayloads = new bytes[][](2);
+    validationPayloads[0] = validationPayload1;
+    validationPayloads[1] = validationPayload2;
+
+    AttestationPayload[] memory attestationPayloads = new AttestationPayload[](2);
+    attestationPayloads[0] = attestationPayload;
+    attestationPayloads[1] = attestationPayload;
+
+    moduleRegistry.bulkRunModulesV2(
+      moduleAddresses,
+      attestationPayloads,
+      validationPayloads,
+      address(makeAddr("initialCaller")),
+      address(makeAddr("attester"))
+    );
     vm.stopPrank();
   }
 

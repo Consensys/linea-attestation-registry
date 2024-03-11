@@ -3,6 +3,7 @@ pragma solidity 0.8.21;
 
 import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./abstracts/AbstractModule.sol";
+import { AbstractModuleV2 } from "./abstracts/AbstractModuleV2.sol";
 import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
@@ -102,8 +103,11 @@ contract ModuleRegistry is OwnableUpgradeable {
     if (bytes(name).length == 0) revert ModuleNameMissing();
     // Check if moduleAddress is a smart contract address
     if (!isContractAddress(moduleAddress)) revert ModuleAddressInvalid();
-    // Check if module has implemented AbstractModule
-    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId)) {
+    // Check if module has implemented AbstractModule or AbstractModuleV2
+    if (
+      !ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId) &&
+      !ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModuleV2).interfaceId)
+    ) {
       revert ModuleInvalid();
     }
     // Module address is used to identify uniqueness of the module
@@ -127,15 +131,52 @@ contract ModuleRegistry is OwnableUpgradeable {
     bytes[] memory validationPayloads,
     uint256 value
   ) public {
-    // If no modules provided, bypass module validation
+    // If no module provided, bypass module validation
     if (modulesAddresses.length == 0) return;
     // Each module involved must have a corresponding item from the validation payload
     if (modulesAddresses.length != validationPayloads.length) revert ModuleValidationPayloadMismatch();
 
-    // For each module check if it is registered and call run method
+    // For each module, check if it is registered and call its run method
     for (uint32 i = 0; i < modulesAddresses.length; i = uncheckedInc32(i)) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
       AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayloads[i], tx.origin, value);
+    }
+  }
+
+  /**
+   * @notice Executes the V2 run method for all given Modules that are registered
+   * @param modulesAddresses the addresses of the registered modules
+   * @param attestationPayload the payload to attest
+   * @param validationPayloads the payloads to check for each module (one payload per module)
+   * @param value the value (ETH) optionally passed in the attesting transaction
+   * @param initialCaller the address of the initial caller (transaction sender)
+   * @param attester the address defined by the Portal as the attester for this payload
+   * @dev check if modules are registered and execute the V2 run method for each module
+   */
+  function runModulesV2(
+    address[] memory modulesAddresses,
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayloads,
+    uint256 value,
+    address initialCaller,
+    address attester
+  ) public {
+    // If no module provided, bypass module validation
+    if (modulesAddresses.length == 0) return;
+    // Each module involved must have a corresponding item from the validation payload
+    if (modulesAddresses.length != validationPayloads.length) revert ModuleValidationPayloadMismatch();
+
+    // For each module, check if it is registered and call its run method
+    for (uint32 i = 0; i < modulesAddresses.length; i = uncheckedInc32(i)) {
+      if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
+      AbstractModuleV2(modulesAddresses[i]).run(
+        attestationPayload,
+        validationPayloads[i],
+        initialCaller,
+        value,
+        attester,
+        msg.sender
+      );
     }
   }
 
@@ -154,6 +195,26 @@ contract ModuleRegistry is OwnableUpgradeable {
   ) public {
     for (uint32 i = 0; i < attestationsPayloads.length; i = uncheckedInc32(i)) {
       runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i], 0);
+    }
+  }
+
+  /**
+   * @notice Executes the V2 modules validation for all attestations payloads for all given V2 Modules that are registered
+   * @param modulesAddresses the addresses of the registered modules
+   * @param attestationPayloads the payloads to attest
+   * @param validationPayloads the payloads to check for each module
+   * @dev NOTE: Currently the bulk run modules does not handle payable modules
+   *            a default value of 0 is used.
+   */
+  function bulkRunModulesV2(
+    address[] memory modulesAddresses,
+    AttestationPayload[] memory attestationPayloads,
+    bytes[][] memory validationPayloads,
+    address initialCaller,
+    address attester
+  ) public {
+    for (uint32 i = 0; i < attestationPayloads.length; i = uncheckedInc32(i)) {
+      runModulesV2(modulesAddresses, attestationPayloads[i], validationPayloads[i], 0, initialCaller, attester);
     }
   }
 

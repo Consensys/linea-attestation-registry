@@ -129,6 +129,29 @@ describe("AttestationRegistry", () => {
       assert.fieldEquals("Portal", portal.toHexString(), "attestationCounter", "1");
     });
 
+    test("Should increment the attestations counter in schema", () => {
+      assert.entityCount("Attestation", 0);
+      assert.entityCount("Schema", 0);
+
+      const schemaEntity = new Schema(schemaId.toHexString());
+      schemaEntity.name = "name";
+      schemaEntity.description = "description";
+      schemaEntity.context = "context";
+      schemaEntity.schema = "schemaString";
+      schemaEntity.attestationCounter = 0;
+      schemaEntity.save();
+
+      assert.entityCount("Schema", 1);
+      assert.fieldEquals("Schema", schemaId.toHexString(), "attestationCounter", "0");
+
+      const attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
+
+      handleAttestationRegistered(attestationRegisteredEvent);
+
+      assert.entityCount("Attestation", 1);
+      assert.fieldEquals("Schema", schemaId.toHexString(), "attestationCounter", "1");
+    });
+
     test("Should decode a basic attestation data", () => {
       const schema = new Schema(schemaId.toHexString());
       schema.name = "name";

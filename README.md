@@ -129,6 +129,24 @@ Here are the addresses on those networks:
 </details>
 
 <details>
+  <summary>Arbitrum Sepolia</summary>
+
+- Router =
+  [0x374B686137eC0DB442a8d833451f8C12cD4B5De4](https://sepolia.arbiscan.io/address/0x374B686137eC0DB442a8d833451f8C12cD4B5De4)
+- AttestationRegistry =
+  [0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5](https://sepolia.arbiscan.io/address/0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5)
+- ModuleRegistry =
+  [0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6](https://sepolia.arbiscan.io/address/0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6)
+- PortalRegistry =
+  [0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE](https://sepolia.arbiscan.io/address/0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE)
+- SchemaRegistry =
+  [0x025531b655D9EE335B8E6cc4C118b313f26ACc8F](https://sepolia.arbiscan.io/address/0x025531b655D9EE335B8E6cc4C118b313f26ACc8F)
+- AttestationReader =
+  [0xBdC45324AB9A7e82Ae15324a3d8352b513Ee2788](https://sepolia.arbiscan.io/address/0xBdC45324AB9A7e82Ae15324a3d8352b513Ee2788)
+
+</details>
+
+<details>
   <summary>Arbitrum Mainnet</summary>
 
 - Router =

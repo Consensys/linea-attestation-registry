@@ -25,6 +25,11 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY_ARBITRUM_TESTNET !== undefined ? [process.env.PRIVATE_KEY_ARBITRUM_TESTNET] : [],
     },
+    "arbitrum-sepolia": {
+      url: `https://arbitrum-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      accounts:
+        process.env.PRIVATE_KEY_ARBITRUM_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_ARBITRUM_SEPOLIA] : [],
+    },
     arbitrum: {
       url: "https://arb1.arbitrum.io/rpc",
       accounts:
@@ -49,6 +54,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       "arbitrum-goerli": process.env.ARBISCAN_API_KEY ?? "",
+      "arbitrum-sepolia": process.env.ARBISCAN_API_KEY ?? "",
       arbitrum: process.env.ARBISCAN_API_KEY ?? "",
       "linea-goerli": process.env.LINEASCAN_API_KEY ?? "",
       linea: process.env.LINEASCAN_API_KEY ?? "",
@@ -61,6 +67,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api-goerli.arbiscan.io/api",
           browserURL: "https://goerli.arbiscan.io",
+        },
+      },
+      {
+        network: "arbitrum-sepolia",
+        chainId: 421614,
+        urls: {
+          apiURL: "https://api-sepolia.arbiscan.io/api",
+          browserURL: "https://sepolia.arbiscan.io",
         },
       },
       {

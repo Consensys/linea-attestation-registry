@@ -1,7 +1,8 @@
 packages:
   - 'contracts'
-  - 'subgraph'
+  - 'explorer'
+  - 'governance'
   - 'sdk'
   - 'snap/packages/*'
+  - 'subgraph'
   - 'website'
-  - 'explorer'

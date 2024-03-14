@@ -1,4 +1,4 @@
-export const MetaMask = ({ color }: { color: string }) => (
+export const MetaMask = ({ color }: { color?: string | undefined }) => (
   <svg
     width="98"
     height="12"

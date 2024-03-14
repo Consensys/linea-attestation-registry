@@ -1,4 +1,4 @@
-export const PoweredBy = ({ color }: { color: string }) => (
+export const PoweredBy = ({ color }: { color?: string | undefined }) => (
   <svg
     width="60"
     height="12"

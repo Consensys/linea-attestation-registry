@@ -1,14 +1,16 @@
 module.exports = {
   extends: ['../../.eslintrc.js'],
 
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+  },
+
   overrides: [
     {
-      files: ['**/*.{ts,tsx}'],
-      rules: {
-        'jsdoc/require-jsdoc': 0,
-      },
+      files: ['*.ts', '*.tsx'],
+      extends: ['@metamask/eslint-config-browser'],
     },
   ],
 
-  ignorePatterns: ['!.eslintrc.js', 'build/'],
+  ignorePatterns: ['.cache/', 'public/'],
 };

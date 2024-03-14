@@ -1,0 +1,11 @@
+{
+  "detail": {
+    "caption": "{count} Attestations trouvées",
+    "from": "Émise par",
+    "attestedOn": "Attestée le",
+    "expiry": "Expiration",
+    "content": "Contenu"
+  },
+  "locale": "fr",
+  "noAttestations": "Aucune attestation trouvée"
+}

@@ -6,4 +6,6 @@
  * don't. Instead, rename `.env.production.dist` to `.env.production` and set the production URL
  * there. Running `yarn build` will automatically use the production environment variables.
  */
-export const defaultSnapOrigin = process.env.SNAP_ORIGIN ?? `local:http://localhost:8080`;
+export const defaultSnapOrigin =
+  // eslint-disable-next-line no-restricted-globals
+  process.env.SNAP_ORIGIN ?? `local:http://localhost:8080`;

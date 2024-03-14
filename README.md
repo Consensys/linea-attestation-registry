@@ -28,7 +28,7 @@ the network.</h4>
 📚 [Documentation](https://docs.ver.ax/)  
 🔍 [Subgraphs](#subgraphs-addresses)  
 🧱 [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)  
-🌍 Verax Explorer (_Coming soon_)
+🌍 [Explorer](https://explorer.ver.ax)
 
 ## Repository Organisation
 
@@ -42,41 +42,19 @@ the network.</h4>
 ├── website     # Verax landing page and
 ```
 
+Each package has its own README file for more details and installation process description.
+
 ## Getting Started
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/en/) (>= 18)
 
-### Global installation
+### Global setup
 
 ```bash
 pnpm i
 ```
-
-### Contracts
-
-Check the dedicated [README](./contracts/README.md) for more details.
-
-### Explorer
-
-Check the dedicated [README](./explorer/README.md) for more details.
-
-### SDK
-
-Check the dedicated [README](./sdk/README.md) for more details.
-
-### Snap
-
-Check the dedicated [README](./snap/README.md) for more details.
-
-### Subgraph
-
-Check the dedicated [README](./subgraph/README.md) for more details.
-
-### Website
-
-Check the dedicated [README](./website/README.md) for more details.
 
 ## Contributing
 
@@ -170,40 +148,10 @@ Here are the addresses on those networks:
 
 ## Subgraphs Addresses
 
-- [Linea Testnet](https://graph-query.goerli.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
+- [Linea Testnet](https://api.goldsky.com/api/public/project_clqghnrbp9nx201wtgylv8748/subgraphs/verax/subgraph-testnet/gn)
 - [Linea Mainnet](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
 - [Arbitrum Goerli](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum-goerli)
 - [Arbitrum Mainnet](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum)
-
-## Linking Attestations
-
-Verax Attestation Registry allows creating links ("relationships") between attestations.  
-🔗 Go to the [official documentation](https://docs.ver.ax/developer-guides/for-attestation-issuers/link-attestations)
-for more details
-
-Verax offers 2 Schemas to cover most use cases:
-
-- The **Relationship** Schema, with ID `0x41b8c81288eebbf173b2f54b9fb2f1d37f2caca51ef39e8f99299b53c2599a3a`
-- The **Named Graph Relationship** Schema with ID `0x8f83a0ef7871f63455a506f6bca0db98a88721764ae6dbde2afddd8e12e442b8`
-
-## Off-chain Attestations
-
-To handle large payloads to attest and avoid increasing the gas cost for the attestation process, it is possible to host
-the attested payload off-chain. In this case, the on-chain attestation will only contain a link to the attested payload,
-based on a dedicated Schema called **Offchain**. It is available with ID
-`0xa288e257097a4bed4166c002cb6911713edacc88e30b6cb2b0104df9c365327d`.
-
-To use it, simply pass a payload with the following content:
-
-```json
-{
-  "schemaId": "0x41b8c81288eebbf173b2f54b9fb2f1d37f2caca51ef39e8f99299b53c2599a3b",
-  "uri": "https://example.com/payload/123"
-}
-```
-
-- `schemaId`: the ID of the Schema encoding the complete (off-chain) payload
-- `uri`: the link to the complete (off-chain) payload
 
 ## License
 

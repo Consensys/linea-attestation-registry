@@ -1,16 +1,17 @@
-const { expect } = require("chai");
-const { ethers } = require("hardhat");
+import { expect } from "chai";
+import { ethers, upgrades } from "hardhat";
+import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
+import type { Contract } from "ethers";
 
 describe("VeraxVotingNFT", function () {
   let owner;
-  let addr1;
-  let addr2;
-  let addrs;
+  let addr1: HardhatEthersSigner;
+  let addr2: HardhatEthersSigner;
 
-  let veraxVotingNFT;
+  let veraxVotingNFT: Contract;
 
   beforeEach(async function () {
-    [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
+    [owner, addr1, addr2] = await ethers.getSigners();
     const VeraxVotingNFT = await ethers.getContractFactory("VeraxVotingNFT");
 
     veraxVotingNFT = await upgrades.deployProxy(VeraxVotingNFT, [owner.address]);

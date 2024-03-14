@@ -1,4 +1,4 @@
-import { arbitrum, arbitrumGoerli, linea, lineaTestnet } from "viem/chains";
+import { arbitrum, arbitrumGoerli, arbitrumSepolia, linea, lineaTestnet } from "viem/chains";
 import AttestationDataMapper from "./dataMapper/AttestationDataMapper";
 import SchemaDataMapper from "./dataMapper/SchemaDataMapper";
 import ModuleDataMapper from "./dataMapper/ModuleDataMapper";
@@ -55,6 +55,21 @@ export class VeraxSdk {
 
   static DEFAULT_ARBITRUM_TESTNET_FRONTEND: Conf = {
     ...VeraxSdk.DEFAULT_ARBITRUM_TESTNET,
+    mode: SDKMode.FRONTEND,
+  };
+
+  static DEFAULT_ARBITRUM_SEPOLIA: Conf = {
+    chain: arbitrumSepolia,
+    mode: SDKMode.BACKEND,
+    subgraphUrl: "https://api.studio.thegraph.com/query/67946/verax-arbitrum-sepolia/v0.0.2",
+    portalRegistryAddress: "0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE",
+    moduleRegistryAddress: "0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6",
+    schemaRegistryAddress: "0x025531b655D9EE335B8E6cc4C118b313f26ACc8F",
+    attestationRegistryAddress: "0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5",
+  };
+
+  static DEFAULT_ARBITRUM_SEPOLIA_FRONTEND: Conf = {
+    ...VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA,
     mode: SDKMode.FRONTEND,
   };
 

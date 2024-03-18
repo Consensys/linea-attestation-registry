@@ -549,11 +549,11 @@ importers:
         specifier: 0.68.5
         version: 0.68.5(@types/node@20.10.3)(node-fetch@3.3.2)(typescript@5.2.2)
       '@graphprotocol/graph-ts':
-        specifier: 0.31.0
-        version: 0.31.0
+        specifier: 0.33.0
+        version: 0.33.0
       assemblyscript:
-        specifier: 0.19.10
-        version: 0.19.10
+        specifier: 0.27.25
+        version: 0.27.25
       matchstick-as:
         specifier: 0.6.0
         version: 0.6.0
@@ -3511,8 +3511,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@graphprotocol/graph-ts@0.31.0:
-    resolution: {integrity: sha512-xreRVM6ho2BtolyOh2flDkNoGZximybnzUnF53zJVp0+Ed0KnAlO1/KOCUYw06euVI9tk0c9nA2Z/D5SIQV2Rg==}
+  /@graphprotocol/graph-ts@0.33.0:
+    resolution: {integrity: sha512-HBUVblHUdjQZ/MEjjYPzVgmh+SiuF9VV0D8KubYfFAtzkqpVJlvdyk+RZTAJUiu8hpyYy0EVIcAnLEPtKlwMGQ==}
     dependencies:
       assemblyscript: 0.19.10
     dev: true
@@ -12208,6 +12208,15 @@ packages:
       source-map-support: 0.5.21
     dev: true
 
+  /assemblyscript@0.27.25:
+    resolution: {integrity: sha512-hkx6Vz+EFVA2hqFfnTWfO14892scFIkJzdXyqfXUoBS76cLbar0PFJQ7yZuL9m/i5xpjFk9Bz2094uHLh7W5UA==}
+    engines: {node: '>=16', npm: '>=7'}
+    hasBin: true
+    dependencies:
+      binaryen: 116.0.0-nightly.20240114
+      long: 5.2.3
+    dev: true
+
   /assert@1.5.1:
     resolution: {integrity: sha512-zzw1uCAgLbsKwBfFc8CX78DDg+xZeBksSO3vwVIDDN5i94eOrPsSSyiVhmsSABFDM/OcpE2aagCat9dnWQLG1A==}
     dependencies:
@@ -12757,6 +12766,11 @@ packages:
 
   /binaryen@102.0.0-nightly.20211028:
     resolution: {integrity: sha512-GCJBVB5exbxzzvyt8MGDv/MeUjs6gkXDvf4xOIItRBptYl0Tz5sm1o/uG95YK0L0VeG5ajDu3hRtkBP2kzqC5w==}
+    hasBin: true
+    dev: true
+
+  /binaryen@116.0.0-nightly.20240114:
+    resolution: {integrity: sha512-0GZrojJnuhoe+hiwji7QFaL3tBlJoA+KFUN7ouYSDGZLSo9CKM8swQX8n/UcbR0d1VuZKU+nhogNzv423JEu5A==}
     hasBin: true
     dev: true
 

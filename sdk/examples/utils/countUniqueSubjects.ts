@@ -17,7 +17,7 @@ async function main() {
   const allSubjects: string[][] = [];
   const uniqueSubjects: Set<string> = new Set<string>();
 
-  for (let i = 0; i <= filesNumber; i++) {
+  for (let i = 0; i < filesNumber; i++) {
     allSubjects.push(await fetchSubjectsFromFile(i));
   }
 

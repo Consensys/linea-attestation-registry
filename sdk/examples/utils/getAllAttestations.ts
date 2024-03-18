@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 
 const BATCH_SIZE = 100000;
+const BATCH_START = 0;
 
 const fetchAllAttestations = async (batchNumber: number, veraxSdk: VeraxSdk) => {
   let skip = 0;
@@ -36,7 +37,7 @@ async function main() {
     `We expect ${batchesNumber} batches of ${BATCH_SIZE} attestations to get all ${attestationsNumber} attestations.`,
   );
 
-  for (let i = 0; i <= batchesNumber; i++) {
+  for (let i = BATCH_START; i < batchesNumber; i++) {
     console.log(`Attestations batch #${i}`);
     const subjectsBatch = await fetchAllAttestations(i, veraxSdk);
 

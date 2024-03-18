@@ -58,7 +58,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
   }
 
   private async enrichAttestation(attestation: Attestation) {
-    const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
+    const schema = (await this.veraxSdk.schema.getSchema(attestation.schema)) as Schema;
     attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as `0x${string}`);
 
     attestation.attestedDate = Number(attestation.attestedDate);
@@ -68,7 +68,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
     attestation.version = Number(attestation.version);
 
     // Check if data is stored offchain
-    if (attestation.schemaId === Constants.OFFCHAIN_DATA_SCHEMA_ID) {
+    if (attestation.schema === Constants.OFFCHAIN_DATA_SCHEMA_ID) {
       attestation.offchainData = {
         schemaId: (attestation.decodedPayload as OffchainData[])[0].schemaId,
         uri: (attestation.decodedPayload as OffchainData[])[0].uri,
@@ -175,7 +175,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
       return null;
     }
     const attestationWithDecodeObject: AttestationWithDecodeObject = { ...attestation, decodeObject: {} };
-    const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
+    const schema = await this.veraxSdk.schema.getSchema(attestation.schema);
     const splitSchema = schema.schema.split(",");
     const schemaFields = splitSchema.map<string>((item) => item.trim().split(" ")[1]);
     for (let i = 0; i < schemaFields.length; i++) {

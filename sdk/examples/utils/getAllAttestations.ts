@@ -9,7 +9,7 @@ const fetchAllAttestations = async (batchNumber: number, veraxSdk: VeraxSdk) => 
   let hasMoreResults = true;
   const batch: string[] = [];
 
-  while (hasMoreResults && batch.length <= BATCH_SIZE) {
+  while (hasMoreResults && batch.length < BATCH_SIZE) {
     console.log(`Query batch #${skip}`);
     const matchingAttestations = await veraxSdk.attestation.findBy(1000, skip * 1000 + batchNumber * BATCH_SIZE);
 
@@ -29,15 +29,13 @@ const fetchAllAttestations = async (batchNumber: number, veraxSdk: VeraxSdk) => 
 
 async function main() {
   const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_MAINNET);
-  const attestationsNumber = await veraxSdk.utils.getAttestationIdCounter();
-  const batchesNumber = Math.ceil(Number(attestationsNumber) / BATCH_SIZE);
+  const attestationNumber = await veraxSdk.utils.getAttestationIdCounter();
+  const batchesNumber = Math.ceil(Number(attestationNumber) / BATCH_SIZE);
 
-  console.log(
-    `We expect ${batchesNumber} batches of ${BATCH_SIZE} attestations to get all ${attestationsNumber} attestations.`,
-  );
+  console.log(`Creating ${batchesNumber} batches of ${BATCH_SIZE} items to get all ${attestationNumber} attestations.`);
 
-  for (let i = 0; i <= batchesNumber; i++) {
-    console.log(`Attestations batch #${i}`);
+  for (let i = 8; i < batchesNumber; i++) {
+    console.log(`Attestation batch #${i}`);
     const subjectsBatch = await fetchAllAttestations(i, veraxSdk);
 
     fs.writeFile(path.resolve(__dirname, `../../allSubjects-${i}.txt`), JSON.stringify(subjectsBatch), function (err) {

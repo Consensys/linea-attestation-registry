@@ -23,9 +23,6 @@ abstract contract AbstractPortal is IPortal {
   AttestationRegistry public attestationRegistry;
   PortalRegistry public portalRegistry;
 
-  /// @notice Error thrown when someone else than the portal's owner is trying to revoke
-  error OnlyPortalOwner();
-
   /**
    * @notice Contract constructor
    * @param _modules list of modules to use for the portal (can be empty)
@@ -120,7 +117,7 @@ abstract contract AbstractPortal is IPortal {
   function revoke(bytes32 attestationId) public {
     _onRevoke(attestationId);
 
-    attestationRegistry.revoke(attestationId);
+    attestationRegistry.revoke(attestationId, getAttester());
   }
 
   /**
@@ -130,7 +127,7 @@ abstract contract AbstractPortal is IPortal {
   function bulkRevoke(bytes32[] memory attestationIds) public {
     _onBulkRevoke(attestationIds);
 
-    attestationRegistry.bulkRevoke(attestationIds);
+    attestationRegistry.bulkRevoke(attestationIds, getAttester());
   }
 
   /**
@@ -201,17 +198,11 @@ abstract contract AbstractPortal is IPortal {
 
   /**
    * @notice Optional method run when an attestation is revoked or replaced
-   * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
    */
-  function _onRevoke(bytes32 /*attestationId*/) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
+  function _onRevoke(bytes32 /*attestationId*/) internal virtual {}
 
   /**
    * @notice Optional method run when a batch of attestations are revoked or replaced
-   * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
    */
-  function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
+  function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal virtual {}
 }

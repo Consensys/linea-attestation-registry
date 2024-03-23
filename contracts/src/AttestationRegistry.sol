@@ -29,8 +29,10 @@ contract AttestationRegistry is OwnableUpgradeable {
   error RouterInvalid();
   /// @notice Error thrown when an attestation is not registered in the AttestationRegistry
   error AttestationNotAttested();
-  /// @notice Error thrown when an attempt is made to revoke an attestation by an entity other than the attesting portal
+  /// @notice Error thrown when attestation is revoked by an entity other than the attesting portal
   error OnlyAttestingPortal();
+  /// @notice Error thrown when attestation is revoked by an attestor not associated or not the portal owner
+  error OnlyAttestorOrPortalOwner();
   /// @notice Error thrown when a schema id is not registered
   error SchemaNotRegistered();
   /// @notice Error thrown when an attestation subject is empty
@@ -167,11 +169,11 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @notice Replaces an attestation for the given identifier and replaces it with a new attestation
    * @param attestationId the ID of the attestation to replace
    * @param attestationPayload the attestation payload to create the new attestation and register it
-   * @param attester the account address issuing the attestation
+   * @param replacer the account address replacing the attestation
    */
-  function replace(bytes32 attestationId, AttestationPayload calldata attestationPayload, address attester) public {
-    attest(attestationPayload, attester);
-    revoke(attestationId);
+  function replace(bytes32 attestationId, AttestationPayload calldata attestationPayload, address replacer) public {
+    attest(attestationPayload, replacer);
+    revoke(attestationId, replacer);
     bytes32 replacedBy = generateAttestationId(attestationIdCounter);
     attestations[attestationId].replacedBy = replacedBy;
 
@@ -182,28 +184,33 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @notice Replaces attestations for given identifiers and replaces them with new attestations
    * @param attestationIds the list of IDs of the attestations to replace
    * @param attestationPayloads the list of attestation payloads to create the new attestations and register them
-   * @param attester the account address issuing the attestation
+   * @param replacer the account address replacing the attestation
    */
   function bulkReplace(
     bytes32[] calldata attestationIds,
     AttestationPayload[] calldata attestationPayloads,
-    address attester
+    address replacer
   ) public {
     if (attestationIds.length != attestationPayloads.length) revert ArrayLengthMismatch();
     for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
-      replace(attestationIds[i], attestationPayloads[i], attester);
+      replace(attestationIds[i], attestationPayloads[i], replacer);
     }
   }
 
   /**
    * @notice Revokes an attestation for a given identifier
    * @param attestationId the ID of the attestation to revoke
+   * @param revoker the account address revoking the attestation
    */
-  function revoke(bytes32 attestationId) public {
+  function revoke(bytes32 attestationId, address revoker) public {
     if (!isRegistered(attestationId)) revert AttestationNotAttested();
     if (attestations[attestationId].revoked) revert AlreadyRevoked();
     if (msg.sender != attestations[attestationId].portal) revert OnlyAttestingPortal();
     if (!isRevocable(attestations[attestationId].portal)) revert AttestationNotRevocable();
+
+    PortalRegistry portalRegistry = PortalRegistry(router.getPortalRegistry());
+    address portalOwner = portalRegistry.getPortalOwnerAddress(attestations[attestationId].portal);
+    if (revoker != attestations[attestationId].attester && revoker != portalOwner) revert OnlyAttestorOrPortalOwner();
 
     attestations[attestationId].revoked = true;
     attestations[attestationId].revocationDate = uint64(block.timestamp);
@@ -214,10 +221,11 @@ contract AttestationRegistry is OwnableUpgradeable {
   /**
    * @notice Bulk revokes a list of attestations for the given identifiers
    * @param attestationIds the IDs of the attestations to revoke
+   * @param revoker the account address revoking the attestation
    */
-  function bulkRevoke(bytes32[] memory attestationIds) external {
+  function bulkRevoke(bytes32[] memory attestationIds, address revoker) external {
     for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
-      revoke(attestationIds[i]);
+      revoke(attestationIds[i], revoker);
     }
   }
 

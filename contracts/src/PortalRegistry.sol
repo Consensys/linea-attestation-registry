@@ -214,6 +214,16 @@ contract PortalRegistry is OwnableUpgradeable {
   }
 
   /**
+   * @notice Get a Portal owner address by its address
+   * @param id The address of the Portal
+   * @return The Portal owner address
+   */
+  function getPortalOwnerAddress(address id) public view returns (address) {
+    if (!isRegistered(id)) revert PortalNotRegistered();
+    return portals[id].ownerAddress;
+  }
+
+  /**
    * @notice Check if a Portal is registered
    * @param id The address of the Portal
    * @return True if the Portal is registered, false otherwise

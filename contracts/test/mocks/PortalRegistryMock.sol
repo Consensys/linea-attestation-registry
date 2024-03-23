@@ -32,6 +32,10 @@ contract PortalRegistryMock {
     return portals[id];
   }
 
+  function getPortalOwnerAddress(address id) public view returns (address) {
+    return portals[id].ownerAddress;
+  }
+
   function setIssuer(address issuer) public {
     issuers[issuer] = true;
   }

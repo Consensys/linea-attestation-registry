@@ -41,6 +41,11 @@ export const abiAttestationRegistry = [
   },
   {
     inputs: [],
+    name: "OnlyAttestorOrPortalOwner",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "OnlyPortal",
     type: "error",
   },
@@ -308,7 +313,7 @@ export const abiAttestationRegistry = [
       },
       {
         internalType: "address",
-        name: "attester",
+        name: "replacer",
         type: "address",
       },
     ],
@@ -323,6 +328,11 @@ export const abiAttestationRegistry = [
         internalType: "bytes32[]",
         name: "attestationIds",
         type: "bytes32[]",
+      },
+      {
+        internalType: "address",
+        name: "revoker",
+        type: "address",
       },
     ],
     name: "bulkRevoke",
@@ -419,6 +429,19 @@ export const abiAttestationRegistry = [
         internalType: "uint32",
         name: "",
         type: "uint32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getChainPrefix",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -591,7 +614,7 @@ export const abiAttestationRegistry = [
       },
       {
         internalType: "address",
-        name: "attester",
+        name: "replacer",
         type: "address",
       },
     ],
@@ -606,6 +629,11 @@ export const abiAttestationRegistry = [
         internalType: "bytes32",
         name: "attestationId",
         type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "revoker",
+        type: "address",
       },
     ],
     name: "revoke",
@@ -635,6 +663,19 @@ export const abiAttestationRegistry = [
       },
     ],
     name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_chainPrefix",
+        type: "uint256",
+      },
+    ],
+    name: "updateChainPrefix",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -14,6 +14,7 @@ contract AttestationRegistryTest is Test {
   address public portal = makeAddr("portal");
   address public user = makeAddr("user");
   address public attester = makeAddr("attester");
+  address public portalOwner = makeAddr("portalOwner");
   Router public router;
   AttestationRegistry public attestationRegistry;
   AttestationRegistryHarness public attestationRegistryHarness;
@@ -49,6 +50,7 @@ contract AttestationRegistryTest is Test {
     router.updatePortalRegistry(portalRegistryAddress);
     router.updateSchemaRegistry(schemaRegistryAddress);
 
+    vm.prank(portalOwner);
     PortalRegistry(portalRegistryAddress).register(portal, "Name", "Description", true, "Owner name");
   }
 
@@ -305,7 +307,7 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.bulkReplace(attestationIds, payloadsToAttest, attester);
   }
 
-  function test_revoke(AttestationPayload memory attestationPayload) public {
+  function test_revoke_ByPortalOwner(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
@@ -325,7 +327,38 @@ contract AttestationRegistryTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRevoked(attestationId);
-    attestationRegistry.revoke(attestationId);
+    attestationRegistry.revoke(attestationId, portalOwner);
+    vm.stopPrank();
+
+    // Assert final state is a revoked attestation
+    Attestation memory revokedAttestation = attestationRegistry.getAttestation(
+      attestationRegistryHarness.exposed_generateAttestationId(1)
+    );
+    assertTrue(revokedAttestation.revoked);
+    assertEq(revokedAttestation.revocationDate, block.timestamp);
+  }
+
+  function test_revoke_ByValidAttestor(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+    vm.startPrank(portal, attester);
+    attestationRegistry.attest(attestationPayload, attester);
+    // Assert initial state is a valid attestation
+    bytes32 attestationId = attestationRegistryHarness.exposed_generateAttestationId((1));
+    Attestation memory registeredAttestation = attestationRegistry.getAttestation(attestationId);
+
+    assertEq(registeredAttestation.attestationId, attestationRegistryHarness.exposed_generateAttestationId(1));
+    assertFalse(registeredAttestation.revoked);
+    assertEq(registeredAttestation.revocationDate, 0);
+    assertEq(registeredAttestation.portal, portal);
+    assertEq(registeredAttestation.attester, attester);
+
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRevoked(attestationId);
+    attestationRegistry.revoke(attestationId, attester);
     vm.stopPrank();
 
     // Assert final state is a revoked attestation
@@ -349,10 +382,10 @@ contract AttestationRegistryTest is Test {
 
     vm.expectEmit();
     emit AttestationRevoked(attestationIdToRevoke);
-    attestationRegistry.revoke(attestationIdToRevoke);
+    attestationRegistry.revoke(attestationIdToRevoke, attester);
 
     vm.expectRevert(AttestationRegistry.AlreadyRevoked.selector);
-    attestationRegistry.revoke(attestationIdToRevoke);
+    attestationRegistry.revoke(attestationIdToRevoke, attester);
 
     vm.stopPrank();
   }
@@ -360,7 +393,7 @@ contract AttestationRegistryTest is Test {
   function test_revoke_AttestationNotAttested() public {
     bytes32 attestationIdToRevoke = attestationRegistryHarness.exposed_generateAttestationId(1);
     vm.expectRevert(AttestationRegistry.AttestationNotAttested.selector);
-    attestationRegistry.revoke(attestationIdToRevoke);
+    attestationRegistry.revoke(attestationIdToRevoke, attester);
   }
 
   function test_revoke_OnlyAttestingPortal(AttestationPayload memory attestationPayload) public {
@@ -376,7 +409,7 @@ contract AttestationRegistryTest is Test {
     bytes32 attestationIdToRevoke = attestationRegistryHarness.exposed_generateAttestationId(1);
     vm.expectRevert(AttestationRegistry.OnlyAttestingPortal.selector);
     vm.prank(user);
-    attestationRegistry.revoke(attestationIdToRevoke);
+    attestationRegistry.revoke(attestationIdToRevoke, attester);
   }
 
   function test_revoke_AttestationNotRevocable(AttestationPayload memory attestationPayload) public {
@@ -402,7 +435,24 @@ contract AttestationRegistryTest is Test {
     bytes32 attestationIdToRevoke = attestationRegistryHarness.exposed_generateAttestationId(1);
 
     vm.expectRevert(AttestationRegistry.AttestationNotRevocable.selector);
-    attestationRegistry.revoke(attestationIdToRevoke);
+    attestationRegistry.revoke(attestationIdToRevoke, attester);
+
+    vm.stopPrank();
+  }
+
+  function test_revoke_OnlyAttestorOrPortalOwner(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+    vm.startPrank(portal, attester);
+    attestationRegistry.attest(attestationPayload, attester);
+
+    bytes32 attestationIdToRevoke = attestationRegistryHarness.exposed_generateAttestationId(1);
+
+    vm.expectRevert(AttestationRegistry.OnlyAttestorOrPortalOwner.selector);
+    attestationRegistry.revoke(attestationIdToRevoke, makeAddr("InvalidAttester"));
 
     vm.stopPrank();
   }
@@ -461,7 +511,7 @@ contract AttestationRegistryTest is Test {
     vm.expectEmit(true, true, true, true);
     emit AttestationRevoked(attestationsToRevoke[1]);
 
-    attestationRegistry.bulkRevoke(attestationsToRevoke);
+    attestationRegistry.bulkRevoke(attestationsToRevoke, attester);
     vm.stopPrank();
 
     // Assert final state is a revoked attestation and a replaced attestation

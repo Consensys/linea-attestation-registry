@@ -1,4 +1,4 @@
-name: Build website
+name: Build tutorial
 
 on:
   pull_request:
@@ -13,12 +13,12 @@ on:
       - release/*
 
 jobs:
-  build-website:
+  build-tutorial:
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: website
+        working-directory: tutorial
 
     steps:
       - name: Check out the repo
@@ -57,5 +57,5 @@ jobs:
 
       - name: Add build summary
         run: |
-          echo "## Website build result" >> $GITHUB_STEP_SUMMARY
+          echo "## Tutorial build result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

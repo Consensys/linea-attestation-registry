@@ -1,9 +1,8 @@
 import "./App.css";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home.tsx";
 import Navbar from "./components/Navbar.tsx";
 import Footer from "./components/Footer.tsx";
-import Tutorials from "./pages/Tutorials.tsx";
+import Home from "./pages/Home.tsx";
 
 function App() {
   return (
@@ -14,8 +13,7 @@ function App() {
         </header>
         <div className={"global-body"}>
           <Routes>
-            <Route path="*" element={<Home title={"Verax Attestation Registry"} />} />
-            <Route path="/tutorials" element={<Tutorials title={"Verax | Tutorials"} />} />
+            <Route path="*" element={<Home title={"Verax | Home"} />} />
           </Routes>
         </div>
         <footer>

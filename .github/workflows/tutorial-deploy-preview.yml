@@ -1,19 +1,19 @@
-name: Deploy preview explorer
+name: Deploy preview tutorial
 
 on:
   pull_request:
     branches:
       - dev
     paths:
-      - explorer/**
+      - tutorial/**
 
 jobs:
-  deploy-explorer-preview:
+  deploy-tutorial-preview:
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: explorer
+        working-directory: tutorial
 
     steps:
       - name: Check out the repo
@@ -23,7 +23,7 @@ jobs:
 
       - id: check-changes
         run: |
-          if [ -n "$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '^explorer/')" ]; then
+          if [ -n "$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '^tutorial/')" ]; then
             echo "::set-output name=changed::true"
           else
             echo "::set-output name=changed::false"
@@ -67,13 +67,12 @@ jobs:
         run: pnpm run build:netlify
         env:
           VITE_WALLETCONNECT_PROJECT_ID: ${{ secrets.VITE_WALLETCONNECT_PROJECT_ID }}
-          VITE_INFURA_API_KEY: ${{ secrets.VITE_INFURA_API_KEY }}
 
       - name: Deploy to Netlify
         if: steps.check-changes.outputs.changed == 'true'
         uses: nwtgck/actions-netlify@v2.0
         with:
-          publish-dir: "./explorer/dist"
+          publish-dir: "./tutorial/dist"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: true
@@ -81,17 +80,17 @@ jobs:
           overwrites-pull-request-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_STAGING }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_TUTORIAL_STAGING }}
         timeout-minutes: 1
 
-      - name: Add explorer deployment summary
+      - name: Add tutorial deployment summary
         if: steps.check-changes.outputs.changed == 'true'
         run: |
-          echo "## Explorer staging deployment result" >> $GITHUB_STEP_SUMMARY
+          echo "## Tutorial staging deployment result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
-      - name: Add explorer deployment summary
+      - name: Add tutorial deployment summary
         if: steps.check-changes.outputs.changed == 'false'
         run: |
-          echo "## Explorer staging deployment result" >> $GITHUB_STEP_SUMMARY
-          echo "✅ No change detected in the explorer" >> $GITHUB_STEP_SUMMARY
+          echo "## Tutorial staging deployment result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ No change detected in the tutorial" >> $GITHUB_STEP_SUMMARY

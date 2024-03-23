@@ -1,26 +1,15 @@
-name: Deploy tutorial
+name: Deploy production tutorial
 
 on:
+  workflow_dispatch:
   push:
-    branches: ["dev"]
+    branches:
+      - dev
     paths:
       - tutorial/**
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  deploy-tutorial:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
+  deploy-tutorial-prod:
     runs-on: ubuntu-latest
 
     defaults:
@@ -60,24 +49,19 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run build
+        run: pnpm run build:netlify
         env:
           VITE_WALLETCONNECT_PROJECT_ID: ${{ secrets.VITE_WALLETCONNECT_PROJECT_ID }}
-          VITE_INFURA_API_KEY: ${{ secrets.VITE_INFURA_API_KEY }}
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - name: Deploy tutorial to Netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_TUTORIAL }}
         with:
-          path: "./tutorial/dist"
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+          args: deploy --dir=./tutorial/dist --filter tutorial --prod
 
       - name: Add tutorial deployment summary
         run: |
-          echo "## Tutorial deployment result" >> $GITHUB_STEP_SUMMARY
+          echo "## Tutorial production deployment result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

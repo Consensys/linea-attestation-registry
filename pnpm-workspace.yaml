@@ -5,4 +5,5 @@ packages:
   - 'sdk'
   - 'snap/packages/**'
   - 'subgraph'
+  - 'tutorial'
   - 'website'

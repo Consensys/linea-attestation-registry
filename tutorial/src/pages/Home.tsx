@@ -14,7 +14,7 @@ export type SDKDemoProps = {
   title: string;
 };
 
-const Tutorials: FunctionComponent<SDKDemoProps> = ({ title }) => {
+const Home: FunctionComponent<SDKDemoProps> = ({ title }) => {
   const [veraxSdk, setVeraxSdk] = useState<VeraxSdk>();
   const [schemaId, setSchemaId] = useState<Address>();
   const [portalId, setPortalId] = useState<Address>();
@@ -117,4 +117,4 @@ const Tutorials: FunctionComponent<SDKDemoProps> = ({ title }) => {
   );
 };
 
-export default Tutorials;
+export default Home;

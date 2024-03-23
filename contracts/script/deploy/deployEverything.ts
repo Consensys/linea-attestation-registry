@@ -16,6 +16,8 @@ async function main() {
   const routerProxyAddress = await router.getAddress();
   const routerImplementationAddress = await upgrades.erc1967.getImplementationAddress(routerProxyAddress);
 
+  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
+
   await run("verify:verify", {
     address: routerProxyAddress,
   });
@@ -34,6 +36,8 @@ async function main() {
   const attestationRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
     attestationRegistryProxyAddress,
   );
+
+  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
 
   await run("verify:verify", {
     address: attestationRegistryProxyAddress,
@@ -54,6 +58,8 @@ async function main() {
     moduleRegistryProxyAddress,
   );
 
+  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
+
   await run("verify:verify", {
     address: moduleRegistryProxyAddress,
   });
@@ -72,6 +78,8 @@ async function main() {
   const portalRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
     portalRegistryProxyAddress,
   );
+
+  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
 
   await run("verify:verify", {
     address: portalRegistryProxyAddress,
@@ -92,6 +100,8 @@ async function main() {
     schemaRegistryProxyAddress,
   );
 
+  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
+
   await run("verify:verify", {
     address: schemaRegistryProxyAddress,
   });
@@ -110,6 +120,8 @@ async function main() {
   const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(
     attestationReaderProxyAddress,
   );
+
+  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
 
   await run("verify:verify", {
     address: attestationReaderProxyAddress,

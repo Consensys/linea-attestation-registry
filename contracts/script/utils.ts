@@ -10,6 +10,8 @@ export const getChainPrefix = (chainId: bigint): `0x${string}` => {
       return "0x0001000000000000000000000000000000000000000000000000000000000000";
     case 42161n: // Arbitrum mainnet
       return "0x0001000000000000000000000000000000000000000000000000000000000000";
+    case 42170n: // Arbitrum nova
+      return "0x0002000000000000000000000000000000000000000000000000000000000000";
     default:
       throw new Error("Unknown network");
   }

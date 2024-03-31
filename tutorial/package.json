@@ -29,7 +29,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@lens-protocol/widgets-react": "^2.1.0",
-    "@verax-attestation-registry/verax-sdk": "1.1.1",
+    "@verax-attestation-registry/verax-sdk": "1.2.1",
     "@wagmi/core": "^1.4.7",
     "@web3modal/wagmi": "^3.5.0",
     "axios": "^1.6.1",

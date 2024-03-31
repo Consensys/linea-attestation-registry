@@ -76,8 +76,6 @@
 
     pnpm attestation getAttestation "0x0000000000000000000000000000000000000000000000000000000000000001"
 
-    pnpm attestation getAttestationWithDecodeObject "0x000000000000000000000000000000000000000000000000000000000000121f"
-
     pnpm attestation getVersionNumber
 
     pnpm attestation getAttestationIdCounter

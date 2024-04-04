@@ -149,7 +149,7 @@ importers:
         version: 1.18.9(typescript@5.2.2)(zod@3.22.4)
       vite-tsconfig-paths:
         specifier: ^4.2.1
-        version: 4.2.1(typescript@5.2.2)(vite@4.5.2)
+        version: 4.2.1(typescript@5.2.2)(vite@4.5.3)
       wagmi:
         specifier: ^1.4.6
         version: 1.4.7(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.6)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
@@ -174,7 +174,7 @@ importers:
         version: 6.13.1(eslint@8.55.0)(typescript@5.2.2)
       '@vitejs/plugin-react':
         specifier: ^4.1.1
-        version: 4.2.0(vite@4.5.2)
+        version: 4.2.0(vite@4.5.3)
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
@@ -215,14 +215,14 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
       vite:
-        specifier: ^4.5.2
-        version: 4.5.2(@types/node@20.10.3)
+        specifier: ^4.5.3
+        version: 4.5.3(@types/node@20.10.3)
       vite-plugin-radar:
         specifier: ^0.9.1
-        version: 0.9.1(vite@4.5.2)
+        version: 0.9.1(vite@4.5.3)
       vite-plugin-svgr:
         specifier: ^4.2.0
-        version: 4.2.0(typescript@5.2.2)(vite@4.5.2)
+        version: 4.2.0(typescript@5.2.2)(vite@4.5.3)
 
   governance:
     dependencies:
@@ -620,7 +620,7 @@ importers:
         version: 6.13.1(eslint@8.55.0)(typescript@5.2.2)
       '@vitejs/plugin-react':
         specifier: ^4.1.1
-        version: 4.2.0(vite@4.5.2)
+        version: 4.2.0(vite@4.5.3)
       eslint:
         specifier: ^8.53.0
         version: 8.55.0
@@ -634,11 +634,11 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
       vite:
-        specifier: ^4.5.2
-        version: 4.5.2(@types/node@20.10.3)
+        specifier: ^4.5.3
+        version: 4.5.3(@types/node@20.10.3)
       vite-plugin-radar:
         specifier: ^0.9.1
-        version: 0.9.1(vite@4.5.2)
+        version: 0.9.1(vite@4.5.3)
 
   website:
     devDependencies:
@@ -10544,7 +10544,7 @@ packages:
       resolve: 1.22.8
     dev: true
 
-  /@vitejs/plugin-react@4.2.0(vite@4.5.2):
+  /@vitejs/plugin-react@4.2.0(vite@4.5.3):
     resolution: {integrity: sha512-+MHTH/e6H12kRp5HUkzOGqPMksezRMmW+TNzlh/QXfI8rRf6l2Z2yH/v12no1UvTwhZgEDMuQ7g7rrfMseU6FQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -10555,7 +10555,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.3)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 4.5.2(@types/node@20.10.3)
+      vite: 4.5.3(@types/node@20.10.3)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11306,13 +11306,6 @@ packages:
   /@web3modal/siwe@3.6.0-17c0eb03(@types/react@18.2.37)(typescript@5.2.2):
     resolution: {integrity: sha512-k2WJnqlMlfWDt4BRIT47c2buAC1Z3AVORLuE88poXjMU0p/esduIo4m+ZPq+beJuAGazPchZxFLL8DSVm1+iPQ==}
     requiresBuild: true
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-      vue:
-        optional: true
     dependencies:
       '@web3modal/core': 3.6.0-17c0eb03(@types/react@18.2.37)(react@18.2.0)
       '@web3modal/scaffold-utils': 3.6.0-17c0eb03(@types/react@18.2.37)(react@18.2.0)
@@ -11347,15 +11340,6 @@ packages:
     peerDependencies:
       '@wagmi/core': '>=1'
       viem: '>=1'
-    peerDependenciesMeta:
-      '@web3modal/siwe':
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-      vue:
-        optional: true
     dependencies:
       '@wagmi/core': 1.4.7(@types/react@18.2.37)(react@18.2.0)(typescript@5.2.2)(viem@1.18.9)(zod@3.22.4)
       '@web3modal/polyfills': 3.5.4
@@ -16382,7 +16366,6 @@ packages:
       is-hex-prefixed: 1.0.0
       strip-hex-prefix: 1.0.0
     dev: true
-    bundledDependencies: false
 
   /event-emitter@0.3.5:
     resolution: {integrity: sha512-D9rRn9y7kLPnJ+hMq7S/nhvoKwwvVJahBi2BPmx3bvbsEdK3W9ii8cBSGjP+72/LnM4n6fo3+dkCX5FeTQruXA==}
@@ -27572,15 +27555,15 @@ packages:
       - zod
     dev: false
 
-  /vite-plugin-radar@0.9.1(vite@4.5.2):
+  /vite-plugin-radar@0.9.1(vite@4.5.3):
     resolution: {integrity: sha512-stnb+LxeEKobcesXW2JA0OdCaBRgR/zZwN6ACXZf1gF9MNR689aiK5UlgTVmrpUnEcPucO9U0M0WHnuM6NXPsA==}
     peerDependencies:
       vite: ^2.0.0 || ^3.0.0 || ^4.0.0
     dependencies:
-      vite: 4.5.2(@types/node@20.10.3)
+      vite: 4.5.3(@types/node@20.10.3)
     dev: true
 
-  /vite-plugin-svgr@4.2.0(typescript@5.2.2)(vite@4.5.2):
+  /vite-plugin-svgr@4.2.0(typescript@5.2.2)(vite@4.5.3):
     resolution: {integrity: sha512-SC7+FfVtNQk7So0XMjrrtLAbEC8qjFPifyD7+fs/E6aaNdVde6umlVVh0QuwDLdOMu7vp5RiGFsB70nj5yo0XA==}
     peerDependencies:
       vite: ^2.6.0 || 3 || 4 || 5
@@ -27588,14 +27571,14 @@ packages:
       '@rollup/pluginutils': 5.1.0
       '@svgr/core': 8.1.0(typescript@5.2.2)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0)
-      vite: 4.5.2(@types/node@20.10.3)
+      vite: 4.5.3(@types/node@20.10.3)
     transitivePeerDependencies:
       - rollup
       - supports-color
       - typescript
     dev: true
 
-  /vite-tsconfig-paths@4.2.1(typescript@5.2.2)(vite@4.5.2):
+  /vite-tsconfig-paths@4.2.1(typescript@5.2.2)(vite@4.5.3):
     resolution: {integrity: sha512-GNUI6ZgPqT3oervkvzU+qtys83+75N/OuDaQl7HmOqFTb0pjZsuARrRipsyJhJ3enqV8beI1xhGbToR4o78nSQ==}
     peerDependencies:
       vite: '*'
@@ -27606,14 +27589,14 @@ packages:
       debug: 4.3.4(supports-color@5.5.0)
       globrex: 0.1.2
       tsconfck: 2.1.2(typescript@5.2.2)
-      vite: 4.5.2(@types/node@20.10.3)
+      vite: 4.5.3(@types/node@20.10.3)
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: false
 
-  /vite@4.5.2(@types/node@20.10.3):
-    resolution: {integrity: sha512-tBCZBNSBbHQkaGyhGCDUGqeo2ph8Fstyp6FMSvTtsXeZSPpSMGlviAOav2hxVTqFcx8Hj/twtWKsMJXNY0xI8w==}
+  /vite@4.5.3(@types/node@20.10.3):
+    resolution: {integrity: sha512-kQL23kMeX92v3ph7IauVkXkikdDRsYMGTVl5KY2E9OY4ONLvkHf04MDTbnfo6NKxZiDLWzVpP5oTa8hQD8U3dg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:

@@ -20,16 +20,26 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         ownerName
   }`;
 
-  async simulateAttest(portalAddress: Address, attestationPayload: AttestationPayload, validationPayloads: string[]) {
+  async simulateAttest(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    value: bigint = 0n,
+  ) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
     if (!matchingSchema) {
       throw new Error("No matching Schema");
     }
     const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
-    return this.simulatePortalContract(portalAddress, "attest", [
-      [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
-      validationPayloads,
-    ]);
+    return this.simulatePortalContract(
+      portalAddress,
+      "attest",
+      [
+        [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
+        validationPayloads,
+      ],
+      value,
+    );
   }
 
   async attest(
@@ -37,8 +47,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
     waitForConfirmation: boolean = false,
+    value: bigint = 0n,
   ) {
-    const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads);
+    const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads, value);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
@@ -245,7 +256,12 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     }
   }
 
-  private async simulatePortalContract(portalAddress: Address, functionName: string, args: unknown[]) {
+  private async simulatePortalContract(
+    portalAddress: Address,
+    functionName: string,
+    args: unknown[],
+    value: bigint = 0n,
+  ) {
     if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({
@@ -254,6 +270,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         functionName,
         account: this.walletClient.account,
         args,
+        value,
       });
 
       return request;

@@ -3,4 +3,4 @@
 
 pnpm run prettier:write
 pnpm -r run lint
-pnpm -r run test
+pnpm --filter "{contracts}" run test

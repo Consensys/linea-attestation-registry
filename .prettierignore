@@ -21,3 +21,4 @@ dist
 .pnp.*
 lcov.info
 pnpm-lock.yaml
+.latest.json

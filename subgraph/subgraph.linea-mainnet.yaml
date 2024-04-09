@@ -4,7 +4,7 @@ schema:
 dataSources:
   - kind: ethereum
     name: AttestationRegistry
-    network: linea-mainnet
+    network: linea
     source:
       abi: AttestationRegistry
       address: "0x3de3893aa4Cdea029e84e75223a152FD08315138"
@@ -30,7 +30,7 @@ dataSources:
       file: ./src/attestation-registry.ts
   - kind: ethereum
     name: ModuleRegistry
-    network: linea-mainnet
+    network: linea
     source:
       abi: ModuleRegistry
       address: "0xf851513A732996F22542226341748f3C9978438f"
@@ -50,7 +50,7 @@ dataSources:
       file: ./src/module-registry.ts
   - kind: ethereum
     name: PortalRegistry
-    network: linea-mainnet
+    network: linea
     source:
       abi: PortalRegistry
       address: "0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083"
@@ -67,6 +67,8 @@ dataSources:
       eventHandlers:
         - event: PortalRegistered(string,string,address)
           handler: handlePortalRegistered
+        - event: PortalRevoked(address)
+          handler: handlePortalRevoked
         - event: IssuerAdded(address)
           handler: handleIssuerAdded
         - event: IssuerRemoved(address)
@@ -74,7 +76,7 @@ dataSources:
       file: ./src/portal-registry.ts
   - kind: ethereum
     name: SchemaRegistry
-    network: linea-mainnet
+    network: linea
     source:
       abi: SchemaRegistry
       address: "0x0f95dCec4c7a93F2637eb13b655F2223ea036B59"

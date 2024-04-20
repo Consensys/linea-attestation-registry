@@ -107,4 +107,39 @@ contract IssuersPortalTest is Test {
     emit AttestationRegistered(0x0000000000000000000000000000000000000000000000000000000000000001);
     issuersPortal.attestV2(attestationPayload, validationPayload);
   }
+
+  function test_bulkAttestV2() public {
+    string memory name = "Issuer name";
+    string memory description = "Issuer name";
+    string memory logoURL = "https://example.com/logo";
+    string[] memory keywords = new string[](1);
+    keywords[0] = "Keyword 1";
+    string memory CTATitle = "Issuer CTA";
+    string memory CTALink = "https://example.com/cta";
+
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      schemaId,
+      0,
+      abi.encode(issuerAddress),
+      abi.encode(name, description, logoURL, keywords, CTATitle, CTALink)
+    );
+
+    AttestationPayload[] memory attestationPayloads = new AttestationPayload[](2);
+    attestationPayloads[0] = attestationPayload;
+    attestationPayloads[1] = attestationPayload;
+
+    bytes[] memory validationPayload = new bytes[](2);
+    validationPayload[0] = abi.encode(address(issuersPortal));
+
+    bytes[][] memory validationPayloads = new bytes[][](2);
+    validationPayloads[0] = validationPayload;
+    validationPayloads[1] = validationPayload;
+
+    vm.startPrank(address(0), address(0));
+    vm.expectEmit(address(attestationRegistry));
+    emit AttestationRegistered(0x0000000000000000000000000000000000000000000000000000000000000001);
+    emit AttestationRegistered(0x0000000000000000000000000000000000000000000000000000000000000002);
+    issuersPortal.bulkAttestV2(attestationPayloads, validationPayloads);
+    vm.stopPrank();
+  }
 }

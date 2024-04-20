@@ -23,7 +23,7 @@ contract IssuersModuleTest is Test {
     vm.stopPrank();
   }
 
-  function test_setup() public {
+  function test_setup() public view {
     assertEq(portalRegistry.isIssuer(issuerAddress), true);
   }
 

@@ -96,6 +96,7 @@ contract ERC1271Module is ERC1271, AbstractModule {
     bytes32 s;
     uint8 v;
 
+    // solhint-disable no-inline-assembly
     assembly {
       r := mload(add(_signature, 0x20))
       s := mload(add(_signature, 0x40))

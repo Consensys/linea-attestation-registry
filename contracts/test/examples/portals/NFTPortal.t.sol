@@ -8,8 +8,8 @@ import { AbstractPortal } from "../../../src/abstracts/AbstractPortal.sol";
 import { AttestationPayload } from "../../../src/types/Structs.sol";
 import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
-import { IERC721 } from "openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+import { IERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import { IERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 contract NFTPortalTest is Test {
   address public attester = makeAddr("attester");
@@ -48,19 +48,19 @@ contract NFTPortalTest is Test {
     nftPortal.attest(attestationPayload, validationPayload);
   }
 
-  function test_balanceOf() public {
+  function test_balanceOf() public view {
     uint256 balance = nftPortal.balanceOf(address(1));
     assertEq(balance, 2);
   }
 
-  function test_ownerOf() public {
+  function test_ownerOf() public view {
     address ownerOfFirstAttestation = nftPortal.ownerOf(1);
     address ownerOfSecondAttestation = nftPortal.ownerOf(2);
     assertEq(ownerOfFirstAttestation, address(1));
     assertEq(ownerOfSecondAttestation, address(1));
   }
 
-  function testSupportsInterface() public {
+  function testSupportsInterface() public view {
     bool isIERC165Supported = nftPortal.supportsInterface(type(IERC165).interfaceId);
     assertTrue(isIERC165Supported);
     bool isIERC721Supported = nftPortal.supportsInterface(type(IERC721).interfaceId);

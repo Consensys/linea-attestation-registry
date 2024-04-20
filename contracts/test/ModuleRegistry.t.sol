@@ -65,7 +65,7 @@ contract ModuleRegistryTest is Test {
     testModuleRegistry.updateRouter(address(0));
   }
 
-  function test_isContractAddress() public {
+  function test_isContractAddress() public view {
     // isContractAddress should return false for EOA address
     address eoaAddress = vm.addr(1);
     bool eoaAddressResult = moduleRegistry.isContractAddress(eoaAddress);

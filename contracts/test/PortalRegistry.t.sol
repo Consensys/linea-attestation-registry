@@ -272,7 +272,7 @@ contract PortalRegistryTest is Test {
     assertEq(portalRegistry.isRegistered(address(validPortalMock)), true);
   }
 
-  function _assertPortal(Portal memory portal1, Portal memory portal2) internal {
+  function _assertPortal(Portal memory portal1, Portal memory portal2) internal pure {
     assertEq(portal1.name, portal2.name);
     assertEq(portal1.description, portal2.description);
     assertEq(portal1.isRevocable, portal2.isRevocable);

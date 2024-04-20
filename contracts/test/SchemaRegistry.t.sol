@@ -95,7 +95,7 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.updateMatchingSchemaIssuers(user, address(2));
   }
 
-  function test_getIdFromSchemaString() public {
+  function test_getIdFromSchemaString() public view {
     bytes32 id = schemaRegistry.getIdFromSchemaString(expectedString);
     assertEq(id, expectedId);
   }
@@ -229,7 +229,7 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function _assertSchema(Schema memory schema1, Schema memory schema2) internal {
+  function _assertSchema(Schema memory schema1, Schema memory schema2) internal pure {
     assertEq(schema2.name, schema1.name);
     assertEq(schema2.description, schema1.description);
     assertEq(schema2.context, schema1.context);

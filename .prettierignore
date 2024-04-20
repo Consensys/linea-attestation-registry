@@ -13,6 +13,7 @@ build
 .graphclient
 snap
 dist
+cache_forge
 
 # files
 *.env

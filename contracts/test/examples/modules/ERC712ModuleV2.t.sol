@@ -113,7 +113,7 @@ contract ERC712ModuleV2Test is Test {
     );
   }
 
-  function test_ERC712Module_supportsInterface() public {
+  function test_ERC712Module_supportsInterface() public view {
     bool isAbstractModuleSupported = erc712Module.supportsInterface(type(AbstractModuleV2).interfaceId);
     assertEq(isAbstractModuleSupported, true);
   }

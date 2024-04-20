@@ -81,7 +81,7 @@ contract MerkleProofModuleV2Test is Test {
     );
   }
 
-  function test_MerkleProofModule_supportsInterface() public {
+  function test_MerkleProofModule_supportsInterface() public view {
     bool isAbstractModuleSupported = merkleProofModule.supportsInterface(type(AbstractModuleV2).interfaceId);
     assertEq(isAbstractModuleSupported, true);
   }

@@ -7,7 +7,7 @@ import { Router } from "../../../src/Router.sol";
 import { AbstractPortal } from "../../../src/abstracts/AbstractPortal.sol";
 import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
-import { ERC165Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165Upgradeable.sol";
+import { ERC165Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
 
 contract EASPortalTest is Test {
   address public attester = makeAddr("attester");
@@ -150,7 +150,7 @@ contract EASPortalTest is Test {
     easPortal.bulkRevoke(attestationsToRevoke);
   }
 
-  function test_supportsInterface() public {
+  function test_supportsInterface() public view {
     bool isIERC165Supported = easPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);
     assertEq(isIERC165Supported, true);
     bool isEASAbstractPortalSupported = easPortal.supportsInterface(type(AbstractPortal).interfaceId);

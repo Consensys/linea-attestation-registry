@@ -16,8 +16,9 @@ node_modules
 lcov.info
 coverage
 
-# Hardhat
+# Contarcts
 cache_hardhat
+cache_forge
 artifacts
 typechain-types
 

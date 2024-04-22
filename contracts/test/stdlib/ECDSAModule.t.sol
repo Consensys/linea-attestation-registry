@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { ECDSA } from "openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import { ECDSAModule, AbstractModule } from "../../src/stdlib/ECDSAModule.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";

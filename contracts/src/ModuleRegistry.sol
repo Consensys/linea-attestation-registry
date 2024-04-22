@@ -4,9 +4,9 @@ pragma solidity 0.8.21;
 import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./abstracts/AbstractModule.sol";
 import { AbstractModuleV2 } from "./abstracts/AbstractModuleV2.sol";
-import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
-import { ERC165CheckerUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/utils/introspection/ERC165CheckerUpgradeable.sol";
+import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
 import { uncheckedInc32 } from "./Common.sol";
@@ -139,6 +139,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     // For each module, check if it is registered and call its run method
     for (uint32 i = 0; i < modulesAddresses.length; i = uncheckedInc32(i)) {
       if (!isRegistered(modulesAddresses[i])) revert ModuleNotRegistered();
+      // solhint-disable avoid-tx-origin
       AbstractModule(modulesAddresses[i]).run(attestationPayload, validationPayloads[i], tx.origin, value);
     }
   }

@@ -98,22 +98,6 @@ network files describing the deployed contracts.
 
 ## Utils
 
-### Encode
-
-Change the data you want to encode in `contracts/script/encode.ts`, then run:
-
-```
-pnpm run encode
-```
-
-### Decode
-
-Change the data you want to decode in `contracts/script/decode.ts`, then run:
-
-```
-pnpm run decode
-```
-
 ### Verify with arguments
 
 Change the arguments you want to use fpr the verify action in `contracts/script/arguments.ts`, then run:

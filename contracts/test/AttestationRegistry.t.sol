@@ -52,7 +52,7 @@ contract AttestationRegistryTest is Test {
     PortalRegistry(portalRegistryAddress).register(portal, "Name", "Description", true, "Owner name");
   }
 
-  function test_setup() public {
+  function test_setup() public view {
     // Check Router address
     address routerAddress = address(attestationRegistry.router());
     assertEq(routerAddress, address(router));
@@ -474,7 +474,7 @@ contract AttestationRegistryTest is Test {
     assertEq(revokedAttestation2.revocationDate, block.timestamp);
   }
 
-  function test_isRevocable() public {
+  function test_isRevocable() public view {
     bool isRevocable = attestationRegistry.isRevocable(portal);
     assertTrue(isRevocable);
   }
@@ -645,7 +645,7 @@ contract AttestationRegistryTest is Test {
     attestationRegistry.balanceOfBatch(owners, ids);
   }
 
-  function test_attestationRegistry() public {
+  function test_attestationRegistry() public view {
     bytes32 attestationId = attestationRegistryHarness.exposed_generateAttestationId(0);
     assertEq(attestationId, 0x0003000000000000000000000000000000000000000000000000000000000000);
 
@@ -679,7 +679,7 @@ contract AttestationRegistryTest is Test {
     return attestation;
   }
 
-  function _assertAttestation(Attestation memory attestation1, Attestation memory attestation2) internal {
+  function _assertAttestation(Attestation memory attestation1, Attestation memory attestation2) internal pure {
     assertEq(attestation1.attestationId, attestation2.attestationId);
     assertEq(attestation1.schemaId, attestation2.schemaId);
     assertEq(attestation1.portal, attestation2.portal);

@@ -11,7 +11,7 @@ import { uncheckedInc256 } from "../../Common.sol";
  * @notice This is an example of how to maintain interoperability with EAS - https://attest.sh
  */
 contract EASPortal is AbstractPortal {
-  // @notice This struct is defined in EAS's contracts' codebase
+  // @notice This struct is defined in EAS's src' codebase
   // solhint-disable-next-line max-line-length
   // this definition was taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L9
   struct AttestationRequestData {
@@ -23,7 +23,7 @@ contract EASPortal is AbstractPortal {
     uint256 value;
   }
 
-  // @notice This struct is defined in EAS's contracts' codebase
+  // @notice This struct is defined in EAS's src' codebase
   // solhint-disable-next-line max-line-length
   // definition taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L19
   struct AttestationRequest {

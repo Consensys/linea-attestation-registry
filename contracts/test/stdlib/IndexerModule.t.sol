@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { ECDSA } from "openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import { IndexerModule } from "../../src/stdlib/IndexerModule.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
@@ -95,12 +95,12 @@ contract IndexerModuleTest is Test {
     assertEq(attestationIds.length, 2);
   }
 
-  function test_getAttestationIdsBySubject() public {
+  function test_getAttestationIdsBySubject() public view {
     bytes32[] memory attestationIds = indexerModule.getAttestationIdsBySubject(payload1.subject);
     assertEq(attestationIds[0], bytes32(abi.encode(1)));
   }
 
-  function test_getAttestationIdsBySubjectBySchema() public {
+  function test_getAttestationIdsBySubjectBySchema() public view {
     bytes32[] memory attestationIds = indexerModule.getAttestationIdsBySubjectBySchema(
       payload1.subject,
       payload1.schemaId
@@ -108,27 +108,27 @@ contract IndexerModuleTest is Test {
     assertEq(attestationIds[0], bytes32(abi.encode(1)));
   }
 
-  function test_getAttestationIdsByAttester() public {
+  function test_getAttestationIdsByAttester() public view {
     bytes32[] memory attestationIds = indexerModule.getAttestationIdsByAttester(user);
     assertEq(attestationIds[0], bytes32(abi.encode(1)));
   }
 
-  function test_getAttestationIdsBySchema() public {
+  function test_getAttestationIdsBySchema() public view {
     bytes32[] memory attestationIds = indexerModule.getAttestationIdsBySchema(payload1.schemaId);
     assertEq(attestationIds[0], bytes32(abi.encode(1)));
   }
 
-  function test_getAttestationIdsByPortal() public {
+  function test_getAttestationIdsByPortal() public view {
     bytes32[] memory attestationIds = indexerModule.getAttestationIdsByPortal(portalOwner);
     assertEq(attestationIds[0], bytes32(abi.encode(1)));
   }
 
-  function test_getAttestationByPortalBySubject() public {
+  function test_getAttestationByPortalBySubject() public view {
     bytes32[] memory attestationIds = indexerModule.getAttestationIdsByPortalBySubject(portalOwner, payload1.subject);
     assertEq(attestationIds[0], bytes32(abi.encode(1)));
   }
 
-  function test_getIndexedAttestationStatus() public {
+  function test_getIndexedAttestationStatus() public view {
     bool status = indexerModule.getIndexedAttestationStatus(bytes32(abi.encode(1)));
     assertEq(status, true);
   }

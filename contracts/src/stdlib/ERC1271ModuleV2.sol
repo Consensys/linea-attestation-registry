@@ -4,9 +4,9 @@ pragma solidity 0.8.21;
 import { AbstractModuleV2 } from "../abstracts/AbstractModuleV2.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
 import { AttestationPayload } from "../types/Structs.sol";
-import { ECDSA } from "openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
-import { IERC1271 } from "openzeppelin-contracts/contracts/interfaces/IERC1271.sol";
-import { Address } from "openzeppelin-contracts/contracts/utils/Address.sol";
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import { IERC1271 } from "@openzeppelin/contracts/interfaces/IERC1271.sol";
+import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 
 /**
  * @title ERC-1271 Module V2

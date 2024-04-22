@@ -67,7 +67,7 @@ contract MerkleProofModuleTest is Test {
     merkleProofModule.run(attestationPayload, proofData, user, 0);
   }
 
-  function test_MerkleProofModule_supportsInterface() public {
+  function test_MerkleProofModule_supportsInterface() public view {
     bool isAbstractModuleSupported = merkleProofModule.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);
   }

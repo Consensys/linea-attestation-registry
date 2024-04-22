@@ -2,7 +2,7 @@
 pragma solidity 0.8.21;
 
 import { IPortal } from "../../src/interfaces/IPortal.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+import { IERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 contract IPortalImplementation is IPortal {
   function test() public {}

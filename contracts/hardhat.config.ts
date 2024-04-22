@@ -20,11 +20,6 @@ const config: HardhatUserConfig = {
   defaultNetwork: "linea-goerli",
   networks: {
     hardhat: {},
-    "arbitrum-goerli": {
-      url: "https://goerli-rollup.arbitrum.io/rpc",
-      accounts:
-        process.env.PRIVATE_KEY_ARBITRUM_TESTNET !== undefined ? [process.env.PRIVATE_KEY_ARBITRUM_TESTNET] : [],
-    },
     "arbitrum-sepolia": {
       url: `https://arbitrum-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts:

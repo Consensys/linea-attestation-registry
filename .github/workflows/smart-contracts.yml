@@ -249,6 +249,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
+        if: steps.check-changes.outputs.changed == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Install Pnpm

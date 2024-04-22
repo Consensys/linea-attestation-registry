@@ -16,7 +16,7 @@ node_modules
 lcov.info
 coverage
 
-# Contarcts
+# Contracts
 cache_hardhat
 cache_forge
 artifacts

@@ -38,6 +38,10 @@ const config: HardhatUserConfig = {
       url: `https://linea-goerli.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
     },
+    "linea-sepolia": {
+      url: `https://linea-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      accounts: process.env.PRIVATE_KEY_LINEA_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_LINEA_SEPOLIA] : [],
+    },
     linea: {
       url: `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
@@ -57,6 +61,7 @@ const config: HardhatUserConfig = {
       arbitrum: process.env.ARBISCAN_API_KEY ?? "",
       "arbitrum-nova": process.env.ARBISCAN_NOVA_API_KEY ?? "",
       "linea-goerli": process.env.LINEASCAN_API_KEY ?? "",
+      "linea-sepolia": process.env.LINEASCAN_API_KEY ?? "",
       linea: process.env.LINEASCAN_API_KEY ?? "",
       "scroll-sepolia": process.env.SCROLL_API_KEY ?? "",
     },
@@ -99,6 +104,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api-testnet.lineascan.build/api",
           browserURL: "https://goerli.lineascan.build",
+        },
+      },
+      {
+        network: "linea-sepolia",
+        chainId: 59141,
+        urls: {
+          apiURL: "https://api-sepolia.lineascan.build/api",
+          browserURL: "https://sepolia.lineascan.build",
         },
       },
       {

@@ -31,7 +31,7 @@
     "abitype": "^0.10.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "connectkit": "^1.5.3",
+    "connectkit": "1.5.3",
     "framer-motion": "^10.16.12",
     "i18next": "^23.7.8",
     "lucide-react": "^0.292.0",
@@ -46,9 +46,9 @@
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^2.9.1",
-    "viem": "^1.18.9",
+    "viem": "1.18.9",
     "vite-tsconfig-paths": "^4.2.1",
-    "wagmi": "^1.4.6"
+    "wagmi": "1.4.6"
   },
   "devDependencies": {
     "@types/node": "^20.9.2",
@@ -70,7 +70,7 @@
     "postcss": "^8.4.31",
     "prettier": "^3.1.0",
     "tailwindcss": "^3.3.5",
-    "typescript": "^5.2.2",
+    "typescript": "5.2.2",
     "vite": "^4.5.3",
     "vite-plugin-radar": "^0.9.1",
     "vite-plugin-svgr": "^4.2.0"

@@ -72,7 +72,7 @@ export class VeraxSdk {
   static DEFAULT_LINEA_SEPOLIA: Conf = {
     chain: lineaSepolia,
     mode: SDKMode.BACKEND,
-    subgraphUrl: "https://api.studio.thegraph.com/query/67946/verax-v1-linea-sepolia/v0.0.1",
+    subgraphUrl: "https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.1",
     portalRegistryAddress: "0xF35fe79104e157703dbCC3Baa72a81A99591744D",
     moduleRegistryAddress: "0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa",
     schemaRegistryAddress: "0x90b8542d7288a83EC887229A7C727989C3b56209",
@@ -132,7 +132,7 @@ export class VeraxSdk {
   static DEFAULT_BASE_SEPOLIA: Conf = {
     chain: baseSepolia,
     mode: SDKMode.BACKEND,
-    subgraphUrl: "https://api.studio.thegraph.com/query/67946/verax-v1-base-sepolia/v0.0.1",
+    subgraphUrl: "https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.1",
     portalRegistryAddress: "0x025531b655D9EE335B8E6cc4C118b313f26ACc8F",
     moduleRegistryAddress: "0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6",
     schemaRegistryAddress: "0x66D2F3DCc970343b83a6263E20832184fa71CFe7",
@@ -147,7 +147,7 @@ export class VeraxSdk {
   static DEFAULT_BASE: Conf = {
     chain: base,
     mode: SDKMode.BACKEND,
-    subgraphUrl: "https://api.studio.thegraph.com/query/67946/verax-v1-base/v0.0.1",
+    subgraphUrl: "https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.1",
     portalRegistryAddress: "0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6",
     moduleRegistryAddress: "0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff",
     schemaRegistryAddress: "0x8081dCd745f160c148Eb5be510F78628A0951c31",

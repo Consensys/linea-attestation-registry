@@ -251,13 +251,13 @@ Here are the addresses on those networks:
 ## Subgraphs Addresses
 
 - [Linea Goerli](https://api.goldsky.com/api/public/project_clqghnrbp9nx201wtgylv8748/subgraphs/verax/subgraph-testnet/gn)
-- [Linea Sepolia](https://api.studio.thegraph.com/query/67946/verax-v1-linea-sepolia/v0.0.1)
+- [Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.1)
 - [Linea Mainnet](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
 - [Arbitrum Goerli](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum-goerli)
 - [Arbitrum Mainnet](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum)
 - [Arbitrum Nova](https://api.goldsky.com/api/public/project_clr9aj9alwgwg01q7ci1rh781/subgraphs/verax-arbitrum-nova/0.0.5/gn)
-- [Base Sepolia](https://api.studio.thegraph.com/query/67946/verax-v1-base-sepolia/v0.0.1)
-- [Base Mainnet](https://api.studio.thegraph.com/query/67946/verax-v1-base/v0.0.1)
+- [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.1)
+- [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.1)
 
 ## License
 

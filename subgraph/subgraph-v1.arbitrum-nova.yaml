@@ -1,14 +1,14 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema-v2.graphql
+  file: ./schema-v1.graphql
 dataSources:
   - kind: ethereum
     name: AttestationRegistry
-    network: arbitrum-sepolia
+    network: arbitrum-nova
     source:
       abi: AttestationRegistry
-      address: "0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5"
-      startBlock: 22791116
+      address: "0xB9Cf26ED827Eb4A7079e8dedB0ea93D932A2e3e8"
+      startBlock: 38935000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -27,14 +27,14 @@ dataSources:
           handler: handleAttestationReplaced
         - event: VersionUpdated(uint16)
           handler: handleVersionUpdated
-      file: ./src/attestation-registry.ts
+      file: ./src/attestation-registry-v1.ts
   - kind: ethereum
     name: ModuleRegistry
-    network: arbitrum-sepolia
+    network: arbitrum-nova
     source:
       abi: ModuleRegistry
-      address: "0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6"
-      startBlock: 22791116
+      address: "0x46F7471cd2C1d69Cb5e62c1a34F3fCAf81304Fc3"
+      startBlock: 38935000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -47,14 +47,14 @@ dataSources:
       eventHandlers:
         - event: ModuleRegistered(string,string,address)
           handler: handleModuleRegistered
-      file: ./src/module-registry.ts
+      file: ./src/module-registry-v1.ts
   - kind: ethereum
     name: PortalRegistry
-    network: arbitrum-sepolia
+    network: arbitrum-nova
     source:
       abi: PortalRegistry
-      address: "0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE"
-      startBlock: 22791116
+      address: "0xADc8da3d3388dEe74C7134fC4AEe1cF866Da5d38"
+      startBlock: 38935000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -71,20 +71,20 @@ dataSources:
           handler: handleIssuerAdded
         - event: IssuerRemoved(address)
           handler: handleIssuerRemoved
-      file: ./src/portal-registry.ts
+      file: ./src/portal-registry-v1.ts
   - kind: ethereum
     name: SchemaRegistry
-    network: arbitrum-sepolia
+    network: arbitrum-nova
     source:
       abi: SchemaRegistry
-      address: "0x025531b655D9EE335B8E6cc4C118b313f26ACc8F"
-      startBlock: 22791116
+      address: "0x9b5BABcEbf0E8550da1eCDe5674783179B6557FB"
+      startBlock: 38935000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Schema
+        - Portal
       abis:
         - name: SchemaRegistry
           file: ./abis/SchemaRegistry.json
@@ -93,4 +93,4 @@ dataSources:
           handler: handleSchemaCreated
         - event: SchemaContextUpdated(indexed bytes32)
           handler: handleSchemaContextUpdated
-      file: ./src/schema-registry.ts
+      file: ./src/schema-registry-v1.ts

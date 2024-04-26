@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: ./schema-v2.graphql
 dataSources:
   - kind: ethereum
     name: AttestationRegistry
@@ -67,8 +67,6 @@ dataSources:
       eventHandlers:
         - event: PortalRegistered(string,string,address)
           handler: handlePortalRegistered
-        - event: PortalRevoked(address)
-          handler: handlePortalRevoked
         - event: IssuerAdded(address)
           handler: handleIssuerAdded
         - event: IssuerRemoved(address)
@@ -86,7 +84,7 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Portal
+        - Schema
       abis:
         - name: SchemaRegistry
           file: ./abis/SchemaRegistry.json

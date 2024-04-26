@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: ./schema-v1.graphql
 dataSources:
   - kind: ethereum
     name: AttestationRegistry
@@ -27,7 +27,7 @@ dataSources:
           handler: handleAttestationReplaced
         - event: VersionUpdated(uint16)
           handler: handleVersionUpdated
-      file: ./src/attestation-registry.ts
+      file: ./src/attestation-registry-v1.ts
   - kind: ethereum
     name: ModuleRegistry
     network: base
@@ -47,7 +47,7 @@ dataSources:
       eventHandlers:
         - event: ModuleRegistered(string,string,address)
           handler: handleModuleRegistered
-      file: ./src/module-registry.ts
+      file: ./src/module-registry-v1.ts
   - kind: ethereum
     name: PortalRegistry
     network: base
@@ -67,13 +67,11 @@ dataSources:
       eventHandlers:
         - event: PortalRegistered(string,string,address)
           handler: handlePortalRegistered
-        - event: PortalRevoked(address)
-          handler: handlePortalRevoked
         - event: IssuerAdded(address)
           handler: handleIssuerAdded
         - event: IssuerRemoved(address)
           handler: handleIssuerRemoved
-      file: ./src/portal-registry.ts
+      file: ./src/portal-registry-v1.ts
   - kind: ethereum
     name: SchemaRegistry
     network: base
@@ -86,7 +84,7 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Portal
+        - Schema
       abis:
         - name: SchemaRegistry
           file: ./abis/SchemaRegistry.json
@@ -95,4 +93,4 @@ dataSources:
           handler: handleSchemaCreated
         - event: SchemaContextUpdated(indexed bytes32)
           handler: handleSchemaContextUpdated
-      file: ./src/schema-registry.ts
+      file: ./src/schema-registry-v1.ts

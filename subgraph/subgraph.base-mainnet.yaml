@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: AttestationRegistry
-    network: arbitrum-sepolia
+    network: base
     source:
       abi: AttestationRegistry
-      address: "0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5"
-      startBlock: 22791116
+      address: "0xA0080DBd35711faD39258E45d9A5D798852b05D4"
+      startBlock: 13666866
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -30,11 +30,11 @@ dataSources:
       file: ./src/attestation-registry.ts
   - kind: ethereum
     name: ModuleRegistry
-    network: arbitrum-sepolia
+    network: base
     source:
       abi: ModuleRegistry
-      address: "0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6"
-      startBlock: 22791116
+      address: "0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff"
+      startBlock: 13666866
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -50,11 +50,11 @@ dataSources:
       file: ./src/module-registry.ts
   - kind: ethereum
     name: PortalRegistry
-    network: arbitrum-sepolia
+    network: base
     source:
       abi: PortalRegistry
-      address: "0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE"
-      startBlock: 22791116
+      address: "0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6"
+      startBlock: 13666866
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -74,11 +74,11 @@ dataSources:
       file: ./src/portal-registry.ts
   - kind: ethereum
     name: SchemaRegistry
-    network: arbitrum-sepolia
+    network: base
     source:
       abi: SchemaRegistry
-      address: "0x025531b655D9EE335B8E6cc4C118b313f26ACc8F"
-      startBlock: 22791116
+      address: "0x8081dCd745f160c148Eb5be510F78628A0951c31"
+      startBlock: 13666866
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

@@ -554,8 +554,8 @@ importers:
   subgraph:
     devDependencies:
       '@graphprotocol/graph-cli':
-        specifier: 0.71.0
-        version: 0.71.0(@types/node@20.12.12)(node-fetch@2.7.0)(typescript@4.9.5)
+        specifier: 0.73.0
+        version: 0.73.0(@types/node@20.12.12)(node-fetch@2.7.0)(typescript@4.9.5)
       '@graphprotocol/graph-ts':
         specifier: 0.31.0
         version: 0.31.0
@@ -3199,8 +3199,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@graphprotocol/graph-cli@0.71.0(@types/node@20.12.12)(node-fetch@2.7.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-ITcSBHuXPuaoRs7FzNtqD0tCOIy4JGsM3j4IQNA2yZgXgr/TmmHG7KTB/c3B5Zlnsr9foXrU71T6ixGmwJ4PKw==}
+  /@graphprotocol/graph-cli@0.73.0(@types/node@20.12.12)(node-fetch@2.7.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-g+EapDRvxhRjMccnUJE8gBRGDIF6mXqtv8g0tzzixVClw/BezBni8QXtXMHs4Gg0G2UnerJJLp5ZQgZqtHWnmg==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
@@ -3224,6 +3224,7 @@ packages:
       ipfs-http-client: 55.0.0(node-fetch@2.7.0)
       jayson: 4.0.0
       js-yaml: 3.14.1
+      open: 8.4.2
       prettier: 3.0.3
       semver: 7.6.2
       sync-request: 6.1.0
@@ -3895,7 +3896,7 @@ packages:
       tslib: ^2.4.0
     dependencies:
       '@graphql-mesh/store': 0.98.4(@graphql-mesh/cross-helpers@0.4.2)(@graphql-mesh/types@0.98.4)(@graphql-mesh/utils@0.98.4)(@graphql-tools/utils@10.2.0)(graphql@16.8.1)(tslib@2.6.2)
-      '@graphql-mesh/types': 0.98.4(@graphql-mesh/store@0.95.8)(@graphql-tools/utils@10.2.0)(graphql@16.8.1)(tslib@2.6.2)
+      '@graphql-mesh/types': 0.98.4(@graphql-mesh/store@0.98.4)(@graphql-tools/utils@10.2.0)(graphql@16.8.1)(tslib@2.6.2)
       '@graphql-mesh/utils': 0.98.4(@graphql-mesh/cross-helpers@0.4.2)(@graphql-mesh/types@0.98.4)(@graphql-tools/utils@10.2.0)(graphql@16.8.1)(tslib@2.6.2)
       '@graphql-tools/delegate': 10.0.10(graphql@16.8.1)
       '@graphql-tools/schema': 10.0.3(graphql@16.8.1)
@@ -9021,7 +9022,7 @@ packages:
   /@types/concat-stream@1.6.1:
     resolution: {integrity: sha512-eHE4cQPoj6ngxBZMvVf6Hw7Mh4jMW4U9lpGmS5GBPB9RYxlFg+CHaVN7ErNY4W9XfLIEn20b4VDYaIrbq0q4uA==}
     dependencies:
-      '@types/node': 8.10.66
+      '@types/node': 20.12.12
     dev: true
 
   /@types/configstore@2.1.1:
@@ -9031,7 +9032,7 @@ packages:
   /@types/connect@3.4.38:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
     dependencies:
-      '@types/node': 12.20.55
+      '@types/node': 20.12.12
     dev: true
 
   /@types/cookie@0.4.1:
@@ -9085,7 +9086,7 @@ packages:
   /@types/form-data@0.0.33:
     resolution: {integrity: sha512-8BSvG1kGm83cyJITQMZSulnl6QV8jqAGreJsc5tPu1Jq0vTSOiY/k24Wx82JRpWwZSqrala6sd5rWi6aNXvqcw==}
     dependencies:
-      '@types/node': 8.10.66
+      '@types/node': 20.12.12
     dev: true
 
   /@types/get-port@3.2.0:
@@ -9359,7 +9360,7 @@ packages:
   /@types/ws@7.4.7:
     resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}
     dependencies:
-      '@types/node': 12.20.55
+      '@types/node': 20.12.12
     dev: true
 
   /@types/ws@8.5.10:
@@ -17566,6 +17567,7 @@ packages:
 
   /glob@5.0.15:
     resolution: {integrity: sha512-c9IPMazfRITpmAAKi22dK1VKxGDX9ehhqfABDriL/lzO92xcUKEJPQHrVA/2YHSNFB4iFlykVmWvwo48nr3OxA==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       inflight: 1.0.6
       inherits: 2.0.4
@@ -17576,6 +17578,7 @@ packages:
 
   /glob@7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -18376,6 +18379,7 @@ packages:
   /iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+    requiresBuild: true
     dependencies:
       safer-buffer: 2.1.2
 

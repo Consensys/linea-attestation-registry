@@ -43,7 +43,7 @@
     "create:arbitrum-one": "source .env && graph create --node $DEPLOY_ENDPOINT_ARBITRUM_GOERLI Consensys/verax-arbitrum",
     "deploy:linea-mainnet": "source .env && cp subgraph.linea-mainnet.yaml subgraph.yaml && graph deploy --studio $SUBGRAPH_NAME_LINEA_MAINNET",
     "deploy:linea-goerli": "source .env && cp subgraph.linea-goerli.yaml subgraph.yaml && graph deploy --studio $SUBGRAPH_NAME_LINEA_GOERLI",
-    "deploy:linea-sepolia": "source .env && cp subgraph.linea-sepolia.yaml subgraph.yaml && graph deploy --studio $SUBGRAPH_NAME_LINEA_SEPOLIA",
+    "deploy:linea-sepolia": "source .env && cp subgraph.linea-sepolia.yaml subgraph.yaml && graph deploy --headers \"{\\\"Authorization\\\": \\\"Basic $IPFS_IDENTIFIERS\\\"}\" --ipfs $IPFS_ENDPOINT --version-label v0.0.1 --studio $SUBGRAPH_NAME_LINEA_SEPOLIA",
     "deploy:base-sepolia": "source .env && cp subgraph.base-sepolia.yaml subgraph.yaml && graph deploy --studio $SUBGRAPH_NAME_BASE_SEPOLIA",
     "deploy:base": "source .env && cp subgraph.base.yaml subgraph.yaml && graph deploy --studio $SUBGRAPH_NAME_BASE",
     "deploy:arbitrum-goerli": "source .env && cp subgraph.arbitrum-goerli.yaml subgraph.yaml && graph deploy --network arbitrum-goerli --node $DEPLOY_ENDPOINT_ARBITRUM_GOERLI --headers \"{\\\"Authorization\\\": \\\"Basic $IPFS_IDENTIFIERS\\\"}\" --ipfs $IPFS_ENDPOINT --version-label v0.0.5 Consensys/verax-arbitrum-goerli",

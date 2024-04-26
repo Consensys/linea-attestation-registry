@@ -5,38 +5,20 @@ import {
   AttestationRevoked,
   VersionUpdated,
 } from "../generated/AttestationRegistry/AttestationRegistry";
-import { Attestation, Audit, AuditInformation, Counter, Portal, RegistryVersion, Schema } from "../generated/schema";
+import { Attestation, Counter, Portal, RegistryVersion, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
 
 export function handleAttestationRegistered(event: AttestationRegisteredEvent): void {
   const attestationRegistryContract = AttestationRegistry.bind(event.address);
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
-  const attestation = new Attestation(event.params.attestationId.toHexString().toLowerCase());
+  const attestation = new Attestation(event.params.attestationId.toHex());
 
-  const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-  audit.blockNumber = event.block.number;
-  audit.transactionHash = event.transaction.hash;
-  audit.transactionTimestamp = event.block.timestamp;
-  audit.fromAddress = event.transaction.from;
-  audit.toAddress = event.transaction.to;
-  audit.valueTransferred = event.transaction.value;
-  audit.gasPrice = event.transaction.gasPrice;
+  incrementAttestationCount(attestationData.portal.toHexString(), attestationData.schemaId.toHex());
 
-  audit.save();
-
-  const auditInformation = new AuditInformation(attestation.id);
-  auditInformation.creation = audit.id.toLowerCase();
-  auditInformation.lastModification = audit.id.toLowerCase();
-  auditInformation.modifications = [audit.id.toLowerCase()];
-
-  auditInformation.save();
-
-  attestation.auditInformation = auditInformation.id.toLowerCase();
-
-  incrementAttestationCount(attestationData.portal.toHexString(), attestationData.schemaId.toHexString());
-
+  attestation.schemaId = attestationData.schemaId;
   attestation.replacedBy = attestationData.replacedBy;
   attestation.attester = attestationData.attester;
+  attestation.portal = attestationData.portal;
   attestation.attestedDate = attestationData.attestedDate;
   attestation.expirationDate = attestationData.expirationDate;
   attestation.revocationDate = attestationData.revocationDate;
@@ -44,15 +26,13 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   attestation.revoked = attestationData.revoked;
   attestation.encodedSubject = attestationData.subject;
   attestation.attestationData = attestationData.attestationData;
-  attestation.schema = attestationData.schemaId.toHexString().toLowerCase();
-  attestation.portal = attestationData.portal.toHexString().toLowerCase();
 
   // If the subject looks like an encoded address, decode it to an address
   const tempSubject = ethereum.decode("address", attestationData.subject);
   attestation.subject = tempSubject ? tempSubject.toAddress() : attestationData.subject;
 
-  // Get matching Schemax
-  const schema = Schema.load(attestation.schema);
+  // Get matching Schema
+  const schema = Schema.load(attestationData.schemaId.toHex());
 
   if (schema) {
     // Split Schema into a "type fieldName" array
@@ -63,6 +43,9 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
 
     // Join the types in a single coma-separated string
     const schemaString = schemaTypes.toString();
+
+    // Add this Schema string to the Attestation Entity
+    attestation.schemaString = schemaString;
 
     const encodedData = attestationData.attestationData;
 
@@ -110,64 +93,20 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
 export function handleAttestationRevoked(event: AttestationRevoked): void {
   const attestationRegistryContract = AttestationRegistry.bind(event.address);
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
-  const attestation = Attestation.load(event.params.attestationId.toHexString().toLowerCase());
+  const attestation = Attestation.load(event.params.attestationId.toHex());
 
   if (attestation) {
     attestation.revoked = true;
     attestation.revocationDate = attestationData.revocationDate;
-
-    const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-    audit.blockNumber = event.block.number;
-    audit.transactionHash = event.transaction.hash;
-    audit.transactionTimestamp = event.block.timestamp;
-    audit.fromAddress = event.transaction.from;
-    audit.toAddress = event.transaction.to;
-    audit.valueTransferred = event.transaction.value;
-    audit.gasPrice = event.transaction.gasPrice;
-
-    audit.save();
-
-    const auditInformation = AuditInformation.load(attestation.id);
-    if (auditInformation !== null) {
-      auditInformation.lastModification = audit.id.toLowerCase();
-      auditInformation.modifications.push(audit.id.toLowerCase());
-
-      auditInformation.save();
-
-      attestation.auditInformation = auditInformation.id.toLowerCase();
-    }
-
     attestation.save();
   }
 }
 
 export function handleAttestationReplaced(event: AttestationReplaced): void {
-  const attestation = Attestation.load(event.params.attestationId.toHexString().toLowerCase());
+  const attestation = Attestation.load(event.params.attestationId.toHex());
 
   if (attestation) {
     attestation.replacedBy = event.params.replacedBy;
-
-    const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-    audit.blockNumber = event.block.number;
-    audit.transactionHash = event.transaction.hash;
-    audit.transactionTimestamp = event.block.timestamp;
-    audit.fromAddress = event.transaction.from;
-    audit.toAddress = event.transaction.to;
-    audit.valueTransferred = event.transaction.value;
-    audit.gasPrice = event.transaction.gasPrice;
-
-    audit.save();
-
-    const auditInformation = AuditInformation.load(attestation.id);
-    if (auditInformation !== null) {
-      auditInformation.lastModification = audit.id.toLowerCase();
-      auditInformation.modifications.push(audit.id.toLowerCase());
-
-      auditInformation.save();
-
-      attestation.auditInformation = auditInformation.id.toLowerCase();
-    }
-
     attestation.save();
   }
 }
@@ -178,32 +117,6 @@ export function handleVersionUpdated(event: VersionUpdated): void {
   if (!registryVersion) {
     registryVersion = new RegistryVersion("registry-version");
   }
-
-  const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-  audit.blockNumber = event.block.number;
-  audit.transactionHash = event.transaction.hash;
-  audit.transactionTimestamp = event.block.timestamp;
-  audit.fromAddress = event.transaction.from;
-  audit.toAddress = event.transaction.to;
-  audit.valueTransferred = event.transaction.value;
-  audit.gasPrice = event.transaction.gasPrice;
-
-  audit.save();
-
-  let auditInformation = AuditInformation.load(registryVersion.id);
-  if (auditInformation === null) {
-    auditInformation = new AuditInformation(registryVersion.id);
-    auditInformation.creation = audit.id.toLowerCase();
-    auditInformation.lastModification = audit.id.toLowerCase();
-    auditInformation.modifications = [audit.id.toLowerCase()];
-  } else {
-    auditInformation.lastModification = audit.id.toLowerCase();
-    auditInformation.modifications.push(audit.id.toLowerCase());
-  }
-
-  auditInformation.save();
-
-  registryVersion.auditInformation = auditInformation.id.toLowerCase();
 
   registryVersion.versionNumber = event.params.version;
   registryVersion.timestamp = event.block.timestamp;
@@ -216,7 +129,7 @@ function valueToString(value: ethereum.Value): string {
     case ethereum.ValueKind.ADDRESS:
       return value.toAddress().toHexString();
     case ethereum.ValueKind.FIXED_BYTES:
-      return value.toBytes().toHexString().toLowerCase();
+      return value.toBytes().toHex();
     case ethereum.ValueKind.BYTES:
       return value.toString();
     case ethereum.ValueKind.INT:

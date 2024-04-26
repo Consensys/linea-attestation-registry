@@ -216,6 +216,22 @@ Here are the addresses on those networks:
 
 </details>
 
+<details>
+  <summary>Base Sepolia</summary>
+
+- Router =
+  [0xE235826514945186227918325D3E5b5f873861A6](https://sepolia.basescan.org/address/0xE235826514945186227918325D3E5b5f873861A6)
+- AttestationRegistry =
+  [0x374B686137eC0DB442a8d833451f8C12cD4B5De4](https://sepolia.basescan.org/address/0x374B686137eC0DB442a8d833451f8C12cD4B5De4)
+- ModuleRegistry =
+  [0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6](https://sepolia.basescan.org/address/0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6)
+- PortalRegistry =
+  [0x025531b655D9EE335B8E6cc4C118b313f26ACc8F](https://sepolia.basescan.org/address/0x025531b655D9EE335B8E6cc4C118b313f26ACc8F)
+- SchemaRegistry =
+  [0x66D2F3DCc970343b83a6263E20832184fa71CFe7](https://sepolia.basescan.org/address/0x66D2F3DCc970343b83a6263E20832184fa71CFe7)
+
+</details>
+
 ## Subgraphs Addresses
 
 - [Linea Goerli](https://api.goldsky.com/api/public/project_clqghnrbp9nx201wtgylv8748/subgraphs/verax/subgraph-testnet/gn)
@@ -224,6 +240,7 @@ Here are the addresses on those networks:
 - [Arbitrum Goerli](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum-goerli)
 - [Arbitrum Mainnet](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum)
 - [Arbitrum Nova](https://api.goldsky.com/api/public/project_clr9aj9alwgwg01q7ci1rh781/subgraphs/verax-arbitrum-nova/0.0.5/gn)
+- [Base Sepolia](https://api.studio.thegraph.com/query/67946/verax-v1-base-sepolia/v0.0.1)
 
 ## License
 

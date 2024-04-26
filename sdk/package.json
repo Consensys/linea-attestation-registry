@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-sdk",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Verax Attestation Registry SDK to interact with the subgraph and the contracts",
   "keywords": [
     "linea-attestation-registry",

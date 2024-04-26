@@ -3,6 +3,7 @@ import {
   arbitrumGoerli,
   arbitrumNova,
   arbitrumSepolia,
+  base,
   baseSepolia,
   linea,
   lineaSepolia,
@@ -140,6 +141,21 @@ export class VeraxSdk {
 
   static DEFAULT_BASE_SEPOLIA_FRONTEND: Conf = {
     ...VeraxSdk.DEFAULT_BASE_SEPOLIA,
+    mode: SDKMode.FRONTEND,
+  };
+
+  static DEFAULT_BASE: Conf = {
+    chain: base,
+    mode: SDKMode.BACKEND,
+    subgraphUrl: "https://api.studio.thegraph.com/query/67946/verax-v1-base/v0.0.1",
+    portalRegistryAddress: "0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6",
+    moduleRegistryAddress: "0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff",
+    schemaRegistryAddress: "0x8081dCd745f160c148Eb5be510F78628A0951c31",
+    attestationRegistryAddress: "0xA0080DBd35711faD39258E45d9A5D798852b05D4",
+  };
+
+  static DEFAULT_BASE_FRONTEND: Conf = {
+    ...VeraxSdk.DEFAULT_BASE,
     mode: SDKMode.FRONTEND,
   };
 

@@ -38,6 +38,10 @@ const config: HardhatUserConfig = {
       url: `https://sepolia.base.org`,
       accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
     },
+    base: {
+      url: `https://mainnet.base.org`,
+      accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
+    },
     "linea-goerli": {
       url: `https://linea-goerli.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
@@ -65,6 +69,7 @@ const config: HardhatUserConfig = {
       arbitrum: process.env.ARBISCAN_API_KEY ?? "",
       "arbitrum-nova": process.env.ARBISCAN_NOVA_API_KEY ?? "",
       "base-sepolia": process.env.BASESCAN_API_KEY ?? "",
+      base: process.env.BASESCAN_API_KEY ?? "",
       "linea-goerli": process.env.LINEASCAN_API_KEY ?? "",
       "linea-sepolia": process.env.LINEASCAN_API_KEY ?? "",
       linea: process.env.LINEASCAN_API_KEY ?? "",
@@ -109,6 +114,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api-sepolia.basescan.org/api",
           browserURL: "https://sepolia.basescan.org/",
+        },
+      },
+      {
+        network: "base",
+        chainId: 8453,
+        urls: {
+          apiURL: "https://api.basescan.org/api",
+          browserURL: "https://basescan.org",
         },
       },
       {

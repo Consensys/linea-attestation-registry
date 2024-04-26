@@ -9,7 +9,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [
     react(),
-    tsconfigPaths({ projects: ["./explorer"] }),
+    tsconfigPaths({ projects: ["."] }),
     svgr(),
     VitePluginRadar({
       analytics: {

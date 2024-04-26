@@ -1,4 +1,4 @@
-import { BaseError, decodeAbiParameters, encodeAbiParameters, parseAbiParameters } from "viem";
+import { AbiParameter, BaseError, decodeAbiParameters, encodeAbiParameters, parseAbiParameters } from "viem";
 
 const ENCODED_PARENTHESIS: `0x${string}` = "0x0000000000000000000000000000000000000000000000000000000000000020";
 
@@ -30,7 +30,7 @@ function decodeWrapped(schema: string, attestationData: `0x${string}`): readonly
   }
 }
 
-function tryParse(schema: string): readonly unknown[] {
+function tryParse(schema: string): readonly AbiParameter[] {
   try {
     return parseAbiParameters(schema);
   } catch (e) {

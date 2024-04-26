@@ -76,7 +76,7 @@ The main contracts (i.e. the "registries") and the helpers contracts are deploye
 Here are the addresses on those networks:
 
 <details>
-  <summary>Linea Testnet</summary>
+  <summary>Linea Goerli</summary>
 
 - Router =
   [0x736c78b2f2cBf4F921E8551b2acB6A5Edc9177D5](https://goerli.lineascan.build/address/0x736c78b2f2cBf4F921E8551b2acB6A5Edc9177D5)
@@ -90,6 +90,22 @@ Here are the addresses on those networks:
   [0xB2c4Da1f8F08A0CA25862509E5431289BE2b598B](https://goerli.lineascan.build/address/0xB2c4Da1f8F08A0CA25862509E5431289BE2b598B)
 - AttestationReader =
   [0x65c8294C7aF0f0bDDe51eF92AF850613bb629fc6](https://goerli.lineascan.build/address/0x65c8294C7aF0f0bDDe51eF92AF850613bb629fc6)
+
+</details>
+
+<details>
+  <summary>Linea Sepolia</summary>
+
+- Router =
+  [0xAfA952790492DDeB474012cEA12ba34B788ab39F](https://sepolia.lineascan.build/address/0xAfA952790492DDeB474012cEA12ba34B788ab39F)
+- AttestationRegistry =
+  [0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F](https://sepolia.lineascan.build/address/0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F)
+- ModuleRegistry =
+  [0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa](https://sepolia.lineascan.build/address/0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa)
+- PortalRegistry =
+  [0x506f88a5Ca8D5F001f2909b029738A40042e42a6](https://sepolia.lineascan.build/address/0x506f88a5Ca8D5F001f2909b029738A40042e42a6)
+- SchemaRegistry =
+  [0x90b8542d7288a83EC887229A7C727989C3b56209](https://sepolia.lineascan.build/address/0x90b8542d7288a83EC887229A7C727989C3b56209)
 
 </details>
 
@@ -202,7 +218,8 @@ Here are the addresses on those networks:
 
 ## Subgraphs Addresses
 
-- [Linea Testnet](https://api.goldsky.com/api/public/project_clqghnrbp9nx201wtgylv8748/subgraphs/verax/subgraph-testnet/gn)
+- [Linea Goerli](https://api.goldsky.com/api/public/project_clqghnrbp9nx201wtgylv8748/subgraphs/verax/subgraph-testnet/gn)
+- [Linea Sepolia](https://api.studio.thegraph.com/query/67946/verax-v1-linea-sepolia/v0.0.1)
 - [Linea Mainnet](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
 - [Arbitrum Goerli](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum-goerli)
 - [Arbitrum Mainnet](https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum)

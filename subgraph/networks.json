@@ -17,6 +17,24 @@
       "startBlock": 1454671
     }
   },
+  "linea-sepolia": {
+    "AttestationRegistry": {
+      "address": "0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F",
+      "startBlock": 487966
+    },
+    "ModuleRegistry": {
+      "address": "0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa",
+      "startBlock": 487966
+    },
+    "PortalRegistry": {
+      "address": "0xF35fe79104e157703dbCC3Baa72a81A99591744D",
+      "startBlock": 487966
+    },
+    "SchemaRegistry": {
+      "address": "0x90b8542d7288a83EC887229A7C727989C3b56209",
+      "startBlock": 487966
+    }
+  },
   "linea": {
     "AttestationRegistry": {
       "address": "0x3de3893aa4Cdea029e84e75223a152FD08315138",

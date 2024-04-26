@@ -142,5 +142,23 @@
       "address": "0x66D2F3DCc970343b83a6263E20832184fa71CFe7",
       "startBlock": 9174253
     }
+  },
+  "base": {
+    "AttestationRegistry": {
+      "address": "0xA0080DBd35711faD39258E45d9A5D798852b05D4",
+      "startBlock": 13666866
+    },
+    "ModuleRegistry": {
+      "address": "0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff",
+      "startBlock": 13666866
+    },
+    "PortalRegistry": {
+      "address": "0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6",
+      "startBlock": 13666866
+    },
+    "SchemaRegistry": {
+      "address": "0x8081dCd745f160c148Eb5be510F78628A0951c31",
+      "startBlock": 13666866
+    }
   }
 }

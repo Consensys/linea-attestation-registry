@@ -103,7 +103,7 @@ Here are the addresses on those networks:
 - ModuleRegistry =
   [0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa](https://sepolia.lineascan.build/address/0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa)
 - PortalRegistry =
-  [0x506f88a5Ca8D5F001f2909b029738A40042e42a6](https://sepolia.lineascan.build/address/0x506f88a5Ca8D5F001f2909b029738A40042e42a6)
+  [0xF35fe79104e157703dbCC3Baa72a81A99591744D](https://sepolia.lineascan.build/address/0xF35fe79104e157703dbCC3Baa72a81A99591744D)
 - SchemaRegistry =
   [0x90b8542d7288a83EC887229A7C727989C3b56209](https://sepolia.lineascan.build/address/0x90b8542d7288a83EC887229A7C727989C3b56209)
 

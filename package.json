@@ -21,7 +21,7 @@
     "lint": "eslint .",
     "prepare": "husky install",
     "prettier:check": "prettier --check \"**/*.{json,md,svg,yml,sol,js,jsx,ts,tsx,graphql}\"",
-    "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol,js,jsx,ts,jsx,graphql}\""
+    "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol,js,jsx,ts,tsx,graphql}\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.10.0",

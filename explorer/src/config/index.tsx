@@ -1,16 +1,52 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { getDefaultConfig } from "connectkit";
-import { createConfig } from "wagmi";
-import { arbitrum, arbitrumGoerli, linea, lineaTestnet } from "wagmi/chains";
+import { Chain, createConfig } from "wagmi";
+import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, linea, lineaTestnet } from "wagmi/chains";
 
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
 import ArbitrumIconDark from "@/assets/networks/arbitrum-dark.svg?react";
-import ArbitrumGoerliIcon from "@/assets/networks/arbitrum-goerli.svg?react";
+import ArbitrumNovaIconDark from "@/assets/networks/arbitrum-nova-dark.svg?react";
+import ArbitrumNovaIcon from "@/assets/networks/arbitrum-nova.svg?react";
+import ArbitrumSepoliaIcon from "@/assets/networks/arbitrum-sepolia.svg?react";
 import ArbitrumIcon from "@/assets/networks/arbitrum.svg?react";
+import BaseIconDark from "@/assets/networks/base-dark.svg?react";
+import BaseSepoliaIcon from "@/assets/networks/base-sepolia.svg?react";
+import BaseIcon from "@/assets/networks/base.svg?react";
 import LineaMainnetIconDark from "@/assets/networks/linea-mainnet-dark.svg?react";
 import LineaMainnetIcon from "@/assets/networks/linea-mainnet.svg?react";
+import LineaSepoliaIcon from "@/assets/networks/linea-sepolia.svg?react";
 import LineaTestnetIcon from "@/assets/networks/linea-testnet.svg?react";
 import { INetwork } from "@/interfaces/config";
+
+const lineaSepolia = {
+  id: 59_141,
+  name: "Linea Sepolia Testnet",
+  network: "linea-sepolia",
+  nativeCurrency: { name: "Linea Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.sepolia.linea.build"],
+      webSocket: ["wss://rpc.sepolia.linea.build"],
+    },
+    public: {
+      http: ["https://rpc.sepolia.linea.build"],
+      webSocket: ["wss://rpc.sepolia.linea.build"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Etherscan",
+      url: "https://sepolia.lineascan.build",
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
+      blockCreated: 227427,
+    },
+  },
+  testnet: true,
+} as const satisfies Chain;
 
 const chains: INetwork[] = [
   {
@@ -29,6 +65,13 @@ const chains: INetwork[] = [
     network: "linea-testnet",
   },
   {
+    name: "Linea Sepolia",
+    chain: lineaSepolia,
+    veraxEnv: VeraxSdk.DEFAULT_LINEA_SEPOLIA_FRONTEND,
+    img: <LineaSepoliaIcon />,
+    network: "linea-sepolia",
+  },
+  {
     name: "Arbitrum",
     chain: arbitrum,
     veraxEnv: VeraxSdk.DEFAULT_ARBITRUM_FRONTEND,
@@ -37,11 +80,34 @@ const chains: INetwork[] = [
     network: "arbitrum",
   },
   {
-    name: "Arbitrum Goerli",
-    chain: arbitrumGoerli,
-    veraxEnv: VeraxSdk.DEFAULT_ARBITRUM_TESTNET_FRONTEND,
-    img: <ArbitrumGoerliIcon />,
-    network: "arbitrum-goerli",
+    name: "Arbitrum Sepolia",
+    chain: arbitrumSepolia,
+    veraxEnv: VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA_FRONTEND,
+    img: <ArbitrumSepoliaIcon />,
+    network: "arbitrum-sepolia",
+  },
+  {
+    name: "Arbitrum Nova",
+    chain: arbitrumNova,
+    veraxEnv: VeraxSdk.DEFAULT_ARBITRUM_NOVA_FRONTEND,
+    img: <ArbitrumNovaIcon />,
+    imgDark: <ArbitrumNovaIconDark />,
+    network: "arbitrum-nova",
+  },
+  {
+    name: "Base Mainnet",
+    chain: base,
+    veraxEnv: VeraxSdk.DEFAULT_BASE_FRONTEND,
+    img: <BaseIcon />,
+    imgDark: <BaseIconDark />,
+    network: "base-mainnet",
+  },
+  {
+    name: "Base Sepolia",
+    chain: baseSepolia,
+    veraxEnv: VeraxSdk.DEFAULT_BASE_SEPOLIA_FRONTEND,
+    img: <BaseSepoliaIcon />,
+    network: "base-sepolia",
   },
 ];
 
@@ -58,4 +124,4 @@ const config = createConfig(
 
 const defaultChain = chains[0];
 
-export { chains, config, defaultChain };
+export { lineaSepolia, chains, config, defaultChain };

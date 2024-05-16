@@ -84,7 +84,14 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
                   className="flex gap-2 focus:bg-jumbotronLight dark:focus:bg-jumbotronDark dark:text-whiteDefault cursor-pointer transition"
                   onClick={() => setNetwork(chain)}
                 >
-                  {isDarkMode && chain.imgDark ? chain.imgDark : chain.img}
+                  <div
+                    style={{
+                      width: "24px",
+                      height: "24px",
+                    }}
+                  >
+                    {isDarkMode && chain.imgDark ? chain.imgDark : chain.img}
+                  </div>
                   {chain.name}
                 </DropdownMenuItem>
               ))}

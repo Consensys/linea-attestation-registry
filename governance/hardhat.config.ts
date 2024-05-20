@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "./.env" });
 
-const { PRIVATE_KEY, LINEASCAN_API_KEY, ARBITRUM_MAINNET_PRIVATE_KEY, ARBITRUM_API_KEY } = process.env;
+const { PRIVATE_KEY, LINEASCAN_API_KEY } = process.env;
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -21,15 +21,15 @@ const config: HardhatUserConfig = {
       url: `https://rpc.goerli.linea.build/`,
       accounts: [PRIVATE_KEY ?? ""],
     },
-    arbitrum_one: {
-      url: "https://arb1.arbitrum.io/rpc",
-      accounts: [ARBITRUM_MAINNET_PRIVATE_KEY ?? ""],
+    linea: {
+      url: `https://rpc.linea.build/`,
+      accounts: [PRIVATE_KEY ?? ""],
     },
   },
   etherscan: {
     apiKey: {
       linea_testnet: LINEASCAN_API_KEY ?? "",
-      arbitrumOne: ARBITRUM_API_KEY ?? "",
+      linea: LINEASCAN_API_KEY ?? "",
     },
     customChains: [
       {
@@ -38,6 +38,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api-testnet.lineascan.build/api",
           browserURL: "https://goerli.lineascan.build/address",
+        },
+      },
+      {
+        network: "linea",
+        chainId: 59144,
+        urls: {
+          apiURL: "https://api.lineascan.build/api",
+          browserURL: "https://lineascan.build/address",
         },
       },
     ],

@@ -7,8 +7,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "prettier:check": "prettier --check \"**/*.{json,yml,md,sol,js}\"",
-    "prettier:write": "prettier --write \"**/*.{json,yml,md,sol,js}\""
+    "prettier:check": "prettier --check \"**/*.{json,yml,md,sol,js,ts}\"",
+    "prettier:write": "prettier --write \"**/*.{json,yml,md,sol,js,ts}\"",
+    "test": "jest"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.1",
@@ -17,6 +18,7 @@
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@nomicfoundation/hardhat-foundry": "^1.1.2",
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "@openzeppelin/hardhat-upgrades": "^2.3.3",
     "@types/jest": "^29.5.8",

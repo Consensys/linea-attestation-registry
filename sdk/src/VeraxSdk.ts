@@ -20,6 +20,7 @@ import { Conf } from "./types";
 import { SDKMode } from "./utils/constants";
 
 export * from "./types";
+export * from "./utils/constants";
 
 export class VeraxSdk {
   static DEFAULT_LINEA_MAINNET: Conf = {

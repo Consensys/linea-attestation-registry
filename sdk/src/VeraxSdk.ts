@@ -73,7 +73,7 @@ export class VeraxSdk {
   static DEFAULT_LINEA_SEPOLIA: Conf = {
     chain: lineaSepolia,
     mode: SDKMode.BACKEND,
-    subgraphUrl: "https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.1",
+    subgraphUrl: "https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.2",
     portalRegistryAddress: "0xF35fe79104e157703dbCC3Baa72a81A99591744D",
     moduleRegistryAddress: "0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa",
     schemaRegistryAddress: "0x90b8542d7288a83EC887229A7C727989C3b56209",

@@ -218,7 +218,7 @@ function valueToString(value: ethereum.Value): string {
     case ethereum.ValueKind.FIXED_BYTES:
       return value.toBytes().toHexString().toLowerCase();
     case ethereum.ValueKind.BYTES:
-      return value.toString();
+      return value.toBytes().toString();
     case ethereum.ValueKind.INT:
       return value.toBigInt().toHexString();
     case ethereum.ValueKind.UINT:

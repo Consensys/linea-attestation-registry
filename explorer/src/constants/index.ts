@@ -22,7 +22,7 @@ export const links: Record<number, { trx?: string; address: string }> = {
     address: "https://goerli.lineascan.build/address",
   },
   [lineaSepolia.id]: {
-    address: "https://goerli.lineascan.build/address",
+    address: "https://sepolia.lineascan.build/address",
   },
   [arbitrum.id]: {
     address: "https://arbiscan.io/address",

@@ -8,7 +8,7 @@ export default class ModuleExamples {
     this.veraxSdk = _veraxSdk;
   }
 
-  async run(argv: string, methodName: string = "") {
+  async run(argv: string, methodName: string = "", waitForConfirmation = false) {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
       const moduleId: string = argv === "" ? "0xf75be6f9418710fd516fa82afb3aad07e11a0f1b" : argv;
       console.log(await this.veraxSdk.module.findOneById(moduleId));
@@ -25,7 +25,7 @@ export default class ModuleExamples {
 
     if (methodName.toLowerCase() == "updateRouter".toLowerCase() || methodName == "") {
       const routerAddress: Address = argv === "" ? "0x736c78b2f2cBf4F921E8551b2acB6A5Edc9177D5" : (argv as Address);
-      console.log(await this.veraxSdk.module.updateRouter(routerAddress));
+      console.log(await this.veraxSdk.module.updateRouter(routerAddress, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "simulateRegister".toLowerCase() || methodName == "") {
@@ -47,7 +47,7 @@ export default class ModuleExamples {
         description: "example",
         moduleAddress: "0x4bb8769e18f1518c35be8405d43d7cc07ecf501c",
       };
-      console.log(await this.veraxSdk.module.register(name, description, moduleAddress));
+      console.log(await this.veraxSdk.module.register(name, description, moduleAddress, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "simulateRunModules".toLowerCase() || methodName == "") {
@@ -98,6 +98,7 @@ export default class ModuleExamples {
           attestationPayload,
           validationPayloads,
           value,
+          waitForConfirmation,
         ),
       );
     }
@@ -162,6 +163,7 @@ export default class ModuleExamples {
           modulesAddresses as Address[],
           attestationPayloads,
           validationPayloads,
+          waitForConfirmation,
         ),
       );
     }

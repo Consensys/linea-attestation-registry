@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { OwnableUpgradeable } from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import { Attestation as EASAttestation, IEAS } from "./interfaces/IEAS.sol";
 import { Attestation } from "./types/Structs.sol";
 import { AttestationRegistry } from "./AttestationRegistry.sol";

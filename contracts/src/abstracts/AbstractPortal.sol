@@ -5,14 +5,14 @@ import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
 import { AttestationPayload } from "../types/Structs.sol";
-import { IERC165 } from "openzeppelin-contracts/contracts/utils/introspection/ERC165.sol";
+import { IERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import { IRouter } from "../interfaces/IRouter.sol";
 import { IPortal } from "../interfaces/IPortal.sol";
 
 /**
  * @title Abstract Portal
  * @author Consensys
- * @notice This contract is an abstract contract with basic Portal logic
+ * @notice This contract is an abstracts contract with basic Portal logic
  *         to be inherited. We strongly encourage all Portals to implement
  *         this contract.
  */
@@ -62,6 +62,20 @@ abstract contract AbstractPortal is IPortal {
   }
 
   /**
+   * @notice Attest the schema with given attestationPayload and validationPayload
+   * @param attestationPayload the payload to attest
+   * @param validationPayloads the payloads to validate via the modules to issue the attestations
+   * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
+   */
+  function attestV2(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
+    moduleRegistry.runModulesV2(modules, attestationPayload, validationPayloads, msg.value, msg.sender, getAttester());
+
+    _onAttestV2(attestationPayload, validationPayloads, msg.value);
+
+    attestationRegistry.attest(attestationPayload, getAttester());
+  }
+
+  /**
    * @notice Bulk attest the schema with payloads to attest and validation payloads
    * @param attestationsPayloads the payloads to attest
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
@@ -72,6 +86,19 @@ abstract contract AbstractPortal is IPortal {
     _onBulkAttest(attestationsPayloads, validationPayloads);
 
     attestationRegistry.bulkAttest(attestationsPayloads, getAttester());
+  }
+
+  /**
+   * @notice Bulk attest the schema with payloads to attest and validation payloads
+   * @param attestationPayloads the payloads to attest
+   * @param validationPayloads the payloads to validate via the modules to issue the attestations
+   */
+  function bulkAttestV2(AttestationPayload[] memory attestationPayloads, bytes[][] memory validationPayloads) public {
+    moduleRegistry.bulkRunModulesV2(modules, attestationPayloads, validationPayloads, msg.sender, getAttester());
+
+    _onBulkAttest(attestationPayloads, validationPayloads);
+
+    attestationRegistry.bulkAttest(attestationPayloads, getAttester());
   }
 
   /**
@@ -168,6 +195,18 @@ abstract contract AbstractPortal is IPortal {
    * @param value the value sent with the attestation
    */
   function _onAttest(AttestationPayload memory attestationPayload, address attester, uint256 value) internal virtual {}
+
+  /**
+   * @notice Optional method run before a payload is attested
+   * @param attestationPayload the attestation payload to attest
+   * @param validationPayloads the payloads to validate via the modules
+   * @param value the value sent with the attestation
+   */
+  function _onAttestV2(
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayloads,
+    uint256 value
+  ) internal virtual {}
 
   /**
    * @notice Optional method run when an attestation is replaced

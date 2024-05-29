@@ -53,10 +53,10 @@ export const Module = () => {
         <a
           href={`${links[chain.id].address}/${module.moduleAddress}`}
           target="_blank"
-          className="cursor-pointer hover:underline overflow-hidden text-ellipsis sm:w-fit dark:text-text-secondaryDark flex items-center gap-2"
+          className="cursor-pointer hover:underline break-all sm:w-fit dark:text-text-secondaryDark flex items-center gap-2"
         >
-          {module.moduleAddress}
-          <ArrowUpRight height="1rem" width="auto" />
+          <span className="flex-1">{module.moduleAddress}</span>
+          <ArrowUpRight height="auto" width="1rem" />
         </a>
       </div>
     </section>

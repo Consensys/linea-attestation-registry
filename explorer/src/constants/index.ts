@@ -1,4 +1,6 @@
-import { arbitrum, arbitrumGoerli, linea, lineaTestnet } from "wagmi/chains";
+import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, linea, lineaTestnet } from "wagmi/chains";
+
+import { lineaSepolia } from "@/config";
 
 export const EMPTY_STRING = "";
 export const SPACE_STRING = " ";
@@ -14,17 +16,28 @@ export const BILLION = 1e9;
 
 export const links: Record<number, { trx?: string; address: string }> = {
   [linea.id]: {
-    trx: "https://lineascan.build/trx",
     address: "https://lineascan.build/address",
   },
   [lineaTestnet.id]: {
     address: "https://goerli.lineascan.build/address",
   },
+  [lineaSepolia.id]: {
+    address: "https://sepolia.lineascan.build/address",
+  },
   [arbitrum.id]: {
     address: "https://arbiscan.io/address",
   },
-  [arbitrumGoerli.id]: {
-    address: "https://testnet.arbiscan.io/address",
+  [arbitrumSepolia.id]: {
+    address: "https://sepolia.arbiscan.io/address",
+  },
+  [arbitrumNova.id]: {
+    address: "https://nova.arbiscan.io/address",
+  },
+  [base.id]: {
+    address: "https://basescan.org/address",
+  },
+  [baseSepolia.id]: {
+    address: "https://sepolia.basescan.org/address",
   },
 };
 

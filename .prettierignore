@@ -13,6 +13,7 @@ build
 .graphclient
 snap
 dist
+cache_forge
 
 # files
 *.env
@@ -21,3 +22,4 @@ dist
 .pnp.*
 lcov.info
 pnpm-lock.yaml
+.latest.json

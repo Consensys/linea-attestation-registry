@@ -5,20 +5,38 @@ import {
   AttestationRevoked,
   VersionUpdated,
 } from "../generated/AttestationRegistry/AttestationRegistry";
-import { Attestation, Counter, Portal, RegistryVersion, Schema } from "../generated/schema";
+import { Attestation, Audit, AuditInformation, Counter, Portal, RegistryVersion, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
 
 export function handleAttestationRegistered(event: AttestationRegisteredEvent): void {
   const attestationRegistryContract = AttestationRegistry.bind(event.address);
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
-  const attestation = new Attestation(event.params.attestationId.toHex());
+  const attestation = new Attestation(event.params.attestationId.toHexString().toLowerCase());
 
-  incrementAttestationCount(attestationData.portal.toHexString());
+  const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
+  audit.blockNumber = event.block.number;
+  audit.transactionHash = event.transaction.hash;
+  audit.transactionTimestamp = event.block.timestamp;
+  audit.fromAddress = event.transaction.from;
+  audit.toAddress = event.transaction.to;
+  audit.valueTransferred = event.transaction.value;
+  audit.gasPrice = event.transaction.gasPrice;
 
-  attestation.schemaId = attestationData.schemaId;
+  audit.save();
+
+  const auditInformation = new AuditInformation(attestation.id);
+  auditInformation.creation = audit.id.toLowerCase();
+  auditInformation.lastModification = audit.id.toLowerCase();
+  auditInformation.modifications = [audit.id.toLowerCase()];
+
+  auditInformation.save();
+
+  attestation.auditInformation = auditInformation.id.toLowerCase();
+
+  incrementAttestationCount(attestationData.portal.toHexString(), attestationData.schemaId.toHexString());
+
   attestation.replacedBy = attestationData.replacedBy;
   attestation.attester = attestationData.attester;
-  attestation.portal = attestationData.portal;
   attestation.attestedDate = attestationData.attestedDate;
   attestation.expirationDate = attestationData.expirationDate;
   attestation.revocationDate = attestationData.revocationDate;
@@ -26,6 +44,8 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   attestation.revoked = attestationData.revoked;
   attestation.encodedSubject = attestationData.subject;
   attestation.attestationData = attestationData.attestationData;
+  attestation.schema = attestationData.schemaId.toHexString().toLowerCase();
+  attestation.portal = attestationData.portal.toHexString().toLowerCase();
 
   // If the subject looks like an encoded address, decode it to an address
   const tempSubject = ethereum.decode("address", attestationData.subject);
@@ -35,17 +55,19 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   const schema = Schema.load(attestationData.schemaId.toHex());
 
   if (schema) {
+    // Remove the first and last characters of the schema string (the parentheses) if they exist
+    let tempSchema = schema.schema;
+    tempSchema = tempSchema.startsWith("(") ? tempSchema.substring(1) : tempSchema;
+    tempSchema = tempSchema.endsWith(")") ? tempSchema.substring(0, tempSchema.length - 1) : tempSchema;
+
     // Split Schema into a "type fieldName" array
-    const splitSchema = schema.schema.split(",");
+    const splitSchema = tempSchema.split(",");
 
     // Keep only the Schema's types
     const schemaTypes = splitSchema.map<string>((item) => item.trim().split(" ")[0]);
 
     // Join the types in a single coma-separated string
     const schemaString = schemaTypes.toString();
-
-    // Add this Schema string to the Attestation Entity
-    attestation.schemaString = schemaString;
 
     const encodedData = attestationData.attestationData;
 
@@ -69,15 +91,11 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
 
     // If the decode function went through, save it as an Array of Strings
     if (decoded) {
-      const tempStringArray: string[] = [];
-
       // Make the decoded data into a Tuple
       const tupleValue = decoded.toTuple();
 
       // Convert every field of the Tuple into a String
-      for (let i = 0; i < tupleValue.length; i++) {
-        tempStringArray.push(valueToString(tupleValue[i]));
-      }
+      const tempStringArray: string[] = tupleToStringArray(tupleValue);
 
       // Add this decoded Array to the Attestation Entity
       attestation.decodedData =
@@ -93,20 +111,64 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
 export function handleAttestationRevoked(event: AttestationRevoked): void {
   const attestationRegistryContract = AttestationRegistry.bind(event.address);
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
-  const attestation = Attestation.load(event.params.attestationId.toHex());
+  const attestation = Attestation.load(event.params.attestationId.toHexString().toLowerCase());
 
   if (attestation) {
     attestation.revoked = true;
     attestation.revocationDate = attestationData.revocationDate;
+
+    const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
+    audit.blockNumber = event.block.number;
+    audit.transactionHash = event.transaction.hash;
+    audit.transactionTimestamp = event.block.timestamp;
+    audit.fromAddress = event.transaction.from;
+    audit.toAddress = event.transaction.to;
+    audit.valueTransferred = event.transaction.value;
+    audit.gasPrice = event.transaction.gasPrice;
+
+    audit.save();
+
+    const auditInformation = AuditInformation.load(attestation.id);
+    if (auditInformation !== null) {
+      auditInformation.lastModification = audit.id.toLowerCase();
+      auditInformation.modifications.push(audit.id.toLowerCase());
+
+      auditInformation.save();
+
+      attestation.auditInformation = auditInformation.id.toLowerCase();
+    }
+
     attestation.save();
   }
 }
 
 export function handleAttestationReplaced(event: AttestationReplaced): void {
-  const attestation = Attestation.load(event.params.attestationId.toHex());
+  const attestation = Attestation.load(event.params.attestationId.toHexString().toLowerCase());
 
   if (attestation) {
     attestation.replacedBy = event.params.replacedBy;
+
+    const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
+    audit.blockNumber = event.block.number;
+    audit.transactionHash = event.transaction.hash;
+    audit.transactionTimestamp = event.block.timestamp;
+    audit.fromAddress = event.transaction.from;
+    audit.toAddress = event.transaction.to;
+    audit.valueTransferred = event.transaction.value;
+    audit.gasPrice = event.transaction.gasPrice;
+
+    audit.save();
+
+    const auditInformation = AuditInformation.load(attestation.id);
+    if (auditInformation !== null) {
+      auditInformation.lastModification = audit.id.toLowerCase();
+      auditInformation.modifications.push(audit.id.toLowerCase());
+
+      auditInformation.save();
+
+      attestation.auditInformation = auditInformation.id.toLowerCase();
+    }
+
     attestation.save();
   }
 }
@@ -118,10 +180,46 @@ export function handleVersionUpdated(event: VersionUpdated): void {
     registryVersion = new RegistryVersion("registry-version");
   }
 
+  const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
+  audit.blockNumber = event.block.number;
+  audit.transactionHash = event.transaction.hash;
+  audit.transactionTimestamp = event.block.timestamp;
+  audit.fromAddress = event.transaction.from;
+  audit.toAddress = event.transaction.to;
+  audit.valueTransferred = event.transaction.value;
+  audit.gasPrice = event.transaction.gasPrice;
+
+  audit.save();
+
+  let auditInformation = AuditInformation.load(registryVersion.id);
+  if (auditInformation === null) {
+    auditInformation = new AuditInformation(registryVersion.id);
+    auditInformation.creation = audit.id.toLowerCase();
+    auditInformation.lastModification = audit.id.toLowerCase();
+    auditInformation.modifications = [audit.id.toLowerCase()];
+  } else {
+    auditInformation.lastModification = audit.id.toLowerCase();
+    auditInformation.modifications.push(audit.id.toLowerCase());
+  }
+
+  auditInformation.save();
+
+  registryVersion.auditInformation = auditInformation.id.toLowerCase();
+
   registryVersion.versionNumber = event.params.version;
   registryVersion.timestamp = event.block.timestamp;
 
   registryVersion.save();
+}
+
+function tupleToStringArray(tuple: ethereum.Tuple): string[] {
+  const tempStringArray: string[] = [];
+
+  for (let i = 0; i < tuple.length; i++) {
+    tempStringArray.push(valueToString(tuple[i]));
+  }
+
+  return tempStringArray;
 }
 
 function valueToString(value: ethereum.Value): string {
@@ -131,7 +229,7 @@ function valueToString(value: ethereum.Value): string {
     case ethereum.ValueKind.FIXED_BYTES:
       return value.toBytes().toHex();
     case ethereum.ValueKind.BYTES:
-      return value.toString();
+      return value.toBytes().toHex();
     case ethereum.ValueKind.INT:
       return value.toBigInt().toHexString();
     case ethereum.ValueKind.UINT:
@@ -151,13 +249,13 @@ function valueToString(value: ethereum.Value): string {
         .map<string>((item) => valueToString(item))
         .toString();
     case ethereum.ValueKind.TUPLE:
-      return "TUPLE NOT SUPPORTED";
+      return tupleToStringArray(value.toTuple()).toString();
     default:
       return "UNKNOWN TYPE";
   }
 }
 
-function incrementAttestationCount(portalAddress: string): void {
+function incrementAttestationCount(portalAddress: string, schemaId: string): void {
   let counter = Counter.load("counter");
 
   if (!counter) {
@@ -183,5 +281,18 @@ function incrementAttestationCount(portalAddress: string): void {
     }
 
     portal.save();
+  }
+
+  // Increment attestation counter for corresponding schema
+  const schema = Schema.load(schemaId);
+
+  if (schema) {
+    if (!schema.attestationCounter) {
+      schema.attestationCounter = 1;
+    } else {
+      schema.attestationCounter += 1;
+    }
+
+    schema.save();
   }
 }

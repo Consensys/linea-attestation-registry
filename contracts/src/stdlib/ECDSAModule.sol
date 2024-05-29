@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import { AbstractModule } from "../abstracts/AbstractModule.sol";
 import { AttestationPayload } from "../types/Structs.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
-import { ECDSA } from "openzeppelin-contracts/contracts/utils/cryptography/ECDSA.sol";
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 /**
  * @title Signature Module

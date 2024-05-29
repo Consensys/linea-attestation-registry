@@ -12,6 +12,7 @@ import { parseSearch } from "@/utils/searchUtils";
 
 import { SearchAttestations } from "./components/SearchAttestations";
 import { SearchModules } from "./components/SearchModules";
+import { SearchPortals } from "./components/SearchPortals";
 import { SearchSchemas } from "./components/SearchSchemas";
 
 //todo: load more and loading for child
@@ -60,6 +61,11 @@ export const Search = () => {
               search={search || EMPTY_STRING}
               parsedString={parsedString}
               getSearchData={(count, loaded) => updateSearchElement("module", count, loaded)}
+            />
+            <SearchPortals
+              search={search || EMPTY_STRING}
+              parsedString={parsedString}
+              getSearchData={(count, loaded) => updateSearchElement("portal", count, loaded)}
             />
           </div>
         </>

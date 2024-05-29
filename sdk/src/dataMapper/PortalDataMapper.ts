@@ -20,21 +20,37 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         ownerName
   }`;
 
-  async simulateAttest(portalAddress: Address, attestationPayload: AttestationPayload, validationPayloads: string[]) {
+  async simulateAttest(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    value: bigint = 0n,
+  ) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
     if (!matchingSchema) {
       throw new Error("No matching Schema");
     }
     const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
-    return this.simulatePortalContract(portalAddress, "attest", [
-      [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
-      validationPayloads,
-    ]);
+    return this.simulatePortalContract(
+      portalAddress,
+      "attest",
+      [
+        [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
+        validationPayloads,
+      ],
+      value,
+    );
   }
 
-  async attest(portalAddress: Address, attestationPayload: AttestationPayload, validationPayloads: string[]) {
-    const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads);
-    return executeTransaction(request, this.walletClient);
+  async attest(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    waitForConfirmation: boolean = false,
+    value: bigint = 0n,
+  ) {
+    const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads, value);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateBulkAttest(
@@ -61,27 +77,32 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return this.simulatePortalContract(portalAddress, "bulkAttest", [attestationPayloadsArg, validationPayloads]);
   }
 
-  async bulkAttest(portalAddress: Address, attestationPayloads: AttestationPayload[], validationPayloads: string[][]) {
+  async bulkAttest(
+    portalAddress: Address,
+    attestationPayloads: AttestationPayload[],
+    validationPayloads: string[][],
+    waitForConfirmation: boolean = false,
+  ) {
     const request = await this.simulateBulkAttest(portalAddress, attestationPayloads, validationPayloads);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateRevoke(portalAddress: Address, attestationId: string) {
     return this.simulatePortalContract(portalAddress, "revoke", [attestationId]);
   }
 
-  async revoke(portalAddress: Address, attestationId: string) {
+  async revoke(portalAddress: Address, attestationId: string, waitForConfirmation: boolean = false) {
     const request = await this.simulateRevoke(portalAddress, attestationId);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateBulkRevoke(portalAddress: Address, attestationIds: string[]) {
     return this.simulatePortalContract(portalAddress, "bulkRevoke", [attestationIds]);
   }
 
-  async bulkRevoke(portalAddress: Address, attestationIds: string[]) {
+  async bulkRevoke(portalAddress: Address, attestationIds: string[], waitForConfirmation: boolean = false) {
     const request = await this.simulateBulkRevoke(portalAddress, attestationIds);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateReplace(
@@ -107,9 +128,10 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationId: string,
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
+    waitForConfirmation: boolean = false,
   ) {
     const request = await this.simulateReplace(portalAddress, attestationId, attestationPayload, validationPayloads);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateBulkReplace(
@@ -145,6 +167,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationIds: string[],
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
+    waitForConfirmation: boolean = false,
   ) {
     const request = await this.simulateBulkReplace(
       portalAddress,
@@ -152,16 +175,23 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
       attestationPayloads,
       validationPayloads,
     );
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
     return this.simulatePortalRegistryContract("register", [id, name, description, isRevocable, ownerName]);
   }
 
-  async register(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
+  async register(
+    id: Address,
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+    waitForConfirmation: boolean = false,
+  ) {
     const request = await this.simulateRegister(id, name, description, isRevocable, ownerName);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateDeployDefaultPortal(
@@ -186,9 +216,10 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     description: string,
     isRevocable: boolean,
     ownerName: string,
+    waitForConfirmation: boolean = false,
   ) {
     const request = await this.simulateDeployDefaultPortal(modules, name, description, isRevocable, ownerName);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async getPortalByAddress(id: Address) {
@@ -225,7 +256,12 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     }
   }
 
-  private async simulatePortalContract(portalAddress: Address, functionName: string, args: unknown[]) {
+  private async simulatePortalContract(
+    portalAddress: Address,
+    functionName: string,
+    args: unknown[],
+    value: bigint = 0n,
+  ) {
     if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({
@@ -234,6 +270,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         functionName,
         account: this.walletClient.account,
         args,
+        value,
       });
 
       return request;

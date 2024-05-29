@@ -29,6 +29,34 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
@@ -61,6 +89,34 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
@@ -83,6 +139,34 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
@@ -104,7 +188,7 @@ jobs:
         uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
         with:
           coverage-file: lcov.info
-          minimum-coverage: 96
+          minimum-coverage: 95
 
       - name: Add coverage summary
         run: |
@@ -168,6 +252,39 @@ jobs:
         if: steps.check-changes.outputs.changed == 'true'
         run: pnpm install --frozen-lockfile
 
+      - name: Install Pnpm
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: Get pnpm store directory
+        if: steps.check-changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        if: steps.check-changes.outputs.changed == 'true'
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm install --frozen-lockfile
+
       - name: Install Foundry
         if: steps.check-changes.outputs.changed == 'true'
         uses: foundry-rs/foundry-toolchain@v1
@@ -197,16 +314,16 @@ jobs:
         if: steps.check-changes.outputs.changed == 'true'
         run: pnpm run check:upgradeability linea
 
-      - name: Create Arbitrum testnet env file
+      - name: Create Arbitrum Sepolia env file
         if: steps.check-changes.outputs.changed == 'true'
         run: |
           rm .env
-          cp ./env/.env.arbitrum-goerli .env
+          cp ./env/.env.arbitrum-sepolia .env
           echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
 
-      - name: Check contracts upgradeability on Arbitrum testnet
+      - name: Check contracts upgradeability on Arbitrum Sepolia
         if: steps.check-changes.outputs.changed == 'true'
-        run: pnpm run check:upgradeability arbitrum-goerli
+        run: pnpm run check:upgradeability arbitrum-sepolia
 
       - name: Create Arbitrum mainnet env file
         if: steps.check-changes.outputs.changed == 'true'

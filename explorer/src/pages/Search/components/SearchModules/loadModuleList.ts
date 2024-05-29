@@ -3,15 +3,16 @@ import ModuleDataMapper from "@verax-attestation-registry/verax-sdk/lib/types/sr
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { ResultParseSearch } from "@/interfaces/components";
 import { isNotNullOrUndefined } from "@/utils";
+import { uniqMap } from "@/utils/searchUtils";
 
 export const loadModuleList = async (module: ModuleDataMapper, parsedString: Partial<ResultParseSearch>) => {
   const [listByName, listByDescription] = parsedString.nameOrDescription
     ? await Promise.all([
         module.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-          name_starts_with: parsedString.nameOrDescription,
+          name_contains_nocase: parsedString.nameOrDescription,
         }),
         module.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, {
-          description_starts_with: parsedString.nameOrDescription,
+          description_contains_nocase: parsedString.nameOrDescription,
         }),
       ])
     : [];
@@ -20,7 +21,7 @@ export const loadModuleList = async (module: ModuleDataMapper, parsedString: Par
     parsedString.address ? await Promise.all(parsedString.address.map((id) => module.findOneById(id))) : []
   ).filter(isNotNullOrUndefined);
 
-  const result = [...(listByIds || []), ...(listByName || []), ...(listByDescription || [])];
+  const results = [...(listByIds || []), ...(listByName || []), ...(listByDescription || [])];
 
-  return result;
+  return uniqMap(results, "id");
 };

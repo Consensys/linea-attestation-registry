@@ -1,9 +1,9 @@
 type Attestation @entity {
   id: ID!
-  schemaId: Bytes!
+  schema: Schema!
   replacedBy: Bytes!
   attester: Bytes!
-  portal: Bytes!
+  portal: Portal!
   attestedDate: BigInt!
   expirationDate: BigInt!
   revocationDate: BigInt!
@@ -12,8 +12,8 @@ type Attestation @entity {
   subject: Bytes!
   encodedSubject: Bytes!
   attestationData: Bytes!
-  schemaString: String
   decodedData: [String!]
+  auditInformation: AuditInformation!
 }
 
 type Module @entity {
@@ -21,6 +21,7 @@ type Module @entity {
   moduleAddress: Bytes!
   name: String!
   description: String!
+  auditInformation: AuditInformation!
 }
 
 type Portal @entity {
@@ -32,6 +33,7 @@ type Portal @entity {
   description: String!
   ownerName: String!
   attestationCounter: Int
+  auditInformation: AuditInformation!
 }
 
 type Schema @entity {
@@ -40,6 +42,8 @@ type Schema @entity {
   description: String!
   context: String!
   schema: String!
+  attestationCounter: Int
+  auditInformation: AuditInformation!
 }
 
 type Counter @entity {
@@ -52,10 +56,30 @@ type Counter @entity {
 
 type Issuer @entity {
   id: ID!
+  auditInformation: AuditInformation!
 }
 
 type RegistryVersion @entity {
   id: ID!
   versionNumber: Int
   timestamp: BigInt
+  auditInformation: AuditInformation!
+}
+
+type AuditInformation @entity {
+  id: ID!
+  creation: Audit!
+  lastModification: Audit!
+  modifications: [Audit!]!
+}
+
+type Audit @entity {
+  id: ID!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+  transactionTimestamp: BigInt!
+  fromAddress: Bytes!
+  toAddress: Bytes
+  valueTransferred: BigInt
+  gasPrice: BigInt
 }

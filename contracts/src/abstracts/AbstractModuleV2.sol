@@ -1,0 +1,42 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.21;
+
+import { AttestationPayload } from "../types/Structs.sol";
+import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+
+/**
+ * @title Abstract Module V2
+ * @author Consensys
+ * @notice Defines the minimal Module V2 interface
+ */
+abstract contract AbstractModuleV2 is IERC165 {
+  /// @notice Error thrown when someone else than the portal's owner is trying to revoke
+  error OnlyPortalOwner();
+
+  /**
+   * @notice Executes the module's custom logic
+   * @param attestationPayload The incoming attestation data
+   * @param validationPayload Additional data required for verification
+   * @param initialCaller The address of the initial caller (transaction sender)
+   * @param value The value (ETH) optionally passed in the attesting transaction
+   * @param attester The address defined by the Portal as the attester for this payload
+   * @param portal The issuing Portal's address
+   */
+  function run(
+    AttestationPayload memory attestationPayload,
+    bytes memory validationPayload,
+    address initialCaller,
+    uint256 value,
+    address attester,
+    address portal
+  ) public virtual;
+
+  /**
+   * @notice Checks if the contract implements the Module interface.
+   * @param interfaceID The ID of the interface to check.
+   * @return A boolean indicating interface support.
+   */
+  function supportsInterface(bytes4 interfaceID) public pure virtual override returns (bool) {
+    return interfaceID == type(AbstractModuleV2).interfaceId || interfaceID == type(IERC165).interfaceId;
+  }
+}

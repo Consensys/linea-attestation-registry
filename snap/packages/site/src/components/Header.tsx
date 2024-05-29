@@ -1,10 +1,11 @@
-import {useContext} from 'react';
-import styled, {useTheme} from 'styled-components';
-import {MetamaskActions, MetaMaskContext} from '../hooks';
-import {connectSnap, getSnap, getThemePreference} from '../utils';
-import {HeaderButtons} from './Buttons';
-import {Toggle} from './Toggle';
-import veraxLogo from '../assets/verax-logo-circle.svg';
+import { useContext } from 'react';
+import styled, { useTheme } from 'styled-components';
+
+import { MetamaskActions, MetaMaskContext } from '../hooks';
+import { connectSnap, getSnap, getThemePreference } from '../utils';
+import { HeaderButtons } from './Buttons';
+import { SnapLogo } from './SnapLogo';
+import { Toggle } from './Toggle';
 
 const HeaderWrapper = styled.header`
   display: flex;
@@ -12,7 +13,7 @@ const HeaderWrapper = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 2.4rem;
-  border-bottom: 1px solid ${(props) => props.theme.colors.border.default};
+  border-bottom: 1px solid ${(props) => props.theme.colors.border?.default};
 `;
 
 const Title = styled.p`
@@ -21,7 +22,7 @@ const Title = styled.p`
   margin: 0;
   margin-left: 1.2rem;
 
-  ${({theme}) => theme.mediaQueries.small} {
+  ${({ theme }) => theme.mediaQueries.small} {
     display: none;
   }
 `;
@@ -39,40 +40,43 @@ const RightContainer = styled.div`
 `;
 
 export const Header = ({
-                           handleToggleClick,
-                       }: {
-    handleToggleClick(): void;
+  handleToggleClick,
+}: {
+  handleToggleClick(): void;
 }) => {
-    const theme = useTheme();
-    const [state, dispatch] = useContext(MetaMaskContext);
+  const theme = useTheme();
+  const { state, dispatch, provider } = useContext(MetaMaskContext);
 
-    const handleConnectClick = async () => {
-        try {
-            await connectSnap();
-            const installedSnap = await getSnap();
+  const handleConnectClick = async () => {
+    try {
+      // This function will only be triggerable if a provider is available
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      await connectSnap(provider!);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const installedSnap = await getSnap(provider!);
 
-            dispatch({
-                type: MetamaskActions.SetInstalled,
-                payload: installedSnap,
-            });
-        } catch (e) {
-            console.error(e);
-            dispatch({type: MetamaskActions.SetError, payload: e});
-        }
-    };
-    return (
-        <HeaderWrapper>
-            <LogoWrapper>
-                <img width={36} height={36} src={veraxLogo} alt={'Verax Logo'}/>
-                <Title>Verax Checker</Title>
-            </LogoWrapper>
-            <RightContainer>
-                <Toggle
-                    onToggle={handleToggleClick}
-                    defaultChecked={getThemePreference()}
-                />
-                <HeaderButtons state={state} onConnectClick={handleConnectClick}/>
-            </RightContainer>
-        </HeaderWrapper>
-    );
+      dispatch({
+        type: MetamaskActions.SetInstalled,
+        payload: installedSnap,
+      });
+    } catch (error) {
+      console.error(error);
+      dispatch({ type: MetamaskActions.SetError, payload: error });
+    }
+  };
+  return (
+    <HeaderWrapper>
+      <LogoWrapper>
+        <SnapLogo color={theme.colors.icon?.default} size={36} />
+        <Title>Verax Checker Snap</Title>
+      </LogoWrapper>
+      <RightContainer>
+        <Toggle
+          onToggle={handleToggleClick}
+          defaultChecked={getThemePreference()}
+        />
+        <HeaderButtons state={state} onConnectClick={handleConnectClick} />
+      </RightContainer>
+    </HeaderWrapper>
+  );
 };

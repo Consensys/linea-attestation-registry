@@ -1,0 +1,98 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AttestationRegistry
+    network: base-sepolia
+    source:
+      abi: AttestationRegistry
+      address: "0x374B686137eC0DB442a8d833451f8C12cD4B5De4"
+      startBlock: 9174253
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Attestation
+      abis:
+        - name: AttestationRegistry
+          file: ./abis/AttestationRegistry.json
+      eventHandlers:
+        - event: AttestationRegistered(indexed bytes32)
+          handler: handleAttestationRegistered
+        - event: AttestationRevoked(bytes32)
+          handler: handleAttestationRevoked
+        - event: AttestationReplaced(bytes32,bytes32)
+          handler: handleAttestationReplaced
+        - event: VersionUpdated(uint16)
+          handler: handleVersionUpdated
+      file: ./src/attestation-registry.ts
+  - kind: ethereum
+    name: ModuleRegistry
+    network: base-sepolia
+    source:
+      abi: ModuleRegistry
+      address: "0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6"
+      startBlock: 9174253
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Module
+      abis:
+        - name: ModuleRegistry
+          file: ./abis/ModuleRegistry.json
+      eventHandlers:
+        - event: ModuleRegistered(string,string,address)
+          handler: handleModuleRegistered
+      file: ./src/module-registry.ts
+  - kind: ethereum
+    name: PortalRegistry
+    network: base-sepolia
+    source:
+      abi: PortalRegistry
+      address: "0x025531b655D9EE335B8E6cc4C118b313f26ACc8F"
+      startBlock: 9174253
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Portal
+      abis:
+        - name: PortalRegistry
+          file: ./abis/PortalRegistry.json
+      eventHandlers:
+        - event: PortalRegistered(string,string,address)
+          handler: handlePortalRegistered
+        - event: PortalRevoked(address)
+          handler: handlePortalRevoked
+        - event: IssuerAdded(address)
+          handler: handleIssuerAdded
+        - event: IssuerRemoved(address)
+          handler: handleIssuerRemoved
+      file: ./src/portal-registry.ts
+  - kind: ethereum
+    name: SchemaRegistry
+    network: base-sepolia
+    source:
+      abi: SchemaRegistry
+      address: "0x66D2F3DCc970343b83a6263E20832184fa71CFe7"
+      startBlock: 9174253
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Portal
+      abis:
+        - name: SchemaRegistry
+          file: ./abis/SchemaRegistry.json
+      eventHandlers:
+        - event: SchemaCreated(indexed bytes32,string,string,string,string)
+          handler: handleSchemaCreated
+        - event: SchemaContextUpdated(indexed bytes32)
+          handler: handleSchemaContextUpdated
+      file: ./src/schema-registry.ts

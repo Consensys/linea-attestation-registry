@@ -1,8 +1,10 @@
-import { createContext, FunctionComponent, ReactNode, useState } from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
+import { createContext, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { getThemePreference, setLocalStorage } from './utils';
+
 import { dark, light } from './config/theme';
 import { MetaMaskProvider } from './hooks';
+import { getThemePreference, setLocalStorage } from './utils';
 
 export type RootProps = {
   children: ReactNode;

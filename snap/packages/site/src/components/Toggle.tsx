@@ -72,7 +72,7 @@ const ToggleContainer = styled.div`
   height: 36px;
   padding: 0;
   border-radius: 36px;
-  background-color: ${({ theme }) => theme.colors.background.alternative};
+  background-color: ${({ theme }) => theme.colors.background?.alternative};
   transition: all 0.2s ease;
 `;
 const ToggleCircle = styled.div<CheckedProps>`

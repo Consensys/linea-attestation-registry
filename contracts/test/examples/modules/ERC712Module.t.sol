@@ -92,7 +92,7 @@ contract ERC712ModuleTest is Test {
     erc712Module.run(attestationPayload, signature, not_signer, 0);
   }
 
-  function test_ERC712Module_supportsInterface() public {
+  function test_ERC712Module_supportsInterface() public view {
     bool isAbstractModuleSupported = erc712Module.supportsInterface(type(AbstractModule).interfaceId);
     assertEq(isAbstractModuleSupported, true);
   }

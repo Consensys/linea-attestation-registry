@@ -4,22 +4,30 @@
   "proposedName": "Verax Checker Snap",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Consensys/cet-poc-initiative.git"
+    "url": "https://github.com/Consensys/linea-attestation-registry.git"
   },
   "source": {
-    "shasum": "JV5q5A/hKtTx3GDMAFxe4ESsaNIbJgjboZ7JR+maNnw=",
+    "shasum": "AfRgKFZtVEpwmP3C7vz7yHngMdGKJiR7J432MxhFGtQ=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
-        "iconPath": "images/verax-logo-circle.svg",
-        "packageName": "verax-checker",
+        "iconPath": "images/verax-logo.svg",
+        "packageName": "@verax-attestation-registry/verax-checker",
         "registry": "https://registry.npmjs.org/"
       }
     }
   },
   "initialPermissions": {
+    "endowment:page-home": {},
     "endowment:network-access": {},
-    "endowment:transaction-insight": {}
+    "endowment:transaction-insight": {},
+    "endowment:rpc": {
+      "dapps": true,
+      "snaps": false
+    },
+    "endowment:ethereum-provider": {},
+    "snap_manageState": {},
+    "snap_getLocale": {}
   },
   "manifestVersion": "0.1"
 }

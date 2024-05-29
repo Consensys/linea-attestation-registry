@@ -20,8 +20,8 @@
   "scripts": {
     "lint": "eslint .",
     "prepare": "husky install",
-    "prettier:check": "prettier --check \"**/*.{json,md,svg,yml,sol,js,ts,graphql}\"",
-    "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol,js,ts,graphql}\""
+    "prettier:check": "prettier --check \"**/*.{json,md,svg,yml,sol,js,jsx,ts,tsx,graphql}\"",
+    "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol,js,jsx,ts,tsx,graphql}\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.10.0",
@@ -29,15 +29,20 @@
     "eslint": "^8.53.0",
     "husky": "^8.0.3",
     "prettier": "^2.8.8",
-    "typescript": "^5.2.2"
+    "prettier-plugin-solidity": "^1.3.1",
+    "typescript": "5.2.2"
   },
   "pnpm": {
     "overrides": {
-      "got@<11.8.5": ">=11.8.5",
-      "ejs@<3.1.7": ">=3.1.7",
-      "engine.io@>=5.1.0 <6.4.2": ">=6.4.2",
       "semver@>=7.0.0 <7.5.2": ">=7.5.2",
-      "tough-cookie@<4.1.3": ">=4.1.3"
+      "axios@>=0.8.1 <0.28.0": ">=0.28.0",
+      "ip@<1.1.9": ">=1.1.9",
+      "es5-ext@>=0.10.0 <0.10.63": ">=0.10.63",
+      "undici@<=5.28.2": ">=5.28.3",
+      "webpack-dev-middleware@<=5.3.3": ">=5.3.4",
+      "express@<4.19.2": ">=4.19.2",
+      "follow-redirects@<=1.15.5": ">=1.15.6",
+      "undici@<5.28.4": ">=5.28.4"
     }
   }
 }

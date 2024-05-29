@@ -1,13 +1,14 @@
 {
-  "name": "linea-attestation-registry-contracts",
-  "version": "0.0.1",
+  "name": "@verax-attestation-registry/verax-contracts",
+  "version": "0.0.4",
   "description": "Verax Attestation Registry core smart contracts",
   "keywords": [
-    "linea-attestation-registry",
+    "verax",
     "blockchain",
     "attestation",
     "ethereum",
     "foundry",
+    "hardhat",
     "smart-contracts",
     "solidity"
   ],
@@ -15,40 +16,45 @@
   "license": "MIT",
   "author": "Consensys",
   "files": [
-    "src"
+    "contracts/**/*.sol",
+    "build/*.json",
+    "!contracts/examples/**/*"
   ],
   "scripts": {
     "build": "forge build",
     "check:implementations": "npx hardhat run script/upgrade/checkImplementations.ts",
     "check:upgradeability": "npx hardhat run script/upgrade/checkUpgradeability.ts --network",
-    "clean": "rm -rf lcov.info coverage artifacts cache_hardhat cache out typechain-types",
-    "decode": "npx hardhat run script/decode.ts",
+    "clean": "rm -rf lcov.info coverage artifacts cache_forge cache_hardhat cache out typechain-types build contracts",
     "deploy": "npx hardhat run script/deploy/deployEverything.ts --network",
     "deploy:issuers": "npx hardhat run script/deploy/deployIssuers.ts --network",
     "deploy:post": "npx hardhat run script/deploy/postDeployment.ts --network",
     "deploy:stdlib": "npx hardhat run script/deploy/deployStdLib.ts --network",
-    "encode": "npx hardhat run script/encode.ts",
-    "lint": "pnpm solhint \"{script,src,test}/**/*.sol\"",
-    "massImport:prepare": "npx hardhat run script/massImport/prepareData.ts",
-    "massImport:attest": "npx hardhat run script/massImport/massImport.ts --network",
+    "lint": "pnpm solhint \"{script,src,test}/**/*.sol\" -c .solhint.json",
+    "postpack": "./postpack.sh",
+    "prepack": "./prepack.sh",
+    "prepublishOnly": "pnpm run clean && pnpm run lint && pnpm run build && pnpm run test",
+    "publish:dry-run": "pnpm publish --dry-run --no-git-checks",
+    "publish:public": "pnpm publish --access public --no-git-checks",
     "reimport": "npx hardhat run script/recreateNetworkFile.ts --network",
     "test": "forge test",
+    "test:coverage": "forge coverage --report lcov && genhtml lcov.info -o coverage/html",
     "upgrade": "npx hardhat run script/upgrade/upgradeEverything.ts --network",
     "upgrade:force": "npx hardhat run script/upgrade/forceUpgradeEverything.ts --network"
   },
-  "devDependencies": {
-    "@nomicfoundation/hardhat-ethers": "^3.0.4",
-    "@nomicfoundation/hardhat-foundry": "^1.1.1",
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "@openzeppelin/hardhat-upgrades": "^2.3.3",
-    "dotenv": "^16.3.1",
-    "ethers": "^6.8.1",
-    "hardhat": "^2.19.0",
-    "solhint": "^3.6.2",
-    "solhint-plugin-prettier": "^0.0.5"
-  },
   "dependencies": {
-    "@consensys/linea-sdk": "^0.1.6",
-    "@types/node": "^20.9.0"
+    "@openzeppelin/contracts": "4.9.6",
+    "@openzeppelin/contracts-upgradeable": "4.9.6"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.5",
+    "@nomicfoundation/hardhat-foundry": "^1.1.1",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.0.5",
+    "@types/node": "^18.16.0",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.12.0",
+    "hardhat": "^2.22.3",
+    "solhint": "^4.5.4",
+    "solhint-plugin-prettier": "^0.1.0"
   }
 }

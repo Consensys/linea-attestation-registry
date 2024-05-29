@@ -23,10 +23,25 @@
       "path": "contracts"
     },
     {
-      "path": "subgraph"
+      "path": "explorer"
+    },
+    {
+      "path": "governance"
     },
     {
       "path": "sdk"
+    },
+    {
+      "path": "snap/packages/site"
+    },
+    {
+      "path": "snap/packages/snap"
+    },
+    {
+      "path": "subgraph"
+    },
+    {
+      "path": "website"
     }
   ],
   "include": ["**/*.ts", "**/*.json"],

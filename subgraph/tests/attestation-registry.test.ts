@@ -59,7 +59,7 @@ describe("AttestationRegistry", () => {
       assert.bytesEquals(result.attestationData, attestationData);
     });
 
-    test("Should create a new Attestation entity", () => {
+    test("Should create a new Attestation entity and audit data", () => {
       assert.entityCount("Attestation", 0);
 
       const attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
@@ -69,7 +69,7 @@ describe("AttestationRegistry", () => {
       assert.entityCount("Attestation", 1);
 
       assert.fieldEquals("Attestation", attestationId.toHexString(), "id", attestationId.toHexString());
-      assert.fieldEquals("Attestation", attestationId.toHexString(), "schemaId", schemaId.toHexString());
+      assert.fieldEquals("Attestation", attestationId.toHexString(), "schema", schemaId.toHexString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "replacedBy", replacedBy.toHexString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "attester", attester.toHexString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "portal", portal.toHexString());
@@ -90,6 +90,11 @@ describe("AttestationRegistry", () => {
       assert.fieldEquals("Attestation", attestationId.toHexString(), "revoked", revoked.toString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "subject", subject.toHexString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "attestationData", attestationData.toHexString());
+
+      assert.entityCount("AuditInformation", 1);
+      assert.fieldEquals("AuditInformation", attestationId.toHexString(), "id", attestationId.toHexString());
+
+      assert.entityCount("Audit", 1);
     });
 
     test("Should increment the attestations Counter", () => {
@@ -116,6 +121,7 @@ describe("AttestationRegistry", () => {
       portalEntity.ownerName = "ownerName";
       portalEntity.ownerAddress = Address.fromString("e75be6f9418710fd516fa82afb3aad07e11a0f1b");
       portalEntity.attestationCounter = 0;
+      portalEntity.auditInformation = portal.toHexString();
       portalEntity.save();
 
       assert.entityCount("Portal", 1);
@@ -129,6 +135,30 @@ describe("AttestationRegistry", () => {
       assert.fieldEquals("Portal", portal.toHexString(), "attestationCounter", "1");
     });
 
+    test("Should increment the attestations counter in schema", () => {
+      assert.entityCount("Attestation", 0);
+      assert.entityCount("Schema", 0);
+
+      const schemaEntity = new Schema(schemaId.toHexString());
+      schemaEntity.name = "name";
+      schemaEntity.description = "description";
+      schemaEntity.context = "context";
+      schemaEntity.schema = "schemaString";
+      schemaEntity.attestationCounter = 0;
+      schemaEntity.auditInformation = schemaId.toHexString();
+      schemaEntity.save();
+
+      assert.entityCount("Schema", 1);
+      assert.fieldEquals("Schema", schemaId.toHexString(), "attestationCounter", "0");
+
+      const attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
+
+      handleAttestationRegistered(attestationRegisteredEvent);
+
+      assert.entityCount("Attestation", 1);
+      assert.fieldEquals("Schema", schemaId.toHexString(), "attestationCounter", "1");
+    });
+
     test("Should decode a basic attestation data", () => {
       const schema = new Schema(schemaId.toHexString());
       schema.name = "name";
@@ -136,6 +166,7 @@ describe("AttestationRegistry", () => {
       schema.context = "context";
       schema.schema =
         "uint256[] providers, bytes32[] hashes, uint64[] issuanceDates, uint64[] expirationDates, uint16 providerMapVersion";
+      schema.auditInformation = schemaId.toHexString();
       schema.save();
 
       const attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
@@ -145,7 +176,7 @@ describe("AttestationRegistry", () => {
       assert.entityCount("Attestation", 1);
 
       assert.fieldEquals("Attestation", attestationId.toHexString(), "id", attestationId.toHexString());
-      assert.fieldEquals("Attestation", attestationId.toHexString(), "schemaId", schemaId.toHexString());
+      assert.fieldEquals("Attestation", attestationId.toHexString(), "schema", schemaId.toHexString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "replacedBy", replacedBy.toHexString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "attester", attester.toHexString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "portal", portal.toHexString());
@@ -166,12 +197,6 @@ describe("AttestationRegistry", () => {
       assert.fieldEquals("Attestation", attestationId.toHexString(), "revoked", revoked.toString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "subject", subject.toHexString());
       assert.fieldEquals("Attestation", attestationId.toHexString(), "attestationData", attestationData.toHexString());
-      assert.fieldEquals(
-        "Attestation",
-        attestationId.toHexString(),
-        "schemaString",
-        "uint256[],bytes32[],uint64[],uint64[],uint16",
-      );
       assert.fieldEquals(
         "Attestation",
         attestationId.toHexString(),

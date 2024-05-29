@@ -3,10 +3,30 @@ import {
   SchemaCreated as SchemaCreatedEvent,
   SchemaRegistry,
 } from "../generated/SchemaRegistry/SchemaRegistry";
-import { Counter, Schema } from "../generated/schema";
+import { Audit, AuditInformation, Counter, Schema } from "../generated/schema";
 
 export function handleSchemaCreated(event: SchemaCreatedEvent): void {
   const schema = new Schema(event.params.id.toHexString());
+
+  const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
+  audit.blockNumber = event.block.number;
+  audit.transactionHash = event.transaction.hash;
+  audit.transactionTimestamp = event.block.timestamp;
+  audit.fromAddress = event.transaction.from;
+  audit.toAddress = event.transaction.to;
+  audit.valueTransferred = event.transaction.value;
+  audit.gasPrice = event.transaction.gasPrice;
+
+  audit.save();
+
+  const auditInformation = new AuditInformation(schema.id);
+  auditInformation.creation = audit.id.toLowerCase();
+  auditInformation.lastModification = audit.id.toLowerCase();
+  auditInformation.modifications = [audit.id.toLowerCase()];
+
+  auditInformation.save();
+
+  schema.auditInformation = auditInformation.id.toLowerCase();
 
   incrementSchemasCount();
 
@@ -14,6 +34,7 @@ export function handleSchemaCreated(event: SchemaCreatedEvent): void {
   schema.description = event.params.description;
   schema.context = event.params.context;
   schema.schema = event.params.schemaString;
+  schema.attestationCounter = 0;
 
   schema.save();
 }
@@ -25,6 +46,27 @@ export function handleSchemaContextUpdated(event: SchemaContextUpdated): void {
   const schema = Schema.load(event.params.id.toHexString());
 
   if (schema !== null) {
+    const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
+    audit.blockNumber = event.block.number;
+    audit.transactionHash = event.transaction.hash;
+    audit.transactionTimestamp = event.block.timestamp;
+    audit.fromAddress = event.transaction.from;
+    audit.toAddress = event.transaction.to;
+    audit.valueTransferred = event.transaction.value;
+    audit.gasPrice = event.transaction.gasPrice;
+
+    audit.save();
+
+    const auditInformation = AuditInformation.load(schema.id);
+    if (auditInformation !== null) {
+      auditInformation.lastModification = audit.id.toLowerCase();
+      auditInformation.modifications.push(audit.id.toLowerCase());
+
+      auditInformation.save();
+
+      schema.auditInformation = auditInformation.id.toLowerCase();
+    }
+
     schema.context = newContext;
     schema.save();
   }

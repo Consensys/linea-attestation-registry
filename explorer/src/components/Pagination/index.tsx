@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
@@ -9,19 +9,25 @@ import { displayAmountWithComma } from "@/utils/amountUtils";
 import { pageBySearchParams } from "@/utils/paginationUtils";
 
 import { IPaginationProps } from "./interface";
+import { PerPageSelector } from "./PerPageSelector";
 
 export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = pageBySearchParams(searchParams, itemsCount);
+  const [itemsPerPage, setItemsPerPage] = useState<string | number>(
+    Number(searchParams.get(EQueryParams.ITEMS_PER_PAGE)) || ITEMS_PER_PAGE_DEFAULT,
+  );
+  const currentPage = pageBySearchParams(searchParams, itemsCount, Number(itemsPerPage));
 
   useEffect(() => {
     handlePage(currentPage);
   }, [currentPage, handlePage, searchParams]);
 
-  const totalPages = Math.ceil(itemsCount / ITEMS_PER_PAGE_DEFAULT);
+  const totalPages = Math.ceil(itemsCount / Number(itemsPerPage));
 
   const disablePrev = currentPage === 1;
   const disableNext = currentPage === totalPages;
+
+  const itemsPerPageValues = [ITEMS_PER_PAGE_DEFAULT, 20, 50, 100];
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,6 +37,12 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
       searchParams.set(EQueryParams.PAGE, newPage.toString());
       setSearchParams(searchParams);
     }
+  };
+
+  const handleItemsPerPage = (val: number | string) => {
+    setItemsPerPage(val);
+    searchParams.set(EQueryParams.ITEMS_PER_PAGE, String(val));
+    setSearchParams(searchParams);
   };
 
   const handleFirstPage = () => handlePageChange(1);
@@ -85,6 +97,10 @@ export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
           className="w-16 h-8 px-2 border text-xs font-semibold dark:bg-transparent text-text-primary dark:text-whiteDefault text-center outline-none border-border-table dark:border-greyDark focus:border-border-inputFocus dark:focus:border-border-inputFocus rounded-lg transition"
         />
         <span className="text-slate-500 text-xs font-normal">{`of ${displayAmountWithComma(totalPages)}`}</span>
+        <PerPageSelector onChange={handleItemsPerPage} values={itemsPerPageValues} value={itemsPerPage} />
+        <span className="hidden md:inline-block text-slate-500 text-xs font-normal">
+          {t("common.messages.perPage")}
+        </span>
       </div>
       <div className="flex gap-3">
         <button

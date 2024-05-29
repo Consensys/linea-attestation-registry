@@ -1,6 +1,6 @@
+import { VeraxSdk } from "../../src/VeraxSdk";
 import fs from "fs";
 import path from "path";
-import { VeraxSdk } from "../../src/VeraxSdk";
 
 const BATCH_SIZE = 100000;
 
@@ -11,13 +11,13 @@ const fetchSubjectsFromFile = async (fileSuffix: number): Promise<string[]> => {
 
 async function main() {
   const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_MAINNET);
-  const attestationsNumber = await veraxSdk.utils.getAttestationIdCounter();
-  const filesNumber = Math.ceil(Number(attestationsNumber) / BATCH_SIZE);
+  const attestationNumber = await veraxSdk.utils.getAttestationIdCounter();
+  const filesNumber = Math.ceil(Number(attestationNumber) / BATCH_SIZE);
 
   const allSubjects: string[][] = [];
   const uniqueSubjects: Set<string> = new Set<string>();
 
-  for (let i = 0; i <= filesNumber; i++) {
+  for (let i = 0; i < filesNumber; i++) {
     allSubjects.push(await fetchSubjectsFromFile(i));
   }
 
@@ -30,6 +30,23 @@ async function main() {
   }
 
   console.log(`Unique subjects = ${uniqueSubjects.size}`);
+
+  const uniqueSubjectsArray = Array.from(uniqueSubjects);
+  const chunks = Math.ceil(uniqueSubjectsArray.length / BATCH_SIZE);
+
+  for (let i = 0; i < chunks; i++) {
+    const start = i * BATCH_SIZE;
+    const end = start + BATCH_SIZE;
+    const chunk = uniqueSubjectsArray.slice(start, end);
+
+    fs.writeFile(path.resolve(__dirname, `../../uniqueSubjects-${i}.txt`), JSON.stringify(chunk), function (err) {
+      if (err) {
+        return console.log(err);
+      }
+
+      console.log(`File uniqueSubjects-${i}.txt was saved!`);
+    });
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -1,6 +1,6 @@
 import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
-import { Attestation, AttestationPayload, AttestationWithDecodeObject, OffchainData, Schema } from "../types";
+import { Attestation, AttestationPayload, OffchainData, Schema } from "../types";
 import { Attestation_filter, Attestation_orderBy, OrderDirection } from "../../.graphclient";
 import { Constants } from "../utils/constants";
 import { handleSimulationError } from "../utils/simulationErrorHandler";
@@ -58,12 +58,14 @@ export default class AttestationDataMapper extends BaseDataMapper<
   }
 
   private async enrichAttestation(attestation: Attestation) {
-    const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
+    const schema = (await this.veraxSdk.schema.findOneById(attestation.schemaId)) as Schema;
     attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as `0x${string}`);
 
     attestation.attestedDate = Number(attestation.attestedDate);
     attestation.expirationDate = Number(attestation.expirationDate);
     attestation.revocationDate = Number(attestation.revocationDate);
+
+    attestation.version = Number(attestation.version);
 
     // Check if data is stored offchain
     if (attestation.schemaId === Constants.OFFCHAIN_DATA_SCHEMA_ID) {
@@ -77,7 +79,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
           const ipfsHash = attestation.offchainData.uri.split("//")[1];
           const response = await getIPFSContent(ipfsHash);
           if (response.toString().startsWith("0x")) {
-            const offchainDataSchema = (await this.veraxSdk.schema.getSchema(
+            const offchainDataSchema = (await this.veraxSdk.schema.findOneById(
               attestation.offchainData.schemaId,
             )) as Schema;
             attestation.decodedPayload = decodeWithRetry(
@@ -111,9 +113,9 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return this.simulateContract("updateRouter", [routerAddress]);
   }
 
-  async updateRouter(routerAddress: Address) {
+  async updateRouter(routerAddress: Address, waitForConfirmation: boolean = false) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateMassImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
@@ -137,18 +139,22 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return this.simulateContract("massImport", [attestationPayloadsArg, portalAddress]);
   }
 
-  async massImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
+  async massImport(
+    portalAddress: Address,
+    attestationPayloads: AttestationPayload[],
+    waitForConfirmation: boolean = false,
+  ) {
     const request = await this.simulateMassImport(portalAddress, attestationPayloads);
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async simulateIncrementVersionNumber() {
     return this.simulateContract("incrementVersionNumber", []);
   }
 
-  async incrementVersionNumber() {
+  async incrementVersionNumber(waitForConfirmation: boolean = false) {
     const request = await this.simulateIncrementVersionNumber();
-    return executeTransaction(request, this.walletClient);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async isRegistered(attestationId: string) {
@@ -161,21 +167,6 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
   async getAttestation(attestationId: string) {
     return this.executeReadMethod("getAttestation", [attestationId]);
-  }
-
-  async getAttestationWithDecodeObject(attestationId: string) {
-    const attestation = await this.findOneById(attestationId);
-    if (!attestation) {
-      return null;
-    }
-    const attestationWithDecodeObject: AttestationWithDecodeObject = { ...attestation, decodeObject: {} };
-    const schema = (await this.veraxSdk.schema.getSchema(attestation.schemaId)) as Schema;
-    const splitSchema = schema.schema.split(",");
-    const schemaFields = splitSchema.map<string>((item) => item.trim().split(" ")[1]);
-    for (let i = 0; i < schemaFields.length; i++) {
-      attestationWithDecodeObject.decodeObject[schemaFields[i]] = attestation.decodedData[i];
-    }
-    return attestationWithDecodeObject;
   }
 
   async getVersionNumber() {

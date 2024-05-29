@@ -16,7 +16,7 @@ describe("handleModuleRegistered()", () => {
     clearStore();
   });
 
-  test("Should create a new Module entity", () => {
+  test("Should create a new Module entity and audit data", () => {
     assert.entityCount("Module", 0);
 
     const moduleRegisteredEvent = createModuleRegisteredEvent(moduleAddress, moduleName, moduleDescription);
@@ -29,6 +29,11 @@ describe("handleModuleRegistered()", () => {
     assert.fieldEquals("Module", "0x" + moduleAddress, "name", moduleName);
     assert.fieldEquals("Module", "0x" + moduleAddress, "description", moduleDescription);
     assert.fieldEquals("Module", "0x" + moduleAddress, "moduleAddress", "0x" + moduleAddress);
+
+    assert.entityCount("AuditInformation", 1);
+    assert.fieldEquals("AuditInformation", "0x" + moduleAddress, "id", "0x" + moduleAddress);
+
+    assert.entityCount("Audit", 1);
   });
 
   test("Should increment the modules Counter", () => {

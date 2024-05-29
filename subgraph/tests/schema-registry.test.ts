@@ -15,7 +15,7 @@ describe("handleSchemaCreated()", () => {
     clearStore();
   });
 
-  test("Should create a new Schema entity", () => {
+  test("Should create a new Schema entity and audit data", () => {
     assert.entityCount("Schema", 0);
 
     const schemaCreatedEvent = createSchemaCreatedEvent(
@@ -35,6 +35,12 @@ describe("handleSchemaCreated()", () => {
     assert.fieldEquals("Schema", schemaId, "description", schemaDescription);
     assert.fieldEquals("Schema", schemaId, "context", schemaContext);
     assert.fieldEquals("Schema", schemaId, "schema", schemaString);
+    assert.fieldEquals("Schema", schemaId, "attestationCounter", "0");
+
+    assert.entityCount("AuditInformation", 1);
+    assert.fieldEquals("AuditInformation", schemaId, "id", schemaId);
+
+    assert.entityCount("Audit", 1);
   });
 
   test("Should increment the schemas Counter", () => {

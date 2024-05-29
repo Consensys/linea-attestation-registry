@@ -131,7 +131,7 @@ contract AttestationReaderTest is Test {
     return attestation;
   }
 
-  function _assertAttestation(EASAttestation memory attestation1, EASAttestation memory attestation2) internal {
+  function _assertAttestation(EASAttestation memory attestation1, EASAttestation memory attestation2) internal pure {
     assertEq(attestation1.uid, attestation2.uid);
     assertEq(attestation1.schema, attestation2.schema);
     assertEq(attestation1.time, attestation2.time);

@@ -12,9 +12,9 @@ npx hardhat help
 npx hardhat test
 REPORT_GAS=true npx hardhat test
 npx hardhat node
-npx hardhat run scripts/deploy.js
+npx hardhat run scripts/deploy.ts
 
-npx hardhat run scripts/deployProxy.js --network arbitrum_one
+npx hardhat run scripts/deployProxy.ts --network arbitrum_one
 npx hardhat verify --network arbitrum_one [PROXY_ADDRESS]
-npx hardhat run scripts/upgrade.js --network arbitrum_one
+npx hardhat run scripts/upgrade.ts --network arbitrum_one
 ```

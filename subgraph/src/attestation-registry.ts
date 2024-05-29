@@ -51,12 +51,17 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
   const tempSubject = ethereum.decode("address", attestationData.subject);
   attestation.subject = tempSubject ? tempSubject.toAddress() : attestationData.subject;
 
-  // Get matching Schemax
-  const schema = Schema.load(attestation.schema);
+  // Get matching Schema
+  const schema = Schema.load(attestationData.schemaId.toHex());
 
   if (schema) {
+    // Remove the first and last characters of the schema string (the parentheses) if they exist
+    let tempSchema = schema.schema;
+    tempSchema = tempSchema.startsWith("(") ? tempSchema.substring(1) : tempSchema;
+    tempSchema = tempSchema.endsWith(")") ? tempSchema.substring(0, tempSchema.length - 1) : tempSchema;
+
     // Split Schema into a "type fieldName" array
-    const splitSchema = schema.schema.split(",");
+    const splitSchema = tempSchema.split(",");
 
     // Keep only the Schema's types
     const schemaTypes = splitSchema.map<string>((item) => item.trim().split(" ")[0]);
@@ -86,15 +91,11 @@ export function handleAttestationRegistered(event: AttestationRegisteredEvent): 
 
     // If the decode function went through, save it as an Array of Strings
     if (decoded) {
-      const tempStringArray: string[] = [];
-
       // Make the decoded data into a Tuple
       const tupleValue = decoded.toTuple();
 
       // Convert every field of the Tuple into a String
-      for (let i = 0; i < tupleValue.length; i++) {
-        tempStringArray.push(valueToString(tupleValue[i]));
-      }
+      const tempStringArray: string[] = tupleToStringArray(tupleValue);
 
       // Add this decoded Array to the Attestation Entity
       attestation.decodedData =
@@ -211,14 +212,24 @@ export function handleVersionUpdated(event: VersionUpdated): void {
   registryVersion.save();
 }
 
+function tupleToStringArray(tuple: ethereum.Tuple): string[] {
+  const tempStringArray: string[] = [];
+
+  for (let i = 0; i < tuple.length; i++) {
+    tempStringArray.push(valueToString(tuple[i]));
+  }
+
+  return tempStringArray;
+}
+
 function valueToString(value: ethereum.Value): string {
   switch (value.kind) {
     case ethereum.ValueKind.ADDRESS:
       return value.toAddress().toHexString();
     case ethereum.ValueKind.FIXED_BYTES:
-      return value.toBytes().toHexString().toLowerCase();
+      return value.toBytes().toHex();
     case ethereum.ValueKind.BYTES:
-      return value.toBytes().toString();
+      return value.toBytes().toHex();
     case ethereum.ValueKind.INT:
       return value.toBigInt().toHexString();
     case ethereum.ValueKind.UINT:
@@ -238,7 +249,7 @@ function valueToString(value: ethereum.Value): string {
         .map<string>((item) => valueToString(item))
         .toString();
     case ethereum.ValueKind.TUPLE:
-      return "TUPLE NOT SUPPORTED";
+      return tupleToStringArray(value.toTuple()).toString();
     default:
       return "UNKNOWN TYPE";
   }

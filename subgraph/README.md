@@ -14,30 +14,20 @@ You can replace `XXX` by the name of the networks you want to work on in the com
 - `linea-goerli`
 - `linea-mainnet`
 
-### 1. Add secrets
-
-1. Copy the .env.example file to a .env file
-2. Fill `DEPLOY_ENDPOINT_XXX` with the endpoint(s) dedicated to network(s) you want to work on
-3. Fill `IPFS_ENDPOINT` with your IPFS endpoint (you can get one for free via Infura)
-4. Fill `IPFS_IDENTIFIERS` with your IPFS identifiers (you can get them for free via Infura)
-5. Fill `SUBGRAPH_NAME_XXX` with the name you want to give to the subgraph
-
-Note: You need to encode your identifier and secret key to Base64, following this format: `IDENTIFIER:SECRET`.
-
-### 2. Create the subgraph
+### 1. Generate code
 
 ```bash
-pnpm run create:XXX
+pnpm run codegen:vY
 ```
 
-### 3. Build the subgraph
+### 2. Build the subgraph
 
 ```bash
-pnpm run build:XXX
+pnpm run build:XXX:vY
 ```
 
-### 4. Deploy the subgraph
+### 3. Deploy the subgraph
 
 ```bash
-pnpm run deploy:XXX
+pnpm run deploy:XXX:vY
 ```

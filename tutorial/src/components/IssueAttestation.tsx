@@ -1,8 +1,7 @@
 import { type FunctionComponent, useState } from "react";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { useAccount } from "wagmi";
-import { Address } from "@wagmi/core";
-import { Hex } from "viem";
+import { Address, Hex } from "viem";
 
 export type SDKDemoProps = {
   veraxSdk: VeraxSdk;

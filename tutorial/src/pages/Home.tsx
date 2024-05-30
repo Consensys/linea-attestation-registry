@@ -1,14 +1,14 @@
 import { type FunctionComponent, useEffect, useState } from "react";
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
-import { useAccount, useNetwork } from "wagmi";
-import ConnectWallet from "../components/ConnectWallet.tsx";
+import { useAccount } from "wagmi";
 import IssueAttestation from "../components/IssueAttestation.tsx";
 import AttestationPreview from "../components/AttestationPreview.tsx";
 import { waitForTransactionReceipt } from "viem/actions";
-import { Address, getPublicClient } from "@wagmi/core";
 import CreateSchema from "../components/CreateSchema.tsx";
 import CreatePortal from "../components/CreatePortal.tsx";
-import { decodeEventLog, parseAbi } from "viem";
+import { Address, decodeEventLog, parseAbi } from "viem";
+import { wagmiConfig } from "../wagmiConfig.ts";
+import { ConnectKitButton } from "connectkit";
 
 export type SDKDemoProps = {
   title: string;
@@ -20,8 +20,7 @@ const Home: FunctionComponent<SDKDemoProps> = ({ title }) => {
   const [portalId, setPortalId] = useState<Address>();
   const [attestationId, setAttestationId] = useState<string>();
 
-  const { address, isConnected } = useAccount();
-  const { chain } = useNetwork();
+  const { address, isConnected, chain } = useAccount();
 
   useEffect(() => {
     document.title = title;
@@ -30,21 +29,21 @@ const Home: FunctionComponent<SDKDemoProps> = ({ title }) => {
   useEffect(() => {
     if (chain && address) {
       const sdkConf =
-        chain.id === 59144 ? VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND : VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND;
+        chain.id === 59144 ? VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND : VeraxSdk.DEFAULT_LINEA_SEPOLIA_FRONTEND;
       const sdk = new VeraxSdk(sdkConf, address);
       setVeraxSdk(sdk);
     }
   }, [chain, address]);
 
   const handleSchemaTx = async (hash: Address) => {
-    const receipt = await waitForTransactionReceipt(getPublicClient(), {
+    const receipt = await waitForTransactionReceipt(wagmiConfig.getClient(), {
       hash,
     });
     setSchemaId(receipt.logs[0].topics[1]);
   };
 
   const handlePortalTx = async (hash: Address) => {
-    const receipt = await waitForTransactionReceipt(getPublicClient(), {
+    const receipt = await waitForTransactionReceipt(wagmiConfig.getClient(), {
       hash,
     });
     const decodedLogs = decodeEventLog({
@@ -56,7 +55,7 @@ const Home: FunctionComponent<SDKDemoProps> = ({ title }) => {
   };
 
   const handleAttestationTx = async (hash: Address) => {
-    const receipt = await waitForTransactionReceipt(getPublicClient(), {
+    const receipt = await waitForTransactionReceipt(wagmiConfig.getClient(), {
       hash,
     });
     setAttestationId(receipt.logs[0].topics[1]);
@@ -66,7 +65,7 @@ const Home: FunctionComponent<SDKDemoProps> = ({ title }) => {
     <>
       <h1>1. Connect your wallet</h1>
       <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <ConnectWallet />
+        <ConnectKitButton />
       </div>
 
       {veraxSdk && isConnected && (

@@ -5,16 +5,21 @@ governance.
 
 This is a JavaScript HardHat project that uses OpenZeppellin contracts as a dependency.
 
-The following tasks are valid:
+## Usage
 
-```shell
-npx hardhat help
+```
+# 1. Set-up
+npm install
+cp .env.template .env  # and fill the document
+
+# 2. Test
 npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
 
-npx hardhat run scripts/deployProxy.ts --network arbitrum_one
-npx hardhat verify --network arbitrum_one [PROXY_ADDRESS]
-npx hardhat run scripts/upgrade.ts --network arbitrum_one
+# 3. Deploy
+npx hardhat run scripts/deploy.ts --network NETWORK_NAME
+npx hardhat run scripts/deployProxy.ts --network NETWORK_NAME
+
+# 4. Upgrade (if needed)
+npx hardhat run scripts/upgrade.ts --network NETWORK_NAME
+
 ```

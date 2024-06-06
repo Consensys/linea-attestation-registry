@@ -25,6 +25,7 @@
       "notFound": "Not Found",
       "noResults": "No Results",
       "hasntBeenFound": "hasn`t been found",
+      "searchInProgress": "Searching for <bold>“{{search}}”</bold>...",
       "searchNotFound": "Nothing found on <bold>“{{search}}”</bold> search request",
       "searchFound": "<bold>{{count}}</bold> results found on <bold>“{{search}}”</bold> search request",
       "perPage": "per page"
@@ -64,6 +65,8 @@
   },
   "attestation": {
     "title": "Attestation",
+    "received": "Attestations received",
+    "issued": "Attestations issued",
     "list": {
       "title": "Explore Attestations",
       "switch": {

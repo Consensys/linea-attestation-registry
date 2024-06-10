@@ -1,9 +1,10 @@
 import { Address } from "viem";
 import { Module_filter, Module_orderBy } from "../../.graphclient";
 import { AttestationPayload, Module } from "../types";
+import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiModuleRegistry } from "../abi/ModuleRegistry";
-import { handleSimulationError } from "../utils/simulationErrorHandler";
+import { handleError } from "../utils/errorHandler";
 import { executeTransaction } from "../utils/transactionSender";
 import { encode } from "../utils/abiCoder";
 
@@ -143,7 +144,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
 
       return request;
     } catch (err) {
-      handleSimulationError(err);
+      handleError(ActionType.Simulation, err);
     }
   }
 }

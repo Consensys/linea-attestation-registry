@@ -1,4 +1,6 @@
 import { Hash, PublicClient, TransactionReceipt, WalletClient } from "viem";
+import { handleError } from "./errorHandler";
+import { ActionType } from "./constants";
 
 // TODO: Use correct type for request
 export async function executeTransaction(
@@ -14,7 +16,6 @@ export async function executeTransaction(
 
   try {
     const hash: Hash = await walletClient.writeContract(request);
-    console.log(`Transaction sent with hash ${hash}`);
 
     if (waitForConfirmation) {
       // Wait for the transaction to be confirmed
@@ -22,9 +23,7 @@ export async function executeTransaction(
     }
 
     return { transactionHash: hash };
-  } catch (error) {
-    // Handle errors or rethrow if needed
-    console.error("Error while executing transaction:", error);
-    throw error;
+  } catch (err) {
+    handleError(ActionType.Transaction, err);
   }
 }

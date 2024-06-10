@@ -18,10 +18,6 @@ export type AttestationPayload = {
   attestationData: object[]; // The attestation data.
 };
 
-export type AttestationWithDecodeObject = Attestation & {
-  decodeObject: { [propName: string]: unknown };
-};
-
 export type Attestation = OnChainAttestation & {
   id: string;
   schemaString: string;

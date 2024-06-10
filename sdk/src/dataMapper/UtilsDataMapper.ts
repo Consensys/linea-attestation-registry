@@ -4,6 +4,7 @@ import { abiModuleRegistry } from "../abi/ModuleRegistry";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { abiSchemaRegistry } from "../abi/SchemaRegistry";
 import { decode, encode } from "../utils/abiCoder";
+import { Hex } from "viem";
 
 export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unknown> {
   typeName = "counter";
@@ -54,11 +55,11 @@ export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unk
     });
   }
 
-  encode(schema: string, values: unknown[]): `0x${string}` {
+  encode(schema: string, values: unknown[]): Hex {
     return encode(schema, values);
   }
 
-  decode(schema: string, attestationData: `0x${string}`): readonly unknown[] {
+  decode(schema: string, attestationData: Hex): readonly unknown[] {
     return decode(schema, attestationData);
   }
 }

@@ -17,7 +17,7 @@ export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId })
 
   const { data: attestations, isLoading } = useSWR(
     `${SWRKeys.GET_RECENT_ATTESTATION}/${schemaId}/${chain.id}`,
-    () => sdk.attestation.findBy(undefined, undefined, { schemaId }),
+    () => sdk.attestation.findBy(5, 0, { schemaId }, "attestedDate", "desc"),
     {
       shouldRetryOnError: false,
     },

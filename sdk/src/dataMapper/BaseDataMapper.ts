@@ -2,8 +2,7 @@ import { PublicClient, WalletClient } from "viem";
 import { Conf } from "../types";
 import { OrderDirection } from "../../.graphclient";
 import { VeraxSdk } from "../VeraxSdk";
-import { stringifyWhereClause } from "../utils/graphClientHelper";
-import axios from "axios";
+import { stringifyWhereClause, subgraphCall } from "../utils/graphClientHelper";
 
 export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   protected readonly conf: Conf;
@@ -23,7 +22,7 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   async findOneById(id: string) {
     const query = `query get_${this.typeName} { ${this.typeName}(id: "${id}") ${this.gqlInterface} }`;
 
-    const { data, status } = await this.subgraphCall(query);
+    const { data, status } = await subgraphCall(query, this.conf.subgraphUrl);
 
     if (status != 200) {
       throw new Error(`Error(s) while fetching ${this.typeName}`);
@@ -46,25 +45,12 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
         }
     `;
 
-    const { data, status } = await this.subgraphCall(query);
+    const { data, status } = await subgraphCall(query, this.conf.subgraphUrl);
 
     if (status != 200) {
       throw new Error(`Error(s) while fetching ${this.typeName}s`);
     }
 
     return data?.data ? (data.data[`${this.typeName}s`] as T[]) : [];
-  }
-
-  async subgraphCall(query: string) {
-    return axios.post(
-      this.conf.subgraphUrl,
-      { query },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      },
-    );
   }
 }

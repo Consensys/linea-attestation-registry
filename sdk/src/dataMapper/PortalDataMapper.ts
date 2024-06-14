@@ -1,11 +1,12 @@
 import { AttestationPayload, Portal } from "../types";
+import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
 import { Address } from "viem";
 import { encode } from "../utils/abiCoder";
 import { Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
-import { handleSimulationError } from "../utils/simulationErrorHandler";
+import { handleError } from "../utils/errorHandler";
 import { executeTransaction } from "../utils/transactionSender";
 
 export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filter, Portal_orderBy> {
@@ -252,7 +253,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
       return request;
     } catch (err) {
-      handleSimulationError(err);
+      handleError(ActionType.Simulation, err);
     }
   }
 
@@ -275,7 +276,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
 
       return request;
     } catch (err) {
-      handleSimulationError(err);
+      handleError(ActionType.Simulation, err);
     }
   }
 }

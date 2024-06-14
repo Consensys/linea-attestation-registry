@@ -1,10 +1,10 @@
 import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
 import { Attestation, AttestationPayload, OffchainData, Schema } from "../types";
+import { ActionType, Constants } from "../utils/constants";
 import { Attestation_filter, Attestation_orderBy, OrderDirection } from "../../.graphclient";
-import { Constants } from "../utils/constants";
-import { handleSimulationError } from "../utils/simulationErrorHandler";
-import { Address } from "viem";
+import { handleError } from "../utils/errorHandler";
+import { Address, Hex } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
 import { executeTransaction } from "../utils/transactionSender";
 import { getIPFSContent } from "../utils/ipfsClient";
@@ -59,7 +59,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
   private async enrichAttestation(attestation: Attestation) {
     const schema = (await this.veraxSdk.schema.findOneById(attestation.schemaId)) as Schema;
-    attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as `0x${string}`);
+    attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as Hex);
 
     attestation.attestedDate = Number(attestation.attestedDate);
     attestation.expirationDate = Number(attestation.expirationDate);
@@ -82,10 +82,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
             const offchainDataSchema = (await this.veraxSdk.schema.findOneById(
               attestation.offchainData.schemaId,
             )) as Schema;
-            attestation.decodedPayload = decodeWithRetry(
-              offchainDataSchema.schema,
-              attestation.attestationData as `0x${string}`,
-            );
+            attestation.decodedPayload = decodeWithRetry(offchainDataSchema.schema, attestation.attestationData as Hex);
           } else {
             attestation.decodedPayload = response as unknown as object;
           }
@@ -207,7 +204,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
       return request;
     } catch (err) {
-      handleSimulationError(err);
+      handleError(ActionType.Simulation, err);
     }
   }
 }

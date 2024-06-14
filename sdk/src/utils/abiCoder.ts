@@ -1,16 +1,16 @@
-import { AbiParameter, BaseError, decodeAbiParameters, encodeAbiParameters, parseAbiParameters } from "viem";
+import { AbiParameter, BaseError, decodeAbiParameters, encodeAbiParameters, Hex, parseAbiParameters } from "viem";
 
-const ENCODED_PARENTHESIS: `0x${string}` = "0x0000000000000000000000000000000000000000000000000000000000000020";
+const ENCODED_PARENTHESIS: Hex = "0x0000000000000000000000000000000000000000000000000000000000000020";
 
-export function encode(schema: string, values: unknown[]): `0x${string}` {
+export function encode(schema: string, values: unknown[]): Hex {
   return encodeAbiParameters(parseAbiParameters(schema), values);
 }
 
-export function decode(schema: string, attestationData: `0x${string}`): readonly unknown[] {
+export function decode(schema: string, attestationData: Hex): readonly unknown[] {
   return decodeAbiParameters(parseAbiParameters(schema), attestationData);
 }
 
-export function decodeWithRetry(schema: string, attestationData: `0x${string}`): readonly unknown[] {
+export function decodeWithRetry(schema: string, attestationData: Hex): readonly unknown[] {
   const wrappedSchema = schema.startsWith("(") ? schema : `(${schema})`;
   let result = decodeWrapped(wrappedSchema, attestationData);
 
@@ -21,7 +21,7 @@ export function decodeWithRetry(schema: string, attestationData: `0x${string}`):
   return result;
 }
 
-function decodeWrapped(schema: string, attestationData: `0x${string}`): readonly unknown[] {
+function decodeWrapped(schema: string, attestationData: Hex): readonly unknown[] {
   try {
     const parsedParams = tryParse(schema);
     return decodeAbiParameters(parsedParams, attestationData);

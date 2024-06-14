@@ -9,3 +9,8 @@ export enum SDKMode {
   BACKEND = "BACKEND",
   FRONTEND = "FRONTEND",
 }
+
+export enum ActionType {
+  Simulation = "Simulation",
+  Transaction = "Transaction",
+}

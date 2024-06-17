@@ -11,7 +11,6 @@ import Pado from "@/assets/issuers/pado.svg?react";
 import Reclaim from "@/assets/issuers/reclaim.svg?react";
 import RubyScore from "@/assets/issuers/rubyscore.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
-import Zeronym from "@/assets/issuers/zeronym.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
 import Zeronym from "@/assets/issuers/zeronym-black.png?react";

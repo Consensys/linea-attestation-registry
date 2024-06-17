@@ -14,6 +14,8 @@ import Trusta from "@/assets/issuers/trusta.svg?react";
 import Zeronym from "@/assets/issuers/zeronym.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
+import Zeronym from "@/assets/issuers/zeronym-black.png?react";
+import ZeronymDark from "@/assets/issuers/zeronym-white.png?react";
 
 import { IIssuer } from "./interface";
 
@@ -153,8 +155,9 @@ export const issuersData: IIssuer[] = [
   {
     name: "Holonym",
     logo: Zeronym,
+    logoDark: ZeronymDark,
     keywords: ["Proof of Personhood"],
-    description: "Prove your personhood with Zeronym without revealing any information about your identity",
+    description: "Prove your personhood with Zeronym by Holonym without revealing any information about your identity",
     CTALink: "https://holonym.id/",
     CTATitle: "Go To Holonym",
     address: "0x5631Aecf3283922b6bf36D7485Eb460f244bfac1",

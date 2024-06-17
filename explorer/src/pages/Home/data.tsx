@@ -13,8 +13,7 @@ import RubyScore from "@/assets/issuers/rubyscore.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
-import Zeronym from "@/assets/issuers/zeronym-black.png?react";
-import ZeronymDark from "@/assets/issuers/zeronym-white.png?react";
+import Holonym from "@/assets/issuers/logo-holo.svg?react";
 
 import { IIssuer } from "./interface";
 
@@ -153,8 +152,7 @@ export const issuersData: IIssuer[] = [
   },
   {
     name: "Holonym",
-    logo: Zeronym,
-    logoDark: ZeronymDark,
+    logo: Holonym,
     keywords: ["Proof of Personhood"],
     description: "Prove your personhood with Zeronym by Holonym without revealing any information about your identity",
     CTALink: "https://holonym.id/",

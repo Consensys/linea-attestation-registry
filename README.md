@@ -75,6 +75,8 @@ The main contracts (i.e. the "registries") and the helpers contracts are deploye
 - Arbitrum Nova
 - Base Sepolia
 - Base Mainnet
+- BSC Testnet
+- BSC Mainnet
 
 Here are the addresses on those networks:
 
@@ -214,6 +216,36 @@ Here are the addresses on those networks:
 - SchemaRegistry =
   [0x8081dCd745f160c148Eb5be510F78628A0951c31](https://basescan.org/address/0x8081dCd745f160c148Eb5be510F78628A0951c31)
 
+<details>
+  <summary>BSC Testnet</summary>
+
+- Router =
+  [0x90b8542d7288a83EC887229A7C727989C3b56209](https://testnet.bscscan.com/address/0x90b8542d7288a83EC887229A7C727989C3b56209)
+- AttestationRegistry =
+  [0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe](https://testnet.bscscan.com/address/0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe)
+- ModuleRegistry =
+  [0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a](https://testnet.bscscan.com/address/0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a)
+- PortalRegistry =
+  [0xA4a7517F62216BD42e42a67dF09C25adc72A5897](https://testnet.bscscan.com/address/0xA4a7517F62216BD42e42a67dF09C25adc72A5897)
+- SchemaRegistry =
+  [0x51929da151eC2C5a5881C750E5b9941eACC46c1d](https://testnet.bscscan.com/address/0x51929da151eC2C5a5881C750E5b9941eACC46c1d)
+
+</details>
+
+<details>
+  <summary>BSC</summary>
+
+- Router =
+  [0x7a5C1fAC7fF9908a8b2ED479e060619213116A47](https://bscscan.com/address/0x7a5C1fAC7fF9908a8b2ED479e060619213116A47)
+- AttestationRegistry =
+  [0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261](https://bscscan.com/address/0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261)
+- ModuleRegistry =
+  [0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB](https://bscscan.com/address/0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB)
+- PortalRegistry =
+  [0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0](https://bscscan.com/address/0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0)
+- SchemaRegistry =
+  [0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd](https://bscscan.com/address/0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd)
+
 </details>
 
 ## Subgraphs URLs
@@ -227,6 +259,8 @@ Here are the addresses on those networks:
 - [Arbitrum Nova](https://api.goldsky.com/api/public/project_clwsa54350ydv01wjbq5r17v1/subgraphs/verax-v1-arbitrum-nova/0.0.4/gn)
 - [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.2)
 - [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.2)
+- [BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1)
+- [BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc/v0.0.1)
 
 ## Network Prefixes
 
@@ -241,6 +275,8 @@ ID. This prefix is defined in the `contracts/script/utils.ts` file.
 - Arbitrum Nova - `0x0002`
 - Base Sepolia - `0x0005`
 - Base Mainnet - `0x0005`
+- BSC Testnet - `0x0006`
+- BSC Mainnet - `0x0006`
 
 ## License
 

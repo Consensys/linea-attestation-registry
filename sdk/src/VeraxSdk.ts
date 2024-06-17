@@ -4,6 +4,8 @@ import {
   arbitrumSepolia,
   base,
   baseSepolia,
+  bsc,
+  bscTestnet,
   linea,
   lineaSepolia,
   lineaTestnet,
@@ -142,6 +144,36 @@ export class VeraxSdk {
 
   static DEFAULT_BASE_FRONTEND: Conf = {
     ...VeraxSdk.DEFAULT_BASE,
+    mode: SDKMode.FRONTEND,
+  };
+
+  static DEFAULT_BSC_TESTNET: Conf = {
+    chain: bscTestnet,
+    mode: SDKMode.BACKEND,
+    subgraphUrl: "https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1",
+    portalRegistryAddress: "0xA4a7517F62216BD42e42a67dF09C25adc72A5897",
+    moduleRegistryAddress: "0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a",
+    schemaRegistryAddress: "0x51929da151eC2C5a5881C750E5b9941eACC46c1d",
+    attestationRegistryAddress: "0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe",
+  };
+
+  static DEFAULT_BSC_TESTNET_FRONTEND: Conf = {
+    ...VeraxSdk.DEFAULT_BSC_TESTNET,
+    mode: SDKMode.FRONTEND,
+  };
+
+  static DEFAULT_BSC: Conf = {
+    chain: bsc,
+    mode: SDKMode.BACKEND,
+    subgraphUrl: "https://api.studio.thegraph.com/query/67521/verax-v1-bsc/v0.0.1",
+    portalRegistryAddress: "0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0",
+    moduleRegistryAddress: "0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB",
+    schemaRegistryAddress: "0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd",
+    attestationRegistryAddress: "0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261",
+  };
+
+  static DEFAULT_BSC_FRONTEND: Conf = {
+    ...VeraxSdk.DEFAULT_BSC,
     mode: SDKMode.FRONTEND,
   };
 

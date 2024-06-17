@@ -160,5 +160,41 @@
       "address": "0x8081dCd745f160c148Eb5be510F78628A0951c31",
       "startBlock": 13666866
     }
+  },
+  "bsc-testnet": {
+    "AttestationRegistry": {
+      "address": "0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe",
+      "startBlock": 41312659
+    },
+    "ModuleRegistry": {
+      "address": "0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a",
+      "startBlock": 41312659
+    },
+    "PortalRegistry": {
+      "address": "0xA4a7517F62216BD42e42a67dF09C25adc72A5897",
+      "startBlock": 41312659
+    },
+    "SchemaRegistry": {
+      "address": "0x51929da151eC2C5a5881C750E5b9941eACC46c1d",
+      "startBlock": 41312659
+    }
+  },
+  "bsc": {
+    "AttestationRegistry": {
+      "address": "0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261",
+      "startBlock": 39759713
+    },
+    "ModuleRegistry": {
+      "address": "0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB",
+      "startBlock": 39759713
+    },
+    "PortalRegistry": {
+      "address": "0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0",
+      "startBlock": 39759713
+    },
+    "SchemaRegistry": {
+      "address": "0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd",
+      "startBlock": 39759713
+    }
   }
 }

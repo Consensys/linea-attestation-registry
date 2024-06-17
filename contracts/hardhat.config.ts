@@ -42,6 +42,14 @@ const config: HardhatUserConfig = {
       url: `https://mainnet.base.org`,
       accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
     },
+    "bsc-testnet": {
+      url: `https://data-seed-prebsc-1-s1.binance.org:8545`,
+      accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
+    },
+    bsc: {
+      url: `https://rpc.ankr.com/bsc`,
+      accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
+    },
     "linea-goerli": {
       url: `https://linea-goerli.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
@@ -70,6 +78,8 @@ const config: HardhatUserConfig = {
       "arbitrum-nova": process.env.ARBISCAN_NOVA_API_KEY ?? "",
       "base-sepolia": process.env.BASESCAN_API_KEY ?? "",
       base: process.env.BASESCAN_API_KEY ?? "",
+      "bsc-testnet": process.env.BSCSCAN_API_KEY ?? "",
+      bsc: process.env.BSCSCAN_API_KEY ?? "",
       "linea-goerli": process.env.LINEASCAN_API_KEY ?? "",
       "linea-sepolia": process.env.LINEASCAN_API_KEY ?? "",
       linea: process.env.LINEASCAN_API_KEY ?? "",
@@ -122,6 +132,22 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api.basescan.org/api",
           browserURL: "https://basescan.org",
+        },
+      },
+      {
+        network: "bsc-testnet",
+        chainId: 97,
+        urls: {
+          apiURL: "https://api-testnet.bscscan.com/api",
+          browserURL: "https://testnet.bscscan.com",
+        },
+      },
+      {
+        network: "bsc",
+        chainId: 56,
+        urls: {
+          apiURL: "https://api.bscscan.com/api",
+          browserURL: "https://bscscan.com",
         },
       },
       {

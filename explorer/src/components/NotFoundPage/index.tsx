@@ -1,5 +1,6 @@
 import { t } from "i18next";
 import { ChevronLeft } from "lucide-react";
+import { Hex, hexToNumber } from "viem";
 
 import archive from "@/assets/icons/archive.svg";
 import { Link } from "@/components/Link";
@@ -10,7 +11,10 @@ import { getNotFoundPageData } from "./utils";
 
 export const NotFoundPage: React.FC<NotFoundPageProps> = ({ id, page }) => {
   const pageData = getNotFoundPageData(page, id);
-  const decodedId = typeof pageData.id === "string" ? pageData.id : displayAmountWithComma(pageData.id);
+  const decodedId =
+    typeof pageData.id === "string"
+      ? pageData.id
+      : displayAmountWithComma(hexToNumber(`0x${(id as Hex).substring(6)}`));
   return (
     <section className="container flex justify-center px-4">
       <div className="flex flex-col max-w-[1200px] w-full h-[644px] items-center justify-center gap-6 border border-solid mt-8 rounded-3xl">

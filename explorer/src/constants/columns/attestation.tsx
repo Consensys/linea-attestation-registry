@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Attestation, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import moment from "moment";
-import { Address } from "viem";
+import { Hex } from "viem";
 import { hexToNumber } from "viem/utils";
 
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
@@ -37,7 +37,7 @@ export const columns = ({ sortByDate = true, sdk, chainId }: Partial<ColumnsProp
       const id = row.getValue("id");
       return (
         <Link to={toAttestationById(id as string)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
-          {displayAmountWithComma(hexToNumber(id as Address))}
+          {displayAmountWithComma(hexToNumber(`0x${(id as Hex).substring(6)}`))}
         </Link>
       );
     },

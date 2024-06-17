@@ -13,6 +13,7 @@ import RubyScore from "@/assets/issuers/rubyscore.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
+import Zeronym from "@/assets/issuers/zeronym.svg?react";
 
 import { IIssuer } from "./interface";
 
@@ -148,5 +149,15 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://rubyscore.io/attestation",
     CTATitle: "Go To RubyScore",
     address: "0xb9cc0bb020cf55197c4c3d826ac87cadba51f272",
+  },
+  {
+    name: "Holonym",
+    logo: Zeronym,
+    keywords: ["Proof of Personhood"],
+    description:
+      "Prove your personhood with Zeronym without revealing any information about your identity",
+    CTALink: "https://holonym.id/",
+    CTATitle: "Go To Holonym",
+    address: "0x5631Aecf3283922b6bf36D7485Eb460f244bfac1",
   },
 ];

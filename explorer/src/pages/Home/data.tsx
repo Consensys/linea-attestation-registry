@@ -3,7 +3,6 @@ import Aspecta from "@/assets/issuers/aspecta.svg?react";
 import Automata from "@/assets/issuers/automata.svg?react";
 import Clique from "@/assets/issuers/clique.svg?react";
 import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
-import Holonym from "@/assets/issuers/logo-holo.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
 import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
@@ -12,6 +11,8 @@ import Pado from "@/assets/issuers/pado.svg?react";
 import Reclaim from "@/assets/issuers/reclaim.svg?react";
 import RubyScore from "@/assets/issuers/rubyscore.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
+import Zeronym from "@/assets/issuers/zeronym-black.svg?react";
+import ZeronymDark from "@/assets/issuers/zeronym-white.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
 
@@ -151,12 +152,13 @@ export const issuersData: IIssuer[] = [
     address: "0xb9cc0bb020cf55197c4c3d826ac87cadba51f272",
   },
   {
-    name: "Holonym",
-    logo: Holonym,
+    name: "Zeronym by Holonym",
+    logo: Zeronym,
+    logoDark: ZeronymDark,
     keywords: ["Proof of Personhood"],
     description: "Prove your personhood with Zeronym by Holonym without revealing any information about your identity",
     CTALink: "https://holonym.id/",
     CTATitle: "Go To Holonym",
-    address: "0x5631Aecf3283922b6bf36D7485Eb460f244bfac1",
+    address: "0xdca2e9ae8423d7b0f94d7f9fc09e698a45f3c851",
   },
 ];

@@ -32,11 +32,6 @@ async function main() {
     throw new Error("Schema proxy address not found");
   }
 
-  const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS;
-  if (!attestationReaderProxyAddress) {
-    throw new Error("Attestation reader proxy address not found");
-  }
-
   const network = await ethers.provider.getNetwork();
   const networkConfig = getNetworkConfig(network.chainId);
   console.log(
@@ -47,7 +42,10 @@ async function main() {
 
   console.log("Upgrading Router, with proxy at", routerProxyAddress);
   const Router = await ethers.getContractFactory("Router");
-  await upgrades.upgradeProxy(routerProxyAddress, Router);
+  await upgrades.upgradeProxy(routerProxyAddress, Router, {
+    timeout: 25000,
+    txOverrides: { gasLimit: 10000000n, gasPrice: 8000000000n },
+  });
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
@@ -57,7 +55,10 @@ async function main() {
 
   console.log("Upgrading AttestationRegistry, with proxy at", attestationProxyAddress);
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");
-  const attestationRegistry = await upgrades.upgradeProxy(attestationProxyAddress, AttestationRegistry);
+  const attestationRegistry = await upgrades.upgradeProxy(attestationProxyAddress, AttestationRegistry, {
+    timeout: 25000,
+    txOverrides: { gasLimit: 10000000n, gasPrice: 8000000000n },
+  });
 
   await attestationRegistry.incrementVersionNumber();
 
@@ -69,7 +70,10 @@ async function main() {
 
   console.log("Upgrading ModuleRegistry, with proxy at", moduleProxyAddress);
   const ModuleRegistry = await ethers.getContractFactory("ModuleRegistry");
-  await upgrades.upgradeProxy(moduleProxyAddress, ModuleRegistry);
+  await upgrades.upgradeProxy(moduleProxyAddress, ModuleRegistry, {
+    timeout: 25000,
+    txOverrides: { gasLimit: 10000000n, gasPrice: 8000000000n },
+  });
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
@@ -81,6 +85,8 @@ async function main() {
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
   await upgrades.upgradeProxy(portalProxyAddress, PortalRegistry, {
     constructorArgs: [networkConfig.isTestnet],
+    timeout: 25000,
+    txOverrides: { gasLimit: 10000000n, gasPrice: 8000000000n },
   });
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -91,19 +97,14 @@ async function main() {
 
   console.log("Upgrading SchemaRegistry, with proxy at", schemaProxyAddress);
   const SchemaRegistry = await ethers.getContractFactory("SchemaRegistry");
-  await upgrades.upgradeProxy(schemaProxyAddress, SchemaRegistry);
+  await upgrades.upgradeProxy(schemaProxyAddress, SchemaRegistry, {
+    timeout: 25000,
+    txOverrides: { gasLimit: 10000000n, gasPrice: 8000000000n },
+  });
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
   console.log(`SchemaRegistry successfully upgraded!`);
-
-  console.log(`\n----\n`);
-
-  console.log("Upgrading AttestationReader, with proxy at", attestationReaderProxyAddress);
-  const AttestationReader = await ethers.getContractFactory("AttestationReader");
-  await upgrades.upgradeProxy(attestationReaderProxyAddress, AttestationReader);
-
-  console.log(`AttestationReader successfully upgraded!`);
 
   console.log(`\n----\n`);
 
@@ -170,27 +171,12 @@ async function main() {
 
   console.log(`\n----\n`);
 
-  const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(
-    attestationReaderProxyAddress,
-  );
-
-  await run("verify:verify", {
-    address: attestationReaderProxyAddress,
-  });
-
-  console.log(`AttestationReader successfully upgraded and verified!`);
-  console.log(`Proxy is at ${attestationReaderProxyAddress}`);
-  console.log(`Implementation is at ${attestationReaderImplementationAddress}`);
-
-  console.log(`\n----\n`);
-
   console.log(`** SUMMARY **`);
   console.log(`Router = ${routerProxyAddress}`);
   console.log(`AttestationRegistry = ${attestationProxyAddress}`);
   console.log(`ModuleRegistry = ${moduleProxyAddress}`);
   console.log(`PortalRegistry = ${portalProxyAddress}`);
   console.log(`SchemaRegistry = ${schemaProxyAddress}`);
-  console.log(`AttestationReader = ${attestationReaderProxyAddress}`);
 
   console.log(`All contracts were upgraded!`);
 }

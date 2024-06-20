@@ -3,6 +3,7 @@ import Aspecta from "@/assets/issuers/aspecta.svg?react";
 import Automata from "@/assets/issuers/automata.svg?react";
 import Clique from "@/assets/issuers/clique.svg?react";
 import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
+import Hapi from "@/assets/issuers/Hapi_logo_square.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
 import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
@@ -15,7 +16,6 @@ import Zeronym from "@/assets/issuers/zeronym-black.svg?react";
 import ZeronymDark from "@/assets/issuers/zeronym-white.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
-import Hapi from "@/assets/issuers/Hapi_logo_square.svg?react";
 
 import { IIssuer } from "./interface";
 
@@ -166,7 +166,8 @@ export const issuersData: IIssuer[] = [
     name: "Hapi",
     logo: Hapi,
     keywords: ["Proof of Personhood", "Trust Score", "Security"],
-    description: "HAPI ID is a digital identification of a user’s on-chain activity, created to simplify the interpretation of user’s action on the blockchain. Created for users, protocols, DApps, and businesses, HAPI ID serves as a one-stop unique solution against Sybils and for Users!",
+    description:
+      "HAPI ID is a digital identification of a user’s on-chain activity, created to simplify the interpretation of user’s action on the blockchain. Created for users, protocols, DApps, and businesses, HAPI ID serves as a one-stop unique solution against Sybils and for Users!",
     CTALink: "https://hapi.one",
     CTATitle: "Go To Hapi",
     address: "0x0000000000000000000000000000000000000000",

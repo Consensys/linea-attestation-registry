@@ -3,6 +3,7 @@ import Aspecta from "@/assets/issuers/aspecta.svg?react";
 import Automata from "@/assets/issuers/automata.svg?react";
 import Clique from "@/assets/issuers/clique.svg?react";
 import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
+import Hapi from "@/assets/issuers/Hapi_logo_square.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
 import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
@@ -160,5 +161,15 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://holonym.id/",
     CTATitle: "Go To Holonym",
     address: "0xdca2e9ae8423d7b0f94d7f9fc09e698a45f3c851",
+  },
+  {
+    name: "Hapi",
+    logo: Hapi,
+    keywords: ["Proof of Personhood", "Trust Score", "Security"],
+    description:
+      "HAPI ID is a digital identification of a user’s on-chain activity, created to simplify the interpretation of user’s action on the blockchain. Created for users, protocols, DApps, and businesses, HAPI ID serves as a one-stop unique solution against Sybils and for Users!",
+    CTALink: "https://hapi.one",
+    CTATitle: "Go To Hapi",
+    address: "0x0000000000000000000000000000000000000000",
   },
 ];

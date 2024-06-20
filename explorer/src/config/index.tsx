@@ -1,7 +1,17 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { getDefaultConfig } from "connectkit";
 import { Chain, createConfig } from "wagmi";
-import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, linea, lineaTestnet } from "wagmi/chains";
+import {
+  arbitrum,
+  arbitrumNova,
+  arbitrumSepolia,
+  base,
+  baseSepolia,
+  bsc,
+  bscTestnet,
+  linea,
+  lineaTestnet,
+} from "wagmi/chains";
 
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
 import ArbitrumIconDark from "@/assets/networks/arbitrum-dark.svg?react";
@@ -10,8 +20,11 @@ import ArbitrumNovaIcon from "@/assets/networks/arbitrum-nova.svg?react";
 import ArbitrumSepoliaIcon from "@/assets/networks/arbitrum-sepolia.svg?react";
 import ArbitrumIcon from "@/assets/networks/arbitrum.svg?react";
 import BaseIconDark from "@/assets/networks/base-dark.svg?react";
+import BaseMainnetIcon from "@/assets/networks/base-mainnet.svg?react";
 import BaseSepoliaIcon from "@/assets/networks/base-sepolia.svg?react";
-import BaseIcon from "@/assets/networks/base.svg?react";
+import BscMainnetIconDark from "@/assets/networks/bsc-dark.svg?react";
+import BscMainnetIcon from "@/assets/networks/bsc-mainnet.svg?react";
+import BscTestnetIcon from "@/assets/networks/bsc-testnet.svg?react";
 import LineaMainnetIconDark from "@/assets/networks/linea-mainnet-dark.svg?react";
 import LineaMainnetIcon from "@/assets/networks/linea-mainnet.svg?react";
 import LineaSepoliaIcon from "@/assets/networks/linea-sepolia.svg?react";
@@ -98,7 +111,7 @@ const chains: INetwork[] = [
     name: "Base Mainnet",
     chain: base,
     veraxEnv: VeraxSdk.DEFAULT_BASE_FRONTEND,
-    img: <BaseIcon />,
+    img: <BaseMainnetIcon />,
     imgDark: <BaseIconDark />,
     network: "base-mainnet",
   },
@@ -108,6 +121,21 @@ const chains: INetwork[] = [
     veraxEnv: VeraxSdk.DEFAULT_BASE_SEPOLIA_FRONTEND,
     img: <BaseSepoliaIcon />,
     network: "base-sepolia",
+  },
+  {
+    name: "BSC Mainnet",
+    chain: bsc,
+    veraxEnv: VeraxSdk.DEFAULT_BSC_FRONTEND,
+    img: <BscMainnetIcon />,
+    imgDark: <BscMainnetIconDark />,
+    network: "bsc-mainnet",
+  },
+  {
+    name: "BSC Testnet",
+    chain: bscTestnet,
+    veraxEnv: VeraxSdk.DEFAULT_BSC_TESTNET_FRONTEND,
+    img: <BscTestnetIcon />,
+    network: "bsc-testnet",
   },
 ];
 

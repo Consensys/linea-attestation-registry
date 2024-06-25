@@ -44,6 +44,7 @@ abstract contract AbstractPortal is IPortal {
    * @notice Optional method to withdraw funds from the Portal
    * @param to the address to send the funds to
    * @param amount the amount to withdraw
+   * @dev DISCLAIMER: by default, this method is not implemented and should be overridden if funds are to be withdrawn
    */
   function withdraw(address payable to, uint256 amount) external virtual;
 

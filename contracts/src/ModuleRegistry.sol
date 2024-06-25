@@ -188,6 +188,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @param validationPayloads the payloads to check for each module
    * @dev NOTE: Currently the bulk run modules does not handle payable modules
    *            a default value of 0 is used.
+   * @dev DISCLAIMER: This method may have unexpected behavior if one of the checks is done on the attestation ID
+   *                  as this ID won't be incremented before the end of the transaction.
+   *                  If you need to check the attestation ID, please use the `attest` method.
    */
   function bulkRunModules(
     address[] memory modulesAddresses,
@@ -206,6 +209,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @param validationPayloads the payloads to check for each module
    * @dev NOTE: Currently the bulk run modules does not handle payable modules
    *            a default value of 0 is used.
+   * @dev DISCLAIMER: This method may have unexpected behavior if one of the checks is done on the attestation ID
+   *                  as this ID won't be incremented before the end of the transaction.
+   *                  If you need to check the attestation ID, please use the `attestV2` method.
    */
   function bulkRunModulesV2(
     address[] memory modulesAddresses,

@@ -79,6 +79,9 @@ abstract contract AbstractPortal is IPortal {
    * @notice Bulk attest the schema with payloads to attest and validation payloads
    * @param attestationsPayloads the payloads to attest
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
+   * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
+   *                  as this ID won't be incremented before the end of the transaction.
+   *                  If you need to check the attestation ID, please use the `attest` method.
    */
   function bulkAttest(AttestationPayload[] memory attestationsPayloads, bytes[][] memory validationPayloads) public {
     moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
@@ -92,6 +95,9 @@ abstract contract AbstractPortal is IPortal {
    * @notice Bulk attest the schema with payloads to attest and validation payloads
    * @param attestationPayloads the payloads to attest
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
+   * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
+   *                  as this ID won't be incremented before the end of the transaction.
+   *                  If you need to check the attestation ID, please use the `attestV2` method.
    */
   function bulkAttestV2(AttestationPayload[] memory attestationPayloads, bytes[][] memory validationPayloads) public {
     moduleRegistry.bulkRunModulesV2(modules, attestationPayloads, validationPayloads, msg.sender, getAttester());
@@ -125,6 +131,9 @@ abstract contract AbstractPortal is IPortal {
    * @param attestationIds the list of IDs of the attestations to replace
    * @param attestationsPayloads the list of attestation payloads to create the new attestations and register them
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
+   * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
+   *                  as this ID won't be incremented before the end of the transaction.
+   *                  If you need to check the attestation ID, please use the `replace` method.
    */
   function bulkReplace(
     bytes32[] memory attestationIds,

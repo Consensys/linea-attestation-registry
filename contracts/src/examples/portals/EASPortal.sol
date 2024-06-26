@@ -40,6 +40,12 @@ contract EASPortal is AbstractPortal {
   /// @notice Error thrown when trying to bulk revoke attestations
   error NoBulkRevocation();
 
+  /**
+   * @notice Contract constructor
+   * @param modules list of modules to use for the portal (can be empty)
+   * @param router Router's address
+   * @dev This sets the addresses for the AttestationRegistry, ModuleRegistry and PortalRegistry
+   */
   constructor(address[] memory modules, address router) AbstractPortal(modules, router) {}
 
   /// @inheritdoc AbstractPortal

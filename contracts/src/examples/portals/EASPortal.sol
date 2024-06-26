@@ -89,6 +89,9 @@ contract EASPortal is AbstractPortal {
   /**
    * @notice Issues Verax attestations in bulk, based on a list of EAS attestations
    * @param attestationsRequests the EAS payloads to attest
+   * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
+   *                  as this ID won't be incremented before the end of the transaction.
+   *                  If you need to check the attestation ID, please use the `replace` method.
    */
   function bulkAttest(AttestationRequest[] memory attestationsRequests) external payable {
     for (uint256 i = 0; i < attestationsRequests.length; i = uncheckedInc256(i)) {

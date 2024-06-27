@@ -108,6 +108,25 @@ contract DefaultPortalTest is Test {
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
     defaultPortal.attest(attestationPayload, validationPayload);
+    vm.prank(portalOwner);
+    defaultPortal.replace(bytes32(abi.encode(1)), attestationPayload, validationPayload);
+  }
+
+  function test_replaceFail_OnlyOwner() public {
+    // Create attestation payload
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
+      bytes("subject"),
+      new bytes(1)
+    );
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    defaultPortal.attest(attestationPayload, validationPayload);
+    vm.prank(makeAddr("random"));
+    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
     defaultPortal.replace(bytes32(abi.encode(1)), attestationPayload, validationPayload);
   }
 
@@ -132,6 +151,33 @@ contract DefaultPortalTest is Test {
     attestationIds[1] = bytes32(abi.encode(2));
 
     defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
+    vm.prank(portalOwner);
+    defaultPortal.bulkReplace(attestationIds, payloadsToAttest, validationPayloads);
+  }
+
+  function test_bulkReplaceFail_OnlyOwner(AttestationPayload[2] memory attestationPayloads) public {
+    vm.assume(bytes32(attestationPayloads[0].schemaId) != 0);
+    vm.assume(bytes32(attestationPayloads[1].schemaId) != 0);
+    // Create attestations payloads
+    AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
+    payloadsToAttest[0] = attestationPayloads[0];
+    payloadsToAttest[1] = attestationPayloads[1];
+
+    // Create validation payloads
+    bytes[] memory validationPayload1 = new bytes[](1);
+    bytes[] memory validationPayload2 = new bytes[](1);
+
+    bytes[][] memory validationPayloads = new bytes[][](2);
+    validationPayloads[0] = validationPayload1;
+    validationPayloads[1] = validationPayload2;
+
+    bytes32[] memory attestationIds = new bytes32[](2);
+    attestationIds[0] = bytes32(abi.encode(1));
+    attestationIds[1] = bytes32(abi.encode(2));
+
+    defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
+    vm.prank(makeAddr("random"));
+    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
     defaultPortal.bulkReplace(attestationIds, payloadsToAttest, validationPayloads);
   }
 

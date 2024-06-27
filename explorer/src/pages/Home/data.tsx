@@ -5,6 +5,8 @@ import Clique from "@/assets/issuers/clique.svg?react";
 import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
 import Hapi from "@/assets/issuers/Hapi_logo_square.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
+import OkapiDark from "@/assets/issuers/okapi-white.svg?react";
+import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
 import PadoDark from "@/assets/issuers/pado-dark.svg?react";
@@ -172,4 +174,14 @@ export const issuersData: IIssuer[] = [
     CTATitle: "Go To Hapi",
     address: "0x0000000000000000000000000000000000000000",
   },
+    {
+    name: "Okapi",
+    logo: Okapi,
+    logoDark: OkapiDark,
+    keywords: ["Proof of Personhood",],
+    description:
+      "Okapi is a social discovery protocol that leverages the wisdom of the crowd to guide users’ journey through the entirety of web3.",
+    CTALink: "https://www.okapi.xyz",
+    CTATitle: "Go To Okapi",
+    address: "0xab3fa8a72eb66a128e8a84baa8c9578180806c6f",
 ];

@@ -1,6 +1,6 @@
 import { VeraxSdk } from "../../src/VeraxSdk";
 
-const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET);
+const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA);
 
 // This example relies on a complex Schema written by Clique
 console.log(

@@ -17,6 +17,6 @@ let waitForConfirmation = false;
 if ((argv === "" && (process.argv[3] as string) === "wait") || waitForConfirmationArgv === "wait")
   waitForConfirmation = true;
 
-const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_TESTNET, undefined, privateKey);
+const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA, undefined, privateKey);
 
 new PortalExamples(veraxSdk).run(argv, process.argv[2], waitForConfirmation);

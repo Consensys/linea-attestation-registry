@@ -53,6 +53,8 @@ contract PortalRegistry is OwnableUpgradeable {
   event IssuerRemoved(address issuerAddress);
   /// @notice Event emitted when a Portal is revoked
   event PortalRevoked(address portalAddress);
+  /// @notice Event emitted when the router is updated
+  event RouterUpdated(address routerAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -73,6 +75,7 @@ contract PortalRegistry is OwnableUpgradeable {
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
     router = IRouter(_router);
+    emit RouterUpdated(_router);
   }
 
   /**

@@ -44,6 +44,10 @@ contract SchemaRegistry is OwnableUpgradeable {
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
   /// @notice Event emitted when a Schema context is updated
   event SchemaContextUpdated(bytes32 indexed id);
+  /// @notice Event emitted when the router is updated
+  event RouterUpdated(address routerAddress);
+  /// @notice Event emitted when the schema issuer is updated
+  event SchemaIssuerUpdated(bytes32 schemaId, address schemaIssuerAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -84,6 +88,7 @@ contract SchemaRegistry is OwnableUpgradeable {
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
     router = IRouter(_router);
+    emit RouterUpdated(_router);
   }
 
   /**
@@ -97,6 +102,7 @@ contract SchemaRegistry is OwnableUpgradeable {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (issuer == address(0)) revert IssuerInvalid();
     schemasIssuers[schemaId] = issuer;
+    emit SchemaIssuerUpdated(schemaId, issuer);
   }
 
   /**
@@ -110,6 +116,7 @@ contract SchemaRegistry is OwnableUpgradeable {
     for (uint256 i = 0; i < schemaIds.length; i = uncheckedInc256(i)) {
       if (schemasIssuers[schemaIds[i]] == oldIssuer) {
         schemasIssuers[schemaIds[i]] = newIssuer;
+        emit SchemaIssuerUpdated(schemaIds[i], newIssuer);
       }
     }
   }

@@ -22,6 +22,11 @@ contract AttestationReader is OwnableUpgradeable {
   /// @notice Error thrown when an invalid EAS registry address is given
   error EASAddressInvalid();
 
+  /// @notice Event emitted when the router is updated
+  event RouterUpdated(address routerAddress);
+  /// @notice Event emitted when the EAS registry address is updated
+  event EASRegistryAddressUpdated(address easRegistryAddress);
+
   /**
    * @notice Contract initialization
    */
@@ -41,6 +46,7 @@ contract AttestationReader is OwnableUpgradeable {
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
     router = IRouter(_router);
+    emit RouterUpdated(_router);
   }
 
   /**
@@ -51,6 +57,7 @@ contract AttestationReader is OwnableUpgradeable {
   function updateEASRegistryAddress(address _easRegistryAddress) public onlyOwner {
     if (_easRegistryAddress == address(0)) revert EASAddressInvalid();
     easRegistry = IEAS(_easRegistryAddress);
+    emit EASRegistryAddressUpdated(_easRegistryAddress);
   }
 
   /**

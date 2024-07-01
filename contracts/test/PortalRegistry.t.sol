@@ -32,6 +32,7 @@ contract PortalRegistryTest is Test {
   event IssuerAdded(address issuerAddress);
   event IssuerRemoved(address issuerAddress);
   event PortalRevoked(address portalAddress);
+  event RouterUpdated(address routerAddress);
 
   function setUp() public {
     router = new Router();
@@ -63,6 +64,8 @@ contract PortalRegistryTest is Test {
   function test_updateRouter() public {
     PortalRegistry testPortalRegistry = new PortalRegistry();
 
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
     vm.prank(address(0));
     testPortalRegistry.updateRouter(address(1));
     address routerAddress = address(testPortalRegistry.router());

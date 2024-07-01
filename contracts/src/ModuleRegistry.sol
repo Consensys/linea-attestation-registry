@@ -44,6 +44,8 @@ contract ModuleRegistry is OwnableUpgradeable {
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
+  /// @notice Event emitted when the router is updated
+  event RouterUpdated(address routerAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -74,6 +76,7 @@ contract ModuleRegistry is OwnableUpgradeable {
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
     router = IRouter(_router);
+    emit RouterUpdated(_router);
   }
 
   /**

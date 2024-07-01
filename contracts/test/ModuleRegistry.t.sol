@@ -22,6 +22,7 @@ contract ModuleRegistryTest is Test {
 
   event ModuleRegistered(string name, string description, address moduleAddress);
   event Initialized(uint8 version);
+  event RouterUpdated(address routerAddress);
 
   function setUp() public {
     router = new Router();
@@ -51,6 +52,8 @@ contract ModuleRegistryTest is Test {
   function test_updateRouter() public {
     ModuleRegistry testModuleRegistry = new ModuleRegistry();
 
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
     vm.prank(address(0));
     testModuleRegistry.updateRouter(address(1));
     address routerAddress = address(testModuleRegistry.router());

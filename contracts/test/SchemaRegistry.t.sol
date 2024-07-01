@@ -22,6 +22,8 @@ contract SchemaRegistryTest is Test {
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
   event SchemaContextUpdated(bytes32 indexed id);
   event Initialized(uint8 version);
+  event RouterUpdated(address routerAddress);
+  event SchemaIssuerUpdated(bytes32 schemaId, address schemaIssuerAddress);
 
   function setUp() public {
     router = new Router();
@@ -45,6 +47,8 @@ contract SchemaRegistryTest is Test {
   function test_updateRouter() public {
     SchemaRegistry testSchemaRegistry = new SchemaRegistry();
 
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
     vm.prank(address(0));
     testSchemaRegistry.updateRouter(address(1));
     address routerAddress = address(testSchemaRegistry.router());
@@ -62,6 +66,8 @@ contract SchemaRegistryTest is Test {
   function test_updateSchemaIssuer() public {
     vm.prank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    vm.expectEmit(true, true, true, true);
+    emit SchemaIssuerUpdated(expectedId, address(2));
     vm.prank(address(0));
     schemaRegistry.updateSchemaIssuer(expectedId, address(2));
   }
@@ -83,6 +89,8 @@ contract SchemaRegistryTest is Test {
   function test_updateMatchingSchemaIssuers() public {
     vm.prank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    vm.expectEmit(true, true, true, true);
+    emit SchemaIssuerUpdated(expectedId, address(2));
     vm.prank(portalRegistryAddress);
     schemaRegistry.updateMatchingSchemaIssuers(user, address(2));
   }

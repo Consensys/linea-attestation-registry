@@ -174,14 +174,15 @@ export const issuersData: IIssuer[] = [
     CTATitle: "Go To Hapi",
     address: "0x0000000000000000000000000000000000000000",
   },
-    {
+  {
     name: "Okapi",
     logo: Okapi,
     logoDark: OkapiDark,
-    keywords: ["Proof of Personhood",],
+    keywords: ["Proof of Personhood"],
     description:
       "Okapi is a social discovery protocol that leverages the wisdom of the crowd to guide users' journey through the entirety of web3",
     CTALink: "https://www.okapi.xyz",
     CTATitle: "Go To Okapi",
     address: "0xab3fa8a72eb66a128e8a84baa8c9578180806c6f",
+  },
 ];

@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { AbstractModuleV2 } from "../abstracts/AbstractModuleV2.sol";
+import { OperationType } from "../types/Enums.sol";
 import { AttestationPayload } from "../types/Structs.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
 
@@ -68,7 +69,8 @@ contract SchemaModuleV2 is AbstractModuleV2 {
     address /*initialCaller*/,
     uint256 /*value*/,
     address /*attester*/,
-    address portal
+    address portal,
+    OperationType /*operationType*/
   ) public view override {
     if (!authorizedSchemaIds[portal][attestationPayload.schemaId]) revert SchemaNotAuthorized();
   }

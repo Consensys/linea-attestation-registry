@@ -3,6 +3,7 @@ pragma solidity 0.8.21;
 
 import { AbstractModuleV2 } from "../abstracts/AbstractModuleV2.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
+import { OperationType } from "../types/Enums.sol";
 import { AttestationPayload } from "../types/Structs.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { IERC1271 } from "@openzeppelin/contracts/interfaces/IERC1271.sol";
@@ -81,7 +82,8 @@ contract ERC1271ModuleV2 is AbstractModuleV2 {
     address /*initialCaller*/,
     uint256 /*value*/,
     address /*attester*/,
-    address portal
+    address portal,
+    OperationType /*operationType*/
   ) public view override {
     bytes32 messageHash = keccak256(abi.encode(attestationPayload));
     address messageSigner = messageHash.toEthSignedMessageHash().recover(validationPayload);

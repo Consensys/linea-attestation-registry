@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
+import { OperationType } from "../types/Enums.sol";
 import { AttestationPayload } from "../types/Structs.sol";
 import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
@@ -28,7 +29,8 @@ abstract contract AbstractModuleV2 is IERC165 {
     address initialCaller,
     uint256 value,
     address attester,
-    address portal
+    address portal,
+    OperationType operationType
   ) public virtual;
 
   /**

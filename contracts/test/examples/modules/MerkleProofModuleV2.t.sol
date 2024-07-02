@@ -4,6 +4,7 @@ pragma solidity 0.8.21;
 import { Test } from "forge-std/Test.sol";
 import { AbstractModuleV2 } from "../../../src/abstracts/AbstractModuleV2.sol";
 import { MerkleProofModuleV2 } from "../../../src/examples/modules/MerkleProofModuleV2.sol";
+import { OperationType } from "../../../src/types/Enums.sol";
 import { AttestationPayload } from "../../../src/types/Structs.sol";
 import { uncheckedInc256 } from "../../../src/Common.sol";
 
@@ -57,7 +58,8 @@ contract MerkleProofModuleV2Test is Test {
       user,
       0,
       address(makeAddr("attester")),
-      address(makeAddr("portal"))
+      address(makeAddr("portal")),
+      OperationType.Attest
     );
   }
 
@@ -77,7 +79,8 @@ contract MerkleProofModuleV2Test is Test {
       user,
       0,
       address(makeAddr("attester")),
-      address(makeAddr("portal"))
+      address(makeAddr("portal")),
+      OperationType.Attest
     );
   }
 

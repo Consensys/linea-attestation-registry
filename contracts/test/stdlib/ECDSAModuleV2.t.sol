@@ -5,6 +5,7 @@ import { Test } from "forge-std/Test.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import { ECDSAModuleV2, AbstractModuleV2 } from "../../src/stdlib/ECDSAModuleV2.sol";
+import { OperationType } from "../../src/types/Enums.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 
@@ -75,7 +76,15 @@ contract ECDSAModuleV2Test is Test {
     bytes memory validationPayload = makeSignature(signerPk1, aPayload);
 
     vm.prank(portal);
-    ecdsaModule.run(aPayload, validationPayload, signer1, 0, address(makeAddr("attester")), portal);
+    ecdsaModule.run(
+      aPayload,
+      validationPayload,
+      signer1,
+      0,
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
   }
 
   function test_run_SignerNotAuthorized() public {
@@ -84,7 +93,15 @@ contract ECDSAModuleV2Test is Test {
 
     vm.prank(portal);
     vm.expectRevert(ECDSAModuleV2.SignerNotAuthorized.selector);
-    ecdsaModule.run(aPayload, validationPayload, signer1, 0, address(makeAddr("attester")), portal);
+    ecdsaModule.run(
+      aPayload,
+      validationPayload,
+      signer1,
+      0,
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
   }
 
   function makeSignature(uint256 signerPk, AttestationPayload memory payload) private pure returns (bytes memory) {

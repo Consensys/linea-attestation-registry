@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { AbstractModuleV2 } from "../../abstracts/AbstractModuleV2.sol";
+import { OperationType } from "../../types/Enums.sol";
 import { AttestationPayload } from "../../types/Structs.sol";
 
 /**
@@ -39,7 +40,8 @@ contract ERC712ModuleV2 is AbstractModuleV2 {
     address initialCaller,
     uint256 /*value*/,
     address /*attester*/,
-    address /*portal*/
+    address /*portal*/,
+    OperationType /*operationType*/
   ) public view override {
     (uint8 v, bytes32 r, bytes32 s) = abi.decode(validationPayload, (uint8, bytes32, bytes32));
 

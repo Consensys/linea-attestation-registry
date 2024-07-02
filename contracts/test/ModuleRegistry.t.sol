@@ -7,6 +7,7 @@ import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
 import { CorrectModuleV2 } from "./mocks/CorrectModuleV2Mock.sol";
 import { IncorrectModule } from "./mocks/IncorrectModuleMock.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
+import { OperationType } from "../src/types/Enums.sol";
 import { PortalRegistryNotAllowlistedMock } from "./mocks/PortalRegistryNotAllowlistedMock.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
@@ -174,7 +175,8 @@ contract ModuleRegistryTest is Test {
       validationPayload,
       0,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.Attest
     );
   }
 
@@ -215,7 +217,8 @@ contract ModuleRegistryTest is Test {
       validationPayload,
       0,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.Attest
     );
   }
 
@@ -242,7 +245,8 @@ contract ModuleRegistryTest is Test {
       validationPayload,
       0,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.Attest
     );
   }
 
@@ -277,7 +281,8 @@ contract ModuleRegistryTest is Test {
       validationPayload,
       0,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.Attest
     );
   }
 
@@ -332,7 +337,8 @@ contract ModuleRegistryTest is Test {
       attestationPayloads,
       validationPayloads,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.BulkAttest
     );
     vm.stopPrank();
   }

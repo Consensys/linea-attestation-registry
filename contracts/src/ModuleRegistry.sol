@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
+import { OperationType } from "./types/Enums.sol";
 import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./abstracts/AbstractModule.sol";
 import { AbstractModuleV2 } from "./abstracts/AbstractModuleV2.sol";
@@ -162,7 +163,8 @@ contract ModuleRegistry is OwnableUpgradeable {
     bytes[] memory validationPayloads,
     uint256 value,
     address initialCaller,
-    address attester
+    address attester,
+    OperationType operationType
   ) public {
     // If no module provided, bypass module validation
     if (modulesAddresses.length == 0) return;
@@ -178,7 +180,8 @@ contract ModuleRegistry is OwnableUpgradeable {
         initialCaller,
         value,
         attester,
-        msg.sender
+        msg.sender,
+        operationType
       );
     }
   }
@@ -220,10 +223,19 @@ contract ModuleRegistry is OwnableUpgradeable {
     AttestationPayload[] memory attestationPayloads,
     bytes[][] memory validationPayloads,
     address initialCaller,
-    address attester
+    address attester,
+    OperationType operationType
   ) public {
     for (uint32 i = 0; i < attestationPayloads.length; i = uncheckedInc32(i)) {
-      runModulesV2(modulesAddresses, attestationPayloads[i], validationPayloads[i], 0, initialCaller, attester);
+      runModulesV2(
+        modulesAddresses,
+        attestationPayloads[i],
+        validationPayloads[i],
+        0,
+        initialCaller,
+        attester,
+        operationType
+      );
     }
   }
 

@@ -5,6 +5,7 @@ import { Test } from "forge-std/Test.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import { ERC1271ModuleV2, AbstractModuleV2 } from "../../src/stdlib/ERC1271ModuleV2.sol";
+import { OperationType } from "../../src/types/Enums.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 
@@ -78,7 +79,15 @@ contract ERC1271ModuleV2Test is Test {
     bytes memory signature = abi.encodePacked(r, s, v);
 
     vm.prank(portal);
-    erc1271Module.run(attestationPayload, signature, signer1, 0, address(makeAddr("attester")), portal);
+    erc1271Module.run(
+      attestationPayload,
+      signature,
+      signer1,
+      0,
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
   }
 
   function test_run_SignerNotAuthorized() public {
@@ -93,7 +102,15 @@ contract ERC1271ModuleV2Test is Test {
 
     vm.prank(portal);
     vm.expectRevert(ERC1271ModuleV2.SignerNotAuthorized.selector);
-    erc1271Module.run(attestationPayload, signature, signer2, 0, address(makeAddr("attester")), portal);
+    erc1271Module.run(
+      attestationPayload,
+      signature,
+      signer2,
+      0,
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
   }
 
   function createMessageHash(AttestationPayload memory payload) internal pure returns (bytes32) {

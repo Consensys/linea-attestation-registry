@@ -3,6 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { FeeModuleV2, AbstractModuleV2 } from "../../src/stdlib/FeeModuleV2.sol";
+import { OperationType } from "../../src/types/Enums.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 
@@ -71,13 +72,29 @@ contract FeeModuleV2Test is Test {
     // Test with sufficient fees
     vm.startPrank(portal);
     AttestationPayload memory attestationPayload1 = AttestationPayload(schemaIds[0], 0, new bytes(0), new bytes(0));
-    feeModule.run(attestationPayload1, new bytes(0), user1, attestationFees[0], address(makeAddr("attester")), portal);
+    feeModule.run(
+      attestationPayload1,
+      new bytes(0),
+      user1,
+      attestationFees[0],
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
 
     // Test with insufficient fees
     vm.startPrank(portal2);
     AttestationPayload memory attestationPayload2 = AttestationPayload(schemaIds[1], 0, new bytes(0), new bytes(0));
     vm.expectRevert(FeeModuleV2.InvalidAttestationFee.selector);
-    feeModule.run(attestationPayload2, new bytes(0), user1, 0, address(makeAddr("attester")), portal);
+    feeModule.run(
+      attestationPayload2,
+      new bytes(0),
+      user1,
+      0,
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
   }
 
   function test_run_InvalidAttestationFee() public {
@@ -85,6 +102,6 @@ contract FeeModuleV2Test is Test {
     AttestationPayload memory payload = AttestationPayload(schemaIds[0], 0, new bytes(0), new bytes(0));
     vm.expectRevert(FeeModuleV2.InvalidAttestationFee.selector);
     vm.startPrank(portal);
-    feeModule.run(payload, new bytes(0), user1, 0, address(makeAddr("attester")), portal);
+    feeModule.run(payload, new bytes(0), user1, 0, address(makeAddr("attester")), portal, OperationType.Attest);
   }
 }

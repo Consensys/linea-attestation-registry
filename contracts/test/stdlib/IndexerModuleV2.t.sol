@@ -5,6 +5,7 @@ import { Test } from "forge-std/Test.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import { IndexerModuleV2 } from "../../src/stdlib/IndexerModuleV2.sol";
+import { OperationType } from "../../src/types/Enums.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
@@ -66,7 +67,15 @@ contract IndexerModuleV2Test is Test {
     vm.prank(address(validPortal));
     vm.expectEmit({ emitter: address(indexerModule) });
     emit AttestationIndexed(bytes32(abi.encode(3)));
-    indexerModule.run(payload3, bytes(""), address(0), 0, address(makeAddr("attester")), address(validPortal));
+    indexerModule.run(
+      payload3,
+      bytes(""),
+      address(0),
+      0,
+      address(makeAddr("attester")),
+      address(validPortal),
+      OperationType.Attest
+    );
     assertEq(indexerModule.getIndexedAttestationStatus(bytes32(abi.encode(3))), true);
   }
 

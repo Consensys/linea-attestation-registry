@@ -3,6 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { IssuersModuleV2 } from "../../../src/stdlib/IssuersModuleV2.sol";
+import { OperationType } from "../../../src/types/Enums.sol";
 import { AttestationPayload } from "../../../src/types/Structs.sol";
 import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 
@@ -35,7 +36,15 @@ contract IssuersModuleV2Test is Test {
       abi.encode(issuerAddress),
       new bytes(0)
     );
-    issuersModule.run(attestationPayload, "", makeAddr("sender"), 0, address(makeAddr("attester")), portal);
+    issuersModule.run(
+      attestationPayload,
+      "",
+      makeAddr("sender"),
+      0,
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
   }
 
   function test_run_rawSubject() public {
@@ -45,7 +54,15 @@ contract IssuersModuleV2Test is Test {
       abi.encodePacked(issuerAddress),
       new bytes(0)
     );
-    issuersModule.run(attestationPayload, "", makeAddr("sender"), 0, address(makeAddr("attester")), portal);
+    issuersModule.run(
+      attestationPayload,
+      "",
+      makeAddr("sender"),
+      0,
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
   }
 
   function test_run_unauthorized_encodedSubject() public {
@@ -56,7 +73,15 @@ contract IssuersModuleV2Test is Test {
       new bytes(0)
     );
     vm.expectRevert(IssuersModuleV2.UnauthorizedSubject.selector);
-    issuersModule.run(attestationPayload, "", makeAddr("sender"), 0, address(makeAddr("attester")), portal);
+    issuersModule.run(
+      attestationPayload,
+      "",
+      makeAddr("sender"),
+      0,
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
   }
 
   function test_run_unauthorized_rawSubject() public {
@@ -67,6 +92,14 @@ contract IssuersModuleV2Test is Test {
       new bytes(0)
     );
     vm.expectRevert(IssuersModuleV2.UnauthorizedSubject.selector);
-    issuersModule.run(attestationPayload, "", makeAddr("sender"), 0, address(makeAddr("attester")), portal);
+    issuersModule.run(
+      attestationPayload,
+      "",
+      makeAddr("sender"),
+      0,
+      address(makeAddr("attester")),
+      portal,
+      OperationType.Attest
+    );
   }
 }

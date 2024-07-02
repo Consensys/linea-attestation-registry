@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { AbstractModuleV2 } from "../abstracts/AbstractModuleV2.sol";
+import { OperationType } from "../types/Enums.sol";
 import { AttestationPayload, Attestation } from "../types/Structs.sol";
 import { Router } from "../Router.sol";
 import { AttestationRegistry } from "../AttestationRegistry.sol";
@@ -60,7 +61,8 @@ contract IndexerModuleV2 is AbstractModuleV2 {
     address /*initialCaller*/,
     uint256 /*value*/,
     address attester,
-    address portal
+    address portal,
+    OperationType /*operationType*/
   ) public override onlyRegisteredPortal(portal) {
     Attestation memory attestation = _buildAttestation(attestationPayload, attester, portal);
     _indexAttestation(attestation);

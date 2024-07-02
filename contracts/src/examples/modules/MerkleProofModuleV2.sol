@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { AbstractModuleV2 } from "../../abstracts/AbstractModuleV2.sol";
+import { OperationType } from "../../types/Enums.sol";
 import { AttestationPayload } from "../../types/Structs.sol";
 import { uncheckedInc256 } from "../../Common.sol";
 
@@ -21,7 +22,8 @@ contract MerkleProofModuleV2 is AbstractModuleV2 {
     address /*initialCaller*/,
     uint256 /*value*/,
     address /*attester*/,
-    address /*portal*/
+    address /*portal*/,
+    OperationType /*operationType*/
   ) public pure override {
     bytes32[] memory proof = abi.decode(validationPayload, (bytes32[]));
     bytes32 hash = bytes32(attestationPayload.attestationData);

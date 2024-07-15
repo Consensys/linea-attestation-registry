@@ -171,14 +171,17 @@ contract PortalRegistry is OwnableUpgradeable {
 
     portals[id] = Portal(address(0), address(0), new address[](0), false, "", "", "");
 
+    bool found = false;
     uint256 portalAddressIndex;
     for (uint256 i = 0; i < portalAddresses.length; i = uncheckedInc256(i)) {
       if (portalAddresses[i] == id) {
         portalAddressIndex = i;
+        found = true;
+        break;
       }
     }
 
-    if (portalAddressIndex >= portalAddresses.length) {
+    if (!found) {
       revert PortalNotRegistered();
     }
 

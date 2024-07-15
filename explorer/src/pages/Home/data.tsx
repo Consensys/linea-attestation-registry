@@ -1,7 +1,6 @@
 import ZeroXScore from "@/assets/issuers/0xscore.svg?react";
 import Aspecta from "@/assets/issuers/aspecta.svg?react";
 import Automata from "@/assets/issuers/automata.svg?react";
-import Clique from "@/assets/issuers/clique.svg?react";
 import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
 import Hapi from "@/assets/issuers/Hapi_logo_square.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
@@ -64,16 +63,6 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://verax.zkpass.org/verax",
     CTATitle: "Go To zkPass",
     address: "0x182085Ce8b0faDdc8503D9921dF6Af076281A6A9",
-  },
-  {
-    name: "Clique",
-    logo: Clique,
-    keywords: ["zk-attestations", "social account attestation"],
-    description:
-      "Connect your Twitter account & claim your Twitter attestations on the Linea Network. Your attestations will be directly embedded in Linea's reputation layer.",
-    CTALink: "https://www.clique.social/attestor/twitterLinea",
-    CTATitle: "Connect with clique",
-    address: "0x4401A1667dAFb63Cff06218A69cE11537de9A101",
   },
   {
     name: "Openid3",

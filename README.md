@@ -216,6 +216,8 @@ Here are the addresses on those networks:
 - SchemaRegistry =
   [0x8081dCd745f160c148Eb5be510F78628A0951c31](https://basescan.org/address/0x8081dCd745f160c148Eb5be510F78628A0951c31)
 
+</details>
+
 <details>
   <summary>BSC Testnet</summary>
 

@@ -12,13 +12,13 @@ export default class AttestationExamples {
   async run(argv: string, methodName: string = "", waitForConfirmation = false) {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
       const attestationId: string =
-        argv === "" ? "0x00000000000000000000000000000000000000000000000000000000000007b5" : argv;
+        argv === "" ? "0x0000000000000000000000000000000000000000000000000000000000000129" : argv;
       console.log(await this.veraxSdk.attestation.findOneById(attestationId));
     }
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
       const filter: Attestation_filter | undefined =
-        argv !== "" ? JSON.parse(argv) : { attester_not: "0x809e815596AbEB3764aBf81BE2DC39fBBAcc9949" };
+        argv !== "" ? JSON.parse(argv) : { attester_not: "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d" };
       console.log(await this.veraxSdk.attestation.findBy(2, 0, filter, "attestedDate", "desc"));
     }
 
@@ -96,7 +96,7 @@ export default class AttestationExamples {
 
     if (methodName.toLowerCase() == "isRegistered".toLowerCase() || methodName == "") {
       const attestationId: string =
-        argv === "" ? "0x00000000000000000000000000000000000000000000000000000000000007b5" : argv;
+        argv === "" ? "0x0000000000000000000000000000000000000000000000000000000000000129" : argv;
       console.log(await this.veraxSdk.attestation.isRegistered(attestationId));
     }
 
@@ -107,7 +107,7 @@ export default class AttestationExamples {
 
     if (methodName.toLowerCase() == "getAttestation".toLowerCase() || methodName == "") {
       const attestationId: string =
-        argv === "" ? "0x00000000000000000000000000000000000000000000000000000000000007b5" : argv;
+        argv === "" ? "0x0000000000000000000000000000000000000000000000000000000000000129" : argv;
       console.log(await this.veraxSdk.attestation.getAttestation(attestationId));
     }
 
@@ -122,7 +122,7 @@ export default class AttestationExamples {
     if (methodName.toLowerCase() == "balanceOf".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const account = params?.account ? (params.account as Address) : "0x809e815596abeb3764abf81be2dc39fbbacc9949";
+      const account = params?.account ? (params.account as Address) : "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d";
       const id = params?.id ? (params.id as unknown as number) : 1;
 
       console.log(await this.veraxSdk.attestation.balanceOf(account, id));
@@ -133,7 +133,7 @@ export default class AttestationExamples {
       if (argv !== "") params = JSON.parse(argv);
       const accounts = params?.accounts
         ? (params.accounts as Address[])
-        : ["0x809e815596abeb3764abf81be2dc39fbbacc9949", "0x809e815596abeb3764abf81be2dc39fbbacc9949"];
+        : ["0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d", "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d"];
       const ids = params?.ids ? (params.ids as number[]) : [1, 2];
 
       console.log(await this.veraxSdk.attestation.balanceOfBatch(accounts as Address[], ids));

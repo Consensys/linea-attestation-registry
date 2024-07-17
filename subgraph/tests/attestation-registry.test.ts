@@ -208,7 +208,7 @@ describe("AttestationRegistry", () => {
     test("Should decode an abi-encoded address subject", () => {
       assert.entityCount("Attestation", 0);
       let attestationRegisteredEvent = createAttestationRegisteredEvent(attestationId);
-      mockGetAttestation(revoked, revocationDate, Bytes.fromHexString("0x809e815596abeb3764abf81be2dc39fbbacc9949"));
+      mockGetAttestation(revoked, revocationDate, Bytes.fromHexString("0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d"));
 
       handleAttestationRegistered(attestationRegisteredEvent);
 
@@ -219,13 +219,13 @@ describe("AttestationRegistry", () => {
         "Attestation",
         attestationId.toHexString(),
         "subject",
-        "0x809e815596abeb3764abf81be2dc39fbbacc9949",
+        "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d",
       );
       assert.fieldEquals(
         "Attestation",
         attestationId.toHexString(),
         "encodedSubject",
-        "0x809e815596abeb3764abf81be2dc39fbbacc9949",
+        "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d",
       );
 
       attestationRegisteredEvent = createAttestationRegisteredEvent(
@@ -234,7 +234,7 @@ describe("AttestationRegistry", () => {
       mockGetAttestation(
         revoked,
         revocationDate,
-        Bytes.fromHexString("0x000000000000000000000000809e815596abeb3764abf81be2dc39fbbacc9949"),
+        Bytes.fromHexString("0x0000000000000000000000006ecfd8252c19ac2bf4bd1cbdc026c001c93e179d"),
         Bytes.fromHexString("0x00000000000000000000000000000000000000000000000000000000000010f6"),
       );
 
@@ -247,13 +247,13 @@ describe("AttestationRegistry", () => {
         "Attestation",
         "0x00000000000000000000000000000000000000000000000000000000000010f6",
         "subject",
-        "0x809e815596abeb3764abf81be2dc39fbbacc9949",
+        "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d",
       );
       assert.fieldEquals(
         "Attestation",
         "0x00000000000000000000000000000000000000000000000000000000000010f6",
         "encodedSubject",
-        "0x000000000000000000000000809e815596abeb3764abf81be2dc39fbbacc9949",
+        "0x0000000000000000000000006ecfd8252c19ac2bf4bd1cbdc026c001c93e179d",
       );
     });
   });

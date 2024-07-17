@@ -1,4 +1,4 @@
-import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, linea, lineaTestnet } from "wagmi/chains";
+import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, linea } from "wagmi/chains";
 
 import { lineaSepolia } from "@/config";
 
@@ -18,9 +18,6 @@ export const BILLION = 1e9;
 export const links: Record<number, { trx?: string; address: string }> = {
   [linea.id]: {
     address: "https://lineascan.build/address",
-  },
-  [lineaTestnet.id]: {
-    address: "https://goerli.lineascan.build/address",
   },
   [lineaSepolia.id]: {
     address: "https://sepolia.lineascan.build/address",

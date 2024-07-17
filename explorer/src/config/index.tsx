@@ -1,17 +1,7 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { getDefaultConfig } from "connectkit";
 import { Chain, createConfig } from "wagmi";
-import {
-  arbitrum,
-  arbitrumNova,
-  arbitrumSepolia,
-  base,
-  baseSepolia,
-  bsc,
-  bscTestnet,
-  linea,
-  lineaTestnet,
-} from "wagmi/chains";
+import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
 
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
 import ArbitrumIconDark from "@/assets/networks/arbitrum-dark.svg?react";
@@ -28,7 +18,6 @@ import BscTestnetIcon from "@/assets/networks/bsc-testnet.svg?react";
 import LineaMainnetIconDark from "@/assets/networks/linea-mainnet-dark.svg?react";
 import LineaMainnetIcon from "@/assets/networks/linea-mainnet.svg?react";
 import LineaSepoliaIcon from "@/assets/networks/linea-sepolia.svg?react";
-import LineaTestnetIcon from "@/assets/networks/linea-testnet.svg?react";
 import { INetwork } from "@/interfaces/config";
 
 const lineaSepolia = {
@@ -69,13 +58,6 @@ const chains: INetwork[] = [
     img: <LineaMainnetIcon />,
     imgDark: <LineaMainnetIconDark />,
     network: "linea",
-  },
-  {
-    name: "Linea Testnet",
-    chain: lineaTestnet,
-    veraxEnv: VeraxSdk.DEFAULT_LINEA_TESTNET_FRONTEND,
-    img: <LineaTestnetIcon />,
-    network: "linea-testnet",
   },
   {
     name: "Linea Sepolia",

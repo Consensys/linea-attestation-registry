@@ -36,7 +36,7 @@ const config: HardhatUserConfig = {
     },
     "base-sepolia": {
       url: `https://base-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
+      accounts: process.env.PRIVATE_KEY_LINEA_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_LINEA_SEPOLIA] : [],
     },
     base: {
       url: `https://base-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
@@ -44,7 +44,7 @@ const config: HardhatUserConfig = {
     },
     "bsc-testnet": {
       url: `https://data-seed-prebsc-1-s1.binance.org:8545`,
-      accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
+      accounts: process.env.PRIVATE_KEY_LINEA_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_LINEA_SEPOLIA] : [],
     },
     bsc: {
       url: `https://rpc.ankr.com/bsc`,

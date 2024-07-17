@@ -8,7 +8,6 @@ import {
   bscTestnet,
   linea,
   lineaSepolia,
-  lineaTestnet,
 } from "viem/chains";
 import AttestationDataMapper from "./dataMapper/AttestationDataMapper";
 import SchemaDataMapper from "./dataMapper/SchemaDataMapper";
@@ -37,22 +36,6 @@ export class VeraxSdk {
 
   static DEFAULT_LINEA_MAINNET_FRONTEND: Conf = {
     ...VeraxSdk.DEFAULT_LINEA_MAINNET,
-    mode: SDKMode.FRONTEND,
-  };
-
-  static DEFAULT_LINEA_TESTNET: Conf = {
-    chain: lineaTestnet,
-    mode: SDKMode.BACKEND,
-    subgraphUrl:
-      "https://api.goldsky.com/api/public/project_clqghnrbp9nx201wtgylv8748/subgraphs/verax/subgraph-testnet/gn",
-    portalRegistryAddress: "0x506f88a5Ca8D5F001f2909b029738A40042e42a6",
-    moduleRegistryAddress: "0x1a20b2CFA134686306436D2c9f778D7eC6c43A43",
-    schemaRegistryAddress: "0xB2c4Da1f8F08A0CA25862509E5431289BE2b598B",
-    attestationRegistryAddress: "0xC765F28096F6121C2F2b82D35A4346280164428b",
-  };
-
-  static DEFAULT_LINEA_TESTNET_FRONTEND: Conf = {
-    ...VeraxSdk.DEFAULT_LINEA_TESTNET,
     mode: SDKMode.FRONTEND,
   };
 

@@ -10,6 +10,12 @@ async function main() {
   console.log("Checking contracts for upgradeability...");
 
   console.log("Checking AttestationRegistry...");
+  const routerProxyAddress = process.env.ROUTER_ADDRESS ?? "";
+  const Router = await ethers.getContractFactory("Router");
+
+  await upgrades.validateUpgrade(routerProxyAddress, Router, { kind: "transparent" });
+
+  console.log("Checking AttestationRegistry...");
   const attestationRegistryProxyAddress = process.env.ATTESTATION_REGISTRY_ADDRESS ?? "";
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");
 
@@ -33,11 +39,14 @@ async function main() {
 
   await upgrades.validateUpgrade(schemaRegistryProxyAddress, SchemaRegistry, { kind: "transparent" });
 
-  console.log("Checking AttestationReader...");
-  const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS ?? "";
-  const AttestationReader = await ethers.getContractFactory("AttestationReader");
+  const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS;
 
-  await upgrades.validateUpgrade(attestationReaderProxyAddress, AttestationReader, { kind: "transparent" });
+  if (attestationReaderProxyAddress) {
+    console.log("Checking AttestationReader...");
+    const AttestationReader = await ethers.getContractFactory("AttestationReader");
+
+    await upgrades.validateUpgrade(attestationReaderProxyAddress, AttestationReader, { kind: "transparent" });
+  }
 
   console.log("All contracts are upgradeable!");
 }

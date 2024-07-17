@@ -293,15 +293,15 @@ jobs:
         if: steps.check-changes.outputs.changed == 'true'
         run: pnpm run check:implementations
 
-      - name: Create Linea testnet env file
+      - name: Create Linea Sepolia env file
         if: steps.check-changes.outputs.changed == 'true'
         run: |
-          cp ./env/.env.linea-goerli .env
+          cp ./env/.env.linea-sepolia .env
           echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
 
-      - name: Check contracts upgradeability on Linea testnet
+      - name: Check contracts upgradeability on Linea Sepolia
         if: steps.check-changes.outputs.changed == 'true'
-        run: pnpm run check:upgradeability linea-goerli
+        run: pnpm run check:upgradeability linea-sepolia
 
       - name: Create Linea mainnet env file
         if: steps.check-changes.outputs.changed == 'true'
@@ -335,6 +335,60 @@ jobs:
       - name: Check contracts upgradeability on Arbitrum mainnet
         if: steps.check-changes.outputs.changed == 'true'
         run: pnpm run check:upgradeability arbitrum
+
+      - name: Create Arbitrum Nova env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.arbitrum-nova .env
+
+      - name: Check contracts upgradeability on Arbitrum Nova
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability arbitrum-nova
+
+      - name: Create Base Sepolia env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.base-sepolia .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Base Sepolia
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability base-sepolia
+
+      - name: Create Base mainnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.base .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Base
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability base
+
+      - name: Create BSC testnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.bsc-testnet .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on BSC testnet
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability bsc-testnet
+
+      - name: Create BSC mainnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.bsc .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on BSC mainnet
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability bsc
 
       - name: Add upgradeability summary
         if: steps.check-changes.outputs.changed == 'true'

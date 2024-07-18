@@ -67,7 +67,6 @@ Don't hesitate to check our [Contribution Guide](./CONTRIBUTING.md) before pushi
 
 The main contracts (i.e. the "registries") and the helpers contracts are deployed on:
 
-- Linea Goerli (Deprecated)
 - Linea Sepolia
 - Linea Mainnet
 - Arbitrum Sepolia
@@ -79,24 +78,6 @@ The main contracts (i.e. the "registries") and the helpers contracts are deploye
 - BSC Mainnet
 
 Here are the addresses on those networks:
-
-<details>
-  <summary>Linea Goerli (Deprecated)</summary>
-
-- Router =
-  [0x736c78b2f2cBf4F921E8551b2acB6A5Edc9177D5](https://goerli.lineascan.build/address/0x736c78b2f2cBf4F921E8551b2acB6A5Edc9177D5)
-- AttestationRegistry =
-  [0xC765F28096F6121C2F2b82D35A4346280164428b](https://goerli.lineascan.build/address/0xC765F28096F6121C2F2b82D35A4346280164428b)
-- ModuleRegistry =
-  [0x1a20b2CFA134686306436D2c9f778D7eC6c43A43](https://goerli.lineascan.build/address/0x1a20b2CFA134686306436D2c9f778D7eC6c43A43)
-- PortalRegistry =
-  [0x506f88a5Ca8D5F001f2909b029738A40042e42a6](https://goerli.lineascan.build/address/0x506f88a5Ca8D5F001f2909b029738A40042e42a6)
-- SchemaRegistry =
-  [0xB2c4Da1f8F08A0CA25862509E5431289BE2b598B](https://goerli.lineascan.build/address/0xB2c4Da1f8F08A0CA25862509E5431289BE2b598B)
-- AttestationReader =
-  [0x65c8294C7aF0f0bDDe51eF92AF850613bb629fc6](https://goerli.lineascan.build/address/0x65c8294C7aF0f0bDDe51eF92AF850613bb629fc6)
-
-</details>
 
 <details>
   <summary>Linea Sepolia</summary>
@@ -284,7 +265,6 @@ Here are the addresses on those networks:
 
 ## Subgraphs URLs
 
-- [Linea Goerli (Deprecated)](https://api.goldsky.com/api/public/project_clqghnrbp9nx201wtgylv8748/subgraphs/verax/subgraph-testnet/gn)
 - [Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.12)
 - [Linea Mainnet](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
 - [Linea Mainnet (Backup)](https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1)
@@ -301,7 +281,6 @@ Here are the addresses on those networks:
 To easily differentiate the networks on which an attestation has been made, we use network prefixes for the Attestation
 ID. This prefix is defined in the `contracts/script/utils.ts` file.
 
-- Linea Goerli (Deprecated) - `0x0000`
 - Linea Sepolia - `0x0000`
 - Linea Mainnet - `0x0000`
 - Arbitrum Sepolia - `0x0001`

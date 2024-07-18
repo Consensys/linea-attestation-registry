@@ -90,8 +90,8 @@ importers:
         specifier: ^8.10.7
         version: 8.17.3(react-dom@18.3.1)(react@18.3.1)
       '@verax-attestation-registry/verax-sdk':
-        specifier: 1.9.0
-        version: 1.9.0(@envelop/core@5.0.1)(@graphql-mesh/types@0.95.8)(@graphql-tools/delegate@10.0.10)(@graphql-tools/merge@9.0.4)(@graphql-tools/utils@10.2.0)(@graphql-tools/wrap@10.0.5)(@types/node@20.12.12)(@types/react@18.3.2)(graphql-tag@2.12.6)(graphql-yoga@5.3.1)(react-dom@18.3.1)(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2)
+        specifier: 1.10.0
+        version: 1.10.0(@envelop/core@5.0.1)(@graphql-mesh/types@0.95.8)(@graphql-tools/delegate@10.0.10)(@graphql-tools/merge@9.0.4)(@graphql-tools/utils@10.2.0)(@graphql-tools/wrap@10.0.5)(@types/node@20.12.12)(@types/react@18.3.2)(graphql-tag@2.12.6)(graphql-yoga@5.3.1)(react-dom@18.3.1)(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2)
       '@wagmi/core':
         specifier: ^1.4.7
         version: 1.4.13(@types/react@18.3.2)(react@18.3.1)(typescript@5.2.2)(viem@1.18.9)
@@ -9879,8 +9879,8 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@verax-attestation-registry/verax-sdk@1.9.0(@envelop/core@5.0.1)(@graphql-mesh/types@0.95.8)(@graphql-tools/delegate@10.0.10)(@graphql-tools/merge@9.0.4)(@graphql-tools/utils@10.2.0)(@graphql-tools/wrap@10.0.5)(@types/node@20.12.12)(@types/react@18.3.2)(graphql-tag@2.12.6)(graphql-yoga@5.3.1)(react-dom@18.3.1)(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2):
-    resolution: {integrity: sha512-w1vIY2PlnNNZwFul0Feyk/EENEkp4vHGnf9G9Zhdi1PHUSSTgoTubmi5nKSys9t88nKUqSsBUCqMErPewfwpzw==}
+  /@verax-attestation-registry/verax-sdk@1.10.0(@envelop/core@5.0.1)(@graphql-mesh/types@0.95.8)(@graphql-tools/delegate@10.0.10)(@graphql-tools/merge@9.0.4)(@graphql-tools/utils@10.2.0)(@graphql-tools/wrap@10.0.5)(@types/node@20.12.12)(@types/react@18.3.2)(graphql-tag@2.12.6)(graphql-yoga@5.3.1)(react-dom@18.3.1)(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2):
+    resolution: {integrity: sha512-tzy7Gaw3Q18mA0inkT9UESvMTPVR6wKzV50D1CAqyvsshLPG+1pVKV3bRhS4WFhoIHLnoLKSpko0aHmk3xa4gg==}
     dependencies:
       '@graphprotocol/client-cli': 3.0.3(@envelop/core@5.0.1)(@graphql-mesh/cross-helpers@0.4.2)(@graphql-mesh/store@0.95.8)(@graphql-mesh/types@0.95.8)(@graphql-mesh/utils@0.95.8)(@graphql-tools/delegate@10.0.10)(@graphql-tools/merge@9.0.4)(@graphql-tools/utils@10.2.0)(@graphql-tools/wrap@10.0.5)(@types/node@20.12.12)(@types/react@18.3.2)(graphql-tag@2.12.6)(graphql-yoga@5.3.1)(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)
       '@graphql-mesh/cache-localforage': 0.95.8(@graphql-mesh/types@0.95.8)(@graphql-mesh/utils@0.95.8)(graphql@16.8.1)(tslib@2.6.2)

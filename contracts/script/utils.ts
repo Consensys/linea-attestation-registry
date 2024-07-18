@@ -1,7 +1,5 @@
 export const getChainPrefix = (chainId: bigint): `0x${string}` => {
   switch (chainId) {
-    case 59140n: // Linea testnet
-      return "0x0000000000000000000000000000000000000000000000000000000000000000";
     case 59141n: // Linea Sepolia
       return "0x0000000000000000000000000000000000000000000000000000000000000000";
     case 59144n: // Linea mainnet

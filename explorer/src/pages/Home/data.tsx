@@ -3,6 +3,8 @@ import Aspecta from "@/assets/issuers/aspecta.svg?react";
 import Automata from "@/assets/issuers/automata.svg?react";
 import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
 import Hapi from "@/assets/issuers/Hapi_logo_square.svg?react";
+import IndexNetwork from "@/assets/issuers/index-network-black.svg?react";
+import IndexNetworkDark from "@/assets/issuers/index-network.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
 import Okapi from "@/assets/issuers/okapi-black.svg?react";
 import OkapiDark from "@/assets/issuers/okapi-white.svg?react";
@@ -161,7 +163,7 @@ export const issuersData: IIssuer[] = [
       "HAPI ID is a digital identification of a user’s on-chain activity, created to simplify the interpretation of user’s action on the blockchain. Created for users, protocols, DApps, and businesses, HAPI ID serves as a one-stop unique solution against Sybils and for Users!",
     CTALink: "https://hapi.one",
     CTATitle: "Go To Hapi",
-    address: "0x0000000000000000000000000000000000000000",
+    address: "0x62773b3217e066a9a4ebd98db4360d89671453df",
   },
   {
     name: "Okapi",
@@ -173,5 +175,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://www.okapi.xyz",
     CTATitle: "Go To Okapi",
     address: "0xab3fa8a72eb66a128e8a84baa8c9578180806c6f",
+  },
+  {
+    name: "Index Network",
+    logo: IndexNetwork,
+    logoDark: IndexNetworkDark,
+    keywords: ["Discoverability"],
+    description:
+      "Index Network is a discovery protocol that enables truly personalized and autonomous experiences across the web. By utilizing decentralized agents and semantic indexes, it facilitates the discovery of information in various fields, including science, journalism, e-commerce, and social interactions. Index Network transforms discovery into a protocol, making it a foundational layer for better information and user experience in web3.",
+    CTALink: "https://index.network/",
+    CTATitle: "Go To Index Network",
+    address: "0x0000000000000000000000000000000000000000",
   },
 ];

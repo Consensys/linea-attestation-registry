@@ -55,6 +55,10 @@ contract PortalRegistry is OwnableUpgradeable {
   event PortalRevoked(address portalAddress);
   /// @notice Event emitted when the router is updated
   event RouterUpdated(address routerAddress);
+  /// @notice Event emitted when the schema issuer is updated with the portal owner
+  event SchemaIssuerUpdated(bytes32 schemaId);
+  /// @notice Event emitted when the schemas issuers are updated in bulk with the portal owner
+  event BulkSchemasIssuersUpdated(bytes32[] schemaIds);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -94,9 +98,26 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function removeIssuer(address issuer) public onlyOwner {
     issuers[issuer] = false;
-    SchemaRegistry(router.getSchemaRegistry()).updateMatchingSchemaIssuers(issuer, msg.sender);
     // Emit event
     emit IssuerRemoved(issuer);
+  }
+
+  /**
+   * @notice Updates issuer address for the given schemaId
+   * @param schemaId the schema ID to update
+   */
+  function updateSchemaIssuerWithPortalOwner(bytes32 schemaId) public onlyOwner {
+    SchemaRegistry(router.getSchemaRegistry()).updateSchemaIssuer(schemaId, msg.sender);
+    emit SchemaIssuerUpdated(schemaId);
+  }
+
+  /**
+   * @notice Updates issuer addresses for all schemas associated with given IDs
+   * @param schemaIds the schema IDs to update
+   */
+  function bulkUpdateSchemasIssuersWithPortalOwner(bytes32[] calldata schemaIds) public onlyOwner {
+    SchemaRegistry(router.getSchemaRegistry()).bulkUpdateSchemasIssuers(schemaIds, msg.sender);
+    emit BulkSchemasIssuersUpdated(schemaIds);
   }
 
   /**

@@ -122,6 +122,19 @@ contract SchemaRegistry is OwnableUpgradeable {
   }
 
   /**
+   * @notice Updates issuers of all given schemaIds with the new issuer
+   * @param schemaIdsToUpdate the IDs of schemas to update
+   * @param issuer the address of new issuer
+   * @dev Updates issuer for the given schemaIds in the `schemaIssuers` mapping
+   *      The issuer must already be registered as an Issuer via the `PortalRegistry`
+   */
+  function bulkUpdateSchemasIssuers(bytes32[] calldata schemaIdsToUpdate, address issuer) public onlyOwner {
+    for (uint256 i = 0; i < schemaIdsToUpdate.length; i = uncheckedInc256(i)) {
+      updateSchemaIssuer(schemaIdsToUpdate[i], issuer);
+    }
+  }
+
+  /**
    * Generate an ID for a given schema
    * @param schema the string defining a schema
    * @return the schema ID

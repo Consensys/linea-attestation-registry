@@ -28,4 +28,8 @@ contract SchemaRegistryMock {
   }
 
   function updateMatchingSchemaIssuers(address oldIssuer, address newIssuer) public {}
+
+  function updateSchemaIssuer(bytes32 schemaId, address issuer) public {}
+
+  function bulkUpdateSchemasIssuers(bytes32[] calldata schemaIdsToUpdate, address issuer) public {}
 }

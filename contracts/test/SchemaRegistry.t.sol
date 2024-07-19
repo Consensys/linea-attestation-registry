@@ -18,6 +18,7 @@ contract SchemaRegistryTest is Test {
   string private expectedString = "this is a schema";
   address private user = makeAddr("user");
   address private unassignedUser = makeAddr("unassignedUser");
+  bytes32[] private expectedIds;
 
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
   event SchemaContextUpdated(bytes32 indexed id);
@@ -37,6 +38,7 @@ contract SchemaRegistryTest is Test {
     router.updatePortalRegistry(portalRegistryAddress);
     portalRegistryMock.setIssuer(user);
     portalRegistryMock.setIssuer(unassignedUser);
+    expectedIds.push(expectedId);
   }
 
   function test_initialize_ContractAlreadyInitialized() public {
@@ -84,6 +86,29 @@ contract SchemaRegistryTest is Test {
     vm.prank(address(0));
     vm.expectRevert(SchemaRegistry.IssuerInvalid.selector);
     schemaRegistry.updateSchemaIssuer(expectedId, address(0));
+  }
+
+  function test_bulkUpdateSchemasIssuers() public {
+    vm.prank(user);
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    vm.expectEmit(true, true, true, true);
+    emit SchemaIssuerUpdated(expectedId, address(2));
+    vm.prank(address(0));
+    schemaRegistry.bulkUpdateSchemasIssuers(expectedIds, address(2));
+  }
+
+  function test_bulkUpdateSchemasIssuers_SchemaNotRegistered() public {
+    vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
+    vm.prank(address(0));
+    schemaRegistry.bulkUpdateSchemasIssuers(expectedIds, address(0));
+  }
+
+  function test_bulkUpdateSchemasIssuers_IssuerInvalid() public {
+    vm.prank(user);
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    vm.prank(address(0));
+    vm.expectRevert(SchemaRegistry.IssuerInvalid.selector);
+    schemaRegistry.bulkUpdateSchemasIssuers(expectedIds, address(0));
   }
 
   function test_updateMatchingSchemaIssuers() public {

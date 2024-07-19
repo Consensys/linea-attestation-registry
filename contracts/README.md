@@ -105,3 +105,13 @@ Change the arguments you want to use fpr the verify action in `contracts/script/
 ```
 npx hardhat verify --network NETWORK_NAME CONTRACT_ADDRESS --constructor-args contracts/script/arguments.ts
 ```
+
+## Important Notes
+
+### Removal of issuers and schema ownership
+
+Issuers may have schemas associated with them. When removing issuers, you will need to reassign schema ownership to the
+portal owner by separately calling the following methods :
+
+1. updateSchemaIssuerWithPortalOwner
+2. bulkUpdateSchemasIssuersWithPortalOwner"

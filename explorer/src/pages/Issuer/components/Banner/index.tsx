@@ -1,31 +1,37 @@
 import { ArrowUpRight } from "lucide-react";
 
-import issuerBG from "@/assets/backgrounds/issuer-bg.jpeg";
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
+import { Chips } from "@/components/Chips";
 
 import { IBannerProps } from "./interface";
 
-export const Banner: React.FC<IBannerProps> = ({ name, CTALink, CTATitle, logo }) => {
+export const Banner: React.FC<IBannerProps> = ({ name, CTALink, CTATitle, logo, keywords }) => {
   const IssuerLogo = logo;
-
   return (
-    <div className="bg-gray-900 bg-opacity-50 h-[24.125rem] p-4 md:h-[20.4375rem] md:p-8 rounded-[1.375rem] md:rounded-[2.25rem] flex flex-col lg:flex-row justify-end lg:justify-between items-start lg:items-end relative overflow-hidden">
-      <img src={issuerBG} alt="issuer background" className="absolute -z-[1] top-0 left-0 h-full w-full object-cover" />
-      <div className="mb-6 lg:mb-0 md:flex md:items-center md:gap-6">
-        <IssuerLogo className="mb-4 md:mb-0 w-[2.875rem] md:w-16 h-auto" />
-        <div className="text-[2rem] font-medium md:text-[2.5rem] lg:text-[2.75rem] md:font-semibold text-whiteDefault">
-          {name}
+    <div>
+      <div className="flex flex-col lg:flex-row justify-end lg:justify-between items-start lg:items-end relative overflow-hidden">
+        <div className="flex flex-row items-center gap-[20px]">
+          <div className="w-[87px] h-[87px] relative">
+            <IssuerLogo className="absolute w-[87px] h-[87px] font-normal text-[12px] leading-[15px] text-black" />
+          </div>
+          <div className="text-[32px] font-normal leading-[39px] dark:text-whiteDefault">{name}</div>
         </div>
+        {CTALink && (
+          <Button
+            name={CTATitle}
+            handler={() => window.open(CTALink, "_blank")}
+            buttonType={EButtonType.PRIMARY_WHITE}
+            iconRight={<ArrowUpRight />}
+            className="mb-5 bg-[#D9D9D9] rounded-[50px]"
+          />
+        )}
       </div>
-      {CTALink && (
-        <Button
-          name={CTATitle}
-          handler={() => window.open(CTALink, "_blank")}
-          buttonType={EButtonType.PRIMARY_WHITE}
-          iconRight={<ArrowUpRight />}
-        />
-      )}
+      <div className="flex flex-wrap gap-2 mt-4">
+        {keywords.map((keyword) => (
+          <Chips name={keyword} key={keyword} />
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,10 +1,11 @@
-import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { Attestation_filter, OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
+import { BasicPagination } from "@/components/Pagination/Basic";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
 import { attestationColumnsOption, columns, skeletonAttestations } from "@/constants/columns/attestation";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
@@ -32,6 +33,9 @@ export const Attestations: React.FC = () => {
   const page = pageBySearchParams(searchParams, totalItems);
   const sortByDateDirection = searchParams.get(EQueryParams.SORT_BY_DATE);
   const itemsPerPage = Number(searchParams.get(EQueryParams.ITEMS_PER_PAGE)) || ITEMS_PER_PAGE_DEFAULT;
+  const where = searchParams.get(EQueryParams.WHERE)
+    ? (JSON.parse(searchParams.get(EQueryParams.WHERE) ?? "") as Attestation_filter)
+    : undefined;
 
   const [lastID, setLastID] = useState<number>(getItemsByPage(page, itemsPerPage));
 
@@ -48,6 +52,7 @@ export const Attestations: React.FC = () => {
           (sortByDateDirection as OrderDirection) === ETableSorting.DESC
           ? { id_lte: buildAttestationId(totalItems - (page - 1) * itemsPerPage, network.prefix) }
           : { id_gt: buildAttestationId(lastID, network.prefix) },
+        // TODO: add 'where' clause
         "attestedDate",
         (sortByDateDirection as OrderDirection) || ETableSorting.DESC,
       ),
@@ -62,10 +67,22 @@ export const Attestations: React.FC = () => {
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations(itemsPerPage) }
     : { columns: columns({ chain: network.chain }), list: attestationsList || [] };
 
+  const renderPagination = () => {
+    if (attestationsCount) {
+      if (where) {
+        return <BasicPagination handlePage={handlePage} />;
+      } else {
+        return <Pagination itemsCount={attestationsCount} handlePage={handlePage} />;
+      }
+    } else {
+      return null;
+    }
+  };
+
   return (
     <TitleAndSwitcher>
       <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.ATTESTATION_BY_ID} />
-      {attestationsCount ? <Pagination itemsCount={attestationsCount} handlePage={handlePage} /> : null}
+      {renderPagination()}
     </TitleAndSwitcher>
   );
 };

@@ -34,6 +34,64 @@ export const issuersData: IIssuer[] = [
       "https://trustgo.trustalabs.ai/etrusta/0x085ed975a8b6b860de3c2b871da60a3f9f48a5b8/lineaverax/h?f=linea&chainId=324",
     CTATitle: "Go To Trusta Labs",
     address: "0x9e728394E55e6535BF66f913e911Ae1f572D8db0",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Gitcoin Passport",
@@ -44,6 +102,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://passport.gitcoin.co/#/dashboard/verax",
     CTATitle: "Get your passport",
     address: "0x96DB2c6D93A8a12089f7a6EdA5464e967308AdEd",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "PADO Labs",
@@ -55,6 +123,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://www.padolabs.org/events",
     CTATitle: "Go to pado",
     address: "0xDB736B13E2f522dBE18B2015d0291E4b193D8eF6",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "zkPass",
@@ -66,6 +144,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://verax.zkpass.org/verax",
     CTATitle: "Go To zkPass",
     address: "0x182085Ce8b0faDdc8503D9921dF6Af076281A6A9",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Openid3",
@@ -75,6 +163,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://auth.openid3.xyz",
     CTATitle: "Go to openid3",
     address: "0xdbCaf063873dC6be53c007Cf8f8447E303Cac8A3",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Nomis",
@@ -85,6 +183,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://nomis.cc/linea-voyage",
     CTATitle: "Go To Nomis",
     address: "0x8535156C75750d79ee0D9829c5D4Ae6f5D9DbCB5",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Orange Protocol",
@@ -95,6 +203,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://www.orangeprotocol.io/",
     CTATitle: "Go to orange",
     address: "0x3176383A7590D6B5c6F6268209f4c7FDeb7244Dc",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "0xScore",
@@ -105,6 +223,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://0xscore.pro/linea-attestation",
     CTATitle: "Go To 0xScore",
     address: "0x04636DdD2feF7e9DB42a24821E489AD071749fEA",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Aspecta",
@@ -115,6 +243,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://aspecta.id/campaign/builders-voyage",
     CTATitle: "Go To Aspecta",
     address: "0x36933bd4288648d95a8275e663003ae7efd2199d",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Automata Network",
@@ -125,6 +263,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://pom.ata.network",
     CTATitle: "Go To Automata",
     address: "0x95d06B395F04dc1bBD0CE9fcC501D7044ea25DAd",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Reclaim Protocol",
@@ -135,6 +283,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://publish-credentials.reclaimprotocol.org/create-credential",
     CTATitle: "Go To Reclaim Protocol",
     address: "0xc15718EEC68DbCA02C4B4215B87beef46C3106d5",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "RubyScore",
@@ -145,6 +303,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://rubyscore.io/attestation",
     CTATitle: "Go To RubyScore",
     address: "0xb9cc0bb020cf55197c4c3d826ac87cadba51f272",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Zeronym by Holonym",
@@ -155,6 +323,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://holonym.id/",
     CTATitle: "Go To Holonym",
     address: "0xdca2e9ae8423d7b0f94d7f9fc09e698a45f3c851",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Hapi",
@@ -165,6 +343,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://hapi.one",
     CTATitle: "Go To Hapi",
     address: "0x62773b3217e066a9a4ebd98db4360d89671453df",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Okapi",
@@ -176,6 +364,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://www.okapi.xyz",
     CTATitle: "Go To Okapi",
     address: "0xab3fa8a72eb66a128e8a84baa8c9578180806c6f",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Index Network",
@@ -187,6 +385,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://index.network/",
     CTATitle: "Go To Index Network",
     address: "0x0000000000000000000000000000000000000000",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
   {
     name: "Privado ID",
@@ -198,5 +406,15 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://www.privado.id/",
     CTATitle: "Go To Privado ID",
     address: "0x80203136fae3111b810106baa500231d4fd08fc6",
+    attestationDefinitions: [
+      {
+        name: "OKX KYC",
+        logo: Trusta,
+        description: "Attest you have completed your KYC on OKX with a zero-knowledge proof",
+        portal: "0x3b30d7c4e5aa3d7da11431af23e8d1f7d25bb0b8",
+        schema: "0xc0980771b02c57e851f0ecca619d593de82dc84b25db9c9273bbf5b1537276ae",
+        url: "https://google.com",
+      },
+    ],
   },
 ];

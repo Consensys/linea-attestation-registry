@@ -12,6 +12,7 @@ import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
 import PadoDark from "@/assets/issuers/pado-dark.svg?react";
 import Pado from "@/assets/issuers/pado.svg?react";
+import PrivadoID from "@/assets/issuers/privado-id.svg?react";
 import Reclaim from "@/assets/issuers/reclaim.svg?react";
 import RubyScore from "@/assets/issuers/rubyscore.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
@@ -186,5 +187,16 @@ export const issuersData: IIssuer[] = [
     CTALink: "https://index.network/",
     CTATitle: "Go To Index Network",
     address: "0x0000000000000000000000000000000000000000",
+  },
+  {
+    name: "Privado ID",
+    logo: PrivadoID,
+    logoDark: PrivadoID,
+    keywords: ["Proof of Uniqueness", "Proof of Liveness", "Reputation"],
+    description:
+      "Unlock your exclusive early adopter rewards while outsmarting bots! Participate in incentive programs or interact with dApps while preserving your privacy. Claim your Proof of Uniqueness (PoU) and Proof of Liveness (PoL) credentials and reuse them across any EVM-compatible chain.",
+    CTALink: "https://www.privado.id/",
+    CTATitle: "Go To Privado ID",
+    address: "0x80203136fae3111b810106baa500231d4fd08fc6",
   },
 ];

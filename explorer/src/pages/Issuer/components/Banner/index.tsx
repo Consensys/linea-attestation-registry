@@ -14,18 +14,16 @@ export const Banner: React.FC<IBannerProps> = ({ name, CTALink, CTATitle, logo }
           <div className="absolute w-[87px] h-[87px] bg-[#D9D9D9]"></div>
           <IssuerLogo className="absolute w-[25px] h-[15px] left-[31px] top-[36px] font-normal text-[12px] leading-[15px] text-black" />
         </div>
-        <div className="text-[32px] font-normal leading-[39px] text-white">
-          {name}
-        </div>
+        <div className="text-[32px] font-normal leading-[39px] text-white">{name}</div>
       </div>
       {CTALink && (
- <Button
- name={CTATitle}
- handler={() => window.open(CTALink, "_blank")}
- buttonType={EButtonType.PRIMARY_WHITE}
- iconRight={<ArrowUpRight />}
- className="mb-5"
-/>
+        <Button
+          name={CTATitle}
+          handler={() => window.open(CTALink, "_blank")}
+          buttonType={EButtonType.PRIMARY_WHITE}
+          iconRight={<ArrowUpRight />}
+          className="mb-5"
+        />
       )}
     </div>
   );

@@ -23,7 +23,6 @@ contract PortalRegistryTest is Test {
   string public expectedName = "Name";
   string public expectedDescription = "Description";
   string public expectedOwnerName = "Owner Name";
-  bytes32[] public schemaIds;
   ValidPortalMock public validPortalMock;
   InvalidPortalMock public invalidPortalMock = new InvalidPortalMock();
   IPortalImplementation public iPortalImplementation = new IPortalImplementation();
@@ -34,8 +33,6 @@ contract PortalRegistryTest is Test {
   event IssuerRemoved(address issuerAddress);
   event PortalRevoked(address portalAddress);
   event RouterUpdated(address routerAddress);
-  event SchemaIssuerUpdated(bytes32 schemaId);
-  event BulkSchemasIssuersUpdated(bytes32[] schemaIds);
 
   function setUp() public {
     router = new Router();
@@ -107,26 +104,6 @@ contract PortalRegistryTest is Test {
     portalRegistry.removeIssuer(issuerAddress);
     bool isIssuerAfterRemoval = portalRegistry.isIssuer(issuerAddress);
     assertEq(isIssuerAfterRemoval, false);
-    vm.stopPrank();
-  }
-
-  function test_updateSchemaIssuerWithPortalOwner() public {
-    bytes32 schemaId = 0x36304af55bbea73214675d3770f679b4b6e0bfff512f5af01046e6f5d29261e3;
-    vm.startPrank(address(0));
-
-    vm.expectEmit();
-    emit SchemaIssuerUpdated(schemaId);
-    portalRegistry.updateSchemaIssuerWithPortalOwner(schemaId);
-    vm.stopPrank();
-  }
-
-  function test_bulkUpdateSchemasIssuersWithPortalOwner() public {
-    schemaIds.push(0x36304af55bbea73214675d3770f679b4b6e0bfff512f5af01046e6f5d29261e3);
-    vm.startPrank(address(0));
-
-    vm.expectEmit();
-    emit BulkSchemasIssuersUpdated(schemaIds);
-    portalRegistry.bulkUpdateSchemasIssuersWithPortalOwner(schemaIds);
     vm.stopPrank();
   }
 

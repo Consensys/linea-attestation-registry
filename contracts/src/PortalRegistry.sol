@@ -6,7 +6,6 @@ import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/O
 import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { AbstractPortal } from "./abstracts/AbstractPortal.sol";
 import { DefaultPortal } from "./DefaultPortal.sol";
-import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { Portal } from "./types/Structs.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
 import { IPortal } from "./interfaces/IPortal.sol";
@@ -55,10 +54,6 @@ contract PortalRegistry is OwnableUpgradeable {
   event PortalRevoked(address portalAddress);
   /// @notice Event emitted when the router is updated
   event RouterUpdated(address routerAddress);
-  /// @notice Event emitted when the schema issuer is updated with the portal owner
-  event SchemaIssuerUpdated(bytes32 schemaId);
-  /// @notice Event emitted when the schemas issuers are updated in bulk with the portal owner
-  event BulkSchemasIssuersUpdated(bytes32[] schemaIds);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -100,24 +95,6 @@ contract PortalRegistry is OwnableUpgradeable {
     issuers[issuer] = false;
     // Emit event
     emit IssuerRemoved(issuer);
-  }
-
-  /**
-   * @notice Updates issuer address for the given schemaId
-   * @param schemaId the schema ID to update
-   */
-  function updateSchemaIssuerWithPortalOwner(bytes32 schemaId) public onlyOwner {
-    SchemaRegistry(router.getSchemaRegistry()).updateSchemaIssuer(schemaId, msg.sender);
-    emit SchemaIssuerUpdated(schemaId);
-  }
-
-  /**
-   * @notice Updates issuer addresses for all schemas associated with given IDs
-   * @param schemaIds the schema IDs to update
-   */
-  function bulkUpdateSchemasIssuersWithPortalOwner(bytes32[] calldata schemaIds) public onlyOwner {
-    SchemaRegistry(router.getSchemaRegistry()).bulkUpdateSchemasIssuers(schemaIds, msg.sender);
-    emit BulkSchemasIssuersUpdated(schemaIds);
   }
 
   /**

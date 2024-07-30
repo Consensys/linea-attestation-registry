@@ -106,22 +106,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Updates issuer address for all schemas associated with old issuer address
-   * @param oldIssuer the address of old issuer
-   * @param newIssuer the address of new issuer
-   * @dev Finds all the schemaIds associated with old issuer and updates the mapping `schemasIssuers`
-   *      for schemaIds found with new issuer
-   */
-  function updateMatchingSchemaIssuers(address oldIssuer, address newIssuer) public onlyPortalRegistry(msg.sender) {
-    for (uint256 i = 0; i < schemaIds.length; i = uncheckedInc256(i)) {
-      if (schemasIssuers[schemaIds[i]] == oldIssuer) {
-        schemasIssuers[schemaIds[i]] = newIssuer;
-        emit SchemaIssuerUpdated(schemaIds[i], newIssuer);
-      }
-    }
-  }
-
-  /**
    * @notice Updates issuers of all given schemaIds with the new issuer
    * @param schemaIdsToUpdate the IDs of schemas to update
    * @param issuer the address of new issuer

@@ -108,10 +108,10 @@ npx hardhat verify --network NETWORK_NAME CONTRACT_ADDRESS --constructor-args co
 
 ## Important Notes
 
-### Removal of issuers and schema ownership
+### Removal of Issuers and Schemas ownership
 
-Issuers may have schemas associated with them. When removing issuers, you will need to reassign schema ownership to the
-portal owner by separately calling the following methods :
+Issuers may have Schemas associated with them. When removing issuers, you will need to reassign schema ownership by
+calling the following methods :
 
-1. updateSchemaIssuerWithPortalOwner
-2. bulkUpdateSchemasIssuersWithPortalOwner"
+1. updateSchemaIssuer
+2. bulkUpdateSchemasIssuers

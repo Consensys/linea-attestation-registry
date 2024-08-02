@@ -62,7 +62,7 @@ export const Attestations: React.FC = () => {
   return (
     <TitleAndSwitcher>
       <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.ATTESTATION_BY_ID} />
-      {attestationsCount  ? <Pagination itemsCount={attestationsCount} handlePage={handlePage} /> : null}
+      {attestationsCount ? <Pagination itemsCount={attestationsCount} handlePage={handlePage} /> : null}
     </TitleAndSwitcher>
   );
 };

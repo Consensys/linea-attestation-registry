@@ -41,7 +41,7 @@ export const links: Record<number, { trx?: string; address: string }> = {
     address: "https://bscscan.com/address",
   },
   [bscTestnet.id]: {
-    address: "https://testnet.bscscan.com/",
+    address: "https://testnet.bscscan.com/address",
   },
 };
 

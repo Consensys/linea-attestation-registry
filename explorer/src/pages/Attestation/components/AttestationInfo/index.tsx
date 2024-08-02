@@ -4,9 +4,9 @@ import { ArrowUpRight } from "lucide-react";
 import { Hex, hexToNumber } from "viem";
 
 import { Link } from "@/components/Link";
-import { links } from "@/constants";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { toPortalById } from "@/routes/constants";
+import { getBlockExplorerLink } from "@/utils";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
@@ -18,6 +18,9 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   } = useNetworkContext();
 
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
+
+  const blockExplorerLink = getBlockExplorerLink(chain);
+
   const list: Array<{ title: string; value: string; to?: string; link?: string }> = [
     createDateListItem(t("attestation.info.attested"), attestedDate.toString()),
     createDateListItem(t("attestation.info.expirationDate"), expirationDate.toString()),
@@ -29,7 +32,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     {
       title: t("attestation.info.issuedBy"),
       value: cropString(attester),
-      link: `${links[chain.id].address}/${attester}`,
+      link: `${blockExplorerLink}/${attester}`,
     },
     {
       title: t("attestation.info.portal"),
@@ -39,7 +42,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     {
       title: t("attestation.info.subject"),
       value: cropString(subject),
-      link: `${links[chain.id].address}/${subject}`,
+      link: `${blockExplorerLink}/${subject}`,
     },
   ];
 

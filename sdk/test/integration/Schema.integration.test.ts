@@ -21,6 +21,7 @@ describe("SchemaDataMapper", () => {
         "Describes a token balance owned on a contract (ERC-20, ERC-721, ERC-1155, etc.)",
       );
       expect(result?.schema).toEqual("(address contract, uint256 balance)");
+      expect(result?.attestationCounter).toBeGreaterThanOrEqual(27);
     });
   });
 

@@ -19,6 +19,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         name
         description
         ownerName
+        attestationCounter
   }`;
 
   async simulateAttest(

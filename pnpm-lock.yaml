@@ -308,8 +308,8 @@ importers:
         specifier: ^0.9.14
         version: 0.9.17
       axios:
-        specifier: ^1.6.1
-        version: 1.6.8(debug@4.3.4)
+        specifier: ^1.7.4
+        version: 1.7.4(debug@4.3.4)
       dotenv:
         specifier: ^16.3.1
         version: 16.4.5
@@ -6668,7 +6668,7 @@ packages:
     resolution: {integrity: sha512-bKU+T/eY9P0rC7o+0av8BDb7/L2Ixgb9LVh+1gVVyg6ZDBT07DoU9VONOXJuL6rbOnlniZVo4xhm/7kNAuLIyw==}
     dependencies:
       '@openzeppelin/defender-base-client': 1.54.2(debug@4.3.4)
-      axios: 1.6.8(debug@4.3.4)
+      axios: 1.7.4(debug@4.3.4)
       ethers: 5.7.2
       lodash: 4.17.21
       node-fetch: 2.7.0
@@ -6684,7 +6684,7 @@ packages:
     dependencies:
       amazon-cognito-identity-js: 6.3.12
       async-retry: 1.3.3
-      axios: 1.6.8(debug@4.3.4)
+      axios: 1.7.4(debug@4.3.4)
       lodash: 4.17.21
       node-fetch: 2.7.0
     transitivePeerDependencies:
@@ -6705,7 +6705,7 @@ packages:
     resolution: {integrity: sha512-igLut1lIV52DWV9Bn8MrESgCvCQSOunqRZkSLC/KGCbEUTEyNoAHNsGMu9Z+K11RYCD0CHGnfAi0ODLsbrq6QA==}
     dependencies:
       '@openzeppelin/defender-sdk-base-client': 1.13.0
-      axios: 1.6.8(debug@4.3.4)
+      axios: 1.7.4(debug@4.3.4)
       lodash: 4.17.21
     transitivePeerDependencies:
       - debug
@@ -6716,7 +6716,7 @@ packages:
     resolution: {integrity: sha512-Rv9QBEBvEi407zZzCPnOrL8y8ByyQo7fwni5EBoRJQPj1HeM4uhZkLRNpq8YZOjjNhu648SP+L4F8Bbtdzmd9w==}
     dependencies:
       '@openzeppelin/defender-sdk-base-client': 1.13.0
-      axios: 1.6.8(debug@4.3.4)
+      axios: 1.7.4(debug@4.3.4)
       lodash: 4.17.21
     transitivePeerDependencies:
       - debug
@@ -11285,7 +11285,7 @@ packages:
   /apisauce@2.1.6(debug@4.3.4):
     resolution: {integrity: sha512-MdxR391op/FucS2YQRfB/NMRyCnHEPDd4h17LRIuVYi0BpGmMhpxc0shbOpfs5ahABuBEffNCGal5EcsydbBWg==}
     dependencies:
-      axios: 1.6.8(debug@4.3.4)
+      axios: 1.7.4(debug@4.3.4)
     transitivePeerDependencies:
       - debug
     dev: true
@@ -11630,6 +11630,15 @@ packages:
 
   /axios@1.6.8(debug@4.3.4):
     resolution: {integrity: sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==}
+    dependencies:
+      follow-redirects: 1.15.6(debug@4.3.4)
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
+  /axios@1.7.4(debug@4.3.4):
+    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.4)
       form-data: 4.0.0
@@ -12026,7 +12035,7 @@ packages:
     resolution: {integrity: sha512-v7ms6N/H7iciuk6QInon3/n2mu7oRX+6knJ9xFPsJ3rQePgAqcR3CRTwUheFd8SLbiq4LL7Z4G/44L9zscdt9A==}
     engines: {node: '>=10'}
     dependencies:
-      axios: 1.6.8(debug@4.3.4)
+      axios: 1.7.4(debug@4.3.4)
       rimraf: 3.0.2
       tar: 6.2.1
     transitivePeerDependencies:
@@ -15457,7 +15466,7 @@ packages:
         optional: true
     dependencies:
       '@solidity-parser/parser': 0.14.5
-      axios: 1.6.8(debug@4.3.4)
+      axios: 1.7.4(debug@4.3.4)
       cli-table3: 0.5.1
       colors: 1.4.0
       ethereum-cryptography: 1.2.0

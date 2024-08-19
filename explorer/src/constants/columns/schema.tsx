@@ -65,6 +65,7 @@ export const skeletonSchemas = (itemPerPage = ITEMS_PER_PAGE_DEFAULT): Array<Sch
       description: EMPTY_STRING,
       context: EMPTY_STRING,
       schema: EMPTY_STRING,
+      attestationCounter: 0,
     })),
   );
 

@@ -21,6 +21,7 @@ describe("PortalDataMapper", () => {
       expect(result?.name).toEqual("eFrogs Portal");
       expect(result?.description).toEqual("eFrogs attestations");
       expect(result?.ownerName).toEqual("alainnicolas.eth");
+      expect(result?.attestationCounter).toBeGreaterThanOrEqual(26);
     });
   });
 

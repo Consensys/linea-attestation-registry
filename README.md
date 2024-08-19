@@ -266,8 +266,8 @@ Here are the addresses on those networks:
 ## Subgraphs URLs
 
 - [Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.12)
-- [Linea Mainnet](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
-- [Linea Mainnet (Backup)](https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1)
+- [Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1)
+- [Linea Mainnet (Backup)](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
 - [Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum-sepolia/v0.0.2)
 - [Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum/v0.0.1)
 - [Arbitrum Nova](https://api.goldsky.com/api/public/project_clwsa54350ydv01wjbq5r17v1/subgraphs/verax-v1-arbitrum-nova/0.0.4/gn)

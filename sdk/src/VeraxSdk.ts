@@ -26,8 +26,8 @@ export class VeraxSdk {
   static DEFAULT_LINEA_MAINNET: Conf = {
     chain: linea,
     mode: SDKMode.BACKEND,
-    subgraphUrl: "https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry",
-    // Backup URL: subgraphUrl: "https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1",
+    subgraphUrl: "https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1",
+    // Backup URL: subgraphUrl: "https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry",
     portalRegistryAddress: "0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083",
     moduleRegistryAddress: "0xf851513A732996F22542226341748f3C9978438f",
     schemaRegistryAddress: "0x0f95dCec4c7a93F2637eb13b655F2223ea036B59",

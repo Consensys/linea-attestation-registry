@@ -15,6 +15,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
         description
         context
         schema
+        attestationCounter
   }`;
 
   async simulateUpdateRouter(routerAddress: Address) {

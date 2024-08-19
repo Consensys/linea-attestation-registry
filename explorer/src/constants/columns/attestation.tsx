@@ -129,6 +129,7 @@ export const skeletonAttestations = (itemPerPage = ITEMS_PER_PAGE_DEFAULT): Arra
       version: 0,
       revoked: false,
       subject: EMPTY_STRING,
+      encodedSubject: EMPTY_STRING,
       attestationData: EMPTY_STRING,
     })),
   );

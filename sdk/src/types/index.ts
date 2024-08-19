@@ -39,7 +39,8 @@ export type OnChainAttestation = {
   revocationDate: number | null; // The date when the attestation was revoked.
   version: number; // Version of the registry when the attestation was created.
   revoked: boolean; // Whether the attestation is revoked or not.
-  subject: string; // The ID of the attestee, EVM address, DID, URL etc.
+  subject: string; // The ID of the attestee, EVM address, DID, URL, etc., tentatively decoded as an ETH address.
+  encodedSubject: string; // The raw version of the subject, as it was registered on-chain.
   attestationData: string; // The attestation data.
 };
 
@@ -49,6 +50,7 @@ export type Schema = {
   description: string; // A description of the schema.
   context: string; // The context of the schema.
   schema: string; // The schema definition.
+  attestationCounter: number; // The number of attestations issued with this schema.
 };
 
 export type Portal = {
@@ -59,6 +61,7 @@ export type Portal = {
   name: string; // The name of the portal.
   description: string; // A description of the portal.
   ownerName: string; // The name of the owner of this portal.
+  attestationCounter: number; // The number of attestations issued by the portal.
 };
 
 export type Module = OnChainModule & { id: string };

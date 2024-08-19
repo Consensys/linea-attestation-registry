@@ -18,6 +18,6 @@ export function getBlockExplorerLink(chain: Chain) {
   if (chain.blockExplorers) {
     return `${chain.blockExplorers.default.url}/address`;
   } else {
-    return `${links[chain.id].address}/address`;
+    return `${links[chain.id].address}`;
   }
 }

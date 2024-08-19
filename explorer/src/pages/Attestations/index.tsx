@@ -57,12 +57,12 @@ export const Attestations: React.FC = () => {
 
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations(itemsPerPage) }
-    : { columns: columns({ sdk, chainId: chain.id }), list: attestationsList || [] };
+    : { columns: columns({ sdk, chain }), list: attestationsList || [] };
 
   return (
     <TitleAndSwitcher>
       <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.ATTESTATION_BY_ID} />
-      {attestationsCount && <Pagination itemsCount={attestationsCount} handlePage={handlePage} />}
+      {attestationsCount ? <Pagination itemsCount={attestationsCount} handlePage={handlePage} /> : null}
     </TitleAndSwitcher>
   );
 };

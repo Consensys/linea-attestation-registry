@@ -31,7 +31,7 @@ export const SearchAttestationsReceived: React.FC<SearchComponentProps> = ({ get
   if (!data || !data.length) return null;
   return (
     <SearchWrapper title={t("attestation.received")} items={data.length}>
-      <DataTable columns={columns({ sdk, chainId: chain.id })} data={data} link={APP_ROUTES.ATTESTATION_BY_ID} />
+      <DataTable columns={columns({ sdk, chain })} data={data} link={APP_ROUTES.ATTESTATION_BY_ID} />
     </SearchWrapper>
   );
 };

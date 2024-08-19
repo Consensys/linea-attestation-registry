@@ -1,8 +1,8 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
-import { Chain, switchNetwork } from "@wagmi/core";
+import { Chain } from "@wagmi/core";
 import { FC, PropsWithChildren, useCallback, useState } from "react";
 import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 
 import { INetwork } from "@/interfaces/config";
 
@@ -14,6 +14,7 @@ export const NetworkContextProvider: FC<PropsWithChildren> = ({ children }): JSX
 
   const { isConnected } = useAccount();
   const { chain: currentChain } = useNetwork();
+  const { switchNetworkAsync } = useSwitchNetwork();
   const retrievedNetwork = useLoaderData() as INetwork;
 
   const [network, setNetwork] = useState<INetwork>(retrievedNetwork);
@@ -26,14 +27,14 @@ export const NetworkContextProvider: FC<PropsWithChildren> = ({ children }): JSX
       }
 
       try {
-        await switchNetwork({ chainId: pendingChain.id });
+        await switchNetworkAsync?.(pendingChain.id);
         return true;
       } catch (error) {
         console.error(`Error: while switching network: ${pendingChain.name} \n\n`, error);
         return false;
       }
     },
-    [isConnected],
+    [isConnected, switchNetworkAsync],
   );
 
   const setNetworkHandler = async (params: INetwork) => {

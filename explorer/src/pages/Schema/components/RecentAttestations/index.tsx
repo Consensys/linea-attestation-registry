@@ -27,7 +27,7 @@ export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId })
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations(5) }
     : {
-        columns: columns({ sortByDate: false, sdk, chainId: chain.id }),
+        columns: columns({ sortByDate: false, sdk, chain }),
         list: attestations?.slice(-5).reverse() || [],
       };
 

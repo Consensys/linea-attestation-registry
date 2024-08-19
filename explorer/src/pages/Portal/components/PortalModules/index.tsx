@@ -29,7 +29,7 @@ export const PortalModules: React.FC<{ portalModules: Array<Address> }> = ({ por
   const columnsSkeletonRef = useRef(columnsSkeleton(columns(), moduleColumnsOption));
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonModules(5) }
-    : { columns: columns({ chainId: chain.id }), list: modulesList?.slice(-5).reverse() || [] };
+    : { columns: columns({ chain }), list: modulesList?.slice(-5).reverse() || [] };
 
   return (
     <div className="flex flex-col gap-6 w-full px-5 md:px-10">

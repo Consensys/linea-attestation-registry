@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Attestation, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import moment from "moment";
-import { Hex } from "viem";
+import { Chain, Hex } from "viem";
 import { hexToNumber } from "viem/utils";
 
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
@@ -13,18 +13,19 @@ import { ColumnsOptions } from "@/interfaces/components";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { SWRCell } from "@/pages/Attestations/components/SWRCell";
 import { toAttestationById, toPortalById, toSchemaById } from "@/routes/constants";
+import { getBlockExplorerLink } from "@/utils";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
-import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT, links } from "../index";
+import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
 
 interface ColumnsProps {
   sortByDate: boolean;
   sdk: VeraxSdk;
-  chainId: number;
+  chain: Chain;
 }
 
-export const columns = ({ sortByDate = true, sdk, chainId }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
+export const columns = ({ sortByDate = true, sdk, chain }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
   {
     accessorKey: "id",
     header: () => (
@@ -85,11 +86,11 @@ export const columns = ({ sortByDate = true, sdk, chainId }: Partial<ColumnsProp
     header: () => <p className="text-left">{t("attestation.list.columns.subject")}</p>,
     cell: ({ row }) => {
       const subject = row.getValue("subject") as string;
-      if (!chainId) return cropString(subject);
+      if (!chain) return cropString(subject);
 
       return (
         <a
-          href={`${links[chainId].address}/${subject}`}
+          href={`${getBlockExplorerLink(chain)}/${subject}`}
           onClick={(e) => e.stopPropagation()}
           target="_blank"
           className="hover:underline"

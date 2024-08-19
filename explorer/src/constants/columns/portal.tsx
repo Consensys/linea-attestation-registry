@@ -1,16 +1,16 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Portal } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
+import { Chain } from "viem";
 
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { toPortalById } from "@/routes/constants";
+import { getBlockExplorerLink } from "@/utils";
 import { cropString } from "@/utils/stringUtils";
 
-import { links } from "../index";
-
-export const columns = ({ chainId }: { chainId: number }): ColumnDef<Portal>[] => [
+export const columns = ({ chain }: { chain: Chain }): ColumnDef<Portal>[] => [
   {
     accessorKey: "name",
     header: () => (
@@ -47,7 +47,7 @@ export const columns = ({ chainId }: { chainId: number }): ColumnDef<Portal>[] =
 
       return (
         <TdHandler
-          valueUrl={chainId ? `${links[chainId].address}/${address}` : "#"}
+          valueUrl={chain ? `${getBlockExplorerLink(chain)}/${address}` : "#"}
           value={cropString(address)}
           to={toPortalById(id)}
         />

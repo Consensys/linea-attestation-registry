@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Portal } from "../../src/types/Structs.sol";
 
-contract PortalRegistryMock {
+contract PortalRegistryNotAllowlistedMock {
   event PortalRegistered(string name, string description, address portalAddress);
 
   mapping(address id => Portal portal) private portals;
@@ -41,6 +41,6 @@ contract PortalRegistryMock {
   }
 
   function isAllowlisted(address /*user*/) public pure returns (bool) {
-    return true;
+    return false;
   }
 }

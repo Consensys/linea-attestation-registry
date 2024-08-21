@@ -4,6 +4,7 @@ pragma solidity 0.8.21;
 import { Test } from "forge-std/Test.sol";
 import { SchemaRegistry } from "../src/SchemaRegistry.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
+import { PortalRegistryNotAllowlistedMock } from "./mocks/PortalRegistryNotAllowlistedMock.sol";
 import { Schema } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 
@@ -129,8 +130,12 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function test_createSchema_OnlyIssuer() public {
-    vm.expectRevert(SchemaRegistry.OnlyIssuer.selector);
+  function test_createSchema_OnlyAllowlisted() public {
+    PortalRegistryNotAllowlistedMock portalRegistryNotAllowlistedMock = new PortalRegistryNotAllowlistedMock();
+    portalRegistryAddress = address(portalRegistryNotAllowlistedMock);
+    router.updatePortalRegistry(portalRegistryAddress);
+
+    vm.expectRevert(SchemaRegistry.OnlyAllowlisted.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.stopPrank();

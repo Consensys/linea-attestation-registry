@@ -25,8 +25,8 @@ contract ModuleRegistry is OwnableUpgradeable {
 
   /// @notice Error thrown when an invalid Router address is given
   error RouterInvalid();
-  /// @notice Error thrown when a non-issuer tries to call a method that can only be called by an issuer
-  error OnlyIssuer();
+  /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
+  error OnlyAllowlisted();
   /// @notice Error thrown when an identical Module was already registered
   error ModuleAlreadyExists();
   /// @notice Error thrown when attempting to add a Module without a name
@@ -60,12 +60,11 @@ contract ModuleRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Checks if the caller is a registered issuer.
-   * @param issuer the issuer address
+   * @notice Checks if the caller is allowlisted.
+   * @param user the user address
    */
-  modifier onlyIssuers(address issuer) {
-    bool isIssuerRegistered = PortalRegistry(router.getPortalRegistry()).isIssuer(issuer);
-    if (!isIssuerRegistered) revert OnlyIssuer();
+  modifier onlyAllowlisted(address user) {
+    if (!PortalRegistry(router.getPortalRegistry()).isAllowlisted(user)) revert OnlyAllowlisted();
     _;
   }
 
@@ -102,7 +101,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     string memory name,
     string memory description,
     address moduleAddress
-  ) public onlyIssuers(msg.sender) {
+  ) public onlyAllowlisted(msg.sender) {
     if (bytes(name).length == 0) revert ModuleNameMissing();
     // Check if moduleAddress is a smart contract address
     if (!isContractAddress(moduleAddress)) revert ModuleAddressInvalid();

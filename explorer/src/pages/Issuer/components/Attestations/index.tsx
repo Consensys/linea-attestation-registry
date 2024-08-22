@@ -9,6 +9,8 @@ import { formatNumber } from "@/utils/amountUtils";
 
 import { IAttestationProps } from "./interface";
 
+import "./styles.css";
+
 export const Attestations: React.FC<IAttestationProps> = ({ address }) => {
   const {
     sdk,
@@ -41,7 +43,7 @@ export const Attestations: React.FC<IAttestationProps> = ({ address }) => {
           onClick={handleAttestationCounterClick}
           style={{ cursor: "pointer" }}
         >
-          {isLoading ? <Loader /> : formatNumber(attestationCounter)}
+          {isLoading ? <Loader className={"spinning-icon"} /> : formatNumber(attestationCounter)}
         </div>
       </div>
     </div>

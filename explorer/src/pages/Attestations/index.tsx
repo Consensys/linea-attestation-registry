@@ -2,6 +2,7 @@ import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
+import { numberToHex } from "viem/utils";
 
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
@@ -35,22 +36,28 @@ export const Attestations: React.FC = () => {
   const sortByDateDirection = searchParams.get(EQueryParams.SORT_BY_DATE);
   const itemsPerPage = Number(searchParams.get(EQueryParams.ITEMS_PER_PAGE)) || ITEMS_PER_PAGE_DEFAULT;
 
-  const [skip, setSkip] = useState<number>(getItemsByPage(page, itemsPerPage));
+  const [lastID, setLastID] = useState<number>(getItemsByPage(page, itemsPerPage));
 
   const { data: attestationsList, isLoading } = useSWR(
-    `${SWRKeys.GET_ATTESTATION_LIST}/${itemsPerPage}/${skip}/${sortByDateDirection}/${chain.id}`,
+    totalItems > 0
+      ? `${SWRKeys.GET_ATTESTATION_LIST}/${itemsPerPage}/${lastID}/${sortByDateDirection}/${chain.id}`
+      : null,
     () =>
       sdk.attestation.findBy(
         itemsPerPage,
-        skip,
         undefined,
+        (sortByDateDirection as OrderDirection) === null ||
+          (sortByDateDirection as OrderDirection) === undefined ||
+          (sortByDateDirection as OrderDirection) === ETableSorting.DESC
+          ? { id_lt: numberToHex(totalItems - (page - 1) * itemsPerPage, { size: 32 }) }
+          : { id_gt: numberToHex(lastID, { size: 32 }) },
         "attestedDate",
         (sortByDateDirection as OrderDirection) || ETableSorting.DESC,
       ),
   );
 
   const handlePage = (retrievedPage: number) => {
-    setSkip(getItemsByPage(retrievedPage, itemsPerPage));
+    setLastID(getItemsByPage(retrievedPage, itemsPerPage));
   };
 
   const columnsSkeletonRef = useRef(columnsSkeleton(columns(), attestationColumnsOption));

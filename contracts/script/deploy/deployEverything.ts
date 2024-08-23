@@ -1,6 +1,6 @@
 import { ethers, run, upgrades } from "hardhat";
 import dotenv from "dotenv";
-import { getChainPrefix } from "../utils";
+import { getNetworkConfig } from "../utils";
 
 dotenv.config({ path: "../.env" });
 
@@ -8,6 +8,14 @@ async function main() {
   console.log(`START SCRIPT`);
 
   const easRegistryAddress = process.env.EAS_REGISTRY_ADDRESS;
+
+  const network = await ethers.provider.getNetwork();
+  const networkConfig = getNetworkConfig(network.chainId);
+  console.log(
+    `Chain prefix for chain ID ${network.chainId} is ${networkConfig.chainPrefix} (${
+      networkConfig.isTestnet ? "testnet" : "mainnet"
+    })`,
+  );
 
   console.log("Deploying Router...");
   const Router = await ethers.getContractFactory("Router");
@@ -72,7 +80,7 @@ async function main() {
 
   console.log("Deploying PortalRegistry...");
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
-  const portalRegistry = await upgrades.deployProxy(PortalRegistry);
+  const portalRegistry = await upgrades.deployProxy(PortalRegistry, [networkConfig.isTestnet]);
   await portalRegistry.waitForDeployment();
   const portalRegistryProxyAddress = await portalRegistry.getAddress();
   const portalRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
@@ -149,10 +157,7 @@ async function main() {
   console.log("AttestationRegistry updated!");
 
   console.log("Updating AttestationRegistry with the chain prefix...");
-  const network = await ethers.provider.getNetwork();
-  const chainPrefix = getChainPrefix(network.chainId);
-  console.log(`Chain prefix for chain ID ${network.chainId} is ${chainPrefix}`);
-  await attestationRegistry.updateChainPrefix(chainPrefix);
+  await attestationRegistry.updateChainPrefix(networkConfig.chainPrefix);
   console.log("AttestationRegistry updated!");
 
   console.log("Updating ModuleRegistry with the Router address...");

@@ -9,7 +9,7 @@ import { ethers, upgrades } from "hardhat";
 async function main() {
   console.log("Checking contracts for upgradeability...");
 
-  console.log("Checking AttestationRegistry...");
+  console.log("Checking Router...");
   const routerProxyAddress = process.env.ROUTER_ADDRESS ?? "";
   const Router = await ethers.getContractFactory("Router");
 
@@ -31,7 +31,11 @@ async function main() {
   const portalRegistryProxyAddress = process.env.PORTAL_REGISTRY_ADDRESS ?? "";
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
 
-  await upgrades.validateUpgrade(portalRegistryProxyAddress, PortalRegistry, { kind: "transparent" });
+  // @ts-expect-error-next-line - constructorArgs is not part of the type
+  await upgrades.validateUpgrade(portalRegistryProxyAddress, PortalRegistry, {
+    kind: "transparent",
+    constructorArgs: [false],
+  });
 
   console.log("Checking SchemaRegistry...");
   const schemaRegistryProxyAddress = process.env.SCHEMA_REGISTRY_ADDRESS ?? "";

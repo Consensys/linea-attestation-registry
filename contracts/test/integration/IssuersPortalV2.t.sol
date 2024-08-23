@@ -16,7 +16,7 @@ contract IssuersPortalTest is Test {
   address public issuerAddress = makeAddr("issuer");
   Router public router = new Router();
   SchemaRegistry public schemaRegistry = new SchemaRegistry();
-  PortalRegistry public portalRegistry = new PortalRegistry();
+  PortalRegistry public portalRegistry = new PortalRegistry(false);
   ModuleRegistry public moduleRegistry = new ModuleRegistry();
   AttestationRegistry public attestationRegistry = new AttestationRegistry();
   IssuersModuleV2 public issuersModule;

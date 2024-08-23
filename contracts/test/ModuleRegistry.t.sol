@@ -7,6 +7,7 @@ import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
 import { CorrectModuleV2 } from "./mocks/CorrectModuleV2Mock.sol";
 import { IncorrectModule } from "./mocks/IncorrectModuleMock.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
+import { PortalRegistryNotAllowlistedMock } from "./mocks/PortalRegistryNotAllowlistedMock.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 
@@ -92,8 +93,12 @@ contract ModuleRegistryTest is Test {
     assertEq(description, expectedDescription);
   }
 
-  function test_register_OnlyIssuer() public {
-    vm.expectRevert(ModuleRegistry.OnlyIssuer.selector);
+  function test_register_OnlyAllowlisted() public {
+    PortalRegistryNotAllowlistedMock portalRegistryNotAllowlistedMock = new PortalRegistryNotAllowlistedMock();
+    portalRegistryAddress = address(portalRegistryNotAllowlistedMock);
+    router.updatePortalRegistry(portalRegistryAddress);
+
+    vm.expectRevert(ModuleRegistry.OnlyAllowlisted.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.stopPrank();

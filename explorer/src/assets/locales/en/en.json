@@ -17,7 +17,9 @@
       "next": "Next",
       "learnMore": "Learn More",
       "getStarted": "Get Started",
-      "viewMyAttestations": "View My Attestations"
+      "viewMyAttestations": "View My Attestations",
+      "getAttestation": "Get Attestations",
+      "seeAttestations": "See Attestations"
     },
     "messages": {
       "empty": "Empty",

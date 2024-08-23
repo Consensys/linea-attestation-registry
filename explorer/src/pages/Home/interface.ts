@@ -19,4 +19,5 @@ export interface AttestationDefinition {
   portal: Address;
   schema: Address;
   url: string;
+  chainId: string;
 }

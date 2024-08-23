@@ -19,11 +19,11 @@ export const Banner: React.FC<IBannerProps> = ({ name, CTALink, CTATitle, logo, 
         </div>
         {CTALink && (
           <Button
+            isSmall
             name={CTATitle}
             handler={() => window.open(CTALink, "_blank")}
-            buttonType={EButtonType.PRIMARY_WHITE}
+            buttonType={EButtonType.TRANSPARENT}
             iconRight={<ArrowUpRight />}
-            className="mb-5 bg-[#D9D9D9] rounded-[50px]"
           />
         )}
       </div>

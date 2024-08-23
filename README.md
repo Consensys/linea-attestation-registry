@@ -265,6 +265,8 @@ Here are the addresses on those networks:
 
 ## Subgraphs URLs
 
+### Subgraph V1
+
 - [Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.12)
 - [Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1)
 - [Linea Mainnet (Backup)](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
@@ -275,6 +277,19 @@ Here are the addresses on those networks:
 - [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.2)
 - [BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1)
 - [BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc/v0.0.1)
+
+### Subgraph V2
+
+- [Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-linea-sepolia/v0.0.2)
+- [Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-linea/v0.0.1)
+- [Linea Mainnet (Backup)](https://api.goldsky.com/api/public/project_cm06hsedxpgls01xm39r67el8/subgraphs/verax-v2-arbitrum-nova/0.0.1/gn)
+- [Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum-sepolia/v0.0.1)
+- [Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum/v0.0.1)
+- [Arbitrum Nova](https://api.goldsky.com/api/public/project_cm06hsedxpgls01xm39r67el8/subgraphs/verax-v2-arbitrum-nova/0.0.1/gn)
+- [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-base-sepolia/v0.0.2)
+- [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-base/v0.0.1)
+- [BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc-testnet/v0.0.1)
+- [BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc/v0.0.1)
 
 ## Network Prefixes
 

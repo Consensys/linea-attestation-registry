@@ -39,12 +39,15 @@ export const Attestations: React.FC = () => {
   const [lastID, setLastID] = useState<number>(getItemsByPage(page, itemsPerPage));
 
   const { data: attestationsList, isLoading } = useSWR(
-    `${SWRKeys.GET_ATTESTATION_LIST}/${itemsPerPage}/${lastID}/${sortByDateDirection}/${chain.id}`,
+    totalItems > 0
+      ? `${SWRKeys.GET_ATTESTATION_LIST}/${itemsPerPage}/${lastID}/${sortByDateDirection}/${chain.id}`
+      : null,
     () =>
       sdk.attestation.findBy(
         itemsPerPage,
         undefined,
-        (sortByDateDirection as OrderDirection) === undefined ||
+        (sortByDateDirection as OrderDirection) === null ||
+          (sortByDateDirection as OrderDirection) === undefined ||
           (sortByDateDirection as OrderDirection) === ETableSorting.DESC
           ? { id_lt: numberToHex(totalItems - (page - 1) * itemsPerPage, { size: 32 }) }
           : { id_gt: numberToHex(lastID, { size: 32 }) },

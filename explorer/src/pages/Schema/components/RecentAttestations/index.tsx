@@ -17,7 +17,7 @@ export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId })
 
   const { data: attestations, isLoading } = useSWR(
     `${SWRKeys.GET_RECENT_ATTESTATION}/${schemaId}/${chain.id}`,
-    () => sdk.attestation.findBy(5, 0, { schemaId }, "attestedDate", "desc"),
+    () => sdk.attestation.findBy(5, 0, { schema: schemaId }, "attestedDate", "desc"),
     {
       shouldRetryOnError: false,
     },
@@ -27,7 +27,7 @@ export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId })
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations(5) }
     : {
-        columns: columns({ sortByDate: false, sdk, chain }),
+        columns: columns({ sortByDate: false, chain }),
         list: attestations || [],
       };
 

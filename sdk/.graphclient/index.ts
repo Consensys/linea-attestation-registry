@@ -49,10 +49,10 @@ export type Aggregation_interval =
 
 export type Attestation = {
   id: Scalars['ID']['output'];
-  schemaId: Scalars['Bytes']['output'];
+  schema: Schema;
   replacedBy: Scalars['Bytes']['output'];
   attester: Scalars['Bytes']['output'];
-  portal: Scalars['Bytes']['output'];
+  portal: Portal;
   attestedDate: Scalars['BigInt']['output'];
   expirationDate: Scalars['BigInt']['output'];
   revocationDate: Scalars['BigInt']['output'];
@@ -61,8 +61,8 @@ export type Attestation = {
   subject: Scalars['Bytes']['output'];
   encodedSubject: Scalars['Bytes']['output'];
   attestationData: Scalars['Bytes']['output'];
-  schemaString?: Maybe<Scalars['String']['output']>;
   decodedData?: Maybe<Array<Scalars['String']['output']>>;
+  auditInformation: AuditInformation;
 };
 
 export type Attestation_filter = {
@@ -74,16 +74,27 @@ export type Attestation_filter = {
   id_lte?: InputMaybe<Scalars['ID']['input']>;
   id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
-  schemaId?: InputMaybe<Scalars['Bytes']['input']>;
-  schemaId_not?: InputMaybe<Scalars['Bytes']['input']>;
-  schemaId_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  schemaId_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  schemaId_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  schemaId_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  schemaId_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  schemaId_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  schemaId_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  schemaId_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  schema?: InputMaybe<Scalars['String']['input']>;
+  schema_not?: InputMaybe<Scalars['String']['input']>;
+  schema_gt?: InputMaybe<Scalars['String']['input']>;
+  schema_lt?: InputMaybe<Scalars['String']['input']>;
+  schema_gte?: InputMaybe<Scalars['String']['input']>;
+  schema_lte?: InputMaybe<Scalars['String']['input']>;
+  schema_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  schema_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  schema_contains?: InputMaybe<Scalars['String']['input']>;
+  schema_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  schema_not_contains?: InputMaybe<Scalars['String']['input']>;
+  schema_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  schema_starts_with?: InputMaybe<Scalars['String']['input']>;
+  schema_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  schema_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  schema_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  schema_ends_with?: InputMaybe<Scalars['String']['input']>;
+  schema_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  schema_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  schema_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  schema_?: InputMaybe<Schema_filter>;
   replacedBy?: InputMaybe<Scalars['Bytes']['input']>;
   replacedBy_not?: InputMaybe<Scalars['Bytes']['input']>;
   replacedBy_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -104,16 +115,27 @@ export type Attestation_filter = {
   attester_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   attester_contains?: InputMaybe<Scalars['Bytes']['input']>;
   attester_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  portal?: InputMaybe<Scalars['Bytes']['input']>;
-  portal_not?: InputMaybe<Scalars['Bytes']['input']>;
-  portal_gt?: InputMaybe<Scalars['Bytes']['input']>;
-  portal_lt?: InputMaybe<Scalars['Bytes']['input']>;
-  portal_gte?: InputMaybe<Scalars['Bytes']['input']>;
-  portal_lte?: InputMaybe<Scalars['Bytes']['input']>;
-  portal_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  portal_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  portal_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  portal_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  portal?: InputMaybe<Scalars['String']['input']>;
+  portal_not?: InputMaybe<Scalars['String']['input']>;
+  portal_gt?: InputMaybe<Scalars['String']['input']>;
+  portal_lt?: InputMaybe<Scalars['String']['input']>;
+  portal_gte?: InputMaybe<Scalars['String']['input']>;
+  portal_lte?: InputMaybe<Scalars['String']['input']>;
+  portal_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  portal_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  portal_contains?: InputMaybe<Scalars['String']['input']>;
+  portal_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  portal_not_contains?: InputMaybe<Scalars['String']['input']>;
+  portal_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  portal_starts_with?: InputMaybe<Scalars['String']['input']>;
+  portal_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  portal_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  portal_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  portal_ends_with?: InputMaybe<Scalars['String']['input']>;
+  portal_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  portal_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  portal_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  portal_?: InputMaybe<Portal_filter>;
   attestedDate?: InputMaybe<Scalars['BigInt']['input']>;
   attestedDate_not?: InputMaybe<Scalars['BigInt']['input']>;
   attestedDate_gt?: InputMaybe<Scalars['BigInt']['input']>;
@@ -180,32 +202,33 @@ export type Attestation_filter = {
   attestationData_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   attestationData_contains?: InputMaybe<Scalars['Bytes']['input']>;
   attestationData_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
-  schemaString?: InputMaybe<Scalars['String']['input']>;
-  schemaString_not?: InputMaybe<Scalars['String']['input']>;
-  schemaString_gt?: InputMaybe<Scalars['String']['input']>;
-  schemaString_lt?: InputMaybe<Scalars['String']['input']>;
-  schemaString_gte?: InputMaybe<Scalars['String']['input']>;
-  schemaString_lte?: InputMaybe<Scalars['String']['input']>;
-  schemaString_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  schemaString_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  schemaString_contains?: InputMaybe<Scalars['String']['input']>;
-  schemaString_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  schemaString_not_contains?: InputMaybe<Scalars['String']['input']>;
-  schemaString_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
-  schemaString_starts_with?: InputMaybe<Scalars['String']['input']>;
-  schemaString_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  schemaString_not_starts_with?: InputMaybe<Scalars['String']['input']>;
-  schemaString_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  schemaString_ends_with?: InputMaybe<Scalars['String']['input']>;
-  schemaString_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  schemaString_not_ends_with?: InputMaybe<Scalars['String']['input']>;
-  schemaString_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   decodedData?: InputMaybe<Array<Scalars['String']['input']>>;
   decodedData_not?: InputMaybe<Array<Scalars['String']['input']>>;
   decodedData_contains?: InputMaybe<Array<Scalars['String']['input']>>;
   decodedData_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
   decodedData_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
   decodedData_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_?: InputMaybe<AuditInformation_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Attestation_filter>>>;
@@ -214,10 +237,23 @@ export type Attestation_filter = {
 
 export type Attestation_orderBy =
   | 'id'
-  | 'schemaId'
+  | 'schema'
+  | 'schema__id'
+  | 'schema__name'
+  | 'schema__description'
+  | 'schema__context'
+  | 'schema__schema'
+  | 'schema__attestationCounter'
   | 'replacedBy'
   | 'attester'
   | 'portal'
+  | 'portal__id'
+  | 'portal__ownerAddress'
+  | 'portal__isRevocable'
+  | 'portal__name'
+  | 'portal__description'
+  | 'portal__ownerName'
+  | 'portal__attestationCounter'
   | 'attestedDate'
   | 'expirationDate'
   | 'revocationDate'
@@ -226,8 +262,209 @@ export type Attestation_orderBy =
   | 'subject'
   | 'encodedSubject'
   | 'attestationData'
-  | 'schemaString'
-  | 'decodedData';
+  | 'decodedData'
+  | 'auditInformation'
+  | 'auditInformation__id';
+
+export type Audit = {
+  id: Scalars['ID']['output'];
+  blockNumber: Scalars['BigInt']['output'];
+  transactionHash: Scalars['Bytes']['output'];
+  transactionTimestamp: Scalars['BigInt']['output'];
+  fromAddress: Scalars['Bytes']['output'];
+  toAddress?: Maybe<Scalars['Bytes']['output']>;
+  valueTransferred?: Maybe<Scalars['BigInt']['output']>;
+  gasPrice?: Maybe<Scalars['BigInt']['output']>;
+};
+
+export type AuditInformation = {
+  id: Scalars['ID']['output'];
+  creation: Audit;
+  lastModification: Audit;
+  modifications: Array<Audit>;
+};
+
+
+export type AuditInformationmodificationsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Audit_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Audit_filter>;
+};
+
+export type AuditInformation_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  creation?: InputMaybe<Scalars['String']['input']>;
+  creation_not?: InputMaybe<Scalars['String']['input']>;
+  creation_gt?: InputMaybe<Scalars['String']['input']>;
+  creation_lt?: InputMaybe<Scalars['String']['input']>;
+  creation_gte?: InputMaybe<Scalars['String']['input']>;
+  creation_lte?: InputMaybe<Scalars['String']['input']>;
+  creation_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  creation_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  creation_contains?: InputMaybe<Scalars['String']['input']>;
+  creation_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  creation_not_contains?: InputMaybe<Scalars['String']['input']>;
+  creation_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  creation_starts_with?: InputMaybe<Scalars['String']['input']>;
+  creation_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  creation_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  creation_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  creation_ends_with?: InputMaybe<Scalars['String']['input']>;
+  creation_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  creation_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  creation_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  creation_?: InputMaybe<Audit_filter>;
+  lastModification?: InputMaybe<Scalars['String']['input']>;
+  lastModification_not?: InputMaybe<Scalars['String']['input']>;
+  lastModification_gt?: InputMaybe<Scalars['String']['input']>;
+  lastModification_lt?: InputMaybe<Scalars['String']['input']>;
+  lastModification_gte?: InputMaybe<Scalars['String']['input']>;
+  lastModification_lte?: InputMaybe<Scalars['String']['input']>;
+  lastModification_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  lastModification_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  lastModification_contains?: InputMaybe<Scalars['String']['input']>;
+  lastModification_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  lastModification_not_contains?: InputMaybe<Scalars['String']['input']>;
+  lastModification_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  lastModification_starts_with?: InputMaybe<Scalars['String']['input']>;
+  lastModification_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lastModification_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  lastModification_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lastModification_ends_with?: InputMaybe<Scalars['String']['input']>;
+  lastModification_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lastModification_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  lastModification_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lastModification_?: InputMaybe<Audit_filter>;
+  modifications?: InputMaybe<Array<Scalars['String']['input']>>;
+  modifications_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  modifications_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modifications_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modifications_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modifications_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modifications_?: InputMaybe<Audit_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<AuditInformation_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<AuditInformation_filter>>>;
+};
+
+export type AuditInformation_orderBy =
+  | 'id'
+  | 'creation'
+  | 'creation__id'
+  | 'creation__blockNumber'
+  | 'creation__transactionHash'
+  | 'creation__transactionTimestamp'
+  | 'creation__fromAddress'
+  | 'creation__toAddress'
+  | 'creation__valueTransferred'
+  | 'creation__gasPrice'
+  | 'lastModification'
+  | 'lastModification__id'
+  | 'lastModification__blockNumber'
+  | 'lastModification__transactionHash'
+  | 'lastModification__transactionTimestamp'
+  | 'lastModification__fromAddress'
+  | 'lastModification__toAddress'
+  | 'lastModification__valueTransferred'
+  | 'lastModification__gasPrice'
+  | 'modifications';
+
+export type Audit_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  transactionTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  transactionTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  transactionTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  transactionTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  transactionTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  transactionTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  transactionTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  fromAddress?: InputMaybe<Scalars['Bytes']['input']>;
+  fromAddress_not?: InputMaybe<Scalars['Bytes']['input']>;
+  fromAddress_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  fromAddress_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  fromAddress_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  fromAddress_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  fromAddress_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  fromAddress_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  fromAddress_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  fromAddress_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  toAddress?: InputMaybe<Scalars['Bytes']['input']>;
+  toAddress_not?: InputMaybe<Scalars['Bytes']['input']>;
+  toAddress_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  toAddress_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  toAddress_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  toAddress_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  toAddress_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  toAddress_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  toAddress_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  toAddress_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  valueTransferred?: InputMaybe<Scalars['BigInt']['input']>;
+  valueTransferred_not?: InputMaybe<Scalars['BigInt']['input']>;
+  valueTransferred_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  valueTransferred_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  valueTransferred_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  valueTransferred_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  valueTransferred_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  valueTransferred_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  gasPrice?: InputMaybe<Scalars['BigInt']['input']>;
+  gasPrice_not?: InputMaybe<Scalars['BigInt']['input']>;
+  gasPrice_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  gasPrice_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  gasPrice_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  gasPrice_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  gasPrice_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  gasPrice_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Audit_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Audit_filter>>>;
+};
+
+export type Audit_orderBy =
+  | 'id'
+  | 'blockNumber'
+  | 'transactionHash'
+  | 'transactionTimestamp'
+  | 'fromAddress'
+  | 'toAddress'
+  | 'valueTransferred'
+  | 'gasPrice';
 
 export type BlockChangedFilter = {
   number_gte: Scalars['Int']['input'];
@@ -303,6 +540,7 @@ export type Counter_orderBy =
 
 export type Issuer = {
   id: Scalars['ID']['output'];
+  auditInformation: AuditInformation;
 };
 
 export type Issuer_filter = {
@@ -314,6 +552,27 @@ export type Issuer_filter = {
   id_lte?: InputMaybe<Scalars['ID']['input']>;
   id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  auditInformation?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_?: InputMaybe<AuditInformation_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Issuer_filter>>>;
@@ -321,13 +580,16 @@ export type Issuer_filter = {
 };
 
 export type Issuer_orderBy =
-  | 'id';
+  | 'id'
+  | 'auditInformation'
+  | 'auditInformation__id';
 
 export type Module = {
   id: Scalars['ID']['output'];
   moduleAddress: Scalars['Bytes']['output'];
   name: Scalars['String']['output'];
   description: Scalars['String']['output'];
+  auditInformation: AuditInformation;
 };
 
 export type Module_filter = {
@@ -389,6 +651,27 @@ export type Module_filter = {
   description_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   description_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_?: InputMaybe<AuditInformation_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Module_filter>>>;
@@ -399,7 +682,9 @@ export type Module_orderBy =
   | 'id'
   | 'moduleAddress'
   | 'name'
-  | 'description';
+  | 'description'
+  | 'auditInformation'
+  | 'auditInformation__id';
 
 /** Defines the order direction, either ascending or descending */
 export type OrderDirection =
@@ -415,6 +700,7 @@ export type Portal = {
   description: Scalars['String']['output'];
   ownerName: Scalars['String']['output'];
   attestationCounter?: Maybe<Scalars['Int']['output']>;
+  auditInformation: AuditInformation;
 };
 
 export type Portal_filter = {
@@ -514,6 +800,27 @@ export type Portal_filter = {
   attestationCounter_lte?: InputMaybe<Scalars['Int']['input']>;
   attestationCounter_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   attestationCounter_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  auditInformation?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_?: InputMaybe<AuditInformation_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Portal_filter>>>;
@@ -528,7 +835,9 @@ export type Portal_orderBy =
   | 'name'
   | 'description'
   | 'ownerName'
-  | 'attestationCounter';
+  | 'attestationCounter'
+  | 'auditInformation'
+  | 'auditInformation__id';
 
 export type Query = {
   attestation?: Maybe<Attestation>;
@@ -545,6 +854,10 @@ export type Query = {
   issuers: Array<Issuer>;
   registryVersion?: Maybe<RegistryVersion>;
   registryVersions: Array<RegistryVersion>;
+  auditInformation?: Maybe<AuditInformation>;
+  auditInformations: Array<AuditInformation>;
+  audit?: Maybe<Audit>;
+  audits: Array<Audit>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -676,6 +989,42 @@ export type QueryregistryVersionsArgs = {
 };
 
 
+export type QueryauditInformationArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryauditInformationsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AuditInformation_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<AuditInformation_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryauditArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryauditsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Audit_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Audit_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Query_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
@@ -684,6 +1033,7 @@ export type RegistryVersion = {
   id: Scalars['ID']['output'];
   versionNumber?: Maybe<Scalars['Int']['output']>;
   timestamp?: Maybe<Scalars['BigInt']['output']>;
+  auditInformation: AuditInformation;
 };
 
 export type RegistryVersion_filter = {
@@ -711,6 +1061,27 @@ export type RegistryVersion_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  auditInformation?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_?: InputMaybe<AuditInformation_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<RegistryVersion_filter>>>;
@@ -720,7 +1091,9 @@ export type RegistryVersion_filter = {
 export type RegistryVersion_orderBy =
   | 'id'
   | 'versionNumber'
-  | 'timestamp';
+  | 'timestamp'
+  | 'auditInformation'
+  | 'auditInformation__id';
 
 export type Schema = {
   id: Scalars['ID']['output'];
@@ -729,6 +1102,7 @@ export type Schema = {
   context: Scalars['String']['output'];
   schema: Scalars['String']['output'];
   attestationCounter?: Maybe<Scalars['Int']['output']>;
+  auditInformation: AuditInformation;
 };
 
 export type Schema_filter = {
@@ -828,6 +1202,27 @@ export type Schema_filter = {
   attestationCounter_lte?: InputMaybe<Scalars['Int']['input']>;
   attestationCounter_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   attestationCounter_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  auditInformation?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lt?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_gte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_lte?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  auditInformation_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  auditInformation_?: InputMaybe<AuditInformation_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Schema_filter>>>;
@@ -840,7 +1235,9 @@ export type Schema_orderBy =
   | 'description'
   | 'context'
   | 'schema'
-  | 'attestationCounter';
+  | 'attestationCounter'
+  | 'auditInformation'
+  | 'auditInformation__id';
 
 export type Subscription = {
   attestation?: Maybe<Attestation>;
@@ -857,6 +1254,10 @@ export type Subscription = {
   issuers: Array<Issuer>;
   registryVersion?: Maybe<RegistryVersion>;
   registryVersions: Array<RegistryVersion>;
+  auditInformation?: Maybe<AuditInformation>;
+  auditInformations: Array<AuditInformation>;
+  audit?: Maybe<Audit>;
+  audits: Array<Audit>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -983,6 +1384,42 @@ export type SubscriptionregistryVersionsArgs = {
   orderBy?: InputMaybe<RegistryVersion_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<RegistryVersion_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionauditInformationArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionauditInformationsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<AuditInformation_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<AuditInformation_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionauditArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionauditsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Audit_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Audit_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -1115,6 +1552,12 @@ export type ResolversTypes = ResolversObject<{
   Attestation: ResolverTypeWrapper<Attestation>;
   Attestation_filter: Attestation_filter;
   Attestation_orderBy: Attestation_orderBy;
+  Audit: ResolverTypeWrapper<Audit>;
+  AuditInformation: ResolverTypeWrapper<AuditInformation>;
+  AuditInformation_filter: AuditInformation_filter;
+  AuditInformation_orderBy: AuditInformation_orderBy;
+  Audit_filter: Audit_filter;
+  Audit_orderBy: Audit_orderBy;
   BigDecimal: ResolverTypeWrapper<Scalars['BigDecimal']['output']>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
   BlockChangedFilter: BlockChangedFilter;
@@ -1157,6 +1600,10 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   Attestation: Attestation;
   Attestation_filter: Attestation_filter;
+  Audit: Audit;
+  AuditInformation: AuditInformation;
+  AuditInformation_filter: AuditInformation_filter;
+  Audit_filter: Audit_filter;
   BigDecimal: Scalars['BigDecimal']['output'];
   BigInt: Scalars['BigInt']['output'];
   BlockChangedFilter: BlockChangedFilter;
@@ -1205,10 +1652,10 @@ export type derivedFromDirectiveResolver<Result, Parent, ContextType = MeshConte
 
 export type AttestationResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Attestation'] = ResolversParentTypes['Attestation']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  schemaId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  schema?: Resolver<ResolversTypes['Schema'], ParentType, ContextType>;
   replacedBy?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   attester?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
-  portal?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  portal?: Resolver<ResolversTypes['Portal'], ParentType, ContextType>;
   attestedDate?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   expirationDate?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   revocationDate?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -1217,8 +1664,28 @@ export type AttestationResolvers<ContextType = MeshContext, ParentType extends R
   subject?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   encodedSubject?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   attestationData?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
-  schemaString?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   decodedData?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  auditInformation?: Resolver<ResolversTypes['AuditInformation'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type AuditResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Audit'] = ResolversParentTypes['Audit']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  transactionTimestamp?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  fromAddress?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  toAddress?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+  valueTransferred?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  gasPrice?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type AuditInformationResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['AuditInformation'] = ResolversParentTypes['AuditInformation']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  creation?: Resolver<ResolversTypes['Audit'], ParentType, ContextType>;
+  lastModification?: Resolver<ResolversTypes['Audit'], ParentType, ContextType>;
+  modifications?: Resolver<Array<ResolversTypes['Audit']>, ParentType, ContextType, RequireFields<AuditInformationmodificationsArgs, 'skip' | 'first'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1249,6 +1716,7 @@ export interface Int8ScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type IssuerResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Issuer'] = ResolversParentTypes['Issuer']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  auditInformation?: Resolver<ResolversTypes['AuditInformation'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1257,6 +1725,7 @@ export type ModuleResolvers<ContextType = MeshContext, ParentType extends Resolv
   moduleAddress?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  auditInformation?: Resolver<ResolversTypes['AuditInformation'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1269,6 +1738,7 @@ export type PortalResolvers<ContextType = MeshContext, ParentType extends Resolv
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ownerName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   attestationCounter?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  auditInformation?: Resolver<ResolversTypes['AuditInformation'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1287,6 +1757,10 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   issuers?: Resolver<Array<ResolversTypes['Issuer']>, ParentType, ContextType, RequireFields<QueryissuersArgs, 'skip' | 'first' | 'subgraphError'>>;
   registryVersion?: Resolver<Maybe<ResolversTypes['RegistryVersion']>, ParentType, ContextType, RequireFields<QueryregistryVersionArgs, 'id' | 'subgraphError'>>;
   registryVersions?: Resolver<Array<ResolversTypes['RegistryVersion']>, ParentType, ContextType, RequireFields<QueryregistryVersionsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  auditInformation?: Resolver<Maybe<ResolversTypes['AuditInformation']>, ParentType, ContextType, RequireFields<QueryauditInformationArgs, 'id' | 'subgraphError'>>;
+  auditInformations?: Resolver<Array<ResolversTypes['AuditInformation']>, ParentType, ContextType, RequireFields<QueryauditInformationsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  audit?: Resolver<Maybe<ResolversTypes['Audit']>, ParentType, ContextType, RequireFields<QueryauditArgs, 'id' | 'subgraphError'>>;
+  audits?: Resolver<Array<ResolversTypes['Audit']>, ParentType, ContextType, RequireFields<QueryauditsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
 }>;
 
@@ -1294,6 +1768,7 @@ export type RegistryVersionResolvers<ContextType = MeshContext, ParentType exten
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   versionNumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   timestamp?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  auditInformation?: Resolver<ResolversTypes['AuditInformation'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1304,6 +1779,7 @@ export type SchemaResolvers<ContextType = MeshContext, ParentType extends Resolv
   context?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   schema?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   attestationCounter?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  auditInformation?: Resolver<ResolversTypes['AuditInformation'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1322,6 +1798,10 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   issuers?: SubscriptionResolver<Array<ResolversTypes['Issuer']>, "issuers", ParentType, ContextType, RequireFields<SubscriptionissuersArgs, 'skip' | 'first' | 'subgraphError'>>;
   registryVersion?: SubscriptionResolver<Maybe<ResolversTypes['RegistryVersion']>, "registryVersion", ParentType, ContextType, RequireFields<SubscriptionregistryVersionArgs, 'id' | 'subgraphError'>>;
   registryVersions?: SubscriptionResolver<Array<ResolversTypes['RegistryVersion']>, "registryVersions", ParentType, ContextType, RequireFields<SubscriptionregistryVersionsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  auditInformation?: SubscriptionResolver<Maybe<ResolversTypes['AuditInformation']>, "auditInformation", ParentType, ContextType, RequireFields<SubscriptionauditInformationArgs, 'id' | 'subgraphError'>>;
+  auditInformations?: SubscriptionResolver<Array<ResolversTypes['AuditInformation']>, "auditInformations", ParentType, ContextType, RequireFields<SubscriptionauditInformationsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  audit?: SubscriptionResolver<Maybe<ResolversTypes['Audit']>, "audit", ParentType, ContextType, RequireFields<SubscriptionauditArgs, 'id' | 'subgraphError'>>;
+  audits?: SubscriptionResolver<Array<ResolversTypes['Audit']>, "audits", ParentType, ContextType, RequireFields<SubscriptionauditsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
 
@@ -1346,6 +1826,8 @@ export type _Meta_Resolvers<ContextType = MeshContext, ParentType extends Resolv
 
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Attestation?: AttestationResolvers<ContextType>;
+  Audit?: AuditResolvers<ContextType>;
+  AuditInformation?: AuditInformationResolvers<ContextType>;
   BigDecimal?: GraphQLScalarType;
   BigInt?: GraphQLScalarType;
   Bytes?: GraphQLScalarType;
@@ -1414,7 +1896,7 @@ const lineaAttestationRegistryTransforms = [];
 const additionalTypeDefs = [] as any[];
 const lineaAttestationRegistryHandler = new GraphqlHandler({
               name: "linea-attestation-registry",
-              config: {"endpoint":"https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1"},
+              config: {"endpoint":"https://api.studio.thegraph.com/query/67521/verax-v2-linea/v0.0.1"},
               baseDir,
               cache,
               pubsub,

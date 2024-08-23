@@ -15,10 +15,24 @@ describe("AttestationDataMapper", () => {
 
       expect(result).not.toBeUndefined();
       expect(result?.id).toEqual(attestationId);
-      expect(result?.schemaId).toEqual("0x5dc8bc9158dd69ee8a234bb8f9ab1f4f17bb52c84b6fd4720d58ec82bb43d2f5");
+      expect(result?.schema.id).toEqual("0x5dc8bc9158dd69ee8a234bb8f9ab1f4f17bb52c84b6fd4720d58ec82bb43d2f5");
+      expect(result?.schema.name).toEqual("Token Balance");
+      expect(result?.schema.description).toEqual("Describes a balance owned on a contract");
+      expect(result?.schema.context).toEqual(
+        "Describes a token balance owned on a contract (ERC-20, ERC-721, ERC-1155, etc.)",
+      );
+      expect(result?.schema.schema).toEqual("(address contract, uint256 balance)");
+      expect(result?.schema.attestationCounter).toBeGreaterThanOrEqual(26);
       expect(result?.replacedBy).toEqual("0x0000000000000000000000000000000000000000000000000000000000000000");
       expect(result?.attester).toEqual("0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d");
-      expect(result?.portal).toEqual("0x0cb56f201e7afe02e542e2d2d42c34d4ce7203f7");
+      expect(result?.portal.id).toEqual("0x0cb56f201e7afe02e542e2d2d42c34d4ce7203f7");
+      expect(result?.portal.name).toEqual("eFrogs Portal");
+      expect(result?.portal.description).toEqual("eFrogs attestations");
+      expect(result?.portal.modules).toEqual([]);
+      expect(result?.portal.isRevocable).toBeTruthy();
+      expect(result?.portal.attestationCounter).toBeGreaterThanOrEqual(26);
+      expect(result?.portal.ownerAddress).toEqual("0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d");
+      expect(result?.portal.ownerName).toEqual("alainnicolas.eth");
       expect(result?.attestedDate).toEqual(1718025507);
       expect(result?.expirationDate).toEqual(1720617499);
       expect(result?.revocationDate).toEqual(0);
@@ -28,7 +42,6 @@ describe("AttestationDataMapper", () => {
       expect(result?.attestationData).toEqual(
         "0x00000000000000000000000035c134262605bc69b3383ea132a077d09d8df0610000000000000000000000000000000000000000000000000000000000000006",
       );
-      expect(result?.schemaString).toEqual("address,uint256");
       expect(result?.decodedData).toEqual(["0x35c134262605bc69b3383ea132a077d09d8df061", "0x6"]);
       expect(result?.decodedPayload).toEqual([
         {

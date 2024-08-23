@@ -20,7 +20,6 @@ export type AttestationPayload = {
 
 export type Attestation = OnChainAttestation & {
   id: string;
-  schemaString: string;
   decodedData: string[];
   decodedPayload: object;
   offchainData?: OffchainData;
@@ -30,10 +29,10 @@ export type OffchainData = { schemaId: string; uri: string; error?: string };
 
 export type OnChainAttestation = {
   attestationId: string; // The unique identifier of the attestation.
-  schemaId: string; // The identifier of the schema this attestation adheres to.
+  schema: Schema; // The Schema this attestation adheres to.
   replacedBy: string | null; // Whether the attestation was replaced by a new one.
   attester: Address; // The address issuing the attestation to the subject.
-  portal: Address; // The id of the portal that created the attestation.
+  portal: Portal; // The Portal that created the attestation.
   attestedDate: number; // The date the attestation is issued.
   expirationDate: number; // The expiration date of the attestation.
   revocationDate: number | null; // The date when the attestation was revoked.

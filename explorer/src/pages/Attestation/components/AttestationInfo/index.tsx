@@ -36,8 +36,8 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     },
     {
       title: t("attestation.info.portal"),
-      value: cropString(portal),
-      to: toPortalById(portal),
+      value: cropString(portal.name),
+      to: toPortalById(portal.id),
     },
     {
       title: t("attestation.info.subject"),

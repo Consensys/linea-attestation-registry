@@ -44,7 +44,7 @@ export const Attestations: React.FC = () => {
       sdk.attestation.findBy(
         itemsPerPage,
         undefined,
-        (sortByDateDirection as OrderDirection) === null ||
+        (sortByDateDirection as OrderDirection) === undefined ||
           (sortByDateDirection as OrderDirection) === ETableSorting.DESC
           ? { id_lt: numberToHex(totalItems - (page - 1) * itemsPerPage, { size: 32 }) }
           : { id_gt: numberToHex(lastID, { size: 32 }) },

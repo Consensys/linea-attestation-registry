@@ -8,7 +8,7 @@ dataSources:
     source:
       abi: AttestationRegistry
       address: "0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5"
-      startBlock: 22791116
+      startBlock: 22789964
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -34,7 +34,7 @@ dataSources:
     source:
       abi: ModuleRegistry
       address: "0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6"
-      startBlock: 22791116
+      startBlock: 22789964
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -54,7 +54,7 @@ dataSources:
     source:
       abi: PortalRegistry
       address: "0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE"
-      startBlock: 22791116
+      startBlock: 22789964
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -78,7 +78,7 @@ dataSources:
     source:
       abi: SchemaRegistry
       address: "0x025531b655D9EE335B8E6cc4C118b313f26ACc8F"
-      startBlock: 22791116
+      startBlock: 22789964
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

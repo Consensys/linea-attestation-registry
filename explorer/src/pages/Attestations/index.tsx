@@ -47,12 +47,14 @@ export const Attestations: React.FC = () => {
       sdk.attestation.findBy(
         itemsPerPage,
         undefined,
-        (sortByDateDirection as OrderDirection) === null ||
+        {
+          ...where,
+          ...((sortByDateDirection as OrderDirection) === null ||
           (sortByDateDirection as OrderDirection) === undefined ||
           (sortByDateDirection as OrderDirection) === ETableSorting.DESC
-          ? { id_lte: buildAttestationId(totalItems - (page - 1) * itemsPerPage, network.prefix) }
-          : { id_gt: buildAttestationId(lastID, network.prefix) },
-        // TODO: add 'where' clause
+            ? { id_lte: buildAttestationId(totalItems - (page - 1) * itemsPerPage, network.prefix) }
+            : { id_gt: buildAttestationId(lastID, network.prefix) }),
+        },
         "attestedDate",
         (sortByDateDirection as OrderDirection) || ETableSorting.DESC,
       ),

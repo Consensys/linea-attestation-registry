@@ -10,14 +10,14 @@ import ArbitrumNovaIcon from "@/assets/networks/arbitrum-nova.svg?react";
 import ArbitrumSepoliaIcon from "@/assets/networks/arbitrum-sepolia.svg?react";
 import ArbitrumIcon from "@/assets/networks/arbitrum.svg?react";
 import BaseIconDark from "@/assets/networks/base-dark.svg?react";
-import BaseMainnetIcon from "@/assets/networks/base-mainnet.svg?react";
 import BaseSepoliaIcon from "@/assets/networks/base-sepolia.svg?react";
+import BaseMainnetIcon from "@/assets/networks/base.svg?react";
 import BscMainnetIconDark from "@/assets/networks/bsc-dark.svg?react";
-import BscMainnetIcon from "@/assets/networks/bsc-mainnet.svg?react";
 import BscTestnetIcon from "@/assets/networks/bsc-testnet.svg?react";
-import LineaMainnetIconDark from "@/assets/networks/linea-mainnet-dark.svg?react";
-import LineaMainnetIcon from "@/assets/networks/linea-mainnet.svg?react";
+import BscMainnetIcon from "@/assets/networks/bsc.svg?react";
+import LineaMainnetIconDark from "@/assets/networks/linea-dark.svg?react";
 import LineaSepoliaIcon from "@/assets/networks/linea-sepolia.svg?react";
+import LineaMainnetIcon from "@/assets/networks/linea.svg?react";
 import { INetwork } from "@/interfaces/config";
 
 const lineaSepolia = {

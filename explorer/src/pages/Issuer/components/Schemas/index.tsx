@@ -1,9 +1,11 @@
 import { t } from "i18next";
 import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTernaryDarkMode } from "usehooks-ts";
 
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
+import { AttestationDefinition } from "@/pages/Home/interface.ts";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES, CHAIN_ID_ROUTE } from "@/routes/constants";
 
@@ -15,6 +17,7 @@ export const Schemas: React.FC<ISchemasProps> = ({ issuerSchemas }) => {
   } = useNetworkContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isDarkMode } = useTernaryDarkMode();
 
   if (issuerSchemas === undefined || issuerSchemas.length === 0) return null;
 
@@ -26,6 +29,12 @@ export const Schemas: React.FC<ISchemasProps> = ({ issuerSchemas }) => {
     });
   };
 
+  const displayLogo = (attestationDefinition: AttestationDefinition) => {
+    const Logo: React.FC<React.SVGProps<SVGSVGElement>> =
+      isDarkMode && attestationDefinition.logoDark ? attestationDefinition.logoDark : attestationDefinition.logo;
+    return <Logo className="w-full h-auto max-w-[2.5rem] md:max-w-[3rem] max-h-[2.5rem] md:max-h-[3rem]" />;
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {issuerSchemas.map((issuerSchema) => (
@@ -35,7 +44,7 @@ export const Schemas: React.FC<ISchemasProps> = ({ issuerSchemas }) => {
         >
           <div className="flex items-center gap-3 text-xl md:text-2xl font-semibold text-blackDefault dark:text-whiteDefault">
             <div className="w-[2.5rem] h-[2.5rem] md:w-[3rem] md:h-[3rem] flex items-center justify-center">
-              <issuerSchema.logo className="w-full h-auto max-w-[2.5rem] md:max-w-[3rem] max-h-[2.5rem] md:max-h-[3rem]" />
+              {displayLogo(issuerSchema)}
             </div>
             {issuerSchema.name}
           </div>

@@ -14,6 +14,7 @@ export interface IIssuer {
 
 export interface AttestationDefinition {
   logo: React.FC<React.SVGProps<SVGSVGElement>>;
+  logoDark?: React.FC<React.SVGProps<SVGSVGElement>>;
   name: string;
   description: string;
   portal: Address;

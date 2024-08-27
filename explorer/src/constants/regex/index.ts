@@ -6,6 +6,8 @@ export const regexEthAddress = {
   by0x: /^0x/,
 };
 
+export const isNumber = /^\d+$/;
+
 export const urlRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+)(\/[^\s]*)?$/;
 
 export const schemaRegex =

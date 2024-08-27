@@ -1,14 +1,18 @@
+import { Hex } from "viem";
+
 import { COMMA_STRING, EMPTY_STRING, SPACE_STRING } from "@/constants";
-import { convertSchemaRegex, regexEthAddress, schemaRegex, schemaStringRegex, urlRegex } from "@/constants/regex";
+import {
+  convertSchemaRegex,
+  isNumber,
+  regexEthAddress,
+  schemaRegex,
+  schemaStringRegex,
+  urlRegex,
+} from "@/constants/regex";
 import { ResultParseSearch } from "@/interfaces/components";
+import { buildAttestationId } from "@/utils/attestationIdUtils.ts";
 
 const filterByRegex = (arr: string[], regex: RegExp): string[] => arr.filter((str) => regex.test(str));
-
-const filterByNumber = (arr: string[]): string[] =>
-  arr.filter((str) => {
-    const number = Number(str);
-    return !(Number.isNaN(number) || !Number.isSafeInteger(number));
-  });
 
 const extractSchema = (search: string) => {
   const matchingSchema = search.match(schemaRegex);
@@ -32,19 +36,21 @@ const removeSubstringFromArray = (inputString: string, substringsToRemove: Array
   return inputString.replace(regex, EMPTY_STRING).trim();
 };
 
-export const parseSearch = (search: string | null): Partial<ResultParseSearch> => {
+export const parseSearch = (search: string | null, chainPrefix: Hex): Partial<ResultParseSearch> => {
   if (!search) return {};
 
-  const splittedSearchBySpace = search.split(SPACE_STRING);
+  const splitSearchBySpace = search.split(SPACE_STRING);
 
-  const startsWith0x = filterByRegex(splittedSearchBySpace, regexEthAddress.by0x);
-  const attestationIds = filterByNumber(startsWith0x);
+  const startsWith0x = filterByRegex(splitSearchBySpace, regexEthAddress.by0x);
+  const rawNumbers = filterByRegex(splitSearchBySpace, isNumber);
+  const hexNumbers = rawNumbers.map((num) => buildAttestationId(Number(num), chainPrefix));
+  const attestationIds = [...startsWith0x, ...hexNumbers];
   const startsWith0xWithoutNumber = startsWith0x.filter((str) => !attestationIds.includes(str));
 
   const defaultAddresses = filterByRegex(startsWith0xWithoutNumber, regexEthAddress.byNumberOfChar[42]);
   const longAddresses = filterByRegex(startsWith0xWithoutNumber, regexEthAddress.byNumberOfChar[64]);
 
-  const urls = filterByRegex(splittedSearchBySpace, urlRegex);
+  const urls = filterByRegex(splitSearchBySpace, urlRegex);
   const allStrings = [...urls, ...defaultAddresses, ...longAddresses, ...attestationIds];
   const searchWithoutUrlsAddressIds = removeSubstringFromArray(search, allStrings);
 

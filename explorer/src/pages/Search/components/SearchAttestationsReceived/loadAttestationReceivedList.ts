@@ -26,7 +26,7 @@ export const loadAttestationReceivedList = async (
   ).filter(isNotNullOrUndefined);
 
   const listBySchemaString = parsedString.schemaString
-    ? await attestation.findBy(ITEMS_SEARCHED_DEFAULT, undefined, { schemaString: parsedString.schemaString })
+    ? await attestation.findBy(ITEMS_SEARCHED_DEFAULT, undefined, { schema: parsedString.schemaString })
     : [];
 
   const results = [...(listByIds || []), ...(listBySubject || []), ...(listBySchemaString || [])];

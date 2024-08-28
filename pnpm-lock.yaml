@@ -90,8 +90,8 @@ importers:
         specifier: ^8.10.7
         version: 8.17.3(react-dom@18.3.1)(react@18.3.1)
       '@verax-attestation-registry/verax-sdk':
-        specifier: 1.11.0
-        version: 1.11.0(@graphql-mesh/types@0.95.8)(@graphql-tools/utils@10.2.0)(@types/node@20.12.12)(@types/react@18.3.2)(react-dom@18.3.1)(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2)
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3(@graphql-mesh/types@0.95.8)(@graphql-tools/utils@10.2.0)(@types/node@20.12.12)(@types/react@18.3.2)(react-dom@18.3.1)(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2)
       '@wagmi/core':
         specifier: ^1.4.7
         version: 1.4.13(@types/react@18.3.2)(react@18.3.1)(typescript@5.2.2)(viem@1.18.9)
@@ -3489,7 +3489,7 @@ packages:
       tsconfig-paths: 4.2.0
       tslib: 2.6.2
       typescript: 5.4.5
-      uWebSockets.js: github.com/uNetworking/uWebSockets.js/6f4b450fc642abba540535f0755c990b42a16026
+      uWebSockets.js: github.com/uNetworking/uWebSockets.js/51ae1d1fd92dff77cbbdc7c431021f85578da1a6
       yargs: 17.7.2
     optionalDependencies:
       node-libcurl: 4.0.0
@@ -9740,8 +9740,8 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@verax-attestation-registry/verax-sdk@1.11.0(@graphql-mesh/types@0.95.8)(@graphql-tools/utils@10.2.0)(@types/node@20.12.12)(@types/react@18.3.2)(react-dom@18.3.1)(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2):
-    resolution: {integrity: sha512-rewR7ZvBLeKkGOAXUCfQpIKSMa7XTQPbGmy0DbA2xJs0qIf39I3BfP6GKNeire+KrNRiTGpP6E8C8JU3SrSa3w==}
+  /@verax-attestation-registry/verax-sdk@2.0.0-beta.3(@graphql-mesh/types@0.95.8)(@graphql-tools/utils@10.2.0)(@types/node@20.12.12)(@types/react@18.3.2)(react-dom@18.3.1)(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2):
+    resolution: {integrity: sha512-War1eN9HxqUNflOSUhmT6LvAj3FIeK9emCV14If5fxCB2nVX80h9rMGjSz/pB/lIzQAykGoDDb4dM+po7kw1UQ==}
     dependencies:
       '@graphql-mesh/cache-localforage': 0.95.8(@graphql-mesh/types@0.95.8)(@graphql-mesh/utils@0.95.8)(graphql@16.8.1)(tslib@2.6.2)
       '@graphql-mesh/cross-helpers': 0.4.2(@graphql-tools/utils@10.2.0)(graphql@16.8.1)
@@ -26290,8 +26290,8 @@ packages:
       use-sync-external-store: 1.2.0(react@18.3.1)
     dev: false
 
-  github.com/uNetworking/uWebSockets.js/6f4b450fc642abba540535f0755c990b42a16026:
-    resolution: {tarball: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/6f4b450fc642abba540535f0755c990b42a16026}
+  github.com/uNetworking/uWebSockets.js/51ae1d1fd92dff77cbbdc7c431021f85578da1a6:
+    resolution: {tarball: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/51ae1d1fd92dff77cbbdc7c431021f85578da1a6}
     name: uWebSockets.js
-    version: 20.47.0
+    version: 20.48.0
     dev: true

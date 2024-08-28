@@ -17,19 +17,35 @@ export default class AttestationDataMapper extends BaseDataMapper<
   typeName = "attestation";
   gqlInterface = `{
             id
-            schemaId
             replacedBy
             attester
-            portal
             attestedDate
             expirationDate
             revocationDate
             version
             revoked
             subject
+            encodedSubject
             attestationData
-            schemaString
             decodedData
+            schema {
+                id
+                name
+                description
+                context
+                schema
+                attestationCounter
+            }
+            portal {
+                id
+                ownerAddress
+                modules
+                isRevocable
+                name
+                description
+                ownerName
+                attestationCounter
+            }
   }`;
 
   override async findOneById(id: string) {
@@ -58,8 +74,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
   }
 
   private async enrichAttestation(attestation: Attestation) {
-    const schema = (await this.veraxSdk.schema.findOneById(attestation.schemaId)) as Schema;
-    attestation.decodedPayload = decodeWithRetry(schema.schema, attestation.attestationData as Hex);
+    attestation.decodedPayload = decodeWithRetry(attestation.schema.schema, attestation.attestationData as Hex);
 
     attestation.attestedDate = Number(attestation.attestedDate);
     attestation.expirationDate = Number(attestation.expirationDate);
@@ -67,8 +82,8 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
     attestation.version = Number(attestation.version);
 
-    // Check if data is stored offchain
-    if (attestation.schemaId === Constants.OFFCHAIN_DATA_SCHEMA_ID) {
+    // Check if data is stored off-chain
+    if (attestation.schema.id === Constants.OFFCHAIN_DATA_SCHEMA_ID) {
       attestation.offchainData = {
         schemaId: (attestation.decodedPayload as OffchainData[])[0].schemaId,
         uri: (attestation.decodedPayload as OffchainData[])[0].uri,
@@ -79,10 +94,10 @@ export default class AttestationDataMapper extends BaseDataMapper<
           const ipfsHash = attestation.offchainData.uri.split("//")[1];
           const response = await getIPFSContent(ipfsHash);
           if (response.toString().startsWith("0x")) {
-            const offchainDataSchema = (await this.veraxSdk.schema.findOneById(
+            const offChainDataSchema = (await this.veraxSdk.schema.findOneById(
               attestation.offchainData.schemaId,
             )) as Schema;
-            attestation.decodedPayload = decodeWithRetry(offchainDataSchema.schema, attestation.attestationData as Hex);
+            attestation.decodedPayload = decodeWithRetry(offChainDataSchema.schema, attestation.attestationData as Hex);
           } else {
             attestation.decodedPayload = response as unknown as object;
           }
@@ -99,7 +114,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
       undefined,
       {
         attestationData_contains: id,
-        schemaId_in: [Constants.RELATIONSHIP_SCHEMA_ID, Constants.NAMED_GRAPH_RELATIONSHIP_SCHEMA_ID],
+        schema_in: [Constants.RELATIONSHIP_SCHEMA_ID, Constants.NAMED_GRAPH_RELATIONSHIP_SCHEMA_ID],
       },
       undefined,
       undefined,

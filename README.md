@@ -282,7 +282,7 @@ Here are the addresses on those networks:
 
 - [Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-linea-sepolia/v0.0.2)
 - [Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-linea/v0.0.1)
-- [Linea Mainnet (Backup)](https://api.goldsky.com/api/public/project_cm06hsedxpgls01xm39r67el8/subgraphs/verax-v2-arbitrum-nova/0.0.1/gn)
+- [Linea Mainnet (Backup)](https://api.goldsky.com/api/public/project_clxx488osyuf501vygg71f86w/subgraphs/verax-v2-linea/0.0.1/gn)
 - [Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum-sepolia/v0.0.1)
 - [Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum/v0.0.1)
 - [Arbitrum Nova](https://api.goldsky.com/api/public/project_cm06hsedxpgls01xm39r67el8/subgraphs/verax-v2-arbitrum-nova/0.0.1/gn)

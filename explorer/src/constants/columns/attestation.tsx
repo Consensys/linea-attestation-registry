@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Attestation, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
+import { Attestation, Portal, Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import moment from "moment";
 import { Chain, Hex } from "viem";
@@ -10,22 +10,20 @@ import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { SortByDate } from "@/components/SortByDate";
 import { ColumnsOptions } from "@/interfaces/components";
-import { SWRKeys } from "@/interfaces/swr/enum";
 import { SWRCell } from "@/pages/Attestations/components/SWRCell";
 import { toAttestationById, toPortalById, toSchemaById } from "@/routes/constants";
 import { getBlockExplorerLink } from "@/utils";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
-import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
+import { EMPTY_0X_STRING, EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
 
 interface ColumnsProps {
   sortByDate: boolean;
-  sdk: VeraxSdk;
   chain: Chain;
 }
 
-export const columns = ({ sortByDate = true, sdk, chain }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
+export const columns = ({ sortByDate = true, chain }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
   {
     accessorKey: "id",
     header: () => (
@@ -52,18 +50,13 @@ export const columns = ({ sortByDate = true, sdk, chain }: Partial<ColumnsProps>
       </div>
     ),
     cell: ({ row }) => {
-      if (!sdk) return null;
+      const portal = row.getValue("portal") as Portal;
 
-      const portalId = row.getValue("portal") as string;
-      const fetcher = () => sdk.portal.findOneById(portalId || EMPTY_STRING);
-
-      return (
-        <SWRCell swrKey={`${SWRKeys.GET_PORTAL_BY_ID}/${portalId}`} fetcher={fetcher} to={toPortalById(portalId)} />
-      );
+      return <SWRCell data={portal} to={toPortalById(portal.id)} />;
     },
   },
   {
-    accessorKey: "schemaId",
+    accessorKey: "schema",
     header: () => (
       <div className="flex items-center gap-2.5">
         <HelperIndicator type="schema" />
@@ -71,14 +64,9 @@ export const columns = ({ sortByDate = true, sdk, chain }: Partial<ColumnsProps>
       </div>
     ),
     cell: ({ row }) => {
-      if (!sdk) return null;
+      const schema = row.getValue("schema") as Schema;
 
-      const schemaId = row.getValue("schemaId") as string;
-      const fetcher = () => sdk.schema.findOneById(schemaId || EMPTY_STRING);
-
-      return (
-        <SWRCell swrKey={`${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}`} fetcher={fetcher} to={toSchemaById(schemaId)} />
-      );
+      return <SWRCell data={schema} to={toSchemaById(schema.id)} />;
     },
   },
   {
@@ -120,10 +108,26 @@ export const skeletonAttestations = (itemPerPage = ITEMS_PER_PAGE_DEFAULT): Arra
       decodedData: [EMPTY_STRING],
       decodedPayload: [EMPTY_STRING],
       attestationId: EMPTY_STRING,
-      schemaId: EMPTY_STRING,
+      schema: {
+        id: EMPTY_0X_STRING,
+        name: EMPTY_STRING,
+        description: EMPTY_STRING,
+        context: EMPTY_STRING,
+        schema: EMPTY_STRING,
+        attestationCounter: 0,
+      },
       replacedBy: EMPTY_STRING,
       attester: `0x${index}`,
-      portal: `0x${index}`,
+      portal: {
+        id: EMPTY_0X_STRING,
+        ownerAddress: EMPTY_0X_STRING,
+        modules: [EMPTY_0X_STRING],
+        isRevocable: false,
+        name: EMPTY_STRING,
+        description: EMPTY_STRING,
+        ownerName: EMPTY_STRING,
+        attestationCounter: 0,
+      },
       attestedDate: 0,
       expirationDate: 0,
       revocationDate: 0,

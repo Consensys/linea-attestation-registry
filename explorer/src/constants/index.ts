@@ -3,6 +3,7 @@ import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, bsc, bscTes
 import { lineaSepolia } from "@/config";
 
 export const EMPTY_STRING = "";
+export const EMPTY_0X_STRING = "0x";
 export const SPACE_STRING = " ";
 export const COMMA_STRING = ",";
 export const DASH = "-";

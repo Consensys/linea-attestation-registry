@@ -2,7 +2,6 @@ import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
-import { numberToHex } from "viem/utils";
 
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
@@ -14,18 +13,16 @@ import { ETableSorting } from "@/enums/tableSorting";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
+import { buildAttestationId } from "@/utils/attestationIdUtils.ts";
 import { getItemsByPage, pageBySearchParams } from "@/utils/paginationUtils";
 
 import { TitleAndSwitcher } from "./components/TitleAndSwitcher";
 
 export const Attestations: React.FC = () => {
-  const {
-    sdk,
-    network: { chain },
-  } = useNetworkContext();
+  const { sdk, network } = useNetworkContext();
 
   const { data: attestationsCount } = useSWR(
-    `${SWRKeys.GET_ATTESTATION_COUNT}/${chain.id}`,
+    `${SWRKeys.GET_ATTESTATION_COUNT}/${network.chain.id}`,
     () => sdk.attestation.getAttestationIdCounter() as Promise<number>,
   );
 
@@ -40,7 +37,7 @@ export const Attestations: React.FC = () => {
 
   const { data: attestationsList, isLoading } = useSWR(
     totalItems > 0
-      ? `${SWRKeys.GET_ATTESTATION_LIST}/${itemsPerPage}/${lastID}/${sortByDateDirection}/${chain.id}`
+      ? `${SWRKeys.GET_ATTESTATION_LIST}/${itemsPerPage}/${lastID}/${sortByDateDirection}/${network.chain.id}`
       : null,
     () =>
       sdk.attestation.findBy(
@@ -49,13 +46,12 @@ export const Attestations: React.FC = () => {
         (sortByDateDirection as OrderDirection) === null ||
           (sortByDateDirection as OrderDirection) === undefined ||
           (sortByDateDirection as OrderDirection) === ETableSorting.DESC
-          ? { id_lt: numberToHex(totalItems - (page - 1) * itemsPerPage, { size: 32 }) }
-          : { id_gt: numberToHex(lastID, { size: 32 }) },
+          ? { id_lte: buildAttestationId(totalItems - (page - 1) * itemsPerPage, network.prefix) }
+          : { id_gt: buildAttestationId(lastID, network.prefix) },
         "attestedDate",
         (sortByDateDirection as OrderDirection) || ETableSorting.DESC,
       ),
   );
-
   const handlePage = (retrievedPage: number) => {
     setLastID(getItemsByPage(retrievedPage, itemsPerPage));
   };
@@ -64,7 +60,7 @@ export const Attestations: React.FC = () => {
 
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations(itemsPerPage) }
-    : { columns: columns({ sdk, chain }), list: attestationsList || [] };
+    : { columns: columns({ sdk, chain: network.chain }), list: attestationsList || [] };
 
   return (
     <TitleAndSwitcher>

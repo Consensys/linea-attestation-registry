@@ -58,6 +58,7 @@ const chains: INetwork[] = [
     img: <LineaMainnetIcon />,
     imgDark: <LineaMainnetIconDark />,
     network: "linea",
+    prefix: "0x0000",
   },
   {
     name: "Linea Sepolia",
@@ -65,6 +66,7 @@ const chains: INetwork[] = [
     veraxEnv: VeraxSdk.DEFAULT_LINEA_SEPOLIA_FRONTEND,
     img: <LineaSepoliaIcon />,
     network: "linea-sepolia",
+    prefix: "0x0000",
   },
   {
     name: "Arbitrum",
@@ -73,6 +75,7 @@ const chains: INetwork[] = [
     img: <ArbitrumIcon />,
     imgDark: <ArbitrumIconDark />,
     network: "arbitrum",
+    prefix: "0x0001",
   },
   {
     name: "Arbitrum Sepolia",
@@ -80,6 +83,7 @@ const chains: INetwork[] = [
     veraxEnv: VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA_FRONTEND,
     img: <ArbitrumSepoliaIcon />,
     network: "arbitrum-sepolia",
+    prefix: "0x0001",
   },
   {
     name: "Arbitrum Nova",
@@ -88,6 +92,7 @@ const chains: INetwork[] = [
     img: <ArbitrumNovaIcon />,
     imgDark: <ArbitrumNovaIconDark />,
     network: "arbitrum-nova",
+    prefix: "0x0002",
   },
   {
     name: "Base Mainnet",
@@ -96,6 +101,7 @@ const chains: INetwork[] = [
     img: <BaseMainnetIcon />,
     imgDark: <BaseIconDark />,
     network: "base-mainnet",
+    prefix: "0x0005",
   },
   {
     name: "Base Sepolia",
@@ -103,6 +109,7 @@ const chains: INetwork[] = [
     veraxEnv: VeraxSdk.DEFAULT_BASE_SEPOLIA_FRONTEND,
     img: <BaseSepoliaIcon />,
     network: "base-sepolia",
+    prefix: "0x0005",
   },
   {
     name: "BSC Mainnet",
@@ -111,6 +118,7 @@ const chains: INetwork[] = [
     img: <BscMainnetIcon />,
     imgDark: <BscMainnetIconDark />,
     network: "bsc-mainnet",
+    prefix: "0x0006",
   },
   {
     name: "BSC Testnet",
@@ -118,6 +126,7 @@ const chains: INetwork[] = [
     veraxEnv: VeraxSdk.DEFAULT_BSC_TESTNET_FRONTEND,
     img: <BscTestnetIcon />,
     network: "bsc-testnet",
+    prefix: "0x0006",
   },
 ];
 

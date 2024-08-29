@@ -60,16 +60,16 @@ export const issuersData: IIssuer[] = [
     logo: PassportXyz,
     keywords: ["reputation", "wallet score"],
     description:
-      "Passport XYZ is the best, easy-to-use identity and Sybil defense solution in web3. Top web3 projects protect what matters with Gitcoin Passport.",
+      "Passport XYZ enables web3 users to fairly participate in rewards, governance, and other community programs by helping partners better identify high-quality unique humans participating in their ecosystem.",
     CTALink: "https://passport.gitcoin.co/#/verax/dashboard",
-    CTATitle: "Get your passport",
+    CTATitle: "Get your Passport",
     address: "0x96DB2c6D93A8a12089f7a6EdA5464e967308AdEd",
     attestationDefinitions: [
       {
-        name: "Passport Score",
+        name: "Unique Humanity Score",
         logo: PassportXyz,
         description:
-          "Passport computes your Unique Humanity Score based on several different credentials and on-chain activity. Most applications require a score of at least 20 to participate",
+          "Passport XYZ's Unique Humanity Score is the sum of different verifiable credentials, which together represents how unique and human the associated account is. Partners typically require users to have a score of 20+ to participate in various programs.",
         portal: "0xcaa9e817f02486ce076560b77a86235ef91c5d5d",
         schema: "0x01f031da36192c34057c764239eb77bb6ec8ebfb808f72a7bb172f37a5bec31f",
         url: "https://passport.gitcoin.co/#/verax/dashboard",

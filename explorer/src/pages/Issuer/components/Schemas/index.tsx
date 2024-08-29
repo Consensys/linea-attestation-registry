@@ -22,7 +22,10 @@ export const Schemas: React.FC<ISchemasProps> = ({ issuerSchemas }) => {
   if (issuerSchemas === undefined || issuerSchemas.length === 0) return null;
 
   const handleSeeAttestationsClick = (portal: string, schema: string) => {
-    const whereClauseJSON = { portal: portal, schemaId: schema };
+    const whereClauseJSON = {
+      portal_: { id: portal },
+      schema_: { id: schema },
+    };
     const whereClause = `?where=${encodeURIComponent(JSON.stringify(whereClauseJSON))}`;
     navigate(APP_ROUTES.ATTESTATIONS.replace(CHAIN_ID_ROUTE, network) + whereClause, {
       state: { from: location.pathname },

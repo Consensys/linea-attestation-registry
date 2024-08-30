@@ -1,7 +1,10 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
+import { useCallback } from "react";
 import { Address, Hex, hexToNumber } from "viem";
+import { mainnet } from "viem/chains";
+import { useEnsName } from "wagmi";
 
 import { Link } from "@/components/Link";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -11,9 +14,6 @@ import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
 import { createDateListItem } from "./utils";
-import { mainnet } from "viem/chains";
-import { useEnsName } from "wagmi";
-import { useCallback } from "react";
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const {
@@ -32,7 +32,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     }
 
     return cropString(attestation.attester);
-  }, [attesterEnsAddress]);
+  }, [attesterEnsAddress, attestation.attester]);
 
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
 

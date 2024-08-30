@@ -1,7 +1,7 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
-import { Hex, hexToNumber } from "viem";
+import { Address, Hex, hexToNumber } from "viem";
 
 import { Link } from "@/components/Link";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -11,11 +11,28 @@ import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
 import { createDateListItem } from "./utils";
+import { mainnet } from "viem/chains";
+import { useEnsName } from "wagmi";
+import { useCallback } from "react";
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const {
     network: { chain },
   } = useNetworkContext();
+
+  const { data: attesterEnsAddress } = useEnsName({
+    address: attestation.attester as Address,
+    chainId: mainnet.id,
+    enabled: true,
+  });
+
+  const displayAttesterEnsNameOrAddress = useCallback(() => {
+    if (attesterEnsAddress) {
+      return attesterEnsAddress;
+    }
+
+    return cropString(attestation.attester);
+  }, [attesterEnsAddress]);
 
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
 
@@ -31,7 +48,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     createDateListItem(t("attestation.info.revocationDate"), revocationDate?.toString()),
     {
       title: t("attestation.info.issuedBy"),
-      value: cropString(attester),
+      value: displayAttesterEnsNameOrAddress(),
       link: `${blockExplorerLink}/${attester}`,
     },
     {

@@ -42,13 +42,13 @@ export const parseSearch = (search: string | null, chainPrefix: Hex): Partial<Re
   const splitSearchBySpace = search.split(SPACE_STRING);
 
   const startsWith0x = filterByRegex(splitSearchBySpace, regexEthAddress.by0x);
+  const potentialAttestationIds = filterByRegex(startsWith0x, regexEthAddress.byNumberOfChar[64]);
   const rawNumbers = filterByRegex(splitSearchBySpace, isNumber);
   const hexNumbers = rawNumbers.map((num) => buildAttestationId(Number(num), chainPrefix));
-  const attestationIds = [...startsWith0x, ...hexNumbers];
-  const startsWith0xWithoutNumber = startsWith0x.filter((str) => !attestationIds.includes(str));
+  const attestationIds = [...potentialAttestationIds, ...hexNumbers];
 
-  const defaultAddresses = filterByRegex(startsWith0xWithoutNumber, regexEthAddress.byNumberOfChar[42]);
-  const longAddresses = filterByRegex(startsWith0xWithoutNumber, regexEthAddress.byNumberOfChar[64]);
+  const defaultAddresses = filterByRegex(startsWith0x, regexEthAddress.byNumberOfChar[42]);
+  const longAddresses = filterByRegex(startsWith0x, regexEthAddress.byNumberOfChar[64]);
 
   const urls = filterByRegex(splitSearchBySpace, urlRegex);
   const allStrings = [...urls, ...defaultAddresses, ...longAddresses, ...attestationIds];

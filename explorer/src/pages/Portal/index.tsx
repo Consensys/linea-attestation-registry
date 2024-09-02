@@ -2,7 +2,9 @@ import { t } from "i18next";
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
-import { Address, mainnet, useEnsName } from "wagmi";
+import { Address } from "viem";
+import { mainnet } from "viem/chains";
+import { useEnsName } from "wagmi";
 
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";

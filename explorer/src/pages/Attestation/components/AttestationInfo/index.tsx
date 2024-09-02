@@ -2,7 +2,7 @@ import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
 import { useCallback } from "react";
-import { Address, Hex, hexToNumber } from "viem";
+import { Address, Hex, hexToNumber, isAddress } from "viem";
 import { mainnet } from "viem/chains";
 import { useEnsName } from "wagmi";
 
@@ -26,6 +26,12 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     enabled: true,
   });
 
+  const { data: subjectEnsAddress } = useEnsName({
+    address: attestation.subject as Address,
+    chainId: mainnet.id,
+    enabled: isAddress(attestation.subject),
+  });
+
   const displayAttesterEnsNameOrAddress = useCallback(() => {
     if (attesterEnsAddress) {
       return attesterEnsAddress;
@@ -33,6 +39,14 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
 
     return cropString(attestation.attester);
   }, [attesterEnsAddress, attestation.attester]);
+
+  const displaySubjectEnsNameOrAddress = useCallback(() => {
+    if (subjectEnsAddress) {
+      return subjectEnsAddress;
+    }
+
+    return cropString(attestation.subject);
+  }, [subjectEnsAddress, attestation.subject]);
 
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
 
@@ -58,7 +72,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     },
     {
       title: t("attestation.info.subject"),
-      value: cropString(subject),
+      value: displaySubjectEnsNameOrAddress(),
       link: `${blockExplorerLink}/${subject}`,
     },
   ];

@@ -144,7 +144,7 @@
   "portal": {
     "title": "Portal",
     "id": "id",
-    "ownerAddress": "Owner Address",
+    "ownerAddress": "Owner",
     "revokable": {
       "title": "Revokable",
       "yes": "Yes",
@@ -155,7 +155,7 @@
       "columns": {
         "name": "Portal Name",
         "description": "Portal Description",
-        "owner": "Owner Address"
+        "owner": "Owner"
       }
     }
   }

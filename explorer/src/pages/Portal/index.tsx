@@ -1,6 +1,8 @@
 import { t } from "i18next";
+import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
+import { Address, mainnet, useEnsName } from "wagmi";
 
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
@@ -34,6 +36,20 @@ export const Portal = () => {
     },
   );
 
+  const { data: portalOwnerEnsAddress } = useEnsName({
+    address: portal?.ownerAddress as Address,
+    chainId: mainnet.id,
+    enabled: !isLoading,
+  });
+
+  const displayPortalOwnerEnsAddress = useCallback(() => {
+    if (portalOwnerEnsAddress) {
+      return portalOwnerEnsAddress;
+    }
+
+    return portal?.ownerAddress;
+  }, [portalOwnerEnsAddress, portal?.ownerAddress]);
+
   if (isLoading || isValidating) return <PortalLoadingSkeleton />;
   if (!portal) return <NotFoundPage page="portal" id={id} />;
 
@@ -44,7 +60,7 @@ export const Portal = () => {
     },
     {
       title: t("portal.ownerAddress"),
-      subtitle: portal.ownerAddress,
+      subtitle: displayPortalOwnerEnsAddress(),
     },
     {
       title: t("portal.revokable.title"),

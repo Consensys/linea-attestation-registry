@@ -388,7 +388,7 @@ export const issuersData: IIssuer[] = [
     address: "0x80203136fae3111b810106baa500231d4fd08fc6",
     attestationDefinitions: [
       {
-        name: "Anima Proof of Uniqueness",
+        name: "Proof of Uniqueness",
         logo: PrivadoID,
         logoDark: PrivadoID,
         description:

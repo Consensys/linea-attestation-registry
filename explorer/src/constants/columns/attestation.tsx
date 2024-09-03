@@ -23,7 +23,14 @@ interface ColumnsProps {
   chain: Chain;
 }
 
-export const columns = ({ sortByDate = true, chain }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
+interface AttestationWithJSXSubject extends Omit<Attestation, "subject"> {
+  subject: string | JSX.Element;
+}
+
+export const columns = ({
+  sortByDate = true,
+  chain,
+}: Partial<ColumnsProps> = {}): ColumnDef<AttestationWithJSXSubject>[] => [
   {
     accessorKey: "id",
     header: () => (

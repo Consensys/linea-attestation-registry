@@ -1,9 +1,11 @@
 import { Attestation_filter, OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
+import { Address, isAddress } from "viem";
 
 import { DataTable } from "@/components/DataTable";
+import { EnsNameDisplay } from "@/components/EnsNameDisplay";
 import { Pagination } from "@/components/Pagination";
 import { BasicPagination } from "@/components/Pagination/Basic";
 import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
@@ -69,6 +71,21 @@ export const Attestations: React.FC = () => {
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations(itemsPerPage) }
     : { columns: columns({ chain: network.chain }), list: attestationsList || [] };
 
+  const attestationTableData = useMemo(() => {
+    return data.list.map((attestation) => {
+      if (!attestation || !attestation.subject) {
+        return attestation;
+      }
+
+      const isValidAddress = isAddress(attestation.subject);
+
+      return {
+        ...attestation,
+        subject: isValidAddress ? <EnsNameDisplay address={attestation.subject as Address} /> : attestation.subject,
+      };
+    });
+  }, [data.list]);
+
   const renderPagination = () => {
     if (attestationsCount) {
       if (where) {
@@ -83,7 +100,7 @@ export const Attestations: React.FC = () => {
 
   return (
     <TitleAndSwitcher>
-      <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.ATTESTATION_BY_ID} />
+      <DataTable columns={data.columns} data={attestationTableData} link={APP_ROUTES.ATTESTATION_BY_ID} />
       {renderPagination()}
     </TitleAndSwitcher>
   );

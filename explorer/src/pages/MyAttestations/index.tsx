@@ -2,14 +2,16 @@ import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/
 import { ConnectKitButton } from "connectkit";
 import { t } from "i18next";
 import { ArchiveIcon, Check, Copy, Wallet } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import useSWR from "swr";
+import { Address, isAddress } from "viem";
 import { useAccount } from "wagmi";
 
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { DataTable } from "@/components/DataTable";
+import { EnsNameDisplay } from "@/components/EnsNameDisplay";
 import { InfoBlock } from "@/components/InfoBlock";
 import { THOUSAND } from "@/constants";
 import { columns } from "@/constants/columns/attestation";
@@ -58,6 +60,23 @@ export const MyAttestations: React.FC = () => {
       ),
   );
 
+  const attestationTableData = useMemo(() => {
+    return attestationsList
+      ? attestationsList.map((attestation) => {
+          if (!attestation || !attestation.subject) {
+            return attestation;
+          }
+
+          const isValidAddress = isAddress(attestation.subject);
+
+          return {
+            ...attestation,
+            subject: isValidAddress ? <EnsNameDisplay address={attestation.subject as Address} /> : attestation.subject,
+          };
+        })
+      : [];
+  }, [attestationsList]);
+
   return (
     <TitleAndSwitcher>
       {address && (
@@ -91,7 +110,7 @@ export const MyAttestations: React.FC = () => {
       ) : !attestationsList || !attestationsList.length ? (
         <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.emptyList")} />
       ) : (
-        <DataTable columns={columns({ chain })} data={attestationsList} link={APP_ROUTES.ATTESTATION_BY_ID} />
+        <DataTable columns={columns({ chain })} data={attestationTableData} link={APP_ROUTES.ATTESTATION_BY_ID} />
       )}
     </TitleAndSwitcher>
   );

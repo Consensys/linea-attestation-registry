@@ -9,8 +9,9 @@ contract AttestationRegistryMock {
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
   event AttestationRegistered();
-  event AttestationReplaced();
   event BulkAttestationsRegistered();
+  event AttestationReplaced();
+  event BulkAttestationsReplaced();
   event AttestationRevoked(bytes32 attestationId);
   event BulkAttestationsRevoked(bytes32[] attestationId);
 
@@ -55,7 +56,9 @@ contract AttestationRegistryMock {
     bytes32[] calldata /*attestationId*/,
     AttestationPayload[] calldata /*attestationPayload*/,
     address /*attester*/
-  ) public {}
+  ) public {
+    emit BulkAttestationsReplaced();
+  }
 
   function revoke(bytes32 attestationId) public {
     emit AttestationRevoked(attestationId);

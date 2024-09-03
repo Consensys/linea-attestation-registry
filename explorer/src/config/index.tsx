@@ -134,7 +134,7 @@ const config = createConfig(
   getDefaultConfig({
     autoConnect: true,
     infuraId: import.meta.env.VITE_INFURA_API_KEY,
-    walletConnectProjectId: "f9f08df5485d8e71127deb33ee1be4f7" || "",
+    walletConnectProjectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "",
     chains: [...chains.map((el) => el.chain), mainnet],
     appName: "Verax | Explorer",
     appIcon: veraxColoredIcon,

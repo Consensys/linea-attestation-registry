@@ -2,10 +2,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Attestation, Portal, Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import moment from "moment";
-import { Chain, Hex } from "viem";
-import { hexToNumber } from "viem/utils";
+import { Address, Chain, Hex } from "viem";
+import { hexToNumber, isAddress } from "viem/utils";
 
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
+import { EnsNameDisplay } from "@/components/EnsNameDisplay";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { SortByDate } from "@/components/SortByDate";
@@ -23,14 +24,7 @@ interface ColumnsProps {
   chain: Chain;
 }
 
-interface AttestationWithJSXSubject extends Omit<Attestation, "subject"> {
-  subject: string | JSX.Element;
-}
-
-export const columns = ({
-  sortByDate = true,
-  chain,
-}: Partial<ColumnsProps> = {}): ColumnDef<AttestationWithJSXSubject>[] => [
+export const columns = ({ sortByDate = true, chain }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
   {
     accessorKey: "id",
     header: () => (
@@ -83,6 +77,9 @@ export const columns = ({
       const subject = row.getValue("subject") as string;
       if (!chain) return cropString(subject);
 
+      const isValidAddress = isAddress(subject);
+      const subjectDisplay = isValidAddress ? <EnsNameDisplay address={subject as Address} /> : cropString(subject);
+
       return (
         <a
           href={`${getBlockExplorerLink(chain)}/${subject}`}
@@ -90,7 +87,7 @@ export const columns = ({
           target="_blank"
           className="hover:underline"
         >
-          {cropString(subject)}
+          {subjectDisplay}
         </a>
       );
     },

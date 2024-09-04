@@ -28,7 +28,7 @@ contract NFTPortalTest is Test {
     router.updateModuleRegistry(address(moduleRegistryMock));
     router.updateAttestationRegistry(address(attestationRegistryMock));
 
-    nftPortal = new NFTPortal(modules, address(router));
+    nftPortal = new NFTPortal(modules, address(router), "TestNFT", "TFNT");
 
     // Create attestation payload
     AttestationPayload memory attestationPayload = AttestationPayload(

@@ -1,7 +1,10 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import { ArrowUpRight } from "lucide-react";
-import { Hex, hexToNumber } from "viem";
+import { useCallback } from "react";
+import { Address, Hex, hexToNumber, isAddress } from "viem";
+import { mainnet } from "viem/chains";
+import { useEnsName } from "wagmi";
 
 import { Link } from "@/components/Link";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -17,6 +20,34 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     network: { chain },
   } = useNetworkContext();
 
+  const { data: attesterEnsAddress } = useEnsName({
+    address: attestation.attester as Address,
+    chainId: mainnet.id,
+    enabled: true,
+  });
+
+  const { data: subjectEnsAddress } = useEnsName({
+    address: attestation.subject as Address,
+    chainId: mainnet.id,
+    enabled: isAddress(attestation.subject),
+  });
+
+  const displayAttesterEnsNameOrAddress = useCallback(() => {
+    if (attesterEnsAddress) {
+      return attesterEnsAddress;
+    }
+
+    return cropString(attestation.attester);
+  }, [attesterEnsAddress, attestation.attester]);
+
+  const displaySubjectEnsNameOrAddress = useCallback(() => {
+    if (subjectEnsAddress) {
+      return subjectEnsAddress;
+    }
+
+    return cropString(attestation.subject);
+  }, [subjectEnsAddress, attestation.subject]);
+
   const { attestedDate, expirationDate, revocationDate, id, revoked, attester, portal, subject } = attestation;
 
   const blockExplorerLink = getBlockExplorerLink(chain);
@@ -31,7 +62,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     createDateListItem(t("attestation.info.revocationDate"), revocationDate?.toString()),
     {
       title: t("attestation.info.issuedBy"),
-      value: cropString(attester),
+      value: displayAttesterEnsNameOrAddress(),
       link: `${blockExplorerLink}/${attester}`,
     },
     {
@@ -41,7 +72,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     },
     {
       title: t("attestation.info.subject"),
-      value: cropString(subject),
+      value: displaySubjectEnsNameOrAddress(),
       link: `${blockExplorerLink}/${subject}`,
     },
   ];

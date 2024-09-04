@@ -1,6 +1,6 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { getDefaultConfig } from "connectkit";
-import { Chain, createConfig } from "wagmi";
+import { Chain, createConfig, mainnet } from "wagmi";
 import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
 
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
@@ -135,7 +135,7 @@ const config = createConfig(
     autoConnect: true,
     infuraId: import.meta.env.VITE_INFURA_API_KEY,
     walletConnectProjectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "",
-    chains: chains.map((el) => el.chain),
+    chains: [...chains.map((el) => el.chain), mainnet],
     appName: "Verax | Explorer",
     appIcon: veraxColoredIcon,
   }),

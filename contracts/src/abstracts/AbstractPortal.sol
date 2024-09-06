@@ -291,6 +291,7 @@ abstract contract AbstractPortal is IPortal {
 
   /**
    * @notice Optional method run when an attestation is replaced
+   * @dev    IMPORTANT NOTE: By default, replacement is only possible by the portal owner
    * @param attestationId the ID of the attestation being replaced
    * @param attestationPayload the attestation payload to create attestation and register it
    * @param attester the address of the attester
@@ -301,7 +302,9 @@ abstract contract AbstractPortal is IPortal {
     AttestationPayload memory attestationPayload,
     address attester,
     uint256 value
-  ) internal virtual {}
+  ) internal virtual {
+    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+  }
 
   /**
    * @notice Optional method run when attesting a batch of payloads
@@ -313,11 +316,20 @@ abstract contract AbstractPortal is IPortal {
     bytes[][] memory validationPayloads
   ) internal virtual {}
 
+  /**
+   * @notice Optional method run when replacing a batch of payloads
+   * @dev    IMPORTANT NOTE: By default, bulk replacement is only possible by the portal owner
+   * @param attestationIds the IDs of the attestations being replaced
+   * @param attestationsPayloads the payloads to replace
+   * @param validationPayloads the payloads to validate in order to replace the attestations
+   */
   function _onBulkReplace(
     bytes32[] memory attestationIds,
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) internal virtual {}
+  ) internal virtual {
+    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+  }
 
   /**
    * @notice Optional method run when an attestation is revoked or replaced

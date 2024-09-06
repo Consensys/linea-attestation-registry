@@ -182,6 +182,7 @@ contract DefaultPortalTest is Test {
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
     defaultPortal.attestV2(attestationPayload, validationPayload);
+    vm.prank(portalOwner);
     defaultPortal.replaceV2(bytes32(abi.encode(1)), attestationPayload, validationPayload);
   }
 
@@ -257,6 +258,7 @@ contract DefaultPortalTest is Test {
     attestationIds[1] = bytes32(abi.encode(2));
 
     defaultPortal.bulkAttestV2(payloadsToAttest, validationPayloads);
+    vm.prank(portalOwner);
     defaultPortal.bulkReplaceV2(attestationIds, payloadsToAttest, validationPayloads);
   }
 

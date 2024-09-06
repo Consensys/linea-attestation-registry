@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-sdk",
-  "version": "1.9.1",
+  "version": "2.0.0-beta.5",
   "description": "Verax Attestation Registry SDK to interact with the subgraph and the contracts",
   "keywords": [
     "linea-attestation-registry",
@@ -15,19 +15,20 @@
   "license": "MIT",
   "author": "Consensys",
   "type": "commonjs",
+  "main": "./lib/src/VeraxSdk.js",
+  "types": "./lib/types/src/VeraxSdk.d.ts",
   "files": [
     "lib/**/*"
   ],
-  "types": "./lib/types/src/VeraxSdk.d.ts",
-  "main": "./lib/src/VeraxSdk.js",
   "scripts": {
     "attestation": "ts-node examples/attestation/index.ts",
-    "clean": "rm -rf ./lib",
     "build": "pnpm run clean && tsc --p ./tsconfig.build.json",
-    "prepack": "npm run build",
-    "publish:public": "pnpm publish --access public --no-git-checks",
+    "clean": "rm -rf ./lib",
+    "generate": "graphclient build",
     "module": "ts-node examples/module/index.ts",
+    "prepack": "npm run build",
     "portal": "ts-node examples/portal/index.ts",
+    "publish:public": "pnpm publish --access public --no-git-checks",
     "schema": "ts-node examples/schema/index.ts",
     "test": "jest",
     "test:ci": "cp .env.example .env && pnpm run test",
@@ -37,7 +38,6 @@
     "test:unit:ci": "cp .env.example .env && pnpm run test:unit"
   },
   "dependencies": {
-    "@graphprotocol/client-cli": "^3.0.0",
     "@graphql-mesh/cache-localforage": "^0.95.8",
     "@graphql-mesh/cross-helpers": "^0.4.1",
     "@graphql-mesh/graphql": "^0.95.8",
@@ -47,7 +47,7 @@
     "@graphql-mesh/store": "^0.95.8",
     "@graphql-mesh/utils": "^0.95.8",
     "@whatwg-node/fetch": "^0.9.14",
-    "axios": "^1.6.1",
+    "axios": "^1.7.4",
     "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
     "viem": "^2.9.26"
@@ -56,6 +56,7 @@
     "@babel/plugin-transform-runtime": "^7.23.3",
     "@babel/preset-env": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
+    "@graphprotocol/client-cli": "^3.0.0",
     "@types/jest": "^29.5.8",
     "@types/node": "^20.9.0",
     "babel-jest": "^29.7.0",

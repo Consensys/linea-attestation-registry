@@ -9,6 +9,7 @@ import { EMPTY_STRING } from "@/constants";
 import { DEFAULT_SEARCH_ELEMENTS } from "@/constants/components";
 import { EQueryParams } from "@/enums/queryParams";
 import { Page, SearchElementProps } from "@/interfaces/components";
+import { useNetworkContext } from "@/providers/network-provider/context.ts";
 import { parseSearch } from "@/utils/searchUtils";
 
 import { SearchAttestationsReceived } from "./components/SearchAttestationsReceived";
@@ -20,7 +21,10 @@ import { SearchSchemas } from "./components/SearchSchemas";
 export const Search = () => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get(EQueryParams.SEARCH_QUERY);
-  const parsedString = useMemo(() => parseSearch(search), [search]);
+  const {
+    network: { prefix },
+  } = useNetworkContext();
+  const parsedString = useMemo(() => parseSearch(search, prefix), [search, prefix]);
 
   const [searchElements, setSearchElements] = useState<SearchElementProps>(DEFAULT_SEARCH_ELEMENTS);
   const [notFound, setNotFound] = useState(false);

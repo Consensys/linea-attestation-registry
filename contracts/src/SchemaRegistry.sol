@@ -23,8 +23,8 @@ contract SchemaRegistry is OwnableUpgradeable {
 
   /// @notice Error thrown when an invalid Router address is given
   error RouterInvalid();
-  /// @notice Error thrown when a non-issuer tries to call a method that can only be called by an issuer
-  error OnlyIssuer();
+  /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
+  error OnlyAllowlisted();
   /// @notice Error thrown when any address which is not a portal registry tries to call a method
   error OnlyPortalRegistry();
   /// @notice Error thrown when a non-assigned issuer tries to call a method that can only be called by an assigned issuer
@@ -44,6 +44,10 @@ contract SchemaRegistry is OwnableUpgradeable {
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
   /// @notice Event emitted when a Schema context is updated
   event SchemaContextUpdated(bytes32 indexed id);
+  /// @notice Event emitted when the router is updated
+  event RouterUpdated(address routerAddress);
+  /// @notice Event emitted when the schema issuer is updated
+  event SchemaIssuerUpdated(bytes32 schemaId, address schemaIssuerAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -58,12 +62,11 @@ contract SchemaRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Checks if the caller is a registered issuer.
-   * @param issuer the issuer address
+   * @notice Checks if the caller is allowlisted.
+   * @param user the user address
    */
-  modifier onlyIssuers(address issuer) {
-    bool isIssuerRegistered = PortalRegistry(router.getPortalRegistry()).isIssuer(issuer);
-    if (!isIssuerRegistered) revert OnlyIssuer();
+  modifier onlyAllowlisted(address user) {
+    if (!PortalRegistry(router.getPortalRegistry()).isAllowlisted(user)) revert OnlyAllowlisted();
     _;
   }
 
@@ -84,6 +87,7 @@ contract SchemaRegistry is OwnableUpgradeable {
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
     router = IRouter(_router);
+    emit RouterUpdated(_router);
   }
 
   /**
@@ -97,20 +101,19 @@ contract SchemaRegistry is OwnableUpgradeable {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (issuer == address(0)) revert IssuerInvalid();
     schemasIssuers[schemaId] = issuer;
+    emit SchemaIssuerUpdated(schemaId, issuer);
   }
 
   /**
-   * @notice Updates issuer address for all schemas associated with old issuer address
-   * @param oldIssuer the address of old issuer
-   * @param newIssuer the address of new issuer
-   * @dev Finds all the schemaIds associated with old issuer and updates the mapping `schemasIssuers`
-   *      for schemaIds found with new issuer
+   * @notice Updates issuers of all given schemaIds with the new issuer
+   * @param schemaIdsToUpdate the IDs of schemas to update
+   * @param issuer the address of new issuer
+   * @dev Updates issuer for the given schemaIds in the `schemaIssuers` mapping
+   *      The issuer must already be registered as an Issuer via the `PortalRegistry`
    */
-  function updateMatchingSchemaIssuers(address oldIssuer, address newIssuer) public onlyPortalRegistry(msg.sender) {
-    for (uint256 i = 0; i < schemaIds.length; i = uncheckedInc256(i)) {
-      if (schemasIssuers[schemaIds[i]] == oldIssuer) {
-        schemasIssuers[schemaIds[i]] = newIssuer;
-      }
+  function bulkUpdateSchemasIssuers(bytes32[] calldata schemaIdsToUpdate, address issuer) public onlyOwner {
+    for (uint256 i = 0; i < schemaIdsToUpdate.length; i = uncheckedInc256(i)) {
+      updateSchemaIssuer(schemaIdsToUpdate[i], issuer);
     }
   }
 
@@ -141,7 +144,7 @@ contract SchemaRegistry is OwnableUpgradeable {
     string memory description,
     string memory context,
     string memory schemaString
-  ) public onlyIssuers(msg.sender) {
+  ) public onlyAllowlisted(msg.sender) {
     if (bytes(name).length == 0) revert SchemaNameMissing();
     if (bytes(schemaString).length == 0) revert SchemaStringMissing();
 

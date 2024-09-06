@@ -52,6 +52,10 @@ contract AttestationRegistry is OwnableUpgradeable {
   event AttestationRevoked(bytes32 attestationId);
   /// @notice Event emitted when the version number is incremented
   event VersionUpdated(uint16 version);
+  /// @notice Event emitted when the router is updated
+  event RouterUpdated(address routerAddress);
+  /// @notice Event emitted when the chain prefix is updated
+  event ChainPrefixUpdated(uint256 chainPrefix);
 
   /**
    * @notice Checks if the caller is a registered portal
@@ -82,6 +86,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
     router = IRouter(_router);
+    emit RouterUpdated(_router);
   }
 
   /**
@@ -90,6 +95,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    */
   function updateChainPrefix(uint256 _chainPrefix) public onlyOwner {
     chainPrefix = _chainPrefix;
+    emit ChainPrefixUpdated(_chainPrefix);
   }
 
   /**

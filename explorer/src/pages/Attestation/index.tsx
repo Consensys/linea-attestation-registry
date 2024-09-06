@@ -44,7 +44,7 @@ export const Attestation = () => {
           <AttestationInfo {...attestation} />
         </div>
         <div className="flex flex-col p-6 gap-12 w-full">
-          <AttestationSchemaCard schemaId={attestation.schemaId} />
+          <AttestationSchemaCard schemaId={attestation.schema.id} />
           <AttestationData {...attestation} />
           {/* TODO: uncomment when correct data will be available */}
           {/* <RelatedAttestations mutate={mutate} /> */}

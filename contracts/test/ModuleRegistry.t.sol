@@ -7,6 +7,8 @@ import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
 import { CorrectModuleV2 } from "./mocks/CorrectModuleV2Mock.sol";
 import { IncorrectModule } from "./mocks/IncorrectModuleMock.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
+import { OperationType } from "../src/types/Enums.sol";
+import { PortalRegistryNotAllowlistedMock } from "./mocks/PortalRegistryNotAllowlistedMock.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 
@@ -22,6 +24,7 @@ contract ModuleRegistryTest is Test {
 
   event ModuleRegistered(string name, string description, address moduleAddress);
   event Initialized(uint8 version);
+  event RouterUpdated(address routerAddress);
 
   function setUp() public {
     router = new Router();
@@ -51,6 +54,8 @@ contract ModuleRegistryTest is Test {
   function test_updateRouter() public {
     ModuleRegistry testModuleRegistry = new ModuleRegistry();
 
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
     vm.prank(address(0));
     testModuleRegistry.updateRouter(address(1));
     address routerAddress = address(testModuleRegistry.router());
@@ -89,8 +94,12 @@ contract ModuleRegistryTest is Test {
     assertEq(description, expectedDescription);
   }
 
-  function test_register_OnlyIssuer() public {
-    vm.expectRevert(ModuleRegistry.OnlyIssuer.selector);
+  function test_register_OnlyAllowlisted() public {
+    PortalRegistryNotAllowlistedMock portalRegistryNotAllowlistedMock = new PortalRegistryNotAllowlistedMock();
+    portalRegistryAddress = address(portalRegistryNotAllowlistedMock);
+    router.updatePortalRegistry(portalRegistryAddress);
+
+    vm.expectRevert(ModuleRegistry.OnlyAllowlisted.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.stopPrank();
@@ -166,7 +175,8 @@ contract ModuleRegistryTest is Test {
       validationPayload,
       0,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.Attest
     );
   }
 
@@ -207,7 +217,8 @@ contract ModuleRegistryTest is Test {
       validationPayload,
       0,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.Attest
     );
   }
 
@@ -234,7 +245,8 @@ contract ModuleRegistryTest is Test {
       validationPayload,
       0,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.Attest
     );
   }
 
@@ -269,7 +281,8 @@ contract ModuleRegistryTest is Test {
       validationPayload,
       0,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.Attest
     );
   }
 
@@ -324,7 +337,8 @@ contract ModuleRegistryTest is Test {
       attestationPayloads,
       validationPayloads,
       address(makeAddr("initialCaller")),
-      address(makeAddr("attester"))
+      address(makeAddr("attester")),
+      OperationType.BulkAttest
     );
     vm.stopPrank();
   }

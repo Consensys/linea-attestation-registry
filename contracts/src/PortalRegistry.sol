@@ -6,7 +6,6 @@ import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/O
 import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { AbstractPortal } from "./abstracts/AbstractPortal.sol";
 import { DefaultPortal } from "./DefaultPortal.sol";
-import { SchemaRegistry } from "./SchemaRegistry.sol";
 import { Portal } from "./types/Structs.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
 import { IPortal } from "./interfaces/IPortal.sol";
@@ -26,10 +25,12 @@ contract PortalRegistry is OwnableUpgradeable {
 
   address[] private portalAddresses;
 
+  bool private isTestnet;
+
   /// @notice Error thrown when an invalid Router address is given
   error RouterInvalid();
-  /// @notice Error thrown when a non-issuer tries to call a method that can only be called by an issuer
-  error OnlyIssuer();
+  /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
+  error OnlyAllowlisted();
   /// @notice Error thrown when attempting to register a Portal twice
   error PortalAlreadyExists();
   /// @notice Error thrown when attempting to register a Portal that is not a smart contract
@@ -53,10 +54,15 @@ contract PortalRegistry is OwnableUpgradeable {
   event IssuerRemoved(address issuerAddress);
   /// @notice Event emitted when a Portal is revoked
   event PortalRevoked(address portalAddress);
+  /// @notice Event emitted when the router is updated
+  event RouterUpdated(address routerAddress);
+  /// @notice Event emitted when the `isTestnet` flag is updated
+  event IsTestnetUpdated(bool isTestnet);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
-  constructor() {
+  constructor(bool _isTestnet) {
     _disableInitializers();
+    isTestnet = _isTestnet;
   }
 
   /**
@@ -73,16 +79,25 @@ contract PortalRegistry is OwnableUpgradeable {
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
     router = IRouter(_router);
+    emit RouterUpdated(_router);
   }
 
   /**
-   * @notice Registers an address as been an issuer
+   * @notice Registers an address as an issuer
    * @param issuer the address to register as an issuer
    */
   function setIssuer(address issuer) public onlyOwner {
     issuers[issuer] = true;
-    // Emit event
     emit IssuerAdded(issuer);
+  }
+
+  /**
+   * @notice Update the testnet status
+   * @param _isTestnet the flag defining the testnet status
+   */
+  function setIsTestnet(bool _isTestnet) public onlyOwner {
+    isTestnet = _isTestnet;
+    emit IsTestnetUpdated(_isTestnet);
   }
 
   /**
@@ -91,7 +106,6 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function removeIssuer(address issuer) public onlyOwner {
     issuers[issuer] = false;
-    SchemaRegistry(router.getSchemaRegistry()).updateMatchingSchemaIssuers(issuer, msg.sender);
     // Emit event
     emit IssuerRemoved(issuer);
   }
@@ -105,11 +119,11 @@ contract PortalRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Checks if the caller is a registered issuer.
-   * @param issuer the issuer address
+   * @notice Checks if the caller is allowlisted.
+   * @param user the user address
    */
-  modifier onlyIssuers(address issuer) {
-    if (!isIssuer(issuer)) revert OnlyIssuer();
+  modifier onlyAllowlisted(address user) {
+    if (!isAllowlisted(user)) revert OnlyAllowlisted();
     _;
   }
 
@@ -127,7 +141,7 @@ contract PortalRegistry is OwnableUpgradeable {
     string memory description,
     bool isRevocable,
     string memory ownerName
-  ) public onlyIssuers(msg.sender) {
+  ) public onlyAllowlisted(msg.sender) {
     // Check if portal already exists
     if (portals[id].id != address(0)) revert PortalAlreadyExists();
 
@@ -168,14 +182,17 @@ contract PortalRegistry is OwnableUpgradeable {
 
     portals[id] = Portal(address(0), address(0), new address[](0), false, "", "", "");
 
+    bool found = false;
     uint256 portalAddressIndex;
     for (uint256 i = 0; i < portalAddresses.length; i = uncheckedInc256(i)) {
       if (portalAddresses[i] == id) {
         portalAddressIndex = i;
+        found = true;
+        break;
       }
     }
 
-    if (portalAddressIndex >= portalAddresses.length) {
+    if (!found) {
       revert PortalNotRegistered();
     }
 
@@ -198,7 +215,7 @@ contract PortalRegistry is OwnableUpgradeable {
     string memory description,
     bool isRevocable,
     string memory ownerName
-  ) external onlyIssuers(msg.sender) {
+  ) external onlyAllowlisted(msg.sender) {
     DefaultPortal defaultPortal = new DefaultPortal(modules, address(router));
     register(address(defaultPortal), name, description, isRevocable, ownerName);
   }
@@ -229,6 +246,23 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function getPortalsCount() public view returns (uint256) {
     return portalAddresses.length;
+  }
+
+  /**
+   * @notice Checks if the caller is allowlisted.
+   * @return A flag indicating whether the Verax instance is running on testnet
+   */
+  function getIsTestnet() public view returns (bool) {
+    return isTestnet;
+  }
+
+  /**
+   * @notice Checks if a user is allowlisted.
+   * @param user the user address
+   * @return A flag indicating whether the given address is allowlisted
+   */
+  function isAllowlisted(address user) public view returns (bool) {
+    return isTestnet || isIssuer(user);
   }
 
   /**

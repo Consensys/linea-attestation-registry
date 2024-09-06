@@ -3,6 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { SenderModuleV2, AbstractModuleV2 } from "../../src/stdlib/SenderModuleV2.sol";
+import { OperationType } from "../../src/types/Enums.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 
@@ -70,7 +71,8 @@ contract SenderModuleV2Test is Test {
       authorizedSender,
       0,
       address(makeAddr("attester")),
-      address(portal)
+      address(portal),
+      OperationType.Attest
     );
   }
 
@@ -84,7 +86,8 @@ contract SenderModuleV2Test is Test {
       notAuthorizedSender,
       0,
       address(makeAddr("attester")),
-      address(portal)
+      address(portal),
+      OperationType.Attest
     );
   }
 }

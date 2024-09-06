@@ -1,4 +1,5 @@
 import { Conf } from "@verax-attestation-registry/verax-sdk";
+import { Hex } from "viem";
 import { Chain } from "wagmi";
 
 export interface INetwork {
@@ -8,4 +9,5 @@ export interface INetwork {
   img: JSX.Element;
   imgDark?: JSX.Element;
   network: string;
+  prefix: Hex;
 }

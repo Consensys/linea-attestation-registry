@@ -21,7 +21,8 @@ async function main() {
 
   console.log("Checking PortalRegistry...");
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
-  await upgrades.validateImplementation(PortalRegistry);
+  // @ts-expect-error-next-line - constructorArgs is not part of the type
+  await upgrades.validateImplementation(PortalRegistry, { constructorArgs: [false] });
   console.log("PortalRegistry OK");
 
   console.log("Checking SchemaRegistry...");

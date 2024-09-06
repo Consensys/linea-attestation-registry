@@ -45,8 +45,6 @@ export const Schemas: React.FC = () => {
     ? { columns: columnsSkeletonRef.current, list: skeletonSchemas(itemsPerPage) }
     : { columns: columns(), list: schemasList || [] };
 
-  console.log("skip: ", skip, page);
-
   return (
     <div className="container mt-5 md:mt-8">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 md:mb-8 gap-6 md:gap-0">

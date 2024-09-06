@@ -39,4 +39,8 @@ contract PortalRegistryMock {
   function isIssuer(address issuer) public view returns (bool) {
     return issuers[issuer];
   }
+
+  function isAllowlisted(address /*user*/) public pure returns (bool) {
+    return true;
+  }
 }

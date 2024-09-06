@@ -42,7 +42,7 @@ export const Modules: React.FC = () => {
   const columnsSkeletonRef = useRef(columnsSkeleton(columns(), moduleColumnsOption));
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonModules(itemsPerPage) }
-    : { columns: columns({ chainId: chain.id }), list: modulesList || [] };
+    : { columns: columns({ chain }), list: modulesList || [] };
 
   return (
     <div className="container mt-5 md:mt-8">

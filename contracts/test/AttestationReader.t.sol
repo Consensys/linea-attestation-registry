@@ -20,6 +20,8 @@ contract AttestationReaderTest is Test {
   address public attestationRegistryAddress;
   address public portalRegistryAddress;
   address public easRegistryAddress;
+  event RouterUpdated(address routerAddress);
+  event EASRegistryAddressUpdated(address easRegistryAddress);
 
   function setUp() public {
     router = new Router();
@@ -47,6 +49,8 @@ contract AttestationReaderTest is Test {
   function test_updateRouter() public {
     AttestationReader testAttestationReader = new AttestationReader();
 
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
     vm.prank(address(0));
     testAttestationReader.updateRouter(address(1));
     address routerAddress = address(testAttestationReader.router());
@@ -64,6 +68,8 @@ contract AttestationReaderTest is Test {
   function test_updateEASRegistryAddress() public {
     AttestationReader testAttestationReader = new AttestationReader();
 
+    vm.expectEmit(true, true, true, true);
+    emit EASRegistryAddressUpdated(address(1));
     vm.prank(address(0));
     testAttestationReader.updateEASRegistryAddress(address(1));
     address easRegistryAddressActual = address(testAttestationReader.easRegistry());

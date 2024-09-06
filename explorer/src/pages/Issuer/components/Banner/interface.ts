@@ -3,4 +3,5 @@ export interface IBannerProps {
   logo: React.FC<React.SVGProps<SVGSVGElement>>;
   CTALink?: string;
   CTATitle: string;
+  keywords: string[];
 }

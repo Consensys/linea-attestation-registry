@@ -38,7 +38,7 @@ contract AttestationRegistryMassTest is Test {
     vm.prank(address(0));
     attestationRegistry.updateRouter(address(router));
 
-    portalRegistry = new PortalRegistry();
+    portalRegistry = new PortalRegistry(false);
     router.updatePortalRegistry(address(portalRegistry));
     vm.prank(address(0));
     portalRegistry.updateRouter(address(router));

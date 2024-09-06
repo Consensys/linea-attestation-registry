@@ -3,6 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { ERC712ModuleV2, EIP712Domain, AbstractModuleV2 } from "../../../src/examples/modules/ERC712ModuleV2.sol";
+import { OperationType } from "../../../src/types/Enums.sol";
 import { AttestationPayload } from "../../../src/types/Structs.sol";
 
 contract ERC712ModuleV2Test is Test {
@@ -61,7 +62,8 @@ contract ERC712ModuleV2Test is Test {
       signer,
       0,
       address(makeAddr("attester")),
-      address(makeAddr("portal"))
+      address(makeAddr("portal")),
+      OperationType.Attest
     );
   }
 
@@ -85,7 +87,8 @@ contract ERC712ModuleV2Test is Test {
       not_signer,
       0,
       address(makeAddr("attester")),
-      address(makeAddr("portal"))
+      address(makeAddr("portal")),
+      OperationType.Attest
     );
   }
 
@@ -109,7 +112,8 @@ contract ERC712ModuleV2Test is Test {
       not_signer,
       0,
       address(makeAddr("attester")),
-      address(makeAddr("portal"))
+      address(makeAddr("portal")),
+      OperationType.Attest
     );
   }
 

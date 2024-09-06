@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
+import { OperationType } from "./types/Enums.sol";
 import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./abstracts/AbstractModule.sol";
 import { AbstractModuleV2 } from "./abstracts/AbstractModuleV2.sol";
@@ -25,8 +26,8 @@ contract ModuleRegistry is OwnableUpgradeable {
 
   /// @notice Error thrown when an invalid Router address is given
   error RouterInvalid();
-  /// @notice Error thrown when a non-issuer tries to call a method that can only be called by an issuer
-  error OnlyIssuer();
+  /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
+  error OnlyAllowlisted();
   /// @notice Error thrown when an identical Module was already registered
   error ModuleAlreadyExists();
   /// @notice Error thrown when attempting to add a Module without a name
@@ -44,6 +45,8 @@ contract ModuleRegistry is OwnableUpgradeable {
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
+  /// @notice Event emitted when the router is updated
+  event RouterUpdated(address routerAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -58,12 +61,11 @@ contract ModuleRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Checks if the caller is a registered issuer.
-   * @param issuer the issuer address
+   * @notice Checks if the caller is allowlisted.
+   * @param user the user address
    */
-  modifier onlyIssuers(address issuer) {
-    bool isIssuerRegistered = PortalRegistry(router.getPortalRegistry()).isIssuer(issuer);
-    if (!isIssuerRegistered) revert OnlyIssuer();
+  modifier onlyAllowlisted(address user) {
+    if (!PortalRegistry(router.getPortalRegistry()).isAllowlisted(user)) revert OnlyAllowlisted();
     _;
   }
 
@@ -74,6 +76,7 @@ contract ModuleRegistry is OwnableUpgradeable {
   function updateRouter(address _router) public onlyOwner {
     if (_router == address(0)) revert RouterInvalid();
     router = IRouter(_router);
+    emit RouterUpdated(_router);
   }
 
   /**
@@ -99,7 +102,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     string memory name,
     string memory description,
     address moduleAddress
-  ) public onlyIssuers(msg.sender) {
+  ) public onlyAllowlisted(msg.sender) {
     if (bytes(name).length == 0) revert ModuleNameMissing();
     // Check if moduleAddress is a smart contract address
     if (!isContractAddress(moduleAddress)) revert ModuleAddressInvalid();
@@ -160,7 +163,8 @@ contract ModuleRegistry is OwnableUpgradeable {
     bytes[] memory validationPayloads,
     uint256 value,
     address initialCaller,
-    address attester
+    address attester,
+    OperationType operationType
   ) public {
     // If no module provided, bypass module validation
     if (modulesAddresses.length == 0) return;
@@ -176,7 +180,8 @@ contract ModuleRegistry is OwnableUpgradeable {
         initialCaller,
         value,
         attester,
-        msg.sender
+        msg.sender,
+        operationType
       );
     }
   }
@@ -218,10 +223,19 @@ contract ModuleRegistry is OwnableUpgradeable {
     AttestationPayload[] memory attestationPayloads,
     bytes[][] memory validationPayloads,
     address initialCaller,
-    address attester
+    address attester,
+    OperationType operationType
   ) public {
     for (uint32 i = 0; i < attestationPayloads.length; i = uncheckedInc32(i)) {
-      runModulesV2(modulesAddresses, attestationPayloads[i], validationPayloads[i], 0, initialCaller, attester);
+      runModulesV2(
+        modulesAddresses,
+        attestationPayloads[i],
+        validationPayloads[i],
+        0,
+        initialCaller,
+        attester,
+        operationType
+      );
     }
   }
 

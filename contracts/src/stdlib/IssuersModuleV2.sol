@@ -36,6 +36,9 @@ contract IssuersModuleV2 is AbstractModuleV2 {
   ) public view override {
     address subject = address(0);
 
+    if (attestationPayload.subject.length != 32 && attestationPayload.subject.length != 20)
+      revert UnauthorizedSubject();
+
     if (attestationPayload.subject.length == 32) subject = abi.decode(attestationPayload.subject, (address));
     if (attestationPayload.subject.length == 20) subject = address(uint160(bytes20(attestationPayload.subject)));
 

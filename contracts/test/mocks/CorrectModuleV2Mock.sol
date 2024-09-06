@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { AbstractModuleV2 } from "../../src/abstracts/AbstractModuleV2.sol";
+import { OperationType } from "../../src/types/Enums.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 
 /**
@@ -20,6 +21,7 @@ contract CorrectModuleV2 is AbstractModuleV2 {
     address /*initialCaller*/,
     uint256 /*value*/,
     address /*attester*/,
-    address /*portal*/
+    address /*portal*/,
+    OperationType /*operationType*/
   ) public pure override {}
 }

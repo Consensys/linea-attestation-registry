@@ -3,6 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { SchemaModuleV2, AbstractModuleV2 } from "../../src/stdlib/SchemaModuleV2.sol";
+import { OperationType } from "../../src/types/Enums.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 
@@ -66,7 +67,8 @@ contract SchemaModuleV2Test is Test {
       address(makeAddr("initialCaller")),
       0,
       address(makeAddr("attester")),
-      portal
+      portal,
+      OperationType.Attest
     );
   }
 
@@ -79,7 +81,8 @@ contract SchemaModuleV2Test is Test {
       address(makeAddr("initialCaller")),
       0,
       address(makeAddr("attester")),
-      portal
+      portal,
+      OperationType.Attest
     );
   }
 }

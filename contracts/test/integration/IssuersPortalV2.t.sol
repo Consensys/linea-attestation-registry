@@ -45,9 +45,10 @@ contract IssuersPortalTest is Test {
     issuersModule = new IssuersModuleV2(address(portalRegistry));
     senderModule = new SenderModuleV2(address(portalRegistry));
 
-    portalRegistry.setIssuer(address(0));
     portalRegistry.setIssuer(issuerAddress);
+    vm.stopPrank();
 
+    vm.startPrank(issuerAddress);
     moduleRegistry.register("IssuersModuleV2", "IssuersModule description", address(issuersModule));
     moduleRegistry.register("SenderModuleV2", "SenderModule description", address(senderModule));
 

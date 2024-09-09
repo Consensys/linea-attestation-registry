@@ -45,6 +45,8 @@ contract PortalRegistry is OwnableUpgradeable {
   error PortalInvalid();
   /// @notice Error thrown when attempting to get a Portal that is not registered
   error PortalNotRegistered();
+  /// @notice Error thrown when an invalid address is given
+  error AddressInvalid();
 
   /// @notice Event emitted when a Portal is registered
   event PortalRegistered(string name, string description, address portalAddress);
@@ -87,6 +89,8 @@ contract PortalRegistry is OwnableUpgradeable {
    * @param issuer the address to register as an issuer
    */
   function setIssuer(address issuer) public onlyOwner {
+    if (issuer == address(0)) revert AddressInvalid();
+
     issuers[issuer] = true;
     emit IssuerAdded(issuer);
   }

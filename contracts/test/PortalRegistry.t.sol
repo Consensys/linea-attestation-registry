@@ -94,6 +94,27 @@ contract PortalRegistryTest is Test {
     assertEq(isIssuer, true);
   }
 
+  function test_setIssuer_OnlyOwner() public {
+    address issuerAddress = makeAddr("Issuer");
+
+    vm.prank(makeAddr("random"));
+    vm.expectRevert("Ownable: caller is not the owner");
+    portalRegistry.setIssuer(issuerAddress);
+
+    bool isIssuer = portalRegistry.isIssuer(issuerAddress);
+    assertEq(isIssuer, false);
+  }
+
+  function test_setIssuer_AddressInvalid() public {
+    vm.prank(address(0));
+
+    vm.expectRevert(PortalRegistry.AddressInvalid.selector);
+    portalRegistry.setIssuer(address(0));
+
+    bool isIssuer = portalRegistry.isIssuer(address(0));
+    assertEq(isIssuer, false);
+  }
+
   function test_setIsTestnet_true() public {
     bool isTestnet = portalRegistry.getIsTestnet();
     assertEq(isTestnet, false);

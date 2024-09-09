@@ -68,4 +68,16 @@ contract IssuersModuleTest is Test {
     vm.expectRevert(IssuersModule.UnauthorizedSubject.selector);
     issuersModule.run(attestationPayload, "", makeAddr("sender"), 0);
   }
+
+  function test_run_unauthorized_InvalidSubject() public {
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32("schema1"),
+      0,
+      abi.encode("randomString"),
+      new bytes(0)
+    );
+    vm.expectRevert(IssuersModule.UnauthorizedSubject.selector);
+    issuersModule.run(attestationPayload, "", makeAddr("sender"), 0);
+    vm.stopPrank();
+  }
 }

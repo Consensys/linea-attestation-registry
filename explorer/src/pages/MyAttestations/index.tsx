@@ -54,7 +54,7 @@ export const MyAttestations: React.FC = () => {
         undefined,
         { subject: address },
         "attestedDate",
-        sortByDateDirection as OrderDirection,
+        (sortByDateDirection as OrderDirection) || "desc",
       ),
   );
 

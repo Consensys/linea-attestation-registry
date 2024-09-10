@@ -3,6 +3,7 @@ import useSWR from "swr";
 
 import { DataTable } from "@/components/DataTable";
 import { columns } from "@/constants/columns/attestation";
+import { EQueryParams } from "@/enums/queryParams.ts";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
@@ -17,9 +18,12 @@ export const SearchAttestationsReceived: React.FC<SearchComponentProps> = ({ get
     network: { chain },
   } = useNetworkContext();
 
+  const searchParams = new URLSearchParams(window.location.search);
+  const sortByDateDirection = searchParams.get(EQueryParams.SORT_BY_DATE);
+
   const { data } = useSWR(
-    `${SWRKeys.GET_ATTESTATION_LIST}/${SWRKeys.SEARCH}/${search}/${chain.id}`,
-    async () => loadAttestationReceivedList(sdk.attestation, parsedString),
+    `${SWRKeys.GET_ATTESTATION_LIST}/${SWRKeys.SEARCH}/${search}/${chain.id}/${sortByDateDirection}`,
+    async () => loadAttestationReceivedList(sdk.attestation, parsedString, sortByDateDirection),
     {
       shouldRetryOnError: false,
       revalidateAll: false,

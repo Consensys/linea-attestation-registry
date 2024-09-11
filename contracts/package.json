@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-contracts",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "description": "Verax Attestation Registry core smart contracts",
   "keywords": [
     "verax",

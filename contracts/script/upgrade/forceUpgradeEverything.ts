@@ -1,5 +1,6 @@
 import { ethers, run, upgrades } from "hardhat";
 import dotenv from "dotenv";
+import { getNetworkConfig } from "../utils";
 
 dotenv.config({ path: "../.env" });
 
@@ -35,6 +36,14 @@ async function main() {
   if (!attestationReaderProxyAddress) {
     throw new Error("Attestation reader proxy address not found");
   }
+
+  const network = await ethers.provider.getNetwork();
+  const networkConfig = getNetworkConfig(network.chainId);
+  console.log(
+    `Chain prefix for chain ID ${network.chainId} is ${networkConfig.chainPrefix} (${
+      networkConfig.isTestnet ? "testnet" : "mainnet"
+    })`,
+  );
 
   console.log("Upgrading Router, with proxy at", routerProxyAddress);
   const Router = await ethers.getContractFactory("Router");
@@ -72,6 +81,7 @@ async function main() {
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
   await upgrades.upgradeProxy(portalProxyAddress, PortalRegistry, {
     redeployImplementation: "always",
+    constructorArgs: [networkConfig.isTestnet],
   });
 
   console.log(`PortalRegistry successfully upgraded!`);
@@ -140,6 +150,7 @@ async function main() {
 
   await run("verify:verify", {
     address: portalProxyAddress,
+    constructorArguments: [networkConfig.isTestnet],
   });
 
   console.log(`PortalRegistry successfully upgraded and verified!`);

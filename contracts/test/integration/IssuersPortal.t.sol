@@ -16,7 +16,7 @@ contract IssuersPortalTest is Test {
   address public issuerAddress = makeAddr("issuer");
   Router public router = new Router();
   SchemaRegistry public schemaRegistry = new SchemaRegistry();
-  PortalRegistry public portalRegistry = new PortalRegistry();
+  PortalRegistry public portalRegistry = new PortalRegistry(false);
   ModuleRegistry public moduleRegistry = new ModuleRegistry();
   AttestationRegistry public attestationRegistry = new AttestationRegistry();
   IssuersModule public issuersModule;
@@ -45,9 +45,10 @@ contract IssuersPortalTest is Test {
     issuersModule = new IssuersModule(address(portalRegistry));
     senderModule = new SenderModule(address(portalRegistry));
 
-    portalRegistry.setIssuer(address(0));
     portalRegistry.setIssuer(issuerAddress);
+    vm.stopPrank();
 
+    vm.startPrank(issuerAddress);
     moduleRegistry.register("IssuersModule", "IssuersModule description", address(issuersModule));
     moduleRegistry.register("SenderModule", "SenderModule description", address(senderModule));
 

@@ -17,7 +17,7 @@ const config: HardhatUserConfig = {
       },
     ],
   },
-  defaultNetwork: "linea-goerli",
+  defaultNetwork: "linea-sepolia",
   networks: {
     hardhat: {},
     "arbitrum-sepolia": {
@@ -26,7 +26,7 @@ const config: HardhatUserConfig = {
         process.env.PRIVATE_KEY_ARBITRUM_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_ARBITRUM_SEPOLIA] : [],
     },
     arbitrum: {
-      url: "https://arb1.arbitrum.io/rpc",
+      url: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts:
         process.env.PRIVATE_KEY_ARBITRUM_MAINNET !== undefined ? [process.env.PRIVATE_KEY_ARBITRUM_MAINNET] : [],
     },
@@ -35,16 +35,20 @@ const config: HardhatUserConfig = {
       accounts: process.env.PRIVATE_KEY_NOVA !== undefined ? [process.env.PRIVATE_KEY_NOVA] : [],
     },
     "base-sepolia": {
-      url: `https://sepolia.base.org`,
-      accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
+      url: `https://base-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      accounts: process.env.PRIVATE_KEY_LINEA_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_LINEA_SEPOLIA] : [],
     },
     base: {
-      url: `https://mainnet.base.org`,
+      url: `https://base-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
     },
-    "linea-goerli": {
-      url: `https://linea-goerli.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: process.env.PRIVATE_KEY_LINEA_TESTNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_TESTNET] : [],
+    "bsc-testnet": {
+      url: `https://data-seed-prebsc-1-s1.binance.org:8545`,
+      accounts: process.env.PRIVATE_KEY_LINEA_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_LINEA_SEPOLIA] : [],
+    },
+    bsc: {
+      url: `https://rpc.ankr.com/bsc`,
+      accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
     },
     "linea-sepolia": {
       url: `https://linea-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
@@ -54,36 +58,23 @@ const config: HardhatUserConfig = {
       url: `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
     },
-    "scroll-sepolia": {
-      url: "https://sepolia-rpc.scroll.io/",
-      accounts: process.env.PRIVATE_KEY_SCROLL_TESTNET !== undefined ? [process.env.PRIVATE_KEY_SCROLL_TESTNET] : [],
-    },
   },
   paths: {
     sources: "./src",
   },
   etherscan: {
     apiKey: {
-      "arbitrum-goerli": process.env.ARBISCAN_API_KEY ?? "",
       "arbitrum-sepolia": process.env.ARBISCAN_API_KEY ?? "",
       arbitrum: process.env.ARBISCAN_API_KEY ?? "",
       "arbitrum-nova": process.env.ARBISCAN_NOVA_API_KEY ?? "",
       "base-sepolia": process.env.BASESCAN_API_KEY ?? "",
       base: process.env.BASESCAN_API_KEY ?? "",
-      "linea-goerli": process.env.LINEASCAN_API_KEY ?? "",
+      "bsc-testnet": process.env.BSCSCAN_API_KEY ?? "",
+      bsc: process.env.BSCSCAN_API_KEY ?? "",
       "linea-sepolia": process.env.LINEASCAN_API_KEY ?? "",
       linea: process.env.LINEASCAN_API_KEY ?? "",
-      "scroll-sepolia": process.env.SCROLL_API_KEY ?? "",
     },
     customChains: [
-      {
-        network: "arbitrum-goerli",
-        chainId: 421613,
-        urls: {
-          apiURL: "https://api-goerli.arbiscan.io/api",
-          browserURL: "https://goerli.arbiscan.io",
-        },
-      },
       {
         network: "arbitrum-sepolia",
         chainId: 421614,
@@ -125,11 +116,19 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: "linea-goerli",
-        chainId: 59140,
+        network: "bsc-testnet",
+        chainId: 97,
         urls: {
-          apiURL: "https://api-testnet.lineascan.build/api",
-          browserURL: "https://goerli.lineascan.build",
+          apiURL: "https://api-testnet.bscscan.com/api",
+          browserURL: "https://testnet.bscscan.com",
+        },
+      },
+      {
+        network: "bsc",
+        chainId: 56,
+        urls: {
+          apiURL: "https://api.bscscan.com/api",
+          browserURL: "https://bscscan.com",
         },
       },
       {
@@ -146,14 +145,6 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api.lineascan.build/api",
           browserURL: "https://lineascan.build",
-        },
-      },
-      {
-        network: "scroll-sepolia",
-        chainId: 534351,
-        urls: {
-          apiURL: "https://sepolia-blockscout.scroll.io/api",
-          browserURL: "https://sepolia-blockscout.scroll.io/",
         },
       },
     ],

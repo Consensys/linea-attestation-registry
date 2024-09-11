@@ -13,14 +13,24 @@ const postData = async (url: string, data: { query: string }) => {
 
 const getSubgraphUrl = (chainId: string) => {
   switch (chainId) {
-    case '0xe704': // Linea Testnet
-      return 'https://api.goldsky.com/api/public/project_clqghnrbp9nx201wtgylv8748/subgraphs/verax/subgraph-testnet/gn';
-    case '0x66eed': // Arbitrum Goerli
-      return 'https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum-goerli';
+    case '0xe705': // Linea Sepolia
+      return 'https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.12';
+    case '0x66eee': // Arbitrum Sepolia
+      return 'https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum-sepolia/v0.0.2';
     case '0xa4b1': // Arbitrum Mainnet
-      return 'https://api.thegraph.com/subgraphs/name/cliqueofficial/verax-arbitrum';
+      return 'https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum/v0.0.1';
+    case '0xa4ba': // Arbitrum Nova
+      return 'https://api.goldsky.com/api/public/project_clwsa54350ydv01wjbq5r17v1/subgraphs/verax-v1-arbitrum-nova/0.0.4/gn';
+    case '0x14a34': // Base Sepolia
+      return 'https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.2';
+    case '0x2105': // Base Mainnet
+      return 'https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.2';
+    case '0x61': // BSC Testnet
+      return 'https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1';
+    case '0x38': // BSC Mainnet
+      return 'https://api.studio.thegraph.com/query/67521/verax-v1-bsc/v0.0.1';
     default: // Linea Mainnet
-      return 'https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry';
+      return 'https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql';
   }
 };
 

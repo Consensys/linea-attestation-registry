@@ -18,13 +18,8 @@ export type AttestationPayload = {
   attestationData: object[]; // The attestation data.
 };
 
-export type AttestationWithDecodeObject = Attestation & {
-  decodeObject: { [propName: string]: unknown };
-};
-
 export type Attestation = OnChainAttestation & {
   id: string;
-  schemaString: string;
   decodedData: string[];
   decodedPayload: object;
   offchainData?: OffchainData;
@@ -34,16 +29,17 @@ export type OffchainData = { schemaId: string; uri: string; error?: string };
 
 export type OnChainAttestation = {
   attestationId: string; // The unique identifier of the attestation.
-  schemaId: string; // The identifier of the schema this attestation adheres to.
+  schema: Schema; // The Schema this attestation adheres to.
   replacedBy: string | null; // Whether the attestation was replaced by a new one.
   attester: Address; // The address issuing the attestation to the subject.
-  portal: Address; // The id of the portal that created the attestation.
+  portal: Portal; // The Portal that created the attestation.
   attestedDate: number; // The date the attestation is issued.
   expirationDate: number; // The expiration date of the attestation.
   revocationDate: number | null; // The date when the attestation was revoked.
   version: number; // Version of the registry when the attestation was created.
   revoked: boolean; // Whether the attestation is revoked or not.
-  subject: string; // The ID of the attestee, EVM address, DID, URL etc.
+  subject: string; // The ID of the attestee, EVM address, DID, URL, etc., tentatively decoded as an ETH address.
+  encodedSubject: string; // The raw version of the subject, as it was registered on-chain.
   attestationData: string; // The attestation data.
 };
 
@@ -53,6 +49,7 @@ export type Schema = {
   description: string; // A description of the schema.
   context: string; // The context of the schema.
   schema: string; // The schema definition.
+  attestationCounter: number; // The number of attestations issued with this schema.
 };
 
 export type Portal = {
@@ -63,6 +60,7 @@ export type Portal = {
   name: string; // The name of the portal.
   description: string; // A description of the portal.
   ownerName: string; // The name of the owner of this portal.
+  attestationCounter: number; // The number of attestations issued by the portal.
 };
 
 export type Module = OnChainModule & { id: string };

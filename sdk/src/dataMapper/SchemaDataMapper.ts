@@ -1,10 +1,11 @@
 import { Address, TransactionReceipt } from "viem";
 import { Schema_filter, Schema_orderBy } from "../../.graphclient";
 import { Schema } from "../types";
+import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiSchemaRegistry } from "../abi/SchemaRegistry";
 import { executeTransaction } from "../utils/transactionSender";
-import { handleSimulationError } from "../utils/simulationErrorHandler";
+import { handleError } from "../utils/errorHandler";
 
 export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filter, Schema_orderBy> {
   typeName = "schema";
@@ -14,6 +15,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
         description
         context
         schema
+        attestationCounter
   }`;
 
   async simulateUpdateRouter(routerAddress: Address) {
@@ -94,7 +96,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
 
       return request;
     } catch (err) {
-      handleSimulationError(err);
+      handleError(ActionType.Simulation, err);
     }
   }
 }

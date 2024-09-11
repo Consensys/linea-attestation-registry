@@ -17,6 +17,12 @@ import { IPortal } from "../../interfaces/IPortal.sol";
 contract NFTPortal is AbstractPortal, ERC721 {
   mapping(bytes owner => uint256 numberOfAttestations) private numberOfAttestationsPerOwner;
 
+  /**
+   * @notice Contract constructor
+   * @param modules list of modules to use for the portal (can be empty)
+   * @param router Router's address
+   * @dev This sets the addresses for the AttestationRegistry, ModuleRegistry and PortalRegistry
+   */
   constructor(
     address[] memory modules,
     address router
@@ -43,8 +49,7 @@ contract NFTPortal is AbstractPortal, ERC721 {
   }
 
   /**
-   * @notice Method run before a payload is attested
-   * @param attestationPayload the attestation payload supposed to be attested
+   * @inheritdoc AbstractPortal
    */
   function _onAttest(
     AttestationPayload memory attestationPayload,
@@ -54,6 +59,7 @@ contract NFTPortal is AbstractPortal, ERC721 {
     numberOfAttestationsPerOwner[attestationPayload.subject]++;
   }
 
+  /// @inheritdoc AbstractPortal
   function withdraw(address payable to, uint256 amount) external override {}
 
   /**

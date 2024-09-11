@@ -1,0 +1,96 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema-v2.graphql
+dataSources:
+  - kind: ethereum
+    name: AttestationRegistry
+    network: arbitrum-one
+    source:
+      abi: AttestationRegistry
+      address: "0x335E9719e8eFE2a19A92E07BC4836160fC31cd7C"
+      startBlock: 149970435
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Attestation
+      abis:
+        - name: AttestationRegistry
+          file: ./abis/AttestationRegistry.json
+      eventHandlers:
+        - event: AttestationRegistered(indexed bytes32)
+          handler: handleAttestationRegistered
+        - event: AttestationRevoked(bytes32)
+          handler: handleAttestationRevoked
+        - event: AttestationReplaced(bytes32,bytes32)
+          handler: handleAttestationReplaced
+        - event: VersionUpdated(uint16)
+          handler: handleVersionUpdated
+      file: ./src/attestation-registry.ts
+  - kind: ethereum
+    name: ModuleRegistry
+    network: arbitrum-one
+    source:
+      abi: ModuleRegistry
+      address: "0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba"
+      startBlock: 149970435
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Module
+      abis:
+        - name: ModuleRegistry
+          file: ./abis/ModuleRegistry.json
+      eventHandlers:
+        - event: ModuleRegistered(string,string,address)
+          handler: handleModuleRegistered
+      file: ./src/module-registry.ts
+  - kind: ethereum
+    name: PortalRegistry
+    network: arbitrum-one
+    source:
+      abi: PortalRegistry
+      address: "0x4042D0A54f997EE3a1b0F51e4813654199BFd8bD"
+      startBlock: 149970435
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Portal
+      abis:
+        - name: PortalRegistry
+          file: ./abis/PortalRegistry.json
+      eventHandlers:
+        - event: PortalRegistered(string,string,address)
+          handler: handlePortalRegistered
+        - event: IssuerAdded(address)
+          handler: handleIssuerAdded
+        - event: IssuerRemoved(address)
+          handler: handleIssuerRemoved
+      file: ./src/portal-registry.ts
+  - kind: ethereum
+    name: SchemaRegistry
+    network: arbitrum-one
+    source:
+      abi: SchemaRegistry
+      address: "0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27"
+      startBlock: 149970435
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Schema
+      abis:
+        - name: SchemaRegistry
+          file: ./abis/SchemaRegistry.json
+      eventHandlers:
+        - event: SchemaCreated(indexed bytes32,string,string,string,string)
+          handler: handleSchemaCreated
+        - event: SchemaContextUpdated(indexed bytes32)
+          handler: handleSchemaContextUpdated
+      file: ./src/schema-registry.ts

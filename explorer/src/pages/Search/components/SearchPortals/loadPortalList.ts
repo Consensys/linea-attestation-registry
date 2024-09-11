@@ -3,6 +3,7 @@ import PortalDataMapper from "@verax-attestation-registry/verax-sdk/lib/types/sr
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { ResultParseSearch } from "@/interfaces/components";
 import { isNotNullOrUndefined } from "@/utils";
+import { uniqMap } from "@/utils/searchUtils.ts";
 
 export const loadPortalList = async (portal: PortalDataMapper, parsedString: Partial<ResultParseSearch>) => {
   const [listByName, listByDescription] = parsedString.nameOrDescription
@@ -20,7 +21,7 @@ export const loadPortalList = async (portal: PortalDataMapper, parsedString: Par
     parsedString.address ? await Promise.all(parsedString.address.map((id) => portal.findOneById(id))) : []
   ).filter(isNotNullOrUndefined);
 
-  const result = [...(listByIds || []), ...(listByName || []), ...(listByDescription || [])];
+  const results = [...(listByIds || []), ...(listByName || []), ...(listByDescription || [])];
 
-  return result;
+  return uniqMap(results, "id");
 };

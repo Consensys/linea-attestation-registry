@@ -3,30 +3,40 @@ schema {
   subscription: Subscription
 }
 
-"Marks the GraphQL type as indexable entity.  Each type that should be an entity is required to be annotated with this directive."
+"""
+Marks the GraphQL type as indexable entity.  Each type that should be an entity is required to be annotated with this directive.
+"""
 directive @entity on OBJECT
 
-"Defined a Subgraph ID for an object type"
+"""Defined a Subgraph ID for an object type"""
 directive @subgraphId(id: String!) on OBJECT
 
-"creates a virtual field on the entity that may be queried but cannot be set manually through the mappings API."
+"""
+creates a virtual field on the entity that may be queried but cannot be set manually through the mappings API.
+"""
 directive @derivedFrom(field: String!) on FIELD_DEFINITION
+
+enum Aggregation_interval {
+  hour
+  day
+}
 
 type Attestation {
   id: ID!
-  schemaId: Bytes!
+  schema: Schema!
   replacedBy: Bytes!
   attester: Bytes!
-  portal: Bytes!
+  portal: Portal!
   attestedDate: BigInt!
   expirationDate: BigInt!
   revocationDate: BigInt!
   version: BigInt!
   revoked: Boolean!
   subject: Bytes!
+  encodedSubject: Bytes!
   attestationData: Bytes!
-  schemaString: String
   decodedData: [String!]
+  auditInformation: AuditInformation!
 }
 
 input Attestation_filter {
@@ -38,30 +48,68 @@ input Attestation_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  schemaId: Bytes
-  schemaId_not: Bytes
-  schemaId_in: [Bytes!]
-  schemaId_not_in: [Bytes!]
-  schemaId_contains: Bytes
-  schemaId_not_contains: Bytes
+  schema: String
+  schema_not: String
+  schema_gt: String
+  schema_lt: String
+  schema_gte: String
+  schema_lte: String
+  schema_in: [String!]
+  schema_not_in: [String!]
+  schema_contains: String
+  schema_contains_nocase: String
+  schema_not_contains: String
+  schema_not_contains_nocase: String
+  schema_starts_with: String
+  schema_starts_with_nocase: String
+  schema_not_starts_with: String
+  schema_not_starts_with_nocase: String
+  schema_ends_with: String
+  schema_ends_with_nocase: String
+  schema_not_ends_with: String
+  schema_not_ends_with_nocase: String
+  schema_: Schema_filter
   replacedBy: Bytes
   replacedBy_not: Bytes
+  replacedBy_gt: Bytes
+  replacedBy_lt: Bytes
+  replacedBy_gte: Bytes
+  replacedBy_lte: Bytes
   replacedBy_in: [Bytes!]
   replacedBy_not_in: [Bytes!]
   replacedBy_contains: Bytes
   replacedBy_not_contains: Bytes
   attester: Bytes
   attester_not: Bytes
+  attester_gt: Bytes
+  attester_lt: Bytes
+  attester_gte: Bytes
+  attester_lte: Bytes
   attester_in: [Bytes!]
   attester_not_in: [Bytes!]
   attester_contains: Bytes
   attester_not_contains: Bytes
-  portal: Bytes
-  portal_not: Bytes
-  portal_in: [Bytes!]
-  portal_not_in: [Bytes!]
-  portal_contains: Bytes
-  portal_not_contains: Bytes
+  portal: String
+  portal_not: String
+  portal_gt: String
+  portal_lt: String
+  portal_gte: String
+  portal_lte: String
+  portal_in: [String!]
+  portal_not_in: [String!]
+  portal_contains: String
+  portal_contains_nocase: String
+  portal_not_contains: String
+  portal_not_contains_nocase: String
+  portal_starts_with: String
+  portal_starts_with_nocase: String
+  portal_not_starts_with: String
+  portal_not_starts_with_nocase: String
+  portal_ends_with: String
+  portal_ends_with_nocase: String
+  portal_not_ends_with: String
+  portal_not_ends_with_nocase: String
+  portal_: Portal_filter
   attestedDate: BigInt
   attestedDate_not: BigInt
   attestedDate_gt: BigInt
@@ -100,61 +148,290 @@ input Attestation_filter {
   revoked_not_in: [Boolean!]
   subject: Bytes
   subject_not: Bytes
+  subject_gt: Bytes
+  subject_lt: Bytes
+  subject_gte: Bytes
+  subject_lte: Bytes
   subject_in: [Bytes!]
   subject_not_in: [Bytes!]
   subject_contains: Bytes
   subject_not_contains: Bytes
+  encodedSubject: Bytes
+  encodedSubject_not: Bytes
+  encodedSubject_gt: Bytes
+  encodedSubject_lt: Bytes
+  encodedSubject_gte: Bytes
+  encodedSubject_lte: Bytes
+  encodedSubject_in: [Bytes!]
+  encodedSubject_not_in: [Bytes!]
+  encodedSubject_contains: Bytes
+  encodedSubject_not_contains: Bytes
   attestationData: Bytes
   attestationData_not: Bytes
+  attestationData_gt: Bytes
+  attestationData_lt: Bytes
+  attestationData_gte: Bytes
+  attestationData_lte: Bytes
   attestationData_in: [Bytes!]
   attestationData_not_in: [Bytes!]
   attestationData_contains: Bytes
   attestationData_not_contains: Bytes
-  schemaString: String
-  schemaString_not: String
-  schemaString_gt: String
-  schemaString_lt: String
-  schemaString_gte: String
-  schemaString_lte: String
-  schemaString_in: [String!]
-  schemaString_not_in: [String!]
-  schemaString_contains: String
-  schemaString_contains_nocase: String
-  schemaString_not_contains: String
-  schemaString_not_contains_nocase: String
-  schemaString_starts_with: String
-  schemaString_starts_with_nocase: String
-  schemaString_not_starts_with: String
-  schemaString_not_starts_with_nocase: String
-  schemaString_ends_with: String
-  schemaString_ends_with_nocase: String
-  schemaString_not_ends_with: String
-  schemaString_not_ends_with_nocase: String
   decodedData: [String!]
   decodedData_not: [String!]
   decodedData_contains: [String!]
   decodedData_contains_nocase: [String!]
   decodedData_not_contains: [String!]
   decodedData_not_contains_nocase: [String!]
+  auditInformation: String
+  auditInformation_not: String
+  auditInformation_gt: String
+  auditInformation_lt: String
+  auditInformation_gte: String
+  auditInformation_lte: String
+  auditInformation_in: [String!]
+  auditInformation_not_in: [String!]
+  auditInformation_contains: String
+  auditInformation_contains_nocase: String
+  auditInformation_not_contains: String
+  auditInformation_not_contains_nocase: String
+  auditInformation_starts_with: String
+  auditInformation_starts_with_nocase: String
+  auditInformation_not_starts_with: String
+  auditInformation_not_starts_with_nocase: String
+  auditInformation_ends_with: String
+  auditInformation_ends_with_nocase: String
+  auditInformation_not_ends_with: String
+  auditInformation_not_ends_with_nocase: String
+  auditInformation_: AuditInformation_filter
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
+  and: [Attestation_filter]
+  or: [Attestation_filter]
 }
 
 enum Attestation_orderBy {
   id
-  schemaId
+  schema
+  schema__id
+  schema__name
+  schema__description
+  schema__context
+  schema__schema
+  schema__attestationCounter
   replacedBy
   attester
   portal
+  portal__id
+  portal__ownerAddress
+  portal__isRevocable
+  portal__name
+  portal__description
+  portal__ownerName
+  portal__attestationCounter
   attestedDate
   expirationDate
   revocationDate
   version
   revoked
   subject
+  encodedSubject
   attestationData
-  schemaString
   decodedData
+  auditInformation
+  auditInformation__id
+}
+
+type Audit {
+  id: ID!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+  transactionTimestamp: BigInt!
+  fromAddress: Bytes!
+  toAddress: Bytes
+  valueTransferred: BigInt
+  gasPrice: BigInt
+}
+
+type AuditInformation {
+  id: ID!
+  creation: Audit!
+  lastModification: Audit!
+  modifications(skip: Int = 0, first: Int = 100, orderBy: Audit_orderBy, orderDirection: OrderDirection, where: Audit_filter): [Audit!]!
+}
+
+input AuditInformation_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  creation: String
+  creation_not: String
+  creation_gt: String
+  creation_lt: String
+  creation_gte: String
+  creation_lte: String
+  creation_in: [String!]
+  creation_not_in: [String!]
+  creation_contains: String
+  creation_contains_nocase: String
+  creation_not_contains: String
+  creation_not_contains_nocase: String
+  creation_starts_with: String
+  creation_starts_with_nocase: String
+  creation_not_starts_with: String
+  creation_not_starts_with_nocase: String
+  creation_ends_with: String
+  creation_ends_with_nocase: String
+  creation_not_ends_with: String
+  creation_not_ends_with_nocase: String
+  creation_: Audit_filter
+  lastModification: String
+  lastModification_not: String
+  lastModification_gt: String
+  lastModification_lt: String
+  lastModification_gte: String
+  lastModification_lte: String
+  lastModification_in: [String!]
+  lastModification_not_in: [String!]
+  lastModification_contains: String
+  lastModification_contains_nocase: String
+  lastModification_not_contains: String
+  lastModification_not_contains_nocase: String
+  lastModification_starts_with: String
+  lastModification_starts_with_nocase: String
+  lastModification_not_starts_with: String
+  lastModification_not_starts_with_nocase: String
+  lastModification_ends_with: String
+  lastModification_ends_with_nocase: String
+  lastModification_not_ends_with: String
+  lastModification_not_ends_with_nocase: String
+  lastModification_: Audit_filter
+  modifications: [String!]
+  modifications_not: [String!]
+  modifications_contains: [String!]
+  modifications_contains_nocase: [String!]
+  modifications_not_contains: [String!]
+  modifications_not_contains_nocase: [String!]
+  modifications_: Audit_filter
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [AuditInformation_filter]
+  or: [AuditInformation_filter]
+}
+
+enum AuditInformation_orderBy {
+  id
+  creation
+  creation__id
+  creation__blockNumber
+  creation__transactionHash
+  creation__transactionTimestamp
+  creation__fromAddress
+  creation__toAddress
+  creation__valueTransferred
+  creation__gasPrice
+  lastModification
+  lastModification__id
+  lastModification__blockNumber
+  lastModification__transactionHash
+  lastModification__transactionTimestamp
+  lastModification__fromAddress
+  lastModification__toAddress
+  lastModification__valueTransferred
+  lastModification__gasPrice
+  modifications
+}
+
+input Audit_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  transactionHash: Bytes
+  transactionHash_not: Bytes
+  transactionHash_gt: Bytes
+  transactionHash_lt: Bytes
+  transactionHash_gte: Bytes
+  transactionHash_lte: Bytes
+  transactionHash_in: [Bytes!]
+  transactionHash_not_in: [Bytes!]
+  transactionHash_contains: Bytes
+  transactionHash_not_contains: Bytes
+  transactionTimestamp: BigInt
+  transactionTimestamp_not: BigInt
+  transactionTimestamp_gt: BigInt
+  transactionTimestamp_lt: BigInt
+  transactionTimestamp_gte: BigInt
+  transactionTimestamp_lte: BigInt
+  transactionTimestamp_in: [BigInt!]
+  transactionTimestamp_not_in: [BigInt!]
+  fromAddress: Bytes
+  fromAddress_not: Bytes
+  fromAddress_gt: Bytes
+  fromAddress_lt: Bytes
+  fromAddress_gte: Bytes
+  fromAddress_lte: Bytes
+  fromAddress_in: [Bytes!]
+  fromAddress_not_in: [Bytes!]
+  fromAddress_contains: Bytes
+  fromAddress_not_contains: Bytes
+  toAddress: Bytes
+  toAddress_not: Bytes
+  toAddress_gt: Bytes
+  toAddress_lt: Bytes
+  toAddress_gte: Bytes
+  toAddress_lte: Bytes
+  toAddress_in: [Bytes!]
+  toAddress_not_in: [Bytes!]
+  toAddress_contains: Bytes
+  toAddress_not_contains: Bytes
+  valueTransferred: BigInt
+  valueTransferred_not: BigInt
+  valueTransferred_gt: BigInt
+  valueTransferred_lt: BigInt
+  valueTransferred_gte: BigInt
+  valueTransferred_lte: BigInt
+  valueTransferred_in: [BigInt!]
+  valueTransferred_not_in: [BigInt!]
+  gasPrice: BigInt
+  gasPrice_not: BigInt
+  gasPrice_gt: BigInt
+  gasPrice_lt: BigInt
+  gasPrice_gte: BigInt
+  gasPrice_lte: BigInt
+  gasPrice_in: [BigInt!]
+  gasPrice_not_in: [BigInt!]
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [Audit_filter]
+  or: [Audit_filter]
+}
+
+enum Audit_orderBy {
+  id
+  blockNumber
+  transactionHash
+  transactionTimestamp
+  fromAddress
+  toAddress
+  valueTransferred
+  gasPrice
 }
 
 scalar BigDecimal
@@ -224,6 +501,8 @@ input Counter_filter {
   schemas_not_in: [Int!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
+  and: [Counter_filter]
+  or: [Counter_filter]
 }
 
 enum Counter_orderBy {
@@ -234,11 +513,65 @@ enum Counter_orderBy {
   schemas
 }
 
+"""
+8 bytes signed integer
+
+"""
+scalar Int8
+
+type Issuer {
+  id: ID!
+  auditInformation: AuditInformation!
+}
+
+input Issuer_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  auditInformation: String
+  auditInformation_not: String
+  auditInformation_gt: String
+  auditInformation_lt: String
+  auditInformation_gte: String
+  auditInformation_lte: String
+  auditInformation_in: [String!]
+  auditInformation_not_in: [String!]
+  auditInformation_contains: String
+  auditInformation_contains_nocase: String
+  auditInformation_not_contains: String
+  auditInformation_not_contains_nocase: String
+  auditInformation_starts_with: String
+  auditInformation_starts_with_nocase: String
+  auditInformation_not_starts_with: String
+  auditInformation_not_starts_with_nocase: String
+  auditInformation_ends_with: String
+  auditInformation_ends_with_nocase: String
+  auditInformation_not_ends_with: String
+  auditInformation_not_ends_with_nocase: String
+  auditInformation_: AuditInformation_filter
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [Issuer_filter]
+  or: [Issuer_filter]
+}
+
+enum Issuer_orderBy {
+  id
+  auditInformation
+  auditInformation__id
+}
+
 type Module {
   id: ID!
   moduleAddress: Bytes!
   name: String!
   description: String!
+  auditInformation: AuditInformation!
 }
 
 input Module_filter {
@@ -252,6 +585,10 @@ input Module_filter {
   id_not_in: [ID!]
   moduleAddress: Bytes
   moduleAddress_not: Bytes
+  moduleAddress_gt: Bytes
+  moduleAddress_lt: Bytes
+  moduleAddress_gte: Bytes
+  moduleAddress_lte: Bytes
   moduleAddress_in: [Bytes!]
   moduleAddress_not_in: [Bytes!]
   moduleAddress_contains: Bytes
@@ -296,8 +633,31 @@ input Module_filter {
   description_ends_with_nocase: String
   description_not_ends_with: String
   description_not_ends_with_nocase: String
+  auditInformation: String
+  auditInformation_not: String
+  auditInformation_gt: String
+  auditInformation_lt: String
+  auditInformation_gte: String
+  auditInformation_lte: String
+  auditInformation_in: [String!]
+  auditInformation_not_in: [String!]
+  auditInformation_contains: String
+  auditInformation_contains_nocase: String
+  auditInformation_not_contains: String
+  auditInformation_not_contains_nocase: String
+  auditInformation_starts_with: String
+  auditInformation_starts_with_nocase: String
+  auditInformation_not_starts_with: String
+  auditInformation_not_starts_with_nocase: String
+  auditInformation_ends_with: String
+  auditInformation_ends_with_nocase: String
+  auditInformation_not_ends_with: String
+  auditInformation_not_ends_with_nocase: String
+  auditInformation_: AuditInformation_filter
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
+  and: [Module_filter]
+  or: [Module_filter]
 }
 
 enum Module_orderBy {
@@ -305,6 +665,8 @@ enum Module_orderBy {
   moduleAddress
   name
   description
+  auditInformation
+  auditInformation__id
 }
 
 """Defines the order direction, either ascending or descending"""
@@ -321,6 +683,8 @@ type Portal {
   name: String!
   description: String!
   ownerName: String!
+  attestationCounter: Int
+  auditInformation: AuditInformation!
 }
 
 input Portal_filter {
@@ -334,6 +698,10 @@ input Portal_filter {
   id_not_in: [ID!]
   ownerAddress: Bytes
   ownerAddress_not: Bytes
+  ownerAddress_gt: Bytes
+  ownerAddress_lt: Bytes
+  ownerAddress_gte: Bytes
+  ownerAddress_lte: Bytes
   ownerAddress_in: [Bytes!]
   ownerAddress_not_in: [Bytes!]
   ownerAddress_contains: Bytes
@@ -408,8 +776,39 @@ input Portal_filter {
   ownerName_ends_with_nocase: String
   ownerName_not_ends_with: String
   ownerName_not_ends_with_nocase: String
+  attestationCounter: Int
+  attestationCounter_not: Int
+  attestationCounter_gt: Int
+  attestationCounter_lt: Int
+  attestationCounter_gte: Int
+  attestationCounter_lte: Int
+  attestationCounter_in: [Int!]
+  attestationCounter_not_in: [Int!]
+  auditInformation: String
+  auditInformation_not: String
+  auditInformation_gt: String
+  auditInformation_lt: String
+  auditInformation_gte: String
+  auditInformation_lte: String
+  auditInformation_in: [String!]
+  auditInformation_not_in: [String!]
+  auditInformation_contains: String
+  auditInformation_contains_nocase: String
+  auditInformation_not_contains: String
+  auditInformation_not_contains_nocase: String
+  auditInformation_starts_with: String
+  auditInformation_starts_with_nocase: String
+  auditInformation_not_starts_with: String
+  auditInformation_not_starts_with_nocase: String
+  auditInformation_ends_with: String
+  auditInformation_ends_with_nocase: String
+  auditInformation_not_ends_with: String
+  auditInformation_not_ends_with_nocase: String
+  auditInformation_: AuditInformation_filter
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
+  and: [Portal_filter]
+  or: [Portal_filter]
 }
 
 enum Portal_orderBy {
@@ -420,6 +819,9 @@ enum Portal_orderBy {
   name
   description
   ownerName
+  attestationCounter
+  auditInformation
+  auditInformation__id
 }
 
 type Query {
@@ -553,8 +955,179 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Counter!]!
+  issuer(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Issuer
+  issuers(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Issuer_orderBy
+    orderDirection: OrderDirection
+    where: Issuer_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Issuer!]!
+  registryVersion(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): RegistryVersion
+  registryVersions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: RegistryVersion_orderBy
+    orderDirection: OrderDirection
+    where: RegistryVersion_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [RegistryVersion!]!
+  auditInformation(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): AuditInformation
+  auditInformations(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: AuditInformation_orderBy
+    orderDirection: OrderDirection
+    where: AuditInformation_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [AuditInformation!]!
+  audit(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Audit
+  audits(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Audit_orderBy
+    orderDirection: OrderDirection
+    where: Audit_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Audit!]!
   """Access to subgraph metadata"""
   _meta(block: Block_height): _Meta_
+}
+
+type RegistryVersion {
+  id: ID!
+  versionNumber: Int
+  timestamp: BigInt
+  auditInformation: AuditInformation!
+}
+
+input RegistryVersion_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  versionNumber: Int
+  versionNumber_not: Int
+  versionNumber_gt: Int
+  versionNumber_lt: Int
+  versionNumber_gte: Int
+  versionNumber_lte: Int
+  versionNumber_in: [Int!]
+  versionNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  auditInformation: String
+  auditInformation_not: String
+  auditInformation_gt: String
+  auditInformation_lt: String
+  auditInformation_gte: String
+  auditInformation_lte: String
+  auditInformation_in: [String!]
+  auditInformation_not_in: [String!]
+  auditInformation_contains: String
+  auditInformation_contains_nocase: String
+  auditInformation_not_contains: String
+  auditInformation_not_contains_nocase: String
+  auditInformation_starts_with: String
+  auditInformation_starts_with_nocase: String
+  auditInformation_not_starts_with: String
+  auditInformation_not_starts_with_nocase: String
+  auditInformation_ends_with: String
+  auditInformation_ends_with_nocase: String
+  auditInformation_not_ends_with: String
+  auditInformation_not_ends_with_nocase: String
+  auditInformation_: AuditInformation_filter
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [RegistryVersion_filter]
+  or: [RegistryVersion_filter]
+}
+
+enum RegistryVersion_orderBy {
+  id
+  versionNumber
+  timestamp
+  auditInformation
+  auditInformation__id
 }
 
 type Schema {
@@ -563,6 +1136,8 @@ type Schema {
   description: String!
   context: String!
   schema: String!
+  attestationCounter: Int
+  auditInformation: AuditInformation!
 }
 
 input Schema_filter {
@@ -654,8 +1229,39 @@ input Schema_filter {
   schema_ends_with_nocase: String
   schema_not_ends_with: String
   schema_not_ends_with_nocase: String
+  attestationCounter: Int
+  attestationCounter_not: Int
+  attestationCounter_gt: Int
+  attestationCounter_lt: Int
+  attestationCounter_gte: Int
+  attestationCounter_lte: Int
+  attestationCounter_in: [Int!]
+  attestationCounter_not_in: [Int!]
+  auditInformation: String
+  auditInformation_not: String
+  auditInformation_gt: String
+  auditInformation_lt: String
+  auditInformation_gte: String
+  auditInformation_lte: String
+  auditInformation_in: [String!]
+  auditInformation_not_in: [String!]
+  auditInformation_contains: String
+  auditInformation_contains_nocase: String
+  auditInformation_not_contains: String
+  auditInformation_not_contains_nocase: String
+  auditInformation_starts_with: String
+  auditInformation_starts_with_nocase: String
+  auditInformation_not_starts_with: String
+  auditInformation_not_starts_with_nocase: String
+  auditInformation_ends_with: String
+  auditInformation_ends_with_nocase: String
+  auditInformation_not_ends_with: String
+  auditInformation_not_ends_with_nocase: String
+  auditInformation_: AuditInformation_filter
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
+  and: [Schema_filter]
+  or: [Schema_filter]
 }
 
 enum Schema_orderBy {
@@ -664,6 +1270,9 @@ enum Schema_orderBy {
   description
   context
   schema
+  attestationCounter
+  auditInformation
+  auditInformation__id
 }
 
 type Subscription {
@@ -797,9 +1406,119 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Counter!]!
+  issuer(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Issuer
+  issuers(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Issuer_orderBy
+    orderDirection: OrderDirection
+    where: Issuer_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Issuer!]!
+  registryVersion(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): RegistryVersion
+  registryVersions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: RegistryVersion_orderBy
+    orderDirection: OrderDirection
+    where: RegistryVersion_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [RegistryVersion!]!
+  auditInformation(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): AuditInformation
+  auditInformations(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: AuditInformation_orderBy
+    orderDirection: OrderDirection
+    where: AuditInformation_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [AuditInformation!]!
+  audit(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Audit
+  audits(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Audit_orderBy
+    orderDirection: OrderDirection
+    where: Audit_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Audit!]!
   """Access to subgraph metadata"""
   _meta(block: Block_height): _Meta_
 }
+
+"""
+A string representation of microseconds UNIX timestamp (16 digits)
+
+"""
+scalar Timestamp
 
 type _Block_ {
   """The hash of the block"""
@@ -808,6 +1527,8 @@ type _Block_ {
   number: Int!
   """Integer representation of the timestamp stored in blocks for the chain"""
   timestamp: Int
+  """The hash of the parent block"""
+  parentHash: Bytes
 }
 
 """The type for the top-level _meta field"""

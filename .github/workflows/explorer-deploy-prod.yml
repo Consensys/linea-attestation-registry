@@ -7,7 +7,7 @@ jobs:
   deploy-explorer-prod:
     if:
       github.actor == 'alainncls' || github.actor  == 'satyajeetkolhapure' || github.actor  == 'orbmis' ||
-      github.actor  == '0xEillo' || github.actor  == 'ars9' || github.actor  == 'Solniechniy'
+      github.actor  == 'arthur-remy' || github.actor  == 'ars9' || github.actor  == 'Solniechniy'
 
     runs-on: ubuntu-latest
 

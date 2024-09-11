@@ -7,7 +7,7 @@ jobs:
   release:
     if:
       github.actor == 'alainncls' || github.actor  == 'satyajeetkolhapure' || github.actor  == 'orbmis' ||
-      github.actor  == '0xEillo'
+      github.actor  == 'arthur-remy'
 
     runs-on: ubuntu-latest
 

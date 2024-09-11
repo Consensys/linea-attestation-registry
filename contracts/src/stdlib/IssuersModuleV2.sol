@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { AbstractModuleV2 } from "../abstracts/AbstractModuleV2.sol";
+import { OperationType } from "../types/Enums.sol";
 import { AttestationPayload } from "../types/Structs.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
 
@@ -30,9 +31,13 @@ contract IssuersModuleV2 is AbstractModuleV2 {
     address /*initialCaller*/,
     uint256 /*value*/,
     address /*attester*/,
-    address /*portal*/
+    address /*portal*/,
+    OperationType /*operationType*/
   ) public view override {
     address subject = address(0);
+
+    if (attestationPayload.subject.length != 32 && attestationPayload.subject.length != 20)
+      revert UnauthorizedSubject();
 
     if (attestationPayload.subject.length == 32) subject = abi.decode(attestationPayload.subject, (address));
     if (attestationPayload.subject.length == 20) subject = address(uint160(bytes20(attestationPayload.subject)));

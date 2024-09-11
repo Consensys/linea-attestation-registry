@@ -28,6 +28,8 @@ contract AttestationRegistryTest is Test {
   event AttestationRevoked(bytes32 attestationId);
   event BulkAttestationsRevoked(bytes32[] attestationId);
   event VersionUpdated(uint16 version);
+  event RouterUpdated(address routerAddress);
+  event ChainPrefixUpdated(uint256 chainPrefix);
 
   function setUp() public {
     router = new Router();
@@ -86,6 +88,8 @@ contract AttestationRegistryTest is Test {
   function test_updateRouter() public {
     AttestationRegistry testAttestationRegistry = new AttestationRegistry();
 
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
     vm.prank(address(0));
     testAttestationRegistry.updateRouter(address(1));
     address routerAddress = address(testAttestationRegistry.router());
@@ -95,12 +99,16 @@ contract AttestationRegistryTest is Test {
   function test_updateChainPrefix() public {
     AttestationRegistry testAttestationRegistry = new AttestationRegistry();
 
+    vm.expectEmit(true, true, true, true);
+    emit ChainPrefixUpdated(initialChainPrefix);
     vm.prank(address(0));
     testAttestationRegistry.updateChainPrefix(initialChainPrefix);
 
     uint256 chainPrefix = testAttestationRegistry.getChainPrefix();
     assertEq(chainPrefix, initialChainPrefix);
 
+    vm.expectEmit(true, true, true, true);
+    emit ChainPrefixUpdated(0x0001000000000000000000000000000000000000000000000000000000000000);
     vm.prank(address(0));
     testAttestationRegistry.updateChainPrefix(0x0001000000000000000000000000000000000000000000000000000000000000);
 

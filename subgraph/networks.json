@@ -1,22 +1,4 @@
 {
-  "linea-goerli": {
-    "AttestationRegistry": {
-      "address": "0xC765F28096F6121C2F2b82D35A4346280164428b",
-      "startBlock": 1454659
-    },
-    "ModuleRegistry": {
-      "address": "0x1a20b2CFA134686306436D2c9f778D7eC6c43A43",
-      "startBlock": 1454663
-    },
-    "PortalRegistry": {
-      "address": "0x506f88a5Ca8D5F001f2909b029738A40042e42a6",
-      "startBlock": 1454667
-    },
-    "SchemaRegistry": {
-      "address": "0xB2c4Da1f8F08A0CA25862509E5431289BE2b598B",
-      "startBlock": 1454671
-    }
-  },
   "linea-sepolia": {
     "AttestationRegistry": {
       "address": "0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F",
@@ -51,24 +33,6 @@
     "SchemaRegistry": {
       "address": "0x0f95dCec4c7a93F2637eb13b655F2223ea036B59",
       "startBlock": 346707
-    }
-  },
-  "arbitrum-goerli": {
-    "AttestationRegistry": {
-      "address": "0xCD839595FdA5A8111d5E03D42d9D9af60ee67B66",
-      "startBlock": 56196775
-    },
-    "ModuleRegistry": {
-      "address": "0x58EE79284bE65b217Db408A0991314f9Ae84348A",
-      "startBlock": 56196823
-    },
-    "PortalRegistry": {
-      "address": "0x7d6a914C1e33C141CB4a5e0095c1075E5649aFB2",
-      "startBlock": 56196902
-    },
-    "SchemaRegistry": {
-      "address": "0x129043e80e0B4C7da61a622df0912c31D3414AA7",
-      "startBlock": 56196956
     }
   },
   "arbitrum-sepolia": {
@@ -159,6 +123,42 @@
     "SchemaRegistry": {
       "address": "0x8081dCd745f160c148Eb5be510F78628A0951c31",
       "startBlock": 13666866
+    }
+  },
+  "bsc-testnet": {
+    "AttestationRegistry": {
+      "address": "0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe",
+      "startBlock": 41312659
+    },
+    "ModuleRegistry": {
+      "address": "0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a",
+      "startBlock": 41312659
+    },
+    "PortalRegistry": {
+      "address": "0xA4a7517F62216BD42e42a67dF09C25adc72A5897",
+      "startBlock": 41312659
+    },
+    "SchemaRegistry": {
+      "address": "0x51929da151eC2C5a5881C750E5b9941eACC46c1d",
+      "startBlock": 41312659
+    }
+  },
+  "bsc": {
+    "AttestationRegistry": {
+      "address": "0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261",
+      "startBlock": 39759713
+    },
+    "ModuleRegistry": {
+      "address": "0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB",
+      "startBlock": 39759713
+    },
+    "PortalRegistry": {
+      "address": "0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0",
+      "startBlock": 39759713
+    },
+    "SchemaRegistry": {
+      "address": "0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd",
+      "startBlock": 39759713
     }
   }
 }

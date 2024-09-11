@@ -56,7 +56,7 @@ export const RelatedAttestations: React.FC<{ mutate: KeyedMutator<Attestation | 
               className="py-2 justify-start items-center gap-2 inline-flex flex-shrink-0 lg:flex-col lg:items-start lg:w-[115px]"
             >
               <div className="text-text-secondary text-lg font-semibold">
-                {displayAmountWithComma(hexToNumber(id as Hex))}
+                {displayAmountWithComma(hexToNumber(`0x${(id as Hex).substring(6)}`))}
               </div>
               <div className="text-text-tertiary text-sm font-normal">{title}</div>
             </Link>

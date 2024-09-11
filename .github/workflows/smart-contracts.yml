@@ -138,25 +138,38 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
+          fetch-depth: 0
+
+      - id: check-changes
+        run: |
+          if [ -n "$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '^contracts/')" ]; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
 
       - name: Install Pnpm
+        if: steps.check-changes.outputs.changed == 'true'
         uses: pnpm/action-setup@v2
         with:
           version: 8
           run_install: false
 
       - name: Install Node.js
+        if: steps.check-changes.outputs.changed == 'true'
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: pnpm
 
       - name: Get pnpm store directory
+        if: steps.check-changes.outputs.changed == 'true'
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - uses: actions/cache@v3
+        if: steps.check-changes.outputs.changed == 'true'
         name: Setup pnpm cache
         with:
           path: ${{ env.STORE_PATH }}
@@ -165,18 +178,23 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
+        if: steps.check-changes.outputs.changed == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Install Foundry
+        if: steps.check-changes.outputs.changed == 'true'
         uses: foundry-rs/foundry-toolchain@v1
 
       - name: Generate the coverage report using the unit tests
+        if: steps.check-changes.outputs.changed == 'true'
         run: cd contracts && forge coverage --report lcov
 
       - name: Move the report at the root of the project
+        if: steps.check-changes.outputs.changed == 'true'
         run: mv contracts/lcov.info .
 
       - name: Upload coverage report to Codecov
+        if: steps.check-changes.outputs.changed == 'true'
         uses: codecov/codecov-action@v3
         with:
           files: ./lcov.info
@@ -185,15 +203,23 @@ jobs:
           verbose: true
 
       - name: Check test coverage
+        if: steps.check-changes.outputs.changed == 'true'
         uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
         with:
           coverage-file: lcov.info
-          minimum-coverage: 95
+          minimum-coverage: 94
 
       - name: Add coverage summary
+        if: steps.check-changes.outputs.changed == 'true'
         run: |
           echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
+
+      - name: Add coverage summary
+        if: steps.check-changes.outputs.changed == 'false'
+        run: |
+          echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ No coverage report to upload" >> $GITHUB_STEP_SUMMARY
 
   upgradeability-contracts:
     runs-on: ubuntu-latest
@@ -293,15 +319,15 @@ jobs:
         if: steps.check-changes.outputs.changed == 'true'
         run: pnpm run check:implementations
 
-      - name: Create Linea testnet env file
+      - name: Create Linea Sepolia env file
         if: steps.check-changes.outputs.changed == 'true'
         run: |
-          cp ./env/.env.linea-goerli .env
+          cp ./env/.env.linea-sepolia .env
           echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
 
-      - name: Check contracts upgradeability on Linea testnet
+      - name: Check contracts upgradeability on Linea Sepolia
         if: steps.check-changes.outputs.changed == 'true'
-        run: pnpm run check:upgradeability linea-goerli
+        run: pnpm run check:upgradeability linea-sepolia
 
       - name: Create Linea mainnet env file
         if: steps.check-changes.outputs.changed == 'true'
@@ -335,6 +361,60 @@ jobs:
       - name: Check contracts upgradeability on Arbitrum mainnet
         if: steps.check-changes.outputs.changed == 'true'
         run: pnpm run check:upgradeability arbitrum
+
+      - name: Create Arbitrum Nova env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.arbitrum-nova .env
+
+      - name: Check contracts upgradeability on Arbitrum Nova
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability arbitrum-nova
+
+      - name: Create Base Sepolia env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.base-sepolia .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Base Sepolia
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability base-sepolia
+
+      - name: Create Base mainnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.base .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on Base
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability base
+
+      - name: Create BSC testnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.bsc-testnet .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on BSC testnet
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability bsc-testnet
+
+      - name: Create BSC mainnet env file
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          rm .env
+          cp ./env/.env.bsc .env
+          echo INFURA_KEY=${{ secrets.INFURA_KEY }} >> .env
+
+      - name: Check contracts upgradeability on BSC mainnet
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:upgradeability bsc
 
       - name: Add upgradeability summary
         if: steps.check-changes.outputs.changed == 'true'

@@ -31,7 +31,7 @@ export const SearchModules: React.FC<SearchComponentProps> = ({ getSearchData, p
   if (!data || !data.length) return null;
   return (
     <SearchWrapper title={t("module.title")} items={data.length}>
-      <DataTable columns={columns({ chainId: chain.id })} data={data} link={APP_ROUTES.MODULES_BY_ID} />
+      <DataTable columns={columns({ chain })} data={data} link={APP_ROUTES.MODULES_BY_ID} />
     </SearchWrapper>
   );
 };

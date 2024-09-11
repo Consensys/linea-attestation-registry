@@ -17,7 +17,9 @@
       "next": "Next",
       "learnMore": "Learn More",
       "getStarted": "Get Started",
-      "viewMyAttestations": "View My Attestations"
+      "viewMyAttestations": "View My Attestations",
+      "getAttestation": "Get Attestations",
+      "seeAttestations": "See Attestations"
     },
     "messages": {
       "empty": "Empty",
@@ -25,6 +27,7 @@
       "notFound": "Not Found",
       "noResults": "No Results",
       "hasntBeenFound": "hasn`t been found",
+      "searchInProgress": "Searching for <bold>“{{search}}”</bold>...",
       "searchNotFound": "Nothing found on <bold>“{{search}}”</bold> search request",
       "searchFound": "<bold>{{count}}</bold> results found on <bold>“{{search}}”</bold> search request",
       "perPage": "per page"
@@ -64,6 +67,8 @@
   },
   "attestation": {
     "title": "Attestation",
+    "received": "Attestations received",
+    "issued": "Attestations issued",
     "list": {
       "title": "Explore Attestations",
       "switch": {
@@ -139,7 +144,7 @@
   "portal": {
     "title": "Portal",
     "id": "id",
-    "ownerAddress": "Owner Address",
+    "ownerAddress": "Owner",
     "revokable": {
       "title": "Revokable",
       "yes": "Yes",
@@ -150,7 +155,7 @@
       "columns": {
         "name": "Portal Name",
         "description": "Portal Description",
-        "owner": "Owner Address"
+        "owner": "Owner"
       }
     }
   }

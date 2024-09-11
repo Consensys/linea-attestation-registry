@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "./.env" });
 
-const { PRIVATE_KEY, LINEASCAN_API_KEY, ARBITRUM_MAINNET_PRIVATE_KEY, ARBITRUM_API_KEY } = process.env;
+const { PRIVATE_KEY, LINEASCAN_API_KEY } = process.env;
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -17,27 +17,35 @@ const config: HardhatUserConfig = {
     ],
   },
   networks: {
-    linea_testnet: {
-      url: `https://rpc.goerli.linea.build/`,
-      accounts: [PRIVATE_KEY ?? ""],
+    "linea-sepolia": {
+      url: `https://linea-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
     },
-    arbitrum_one: {
-      url: "https://arb1.arbitrum.io/rpc",
-      accounts: [ARBITRUM_MAINNET_PRIVATE_KEY ?? ""],
+    linea: {
+      url: `https://rpc.linea.build/`,
+      accounts: [PRIVATE_KEY ?? ""],
     },
   },
   etherscan: {
     apiKey: {
-      linea_testnet: LINEASCAN_API_KEY ?? "",
-      arbitrumOne: ARBITRUM_API_KEY ?? "",
+      "linea-sepolia": LINEASCAN_API_KEY ?? "",
+      linea: LINEASCAN_API_KEY ?? "",
     },
     customChains: [
       {
-        network: "linea_testnet",
-        chainId: 59140,
+        network: "linea-sepolia",
+        chainId: 59141,
         urls: {
-          apiURL: "https://api-testnet.lineascan.build/api",
-          browserURL: "https://goerli.lineascan.build/address",
+          apiURL: "https://api-sepolia.lineascan.build/api",
+          browserURL: "https://sepolia.lineascan.build",
+        },
+      },
+      {
+        network: "linea",
+        chainId: 59144,
+        urls: {
+          apiURL: "https://api.lineascan.build/api",
+          browserURL: "https://lineascan.build",
         },
       },
     ],

@@ -8,6 +8,9 @@ async function main() {
   console.log(`START SCRIPT`);
 
   const easRegistryAddress = process.env.EAS_REGISTRY_ADDRESS;
+  if (!easRegistryAddress) {
+    throw new Error("EAS address not found");
+  }
 
   const network = await ethers.provider.getNetwork();
   const networkConfig = getNetworkConfig(network.chainId);
@@ -24,7 +27,7 @@ async function main() {
   const routerProxyAddress = await router.getAddress();
   const routerImplementationAddress = await upgrades.erc1967.getImplementationAddress(routerProxyAddress);
 
-  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   await run("verify:verify", {
     address: routerProxyAddress,
@@ -45,7 +48,7 @@ async function main() {
     attestationRegistryProxyAddress,
   );
 
-  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   await run("verify:verify", {
     address: attestationRegistryProxyAddress,
@@ -66,7 +69,7 @@ async function main() {
     moduleRegistryProxyAddress,
   );
 
-  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   await run("verify:verify", {
     address: moduleRegistryProxyAddress,
@@ -87,7 +90,7 @@ async function main() {
     portalRegistryProxyAddress,
   );
 
-  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   await run("verify:verify", {
     address: portalRegistryProxyAddress,
@@ -108,7 +111,7 @@ async function main() {
     schemaRegistryProxyAddress,
   );
 
-  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   await run("verify:verify", {
     address: schemaRegistryProxyAddress,
@@ -129,7 +132,7 @@ async function main() {
     attestationReaderProxyAddress,
   );
 
-  await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   await run("verify:verify", {
     address: attestationReaderProxyAddress,

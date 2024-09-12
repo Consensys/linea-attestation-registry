@@ -127,8 +127,6 @@ Here are the addresses on those networks:
   [0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE](https://sepolia.arbiscan.io/address/0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE)
 - SchemaRegistry =
   [0x025531b655D9EE335B8E6cc4C118b313f26ACc8F](https://sepolia.arbiscan.io/address/0x025531b655D9EE335B8E6cc4C118b313f26ACc8F)
-- AttestationReader =
-  [0xBdC45324AB9A7e82Ae15324a3d8352b513Ee2788](https://sepolia.arbiscan.io/address/0xBdC45324AB9A7e82Ae15324a3d8352b513Ee2788)
 
 </details>
 
@@ -181,6 +179,8 @@ Here are the addresses on those networks:
   [0x025531b655D9EE335B8E6cc4C118b313f26ACc8F](https://sepolia.basescan.org/address/0x025531b655D9EE335B8E6cc4C118b313f26ACc8F)
 - SchemaRegistry =
   [0x66D2F3DCc970343b83a6263E20832184fa71CFe7](https://sepolia.basescan.org/address/0x66D2F3DCc970343b83a6263E20832184fa71CFe7)
+- AttestationReader =
+  [0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7](https://sepolia.basescan.org/address/0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7)
 
 </details>
 

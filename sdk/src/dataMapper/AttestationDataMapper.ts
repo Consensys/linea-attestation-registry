@@ -93,10 +93,8 @@ export default class AttestationDataMapper extends BaseDataMapper<
         try {
           const ipfsHash = attestation.offchainData.uri.split("//")[1];
           const response = await getIPFSContent(ipfsHash);
-          if (response.toString().startsWith("0x")) {
-            const offChainDataSchema = (await this.veraxSdk.schema.findOneById(
-              attestation.offchainData.schemaId,
-            )) as Schema;
+          if (response.toString().startsWith("0x") && this.findOneSchemaById) {
+            const offChainDataSchema = (await this.findOneSchemaById(attestation.offchainData.schemaId)) as Schema;
             attestation.decodedPayload = decodeWithRetry(offChainDataSchema.schema, attestation.attestationData as Hex);
           } else {
             attestation.decodedPayload = response as unknown as object;
@@ -134,7 +132,9 @@ export default class AttestationDataMapper extends BaseDataMapper<
     const attestationPayloadsArg = [];
 
     for (const attestationPayload of attestationPayloads) {
-      const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      const matchingSchema = this.findOneSchemaById
+        ? await this.findOneSchemaById(attestationPayload.schemaId)
+        : undefined;
       if (!matchingSchema) {
         throw new Error("No matching Schema");
       }

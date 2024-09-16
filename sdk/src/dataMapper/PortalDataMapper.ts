@@ -28,7 +28,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     validationPayloads: string[],
     value: bigint = 0n,
   ) {
-    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    const matchingSchema = this.findOneSchemaById
+      ? await this.findOneSchemaById(attestationPayload.schemaId)
+      : undefined;
     if (!matchingSchema) {
       throw new Error("No matching Schema");
     }
@@ -63,7 +65,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     const attestationPayloadsArg = [];
 
     for (const attestationPayload of attestationPayloads) {
-      const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      const matchingSchema = this.findOneSchemaById
+        ? await this.findOneSchemaById(attestationPayload.schemaId)
+        : undefined;
       if (!matchingSchema) {
         throw new Error("No matching Schema");
       }
@@ -113,7 +117,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
   ) {
-    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    const matchingSchema = this.findOneSchemaById
+      ? await this.findOneSchemaById(attestationPayload.schemaId)
+      : undefined;
     if (!matchingSchema) {
       throw new Error("No matching Schema");
     }
@@ -145,7 +151,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     const attestationPayloadsArg = [];
 
     for (const attestationPayload of attestationPayloads) {
-      const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      const matchingSchema = this.findOneSchemaById
+        ? await this.findOneSchemaById(attestationPayload.schemaId)
+        : undefined;
       if (!matchingSchema) {
         throw new Error("No matching Schema");
       }

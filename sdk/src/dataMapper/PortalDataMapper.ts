@@ -30,7 +30,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     value: bigint = 0n,
     customAbi?: Abi,
   ) {
-    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    const matchingSchema = this.findOneSchemaById
+      ? await this.findOneSchemaById(attestationPayload.schemaId)
+      : undefined;
     if (!matchingSchema) {
       throw new Error("No matching Schema");
     }
@@ -68,7 +70,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     const attestationPayloadsArg = [];
 
     for (const attestationPayload of attestationPayloads) {
-      const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      const matchingSchema = this.findOneSchemaById
+        ? await this.findOneSchemaById(attestationPayload.schemaId)
+        : undefined;
       if (!matchingSchema) {
         throw new Error("No matching Schema");
       }
@@ -164,7 +168,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     validationPayloads: string[],
     customAbi?: Abi,
   ) {
-    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    const matchingSchema = this.findOneSchemaById
+      ? await this.findOneSchemaById(attestationPayload.schemaId)
+      : undefined;
     if (!matchingSchema) {
       throw new Error("No matching Schema");
     }
@@ -210,7 +216,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     const attestationPayloadsArg = [];
 
     for (const attestationPayload of attestationPayloads) {
-      const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      const matchingSchema = this.findOneSchemaById
+        ? await this.findOneSchemaById(attestationPayload.schemaId)
+        : undefined;
       if (!matchingSchema) {
         throw new Error("No matching Schema");
       }

@@ -1,22 +1,26 @@
 import { PublicClient, WalletClient } from "viem";
-import { Conf } from "../types";
+import { Conf, Schema } from "../types";
 import { OrderDirection } from "../../.graphclient";
-import { VeraxSdk } from "../VeraxSdk";
 import { stringifyWhereClause, subgraphCall } from "../utils/graphClientHelper";
 
 export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   protected readonly conf: Conf;
   protected readonly web3Client: PublicClient;
   protected readonly walletClient: WalletClient | undefined;
-  protected readonly veraxSdk: VeraxSdk;
+  protected readonly findOneSchemaById: ((id: string) => Promise<Schema | undefined>) | undefined;
   protected abstract typeName: string;
   protected abstract gqlInterface: string;
 
-  constructor(_conf: Conf, _web3Client: PublicClient, _veraxSdk: VeraxSdk, _walletClient?: WalletClient) {
+  constructor(
+    _conf: Conf,
+    _web3Client: PublicClient,
+    _walletClient?: WalletClient,
+    _findOneSchemaById?: (id: string) => Promise<Schema | undefined>,
+  ) {
     this.conf = _conf;
     this.web3Client = _web3Client;
-    this.veraxSdk = _veraxSdk;
     this.walletClient = _walletClient;
+    this.findOneSchemaById = _findOneSchemaById;
   }
 
   async findOneById(id: string) {

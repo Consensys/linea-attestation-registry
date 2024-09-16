@@ -41,7 +41,9 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     validationPayloads: string[],
     value: number,
   ) {
-    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    const matchingSchema = this.findOneSchemaById
+      ? await this.findOneSchemaById(attestationPayload.schemaId)
+      : undefined;
     if (!matchingSchema) {
       throw new Error("No matching Schema");
     }
@@ -73,7 +75,9 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     const attestationPayloadsArg = [];
 
     for (const attestationPayload of attestationPayloads) {
-      const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+      const matchingSchema = this.findOneSchemaById
+        ? await this.findOneSchemaById(attestationPayload.schemaId)
+        : undefined;
       if (!matchingSchema) {
         throw new Error("No matching Schema");
       }

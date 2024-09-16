@@ -163,10 +163,12 @@ export class VeraxSdk {
       });
     }
 
-    this.attestation = new AttestationDataMapper(conf, this.web3Client, this, this.walletClient);
-    this.schema = new SchemaDataMapper(conf, this.web3Client, this, this.walletClient);
-    this.module = new ModuleDataMapper(conf, this.web3Client, this, this.walletClient);
-    this.portal = new PortalDataMapper(conf, this.web3Client, this, this.walletClient);
-    this.utils = new UtilsDataMapper(conf, this.web3Client, this, this.walletClient);
+    this.schema = new SchemaDataMapper(conf, this.web3Client, this.walletClient);
+    const findOneSchemaById = this.schema.findOneById.bind(this.schema);
+
+    this.attestation = new AttestationDataMapper(conf, this.web3Client, this.walletClient, findOneSchemaById);
+    this.module = new ModuleDataMapper(conf, this.web3Client, this.walletClient, findOneSchemaById);
+    this.portal = new PortalDataMapper(conf, this.web3Client, this.walletClient, findOneSchemaById);
+    this.utils = new UtilsDataMapper(conf, this.web3Client);
   }
 }

@@ -49,6 +49,7 @@ Each package has its own README file for more details and installation process d
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/en/) (>= 18)
+- [pnpm](https://pnpm.io/installation) (>=9.10.0)
 
 ### Global setup
 

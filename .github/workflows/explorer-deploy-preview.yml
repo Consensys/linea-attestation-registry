@@ -33,7 +33,7 @@ jobs:
         if: steps.check-changes.outputs.changed == 'true'
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Install Node.js

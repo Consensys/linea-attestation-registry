@@ -3,7 +3,7 @@ sources:
   - name: linea-attestation-registry
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/67521/{context.chainName:verax-v2-linea}/v0.0.1
+        endpoint: https://api.studio.thegraph.com/query/67521/{context.chainName:verax-v2-linea}/version/latest
 
 additionalTypeDefs: |
   extend type Attestation {

@@ -1957,7 +1957,7 @@ const additionalEnvelopPlugins: MeshPlugin<any>[] = [];
 const lineaAttestationRegistryTransforms = [];
 const lineaAttestationRegistryHandler = new GraphqlHandler({
               name: "linea-attestation-registry",
-              config: {"endpoint":"https://api.studio.thegraph.com/query/67521/{context.chainName:verax-v2-linea}/v0.0.1"},
+              config: {"endpoint":"https://api.studio.thegraph.com/query/67521/{context.chainName:verax-v2-linea}/version/latest"},
               baseDir,
               cache,
               pubsub,
@@ -1982,10 +1982,10 @@ const merger = new(BareMerger as any)({
         store: rootStore.child('bareMerger')
       })
 const documentHashMap = {
-        "db69bf8183df1d9eeeaa0b8f6cbe343d04ec91a244460bc6c0be5df2c687c2e1": MultichainAttestationsQueryDocument,
-"db69bf8183df1d9eeeaa0b8f6cbe343d04ec91a244460bc6c0be5df2c687c2e1": MultichainPortalsQueryDocument,
-"db69bf8183df1d9eeeaa0b8f6cbe343d04ec91a244460bc6c0be5df2c687c2e1": MultichainSchemasQueryDocument,
-"db69bf8183df1d9eeeaa0b8f6cbe343d04ec91a244460bc6c0be5df2c687c2e1": MultichainModulesQueryDocument
+        "593eb87c0edb701b5f8e028caa5f8319b8477ef56e8b56cc87d5f15118d79e4e": MultichainAttestationsQueryDocument,
+"593eb87c0edb701b5f8e028caa5f8319b8477ef56e8b56cc87d5f15118d79e4e": MultichainPortalsQueryDocument,
+"593eb87c0edb701b5f8e028caa5f8319b8477ef56e8b56cc87d5f15118d79e4e": MultichainSchemasQueryDocument,
+"593eb87c0edb701b5f8e028caa5f8319b8477ef56e8b56cc87d5f15118d79e4e": MultichainModulesQueryDocument
       }
 additionalEnvelopPlugins.push(usePersistedOperations({
         getPersistedOperation(key) {
@@ -2012,28 +2012,28 @@ additionalEnvelopPlugins.push(usePersistedOperations({
           return printWithCache(MultichainAttestationsQueryDocument);
         },
         location: 'MultichainAttestationsQueryDocument.graphql',
-        sha256Hash: 'db69bf8183df1d9eeeaa0b8f6cbe343d04ec91a244460bc6c0be5df2c687c2e1'
+        sha256Hash: '593eb87c0edb701b5f8e028caa5f8319b8477ef56e8b56cc87d5f15118d79e4e'
       },{
         document: MultichainPortalsQueryDocument,
         get rawSDL() {
           return printWithCache(MultichainPortalsQueryDocument);
         },
         location: 'MultichainPortalsQueryDocument.graphql',
-        sha256Hash: 'db69bf8183df1d9eeeaa0b8f6cbe343d04ec91a244460bc6c0be5df2c687c2e1'
+        sha256Hash: '593eb87c0edb701b5f8e028caa5f8319b8477ef56e8b56cc87d5f15118d79e4e'
       },{
         document: MultichainSchemasQueryDocument,
         get rawSDL() {
           return printWithCache(MultichainSchemasQueryDocument);
         },
         location: 'MultichainSchemasQueryDocument.graphql',
-        sha256Hash: 'db69bf8183df1d9eeeaa0b8f6cbe343d04ec91a244460bc6c0be5df2c687c2e1'
+        sha256Hash: '593eb87c0edb701b5f8e028caa5f8319b8477ef56e8b56cc87d5f15118d79e4e'
       },{
         document: MultichainModulesQueryDocument,
         get rawSDL() {
           return printWithCache(MultichainModulesQueryDocument);
         },
         location: 'MultichainModulesQueryDocument.graphql',
-        sha256Hash: 'db69bf8183df1d9eeeaa0b8f6cbe343d04ec91a244460bc6c0be5df2c687c2e1'
+        sha256Hash: '593eb87c0edb701b5f8e028caa5f8319b8477ef56e8b56cc87d5f15118d79e4e'
       }
     ];
     },
@@ -2099,7 +2099,7 @@ export type MultichainAttestationsQueryQueryVariables = Exact<{
 
 
 export type MultichainAttestationsQueryQuery = { multichainAttestations: Array<(
-    Pick<Attestation, 'id' | 'replacedBy' | 'attester' | 'attestedDate' | 'expirationDate' | 'revocationDate' | 'version' | 'revoked' | 'subject' | 'encodedSubject' | 'attestationData' | 'decodedData'>
+    Pick<Attestation, 'id' | 'chainName' | 'replacedBy' | 'attester' | 'attestedDate' | 'expirationDate' | 'revocationDate' | 'version' | 'revoked' | 'subject' | 'encodedSubject' | 'attestationData' | 'decodedData'>
     & { schema: Pick<Schema, 'id' | 'name' | 'description' | 'context' | 'schema' | 'attestationCounter'>, portal: Pick<Portal, 'id' | 'ownerAddress' | 'modules' | 'isRevocable' | 'name' | 'description' | 'ownerName' | 'attestationCounter'> }
   )> };
 
@@ -2151,6 +2151,7 @@ export const MultichainAttestationsQueryDocument = gql`
     orderDirection: $orderDirection
   ) {
     id
+    chainName
     replacedBy
     attester
     attestedDate

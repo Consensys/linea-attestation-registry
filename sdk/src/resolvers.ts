@@ -1,4 +1,4 @@
-import { Resolvers, MeshContext } from "../.graphclient";
+import { Attestation, Module, Portal, Resolvers, Schema } from "../.graphclient";
 
 export const resolvers: Resolvers = {
   Attestation: {
@@ -24,8 +24,8 @@ export const resolvers: Resolvers = {
               ...context,
             },
             info,
-          }).then((attestations: any[]) =>
-            attestations.map((attestation) => ({
+          }).then((attestations: Attestation[]) =>
+            attestations.map((attestation: Attestation) => ({
               ...attestation,
               chainName,
             })),
@@ -42,9 +42,9 @@ export const resolvers: Resolvers = {
               ...context,
             },
             info,
-          }).then((portals: any[]) =>
+          }).then((portals: Portal[]) =>
             // We send chainName here so we can take it in the resolver above
-            portals.map((portal) => ({
+            portals.map((portal: Portal) => ({
               ...portal,
               chainName,
             })),
@@ -61,9 +61,9 @@ export const resolvers: Resolvers = {
               ...context,
             },
             info,
-          }).then((schemas: any[]) =>
+          }).then((schemas: Schema[]) =>
             // We send chainName here so we can take it in the resolver above
-            schemas.map((schema: any) => ({
+            schemas.map((schema: Schema) => ({
               ...schema,
               chainName,
             })),
@@ -80,9 +80,9 @@ export const resolvers: Resolvers = {
               ...context,
             },
             info,
-          }).then((modules: any[]) =>
+          }).then((modules: Module[]) =>
             // We send chainName here so we can take it in the resolver above
-            modules.map((module: any) => ({
+            modules.map((module: Module) => ({
               ...module,
               chainName,
             })),

@@ -2,7 +2,7 @@ import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
 import { Attestation, AttestationPayload, OffchainData, Schema } from "../types";
 import { ActionType, Constants } from "../utils/constants";
-import { Attestation_filter, Attestation_orderBy, OrderDirection, getBuiltGraphSDK } from "../../.graphclient";
+import { Attestation_filter, Attestation_orderBy, getBuiltGraphSDK, OrderDirection } from "../../.graphclient";
 import { handleError } from "../utils/errorHandler";
 import { Address, Hex } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
@@ -64,21 +64,11 @@ export default class AttestationDataMapper extends BaseDataMapper<
     orderDirection?: OrderDirection | undefined,
   ) {
     const graphSdk = getBuiltGraphSDK();
-    const attestationsResult = await graphSdk.MultichainAttestationsQuery({
-      chainNames: ["verax-v2-linea", "verax-v1-base", "verax-v2-sepolia"],
+    return await graphSdk.MultichainAttestationsQuery({
+      chainNames: ["verax-v2-linea", "verax-v2-base"],
       first: first,
       skip: skip,
     });
-
-    // const attestations = attestationsResult.multichainAttestations;
-
-    // await Promise.all(
-    //   attestations.map(async (attestation: any) => {
-    //     await this.enrichAttestation(attestation as Attestation);
-    //   }),
-    // );
-
-    return attestationsResult;
   }
 
   private async enrichAttestation(attestation: Attestation) {

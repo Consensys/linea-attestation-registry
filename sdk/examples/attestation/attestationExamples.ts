@@ -22,6 +22,12 @@ export default class AttestationExamples {
       console.log(await this.veraxSdk.attestation.findBy(2, 0, filter, "attestedDate", "desc"));
     }
 
+    if (methodName.toLowerCase() == "findByNew".toLowerCase() || methodName == "") {
+      const filter: Attestation_filter | undefined =
+        argv !== "" ? JSON.parse(argv) : { attester_not: "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d" };
+      console.table(await this.veraxSdk.attestation.findByNew(2, 0));
+    }
+
     if (methodName.toLowerCase() == "getRelatedAttestations".toLowerCase() || methodName == "") {
       const attestationId: string =
         argv === "" ? "0x0000000000000000000000000000000000000000000000000000000000000001" : argv;

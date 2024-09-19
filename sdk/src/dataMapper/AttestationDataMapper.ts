@@ -2,7 +2,7 @@ import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
 import { Attestation, AttestationPayload, OffchainData, Schema } from "../types";
 import { ActionType, Constants } from "../utils/constants";
-import { Attestation_filter, Attestation_orderBy, OrderDirection } from "../../.graphclient";
+import { Attestation_filter, Attestation_orderBy, OrderDirection, getBuiltGraphSDK } from "../../.graphclient";
 import { handleError } from "../utils/errorHandler";
 import { Address, Hex } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
@@ -56,21 +56,29 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return attestation;
   }
 
-  override async findBy(
+  async findByNew(
     first?: number,
     skip?: number,
-    where?: Attestation_filter,
-    orderBy?: Attestation_orderBy,
-    orderDirection?: OrderDirection,
+    where?: Attestation_filter | undefined,
+    orderBy?: Attestation_orderBy | undefined,
+    orderDirection?: OrderDirection | undefined,
   ) {
-    const attestations = await super.findBy(first, skip, where, orderBy, orderDirection);
-    await Promise.all(
-      attestations.map(async (attestation) => {
-        await this.enrichAttestation(attestation);
-      }),
-    );
+    const graphSdk = getBuiltGraphSDK();
+    const attestationsResult = await graphSdk.MultichainAttestationsQuery({
+      chainNames: ["verax-v2-linea", "verax-v1-base", "verax-v2-sepolia"],
+      first: first,
+      skip: skip,
+    });
 
-    return attestations;
+    // const attestations = attestationsResult.multichainAttestations;
+
+    // await Promise.all(
+    //   attestations.map(async (attestation: any) => {
+    //     await this.enrichAttestation(attestation as Attestation);
+    //   }),
+    // );
+
+    return attestationsResult;
   }
 
   private async enrichAttestation(attestation: Attestation) {

@@ -1,0 +1,126 @@
+query MultichainAttestationsQuery(
+  $chainNames: [String!]!
+  $first: Int
+  $skip: Int
+  $where: Attestation_filter
+  $orderBy: Attestation_orderBy
+  $orderDirection: OrderDirection
+) {
+  multichainAttestations(
+    chainNames: $chainNames
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    id
+    replacedBy
+    attester
+    attestedDate
+    expirationDate
+    revocationDate
+    version
+    revoked
+    subject
+    encodedSubject
+    attestationData
+    decodedData
+    schema {
+      id
+      name
+      description
+      context
+      schema
+      attestationCounter
+    }
+    portal {
+      id
+      ownerAddress
+      modules
+      isRevocable
+      name
+      description
+      ownerName
+      attestationCounter
+    }
+  }
+}
+
+query MultichainPortalsQuery(
+  $chainNames: [String!]!
+  $first: Int
+  $skip: Int
+  $where: Portal_filter
+  $orderBy: Portal_orderBy
+  $orderDirection: OrderDirection
+) {
+  multichainPortals(
+    chainNames: $chainNames
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    chainName
+    id
+    ownerAddress
+    modules
+    isRevocable
+    name
+    description
+    ownerName
+    attestationCounter
+  }
+}
+
+query MultichainSchemasQuery(
+  $chainNames: [String!]!
+  $first: Int
+  $skip: Int
+  $where: Schema_filter
+  $orderBy: Schema_orderBy
+  $orderDirection: OrderDirection
+) {
+  multichainSchemas(
+    chainNames: $chainNames
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    chainName
+    id
+    name
+    description
+    context
+    schema
+    attestationCounter
+  }
+}
+
+query MultichainModulesQuery(
+  $chainNames: [String!]!
+  $first: Int
+  $skip: Int
+  $where: Module_filter
+  $orderBy: Module_orderBy
+  $orderDirection: OrderDirection
+) {
+  multichainModules(
+    chainNames: $chainNames
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    chainName
+    id
+    moduleAddress
+    name
+    description
+  }
+}

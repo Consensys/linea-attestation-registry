@@ -1532,6 +1532,6 @@ export type _SubgraphErrorPolicy_ =
 
   export type Context = {
       ["linea-attestation-registry"]: { Query: QuerySdk, Mutation: MutationSdk, Subscription: SubscriptionSdk },
-      
+      ["chainName"]: Scalars['ID']
     };
 }

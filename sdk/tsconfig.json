@@ -15,7 +15,7 @@
     "outDir": "./lib",
     "sourceMap": true,
     "noEmit": false,
-    "lib": ["ES2021", "DOM"],
+    "lib": ["ES2021", "DOM", "DOM.Iterable"],
     "declarationDir": "./lib/types"
   },
   "ts-node": {

@@ -1,0 +1,370 @@
+{
+  "abi": [
+    {
+      "type": "function",
+      "name": "getAttestationRegistry",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getModuleRegistry",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getPortalRegistry",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getSchemaRegistry",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "stateMutability": "view"
+    },
+    { "type": "function", "name": "initialize", "inputs": [], "outputs": [], "stateMutability": "nonpayable" },
+    {
+      "type": "function",
+      "name": "owner",
+      "inputs": [],
+      "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+      "stateMutability": "view"
+    },
+    { "type": "function", "name": "renounceOwnership", "inputs": [], "outputs": [], "stateMutability": "nonpayable" },
+    {
+      "type": "function",
+      "name": "transferOwnership",
+      "inputs": [{ "name": "newOwner", "type": "address", "internalType": "address" }],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "updateAttestationRegistry",
+      "inputs": [{ "name": "_attestationRegistry", "type": "address", "internalType": "address" }],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "updateModuleRegistry",
+      "inputs": [{ "name": "_moduleRegistry", "type": "address", "internalType": "address" }],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "updatePortalRegistry",
+      "inputs": [{ "name": "_portalRegistry", "type": "address", "internalType": "address" }],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "updateSchemaRegistry",
+      "inputs": [{ "name": "_schemaRegistry", "type": "address", "internalType": "address" }],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "event",
+      "name": "AttestationRegistryUpdated",
+      "inputs": [{ "name": "registryAddress", "type": "address", "indexed": true, "internalType": "address" }],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "Initialized",
+      "inputs": [{ "name": "version", "type": "uint8", "indexed": false, "internalType": "uint8" }],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "ModuleRegistryUpdated",
+      "inputs": [{ "name": "registryAddress", "type": "address", "indexed": true, "internalType": "address" }],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "OwnershipTransferred",
+      "inputs": [
+        { "name": "previousOwner", "type": "address", "indexed": true, "internalType": "address" },
+        { "name": "newOwner", "type": "address", "indexed": true, "internalType": "address" }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "PortalRegistryUpdated",
+      "inputs": [{ "name": "registryAddress", "type": "address", "indexed": true, "internalType": "address" }],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "SchemaRegistryUpdated",
+      "inputs": [{ "name": "registryAddress", "type": "address", "indexed": true, "internalType": "address" }],
+      "anonymous": false
+    }
+  ],
+  "bytecode": {
+    "object": "0x608060405234801561001057600080fd5b50610636806100206000396000f3fe608060405234801561001057600080fd5b50600436106100b45760003560e01c80638da5cb5b116100715780638da5cb5b14610117578063b7dac97614610140578063bfa6658514610151578063edec795214610162578063f10b5cc814610173578063f2fde38b1461018457600080fd5b806316675734146100b957806345a8d0f1146100ce578063499e4112146100e15780636cb74562146100f4578063715018a6146101075780638129fc1c1461010f575b600080fd5b6100cc6100c7366004610585565b610197565b005b6100cc6100dc366004610585565b6101e9565b6100cc6100ef366004610585565b61023b565b6100cc610102366004610585565b61028d565b6100cc6102df565b6100cc6102f3565b6033546001600160a01b03165b6040516001600160a01b03909116815260200160405180910390f35b6067546001600160a01b0316610124565b6065546001600160a01b0316610124565b6066546001600160a01b0316610124565b6068546001600160a01b0316610124565b6100cc610192366004610585565b610409565b61019f61047f565b606680546001600160a01b0319166001600160a01b0383169081179091556040517f0115b36746cbcd5759972b4c5f80450d3be1be0f624693378417d61cad103b3a90600090a250565b6101f161047f565b606580546001600160a01b0319166001600160a01b0383169081179091556040517fb823bfcaa11e0b58fbe97ffae2b42a865c1202c49bc6f75ba47903473cf79e2990600090a250565b61024361047f565b606880546001600160a01b0319166001600160a01b0383169081179091556040517f2f627562d11b69216f18d7a2e496468641735ab36d043fb3c3e3b958044d459690600090a250565b61029561047f565b606780546001600160a01b0319166001600160a01b0383169081179091556040517f37de513e8c3a97267dea780aab6b3413bc6aee6aff9e4dd4f5d8bffbab7a043390600090a250565b6102e761047f565b6102f160006104d9565b565b600054610100900460ff16158080156103135750600054600160ff909116105b8061032d5750303b15801561032d575060005460ff166001145b6103955760405162461bcd60e51b815260206004820152602e60248201527f496e697469616c697a61626c653a20636f6e747261637420697320616c72656160448201526d191e481a5b9a5d1a585b1a5e995960921b60648201526084015b60405180910390fd5b6000805460ff1916600117905580156103b8576000805461ff0019166101001790555b6103c061052b565b8015610406576000805461ff0019169055604051600181527f7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb38474024989060200160405180910390a15b50565b61041161047f565b6001600160a01b0381166104765760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b606482015260840161038c565b610406816104d9565b6033546001600160a01b031633146102f15760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015260640161038c565b603380546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b600054610100900460ff166105525760405162461bcd60e51b815260040161038c906105b5565b6102f1600054610100900460ff1661057c5760405162461bcd60e51b815260040161038c906105b5565b6102f1336104d9565b60006020828403121561059757600080fd5b81356001600160a01b03811681146105ae57600080fd5b9392505050565b6020808252602b908201527f496e697469616c697a61626c653a20636f6e7472616374206973206e6f74206960408201526a6e697469616c697a696e6760a81b60608201526080019056fea26469706673582212205bd437a36a9690a7d48d00d59fdfee6c97b4f2937f7fbbf32b1e48b620dc0e1364736f6c63430008150033",
+    "sourceMap": "340:2400:51:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x608060405234801561001057600080fd5b50600436106100b45760003560e01c80638da5cb5b116100715780638da5cb5b14610117578063b7dac97614610140578063bfa6658514610151578063edec795214610162578063f10b5cc814610173578063f2fde38b1461018457600080fd5b806316675734146100b957806345a8d0f1146100ce578063499e4112146100e15780636cb74562146100f4578063715018a6146101075780638129fc1c1461010f575b600080fd5b6100cc6100c7366004610585565b610197565b005b6100cc6100dc366004610585565b6101e9565b6100cc6100ef366004610585565b61023b565b6100cc610102366004610585565b61028d565b6100cc6102df565b6100cc6102f3565b6033546001600160a01b03165b6040516001600160a01b03909116815260200160405180910390f35b6067546001600160a01b0316610124565b6065546001600160a01b0316610124565b6066546001600160a01b0316610124565b6068546001600160a01b0316610124565b6100cc610192366004610585565b610409565b61019f61047f565b606680546001600160a01b0319166001600160a01b0383169081179091556040517f0115b36746cbcd5759972b4c5f80450d3be1be0f624693378417d61cad103b3a90600090a250565b6101f161047f565b606580546001600160a01b0319166001600160a01b0383169081179091556040517fb823bfcaa11e0b58fbe97ffae2b42a865c1202c49bc6f75ba47903473cf79e2990600090a250565b61024361047f565b606880546001600160a01b0319166001600160a01b0383169081179091556040517f2f627562d11b69216f18d7a2e496468641735ab36d043fb3c3e3b958044d459690600090a250565b61029561047f565b606780546001600160a01b0319166001600160a01b0383169081179091556040517f37de513e8c3a97267dea780aab6b3413bc6aee6aff9e4dd4f5d8bffbab7a043390600090a250565b6102e761047f565b6102f160006104d9565b565b600054610100900460ff16158080156103135750600054600160ff909116105b8061032d5750303b15801561032d575060005460ff166001145b6103955760405162461bcd60e51b815260206004820152602e60248201527f496e697469616c697a61626c653a20636f6e747261637420697320616c72656160448201526d191e481a5b9a5d1a585b1a5e995960921b60648201526084015b60405180910390fd5b6000805460ff1916600117905580156103b8576000805461ff0019166101001790555b6103c061052b565b8015610406576000805461ff0019169055604051600181527f7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb38474024989060200160405180910390a15b50565b61041161047f565b6001600160a01b0381166104765760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b606482015260840161038c565b610406816104d9565b6033546001600160a01b031633146102f15760405162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015260640161038c565b603380546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b600054610100900460ff166105525760405162461bcd60e51b815260040161038c906105b5565b6102f1600054610100900460ff1661057c5760405162461bcd60e51b815260040161038c906105b5565b6102f1336104d9565b60006020828403121561059757600080fd5b81356001600160a01b03811681146105ae57600080fd5b9392505050565b6020808252602b908201527f496e697469616c697a61626c653a20636f6e7472616374206973206e6f74206960408201526a6e697469616c697a696e6760a81b60608201526080019056fea26469706673582212205bd437a36a9690a7d48d00d59fdfee6c97b4f2937f7fbbf32b1e48b620dc0e1364736f6c63430008150033",
+    "sourceMap": "340:2400:51:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1665:165;;;;;;:::i;:::-;;:::i;:::-;;1181:195;;;;;;:::i;:::-;;:::i;2573:165::-;;;;;;:::i;:::-;;:::i;2119:::-;;;;;;:::i;:::-;;:::i;2085:101:23:-;;;:::i;799:68:51:-;;;:::i;1462:85:23:-;1534:6;;-1:-1:-1;;;;;1534:6:23;1462:85;;;-1:-1:-1;;;;;469:32:126;;;451:51;;439:2;424:18;1462:85:23;;;;;;;1860:103:51;1943:15;;-1:-1:-1;;;;;1943:15:51;1860:103;;897:113;985:20;;-1:-1:-1;;;;;985:20:51;897:113;;1406:103;1489:15;;-1:-1:-1;;;;;1489:15:51;1406:103;;2314;2397:15;;-1:-1:-1;;;;;2397:15:51;2314:103;;2335:198:23;;;;;;:::i;:::-;;:::i;1665:165:51:-;1355:13:23;:11;:13::i;:::-;1743:15:51::1;:33:::0;;-1:-1:-1;;;;;;1743:33:51::1;-1:-1:-1::0;;;;;1743:33:51;::::1;::::0;;::::1;::::0;;;1787:38:::1;::::0;::::1;::::0;-1:-1:-1;;1787:38:51::1;1665:165:::0;:::o;1181:195::-;1355:13:23;:11;:13::i;:::-;1269:20:51::1;:43:::0;;-1:-1:-1;;;;;;1269:43:51::1;-1:-1:-1::0;;;;;1269:43:51;::::1;::::0;;::::1;::::0;;;1323:48:::1;::::0;::::1;::::0;-1:-1:-1;;1323:48:51::1;1181:195:::0;:::o;2573:165::-;1355:13:23;:11;:13::i;:::-;2651:15:51::1;:33:::0;;-1:-1:-1;;;;;;2651:33:51::1;-1:-1:-1::0;;;;;2651:33:51;::::1;::::0;;::::1;::::0;;;2695:38:::1;::::0;::::1;::::0;-1:-1:-1;;2695:38:51::1;2573:165:::0;:::o;2119:::-;1355:13:23;:11;:13::i;:::-;2197:15:51::1;:33:::0;;-1:-1:-1;;;;;;2197:33:51::1;-1:-1:-1::0;;;;;2197:33:51;::::1;::::0;;::::1;::::0;;;2241:38:::1;::::0;::::1;::::0;-1:-1:-1;;2241:38:51::1;2119:165:::0;:::o;2085:101:23:-;1355:13;:11;:13::i;:::-;2149:30:::1;2176:1;2149:18;:30::i;:::-;2085:101::o:0;799:68:51:-;3279:19:24;3302:13;;;;;;3301:14;;3347:34;;;;-1:-1:-1;3365:12:24;;3380:1;3365:12;;;;:16;3347:34;3346:108;;;-1:-1:-1;3426:4:24;1713:19:25;:23;;;3387:66:24;;-1:-1:-1;3436:12:24;;;;;:17;3387:66;3325:201;;;;-1:-1:-1;;;3325:201:24;;715:2:126;3325:201:24;;;697:21:126;754:2;734:18;;;727:30;793:34;773:18;;;766:62;-1:-1:-1;;;844:18:126;;;837:44;898:19;;3325:201:24;;;;;;;;;3536:12;:16;;-1:-1:-1;;3536:16:24;3551:1;3536:16;;;3562:65;;;;3596:13;:20;;-1:-1:-1;;3596:20:24;;;;;3562:65;846:16:51::1;:14;:16::i;:::-;3651:14:24::0;3647:99;;;3697:5;3681:21;;-1:-1:-1;;3681:21:24;;;3721:14;;-1:-1:-1;1080:36:126;;3721:14:24;;1068:2:126;1053:18;3721:14:24;;;;;;;3647:99;3269:483;799:68:51:o;2335:198:23:-;1355:13;:11;:13::i;:::-;-1:-1:-1;;;;;2423:22:23;::::1;2415:73;;;::::0;-1:-1:-1;;;2415:73:23;;1329:2:126;2415:73:23::1;::::0;::::1;1311:21:126::0;1368:2;1348:18;;;1341:30;1407:34;1387:18;;;1380:62;-1:-1:-1;;;1458:18:126;;;1451:36;1504:19;;2415:73:23::1;1127:402:126::0;2415:73:23::1;2498:28;2517:8;2498:18;:28::i;1620:130::-:0;1534:6;;-1:-1:-1;;;;;1534:6:23;965:10:26;1683:23:23;1675:68;;;;-1:-1:-1;;;1675:68:23;;1736:2:126;1675:68:23;;;1718:21:126;;;1755:18;;;1748:30;1814:34;1794:18;;;1787:62;1866:18;;1675:68:23;1534:356:126;2687:187:23;2779:6;;;-1:-1:-1;;;;;2795:17:23;;;-1:-1:-1;;;;;;2795:17:23;;;;;;;2827:40;;2779:6;;;2795:17;2779:6;;2827:40;;2760:16;;2827:40;2750:124;2687:187;:::o;1024:95::-;5374:13:24;;;;;;;5366:69;;;;-1:-1:-1;;;5366:69:24;;;;;;;:::i;:::-;1086:26:23::1;5374:13:24::0;;;;;;;5366:69;;;;-1:-1:-1;;;5366:69:24;;;;;;;:::i;:::-;1197:32:23::1;965:10:26::0;1197:18:23::1;:32::i;14:286:126:-:0;73:6;126:2;114:9;105:7;101:23;97:32;94:52;;;142:1;139;132:12;94:52;168:23;;-1:-1:-1;;;;;220:31:126;;210:42;;200:70;;266:1;263;256:12;200:70;289:5;14:286;-1:-1:-1;;;14:286:126:o;1895:407::-;2097:2;2079:21;;;2136:2;2116:18;;;2109:30;2175:34;2170:2;2155:18;;2148:62;-1:-1:-1;;;2241:2:126;2226:18;;2219:41;2292:3;2277:19;;1895:407::o",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "getAttestationRegistry()": "bfa66585",
+    "getModuleRegistry()": "edec7952",
+    "getPortalRegistry()": "b7dac976",
+    "getSchemaRegistry()": "f10b5cc8",
+    "initialize()": "8129fc1c",
+    "owner()": "8da5cb5b",
+    "renounceOwnership()": "715018a6",
+    "transferOwnership(address)": "f2fde38b",
+    "updateAttestationRegistry(address)": "45a8d0f1",
+    "updateModuleRegistry(address)": "16675734",
+    "updatePortalRegistry(address)": "6cb74562",
+    "updateSchemaRegistry(address)": "499e4112"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"registryAddress\",\"type\":\"address\"}],\"name\":\"AttestationRegistryUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"registryAddress\",\"type\":\"address\"}],\"name\":\"ModuleRegistryUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"registryAddress\",\"type\":\"address\"}],\"name\":\"PortalRegistryUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"registryAddress\",\"type\":\"address\"}],\"name\":\"SchemaRegistryUpdated\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"getAttestationRegistry\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getModuleRegistry\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPortalRegistry\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSchemaRegistry\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_attestationRegistry\",\"type\":\"address\"}],\"name\":\"updateAttestationRegistry\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_moduleRegistry\",\"type\":\"address\"}],\"name\":\"updateModuleRegistry\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_portalRegistry\",\"type\":\"address\"}],\"name\":\"updatePortalRegistry\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_schemaRegistry\",\"type\":\"address\"}],\"name\":\"updateSchemaRegistry\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Consensys\",\"events\":{\"Initialized(uint8)\":{\"details\":\"Triggered when the contract has been initialized or reinitialized.\"}},\"kind\":\"dev\",\"methods\":{\"getAttestationRegistry()\":{\"returns\":{\"_0\":\"The current address of the AttestationRegistry contract\"}},\"getModuleRegistry()\":{\"returns\":{\"_0\":\"The current address of the ModuleRegistry contract\"}},\"getPortalRegistry()\":{\"returns\":{\"_0\":\"The current address of the PortalRegistry contract\"}},\"getSchemaRegistry()\":{\"returns\":{\"_0\":\"The current address of the SchemaRegistry contract\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"},\"updateAttestationRegistry(address)\":{\"params\":{\"_attestationRegistry\":\"The new address of the AttestationRegistry contract\"}},\"updateModuleRegistry(address)\":{\"params\":{\"_moduleRegistry\":\"The new address of the ModuleRegistry contract\"}},\"updatePortalRegistry(address)\":{\"params\":{\"_portalRegistry\":\"The new address of the PortalRegistry contract\"}},\"updateSchemaRegistry(address)\":{\"params\":{\"_schemaRegistry\":\"The new address of the SchemaRegistry contract\"}}},\"title\":\"Router\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"getAttestationRegistry()\":{\"notice\":\"Gives the address for the AttestationRegistry contract\"},\"getModuleRegistry()\":{\"notice\":\"Gives the address for the ModuleRegistry contract\"},\"getPortalRegistry()\":{\"notice\":\"Gives the address for the PortalRegistry contract\"},\"getSchemaRegistry()\":{\"notice\":\"Gives the address for the SchemaRegistry contract\"},\"updateAttestationRegistry(address)\":{\"notice\":\"Changes the address for the AttestationRegistry contract\"},\"updateModuleRegistry(address)\":{\"notice\":\"Changes the address for the ModuleRegistry contract\"},\"updatePortalRegistry(address)\":{\"notice\":\"Changes the address for the PortalRegistry contract\"},\"updateSchemaRegistry(address)\":{\"notice\":\"Changes the address for the SchemaRegistry contract\"}},\"notice\":\"This contract aims to register the addresses of the Verax registries\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/Router.sol\":\"Router\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/=node_modules/@openzeppelin/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\",\":openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/\"]},\"sources\":{\"node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\":{\"keccak256\":\"0x359a1ab89b46b9aba7bcad3fb651924baf4893d15153049b9976b0fc9be1358e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e89863421b4014b96a4b62be76eb3b9f0a8afe9684664a6f389124c0964bfe5c\",\"dweb:/ipfs/Qmbk7xr1irpDuU1WdxXgxELBXxs61rHhCgod7heVcvFx16\"]},\"node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\":{\"keccak256\":\"0x89be10e757d242e9b18d5a32c9fbe2019f6d63052bbe46397a430a1d60d7f794\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f103ee2e4aecd37aac6ceefe670709cdd7613dee25fa2d4d9feaf7fc0aaa155e\",\"dweb:/ipfs/QmRiNZLoJk5k3HPMYGPGjZFd2ke1ZxjhJZkM45Ec9GH9hv\"]},\"node_modules/@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol\":{\"keccak256\":\"0x9c80f545915582e63fe206c6ce27cbe85a86fc10b9cd2a0e8c9488fb7c2ee422\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://310136ad60820af4177a11a61d77a3686faf5fca4942b600e08fc940db38396b\",\"dweb:/ipfs/QmbCzMNSTL7Zi7M4UCSqBrkHtp4jjxUnGbkneCZKdR1qeq\"]},\"node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol\":{\"keccak256\":\"0x75097e35253e7fb282ee4d7f27a80eaacfa759923185bf17302a89cbc059c5ef\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8b06267c5f80bad727af3e48b1382333d591dad51376399ef2f6b0ee6d58bf95\",\"dweb:/ipfs/QmdU5La1agcQvghnfMpWZGDPz2TUDTCxUwTLKmuMRXBpAx\"]},\"src/Router.sol\":{\"keccak256\":\"0x114398c1ebb514acd4d78bfd1e763d436c056dc05a0f4420862c519715b0f559\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://42d768ebb2b9c90f72e41899f36d67174491ad7e0e2ed81fc98623af997002cc\",\"dweb:/ipfs/QmaxCvx4qFDLs63G1Tc9eQbNx7ra3yCH6V4oDbuHkWBdSs\"]},\"src/interfaces/IRouter.sol\":{\"keccak256\":\"0x28599dbf7e8d3903c57c0df03a6f4ee26e731452c79755525c34a1b18ddd4d9c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://122078d4c05dc8a8205d766017e3880665e44e726b82aa710347e95989d338a3\",\"dweb:/ipfs/QmSToNkFkzs8cJ2xQeQqsrUBC73tDXjGirGafK6ZkfXTm2\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": { "version": "0.8.21+commit.d9974bed" },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [{ "internalType": "address", "name": "registryAddress", "type": "address", "indexed": true }],
+          "type": "event",
+          "name": "AttestationRegistryUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [{ "internalType": "uint8", "name": "version", "type": "uint8", "indexed": false }],
+          "type": "event",
+          "name": "Initialized",
+          "anonymous": false
+        },
+        {
+          "inputs": [{ "internalType": "address", "name": "registryAddress", "type": "address", "indexed": true }],
+          "type": "event",
+          "name": "ModuleRegistryUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            { "internalType": "address", "name": "previousOwner", "type": "address", "indexed": true },
+            { "internalType": "address", "name": "newOwner", "type": "address", "indexed": true }
+          ],
+          "type": "event",
+          "name": "OwnershipTransferred",
+          "anonymous": false
+        },
+        {
+          "inputs": [{ "internalType": "address", "name": "registryAddress", "type": "address", "indexed": true }],
+          "type": "event",
+          "name": "PortalRegistryUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [{ "internalType": "address", "name": "registryAddress", "type": "address", "indexed": true }],
+          "type": "event",
+          "name": "SchemaRegistryUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getAttestationRegistry",
+          "outputs": [{ "internalType": "address", "name": "", "type": "address" }]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getModuleRegistry",
+          "outputs": [{ "internalType": "address", "name": "", "type": "address" }]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getPortalRegistry",
+          "outputs": [{ "internalType": "address", "name": "", "type": "address" }]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getSchemaRegistry",
+          "outputs": [{ "internalType": "address", "name": "", "type": "address" }]
+        },
+        { "inputs": [], "stateMutability": "nonpayable", "type": "function", "name": "initialize" },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "owner",
+          "outputs": [{ "internalType": "address", "name": "", "type": "address" }]
+        },
+        { "inputs": [], "stateMutability": "nonpayable", "type": "function", "name": "renounceOwnership" },
+        {
+          "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferOwnership"
+        },
+        {
+          "inputs": [{ "internalType": "address", "name": "_attestationRegistry", "type": "address" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "updateAttestationRegistry"
+        },
+        {
+          "inputs": [{ "internalType": "address", "name": "_moduleRegistry", "type": "address" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "updateModuleRegistry"
+        },
+        {
+          "inputs": [{ "internalType": "address", "name": "_portalRegistry", "type": "address" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "updatePortalRegistry"
+        },
+        {
+          "inputs": [{ "internalType": "address", "name": "_schemaRegistry", "type": "address" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "updateSchemaRegistry"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "getAttestationRegistry()": {
+            "returns": { "_0": "The current address of the AttestationRegistry contract" }
+          },
+          "getModuleRegistry()": { "returns": { "_0": "The current address of the ModuleRegistry contract" } },
+          "getPortalRegistry()": { "returns": { "_0": "The current address of the PortalRegistry contract" } },
+          "getSchemaRegistry()": { "returns": { "_0": "The current address of the SchemaRegistry contract" } },
+          "owner()": { "details": "Returns the address of the current owner." },
+          "renounceOwnership()": {
+            "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+          },
+          "transferOwnership(address)": {
+            "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+          },
+          "updateAttestationRegistry(address)": {
+            "params": { "_attestationRegistry": "The new address of the AttestationRegistry contract" }
+          },
+          "updateModuleRegistry(address)": {
+            "params": { "_moduleRegistry": "The new address of the ModuleRegistry contract" }
+          },
+          "updatePortalRegistry(address)": {
+            "params": { "_portalRegistry": "The new address of the PortalRegistry contract" }
+          },
+          "updateSchemaRegistry(address)": {
+            "params": { "_schemaRegistry": "The new address of the SchemaRegistry contract" }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "getAttestationRegistry()": { "notice": "Gives the address for the AttestationRegistry contract" },
+          "getModuleRegistry()": { "notice": "Gives the address for the ModuleRegistry contract" },
+          "getPortalRegistry()": { "notice": "Gives the address for the PortalRegistry contract" },
+          "getSchemaRegistry()": { "notice": "Gives the address for the SchemaRegistry contract" },
+          "updateAttestationRegistry(address)": {
+            "notice": "Changes the address for the AttestationRegistry contract"
+          },
+          "updateModuleRegistry(address)": { "notice": "Changes the address for the ModuleRegistry contract" },
+          "updatePortalRegistry(address)": { "notice": "Changes the address for the PortalRegistry contract" },
+          "updateSchemaRegistry(address)": { "notice": "Changes the address for the SchemaRegistry contract" }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@openzeppelin/=node_modules/@openzeppelin/",
+        "ds-test/=lib/forge-std/lib/ds-test/src/",
+        "erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+        "forge-std/=lib/forge-std/src/",
+        "hardhat/=node_modules/hardhat/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+        "openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/"
+      ],
+      "optimizer": { "enabled": true, "runs": 200 },
+      "metadata": { "bytecodeHash": "ipfs" },
+      "compilationTarget": { "src/Router.sol": "Router" },
+      "evmVersion": "paris",
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
+        "keccak256": "0x359a1ab89b46b9aba7bcad3fb651924baf4893d15153049b9976b0fc9be1358e",
+        "urls": [
+          "bzz-raw://e89863421b4014b96a4b62be76eb3b9f0a8afe9684664a6f389124c0964bfe5c",
+          "dweb:/ipfs/Qmbk7xr1irpDuU1WdxXgxELBXxs61rHhCgod7heVcvFx16"
+        ],
+        "license": "MIT"
+      },
+      "node_modules/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+        "keccak256": "0x89be10e757d242e9b18d5a32c9fbe2019f6d63052bbe46397a430a1d60d7f794",
+        "urls": [
+          "bzz-raw://f103ee2e4aecd37aac6ceefe670709cdd7613dee25fa2d4d9feaf7fc0aaa155e",
+          "dweb:/ipfs/QmRiNZLoJk5k3HPMYGPGjZFd2ke1ZxjhJZkM45Ec9GH9hv"
+        ],
+        "license": "MIT"
+      },
+      "node_modules/@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
+        "keccak256": "0x9c80f545915582e63fe206c6ce27cbe85a86fc10b9cd2a0e8c9488fb7c2ee422",
+        "urls": [
+          "bzz-raw://310136ad60820af4177a11a61d77a3686faf5fca4942b600e08fc940db38396b",
+          "dweb:/ipfs/QmbCzMNSTL7Zi7M4UCSqBrkHtp4jjxUnGbkneCZKdR1qeq"
+        ],
+        "license": "MIT"
+      },
+      "node_modules/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+        "keccak256": "0x75097e35253e7fb282ee4d7f27a80eaacfa759923185bf17302a89cbc059c5ef",
+        "urls": [
+          "bzz-raw://8b06267c5f80bad727af3e48b1382333d591dad51376399ef2f6b0ee6d58bf95",
+          "dweb:/ipfs/QmdU5La1agcQvghnfMpWZGDPz2TUDTCxUwTLKmuMRXBpAx"
+        ],
+        "license": "MIT"
+      },
+      "src/Router.sol": {
+        "keccak256": "0x114398c1ebb514acd4d78bfd1e763d436c056dc05a0f4420862c519715b0f559",
+        "urls": [
+          "bzz-raw://42d768ebb2b9c90f72e41899f36d67174491ad7e0e2ed81fc98623af997002cc",
+          "dweb:/ipfs/QmaxCvx4qFDLs63G1Tc9eQbNx7ra3yCH6V4oDbuHkWBdSs"
+        ],
+        "license": "MIT"
+      },
+      "src/interfaces/IRouter.sol": {
+        "keccak256": "0x28599dbf7e8d3903c57c0df03a6f4ee26e731452c79755525c34a1b18ddd4d9c",
+        "urls": [
+          "bzz-raw://122078d4c05dc8a8205d766017e3880665e44e726b82aa710347e95989d338a3",
+          "dweb:/ipfs/QmSToNkFkzs8cJ2xQeQqsrUBC73tDXjGirGafK6ZkfXTm2"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "id": 51
+}

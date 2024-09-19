@@ -49,6 +49,8 @@ async function main() {
   const Router = await ethers.getContractFactory("Router");
   await upgrades.upgradeProxy(routerProxyAddress, Router);
 
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
   console.log(`Router successfully upgraded!`);
 
   console.log(`\n----\n`);
@@ -59,6 +61,8 @@ async function main() {
 
   await attestationRegistry.incrementVersionNumber();
 
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
   console.log(`AttestationRegistry successfully upgraded!`);
 
   console.log(`\n----\n`);
@@ -66,6 +70,8 @@ async function main() {
   console.log("Upgrading ModuleRegistry, with proxy at", moduleProxyAddress);
   const ModuleRegistry = await ethers.getContractFactory("ModuleRegistry");
   await upgrades.upgradeProxy(moduleProxyAddress, ModuleRegistry);
+
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   console.log(`ModuleRegistry successfully upgraded!`);
 
@@ -77,6 +83,8 @@ async function main() {
     constructorArgs: [networkConfig.isTestnet],
   });
 
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
   console.log(`PortalRegistry successfully upgraded!`);
 
   console.log(`\n----\n`);
@@ -84,6 +92,8 @@ async function main() {
   console.log("Upgrading SchemaRegistry, with proxy at", schemaProxyAddress);
   const SchemaRegistry = await ethers.getContractFactory("SchemaRegistry");
   await upgrades.upgradeProxy(schemaProxyAddress, SchemaRegistry);
+
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   console.log(`SchemaRegistry successfully upgraded!`);
 

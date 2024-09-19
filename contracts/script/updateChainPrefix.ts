@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 import dotenv from "dotenv";
-import { getChainPrefix } from "./utils";
+import { getNetworkConfig } from "./utils";
 
 dotenv.config({ path: "../.env" });
 
@@ -15,10 +15,14 @@ async function main() {
   const attestationRegistry = await ethers.getContractAt("AttestationRegistry", attestationProxyAddress);
 
   const network = await ethers.provider.getNetwork();
-  const chainPrefix = getChainPrefix(network.chainId);
-  console.log(`Chain prefix for chain ID ${network.chainId} is ${chainPrefix}`);
+  const networkConfig = getNetworkConfig(network.chainId);
+  console.log(
+    `Chain prefix for chain ID ${network.chainId} is ${networkConfig.chainPrefix} (${
+      networkConfig.isTestnet ? "testnet" : "mainnet"
+    })`,
+  );
 
-  await attestationRegistry.updateChainPrefix(chainPrefix);
+  await attestationRegistry.updateChainPrefix(networkConfig.chainPrefix);
 
   console.log("AttestationRegistry updated!");
 }

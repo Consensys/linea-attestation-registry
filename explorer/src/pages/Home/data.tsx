@@ -18,6 +18,8 @@ import Zeronym from "@/assets/issuers/zeronym-black.svg?react";
 import ZeronymDark from "@/assets/issuers/zeronym-white.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
+import Reputex from "@/assets/issuers/reputex.svg?react";
+
 
 import { IIssuer } from "./interface";
 
@@ -396,6 +398,30 @@ export const issuersData: IIssuer[] = [
         portal: "0x3486d714c6e6f7257fa7f0bb8396161150b9f100",
         schema: "0x021fa993b2ac55b95340608478282821b89398de6fa14073b4d44a3564a8c79d",
         url: "https://verax.privado.id/",
+        chainId: "0xe708",
+      },
+    ],
+  },
+  {
+    name: "ReputeX",
+    logo: Reputex,
+    logoDark: Reputex,
+    keywords: ["Reputation"],
+    description:
+      "ReputeX is the Modular Web3 Reputation Layer, building a suite of Reputation, Credit and Engagement metrics specifically designed for the Web3 ecosystem.",
+    CTALink: "https://reputex.io",
+    CTATitle: "Go To ReputeX",
+    address: "0xdb5b4874c0948a5a7a1bf7f68708f60c274a8a47",
+    attestationDefinitions: [
+      {
+        name: "ReputeX Score",
+        logo: Reputex,
+        logoDark: Reputex,
+        description:
+          "Users can easily access their reputation scores by connecting their Web3 wallet to the ReputeX platform via the web app. Once connected, you can view and monitor your reputation score and take proactive measures to enhance it.",
+        portal: "0xdb5b4874c0948a5a7a1bf7f68708f60c274a8a47",
+        schema: "0xc51f34fd0d447bb8df012a3e48750a2fef499117a75988d80d098318e8c47b7e",
+        url: "https://reputex.io/verax",
         chainId: "0xe708",
       },
     ],

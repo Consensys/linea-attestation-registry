@@ -171,9 +171,8 @@ async function main() {
 
   console.log(`\n----\n`);
 
-  const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(
-    attestationReaderProxyAddress,
-  );
+  const attestationReaderImplementationAddress =
+    await upgrades.erc1967.getImplementationAddress(attestationReaderProxyAddress);
 
   await run("verify:verify", {
     address: attestationReaderProxyAddress,

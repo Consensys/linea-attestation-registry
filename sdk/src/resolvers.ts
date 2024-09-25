@@ -2,16 +2,16 @@ import { Attestation, Module, Portal, Resolvers, Schema } from "../.graphclient"
 
 export const resolvers: Resolvers = {
   Attestation: {
-    chainName: (root, args, context, info) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
+    chainName: (root, _args, context) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
   },
   Portal: {
-    chainName: (root, args, context, info) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
+    chainName: (root, _args, context) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
   },
   Schema: {
-    chainName: (root, args, context, info) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
+    chainName: (root, _args, context) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
   },
   Module: {
-    chainName: (root, args, context, info) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
+    chainName: (root, _args, context) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
   },
   Query: {
     multichainAttestations: async (root, args, context, info) =>

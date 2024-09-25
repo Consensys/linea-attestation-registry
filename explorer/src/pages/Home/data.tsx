@@ -20,7 +20,6 @@ import ZeronymDark from "@/assets/issuers/zeronym-white.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
 
-
 import { IIssuer } from "./interface";
 
 export const issuersData: IIssuer[] = [
@@ -411,7 +410,7 @@ export const issuersData: IIssuer[] = [
       "ReputeX is the Modular Web3 Reputation Layer, building a suite of Reputation, Credit and Engagement metrics specifically designed for the Web3 ecosystem.",
     CTALink: "https://reputex.io",
     CTATitle: "Go To ReputeX",
-    address: "0xdb5b4874c0948a5a7a1bf7f68708f60c274a8a47",
+    address: "0x92300aed0cb2b0d392dbf912085b01c4b2251b7d",
     attestationDefinitions: [
       {
         name: "ReputeX Score",

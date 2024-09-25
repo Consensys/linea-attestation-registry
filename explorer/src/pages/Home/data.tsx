@@ -12,13 +12,13 @@ import Pado from "@/assets/issuers/pado.svg?react";
 import PassportXyz from "@/assets/issuers/passport-xyz.svg?react";
 import PrivadoID from "@/assets/issuers/privado-id.svg?react";
 import Reclaim from "@/assets/issuers/reclaim.svg?react";
+import Reputex from "@/assets/issuers/reputex.svg?react";
 import RubyScore from "@/assets/issuers/rubyscore.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import Zeronym from "@/assets/issuers/zeronym-black.svg?react";
 import ZeronymDark from "@/assets/issuers/zeronym-white.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
-import Reputex from "@/assets/issuers/reputex.svg?react";
 
 
 import { IIssuer } from "./interface";

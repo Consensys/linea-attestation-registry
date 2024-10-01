@@ -17,16 +17,27 @@ import { IPortal } from "../../interfaces/IPortal.sol";
 contract NFTPortal is AbstractPortal, ERC721 {
   mapping(bytes owner => uint256 numberOfAttestations) private numberOfAttestationsPerOwner;
 
+  /// @notice Error thrown when someone else than the Attestation's subject is trying to revoke
+  error OnlySubject();
+
   /**
    * @notice Contract constructor
    * @param modules list of modules to use for the portal (can be empty)
    * @param router Router's address
+   * @param name The name of the token
+   * @param symbol The symbol of the token
    * @dev This sets the addresses for the AttestationRegistry, ModuleRegistry and PortalRegistry
    */
   constructor(
     address[] memory modules,
-    address router
-  ) AbstractPortal(modules, router) ERC721("NFTPortal", "NFTPortal") {}
+    address router,
+    string memory name,
+    string memory symbol
+  ) AbstractPortal(modules, router) ERC721(name, symbol) {}
+
+  function _baseURI() internal pure override returns (string memory) {
+    return "https://explorer.ver.ax/linea/attestations";
+  }
 
   /**
    * @notice Count all attestations assigned to an owner
@@ -59,8 +70,82 @@ contract NFTPortal is AbstractPortal, ERC721 {
     numberOfAttestationsPerOwner[attestationPayload.subject]++;
   }
 
+  /**
+   * @inheritdoc AbstractPortal
+   */
+  function _onAttestV2(
+    AttestationPayload memory attestationPayload,
+    bytes[] memory /*validationPayloads*/,
+    uint256 /*value*/
+  ) internal override {
+    numberOfAttestationsPerOwner[attestationPayload.subject]++;
+  }
+
+  /**
+   * @inheritdoc AbstractPortal
+   */
+  function _onBulkAttest(
+    AttestationPayload[] memory /*attestationsPayloads*/,
+    bytes[][] memory /*validationPayloads*/
+  ) internal pure override {
+    revert("Bulk attest is not implemented.");
+  }
+
+  /**
+   * @inheritdoc AbstractPortal
+   */
+  function _onReplace(
+    bytes32 /*attestationId*/,
+    AttestationPayload memory /*attestationPayload*/,
+    address /*attester*/,
+    uint256 /*value*/
+  ) internal pure override {
+    revert("Replace is not implemented.");
+  }
+
+  /**
+   * @inheritdoc AbstractPortal
+   */
+  function _onBulkReplace(
+    bytes32[] memory /*attestationIds*/,
+    AttestationPayload[] memory /*attestationsPayloads*/,
+    bytes[][] memory /*validationPayloads*/
+  ) internal pure override {
+    revert("Bulk replace is not implemented.");
+  }
+
+  /**
+   * @inheritdoc AbstractPortal
+   */
+  function _onRevoke(bytes32 attestationId) internal virtual override {
+    Attestation memory attestation = attestationRegistry.getAttestation(attestationId);
+    address subject = abi.decode(attestation.subject, (address));
+    if (msg.sender != subject) revert OnlySubject();
+    // TODO: transfer the token to address(0)?
+  }
+
+  /**
+   * @inheritdoc AbstractPortal
+   */
+  function _onBulkRevoke(bytes32[] memory attestationIds) internal virtual override {
+    for (uint256 i = 0; i < attestationIds.length; i++) {
+      _onRevoke(attestationIds[i]);
+    }
+  }
+
   /// @inheritdoc AbstractPortal
   function withdraw(address payable to, uint256 amount) external override {}
+
+  // TODO: decide what to do with "transfer" functions
+  // safeTransferFrom(from, to, tokenId, data)
+  // safeTransferFrom(from, to, tokenId)
+  // transferFrom(from, to, tokenId)
+
+  // TODO: decide what to do with "approve" functions
+  // approve(to, tokenId)
+  // setApprovalForAll(operator, approved)
+  // getApproved(tokenId)
+  // isApprovedForAll(owner, operator)
 
   /**
    * @notice Verifies that a specific interface is implemented by the Portal, following ERC-165 specification
@@ -73,5 +158,17 @@ contract NFTPortal is AbstractPortal, ERC721 {
       interfaceID == type(IPortal).interfaceId ||
       interfaceID == type(IERC165).interfaceId ||
       interfaceID == type(IERC721).interfaceId;
+  }
+
+  function _beforeTokenTransfer(
+    address from,
+    address to,
+    uint256 /*firstTokenId*/,
+    uint256 /*batchSize*/
+  ) internal pure override {
+    require(
+      from == address(0),
+      "This a Soulbound token. It cannot be transferred. It can only be burned by the token owner."
+    );
   }
 }

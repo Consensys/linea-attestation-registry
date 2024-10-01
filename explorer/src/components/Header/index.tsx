@@ -24,11 +24,11 @@ import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
 
-import { MenuButton } from "./components/MenuButtons";
 import { Button } from "../Buttons";
 import { EButtonType } from "../Buttons/enum";
 import { NavigationList } from "../NavigationList";
 import { SearchInput } from "../SearchInput";
+import { MenuButton } from "./components/MenuButtons";
 
 import "./styles.css";
 

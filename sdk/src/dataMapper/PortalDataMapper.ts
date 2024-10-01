@@ -4,7 +4,7 @@ import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
 import { Address } from "viem";
 import { encode } from "../utils/abiCoder";
-import { Portal_filter, Portal_orderBy } from "../../.graphclient";
+import { OrderDirection, Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { handleError } from "../utils/errorHandler";
 import { executeTransaction } from "../utils/transactionSender";
@@ -21,6 +21,28 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         ownerName
         attestationCounter
   }`;
+
+  async findByMultiChain(
+    chainNames: string[],
+    first?: number,
+    skip?: number,
+    where?: Portal_filter,
+    orderBy?: Portal_orderBy,
+    orderDirection?: OrderDirection,
+  ) {
+    const portalsResult = await this.crossChainClient.MultichainPortalsQuery({
+      chainNames: chainNames,
+      first: first,
+      skip: skip,
+      where: where,
+      orderBy: orderBy,
+      orderDirection: orderDirection,
+    });
+
+    const portals = JSON.parse(JSON.stringify(portalsResult.multichainPortals)) as Portal[];
+
+    return portals;
+  }
 
   async simulateAttest(
     portalAddress: Address,

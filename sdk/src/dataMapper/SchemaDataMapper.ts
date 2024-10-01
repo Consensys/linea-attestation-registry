@@ -1,5 +1,5 @@
 import { Address, TransactionReceipt } from "viem";
-import { Schema_filter, Schema_orderBy } from "../../.graphclient";
+import { OrderDirection, Schema_filter, Schema_orderBy } from "../../.graphclient";
 import { Schema } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
@@ -17,6 +17,28 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
         schema
         attestationCounter
   }`;
+
+  async findByMultiChain(
+    chainNames: string[],
+    first?: number,
+    skip?: number,
+    where?: Schema_filter,
+    orderBy?: Schema_orderBy,
+    orderDirection?: OrderDirection,
+  ) {
+    const schemasResult = await this.crossChainClient.MultichainSchemasQuery({
+      chainNames: chainNames,
+      first: first,
+      skip: skip,
+      where: where,
+      orderBy: orderBy,
+      orderDirection: orderDirection,
+    });
+
+    const schemas = JSON.parse(JSON.stringify(schemasResult.multichainSchemas)) as Schema[];
+
+    return schemas;
+  }
 
   async simulateUpdateRouter(routerAddress: Address) {
     return this.simulateContract("updateRouter", [routerAddress]);

@@ -1,5 +1,6 @@
 import { Address } from "viem";
 import { VeraxSdk } from "../../src/VeraxSdk";
+import { Module_filter } from "../../.graphclient";
 
 export default class ModuleExamples {
   private veraxSdk: VeraxSdk;
@@ -16,6 +17,21 @@ export default class ModuleExamples {
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
       console.log(await this.veraxSdk.module.findBy(2, 0, { name_contains: "Msg" }, undefined, undefined));
+    }
+
+    if (methodName.toLowerCase() == "findByMultiChain".toLowerCase() || methodName == "") {
+      const filter: Module_filter | undefined =
+        argv !== "" ? JSON.parse(argv) : { name_contains: "CliqueSchemaChecker" };
+      console.log(
+        await this.veraxSdk.module.findByMultiChain(
+          [VeraxSdk.CHAINS.LINEA_MAINNET, VeraxSdk.CHAINS.ARBITRUM_MAINNET],
+          2,
+          0,
+          filter,
+          undefined,
+          undefined,
+        ),
+      );
     }
 
     if (methodName.toLowerCase() == "simulateUpdateRouter".toLowerCase() || methodName == "") {

@@ -2,7 +2,7 @@ import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
 import { Attestation, AttestationPayload, OffchainData, Schema } from "../types";
 import { ActionType, Constants } from "../utils/constants";
-import { Attestation_filter, Attestation_orderBy, OrderDirection, getBuiltGraphSDK } from "../../.graphclient";
+import { Attestation_filter, Attestation_orderBy, OrderDirection } from "../../.graphclient";
 import { handleError } from "../utils/errorHandler";
 import { Address, Hex } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
@@ -56,16 +56,16 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return attestation;
   }
 
-  async findByNew(
+  async findByMultiChain(
+    chainNames: string[],
     first?: number,
     skip?: number,
     where?: Attestation_filter,
     orderBy?: Attestation_orderBy,
     orderDirection?: OrderDirection,
   ) {
-    const graphSdk = getBuiltGraphSDK();
-    const attestationsResult = await graphSdk.MultichainAttestationsQuery({
-      chainNames: ["verax-v2-linea", "verax-v1-base", "verax-v2-sepolia"],
+    const attestationsResult = await this.crossChainClient.MultichainAttestationsQuery({
+      chainNames: chainNames,
       first: first,
       skip: skip,
       where: where,

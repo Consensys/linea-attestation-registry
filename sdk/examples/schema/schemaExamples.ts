@@ -1,5 +1,6 @@
 import { Address } from "viem";
 import { VeraxSdk } from "../../src/VeraxSdk";
+import { Schema_filter } from "../../.graphclient";
 
 export default class SchemaExamples {
   private veraxSdk: VeraxSdk;
@@ -16,7 +17,22 @@ export default class SchemaExamples {
     }
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
-      console.log(await this.veraxSdk.schema.findBy(2, 0, { description: "Gitcoin Passport Score" }, "name", "desc"));
+      console.log(await this.veraxSdk.schema.findBy(2, 0, { description: "Gitcoin Passport score" }, "name", "desc"));
+    }
+
+    if (methodName.toLowerCase() == "findByMultiChain".toLowerCase() || methodName == "") {
+      const filter: Schema_filter | undefined =
+        argv !== "" ? JSON.parse(argv) : { description: "Gitcoin Passport score" };
+      console.log(
+        await this.veraxSdk.schema.findByMultiChain(
+          [VeraxSdk.CHAINS.LINEA_MAINNET, VeraxSdk.CHAINS.ARBITRUM_MAINNET],
+          2,
+          0,
+          filter,
+          undefined,
+          undefined,
+        ),
+      );
     }
 
     if (methodName.toLowerCase() == "simulateUpdateRouter".toLowerCase() || methodName == "") {

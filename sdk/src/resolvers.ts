@@ -22,6 +22,7 @@ export const resolvers: Resolvers = {
             args,
             context: {
               ...context,
+              chainName,
             },
             info,
           }).then((attestations: Attestation[]) =>
@@ -40,10 +41,10 @@ export const resolvers: Resolvers = {
             args,
             context: {
               ...context,
+              chainName,
             },
             info,
           }).then((portals: Portal[]) =>
-            // We send chainName here so we can take it in the resolver above
             portals.map((portal: Portal) => ({
               ...portal,
               chainName,
@@ -59,10 +60,10 @@ export const resolvers: Resolvers = {
             args,
             context: {
               ...context,
+              chainName,
             },
             info,
           }).then((schemas: Schema[]) =>
-            // We send chainName here so we can take it in the resolver above
             schemas.map((schema: Schema) => ({
               ...schema,
               chainName,
@@ -78,10 +79,10 @@ export const resolvers: Resolvers = {
             args,
             context: {
               ...context,
+              chainName,
             },
             info,
           }).then((modules: Module[]) =>
-            // We send chainName here so we can take it in the resolver above
             modules.map((module: Module) => ({
               ...module,
               chainName,

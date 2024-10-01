@@ -1,6 +1,6 @@
 import { PublicClient, WalletClient } from "viem";
 import { Conf } from "../types";
-import { OrderDirection } from "../../.graphclient";
+import { getBuiltGraphSDK, OrderDirection } from "../../.graphclient";
 import { VeraxSdk } from "../VeraxSdk";
 import { stringifyWhereClause, subgraphCall } from "../utils/graphClientHelper";
 
@@ -8,6 +8,7 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   protected readonly conf: Conf;
   protected readonly web3Client: PublicClient;
   protected readonly walletClient: WalletClient | undefined;
+  protected readonly crossChainClient;
   protected readonly veraxSdk: VeraxSdk;
   protected abstract typeName: string;
   protected abstract gqlInterface: string;
@@ -17,6 +18,7 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
     this.web3Client = _web3Client;
     this.veraxSdk = _veraxSdk;
     this.walletClient = _walletClient;
+    this.crossChainClient = getBuiltGraphSDK();
   }
 
   async findOneById(id: string) {

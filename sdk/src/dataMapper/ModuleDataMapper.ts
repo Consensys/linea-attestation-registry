@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { Module_filter, Module_orderBy } from "../../.graphclient";
+import { Module_filter, Module_orderBy, OrderDirection } from "../../.graphclient";
 import { AttestationPayload, Module } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
@@ -16,6 +16,28 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
         name
         description
   }`;
+
+  async findByMultiChain(
+    chainNames: string[],
+    first?: number,
+    skip?: number,
+    where?: Module_filter,
+    orderBy?: Module_orderBy,
+    orderDirection?: OrderDirection,
+  ) {
+    const modulesResult = await this.crossChainClient.MultichainModulesQuery({
+      chainNames: chainNames,
+      first: first,
+      skip: skip,
+      where: where,
+      orderBy: orderBy,
+      orderDirection: orderDirection,
+    });
+
+    const modules = JSON.parse(JSON.stringify(modulesResult.multichainModules)) as Module[];
+
+    return modules;
+  }
 
   async simulateUpdateRouter(routerAddress: Address) {
     return await this.simulateContract("updateRouter", [routerAddress]);

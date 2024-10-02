@@ -197,6 +197,8 @@ Here are the addresses on those networks:
   [0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6](https://basescan.org/address/0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6)
 - SchemaRegistry =
   [0x8081dCd745f160c148Eb5be510F78628A0951c31](https://basescan.org/address/0x8081dCd745f160c148Eb5be510F78628A0951c31)
+- AttestationReader =
+  [0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C](https://basescan.org/address/0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C)
 
 </details>
 

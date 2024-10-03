@@ -57,4 +57,20 @@ describe("ModuleDataMapper", () => {
       expect(result[4].name).toEqual("ZKPVerifyModulePoL");
     });
   });
+
+  describe("findByMultiChain", () => {
+    it("should get 2 modules from each network", async () => {
+      const result = await veraxSdk.module.findByMultiChain(
+        [VeraxSdk.CHAINS.LINEA_MAINNET, VeraxSdk.CHAINS.ARBITRUM_MAINNET],
+        2,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result.length).toBe(4);
+      expect(result[0].chainName).toBe(VeraxSdk.CHAINS.LINEA_MAINNET);
+      expect(result[1].chainName).toBe(VeraxSdk.CHAINS.LINEA_MAINNET);
+      expect(result[2].chainName).toBe(VeraxSdk.CHAINS.ARBITRUM_MAINNET);
+      expect(result[3].chainName).toBe(VeraxSdk.CHAINS.ARBITRUM_MAINNET);
+    });
+  });
 });

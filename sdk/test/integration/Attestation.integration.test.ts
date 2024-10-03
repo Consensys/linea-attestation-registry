@@ -85,6 +85,22 @@ describe("AttestationDataMapper", () => {
     });
   });
 
+  describe("findByMultiChain", () => {
+    it("should get 2 attestations from each network", async () => {
+      const result = await veraxSdk.attestation.findByMultiChain(
+        [VeraxSdk.CHAINS.LINEA_MAINNET, VeraxSdk.CHAINS.ARBITRUM_MAINNET],
+        2,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result.length).toBe(4);
+      expect(result[0].chainName).toBe(VeraxSdk.CHAINS.LINEA_MAINNET);
+      expect(result[1].chainName).toBe(VeraxSdk.CHAINS.LINEA_MAINNET);
+      expect(result[2].chainName).toBe(VeraxSdk.CHAINS.ARBITRUM_MAINNET);
+      expect(result[3].chainName).toBe(VeraxSdk.CHAINS.ARBITRUM_MAINNET);
+    });
+  });
+
   describe("getRelatedAttestations", () => {
     it("should return the attestations related to a given attestation", async () => {
       const attestationId = "0x0000000000000000000000000000000000000000000000000000000000000129";

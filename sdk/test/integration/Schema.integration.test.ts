@@ -57,4 +57,20 @@ describe("SchemaDataMapper", () => {
       expect(result[2].id).toEqual("0x38decc6b43074bf3b8a6d651f4a869e0895df1f05670bd55091e9dcf3f2d5bd6");
     });
   });
+
+  describe("findByMultiChain", () => {
+    it("should get 2 schemas from each network", async () => {
+      const result = await veraxSdk.schema.findByMultiChain(
+        [VeraxSdk.CHAINS.LINEA_MAINNET, VeraxSdk.CHAINS.ARBITRUM_MAINNET],
+        2,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result.length).toBe(4);
+      expect(result[0].chainName).toBe(VeraxSdk.CHAINS.LINEA_MAINNET);
+      expect(result[1].chainName).toBe(VeraxSdk.CHAINS.LINEA_MAINNET);
+      expect(result[2].chainName).toBe(VeraxSdk.CHAINS.ARBITRUM_MAINNET);
+      expect(result[3].chainName).toBe(VeraxSdk.CHAINS.ARBITRUM_MAINNET);
+    });
+  });
 });

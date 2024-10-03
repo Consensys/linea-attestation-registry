@@ -57,4 +57,20 @@ describe("PortalDataMapper", () => {
       expect(result[2].id).toEqual("0x79c06b913c42fd960b6917798c39edff292835f1");
     });
   });
+
+  describe("findByMultiChain", () => {
+    it("should get 2 portals from each network", async () => {
+      const result = await veraxSdk.portal.findByMultiChain(
+        [VeraxSdk.CHAINS.LINEA_MAINNET, VeraxSdk.CHAINS.ARBITRUM_MAINNET],
+        2,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result.length).toBe(4);
+      expect(result[0].chainName).toBe(VeraxSdk.CHAINS.LINEA_MAINNET);
+      expect(result[1].chainName).toBe(VeraxSdk.CHAINS.LINEA_MAINNET);
+      expect(result[2].chainName).toBe(VeraxSdk.CHAINS.ARBITRUM_MAINNET);
+      expect(result[3].chainName).toBe(VeraxSdk.CHAINS.ARBITRUM_MAINNET);
+    });
+  });
 });

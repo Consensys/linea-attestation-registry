@@ -23,6 +23,7 @@ export type Attestation = OnChainAttestation & {
   decodedData: string[];
   decodedPayload: object;
   offchainData?: OffchainData;
+  chainName?: string;
 };
 
 export type OffchainData = { schemaId: string; uri: string; error?: string };
@@ -50,6 +51,7 @@ export type Schema = {
   context: string; // The context of the schema.
   schema: string; // The schema definition.
   attestationCounter: number; // The number of attestations issued with this schema.
+  chainName?: string;
 };
 
 export type Portal = {
@@ -61,6 +63,7 @@ export type Portal = {
   description: string; // A description of the portal.
   ownerName: string; // The name of the owner of this portal.
   attestationCounter: number; // The number of attestations issued by the portal.
+  chainName?: string;
 };
 
 export type Module = OnChainModule & { id: string };
@@ -69,6 +72,7 @@ export type OnChainModule = {
   moduleAddress: Address; // The address of the module.
   name: string; // The name of the module.
   description: string; // A description of the module.
+  chainName?: string;
 };
 
 declare global {

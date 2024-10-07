@@ -1,22 +1,14 @@
 import { Address, Chain, EIP1193Provider } from "viem";
 import { SDKMode } from "../utils/constants";
 import {
-  Scalars,
-  InputMaybe,
-  Attestation_filter,
-  Attestation_orderBy,
-  OrderDirection,
   MultichainAttestationsQueryQuery,
-  Exact,
   MultichainPortalsQueryQuery,
   MultichainSchemasQueryQuery,
   MultichainModulesQueryQuery,
-  Portal_filter,
-  Portal_orderBy,
-  Schema_filter,
-  Schema_orderBy,
-  Module_filter,
-  Module_orderBy,
+  MultichainAttestationsQueryQueryVariables,
+  MultichainPortalsQueryQueryVariables,
+  MultichainSchemasQueryQueryVariables,
+  MultichainModulesQueryQueryVariables,
 } from "../../.graphclient";
 
 export interface Conf {
@@ -95,47 +87,19 @@ export type OnChainModule = {
 
 export type CrossChainClient = {
   MultichainAttestationsQuery(
-    variables: Exact<{
-      chainNames: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
-      first?: InputMaybe<Scalars["Int"]["input"]>;
-      skip?: InputMaybe<Scalars["Int"]["input"]>;
-      where?: InputMaybe<Attestation_filter>;
-      orderBy?: InputMaybe<Attestation_orderBy>;
-      orderDirection?: InputMaybe<OrderDirection>;
-    }>,
+    variables: MultichainAttestationsQueryQueryVariables,
     options?: unknown,
   ): Promise<MultichainAttestationsQueryQuery>;
   MultichainPortalsQuery(
-    variables: Exact<{
-      chainNames: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
-      first?: InputMaybe<Scalars["Int"]["input"]>;
-      skip?: InputMaybe<Scalars["Int"]["input"]>;
-      where?: InputMaybe<Portal_filter>;
-      orderBy?: InputMaybe<Portal_orderBy>;
-      orderDirection?: InputMaybe<OrderDirection>;
-    }>,
+    variables: MultichainPortalsQueryQueryVariables,
     options?: unknown,
   ): Promise<MultichainPortalsQueryQuery>;
   MultichainSchemasQuery(
-    variables: Exact<{
-      chainNames: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
-      first?: InputMaybe<Scalars["Int"]["input"]>;
-      skip?: InputMaybe<Scalars["Int"]["input"]>;
-      where?: InputMaybe<Schema_filter>;
-      orderBy?: InputMaybe<Schema_orderBy>;
-      orderDirection?: InputMaybe<OrderDirection>;
-    }>,
+    variables: MultichainSchemasQueryQueryVariables,
     options?: unknown,
   ): Promise<MultichainSchemasQueryQuery>;
   MultichainModulesQuery(
-    variables: Exact<{
-      chainNames: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
-      first?: InputMaybe<Scalars["Int"]["input"]>;
-      skip?: InputMaybe<Scalars["Int"]["input"]>;
-      where?: InputMaybe<Module_filter>;
-      orderBy?: InputMaybe<Module_orderBy>;
-      orderDirection?: InputMaybe<OrderDirection>;
-    }>,
+    variables: MultichainModulesQueryQueryVariables,
     options?: unknown,
   ): Promise<MultichainModulesQueryQuery>;
 };

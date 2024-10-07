@@ -83,9 +83,6 @@ importers:
 
   explorer:
     dependencies:
-      '@graphql-yoga/plugin-persisted-operations':
-        specifier: ^3.7.0
-        version: 3.7.0(@graphql-tools/utils@10.5.4(graphql@16.9.0))(graphql-yoga@5.7.0(graphql@16.9.0))(graphql@16.9.0)
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.0.6
         version: 2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

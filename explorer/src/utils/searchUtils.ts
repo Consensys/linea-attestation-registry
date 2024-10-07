@@ -50,7 +50,9 @@ export const parseSearch = (search: string | null, chainPrefix: Hex): Partial<Re
   const defaultAddresses = filterByRegex(startsWith0x, regexEthAddress.byNumberOfChar[42]).map((address) =>
     address.toLowerCase(),
   );
-  const longAddresses = filterByRegex(startsWith0x, regexEthAddress.byNumberOfChar[64]);
+  const longAddresses = filterByRegex(startsWith0x, regexEthAddress.byNumberOfChar[64]).map((longAddress) =>
+    longAddress.toLowerCase(),
+  );
 
   const urls = filterByRegex(splitSearchBySpace, urlRegex);
   const allStrings = [...urls, ...defaultAddresses, ...longAddresses, ...attestationIds];

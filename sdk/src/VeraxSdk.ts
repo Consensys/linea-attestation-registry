@@ -160,18 +160,6 @@ export class VeraxSdk {
     mode: SDKMode.FRONTEND,
   };
 
-  static CHAINS = {
-    LINEA_MAINNET: "verax-v2-linea",
-    LINEA_SEPOLIA: "verax-v2-linea-sepolia",
-    ARBITRUM_NOVA: "verax-v2-arbitrum-nova",
-    ARBITRUM_SEPOLIA: "verax-v2-arbitrum-sepolia",
-    ARBITRUM_MAINNET: "verax-v2-arbitrum",
-    BASE_MAINNET: "verax-v2-base",
-    BASE_SEPOLIA: "verax-v2-base-sepolia",
-    BSC_MAINNET: "verax-v2-bsc",
-    BSC_TESTNET: "verax-v2-bsc-testnet",
-  };
-
   private readonly web3Client: PublicClient;
   private readonly walletClient: WalletClient | undefined;
 

@@ -1,6 +1,6 @@
 import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
-import { Attestation, AttestationPayload, OffchainData, Schema } from "../types";
+import { Attestation, AttestationPayload, ChainName, OffchainData, Schema } from "../types";
 import { ActionType, Constants } from "../utils/constants";
 import { Attestation_filter, Attestation_orderBy, OrderDirection } from "../../.graphclient";
 import { handleError } from "../utils/errorHandler";
@@ -56,8 +56,24 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return attestation;
   }
 
+  override async findBy(
+    first?: number,
+    skip?: number,
+    where?: Attestation_filter,
+    orderBy?: Attestation_orderBy,
+    orderDirection?: OrderDirection,
+  ) {
+    const attestations = await super.findBy(first, skip, where, orderBy, orderDirection);
+    await Promise.all(
+      attestations.map(async (attestation) => {
+        await this.enrichAttestation(attestation);
+      }),
+    );
+    return attestations;
+  }
+
   async findByMultiChain(
-    chainNames: string[],
+    chainNames: ChainName[],
     first?: number,
     skip?: number,
     where?: Attestation_filter,

@@ -1,6 +1,6 @@
 import { Address } from "viem";
 import { Module_filter, Module_orderBy, OrderDirection } from "../../.graphclient";
-import { AttestationPayload, Module } from "../types";
+import { AttestationPayload, ChainName, Module } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiModuleRegistry } from "../abi/ModuleRegistry";
@@ -18,7 +18,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
   }`;
 
   async findByMultiChain(
-    chainNames: string[],
+    chainNames: ChainName[],
     first?: number,
     skip?: number,
     where?: Module_filter,

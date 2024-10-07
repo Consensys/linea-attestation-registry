@@ -1,5 +1,5 @@
 import { PublicClient, WalletClient } from "viem";
-import { Conf } from "../types";
+import { Conf, CrossChainClient } from "../types";
 import { getBuiltGraphSDK, OrderDirection } from "../../.graphclient";
 import { VeraxSdk } from "../VeraxSdk";
 import { stringifyWhereClause, subgraphCall } from "../utils/graphClientHelper";
@@ -8,7 +8,7 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   protected readonly conf: Conf;
   protected readonly web3Client: PublicClient;
   protected readonly walletClient: WalletClient | undefined;
-  protected readonly crossChainClient;
+  protected readonly crossChainClient: CrossChainClient;
   protected readonly veraxSdk: VeraxSdk;
   protected abstract typeName: string;
   protected abstract gqlInterface: string;

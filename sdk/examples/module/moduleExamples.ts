@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
 import { Module_filter } from "../../.graphclient";
 
 export default class ModuleExamples {
@@ -24,7 +24,7 @@ export default class ModuleExamples {
         argv !== "" ? JSON.parse(argv) : { name_contains: "CliqueSchemaChecker" };
       console.log(
         await this.veraxSdk.module.findByMultiChain(
-          [VeraxSdk.CHAINS.LINEA_MAINNET, VeraxSdk.CHAINS.ARBITRUM_MAINNET],
+          [ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET],
           2,
           0,
           filter,

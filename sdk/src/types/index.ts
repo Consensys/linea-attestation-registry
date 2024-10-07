@@ -1,5 +1,23 @@
 import { Address, Chain, EIP1193Provider } from "viem";
 import { SDKMode } from "../utils/constants";
+import {
+  Scalars,
+  InputMaybe,
+  Attestation_filter,
+  Attestation_orderBy,
+  OrderDirection,
+  MultichainAttestationsQueryQuery,
+  Exact,
+  MultichainPortalsQueryQuery,
+  MultichainSchemasQueryQuery,
+  MultichainModulesQueryQuery,
+  Portal_filter,
+  Portal_orderBy,
+  Schema_filter,
+  Schema_orderBy,
+  Module_filter,
+  Module_orderBy,
+} from "../../.graphclient";
 
 export interface Conf {
   chain: Chain;
@@ -74,6 +92,65 @@ export type OnChainModule = {
   description: string; // A description of the module.
   chainName?: string;
 };
+
+export type CrossChainClient = {
+  MultichainAttestationsQuery(
+    variables: Exact<{
+      chainNames: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
+      first?: InputMaybe<Scalars["Int"]["input"]>;
+      skip?: InputMaybe<Scalars["Int"]["input"]>;
+      where?: InputMaybe<Attestation_filter>;
+      orderBy?: InputMaybe<Attestation_orderBy>;
+      orderDirection?: InputMaybe<OrderDirection>;
+    }>,
+    options?: unknown,
+  ): Promise<MultichainAttestationsQueryQuery>;
+  MultichainPortalsQuery(
+    variables: Exact<{
+      chainNames: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
+      first?: InputMaybe<Scalars["Int"]["input"]>;
+      skip?: InputMaybe<Scalars["Int"]["input"]>;
+      where?: InputMaybe<Portal_filter>;
+      orderBy?: InputMaybe<Portal_orderBy>;
+      orderDirection?: InputMaybe<OrderDirection>;
+    }>,
+    options?: unknown,
+  ): Promise<MultichainPortalsQueryQuery>;
+  MultichainSchemasQuery(
+    variables: Exact<{
+      chainNames: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
+      first?: InputMaybe<Scalars["Int"]["input"]>;
+      skip?: InputMaybe<Scalars["Int"]["input"]>;
+      where?: InputMaybe<Schema_filter>;
+      orderBy?: InputMaybe<Schema_orderBy>;
+      orderDirection?: InputMaybe<OrderDirection>;
+    }>,
+    options?: unknown,
+  ): Promise<MultichainSchemasQueryQuery>;
+  MultichainModulesQuery(
+    variables: Exact<{
+      chainNames: Array<Scalars["String"]["input"]> | Scalars["String"]["input"];
+      first?: InputMaybe<Scalars["Int"]["input"]>;
+      skip?: InputMaybe<Scalars["Int"]["input"]>;
+      where?: InputMaybe<Module_filter>;
+      orderBy?: InputMaybe<Module_orderBy>;
+      orderDirection?: InputMaybe<OrderDirection>;
+    }>,
+    options?: unknown,
+  ): Promise<MultichainModulesQueryQuery>;
+};
+
+export enum ChainName {
+  LINEA_MAINNET = "verax-v2-linea",
+  LINEA_SEPOLIA = "verax-v2-linea-sepolia",
+  ARBITRUM_NOVA = "verax-v2-arbitrum-nova",
+  ARBITRUM_SEPOLIA = "verax-v2-arbitrum-sepolia",
+  ARBITRUM_MAINNET = "verax-v2-arbitrum",
+  BASE_MAINNET = "verax-v2-base",
+  BASE_SEPOLIA = "verax-v2-base-sepolia",
+  BSC_MAINNET = "verax-v2-bsc",
+  BSC_TESTNET = "verax-v2-bsc-testnet",
+}
 
 declare global {
   interface Window {

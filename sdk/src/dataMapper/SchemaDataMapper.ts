@@ -1,6 +1,6 @@
 import { Address, TransactionReceipt } from "viem";
 import { OrderDirection, Schema_filter, Schema_orderBy } from "../../.graphclient";
-import { Schema } from "../types";
+import { ChainName, Schema } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiSchemaRegistry } from "../abi/SchemaRegistry";
@@ -19,7 +19,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
   }`;
 
   async findByMultiChain(
-    chainNames: string[],
+    chainNames: ChainName[],
     first?: number,
     skip?: number,
     where?: Schema_filter,

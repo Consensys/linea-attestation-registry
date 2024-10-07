@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
 import { Schema_filter } from "../../.graphclient";
 
 export default class SchemaExamples {
@@ -25,7 +25,7 @@ export default class SchemaExamples {
         argv !== "" ? JSON.parse(argv) : { description: "Gitcoin Passport score" };
       console.log(
         await this.veraxSdk.schema.findByMultiChain(
-          [VeraxSdk.CHAINS.LINEA_MAINNET, VeraxSdk.CHAINS.ARBITRUM_MAINNET],
+          [ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET],
           2,
           0,
           filter,

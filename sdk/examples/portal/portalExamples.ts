@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
 import { Portal_filter } from "../../.graphclient";
 
 export default class PortalExamples {
@@ -23,7 +23,7 @@ export default class PortalExamples {
       const filter: Portal_filter | undefined = argv !== "" ? JSON.parse(argv) : { name_contains: "CliquePortal" };
       console.log(
         await this.veraxSdk.portal.findByMultiChain(
-          [VeraxSdk.CHAINS.LINEA_MAINNET, VeraxSdk.CHAINS.ARBITRUM_MAINNET],
+          [ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET],
           2,
           0,
           filter,

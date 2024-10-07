@@ -1,4 +1,4 @@
-import { AttestationPayload, Portal } from "../types";
+import { AttestationPayload, ChainName, Portal } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
@@ -23,7 +23,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
   }`;
 
   async findByMultiChain(
-    chainNames: string[],
+    chainNames: ChainName[],
     first?: number,
     skip?: number,
     where?: Portal_filter,

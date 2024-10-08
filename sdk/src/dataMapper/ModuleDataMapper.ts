@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { Module_filter, Module_orderBy, OrderDirection } from "../../.graphclient";
+import { Module_filter, Module_orderBy, MultichainModulesQueryQuery, OrderDirection } from "../../.graphclient";
 import { AttestationPayload, ChainName, Module } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
@@ -34,9 +34,19 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
       orderDirection: orderDirection,
     });
 
-    const modules = JSON.parse(JSON.stringify(modulesResult.multichainModules)) as Module[];
+    const modules: Module[] = this.mapToModules(modulesResult);
 
     return modules;
+  }
+
+  private mapToModules(modulesResult: MultichainModulesQueryQuery): Module[] {
+    return modulesResult.multichainModules.map((pickModule) => ({
+      id: pickModule.id,
+      chainName: pickModule.chainName || "",
+      moduleAddress: pickModule.moduleAddress,
+      name: pickModule.name,
+      description: pickModule.description,
+    }));
   }
 
   async simulateUpdateRouter(routerAddress: Address) {

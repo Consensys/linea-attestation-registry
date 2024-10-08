@@ -2,7 +2,12 @@ import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
 import { Attestation, AttestationPayload, ChainName, OffchainData, Schema } from "../types";
 import { ActionType, Constants } from "../utils/constants";
-import { Attestation_filter, Attestation_orderBy, OrderDirection } from "../../.graphclient";
+import {
+  Attestation_filter,
+  Attestation_orderBy,
+  MultichainAttestationsQueryQuery,
+  OrderDirection,
+} from "../../.graphclient";
 import { handleError } from "../utils/errorHandler";
 import { Address, Hex } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
@@ -89,7 +94,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
       orderDirection: orderDirection,
     });
 
-    const attestations = JSON.parse(JSON.stringify(attestationsResult.multichainAttestations)) as Attestation[];
+    const attestations: Attestation[] = this.mapToAttestations(attestationsResult);
 
     await Promise.all(
       attestations.map(async (attestation) => {
@@ -98,6 +103,44 @@ export default class AttestationDataMapper extends BaseDataMapper<
     );
 
     return attestations;
+  }
+
+  private mapToAttestations(attestationsResult: MultichainAttestationsQueryQuery): Attestation[] {
+    return attestationsResult.multichainAttestations.map((pickAttestation) => ({
+      id: pickAttestation.id,
+      attestationId: pickAttestation.id,
+      chainName: pickAttestation.chainName || "",
+      replacedBy: pickAttestation.replacedBy,
+      attester: pickAttestation.attester,
+      attestedDate: pickAttestation.attestedDate,
+      expirationDate: pickAttestation.expirationDate,
+      revocationDate: pickAttestation.revocationDate,
+      version: pickAttestation.version,
+      revoked: pickAttestation.revoked,
+      subject: pickAttestation.subject,
+      encodedSubject: pickAttestation.encodedSubject,
+      attestationData: pickAttestation.attestationData,
+      decodedData: pickAttestation.decodedData || [],
+      decodedPayload: {},
+      schema: {
+        id: pickAttestation.schema.id,
+        name: pickAttestation.schema.name,
+        description: pickAttestation.schema.description,
+        context: pickAttestation.schema.context,
+        schema: pickAttestation.schema.schema,
+        attestationCounter: pickAttestation.schema.attestationCounter || 0,
+      },
+      portal: {
+        id: pickAttestation.portal.id as Address,
+        ownerAddress: pickAttestation.portal.ownerAddress,
+        modules: pickAttestation.portal.modules as Address[],
+        isRevocable: pickAttestation.portal.isRevocable,
+        name: pickAttestation.portal.name,
+        description: pickAttestation.portal.description,
+        ownerName: pickAttestation.portal.ownerName,
+        attestationCounter: pickAttestation.portal.attestationCounter || 0,
+      },
+    }));
   }
 
   private async enrichAttestation(attestation: Attestation) {

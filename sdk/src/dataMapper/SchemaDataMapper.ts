@@ -1,5 +1,5 @@
 import { Address, TransactionReceipt } from "viem";
-import { OrderDirection, Schema_filter, Schema_orderBy } from "../../.graphclient";
+import { MultichainSchemasQueryQuery, OrderDirection, Schema_filter, Schema_orderBy } from "../../.graphclient";
 import { ChainName, Schema } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
@@ -35,9 +35,21 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
       orderDirection: orderDirection,
     });
 
-    const schemas = JSON.parse(JSON.stringify(schemasResult.multichainSchemas)) as Schema[];
+    const schemas: Schema[] = this.mapToSchemas(schemasResult);
 
     return schemas;
+  }
+
+  private mapToSchemas(schemasResult: MultichainSchemasQueryQuery): Schema[] {
+    return schemasResult.multichainSchemas.map((pickSchema) => ({
+      id: pickSchema.id,
+      chainName: pickSchema.chainName || "",
+      name: pickSchema.name,
+      description: pickSchema.description,
+      context: pickSchema.context,
+      schema: pickSchema.schema,
+      attestationCounter: pickSchema.attestationCounter || 0,
+    }));
   }
 
   async simulateUpdateRouter(routerAddress: Address) {

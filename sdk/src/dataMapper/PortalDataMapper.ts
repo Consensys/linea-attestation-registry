@@ -4,7 +4,7 @@ import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
 import { Address } from "viem";
 import { encode } from "../utils/abiCoder";
-import { OrderDirection, Portal_filter, Portal_orderBy } from "../../.graphclient";
+import { MultichainPortalsQueryQuery, OrderDirection, Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { handleError } from "../utils/errorHandler";
 import { executeTransaction } from "../utils/transactionSender";
@@ -39,9 +39,23 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
       orderDirection: orderDirection,
     });
 
-    const portals = JSON.parse(JSON.stringify(portalsResult.multichainPortals)) as Portal[];
+    const portals: Portal[] = this.mapToPortals(portalsResult);
 
     return portals;
+  }
+
+  private mapToPortals(portalsResult: MultichainPortalsQueryQuery): Portal[] {
+    return portalsResult.multichainPortals.map((pickPortal) => ({
+      id: pickPortal.id as Address,
+      chainName: pickPortal.chainName || "",
+      ownerAddress: pickPortal.ownerAddress,
+      modules: pickPortal.modules as Address[],
+      isRevocable: pickPortal.isRevocable,
+      name: pickPortal.name,
+      description: pickPortal.description,
+      ownerName: pickPortal.ownerName,
+      attestationCounter: pickPortal.attestationCounter || 0,
+    }));
   }
 
   async simulateAttest(

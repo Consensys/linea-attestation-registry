@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
 import { Attestation_filter } from "../../.graphclient";
 
 export default class AttestationExamples {
@@ -20,6 +20,21 @@ export default class AttestationExamples {
       const filter: Attestation_filter | undefined =
         argv !== "" ? JSON.parse(argv) : { attester_not: "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d" };
       console.log(await this.veraxSdk.attestation.findBy(2, 0, filter, "attestedDate", "desc"));
+    }
+
+    if (methodName.toLowerCase() == "findByMultiChain".toLowerCase() || methodName == "") {
+      const filter: Attestation_filter | undefined =
+        argv !== "" ? JSON.parse(argv) : { attester_not: "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d" };
+      console.log(
+        await this.veraxSdk.attestation.findByMultiChain(
+          [ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET],
+          2,
+          0,
+          filter,
+          "attestedDate",
+          "desc",
+        ),
+      );
     }
 
     if (methodName.toLowerCase() == "getRelatedAttestations".toLowerCase() || methodName == "") {

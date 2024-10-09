@@ -1,6 +1,6 @@
 import { Address, TransactionReceipt } from "viem";
-import { Schema_filter, Schema_orderBy } from "../../.graphclient";
-import { Schema } from "../types";
+import { MultichainSchemasQueryQuery, OrderDirection, Schema_filter, Schema_orderBy } from "../../.graphclient";
+import { ChainName, Schema } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiSchemaRegistry } from "../abi/SchemaRegistry";
@@ -17,6 +17,38 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
         schema
         attestationCounter
   }`;
+
+  async findByMultiChain(
+    chainNames: ChainName[],
+    first?: number,
+    skip?: number,
+    where?: Schema_filter,
+    orderBy?: Schema_orderBy,
+    orderDirection?: OrderDirection,
+  ) {
+    const schemasResult = await this.crossChainClient.MultichainSchemasQuery({
+      chainNames: chainNames,
+      first: first,
+      skip: skip,
+      where: where,
+      orderBy: orderBy,
+      orderDirection: orderDirection,
+    });
+
+    return this.mapToSchemas(schemasResult);
+  }
+
+  private mapToSchemas(schemasResult: MultichainSchemasQueryQuery): Schema[] {
+    return schemasResult.multichainSchemas.map((pickSchema) => ({
+      id: pickSchema.id,
+      chainName: pickSchema.chainName || "",
+      name: pickSchema.name,
+      description: pickSchema.description,
+      context: pickSchema.context,
+      schema: pickSchema.schema,
+      attestationCounter: pickSchema.attestationCounter || 0,
+    }));
+  }
 
   async simulateUpdateRouter(routerAddress: Address) {
     return this.simulateContract("updateRouter", [routerAddress]);

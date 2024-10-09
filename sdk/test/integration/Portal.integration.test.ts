@@ -1,4 +1,4 @@
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
 
 describe("PortalDataMapper", () => {
   let veraxSdk: VeraxSdk;
@@ -55,6 +55,19 @@ describe("PortalDataMapper", () => {
       expect(result[1].id).toEqual("0x42ff66bf60066219a3659aa7a7e3e93860958fec");
       expect(result[2].name).toContain(partialName);
       expect(result[2].id).toEqual("0x63a7746518720b8d13cb4e626454f761fc8848e2");
+    });
+  });
+
+  describe("findByMultiChain", () => {
+    it("should get 2 portals from each network", async () => {
+      const result = await veraxSdk.portal.findByMultiChain([ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET], 2);
+
+      expect(result).not.toBeNull();
+      expect(result.length).toBe(4);
+      expect(result[0].chainName).toBe(ChainName.LINEA_MAINNET);
+      expect(result[1].chainName).toBe(ChainName.LINEA_MAINNET);
+      expect(result[2].chainName).toBe(ChainName.ARBITRUM_MAINNET);
+      expect(result[3].chainName).toBe(ChainName.ARBITRUM_MAINNET);
     });
   });
 });

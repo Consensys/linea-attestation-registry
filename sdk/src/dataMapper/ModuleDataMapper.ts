@@ -34,9 +34,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
       orderDirection: orderDirection,
     });
 
-    const modules: Module[] = this.mapToModules(modulesResult);
-
-    return modules;
+    return this.mapToModules(modulesResult);
   }
 
   private mapToModules(modulesResult: MultichainModulesQueryQuery): Module[] {

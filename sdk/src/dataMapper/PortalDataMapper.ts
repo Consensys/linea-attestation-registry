@@ -39,9 +39,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
       orderDirection: orderDirection,
     });
 
-    const portals: Portal[] = this.mapToPortals(portalsResult);
-
-    return portals;
+    return this.mapToPortals(portalsResult);
   }
 
   private mapToPortals(portalsResult: MultichainPortalsQueryQuery): Portal[] {

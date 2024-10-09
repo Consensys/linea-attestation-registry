@@ -35,9 +35,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
       orderDirection: orderDirection,
     });
 
-    const schemas: Schema[] = this.mapToSchemas(schemasResult);
-
-    return schemas;
+    return this.mapToSchemas(schemasResult);
   }
 
   private mapToSchemas(schemasResult: MultichainSchemasQueryQuery): Schema[] {

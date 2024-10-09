@@ -1,5 +1,15 @@
 import { Address, Chain, EIP1193Provider } from "viem";
 import { SDKMode } from "../utils/constants";
+import {
+  MultichainAttestationsQueryQuery,
+  MultichainPortalsQueryQuery,
+  MultichainSchemasQueryQuery,
+  MultichainModulesQueryQuery,
+  MultichainAttestationsQueryQueryVariables,
+  MultichainPortalsQueryQueryVariables,
+  MultichainSchemasQueryQueryVariables,
+  MultichainModulesQueryQueryVariables,
+} from "../../.graphclient";
 
 export interface Conf {
   chain: Chain;
@@ -23,6 +33,7 @@ export type Attestation = OnChainAttestation & {
   decodedData: string[];
   decodedPayload: object;
   offchainData?: OffchainData;
+  chainName?: string;
 };
 
 export type OffchainData = { schemaId: string; uri: string; error?: string };
@@ -50,6 +61,7 @@ export type Schema = {
   context: string; // The context of the schema.
   schema: string; // The schema definition.
   attestationCounter: number; // The number of attestations issued with this schema.
+  chainName?: string;
 };
 
 export type Portal = {
@@ -61,6 +73,7 @@ export type Portal = {
   description: string; // A description of the portal.
   ownerName: string; // The name of the owner of this portal.
   attestationCounter: number; // The number of attestations issued by the portal.
+  chainName?: string;
 };
 
 export type Module = OnChainModule & { id: string };
@@ -69,7 +82,39 @@ export type OnChainModule = {
   moduleAddress: Address; // The address of the module.
   name: string; // The name of the module.
   description: string; // A description of the module.
+  chainName?: string;
 };
+
+export type CrossChainClient = {
+  MultichainAttestationsQuery(
+    variables: MultichainAttestationsQueryQueryVariables,
+    options?: unknown,
+  ): Promise<MultichainAttestationsQueryQuery>;
+  MultichainPortalsQuery(
+    variables: MultichainPortalsQueryQueryVariables,
+    options?: unknown,
+  ): Promise<MultichainPortalsQueryQuery>;
+  MultichainSchemasQuery(
+    variables: MultichainSchemasQueryQueryVariables,
+    options?: unknown,
+  ): Promise<MultichainSchemasQueryQuery>;
+  MultichainModulesQuery(
+    variables: MultichainModulesQueryQueryVariables,
+    options?: unknown,
+  ): Promise<MultichainModulesQueryQuery>;
+};
+
+export enum ChainName {
+  LINEA_MAINNET = "verax-v2-linea",
+  LINEA_SEPOLIA = "verax-v2-linea-sepolia",
+  ARBITRUM_NOVA = "verax-v2-arbitrum-nova",
+  ARBITRUM_SEPOLIA = "verax-v2-arbitrum-sepolia",
+  ARBITRUM_MAINNET = "verax-v2-arbitrum",
+  BASE_MAINNET = "verax-v2-base",
+  BASE_SEPOLIA = "verax-v2-base-sepolia",
+  BSC_MAINNET = "verax-v2-bsc",
+  BSC_TESTNET = "verax-v2-bsc-testnet",
+}
 
 declare global {
   interface Window {

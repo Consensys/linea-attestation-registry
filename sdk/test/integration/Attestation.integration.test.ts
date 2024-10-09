@@ -1,4 +1,4 @@
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
 
 describe("AttestationDataMapper", () => {
   let veraxSdk: VeraxSdk;
@@ -82,6 +82,22 @@ describe("AttestationDataMapper", () => {
       expect(result[0].id).toBe("0x000000000000000000000000000000000000000000000000000000000000002e");
       expect(result[1].id).toBe("0x000000000000000000000000000000000000000000000000000000000000002f");
       expect(result[2].id).toBe("0x0000000000000000000000000000000000000000000000000000000000000030");
+    });
+  });
+
+  describe("findByMultiChain", () => {
+    it("should get 2 attestations from each network", async () => {
+      const result = await veraxSdk.attestation.findByMultiChain(
+        [ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET],
+        2,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result.length).toBe(4);
+      expect(result[0].chainName).toBe(ChainName.LINEA_MAINNET);
+      expect(result[1].chainName).toBe(ChainName.LINEA_MAINNET);
+      expect(result[2].chainName).toBe(ChainName.ARBITRUM_MAINNET);
+      expect(result[3].chainName).toBe(ChainName.ARBITRUM_MAINNET);
     });
   });
 

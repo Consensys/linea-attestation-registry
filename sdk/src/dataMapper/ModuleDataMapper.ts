@@ -1,6 +1,6 @@
 import { Address } from "viem";
-import { Module_filter, Module_orderBy } from "../../.graphclient";
-import { AttestationPayload, Module } from "../types";
+import { Module_filter, Module_orderBy, MultichainModulesQueryQuery, OrderDirection } from "../../.graphclient";
+import { AttestationPayload, ChainName, Module } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiModuleRegistry } from "../abi/ModuleRegistry";
@@ -16,6 +16,36 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
         name
         description
   }`;
+
+  async findByMultiChain(
+    chainNames: ChainName[],
+    first?: number,
+    skip?: number,
+    where?: Module_filter,
+    orderBy?: Module_orderBy,
+    orderDirection?: OrderDirection,
+  ) {
+    const modulesResult = await this.crossChainClient.MultichainModulesQuery({
+      chainNames: chainNames,
+      first: first,
+      skip: skip,
+      where: where,
+      orderBy: orderBy,
+      orderDirection: orderDirection,
+    });
+
+    return this.mapToModules(modulesResult);
+  }
+
+  private mapToModules(modulesResult: MultichainModulesQueryQuery): Module[] {
+    return modulesResult.multichainModules.map((pickModule) => ({
+      id: pickModule.id,
+      chainName: pickModule.chainName || "",
+      moduleAddress: pickModule.moduleAddress,
+      name: pickModule.name,
+      description: pickModule.description,
+    }));
+  }
 
   async simulateUpdateRouter(routerAddress: Address) {
     return await this.simulateContract("updateRouter", [routerAddress]);

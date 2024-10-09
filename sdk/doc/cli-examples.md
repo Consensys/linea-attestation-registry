@@ -7,6 +7,9 @@
     pnpm portal findonebyid '0x34798a866f52949208e67fb57ad36244024c50c0'
 
     pnpm portal findby '{\"ownerName\": \"Tester\"}'
+
+    pnpm portal findbymultichain '{\"ownerName\": \"Clique\"}'
+
     pnpm portal simulateattest '{\"portalAddress\": \"0x34798a866f52949208e67fb57ad36244024c50c0\", \"attestationPayload\" : { \"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"expirationDate\": 1693583329, \"subject\": \"0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47\", \"attestationData\": [{ \"isBuidler\": true }]}, \"validationPayloads\": []}'
 
     pnpm portal attest '{\"portalAddress\": \"0x34798a866f52949208e67fb57ad36244024c50c0\", \"attestationPayload\" : { \"schemaId\": \"0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738\", \"expirationDate\": 1693583329, \"subject\": \"0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47\", \"attestationData\": [{ \"isBuidler\": true }]}, \"validationPayloads\": []}'
@@ -56,6 +59,8 @@
 
     pnpm attestation findby '{\"portal\": \"0x34798a866f52949208e67fb57ad36244024c50c0\"}'
 
+    pnpm attestation findbymultichain '{\"id\": \"0x00000000000000000000000000000000000000000000000000000000000001ce\"}'
+
     pnpm attestation getRelatedAttestations "0x0000000000000000000000000000000000000000000000000000000000000001"
 
     pnpm attestation simulateUpdateRouter "0xC825ACA6621597bcb86438346A2538fba85380d9"
@@ -95,6 +100,8 @@
 
     pnpm module findby '{\"name\": \"Msg Sender Module\"}'
 
+    pnpm module findbymultichain '{\"name_contains\": \"CliqueSchemaChecker\"}'
+
     pnpm module simulateUpdateRouter "0x980978299e23B8F9B4D11542A83D92C83e781cb6"
 
     pnpm module updateRouter "0x980978299e23B8F9B4D11542A83D92C83e781cb6"
@@ -130,7 +137,9 @@
     ```shell
     pnpm schema findonebyid "0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e"
 
-    pnpm schema findby '{\"description\": \"Gitcoin Passport Score\"}'
+    pnpm schema findby '{\"description\": \"Gitcoin Passport score\"}'
+
+    pnpm schema findbymultichain '{\"description\": \"Gitcoin Passport score\"}'
 
     pnpm schema simulateUpdateRouter "0x980978299e23B8F9B4D11542A83D92C83e781cb6"
 

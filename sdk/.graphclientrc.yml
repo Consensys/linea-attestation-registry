@@ -3,4 +3,33 @@ sources:
   - name: linea-attestation-registry
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/67521/verax-v2-linea/v0.0.1
+        endpoint: https://api.studio.thegraph.com/query/67521/{context.chainName:verax-v2-linea}/version/latest
+
+additionalTypeDefs: |
+  extend type Attestation {
+    chainName: String
+  }
+  extend type Portal {
+    chainName: String
+  }
+  extend type Schema {
+    chainName: String
+  }
+  extend type Module {
+    chainName: String
+  }
+  extend type Query {
+   multichainAttestations(chainNames: [String!]!, first: Int, skip: Int, where: Attestation_filter, orderBy: Attestation_orderBy, orderDirection: OrderDirection): [Attestation!]!
+   multichainPortals(chainNames: [String!]!, first: Int, skip: Int, where: Portal_filter, orderBy: Portal_orderBy, orderDirection: OrderDirection): [Portal!]!
+   multichainSchemas(chainNames: [String!]!, first: Int, skip: Int, where: Schema_filter, orderBy: Schema_orderBy, orderDirection: OrderDirection): [Schema!]!
+   multichainModules(chainNames: [String!]!, first: Int, skip: Int, where: Module_filter, orderBy: Module_orderBy, orderDirection: OrderDirection): [Module!]!
+  }
+
+additionalResolvers:
+  - ./src/resolvers.ts
+
+documents:
+  - ./queries.graphql
+
+codegen:
+  contextType: "MeshContext & { chainName: string }"

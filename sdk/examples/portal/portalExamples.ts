@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
 import {
   DEFAULT_PORTAL_ADDRESS,
   DEFAULT_PORTAL_ADDRESS_2,
@@ -11,6 +11,7 @@ import {
   DEFAULT_ATTESTATION_ID_1,
   DEFAULT_PORTAL_ADDRESS_3,
 } from "../constants";
+import { Portal_filter } from "../../.graphclient";
 
 export default class PortalExamples {
   private veraxSdk: VeraxSdk;
@@ -27,6 +28,20 @@ export default class PortalExamples {
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
       console.log(await this.veraxSdk.portal.findBy(2, 0, { ownerName: "alain.linea.eth" }, "name", "desc"));
+    }
+
+    if (methodName.toLowerCase() == "findByMultiChain".toLowerCase() || methodName == "") {
+      const filter: Portal_filter | undefined = argv !== "" ? JSON.parse(argv) : { name_contains: "CliquePortal" };
+      console.log(
+        await this.veraxSdk.portal.findByMultiChain(
+          [ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET],
+          2,
+          0,
+          filter,
+          undefined,
+          undefined,
+        ),
+      );
     }
 
     if (methodName.toLowerCase() == "simulateAttest".toLowerCase() || methodName == "") {

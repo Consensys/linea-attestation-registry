@@ -1,6 +1,6 @@
-import { Address } from "viem";
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
 import { DEFAULT_SCHEMA_ID, DEFAULT_SCHEMA_STRING } from "../constants";
+import { Schema_filter } from "../../.graphclient";
 
 export default class SchemaExamples {
   private veraxSdk: VeraxSdk;
@@ -17,6 +17,21 @@ export default class SchemaExamples {
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
       console.log(await this.veraxSdk.schema.findBy(2, 0, { description: "Hapi Test" }, "name", "desc"));
+    }
+
+    if (methodName.toLowerCase() == "findByMultiChain".toLowerCase() || methodName == "") {
+      const filter: Schema_filter | undefined =
+        argv !== "" ? JSON.parse(argv) : { description: "Gitcoin Passport score" };
+      console.log(
+        await this.veraxSdk.schema.findByMultiChain(
+          [ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET],
+          2,
+          0,
+          filter,
+          undefined,
+          undefined,
+        ),
+      );
     }
 
     if (methodName.toLowerCase() == "simulateCreate".toLowerCase() || methodName == "") {

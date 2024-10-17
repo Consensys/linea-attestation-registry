@@ -32,10 +32,6 @@ const config: HardhatUserConfig = {
       url: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
-    "arbitrum-nova": {
-      url: "https://arbitrum-nova.publicnode.com",
-      accounts: process.env.PRIVATE_KEY_NOVA !== undefined ? [process.env.PRIVATE_KEY_NOVA] : [],
-    },
     "base-sepolia": {
       url: `https://base-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
@@ -68,7 +64,6 @@ const config: HardhatUserConfig = {
     apiKey: {
       "arbitrum-sepolia": process.env.ARBISCAN_API_KEY ?? "",
       arbitrum: process.env.ARBISCAN_API_KEY ?? "",
-      "arbitrum-nova": process.env.ARBISCAN_NOVA_API_KEY ?? "",
       "base-sepolia": process.env.BASESCAN_API_KEY ?? "",
       base: process.env.BASESCAN_API_KEY ?? "",
       "bsc-testnet": process.env.BSCSCAN_API_KEY ?? "",
@@ -91,14 +86,6 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api.arbiscan.io/api",
           browserURL: "https://arbiscan.io",
-        },
-      },
-      {
-        network: "arbitrum-nova",
-        chainId: 42170,
-        urls: {
-          apiURL: "https://api-nova.arbiscan.io/api",
-          browserURL: "https://nova.arbiscan.io/",
         },
       },
       {

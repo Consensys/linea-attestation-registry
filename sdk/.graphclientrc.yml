@@ -26,7 +26,7 @@ additionalTypeDefs: |
   }
 
 additionalResolvers:
-  - ./src/resolvers.ts
+  - ./src/resolvers
 
 documents:
   - ./queries.graphql

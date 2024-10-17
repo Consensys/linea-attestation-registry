@@ -79,6 +79,39 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return this.simulatePortalContract(portalAddress, "bulkAttest", [attestationPayloadsArg, validationPayloads]);
   }
 
+  async simulateAttestV2(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    value: bigint = 0n,
+  ) {
+    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    if (!matchingSchema) {
+      throw new Error("No matching Schema");
+    }
+    const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
+    return this.simulatePortalContract(
+      portalAddress,
+      "attestV2",
+      [
+        [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
+        validationPayloads,
+      ],
+      value,
+    );
+  }
+
+  async attestV2(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    waitForConfirmation: boolean = false,
+    value: bigint = 0n,
+  ) {
+    const request = await this.simulateAttestV2(portalAddress, attestationPayload, validationPayloads, value);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+  }
+
   async bulkAttest(
     portalAddress: Address,
     attestationPayloads: AttestationPayload[],

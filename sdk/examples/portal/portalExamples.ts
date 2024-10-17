@@ -52,6 +52,40 @@ export default class PortalExamples {
       );
     }
 
+    if (methodName.toLowerCase() == "simulateAttestV2".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const portalAddress = params?.portalAddress
+        ? (params.portalAddress as Address)
+        : "0xA93162E5de5c1dcb4762cda08A26aeE4C5b9F264";
+      const attestationPayload = params?.attestationPayload ?? {
+        schemaId: "0x2049fef3764ceceb65a9a4a001b3824dac1d05cf5a46c3f4436cf23d280b87de",
+        expirationDate: Math.floor(Date.now() / 1000) + 2592000,
+        subject: "0x6eCfD8252C19aC2Bf4bd1cBdc026C001C93E179D",
+        attestationData: [{ hasCompletedTutorial: true }],
+      };
+      const validationPayloads = params?.validationPayloads ?? [];
+      console.log(await this.veraxSdk.portal.simulateAttestV2(portalAddress, attestationPayload, validationPayloads));
+    }
+
+    if (methodName.toLowerCase() == "attestV2".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const portalAddress = params?.portalAddress
+        ? (params.portalAddress as Address)
+        : "0xA93162E5de5c1dcb4762cda08A26aeE4C5b9F264";
+      const attestationPayload = params?.attestationPayload ?? {
+        schemaId: "0x2049fef3764ceceb65a9a4a001b3824dac1d05cf5a46c3f4436cf23d280b87de",
+        expirationDate: Math.floor(Date.now() / 1000) + 2592000,
+        subject: "0x6eCfD8252C19aC2Bf4bd1cBdc026C001C93E179D",
+        attestationData: [{ hasCompletedTutorial: true }],
+      };
+      const validationPayloads = params?.validationPayloads ?? [];
+      console.log(
+        await this.veraxSdk.portal.attestV2(portalAddress, attestationPayload, validationPayloads, waitForConfirmation),
+      );
+    }
+
     if (methodName.toLowerCase() == "simulateBulkAttest".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);

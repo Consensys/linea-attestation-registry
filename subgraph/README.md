@@ -11,7 +11,6 @@ You can replace `XXX` by the name of the networks you want to work on in the com
 - `linea`
 - `arbitrum-sepolia`
 - `arbitrum-one`
-- `arbitrum-nova`
 - `base-sepolia`
 - `base`
 - `bsc-testnet`

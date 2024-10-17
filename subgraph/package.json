@@ -15,8 +15,6 @@
   "license": "MIT",
   "author": "Consensys",
   "scripts": {
-    "build:arbitrum-nova:v1": "pnpm run codegen:v1 && graph build subgraph-v1.arbitrum-nova.yaml",
-    "build:arbitrum-nova:v2": "pnpm run codegen:v2 && graph build subgraph.arbitrum-nova.yaml",
     "build:arbitrum-one:v1": "pnpm run codegen:v1 && graph build subgraph-v1.arbitrum-one.yaml",
     "build:arbitrum-one:v2": "pnpm run codegen:v2 && graph build subgraph.arbitrum-one.yaml",
     "build:arbitrum-sepolia:v1": "pnpm run codegen:v1 && graph build subgraph-v1.arbitrum-sepolia.yaml",
@@ -35,8 +33,6 @@
     "build:linea-sepolia:v2": "pnpm run codegen:v2 && graph build subgraph.linea-sepolia.yaml",
     "codegen:v1": "graph codegen subgraph-v1.linea-sepolia.yaml",
     "codegen:v2": "graph codegen subgraph.linea-sepolia.yaml",
-    "deploy:arbitrum-nova:v1": "cp schema-v1.graphql build/schema.graphql && goldsky subgraph deploy verax-v1-arbitrum-nova/0.0.4 && graph clean",
-    "deploy:arbitrum-nova:v2": "cp schema-v2.graphql build/schema.graphql && goldsky subgraph deploy verax-v2-arbitrum-nova/0.0.1 && graph clean",
     "deploy:arbitrum-one:v1": "graph deploy --version-label v0.0.1 --studio verax-v1-arbitrum subgraph-v1.arbitrum-one.yaml",
     "deploy:arbitrum-one:v2": "graph deploy --version-label v0.0.2 --studio verax-v2-arbitrum subgraph.arbitrum-one.yaml",
     "deploy:arbitrum-sepolia:v1": "graph deploy --version-label v0.0.3 --studio verax-v1-arbitrum-sepolia subgraph-v1.arbitrum-sepolia.yaml",

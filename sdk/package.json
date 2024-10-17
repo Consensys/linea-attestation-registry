@@ -34,8 +34,8 @@
     "test:ci": "cp .env.example .env && pnpm run test",
     "test:integration": "jest integration",
     "test:integration:ci": "cp .env.example .env && pnpm run test:integration",
-    "test:unit": "echo \"TODO\"",
-    "test:unit:ci": "cp .env.example .env && pnpm run test:unit"
+    "test:unit": "jest --testPathIgnorePatterns='integration'",
+    "test:unit:ci": "pnpm run test:unit"
   },
   "dependencies": {
     "@graphql-mesh/cache-localforage": "^0.95.8",

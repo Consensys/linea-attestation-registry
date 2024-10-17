@@ -19,8 +19,6 @@ const getSubgraphUrl = (chainId: string) => {
       return 'https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum-sepolia/v0.0.2';
     case '0xa4b1': // Arbitrum Mainnet
       return 'https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum/v0.0.1';
-    case '0xa4ba': // Arbitrum Nova
-      return 'https://api.goldsky.com/api/public/project_clwsa54350ydv01wjbq5r17v1/subgraphs/verax-v1-arbitrum-nova/0.0.4/gn';
     case '0x14a34': // Base Sepolia
       return 'https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.2';
     case '0x2105': // Base Mainnet

@@ -1,4 +1,4 @@
-import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
+import { arbitrum, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
 
 import { lineaSepolia } from "@/config";
 
@@ -28,9 +28,6 @@ export const links: Record<number, { trx?: string; address: string }> = {
   },
   [arbitrumSepolia.id]: {
     address: "https://sepolia.arbiscan.io/address",
-  },
-  [arbitrumNova.id]: {
-    address: "https://nova.arbiscan.io/address",
   },
   [base.id]: {
     address: "https://basescan.org/address",

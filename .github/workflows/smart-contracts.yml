@@ -362,16 +362,6 @@ jobs:
         if: steps.check-changes.outputs.changed == 'true'
         run: pnpm run check:upgradeability arbitrum
 
-      - name: Create Arbitrum Nova env file
-        if: steps.check-changes.outputs.changed == 'true'
-        run: |
-          rm .env
-          cp ./env/.env.arbitrum-nova .env
-
-      - name: Check contracts upgradeability on Arbitrum Nova
-        if: steps.check-changes.outputs.changed == 'true'
-        run: pnpm run check:upgradeability arbitrum-nova
-
       - name: Create Base Sepolia env file
         if: steps.check-changes.outputs.changed == 'true'
         run: |

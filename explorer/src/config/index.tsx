@@ -1,12 +1,10 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { getDefaultConfig } from "connectkit";
 import { Chain, createConfig, mainnet } from "wagmi";
-import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
+import { arbitrum, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
 
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
 import ArbitrumIconDark from "@/assets/networks/arbitrum-dark.svg?react";
-import ArbitrumNovaIconDark from "@/assets/networks/arbitrum-nova-dark.svg?react";
-import ArbitrumNovaIcon from "@/assets/networks/arbitrum-nova.svg?react";
 import ArbitrumSepoliaIcon from "@/assets/networks/arbitrum-sepolia.svg?react";
 import ArbitrumIcon from "@/assets/networks/arbitrum.svg?react";
 import BaseIconDark from "@/assets/networks/base-dark.svg?react";
@@ -100,15 +98,6 @@ const chains: INetwork[] = [
     img: <ArbitrumSepoliaIcon />,
     network: "arbitrum-sepolia",
     prefix: "0x0001",
-  },
-  {
-    name: "Arbitrum Nova",
-    chain: arbitrumNova,
-    veraxEnv: VeraxSdk.DEFAULT_ARBITRUM_NOVA_FRONTEND,
-    img: <ArbitrumNovaIcon />,
-    imgDark: <ArbitrumNovaIconDark />,
-    network: "arbitrum-nova",
-    prefix: "0x0002",
   },
   {
     name: "Base Mainnet",

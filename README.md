@@ -72,7 +72,6 @@ The main contracts (i.e. the "registries") and the helpers contracts are deploye
 - Linea Mainnet
 - Arbitrum Sepolia
 - Arbitrum Mainnet
-- Arbitrum Nova
 - Base Sepolia
 - Base Mainnet
 - BSC Testnet
@@ -145,24 +144,6 @@ Here are the addresses on those networks:
   [0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27](https://arbiscan.io/address/0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27)
 - AttestationReader =
   [0x324C060A26444c3fB9B93e03d31e8cfF4b1715C1](https://arbiscan.io/address/0x324C060A26444c3fB9B93e03d31e8cfF4b1715C1)
-
-</details>
-
-<details>
-  <summary>Arbitrum Nova</summary>
-
-- Router =
-  [0xC81B5149D9Cd49195D00EFb16FED89f3Ba78E03B](https://nova.arbiscan.io/address/0xc81b5149d9cd49195d00efb16fed89f3ba78e03b)
-- AttestationRegistry =
-  [0xB9Cf26ED827Eb4A7079e8dedB0ea93D932A2e3e8](https://nova.arbiscan.io/address/0xB9Cf26ED827Eb4A7079e8dedB0ea93D932A2e3e8)
-- ModuleRegistry =
-  [0x46F7471cd2C1d69Cb5e62c1a34F3fCAf81304Fc3](https://nova.arbiscan.io/address/0x46F7471cd2C1d69Cb5e62c1a34F3fCAf81304Fc3)
-- PortalRegistry =
-  [0xADc8da3d3388dEe74C7134fC4AEe1cF866Da5d38](https://nova.arbiscan.io/address/0xADc8da3d3388dEe74C7134fC4AEe1cF866Da5d38)
-- SchemaRegistry =
-  [0x9b5BABcEbf0E8550da1eCDe5674783179B6557FB](https://nova.arbiscan.io/address/0x9b5BABcEbf0E8550da1eCDe5674783179B6557FB)
-- AttestationReader =
-  [0x7A22D0Fba31a4d5b5E4F5263379B4dbf3707b48c](https://nova.arbiscan.io/address/0x7A22D0Fba31a4d5b5E4F5263379B4dbf3707b48c)
 
 </details>
 
@@ -275,7 +256,6 @@ Here are the addresses on those networks:
 - [Linea Mainnet (Backup)](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
 - [Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum-sepolia/v0.0.3)
 - [Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum/v0.0.1)
-- [Arbitrum Nova](https://api.goldsky.com/api/public/project_clwsa54350ydv01wjbq5r17v1/subgraphs/verax-v1-arbitrum-nova/0.0.4/gn)
 - [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.2)
 - [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.2)
 - [BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1)
@@ -288,7 +268,6 @@ Here are the addresses on those networks:
 - [Linea Mainnet (Backup)](https://api.goldsky.com/api/public/project_clxx488osyuf501vygg71f86w/subgraphs/verax-v2-linea/0.0.1/gn)
 - [Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum-sepolia/v0.0.2)
 - [Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum/v0.0.2)
-- [Arbitrum Nova](https://api.goldsky.com/api/public/project_cm06hsedxpgls01xm39r67el8/subgraphs/verax-v2-arbitrum-nova/0.0.1/gn)
 - [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-base-sepolia/v0.0.2)
 - [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-base/v0.0.1)
 - [BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc-testnet/v0.0.1)
@@ -303,7 +282,6 @@ ID. This prefix is defined in the `contracts/script/utils.ts` file.
 - Linea Mainnet - `0x0000`
 - Arbitrum Sepolia - `0x0001`
 - Arbitrum Mainnet - `0x0001`
-- Arbitrum Nova - `0x0002`
 - Base Sepolia - `0x0005`
 - Base Mainnet - `0x0005`
 - BSC Testnet - `0x0006`

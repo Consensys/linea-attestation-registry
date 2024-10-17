@@ -1972,7 +1972,7 @@ sources[0] = {
         }
 const additionalTypeDefs = [parse("extend type Attestation {\n  chainName: String\n}\n\nextend type Portal {\n  chainName: String\n}\n\nextend type Schema {\n  chainName: String\n}\n\nextend type Module {\n  chainName: String\n}\n\nextend type Query {\n  multichainAttestations(chainNames: [String!]!, first: Int, skip: Int, where: Attestation_filter, orderBy: Attestation_orderBy, orderDirection: OrderDirection): [Attestation!]!\n  multichainPortals(chainNames: [String!]!, first: Int, skip: Int, where: Portal_filter, orderBy: Portal_orderBy, orderDirection: OrderDirection): [Portal!]!\n  multichainSchemas(chainNames: [String!]!, first: Int, skip: Int, where: Schema_filter, orderBy: Schema_orderBy, orderDirection: OrderDirection): [Schema!]!\n  multichainModules(chainNames: [String!]!, first: Int, skip: Int, where: Module_filter, orderBy: Module_orderBy, orderDirection: OrderDirection): [Module!]!\n}"),] as any[];
 const additionalResolvers = await Promise.all([
-        import("../src/resolvers.ts")
+        import("../src/resolvers")
             .then(m => m.resolvers || m.default || m)
       ]);
 const merger = new(BareMerger as any)({

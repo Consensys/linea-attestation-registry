@@ -22,12 +22,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  optimizeDeps: {
-    include: ["@verax-attestation-registry/verax-sdk"],
-  },
-  build: {
-    commonjsOptions: {
-      include: [/@verax-attestation-registry\/verax-sdk/, /node_modules/],
-    },
-  },
 });

@@ -35,7 +35,7 @@
     "test:integration": "jest integration",
     "test:integration:ci": "cp .env.example .env && pnpm run test:integration",
     "test:unit": "jest --testPathIgnorePatterns='integration'",
-    "test:unit:ci": "pnpm run test:unit --coverage"
+    "test:unit:coverage": "pnpm run test:unit --coverage"
   },
   "dependencies": {
     "@graphql-mesh/cache-localforage": "^0.95.8",

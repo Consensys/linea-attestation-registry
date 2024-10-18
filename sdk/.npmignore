@@ -5,6 +5,7 @@ node_modules
 src
 !dist/src
 test
+*.test.*
 .env
 .env.example
 .graphclientrc.yml

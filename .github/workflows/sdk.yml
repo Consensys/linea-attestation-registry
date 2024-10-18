@@ -53,12 +53,29 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run the unit tests
-        run: pnpm run test:unit:ci
+        run: pnpm run test:unit:coverage
+
+      - name: Move the report at the root of the project
+        run: mv coverage/lcov.info .
+
+      - name: Upload coverage report to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: Check test coverage
+        uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
+        with:
+          coverage-file: lcov.info
+          minimum-coverage: 50
+
+      - name: Add coverage summary
+        run: |
+          echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
 
       - name: Run the integration tests
         run: pnpm run test:integration:ci
-
-      - name: Add test summary
-        run: |
-          echo "## Tests result" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

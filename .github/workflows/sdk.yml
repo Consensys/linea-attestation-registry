@@ -55,6 +55,15 @@ jobs:
       - name: Run the unit tests
         run: pnpm run test:unit:coverage
 
+      - name: Run the integration tests
+        run: pnpm run test:integration:ci
+
+  coverage-contracts:
+    runs-on: ubuntu-latest
+
+    needs: test-sdk
+
+    steps:
       - name: Move the report at the root of the project
         run: mv sdk/coverage/lcov.info .
 
@@ -76,6 +85,3 @@ jobs:
         run: |
           echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
-
-      - name: Run the integration tests
-        run: pnpm run test:integration:ci

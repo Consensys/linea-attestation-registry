@@ -24,6 +24,14 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - id: check-changes
+        run: |
+          if [ -n "$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '^sdk/')" ]; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
       - name: Install Pnpm
         uses: pnpm/action-setup@v2
         with:

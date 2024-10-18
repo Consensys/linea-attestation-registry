@@ -40,6 +40,19 @@ describe("errorHandler", () => {
       expect(() => handleError(actionType, mockBaseError)).toThrow(`${actionType} failed with MockErrorName`);
     });
 
+    it("should throw a generic error message if errorName is undefined", () => {
+      // Temporarily cast mockRevertedError.data to bypass TypeScript checks for testing
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (mockRevertedError.data as any).errorName = undefined; // Simulate errorName being `undefined`
+
+      jest.spyOn(mockBaseError, "walk").mockImplementation((fn: (arg0: unknown) => unknown) => {
+        return fn(mockRevertedError) ? mockRevertedError : null;
+      });
+
+      // This should test the code path where `errorName` is `undefined` and fallback to an empty string
+      expect(() => handleError(actionType, mockBaseError)).toThrow(`${actionType} failed with `);
+    });
+
     it("should throw a generic error message if it's an instance of BaseError but not ContractFunctionRevertedError", () => {
       const mockBaseError = new BaseError("Base error");
 

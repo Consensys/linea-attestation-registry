@@ -116,8 +116,17 @@ describe("BaseDataMapper", () => {
       ]);
     });
 
-    it("should return an empty array if no data is found", async () => {
+    it("should return an empty array if data test type is empty", async () => {
       const mockResponse = { data: { data: { TestTypes: [] } }, status: 200 };
+      (subgraphCall as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+      const result = await mockDataMapper.findBy();
+
+      expect(result).toEqual([]);
+    });
+
+    it("should return an empty array if no data is found", async () => {
+      const mockResponse = { data: {}, status: 200 };
       (subgraphCall as jest.Mock).mockResolvedValueOnce(mockResponse);
 
       const result = await mockDataMapper.findBy();

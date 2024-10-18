@@ -55,6 +55,12 @@ jobs:
       - name: Run the unit tests
         run: pnpm run test:unit:ci
 
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: sdk/coverage
+
       - name: Run the integration tests
         run: pnpm run test:integration:ci
 

@@ -55,11 +55,37 @@ jobs:
       - name: Run the unit tests
         run: pnpm run test:unit:coverage
 
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+      - name: Move the report at the root of the project
+        if: steps.check-changes.outputs.changed == 'true'
+        run: mv sdk/coverage/lcov.info .
+
+      - name: Upload coverage report to Codecov
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: codecov/codecov-action@v3
         with:
-          name: coverage-report
-          path: sdk/coverage
+          files: ./lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: Check test coverage
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
+        with:
+          coverage-file: lcov.info
+          minimum-coverage: 50
+
+      - name: Add coverage summary
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
+
+      - name: Add coverage summary
+        if: steps.check-changes.outputs.changed == 'false'
+        run: |
+          echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ No coverage report to upload" >> $GITHUB_STEP_SUMMARY
 
       - name: Run the integration tests
         run: pnpm run test:integration:ci

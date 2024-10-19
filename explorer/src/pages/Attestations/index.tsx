@@ -6,12 +6,14 @@ import useSWR from "swr";
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
 import { BasicPagination } from "@/components/Pagination/Basic";
-import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
+import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
 import { attestationColumnsOption, columns, skeletonAttestations } from "@/constants/columns/attestation";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
+import { regexEthAddress } from "@/constants/regex";
 import { EQueryParams } from "@/enums/queryParams";
 import { ETableSorting } from "@/enums/tableSorting";
 import { SWRKeys } from "@/interfaces/swr/enum";
+import { issuersData } from "@/pages/Home/data";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
 import { buildAttestationId } from "@/utils/attestationIdUtils.ts";
@@ -36,8 +38,34 @@ export const Attestations: React.FC = () => {
   const where = searchParams.get(EQueryParams.WHERE)
     ? (JSON.parse(searchParams.get(EQueryParams.WHERE) ?? "") as Attestation_filter)
     : undefined;
-
   const [lastID, setLastID] = useState<number>(getItemsByPage(page, itemsPerPage));
+
+  const isByAttestationType = "schema_" in (where || {});
+  const isFilteredByWhere = where && (isByAttestationType || where.portal_in?.length);
+  const { name, attestationDefinitions } = isByAttestationType
+    ? issuersData.find((issuer) =>
+        issuer.attestationDefinitions.some((definition) => definition.schema === where?.schema_?.id),
+      ) || {}
+    : issuersData.find((issuer) =>
+        issuer.attestationDefinitions.some((definition) => where?.portal_in?.includes(definition.portal)),
+      ) || {};
+  const { name: attestationName, portal: attestationPortal } =
+    attestationDefinitions?.filter((definition) => definition.schema === where?.schema_?.id)[0] || {};
+  const portalId = isByAttestationType ? where?.portal_?.id : where?.portal_in?.[0];
+  const schemaId = where?.schema_?.id;
+  const isPortalMatch = portalId === attestationPortal;
+  const { data: portal } = useSWR(isPortalMatch ? null : `${SWRKeys.GET_PORTAL_LIST}`, async () => {
+    if (portalId && regexEthAddress.byNumberOfChar[42].test(portalId))
+      return sdk.portal.findOneById(portalId || EMPTY_STRING);
+  });
+  const { data: schema } = useSWR(`${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}/${network.chain.id}`, async () => {
+    if (schemaId && regexEthAddress.byNumberOfChar[64].test(schemaId)) return sdk.schema.findOneById(schemaId);
+  });
+  const titleByAttestationType = isPortalMatch
+    ? `${name} - ${attestationName}`
+    : `Attestations matching Portal ${portal?.name} for Schema ${schema?.name}`;
+  const titleByIssuer = `Attestations from ${name || portal?.ownerName}`;
+  const title = isByAttestationType ? titleByAttestationType : titleByIssuer;
 
   const { data: attestationsList, isLoading } = useSWR(
     totalItems > 0
@@ -82,7 +110,7 @@ export const Attestations: React.FC = () => {
   };
 
   return (
-    <TitleAndSwitcher>
+    <TitleAndSwitcher {...(isFilteredByWhere && { title })}>
       <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.ATTESTATION_BY_ID} />
       {renderPagination()}
     </TitleAndSwitcher>

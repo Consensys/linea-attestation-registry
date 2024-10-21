@@ -1,14 +1,4 @@
-import {
-  arbitrum,
-  arbitrumNova,
-  arbitrumSepolia,
-  base,
-  baseSepolia,
-  bsc,
-  bscTestnet,
-  linea,
-  lineaSepolia,
-} from "viem/chains";
+import { arbitrum, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea, lineaSepolia } from "viem/chains";
 import AttestationDataMapper from "./dataMapper/AttestationDataMapper";
 import SchemaDataMapper from "./dataMapper/SchemaDataMapper";
 import ModuleDataMapper from "./dataMapper/ModuleDataMapper";
@@ -36,22 +26,6 @@ export class VeraxSdk {
 
   static DEFAULT_LINEA_MAINNET_FRONTEND: Conf = {
     ...VeraxSdk.DEFAULT_LINEA_MAINNET,
-    mode: SDKMode.FRONTEND,
-  };
-
-  static DEFAULT_ARBITRUM_NOVA: Conf = {
-    chain: arbitrumNova,
-    mode: SDKMode.BACKEND,
-    subgraphUrl:
-      "https://api.goldsky.com/api/public/project_cm06hsedxpgls01xm39r67el8/subgraphs/verax-v2-arbitrum-nova/0.0.1/gn",
-    portalRegistryAddress: "0xADc8da3d3388dEe74C7134fC4AEe1cF866Da5d38",
-    moduleRegistryAddress: "0x46F7471cd2C1d69Cb5e62c1a34F3fCAf81304Fc3",
-    schemaRegistryAddress: "0x9b5BABcEbf0E8550da1eCDe5674783179B6557FB",
-    attestationRegistryAddress: "0xB9Cf26ED827Eb4A7079e8dedB0ea93D932A2e3e8",
-  };
-
-  static DEFAULT_ARBITRUM_NOVA_FRONTEND: Conf = {
-    ...VeraxSdk.DEFAULT_ARBITRUM_NOVA,
     mode: SDKMode.FRONTEND,
   };
 

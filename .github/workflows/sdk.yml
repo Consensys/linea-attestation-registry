@@ -55,19 +55,10 @@ jobs:
       - name: Run the unit tests
         run: pnpm run test:unit:coverage
 
-      - name: Move the report at the root of the project
-        run: |
-          if [ -f coverage/lcov.info ]; then
-            mv coverage/lcov.info .
-          else
-            echo "lcov.info file not found!"
-            exit 1
-          fi
-
       - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v3
         with:
-          files: ./lcov.info
+          files: ./coverage/lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
           verbose: true

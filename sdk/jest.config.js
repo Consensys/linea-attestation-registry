@@ -5,7 +5,8 @@ const config = {
   transform: {
     ".graphclient/index.ts": ["babel-jest", { configFile: "./babel-jest.config.cjs" }],
   },
-  coverageReporters: ["lcov", "text", "clover"],
+  coverageDirectory: "coverage",
+  coverageReporters: ["lcov", "text"],
 };
 
 module.exports = config;

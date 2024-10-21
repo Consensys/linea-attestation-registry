@@ -1,5 +1,5 @@
 import { Attestation_filter, OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useSWR from "swr";
 
@@ -40,20 +40,31 @@ export const Attestations: React.FC = () => {
     : undefined;
   const [lastID, setLastID] = useState<number>(getItemsByPage(page, itemsPerPage));
 
+  const findIssuerBySchema = () =>
+    issuersData.find((issuer) =>
+      issuer.attestationDefinitions.some(
+        (definition) => definition.schema === where?.schema_?.id && definition.portal === where?.portal_?.id,
+      ),
+    );
+
+  const findIssuerByPortal = () =>
+    issuersData.find((issuer) =>
+      issuer.attestationDefinitions.some((definition) => where?.portal_in?.includes(definition.portal)),
+    );
+
+  const findAttestation = () =>
+    attestationDefinitions?.filter((definition) => definition.schema === where?.schema_?.id)[0];
+
   const isByAttestationType = "schema_" in (where || {});
   const isFilteredByWhere = where && (isByAttestationType || where.portal_in?.length);
   const { name, attestationDefinitions } = isByAttestationType
-    ? issuersData.find((issuer) =>
-        issuer.attestationDefinitions.some((definition) => definition.schema === where?.schema_?.id),
-      ) || {}
-    : issuersData.find((issuer) =>
-        issuer.attestationDefinitions.some((definition) => where?.portal_in?.includes(definition.portal)),
-      ) || {};
-  const { name: attestationName, portal: attestationPortal } =
-    attestationDefinitions?.filter((definition) => definition.schema === where?.schema_?.id)[0] || {};
+    ? findIssuerBySchema() || {}
+    : findIssuerByPortal() || {};
+  const { name: attestationName, portal: attestationPortal } = findAttestation() || {};
   const portalId = isByAttestationType ? where?.portal_?.id : where?.portal_in?.[0];
   const schemaId = where?.schema_?.id;
   const isPortalMatch = portalId === attestationPortal;
+
   const { data: portal } = useSWR(isPortalMatch ? null : `${SWRKeys.GET_PORTAL_LIST}`, async () => {
     if (portalId && regexEthAddress.byNumberOfChar[42].test(portalId))
       return sdk.portal.findOneById(portalId || EMPTY_STRING);
@@ -61,11 +72,14 @@ export const Attestations: React.FC = () => {
   const { data: schema } = useSWR(`${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}/${network.chain.id}`, async () => {
     if (schemaId && regexEthAddress.byNumberOfChar[64].test(schemaId)) return sdk.schema.findOneById(schemaId);
   });
-  const titleByAttestationType = isPortalMatch
-    ? `${name} - ${attestationName}`
-    : `Attestations matching Portal ${portal?.name} for Schema ${schema?.name}`;
-  const titleByIssuer = `Attestations from ${name || portal?.ownerName}`;
-  const title = isByAttestationType ? titleByAttestationType : titleByIssuer;
+
+  const generateTitle = useCallback(() => {
+    const titleByAttestationType = isPortalMatch
+      ? `${name} - ${attestationName}`
+      : `Attestations matching Portal ${portal?.name} for Schema ${schema?.name}`;
+    const titleByIssuer = `Attestations from ${name || portal?.ownerName}`;
+    return isByAttestationType ? titleByAttestationType : titleByIssuer;
+  }, [isPortalMatch, portal, schema, name, attestationName, isByAttestationType]);
 
   const { data: attestationsList, isLoading } = useSWR(
     totalItems > 0
@@ -110,7 +124,7 @@ export const Attestations: React.FC = () => {
   };
 
   return (
-    <TitleAndSwitcher {...(isFilteredByWhere && { title })}>
+    <TitleAndSwitcher {...(isFilteredByWhere && { title: generateTitle() })}>
       <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.ATTESTATION_BY_ID} />
       {renderPagination()}
     </TitleAndSwitcher>

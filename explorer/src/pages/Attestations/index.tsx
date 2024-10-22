@@ -69,6 +69,7 @@ export const Attestations: React.FC = () => {
     if (portalId && regexEthAddress.byNumberOfChar[42].test(portalId))
       return sdk.portal.findOneById(portalId || EMPTY_STRING);
   });
+  
   const { data: schema } = useSWR(`${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}/${network.chain.id}`, async () => {
     if (schemaId && regexEthAddress.byNumberOfChar[64].test(schemaId)) return sdk.schema.findOneById(schemaId);
   });

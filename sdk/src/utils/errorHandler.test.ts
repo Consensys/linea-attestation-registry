@@ -92,7 +92,7 @@ describe("errorHandler", () => {
     });
 
     it("should throw 'unknown error' if the error is not an instance of BaseError or Error", () => {
-      const unknownError = { message: "Some unknown error" }; // Simulate an unexpected error type
+      const unknownError = { message: "Some unknown error" };
 
       expect(() => handleError(actionType, unknownError)).toThrow(`${actionType} failed with an unknown error`);
     });

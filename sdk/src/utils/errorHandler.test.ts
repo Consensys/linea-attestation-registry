@@ -33,12 +33,14 @@ describe("errorHandler", () => {
   describe("handleError", () => {
     const actionType: ActionType = ActionType.Transaction;
 
-    it("should throw with the revert error name if error is a ContractFunctionRevertedError", () => {
-      jest.spyOn(mockBaseError, "walk").mockImplementation((fn: (arg0: unknown) => unknown) => {
-        return fn(mockRevertedError) ? mockRevertedError : null;
-      });
+    it("should throw 'An unknown error occurred' if no shortMessage is present", () => {
+      const mockBaseErrorWithoutShortMessage = new BaseError("Base error");
 
-      expect(() => handleError(actionType, mockBaseError)).toThrow(`${actionType} failed with MockErrorName`);
+      jest.spyOn(mockBaseErrorWithoutShortMessage, "walk").mockImplementation(() => null);
+
+      expect(() => handleError(actionType, mockBaseErrorWithoutShortMessage)).toThrow(
+        `${actionType} failed with An unknown error occurred`,
+      );
     });
 
     it("should throw with the revert signature if errorName is undefined", () => {
@@ -81,7 +83,7 @@ describe("errorHandler", () => {
       jest.spyOn(mockBaseErrorWithoutShortMessage, "walk").mockImplementation(() => null);
 
       expect(() => handleError(actionType, mockBaseErrorWithoutShortMessage)).toThrow(
-        `${actionType} failed with An unknown error occurred`,
+        `${actionType} failed with An unknown error`,
       );
     });
 

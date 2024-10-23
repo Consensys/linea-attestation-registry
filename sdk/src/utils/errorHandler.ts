@@ -1,14 +1,24 @@
 import { BaseError, ContractFunctionRevertedError } from "viem";
 import { ActionType } from "./constants";
 
+function extractErrorName(revertError: ContractFunctionRevertedError): string {
+  if (revertError.data?.errorName) {
+    return revertError.data.errorName;
+  }
+  if (revertError.signature) {
+    return revertError.signature;
+  }
+  return "unknown revert error";
+}
+
 export function handleError(type: ActionType, err: unknown): never {
   if (err instanceof BaseError) {
     const revertError = err.walk((err) => err instanceof ContractFunctionRevertedError);
     if (revertError instanceof ContractFunctionRevertedError) {
-      const errorName = revertError.data?.errorName ?? revertError.signature ?? "unknown revert reason";
+      const errorName = extractErrorName(revertError);
       throw new Error(`${type} failed with ${errorName}`);
     } else {
-      const shortMessage = err.shortMessage ?? "An unknown error occurred";
+      const shortMessage = err.shortMessage ?? "an unknown error";
       throw new Error(`${type} failed with ${shortMessage}`);
     }
   } else if (err instanceof Error) {

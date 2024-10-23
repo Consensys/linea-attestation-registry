@@ -59,6 +59,9 @@ jobs:
         run: mv coverage/lcov.info .
 
       - name: Upload coverage report to Codecov
+        if: env.CODECOV_TOKEN != ''
+        env:
+          CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
         uses: codecov/codecov-action@v3
         with:
           files: ./sdk/lcov.info
@@ -72,10 +75,21 @@ jobs:
           coverage-file: sdk/lcov.info
           minimum-coverage: 50
 
-      - name: Add coverage summary
+      - name: Add coverage summary if upload
+        if: env.CODECOV_TOKEN != ''
+        env:
+          CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
         run: |
           echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
+
+      - name: Add coverage summary if no upload
+        if: env.CODECOV_TOKEN == ''
+        env:
+          CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
+        run: |
+          echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Coverage not uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
 
   integration-test-sdk:
     runs-on: ubuntu-latest

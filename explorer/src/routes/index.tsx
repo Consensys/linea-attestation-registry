@@ -11,6 +11,7 @@ import { Portal } from "@/pages/Portal";
 import { Schema } from "@/pages/Schema";
 import { Schemas } from "@/pages/Schemas";
 import { Search } from "@/pages/Search";
+import { Subject } from "@/pages/Subject";
 import { Providers } from "@/providers";
 import { loaderNetworkProvider } from "@/providers/network-provider/loader";
 
@@ -24,6 +25,7 @@ export const router = createBrowserRouter(
       <Route path={APP_ROUTES.ISSUER_BY_ID} element={<Issuer />} />
       <Route path={APP_ROUTES.ATTESTATIONS} element={<Attestations />} />
       <Route path={APP_ROUTES.MY_ATTESTATIONS} element={<MyAttestations />} />
+      <Route path={APP_ROUTES.ATTESTATIONS_BY_SUBJECT} element={<Subject />} />
       <Route path={APP_ROUTES.ATTESTATION_BY_ID} element={<Attestation />} />
       <Route path={APP_ROUTES.SCHEMAS} element={<Schemas />} />
       <Route path={APP_ROUTES.SCHEMA_BY_ID} element={<Schema />} />

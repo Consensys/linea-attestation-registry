@@ -1,4 +1,5 @@
 const ID_ROUTE = ":id";
+const SUBJECT_ROUTE = ":subject";
 export const CHAIN_ID_ROUTE = ":chainId";
 
 export const APP_ROUTES = {
@@ -14,6 +15,9 @@ export const APP_ROUTES = {
   },
   get MY_ATTESTATIONS() {
     return this.ATTESTATIONS + "/my_attestations";
+  },
+  get ATTESTATIONS_BY_SUBJECT() {
+    return this.HOME + "/subject/" + SUBJECT_ROUTE;
   },
   get ATTESTATION_BY_ID() {
     return this.ATTESTATIONS + `/${ID_ROUTE}`;
@@ -40,6 +44,8 @@ export const APP_ROUTES = {
 } as const;
 
 export const toAttestationById = (id: string) => APP_ROUTES.ATTESTATION_BY_ID.replace(ID_ROUTE, id);
+export const toAttestationsBySubject = (subject: string) =>
+  APP_ROUTES.ATTESTATIONS_BY_SUBJECT.replace(SUBJECT_ROUTE, subject);
 export const toSchemaById = (id: string) => APP_ROUTES.SCHEMA_BY_ID.replace(ID_ROUTE, id);
 export const toModuleById = (id: string) => APP_ROUTES.MODULES_BY_ID.replace(ID_ROUTE, id);
 export const toPortalById = (id: string) => APP_ROUTES.PORTAL_BY_ID.replace(ID_ROUTE, id);

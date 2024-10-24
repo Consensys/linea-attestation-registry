@@ -7,7 +7,6 @@ import BaseDataMapper from "./BaseDataMapper";
 import { lineaSepolia } from "viem/chains";
 import { PublicClient, WalletClient } from "viem";
 import { VeraxSdk } from "../VeraxSdk";
-import { off } from "process";
 
 jest.mock("./BaseDataMapper");
 jest.mock("../utils/abiCoder");

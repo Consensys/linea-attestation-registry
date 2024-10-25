@@ -12,7 +12,7 @@ import { APP_ROUTES } from "@/routes/constants";
 export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId }) => {
   const {
     sdk,
-    network: { chain },
+    network: { chain, network },
   } = useNetworkContext();
 
   const { data: attestations, isLoading } = useSWR(
@@ -27,7 +27,7 @@ export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId })
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations(5) }
     : {
-        columns: columns({ sortByDate: false, chain }),
+        columns: columns({ sortByDate: false, chain, network }),
         list: attestations || [],
       };
 

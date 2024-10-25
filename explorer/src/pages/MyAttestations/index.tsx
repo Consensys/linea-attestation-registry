@@ -19,8 +19,6 @@ import { cropString } from "@/utils/stringUtils";
 
 import { AttestationCard } from "../Attestation/components/AttestationCard";
 import { TitleAndSwitcher } from "../Attestations/components/TitleAndSwitcher";
-import { issuersData } from "../Home/data";
-import { IIssuer } from "../Home/interface";
 
 export const MyAttestations: React.FC = () => {
   const {
@@ -94,27 +92,14 @@ export const MyAttestations: React.FC = () => {
         <div className="flex flex-col gap-14 md:gap-[4.5rem] container mt-14 md:mt-12">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {attestationsList.map((attestation) => {
-              const issuerData = issuersData.find((issuer) =>
-                issuer.attestationDefinitions.some(
-                  (definition) =>
-                    definition.schema === attestation.schema.id && definition.portal === attestation.portal.id,
-                ),
-              ) as IIssuer;
-              const attestationDefinitions = issuerData?.attestationDefinitions.find(
-                (definition) => definition.schema === attestation.schema.id,
-              );
-
-              if (!issuerData) return null;
               return (
                 <AttestationCard
                   key={attestation.id}
                   id={attestation.id}
-                  logo={attestationDefinitions?.logo ?? issuerData?.logo}
-                  logoDark={attestationDefinitions?.logoDark ?? issuerData?.logoDark}
-                  name={attestationDefinitions?.name ?? issuerData?.name}
-                  description={attestationDefinitions?.description ?? ""}
-                  issuerName={issuerData.name}
+                  schemaId={attestation.schema.id}
+                  portalId={attestation.portal.id}
                   issuanceDate={attestation.attestedDate}
+                  expiryDate={attestation.expirationDate}
                 />
               );
             })}

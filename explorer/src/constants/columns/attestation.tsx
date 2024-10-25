@@ -12,8 +12,13 @@ import { Link } from "@/components/Link";
 import { SortByDate } from "@/components/SortByDate";
 import { ColumnsOptions } from "@/interfaces/components";
 import { SWRCell } from "@/pages/Attestations/components/SWRCell";
-import { toAttestationById, toPortalById, toSchemaById } from "@/routes/constants";
-import { getBlockExplorerLink } from "@/utils";
+import {
+  CHAIN_ID_ROUTE,
+  toAttestationById,
+  toAttestationsBySubject,
+  toPortalById,
+  toSchemaById,
+} from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
 
@@ -22,9 +27,14 @@ import { EMPTY_0X_STRING, EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index"
 interface ColumnsProps {
   sortByDate: boolean;
   chain: Chain;
+  network: string;
 }
 
-export const columns = ({ sortByDate = true, chain }: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
+export const columns = ({
+  sortByDate = true,
+  chain,
+  network,
+}: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
   {
     accessorKey: "id",
     header: () => (
@@ -82,7 +92,7 @@ export const columns = ({ sortByDate = true, chain }: Partial<ColumnsProps> = {}
 
       return (
         <a
-          href={`${getBlockExplorerLink(chain)}/${subject}`}
+          href={toAttestationsBySubject(subject).replace(CHAIN_ID_ROUTE, network)}
           onClick={(e) => e.stopPropagation()}
           target="_blank"
           className="hover:underline"

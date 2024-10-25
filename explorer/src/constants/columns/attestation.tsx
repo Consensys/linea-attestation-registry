@@ -92,7 +92,7 @@ export const columns = ({
 
       return (
         <a
-          href={toAttestationsBySubject(subject).replace(CHAIN_ID_ROUTE, network)}
+          href={toAttestationsBySubject(subject).replace(CHAIN_ID_ROUTE, network ?? "")}
           onClick={(e) => e.stopPropagation()}
           target="_blank"
           className="hover:underline"

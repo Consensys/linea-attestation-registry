@@ -8,7 +8,7 @@ function extractErrorName(revertError: ContractFunctionRevertedError): string {
   if (revertError.signature) {
     return revertError.signature;
   }
-  return "unknown revert error";
+  return "unknown revert reason";
 }
 
 export function handleError(type: ActionType, err: unknown): never {
@@ -18,7 +18,7 @@ export function handleError(type: ActionType, err: unknown): never {
       const errorName = extractErrorName(revertError);
       throw new Error(`${type} failed with ${errorName}`);
     } else {
-      const shortMessage = err.shortMessage ?? "an unknown error";
+      const shortMessage = err.shortMessage ?? "an unknown error occurred";
       throw new Error(`${type} failed with ${shortMessage}`);
     }
   } else if (err instanceof Error) {

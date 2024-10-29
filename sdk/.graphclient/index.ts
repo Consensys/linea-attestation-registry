@@ -283,196 +283,6 @@ export type QuerymultichainModulesArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
 };
 
-export type Subscription = {
-  attestation?: Maybe<Attestation>;
-  attestations: Array<Attestation>;
-  module?: Maybe<Module>;
-  modules: Array<Module>;
-  portal?: Maybe<Portal>;
-  portals: Array<Portal>;
-  schema?: Maybe<Schema>;
-  schemas: Array<Schema>;
-  counter?: Maybe<Counter>;
-  counters: Array<Counter>;
-  issuer?: Maybe<Issuer>;
-  issuers: Array<Issuer>;
-  registryVersion?: Maybe<RegistryVersion>;
-  registryVersions: Array<RegistryVersion>;
-  auditInformation?: Maybe<AuditInformation>;
-  auditInformations: Array<AuditInformation>;
-  audit?: Maybe<Audit>;
-  audits: Array<Audit>;
-  /** Access to subgraph metadata */
-  _meta?: Maybe<_Meta_>;
-};
-
-
-export type SubscriptionattestationArgs = {
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionattestationsArgs = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Attestation_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Attestation_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionmoduleArgs = {
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionmodulesArgs = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Module_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Module_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionportalArgs = {
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionportalsArgs = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Portal_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Portal_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionschemaArgs = {
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionschemasArgs = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Schema_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Schema_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptioncounterArgs = {
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptioncountersArgs = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Counter_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Counter_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionissuerArgs = {
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionissuersArgs = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Issuer_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Issuer_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionregistryVersionArgs = {
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionregistryVersionsArgs = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<RegistryVersion_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<RegistryVersion_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionauditInformationArgs = {
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionauditInformationsArgs = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<AuditInformation_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<AuditInformation_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionauditArgs = {
-  id: Scalars['ID']['input'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionauditsArgs = {
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Audit_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Audit_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type Subscription_metaArgs = {
-  block?: InputMaybe<Block_height>;
-};
-
 export type Aggregation_interval =
   | 'hour'
   | 'day';
@@ -1603,7 +1413,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
-  Subscription: ResolverTypeWrapper<{}>;
   Aggregation_interval: Aggregation_interval;
   Attestation: ResolverTypeWrapper<Attestation>;
   Attestation_filter: Attestation_filter;
@@ -1653,7 +1462,6 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Query: {};
-  Subscription: {};
   Attestation: Attestation;
   Attestation_filter: Attestation_filter;
   Audit: Audit;
@@ -1728,28 +1536,6 @@ export type QueryResolvers<ContextType = MeshContext & { chainName: string }, Pa
   multichainPortals?: Resolver<Array<ResolversTypes['Portal']>, ParentType, ContextType, RequireFields<QuerymultichainPortalsArgs, 'chainNames'>>;
   multichainSchemas?: Resolver<Array<ResolversTypes['Schema']>, ParentType, ContextType, RequireFields<QuerymultichainSchemasArgs, 'chainNames'>>;
   multichainModules?: Resolver<Array<ResolversTypes['Module']>, ParentType, ContextType, RequireFields<QuerymultichainModulesArgs, 'chainNames'>>;
-}>;
-
-export type SubscriptionResolvers<ContextType = MeshContext & { chainName: string }, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
-  attestation?: SubscriptionResolver<Maybe<ResolversTypes['Attestation']>, "attestation", ParentType, ContextType, RequireFields<SubscriptionattestationArgs, 'id' | 'subgraphError'>>;
-  attestations?: SubscriptionResolver<Array<ResolversTypes['Attestation']>, "attestations", ParentType, ContextType, RequireFields<SubscriptionattestationsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  module?: SubscriptionResolver<Maybe<ResolversTypes['Module']>, "module", ParentType, ContextType, RequireFields<SubscriptionmoduleArgs, 'id' | 'subgraphError'>>;
-  modules?: SubscriptionResolver<Array<ResolversTypes['Module']>, "modules", ParentType, ContextType, RequireFields<SubscriptionmodulesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  portal?: SubscriptionResolver<Maybe<ResolversTypes['Portal']>, "portal", ParentType, ContextType, RequireFields<SubscriptionportalArgs, 'id' | 'subgraphError'>>;
-  portals?: SubscriptionResolver<Array<ResolversTypes['Portal']>, "portals", ParentType, ContextType, RequireFields<SubscriptionportalsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  schema?: SubscriptionResolver<Maybe<ResolversTypes['Schema']>, "schema", ParentType, ContextType, RequireFields<SubscriptionschemaArgs, 'id' | 'subgraphError'>>;
-  schemas?: SubscriptionResolver<Array<ResolversTypes['Schema']>, "schemas", ParentType, ContextType, RequireFields<SubscriptionschemasArgs, 'skip' | 'first' | 'subgraphError'>>;
-  counter?: SubscriptionResolver<Maybe<ResolversTypes['Counter']>, "counter", ParentType, ContextType, RequireFields<SubscriptioncounterArgs, 'id' | 'subgraphError'>>;
-  counters?: SubscriptionResolver<Array<ResolversTypes['Counter']>, "counters", ParentType, ContextType, RequireFields<SubscriptioncountersArgs, 'skip' | 'first' | 'subgraphError'>>;
-  issuer?: SubscriptionResolver<Maybe<ResolversTypes['Issuer']>, "issuer", ParentType, ContextType, RequireFields<SubscriptionissuerArgs, 'id' | 'subgraphError'>>;
-  issuers?: SubscriptionResolver<Array<ResolversTypes['Issuer']>, "issuers", ParentType, ContextType, RequireFields<SubscriptionissuersArgs, 'skip' | 'first' | 'subgraphError'>>;
-  registryVersion?: SubscriptionResolver<Maybe<ResolversTypes['RegistryVersion']>, "registryVersion", ParentType, ContextType, RequireFields<SubscriptionregistryVersionArgs, 'id' | 'subgraphError'>>;
-  registryVersions?: SubscriptionResolver<Array<ResolversTypes['RegistryVersion']>, "registryVersions", ParentType, ContextType, RequireFields<SubscriptionregistryVersionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  auditInformation?: SubscriptionResolver<Maybe<ResolversTypes['AuditInformation']>, "auditInformation", ParentType, ContextType, RequireFields<SubscriptionauditInformationArgs, 'id' | 'subgraphError'>>;
-  auditInformations?: SubscriptionResolver<Array<ResolversTypes['AuditInformation']>, "auditInformations", ParentType, ContextType, RequireFields<SubscriptionauditInformationsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  audit?: SubscriptionResolver<Maybe<ResolversTypes['Audit']>, "audit", ParentType, ContextType, RequireFields<SubscriptionauditArgs, 'id' | 'subgraphError'>>;
-  audits?: SubscriptionResolver<Array<ResolversTypes['Audit']>, "audits", ParentType, ContextType, RequireFields<SubscriptionauditsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
 
 export type AttestationResolvers<ContextType = MeshContext & { chainName: string }, ParentType extends ResolversParentTypes['Attestation'] = ResolversParentTypes['Attestation']> = ResolversObject<{
@@ -1888,7 +1674,6 @@ export type _Meta_Resolvers<ContextType = MeshContext & { chainName: string }, P
 
 export type Resolvers<ContextType = MeshContext & { chainName: string }> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
-  Subscription?: SubscriptionResolvers<ContextType>;
   Attestation?: AttestationResolvers<ContextType>;
   Audit?: AuditResolvers<ContextType>;
   AuditInformation?: AuditInformationResolvers<ContextType>;

@@ -110,7 +110,7 @@ export const Attestations: React.FC = () => {
 
   const data = isLoading
     ? { columns: columnsSkeletonRef.current, list: skeletonAttestations(itemsPerPage) }
-    : { columns: columns({ chain: network.chain }), list: attestationsList || [] };
+    : { columns: columns({ chain: network.chain, network: network.network }), list: attestationsList || [] };
 
   const renderPagination = () => {
     if (attestationsCount) {

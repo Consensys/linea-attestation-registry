@@ -82,13 +82,7 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
         </div>
         {description && description.trim() ? (
           <div className="text-sm font-normal text-text-darkGrey dark:text-tertiary mt-4">
-            {isDescriptionLong ? (
-              <Tooltip content={description} isDarkMode={isDarkMode}>
-                {truncatedDescription}
-              </Tooltip>
-            ) : (
-              <span>{description}</span>
-            )}
+            <span>{truncatedDescription}</span>
           </div>
         ) : null}
       </div>

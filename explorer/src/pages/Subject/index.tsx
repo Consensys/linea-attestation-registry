@@ -32,8 +32,7 @@ export const Subject: React.FC = () => {
   return (
     <div className="flex flex-col gap-14 md:gap-[4.5rem] container mt-14 md:mt-12">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {attestationsList &&
-          attestationsList.map((attestation) => {
+        {attestationsList?.map((attestation) => {
             return (
               <AttestationCard
                 key={attestation.id}

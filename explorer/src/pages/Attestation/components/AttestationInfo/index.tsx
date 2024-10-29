@@ -73,7 +73,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     {
       title: t("attestation.info.subject"),
       value: displaySubjectEnsNameOrAddress(),
-      link: toAttestationsBySubject(subject).replace(CHAIN_ID_ROUTE, network),
+      to: toAttestationsBySubject(subject).replace(CHAIN_ID_ROUTE, network),
     },
   ];
 

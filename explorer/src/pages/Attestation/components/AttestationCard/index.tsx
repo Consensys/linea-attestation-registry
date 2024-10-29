@@ -1,16 +1,16 @@
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
 import { ChevronRight } from "lucide-react";
+import moment from "moment";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import circleInfo from "@/assets/icons/circle-info.svg";
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
+import { Tooltip } from "@/components/Tooltip";
 import { issuersData } from "@/pages/Home/data";
 import { IIssuer } from "@/pages/Home/interface";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
-import { timeElapsed } from "@/utils/dateUtils";
 
 import { IAttestationCardProps } from "./interface";
 
@@ -41,7 +41,6 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
   );
 
   if (!issuerData) {
-    console.log("Issuer not found for attestation", id, schemaId, portalId);
     return null;
   }
 
@@ -51,7 +50,7 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
   const description = attestationDefinitions?.description ?? "";
   const issuerName = issuerData.name;
 
-  const maxDescriptionLength = 200;
+  const maxDescriptionLength = 140;
   const isDescriptionLong = description.length > maxDescriptionLength;
   const truncatedDescription = isDescriptionLong ? `${description.slice(0, maxDescriptionLength)}...` : description;
 
@@ -84,9 +83,9 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
         {description && description.trim() ? (
           <div className="text-sm font-normal text-text-darkGrey dark:text-tertiary mt-4">
             {isDescriptionLong ? (
-              <Tippy content={description} placement="bottom" theme={isDarkMode ? "dark" : "light"}>
-                <span>{truncatedDescription}</span>
-              </Tippy>
+              <Tooltip content={description} isDarkMode={isDarkMode}>
+                {truncatedDescription}
+              </Tooltip>
             ) : (
               <span>{description}</span>
             )}
@@ -95,20 +94,26 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
       </div>
       <div className="flex flex-col gap-2 mt-auto">
         <div className="flex justify-between text-sm font-normal text-text-darkGrey dark:text-tertiary">
-          <span>Issued</span> <span>{timeElapsed(issuanceDate)}</span>
+          <span>Issued</span> <span>{moment.unix(issuanceDate).fromNow()}</span>
         </div>
         {!!expiryDate && isExpired && (
           <div className="flex justify-between text-sm font-semibold text-text-darkGrey dark:text-tertiary">
             <div className="flex items-center">
               <span>Expired</span>
-              <svg className="w-4 h-4 ml-1 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="currentColor" />
-                <text x="12" y="17" textAnchor="middle" fontSize="14" fill="white" fontWeight="bold">
-                  i
-                </text>
-              </svg>
+              <Tooltip
+                content={
+                  <div style={{ width: "350px", fontWeight: "normal" }}>
+                    The validity of this Attestation is determined by the Issuer, and consumers may choose to adhere to
+                    or ignore this expiration date.
+                  </div>
+                }
+                placement="right"
+                isDarkMode={isDarkMode}
+              >
+                <img src={circleInfo} className="!h-[16px] !w-[16px] ml-1" />
+              </Tooltip>
             </div>
-            <span>{timeElapsed(expiryDate)}</span>
+            <span>{moment.unix(expiryDate).fromNow()}</span>
           </div>
         )}
         <div className="flex mt-4 lg:flex-row lg:items-end justify-end lg:justify-start">

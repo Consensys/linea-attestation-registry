@@ -91,14 +91,13 @@ export const columns = ({
       const subjectDisplay = isValidAddress ? <EnsNameDisplay address={subject as Address} /> : cropString(subject);
 
       return (
-        <a
-          href={toAttestationsBySubject(subject).replace(CHAIN_ID_ROUTE, network ?? "")}
-          onClick={(e) => e.stopPropagation()}
-          target="_blank"
+        <Link
+          to={toAttestationsBySubject(subject).replace(CHAIN_ID_ROUTE, network ?? "")}
           className="hover:underline"
+          onClick={(e) => e.stopPropagation()}
         >
           {subjectDisplay}
-        </a>
+        </Link>
       );
     },
   },

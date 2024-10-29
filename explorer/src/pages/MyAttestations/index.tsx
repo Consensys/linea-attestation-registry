@@ -17,7 +17,7 @@ import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { cropString } from "@/utils/stringUtils";
 
-import { AttestationCard } from "../Attestation/components/AttestationCard";
+import { CardView } from "../Attestations/components/CardView";
 import { TitleAndSwitcher } from "../Attestations/components/TitleAndSwitcher";
 
 export const MyAttestations: React.FC = () => {
@@ -89,22 +89,7 @@ export const MyAttestations: React.FC = () => {
       ) : !attestationsList || !attestationsList.length ? (
         <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.emptyList")} />
       ) : (
-        <div className="flex flex-col gap-14 md:gap-[4.5rem] container mt-14 md:mt-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {attestationsList.map((attestation) => {
-              return (
-                <AttestationCard
-                  key={attestation.id}
-                  id={attestation.id}
-                  schemaId={attestation.schema.id}
-                  portalId={attestation.portal.id}
-                  issuanceDate={attestation.attestedDate}
-                  expiryDate={attestation.expirationDate}
-                />
-              );
-            })}
-          </div>
-        </div>
+        <CardView attestationsList={attestationsList}></CardView>
       )}
     </TitleAndSwitcher>
   );

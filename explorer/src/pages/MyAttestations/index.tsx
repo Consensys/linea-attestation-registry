@@ -9,17 +9,15 @@ import { useAccount } from "wagmi";
 
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
-import { DataTable } from "@/components/DataTable";
 import { InfoBlock } from "@/components/InfoBlock";
 import { THOUSAND } from "@/constants";
-import { columns } from "@/constants/columns/attestation";
 import { EQueryParams } from "@/enums/queryParams";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
-import { APP_ROUTES } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
 
+import { CardView } from "../Attestations/components/CardView";
 import { TitleAndSwitcher } from "../Attestations/components/TitleAndSwitcher";
 
 export const MyAttestations: React.FC = () => {
@@ -91,7 +89,7 @@ export const MyAttestations: React.FC = () => {
       ) : !attestationsList || !attestationsList.length ? (
         <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.emptyList")} />
       ) : (
-        <DataTable columns={columns({ chain })} data={attestationsList} link={APP_ROUTES.ATTESTATION_BY_ID} />
+        <CardView attestationsList={attestationsList}></CardView>
       )}
     </TitleAndSwitcher>
   );

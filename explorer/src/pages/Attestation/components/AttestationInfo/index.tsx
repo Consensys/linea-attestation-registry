@@ -8,7 +8,7 @@ import { useEnsName } from "wagmi";
 
 import { Link } from "@/components/Link";
 import { useNetworkContext } from "@/providers/network-provider/context";
-import { toPortalById } from "@/routes/constants";
+import { CHAIN_ID_ROUTE, toAttestationsBySubject, toPortalById } from "@/routes/constants";
 import { getBlockExplorerLink } from "@/utils";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { cropString } from "@/utils/stringUtils";
@@ -17,7 +17,7 @@ import { createDateListItem } from "./utils";
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const {
-    network: { chain },
+    network: { chain, network },
   } = useNetworkContext();
 
   const { data: attesterEnsAddress } = useEnsName({
@@ -73,7 +73,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
     {
       title: t("attestation.info.subject"),
       value: displaySubjectEnsNameOrAddress(),
-      link: `${blockExplorerLink}/${subject}`,
+      to: toAttestationsBySubject(subject).replace(CHAIN_ID_ROUTE, network),
     },
   ];
 

@@ -18,8 +18,8 @@ export function handleError(type: ActionType, err: unknown): never {
       const errorName = extractErrorName(revertError);
       throw new Error(`${type} failed with ${errorName}`);
     } else {
-      const shortMessage = err.shortMessage ?? "an unknown error occurred";
-      throw new Error(`${type} failed with ${shortMessage}`);
+      const errorMessage = err.shortMessage ?? "An unknown error occurred";
+      throw new Error(`${type} failed with ${errorMessage}`);
     }
   } else if (err instanceof Error) {
     throw new Error(`${type} failed with ${err.message}`);

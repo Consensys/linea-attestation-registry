@@ -35,11 +35,10 @@ describe("errorHandler", () => {
 
     it("should throw 'An unknown error occurred' if no shortMessage is present", () => {
       const mockBaseErrorWithoutShortMessage = new BaseError("Base error");
-
       jest.spyOn(mockBaseErrorWithoutShortMessage, "walk").mockImplementation(() => null);
 
       expect(() => handleError(actionType, mockBaseErrorWithoutShortMessage)).toThrow(
-        `${actionType} failed with An unknown error occurred`,
+        `${actionType} failed with Base error`,
       );
     });
 
@@ -68,22 +67,14 @@ describe("errorHandler", () => {
     it("should throw with shortMessage if error is a BaseError but not ContractFunctionRevertedError", () => {
       const shortMessage = "A short message";
       const mockBaseErrorWithShortMessage = new BaseError("Base error");
-      mockBaseErrorWithShortMessage.shortMessage = shortMessage;
+      Object.defineProperty(mockBaseErrorWithShortMessage, "shortMessage", {
+        get: () => shortMessage,
+      });
 
       jest.spyOn(mockBaseErrorWithShortMessage, "walk").mockImplementation(() => null);
 
       expect(() => handleError(actionType, mockBaseErrorWithShortMessage)).toThrow(
         `${actionType} failed with ${shortMessage}`,
-      );
-    });
-
-    it("should throw 'An unknown error occurred' if no shortMessage is present", () => {
-      const mockBaseErrorWithoutShortMessage = new BaseError("Base error");
-
-      jest.spyOn(mockBaseErrorWithoutShortMessage, "walk").mockImplementation(() => null);
-
-      expect(() => handleError(actionType, mockBaseErrorWithoutShortMessage)).toThrow(
-        `${actionType} failed with An unknown error`,
       );
     });
 

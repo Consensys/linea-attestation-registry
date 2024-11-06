@@ -4,4 +4,5 @@ export interface IAttestationCardProps {
   portalId: string;
   issuanceDate: number;
   expiryDate?: number;
+  revoked: boolean;
 }

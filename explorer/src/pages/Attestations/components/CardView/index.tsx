@@ -15,6 +15,7 @@ export const CardView: React.FC<ICardViewProps> = ({ attestationsList }) => {
               portalId={attestation.portal.id}
               issuanceDate={attestation.attestedDate}
               expiryDate={attestation.expirationDate}
+              revoked={attestation.revoked}
             />
           );
         })}

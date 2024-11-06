@@ -1,0 +1,10 @@
+ <svg
+  viewBox="0 0 100 100"
+  preserveAspectRatio="none"
+  xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="100" height="100" fill="none" stroke="#f87171" strokeWidth="1" rx="4" ry="4" />
+  <line x1="1" y1="1" x2="99" y2="99" stroke="#f87171" strokeWidth="1" />
+  <text x="50" y="50" fill="#f87171" fontSize="5" textAnchor="middle" transform="rotate(45, 50, 50)" dy="-.3em">
+    Revoked
+  </text>
+</svg>

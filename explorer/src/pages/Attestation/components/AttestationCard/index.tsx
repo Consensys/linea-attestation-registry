@@ -103,7 +103,9 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
   return (
     <div
       key={`${id}`}
-      className={`relative group flex flex-col justify-between gap-4 border border-border-card dark:border-border-cardDark rounded-xl p-4 md:p-6 hover:bg-surface-secondary dark:hover:bg-surface-secondaryDark transition md:min-h-[20rem] ${(isExpired || revoked) && "bg-surface-darkGrey dark:bg-surface-darkGreyDark"}`}
+      className={`relative group flex flex-col justify-between gap-4 border border-border-card dark:border-border-cardDark rounded-xl p-4 md:p-6 hover:bg-surface-secondary dark:hover:bg-surface-secondaryDark transition md:min-h-[20rem] ${
+        (isExpired || revoked) && "bg-surface-darkGrey dark:bg-surface-darkGreyDark"
+      }`}
     >
       <div>
         {revoked && (

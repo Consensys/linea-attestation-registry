@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Trans } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import archive from "@/assets/icons/archive.svg";
 import magnifyingGlass from "@/assets/icons/magnifying-glass.svg";
@@ -10,6 +10,7 @@ import { DEFAULT_SEARCH_ELEMENTS } from "@/constants/components";
 import { EQueryParams } from "@/enums/queryParams";
 import { Page, SearchElementProps } from "@/interfaces/components";
 import { useNetworkContext } from "@/providers/network-provider/context.ts";
+import { CHAIN_ID_ROUTE, toAttestationsBySubject } from "@/routes/constants";
 import { parseSearch } from "@/utils/searchUtils";
 
 import { SearchAttestationsReceived } from "./components/SearchAttestationsReceived";
@@ -19,10 +20,11 @@ import { SearchSchemas } from "./components/SearchSchemas";
 
 //todo: load more and loading for child
 export const Search = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const search = searchParams.get(EQueryParams.SEARCH_QUERY);
   const {
-    network: { prefix },
+    network: { prefix, network },
   } = useNetworkContext();
   const parsedString = useMemo(() => parseSearch(search, prefix), [search, prefix]);
 
@@ -38,10 +40,29 @@ export const Search = () => {
     setCount(newCount);
     setIsLoaded(newIsLoaded);
     setNotFound(newIsLoaded && newCount === 0);
-  }, [searchElements]);
+    if (isOnlyAttestationsFound(searchElements)) {
+      navigate(toAttestationsBySubject(search ?? "").replace(CHAIN_ID_ROUTE, network), {
+        state: { from: location.pathname },
+      });
+    }
+  }, [searchElements, navigate, network, search]);
 
   const updateSearchElement = (page: Page, count: number, loaded: boolean) => {
     setSearchElements((prev) => ({ ...prev, [page]: { loaded, count } }));
+  };
+
+  const isOnlyAttestationsFound = (searchElements: SearchElementProps) => {
+    const { attestation, module, portal, schema } = searchElements;
+    return (
+      attestation.loaded &&
+      module.loaded &&
+      portal.loaded &&
+      schema.loaded &&
+      attestation.count > 0 &&
+      module.count === 0 &&
+      portal.count === 0 &&
+      schema.count === 0
+    );
   };
 
   return (

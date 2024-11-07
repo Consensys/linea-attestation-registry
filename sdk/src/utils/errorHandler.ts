@@ -1,7 +1,7 @@
 import { BaseError, ContractFunctionRevertedError } from "viem";
 import { ActionType } from "./constants";
 
-function extractErrorName(revertError: ContractFunctionRevertedError): string {
+export function extractErrorName(revertError: ContractFunctionRevertedError): string {
   if (revertError.data?.errorName) {
     return revertError.data.errorName;
   }

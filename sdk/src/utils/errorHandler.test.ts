@@ -1,5 +1,5 @@
 import { BaseError, ContractFunctionRevertedError, Abi } from "viem";
-import { handleError } from "./errorHandler";
+import { handleError, extractErrorName } from "./errorHandler";
 import { ActionType } from "./constants";
 
 describe("errorHandler", () => {
@@ -28,6 +28,29 @@ describe("errorHandler", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  describe("extractErrorName", () => {
+    it("should return errorName if it exists in revertError.data", () => {
+      const errorName = extractErrorName(mockRevertedError);
+      expect(errorName).toBe("MockErrorName");
+    });
+
+    it("should return the signature if errorName is undefined", () => {
+      (mockRevertedError.data as Partial<typeof mockRevertedError.data>).errorName = undefined;
+      mockRevertedError.signature = "myFunction(uint256)" as `0x${string}`;
+
+      const errorName = extractErrorName(mockRevertedError);
+      expect(errorName).toBe("myFunction(uint256)");
+    });
+
+    it("should return 'unknown revert reason' if both errorName and signature are undefined", () => {
+      (mockRevertedError.data as Partial<typeof mockRevertedError.data>).errorName = undefined;
+      mockRevertedError.signature = undefined;
+
+      const errorName = extractErrorName(mockRevertedError);
+      expect(errorName).toBe("unknown revert reason");
+    });
   });
 
   describe("handleError", () => {

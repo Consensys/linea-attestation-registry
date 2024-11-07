@@ -1,12 +1,15 @@
 import { ChevronRight } from "lucide-react";
 import moment from "moment";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
+import useSWR from "swr";
 import { useTernaryDarkMode } from "usehooks-ts";
 
 import circleInfo from "@/assets/icons/circle-info.svg";
+import StampLogo from "@/assets/logo/stamp-logo.svg?react";
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { Tooltip } from "@/components/Tooltip";
+import { SWRKeys } from "@/interfaces/swr/enum";
 import { issuersData } from "@/pages/Home/data";
 import { IIssuer } from "@/pages/Home/interface";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -22,37 +25,68 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
   expiryDate,
 }) => {
   const {
-    network: { network },
+    sdk,
+    network: { chain, network },
   } = useNetworkContext();
   const navigate = useNavigate();
   const location = useLocation();
   const { isDarkMode } = useTernaryDarkMode();
   const isExpired = expiryDate ? new Date(expiryDate * 1000) < new Date() : false;
 
-  const issuerData = issuersData.find((issuer) =>
-    issuer.attestationDefinitions.some(
-      (definition) =>
-        definition.schema.toLowerCase() === schemaId.toLowerCase() &&
-        definition.portal.toLowerCase() === portalId.toLowerCase(),
-    ),
-  ) as IIssuer;
+  // Function to find issuer data by schemaId and portalId
+  const findIssuerData = () => {
+    let issuer = issuersData.find((issuer) =>
+      issuer.attestationDefinitions.some(
+        (definition) =>
+          definition.schema.toLowerCase() === schemaId.toLowerCase() &&
+          definition.portal.toLowerCase() === portalId.toLowerCase(),
+      ),
+    ) as IIssuer;
+
+    if (!issuer) {
+      issuer = issuersData.find((issuer) =>
+        issuer.attestationDefinitions.some((definition) => definition.portal.toLowerCase() === portalId.toLowerCase()),
+      ) as IIssuer;
+    }
+
+    return issuer;
+  };
+
+  // Fallback to schema if issuer data not found
+  const issuerData = findIssuerData();
   const attestationDefinitions = issuerData?.attestationDefinitions.find(
     (definition) => definition.schema.toLowerCase() === schemaId.toLowerCase(),
   );
 
-  if (!issuerData) {
-    return null;
-  }
+  const { data: schema, isLoading: isSchemaLoading } = useSWR(
+    !issuerData && !attestationDefinitions ? `${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}/${chain.id}` : null,
+    async () => sdk.schema.findOneById(schemaId),
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+    },
+  );
 
-  const logo = attestationDefinitions?.logo ?? issuerData?.logo;
-  const logoDark = attestationDefinitions?.logoDark ?? issuerData?.logoDark;
-  const name = attestationDefinitions?.name ?? issuerData?.name;
-  const description = attestationDefinitions?.description ?? "";
-  const issuerName = issuerData.name;
+  const { data: portal, isLoading: isPortalLoading } = useSWR(
+    !issuerData ? `${SWRKeys.GET_PORTAL_BY_ID}/${portalId}/${chain.id}` : null,
+    async () => sdk.portal.findOneById(schemaId),
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+    },
+  );
+
+  if (!issuerData && isSchemaLoading && isPortalLoading) return null;
+
+  const logo = attestationDefinitions?.logo ?? issuerData?.logo ?? StampLogo;
+  const logoDark = attestationDefinitions?.logoDark ?? issuerData?.logoDark ?? logo ?? StampLogo;
+  const name = attestationDefinitions?.name ?? issuerData?.name ?? schema?.name;
+  const description = attestationDefinitions?.description ?? schema?.description ?? "";
+  const issuerName = issuerData?.name ?? portal?.name;
 
   const maxDescriptionLength = 140;
-  const isDescriptionLong = description.length > maxDescriptionLength;
-  const truncatedDescription = isDescriptionLong ? `${description.slice(0, maxDescriptionLength)}...` : description;
+  const truncatedDescription =
+    description.length > maxDescriptionLength ? `${description.slice(0, maxDescriptionLength)}...` : description;
 
   const handleViewDetailsClick = (id: string) => {
     navigate(generatePath(APP_ROUTES.ATTESTATION_BY_ID, { chainId: network, id }), {
@@ -61,7 +95,7 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
   };
 
   const displayLogo = () => {
-    const Logo: React.FC<React.SVGProps<SVGSVGElement>> = isDarkMode && logoDark ? logoDark : logo;
+    const Logo: React.FC<React.SVGProps<SVGSVGElement>> = isDarkMode ? logoDark : logo;
     return <Logo className="w-full h-auto max-w-[2.5rem] md:max-w-[3rem] max-h-[2.5rem] md:max-h-[3rem]" />;
   };
 
@@ -80,11 +114,11 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
             <div className="text-sm font-normal text-blackDefault dark:text-whiteDefault">{issuerName}</div>
           </div>
         </div>
-        {description && description.trim() ? (
+        {description && (
           <div className="text-sm font-normal text-text-darkGrey dark:text-tertiary mt-4">
             <span>{truncatedDescription}</span>
           </div>
-        ) : null}
+        )}
       </div>
       <div className="flex flex-col gap-2 mt-auto">
         <div className="flex justify-between text-sm font-normal text-text-darkGrey dark:text-tertiary">

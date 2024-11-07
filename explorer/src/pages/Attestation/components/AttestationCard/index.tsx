@@ -82,7 +82,7 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
   const logoDark = attestationDefinitions?.logoDark ?? issuerData?.logoDark ?? logo ?? StampLogo;
   const name = attestationDefinitions?.name ?? issuerData?.name ?? schema?.name;
   const description = attestationDefinitions?.description ?? schema?.description ?? "";
-  const issuerName = issuerData?.name ?? schema?.name ?? portal?.name;
+  const issuerName = issuerData?.name ?? portal?.name;
 
   const maxDescriptionLength = 140;
   const truncatedDescription =

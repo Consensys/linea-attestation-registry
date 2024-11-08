@@ -9,5 +9,6 @@ export interface ICardViewProps {
     };
     attestedDate: number;
     expirationDate?: number;
+    revoked: boolean;
   }>;
 }

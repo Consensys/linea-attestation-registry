@@ -23,6 +23,7 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
   portalId,
   issuanceDate,
   expiryDate,
+  revoked,
 }) => {
   const {
     sdk,
@@ -102,9 +103,19 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
   return (
     <div
       key={`${id}`}
-      className="group flex flex-col justify-between gap-4 border border-border-card dark:border-border-cardDark rounded-xl p-4 md:p-6 hover:bg-surface-secondary dark:hover:bg-surface-secondaryDark transition md:min-h-[20rem]"
+      className={`relative group flex flex-col justify-between gap-4 border border-border-card dark:border-border-cardDark rounded-xl p-4 md:p-6 hover:bg-surface-secondary dark:hover:bg-surface-secondaryDark transition md:min-h-[20rem] ${
+        (isExpired || revoked) && "bg-surface-darkGrey dark:bg-surface-darkGreyDark"
+      }`}
     >
       <div>
+        {revoked && (
+          <div
+            className="absolute inset-0 flex items-center justify-center text-red-500 text-4xl md:text-6xl font-bold opacity-50 pointer-events-none"
+            style={{ transform: "rotate(-45deg)" }}
+          >
+            Revoked
+          </div>
+        )}
         <div className="flex items-start gap-3 text-xl md:text-md font-semibold text-blackDefault dark:text-whiteDefault">
           <div className="w-[2.5rem] h-[2.5rem] md:w-[3rem] md:h-[3rem] flex items-center mr-2 justify-center">
             {displayLogo()}

@@ -20,11 +20,21 @@ describe("PortalDataMapper", () => {
     attestationRegistryAddress: "0x4",
   };
   const mockWeb3Client = {} as PublicClient;
-  const mockVeraxSdk = {} as VeraxSdk;
   const mockWalletClient = {} as WalletClient;
+  const mockVeraxSdk = {
+    schema: {
+      findOneById: jest.fn(),
+    },
+  } as unknown as VeraxSdk;
 
   beforeEach(() => {
     portalDataMapper = new PortalDataMapper(mockConf, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+
+    // Setup a default mock return value for findOneById
+    (mockVeraxSdk.schema.findOneById as jest.Mock).mockResolvedValue({
+      id: "123",
+      name: "Sample Schema",
+    });
   });
 
   afterEach(() => {

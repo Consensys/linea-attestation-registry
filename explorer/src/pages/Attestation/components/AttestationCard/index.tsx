@@ -109,7 +109,12 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
     >
       <div>
         {revoked && (
-          <RevokedWatermark className="absolute inset-0 w-full h-full pointer-events-none"></RevokedWatermark>
+          <div
+            className="absolute inset-0 flex items-center justify-center text-red-500 text-4xl md:text-6xl font-bold opacity-50 pointer-events-none"
+            style={{ transform: "rotate(-45deg)" }}
+          >
+            Revoked
+          </div>
         )}
         <div className="flex items-start gap-3 text-xl md:text-md font-semibold text-blackDefault dark:text-whiteDefault">
           <div className="w-[2.5rem] h-[2.5rem] md:w-[3rem] md:h-[3rem] flex items-center mr-2 justify-center">

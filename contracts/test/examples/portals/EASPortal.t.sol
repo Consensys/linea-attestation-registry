@@ -68,7 +68,7 @@ contract EASPortalTest is Test {
     emit AttestationRegistered();
     easPortal.attest(attestationRequestWithoutRefUID);
 
-    bytes32 attestationIdWithoutRefUID = bytes32(abi.encode(1));
+    bytes32 attestationIdWithoutRefUID = attestationRegistryMock.getNextAttestationId();
 
     // Create second EAS attestation request with RefUID
     EASPortal.AttestationRequestData memory attestationRequestDataWithRefUID = EASPortal.AttestationRequestData(

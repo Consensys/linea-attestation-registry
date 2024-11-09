@@ -84,4 +84,13 @@ contract AttestationRegistryMock {
   function getAttestation(bytes32 attestationId) public view returns (Attestation memory) {
     return attestations[attestationId];
   }
+
+  function generateAttestationId(uint256 id) internal view returns (bytes32) {
+    // This is a mock implementation, 1000 is considered as chain prefix
+    return bytes32(abi.encode(1000 + id));
+  }
+
+  function getNextAttestationId() public view returns (bytes32) {
+    return generateAttestationId(attestationIdCounter + 1);
+  } 
 }

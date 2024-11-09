@@ -332,4 +332,12 @@ contract AttestationRegistry is OwnableUpgradeable {
     // Combine the chain prefix and the ID
     return bytes32(abi.encode(chainPrefix + id));
   }
+
+  /**
+   * @notice Get the next attestation ID including chain identifier
+   * @return The next attestation ID
+   */
+  function getNextAttestationId() public view returns (bytes32) {
+    return generateAttestationId(attestationIdCounter + 1);
+  } 
 }

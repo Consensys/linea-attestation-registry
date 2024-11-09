@@ -339,5 +339,5 @@ contract AttestationRegistry is OwnableUpgradeable {
    */
   function getNextAttestationId() public view returns (bytes32) {
     return generateAttestationId(attestationIdCounter + 1);
-  } 
+  }
 }

@@ -661,7 +661,7 @@ contract AttestationRegistryTest is Test {
     assertEq(attestationId, 0x000300000000000000000000000000000000000000000000000000000000000a);
   }
 
-    function test_getNextAttestationId(AttestationPayload memory attestationPayload) public {
+  function test_getNextAttestationId(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());

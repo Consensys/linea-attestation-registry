@@ -8,6 +8,7 @@ import { Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { handleError } from "../utils/errorHandler";
 import { executeTransaction } from "../utils/transactionSender";
+import { Abi } from "viem";
 
 export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filter, Portal_orderBy> {
   typeName = "portal";
@@ -27,7 +28,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
     value: bigint = 0n,
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
     if (!matchingSchema) {
@@ -62,7 +63,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     portalAddress: Address,
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     const attestationPayloadsArg = [];
 
@@ -89,18 +90,51 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     );
   }
 
+  async simulateAttestV2(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    value: bigint = 0n,
+  ) {
+    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    if (!matchingSchema) {
+      throw new Error("No matching Schema");
+    }
+    const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
+    return this.simulatePortalContract(
+      portalAddress,
+      "attestV2",
+      [
+        [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
+        validationPayloads,
+      ],
+      value,
+    );
+  }
+
+  async attestV2(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    waitForConfirmation: boolean = false,
+    value: bigint = 0n,
+  ) {
+    const request = await this.simulateAttestV2(portalAddress, attestationPayload, validationPayloads, value);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+  }
+
   async bulkAttest(
     portalAddress: Address,
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
     waitForConfirmation: boolean = false,
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     const request = await this.simulateBulkAttest(portalAddress, attestationPayloads, validationPayloads, customAbi);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
-  async simulateRevoke(portalAddress: Address, attestationId: string, customAbi?: any) {
+  async simulateRevoke(portalAddress: Address, attestationId: string, customAbi?: Abi) {
     return this.simulatePortalContract(portalAddress, "revoke", [attestationId], 0n, customAbi);
   }
 
@@ -109,7 +143,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
-  async simulateBulkRevoke(portalAddress: Address, attestationIds: string[], customAbi?: any) {
+  async simulateBulkRevoke(portalAddress: Address, attestationIds: string[], customAbi?: Abi) {
     return this.simulatePortalContract(portalAddress, "bulkRevoke", [attestationIds], 0n, customAbi);
   }
 
@@ -117,7 +151,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     portalAddress: Address,
     attestationIds: string[],
     waitForConfirmation: boolean = false,
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     const request = await this.simulateBulkRevoke(portalAddress, attestationIds, customAbi);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
@@ -128,7 +162,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationId: string,
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
     if (!matchingSchema) {
@@ -154,7 +188,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
     waitForConfirmation: boolean = false,
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     const request = await this.simulateReplace(
       portalAddress,
@@ -171,7 +205,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationIds: string[],
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     const attestationPayloadsArg = [];
 
@@ -203,7 +237,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
     waitForConfirmation: boolean = false,
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     const request = await this.simulateBulkReplace(
       portalAddress,
@@ -220,22 +254,21 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     functionName: string,
     args: unknown[],
     value: bigint = 0n,
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
 
-    const abi = customAbi ? [...abiDefaultPortal, ...customAbi] : abiDefaultPortal;
+    const abi = [...abiDefaultPortal, ...(customAbi || [])];
 
     try {
       const { request } = await this.web3Client.simulateContract({
         address: portalAddress,
-        abi: abi,
+        abi, // Simplified to directly use `abi`
         functionName,
         account: this.walletClient.account,
         args,
         value,
       });
-
       return request;
     } catch (err) {
       handleError(ActionType.Simulation, err);

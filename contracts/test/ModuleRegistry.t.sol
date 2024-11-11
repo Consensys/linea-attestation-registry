@@ -132,16 +132,6 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
   }
 
-  function test_getModulesNumber() public {
-    uint256 modulesNumber = moduleRegistry.getModulesNumber();
-    assertEq(modulesNumber, 0);
-    vm.prank(user);
-    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
-
-    modulesNumber = moduleRegistry.getModulesNumber();
-    assertEq(modulesNumber, 1);
-  }
-
   function test_runModules() public {
     // Register 2 modules
     address[] memory moduleAddresses = new address[](2);
@@ -341,14 +331,6 @@ contract ModuleRegistryTest is Test {
       OperationType.BulkAttest
     );
     vm.stopPrank();
-  }
-
-  function test_getModuleAddress() public {
-    vm.prank(user);
-    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
-
-    address moduleAddress = moduleRegistry.moduleAddresses(0);
-    assertEq(moduleAddress, expectedAddress);
   }
 
   function test_isRegistered() public {

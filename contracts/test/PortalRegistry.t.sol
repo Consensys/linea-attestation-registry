@@ -179,8 +179,8 @@ contract PortalRegistryTest is Test {
     vm.prank(user);
     portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
 
-    uint256 portalCount = portalRegistry.getPortalsCount();
-    assertEq(portalCount, 1);
+    bool isRegistered = portalRegistry.isRegistered(address(validPortalMock));
+    assertEq(isRegistered, true);
 
     // Register a portal implementing IPortal
     vm.expectEmit();
@@ -194,8 +194,8 @@ contract PortalRegistryTest is Test {
       expectedOwnerName
     );
 
-    portalCount = portalRegistry.getPortalsCount();
-    assertEq(portalCount, 2);
+    isRegistered = portalRegistry.isRegistered(address(iPortalImplementation));
+    assertEq(isRegistered, true);
 
     Portal memory expectedPortal = Portal(
       address(validPortalMock),
@@ -272,8 +272,8 @@ contract PortalRegistryTest is Test {
       expectedOwnerName
     );
 
-    uint256 portalCount = portalRegistry.getPortalsCount();
-    assertEq(portalCount, 1);
+    bool isRegistered = portalRegistry.isRegistered(portalAddress);
+    assertEq(isRegistered, true);
 
     Portal memory expectedPortal = Portal(
       portalAddress,
@@ -292,8 +292,8 @@ contract PortalRegistryTest is Test {
     emit PortalRevoked(portalAddress);
     portalRegistry.revoke(portalAddress);
 
-    portalCount = portalRegistry.getPortalsCount();
-    assertEq(portalCount, 0);
+    isRegistered = portalRegistry.isRegistered(portalAddress);
+    assertEq(isRegistered, false);
 
     vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
     portalRegistry.getPortalByAddress(portalAddress);

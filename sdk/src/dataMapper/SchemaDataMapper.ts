@@ -63,7 +63,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
   }
 
   async getSchemasNumber() {
-    return this.executeReadMethod("getSchemasNumber", []);
+    return await super.findTotalCount();
   }
 
   async isRegistered(schemaId: string) {

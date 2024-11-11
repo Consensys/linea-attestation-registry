@@ -53,4 +53,16 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
 
     return data?.data ? (data.data[`${this.typeName}s`] as T[]) : [];
   }
+
+  async findTotalCount() {
+    const query = `query get_${this.typeName}_Counter { counters { ${this.typeName}s } }`;
+
+    const { data, status } = await subgraphCall(query, this.conf.subgraphUrl);
+
+    if (status != 200) {
+      throw new Error(`Error(s) while fetching total count of ${this.typeName}s`);
+    }
+
+    return data?.data ? data.data["counters"][0][`${this.typeName}s`] : 0;
+  }
 }

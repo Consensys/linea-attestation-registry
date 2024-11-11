@@ -117,7 +117,6 @@ contract ModuleRegistry is OwnableUpgradeable {
     if (bytes(modules[moduleAddress].name).length > 0) revert ModuleAlreadyExists();
 
     modules[moduleAddress] = Module(moduleAddress, name, description);
-    moduleAddresses.push(moduleAddress);
     emit ModuleRegistered(name, description, moduleAddress);
   }
 
@@ -237,15 +236,6 @@ contract ModuleRegistry is OwnableUpgradeable {
         operationType
       );
     }
-  }
-
-  /**
-   * @notice Get the number of Modules managed by the contract
-   * @return The number of Modules already registered
-   * @dev Returns the length of the `moduleAddresses` array
-   */
-  function getModulesNumber() public view returns (uint256) {
-    return moduleAddresses.length;
   }
 
   /**

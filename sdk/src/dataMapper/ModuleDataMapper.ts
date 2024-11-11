@@ -107,7 +107,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
   }
 
   async getModulesNumber() {
-    return await this.executeReadMethod("getModulesNumber", []);
+    return await super.findTotalCount();
   }
 
   async isRegistered(moduleAddress: Address) {

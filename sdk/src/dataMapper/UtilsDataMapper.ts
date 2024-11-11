@@ -1,10 +1,8 @@
 import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
-import { abiModuleRegistry } from "../abi/ModuleRegistry";
-import { abiPortalRegistry } from "../abi/PortalRegistry";
-import { abiSchemaRegistry } from "../abi/SchemaRegistry";
 import { decode, encode } from "../utils/abiCoder";
 import { Hex } from "viem";
+import { subgraphCall } from "../utils/graphClientHelper";
 
 export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unknown> {
   typeName = "counter";
@@ -16,27 +14,15 @@ export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unk
   }`;
 
   async getModulesNumber() {
-    return this.web3Client.readContract({
-      abi: abiModuleRegistry,
-      address: this.conf.moduleRegistryAddress,
-      functionName: "getModulesNumber",
-    });
+    return await this.getCounterForType("module");
   }
 
   async getPortalsCount() {
-    return this.web3Client.readContract({
-      abi: abiPortalRegistry,
-      address: this.conf.portalRegistryAddress,
-      functionName: "getPortalsCount",
-    });
+    return await this.getCounterForType("portal");
   }
 
   async getSchemasNumber() {
-    return this.web3Client.readContract({
-      abi: abiSchemaRegistry,
-      address: this.conf.schemaRegistryAddress,
-      functionName: "getSchemasNumber",
-    });
+    return await this.getCounterForType("schema");
   }
 
   async getVersionNumber() {
@@ -61,5 +47,17 @@ export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unk
 
   decode(schema: string, attestationData: Hex): readonly unknown[] {
     return decode(schema, attestationData);
+  }
+
+  private async getCounterForType(type: string) {
+    const query = `query get_${type}_counter { counters { ${type}s } }`;
+
+    const { data, status } = await subgraphCall(query, this.conf.subgraphUrl);
+
+    if (status != 200) {
+      throw new Error(`Error(s) while fetching total count of ${type}s`);
+    }
+
+    return data?.data ? data.data["counters"][0][`${type}s`] : 0;
   }
 }

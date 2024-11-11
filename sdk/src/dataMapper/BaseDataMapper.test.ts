@@ -141,4 +141,35 @@ describe("BaseDataMapper", () => {
       await expect(mockDataMapper.findBy()).rejects.toThrow("Error(s) while fetching TestTypes");
     });
   });
+
+  describe("findTotalCount", () => {
+    it("should call subgraphCall with the correct query and return the result", async () => {
+      const mockResponse = { data: { data: { counters: [{ TestTypes: 4 }] } }, status: 200 };
+      (subgraphCall as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+      const result = await mockDataMapper.findTotalCount();
+
+      expect(subgraphCall).toHaveBeenCalledWith(
+        `query get_TestType_Counter { counters { TestTypes } }`,
+        mockConf.subgraphUrl,
+      );
+      expect(result).toEqual(4);
+    });
+
+    it("should throw an error if the status is not 200", async () => {
+      const mockResponse = { status: 500 };
+      (subgraphCall as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+      await expect(mockDataMapper.findTotalCount()).rejects.toThrow("Error(s) while fetching total count of TestTypes");
+    });
+
+    it("should return 0 if no data is found", async () => {
+      const mockResponse = { data: null, status: 200 };
+      (subgraphCall as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+      const result = await mockDataMapper.findTotalCount();
+
+      expect(result).toEqual(0);
+    });
+  });
 });

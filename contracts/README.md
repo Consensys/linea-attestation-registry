@@ -100,7 +100,7 @@ network files describing the deployed contracts.
 
 ### Verify with arguments
 
-Change the arguments you want to use fpr the verify action in `contracts/script/arguments.ts`, then run:
+Change the arguments you want to use for the verify action in `contracts/script/arguments.ts`, then run:
 
 ```
 npx hardhat verify --network NETWORK_NAME CONTRACT_ADDRESS --constructor-args contracts/script/arguments.ts

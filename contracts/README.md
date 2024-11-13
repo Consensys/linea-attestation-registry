@@ -39,7 +39,7 @@ And run the tests with forge test:
 forge test
 ```
 
-And get the coverage with fotge coverage:
+And get the coverage with forge coverage:
 
 ```bash
 forge coverage

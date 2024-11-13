@@ -27,6 +27,9 @@ abstract contract AbstractPortal is IPortal {
   /// @notice Error thrown when someone else than the portal's owner is trying to revoke
   error OnlyPortalOwner();
 
+  /// @notice Error thrown when withdrawing funds fails
+  error WithdrawFail();
+
   /**
    * @notice Contract constructor
    * @param _modules list of modules to use for the portal (can be empty)
@@ -40,14 +43,18 @@ abstract contract AbstractPortal is IPortal {
     moduleRegistry = ModuleRegistry(router.getModuleRegistry());
     portalRegistry = PortalRegistry(router.getPortalRegistry());
   }
-
+  
   /**
-   * @notice Optional method to withdraw funds from the Portal
+   * @notice Withdraw funds from the Portal
    * @param to the address to send the funds to
    * @param amount the amount to withdraw
-   * @dev DISCLAIMER: by default, this method is not implemented and should be overridden if funds are to be withdrawn
+   * @dev Only the Portal owner can withdraw funds
    */
-  function withdraw(address payable to, uint256 amount) external virtual;
+  function withdraw(address payable to, uint256 amount) external virtual {
+    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+    (bool s, ) = to.call{value: amount}("");
+    if (!s) revert WithdrawFail();
+  }
 
   /**
    * @notice Attest the schema with given attestationPayload and validationPayload

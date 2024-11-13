@@ -17,7 +17,4 @@ contract DefaultPortal is AbstractPortal {
    * @dev This sets the addresses for the AttestationRegistry, ModuleRegistry and PortalRegistry
    */
   constructor(address[] memory modules, address router) AbstractPortal(modules, router) {}
-
-  /// @inheritdoc AbstractPortal
-  function withdraw(address payable to, uint256 amount) external override {}
 }

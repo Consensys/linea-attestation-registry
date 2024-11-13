@@ -344,7 +344,7 @@ contract DefaultPortalTest is Test {
 
     // Verify the recipient's balance has increased by the withdrawal amount
     assertEq(recipient.balance, recipientInitialBalance + withdrawAmount);
-}
+  }
 
   function test_withdrawFail_OnlyPortalOwner() public {
     // Attempt withdrawal by a non-owner address

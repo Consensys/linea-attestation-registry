@@ -43,7 +43,7 @@ abstract contract AbstractPortal is IPortal {
     moduleRegistry = ModuleRegistry(router.getModuleRegistry());
     portalRegistry = PortalRegistry(router.getPortalRegistry());
   }
-  
+
   /**
    * @notice Withdraw funds from the Portal
    * @param to the address to send the funds to
@@ -52,7 +52,7 @@ abstract contract AbstractPortal is IPortal {
    */
   function withdraw(address payable to, uint256 amount) external virtual {
     if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-    (bool s, ) = to.call{value: amount}("");
+    (bool s, ) = to.call{ value: amount }("");
     if (!s) revert WithdrawFail();
   }
 

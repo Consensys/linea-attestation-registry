@@ -661,6 +661,29 @@ contract AttestationRegistryTest is Test {
     assertEq(attestationId, 0x000300000000000000000000000000000000000000000000000000000000000a);
   }
 
+  function test_getNextAttestationId(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+    bytes32 nextAttestationId = attestationRegistry.getNextAttestationId();
+
+    bytes32 expectedNextAttestationId = bytes32(abi.encode(initialChainPrefix + 1));
+    assertEq(nextAttestationId, expectedNextAttestationId);
+
+    vm.startPrank(portal);
+
+    attestationRegistry.attest(attestationPayload, attester);
+
+    expectedNextAttestationId = bytes32(abi.encode(initialChainPrefix + 2));
+    nextAttestationId = attestationRegistry.getNextAttestationId();
+
+    assertEq(nextAttestationId, expectedNextAttestationId);
+
+    vm.stopPrank();
+  }
+
   function _createAttestation(
     AttestationPayload memory attestationPayload,
     uint256 id

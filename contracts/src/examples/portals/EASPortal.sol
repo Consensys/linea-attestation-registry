@@ -71,9 +71,7 @@ contract EASPortal is AbstractPortal {
       if (!attestationRegistry.isRegistered(attestationRequest.data.refUID)) {
         revert ReferenceAttestationNotRegistered();
       }
-
-      uint32 attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-      bytes32 attestationId = bytes32(abi.encode(attestationIdCounter));
+      bytes32 attestationId = attestationRegistry.getNextAttestationId();
 
       AttestationPayload memory relationshipAttestationPayload = AttestationPayload(
         _relationshipSchemaId,

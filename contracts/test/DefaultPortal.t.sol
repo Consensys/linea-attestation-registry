@@ -21,6 +21,7 @@ contract DefaultPortalTest is Test {
   AttestationRegistryMock public attestationRegistryMock = new AttestationRegistryMock();
   Router public router = new Router();
   address public portalOwner = makeAddr("portalOwner");
+  address public recipient = makeAddr("recipient");
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address portalAddress);
@@ -327,5 +328,42 @@ contract DefaultPortalTest is Test {
     assertEq(isIERC165Supported, true);
     bool isAbstractPortalSupported = defaultPortal.supportsInterface(type(AbstractPortal).interfaceId);
     assertEq(isAbstractPortalSupported, true);
+  }
+
+  function test_withdraw_byOwner() public {
+    // Fund the portal contract with 1 ether
+    vm.deal(address(defaultPortal), 1 ether);
+
+    // Set the amount to withdraw
+    uint256 withdrawAmount = 0.5 ether;
+    uint256 recipientInitialBalance = recipient.balance;
+
+    // Attempt withdrawal by the owner
+    vm.prank(portalOwner);
+    defaultPortal.withdraw(payable(recipient), withdrawAmount);
+
+    // Verify the recipient's balance has increased by the withdrawal amount
+    assertEq(recipient.balance, recipientInitialBalance + withdrawAmount);
+  }
+
+  function test_withdrawFail_OnlyPortalOwner() public {
+    // Attempt withdrawal by a non-owner address
+    uint256 withdrawAmount = 0.5 ether;
+    vm.prank(makeAddr("nonOwner"));
+    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+
+    defaultPortal.withdraw(payable(recipient), withdrawAmount);
+  }
+
+  function test_withdrawFail_InsufficientBalance() public {
+    // Fund the portal contract with less than the requested amount
+    vm.deal(address(defaultPortal), 0.25 ether);
+
+    // Attempt withdrawal of 0.5 ether
+    uint256 withdrawAmount = 0.5 ether;
+    vm.prank(portalOwner);
+    vm.expectRevert(AbstractPortal.WithdrawFail.selector);
+
+    defaultPortal.withdraw(payable(recipient), withdrawAmount);
   }
 }

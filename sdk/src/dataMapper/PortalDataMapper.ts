@@ -53,7 +53,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     validationPayloads: string[],
     waitForConfirmation: boolean = false,
     value: bigint = 0n,
-    customAbi?: any,
+    customAbi?: Abi,
   ) {
     const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads, value, customAbi);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
@@ -138,7 +138,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return this.simulatePortalContract(portalAddress, "revoke", [attestationId], 0n, customAbi);
   }
 
-  async revoke(portalAddress: Address, attestationId: string, waitForConfirmation: boolean = false, customAbi?: any) {
+  async revoke(portalAddress: Address, attestationId: string, waitForConfirmation: boolean = false, customAbi?: Abi) {
     const request = await this.simulateRevoke(portalAddress, attestationId, customAbi);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
@@ -263,7 +263,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     try {
       const { request } = await this.web3Client.simulateContract({
         address: portalAddress,
-        abi, // Simplified to directly use `abi`
+        abi,
         functionName,
         account: this.walletClient.account,
         args,
@@ -273,5 +273,59 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     } catch (err) {
       handleError(ActionType.Simulation, err);
     }
+  }
+
+  async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
+    return this.simulatePortalRegistryContract("register", [id, name, description, isRevocable, ownerName]);
+  }
+
+  async register(
+    id: Address,
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+    waitForConfirmation: boolean = false,
+  ) {
+    const request = await this.simulateRegister(id, name, description, isRevocable, ownerName);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+  }
+
+  private async simulatePortalRegistryContract(functionName: string, args: unknown[]) {
+    if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
+    try {
+      const { request } = await this.web3Client.simulateContract({
+        address: this.conf.portalRegistryAddress,
+        abi: abiPortalRegistry,
+        functionName,
+        account: this.walletClient.account,
+        args,
+      });
+
+      return request;
+    } catch (err) {
+      handleError(ActionType.Simulation, err);
+    }
+  }
+
+  async getPortalByAddress(address: Address) {
+    return await this.web3Client.readContract({
+      address: this.conf.portalRegistryAddress,
+      abi: abiPortalRegistry,
+      functionName: "getPortal",
+      args: [address],
+    });
+  }
+
+  async isPortalRegistered(id: Address) {
+    return this.executePortalRegistryReadMethod("isRegistered", [id]);
+  }
+  private async executePortalRegistryReadMethod(functionName: string, args: unknown[]) {
+    return this.web3Client.readContract({
+      abi: abiPortalRegistry,
+      address: this.conf.portalRegistryAddress,
+      functionName,
+      args,
+    });
   }
 }

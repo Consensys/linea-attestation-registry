@@ -192,8 +192,7 @@ contract IndexerModuleV2 is AbstractModuleV2 {
     AttestationRegistry attestationRegistry = AttestationRegistry(router.getAttestationRegistry());
     return
       Attestation(
-        // TODO: Consider the chain prefix to generate the attestation ID
-        bytes32(abi.encode(attestationRegistry.getAttestationIdCounter() + 1)),
+        attestationRegistry.getNextAttestationId(),
         attestationPayload.schemaId,
         bytes32(0),
         attester,

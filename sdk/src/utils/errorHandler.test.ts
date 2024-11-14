@@ -1,5 +1,5 @@
-import { BaseError, ContractFunctionRevertedError, Abi } from "viem";
-import { handleError, extractErrorName } from "./errorHandler";
+import { Abi, BaseError, ContractFunctionRevertedError } from "viem";
+import { handleError } from "./errorHandler";
 import { ActionType } from "./constants";
 
 describe("errorHandler", () => {
@@ -13,7 +13,7 @@ describe("errorHandler", () => {
     },
   ];
 
-  const mockBaseError = new BaseError("Base error");
+  const mockBaseError = new BaseError("This is a BaseError");
   const mockRevertedError = new ContractFunctionRevertedError({
     abi: mockAbi,
     functionName: "myFunction",
@@ -30,29 +30,6 @@ describe("errorHandler", () => {
     jest.clearAllMocks();
   });
 
-  describe("extractErrorName", () => {
-    it("should return errorName if it exists in revertError.data", () => {
-      const errorName = extractErrorName(mockRevertedError);
-      expect(errorName).toBe("MockErrorName");
-    });
-
-    it("should return the signature if errorName is undefined", () => {
-      (mockRevertedError.data as Partial<typeof mockRevertedError.data>).errorName = undefined;
-      mockRevertedError.signature = "myFunction(uint256)" as `0x${string}`;
-
-      const errorName = extractErrorName(mockRevertedError);
-      expect(errorName).toBe("myFunction(uint256)");
-    });
-
-    it("should return 'unknown revert reason' if both errorName and signature are undefined", () => {
-      (mockRevertedError.data as Partial<typeof mockRevertedError.data>).errorName = undefined;
-      mockRevertedError.signature = undefined;
-
-      const errorName = extractErrorName(mockRevertedError);
-      expect(errorName).toBe("unknown revert reason");
-    });
-  });
-
   describe("handleError", () => {
     const actionType: ActionType = ActionType.Transaction;
 
@@ -61,7 +38,7 @@ describe("errorHandler", () => {
       jest.spyOn(mockBaseErrorWithoutShortMessage, "walk").mockImplementation(() => null);
 
       expect(() => handleError(actionType, mockBaseErrorWithoutShortMessage)).toThrow(
-        `${actionType} failed with Base error`,
+        `${actionType} failed: Base error`,
       );
     });
 
@@ -73,7 +50,7 @@ describe("errorHandler", () => {
         return fn(mockRevertedError) ? mockRevertedError : null;
       });
 
-      expect(() => handleError(actionType, mockBaseError)).toThrow(`${actionType} failed with myFunction(uint256)`);
+      expect(() => handleError(actionType, mockBaseError)).toThrow(`${actionType} failed: myFunction(uint256)`);
     });
 
     it("should throw 'unknown revert reason' if both errorName and signature are undefined", () => {
@@ -84,7 +61,7 @@ describe("errorHandler", () => {
         return fn(mockRevertedError) ? mockRevertedError : null;
       });
 
-      expect(() => handleError(actionType, mockBaseError)).toThrow(`${actionType} failed with unknown revert reason`);
+      expect(() => handleError(actionType, mockBaseError)).toThrow(`${actionType} failed: unknown revert reason`);
     });
 
     it("should throw with shortMessage if error is a BaseError but not ContractFunctionRevertedError", () => {
@@ -97,20 +74,20 @@ describe("errorHandler", () => {
       jest.spyOn(mockBaseErrorWithShortMessage, "walk").mockImplementation(() => null);
 
       expect(() => handleError(actionType, mockBaseErrorWithShortMessage)).toThrow(
-        `${actionType} failed with ${shortMessage}`,
+        `${actionType} failed: ${shortMessage}`,
       );
     });
 
     it("should throw with the error message if error is a native JavaScript Error", () => {
       const nativeError = new Error("Native error message");
 
-      expect(() => handleError(actionType, nativeError)).toThrow(`${actionType} failed with Native error message`);
+      expect(() => handleError(actionType, nativeError)).toThrow(`${actionType} failed: Native error message`);
     });
 
     it("should throw 'unknown error' if the error is not an instance of BaseError or Error", () => {
       const unknownError = { message: "Some unknown error" };
 
-      expect(() => handleError(actionType, unknownError)).toThrow(`${actionType} failed with an unknown error`);
+      expect(() => handleError(actionType, unknownError)).toThrow(`${actionType} failed: An unknown error occurred`);
     });
   });
 });

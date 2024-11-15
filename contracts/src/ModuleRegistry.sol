@@ -21,7 +21,7 @@ contract ModuleRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Modules, accessed by their address
   mapping(address id => Module module) public modules;
-  /// @dev The list of Module addresses
+  /// @dev Deprecated: The `moduleAddresses` variable is no longer used. It was used to store the modules addresses.
   address[] public moduleAddresses;
 
   /// @notice Error thrown when an invalid Router address is given

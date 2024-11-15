@@ -23,6 +23,7 @@ contract PortalRegistry is OwnableUpgradeable {
 
   mapping(address issuerAddress => bool isIssuer) private issuers;
 
+  /// @dev Deprecated: The `portalAddresses` variable is no longer used. It was used to store the portals addresses.
   address[] private portalAddresses;
 
   bool private isTestnet;

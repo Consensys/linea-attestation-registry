@@ -182,11 +182,6 @@ export default class ModuleExamples {
       console.log(await this.veraxSdk.module.isRegistered(moduleAddress));
     }
 
-    if (methodName.toLowerCase() == "getModuleAddress".toLowerCase() || methodName == "") {
-      const index: number = argv === "" ? 0 : (argv as unknown as number);
-      console.log(await this.veraxSdk.module.getModuleAddress(index));
-    }
-
     if (methodName.toLowerCase() == "getModule".toLowerCase() || methodName == "") {
       const moduleAddress: Address = argv === "" ? "0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5" : (argv as Address);
       console.log(await this.veraxSdk.module.getModule(moduleAddress));

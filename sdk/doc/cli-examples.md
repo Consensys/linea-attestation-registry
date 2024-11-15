@@ -117,8 +117,6 @@
 
     pnpm module isRegistered "0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5"
 
-    pnpm module getModuleAddress 0
-
     pnpm module getModule "0x8DcC1F7e746D6071Eb3ee9012aFB6c707bFf82a5"
     ```
 
@@ -151,8 +149,6 @@
     pnpm schema getSchemasNumber
 
     pnpm schema isRegistered "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738"
-
-    pnpm schema getSchemaIds 0
     ```
 
 </details>

@@ -261,6 +261,10 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return this.executePortalRegistryReadMethod("getPortalByAddress", [id]);
   }
 
+  async getPortalsNumber() {
+    return super.findTotalCount();
+  }
+
   async isPortalRegistered(id: Address) {
     return this.executePortalRegistryReadMethod("isRegistered", [id]);
   }

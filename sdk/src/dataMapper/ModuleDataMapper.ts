@@ -18,7 +18,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
   }`;
 
   async simulateUpdateRouter(routerAddress: Address) {
-    return await this.simulateContract("updateRouter", [routerAddress]);
+    return this.simulateContract("updateRouter", [routerAddress]);
   }
 
   async updateRouter(routerAddress: Address, waitForConfirmation: boolean = false) {
@@ -27,7 +27,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
   }
 
   async simulateRegister(name: string, description: string, moduleAddress: Address) {
-    return await this.simulateContract("register", [name, description, moduleAddress]);
+    return this.simulateContract("register", [name, description, moduleAddress]);
   }
 
   async register(name: string, description: string, moduleAddress: Address, waitForConfirmation: boolean = false) {
@@ -85,11 +85,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
         attestationData,
       ]);
     }
-    return await this.simulateContract("bulkRunModules", [
-      modulesAddresses,
-      attestationPayloadsArg,
-      validationPayloads,
-    ]);
+    return this.simulateContract("bulkRunModules", [modulesAddresses, attestationPayloadsArg, validationPayloads]);
   }
 
   async bulkRunModules(
@@ -103,27 +99,23 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
   }
 
   async isContractAddress(contractAddress: Address) {
-    return await this.executeReadMethod("isContractAddress", [contractAddress]);
+    return this.executeReadMethod("isContractAddress", [contractAddress]);
   }
 
   async getModulesNumber() {
-    return await super.findTotalCount();
+    return super.findTotalCount();
   }
 
   async isRegistered(moduleAddress: Address) {
-    return await this.executeReadMethod("isRegistered", [moduleAddress]);
-  }
-
-  async getModuleAddress(index: number) {
-    return await this.executeReadMethod("moduleAddresses", [index]);
+    return this.executeReadMethod("isRegistered", [moduleAddress]);
   }
 
   async getModule(moduleAddress: Address) {
-    return await this.executeReadMethod("modules", [moduleAddress]);
+    return this.executeReadMethod("modules", [moduleAddress]);
   }
 
   private async executeReadMethod(functionName: string, args: unknown[]) {
-    return await this.web3Client.readContract({
+    return this.web3Client.readContract({
       abi: abiModuleRegistry,
       address: this.conf.moduleRegistryAddress,
       functionName,

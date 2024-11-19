@@ -220,26 +220,6 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.getSchema(bytes32("not registered"));
   }
 
-  function test_getSchemasNumber() public {
-    uint256 schemasNumber = schemaRegistry.getSchemasNumber();
-    assertEq(schemasNumber, 0);
-    vm.startPrank(user);
-    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-
-    schemasNumber = schemaRegistry.getSchemasNumber();
-    assertEq(schemasNumber, 1);
-    vm.stopPrank();
-  }
-
-  function test_getSchemaIds() public {
-    vm.startPrank(user);
-    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-
-    bytes32 schemaId = schemaRegistry.schemaIds(0);
-    assertEq(schemaId, expectedId);
-    vm.stopPrank();
-  }
-
   function test_isRegistered() public {
     bool isRegistered = schemaRegistry.isRegistered(expectedId);
     assertFalse(isRegistered);

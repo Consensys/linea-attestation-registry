@@ -23,6 +23,7 @@ contract PortalRegistry is OwnableUpgradeable {
 
   mapping(address issuerAddress => bool isIssuer) private issuers;
 
+  /// @dev Deprecated: The `portalAddresses` variable is no longer used. It was used to store the portals addresses.
   address[] private portalAddresses;
 
   bool private isTestnet;
@@ -170,7 +171,6 @@ contract PortalRegistry is OwnableUpgradeable {
     // Add portal to mapping
     Portal memory newPortal = Portal(id, msg.sender, modules, isRevocable, name, description, ownerName);
     portals[id] = newPortal;
-    portalAddresses.push(id);
 
     // Emit event
     emit PortalRegistered(name, description, id);
@@ -184,24 +184,7 @@ contract PortalRegistry is OwnableUpgradeable {
   function revoke(address id) public onlyOwner {
     if (!isRegistered(id)) revert PortalNotRegistered();
 
-    portals[id] = Portal(address(0), address(0), new address[](0), false, "", "", "");
-
-    bool found = false;
-    uint256 portalAddressIndex;
-    for (uint256 i = 0; i < portalAddresses.length; i = uncheckedInc256(i)) {
-      if (portalAddresses[i] == id) {
-        portalAddressIndex = i;
-        found = true;
-        break;
-      }
-    }
-
-    if (!found) {
-      revert PortalNotRegistered();
-    }
-
-    portalAddresses[portalAddressIndex] = portalAddresses[portalAddresses.length - 1];
-    portalAddresses.pop();
+    delete portals[id];
 
     emit PortalRevoked(id);
   }
@@ -241,15 +224,6 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function isRegistered(address id) public view returns (bool) {
     return portals[id].id != address(0);
-  }
-
-  /**
-   * @notice Get the number of Portals managed by the contract
-   * @return The number of Portals already registered
-   * @dev Returns the length of the `portalAddresses` array
-   */
-  function getPortalsCount() public view returns (uint256) {
-    return portalAddresses.length;
   }
 
   /**

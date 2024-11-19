@@ -16,7 +16,7 @@ contract SchemaRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) private schemas;
-  /// @dev The list of Schema IDs
+  /// @dev Deprecated: The `schemaIds` variable is no longer used. It was used to store the ids of schemas.
   bytes32[] public schemaIds;
   /// @dev Associates a Schema ID with the address of the Issuer who created it
   mapping(bytes32 id => address issuer) private schemasIssuers;
@@ -155,7 +155,6 @@ contract SchemaRegistry is OwnableUpgradeable {
     }
 
     schemas[schemaId] = Schema(name, description, context, schemaString);
-    schemaIds.push(schemaId);
     schemasIssuers[schemaId] = msg.sender;
     emit SchemaCreated(schemaId, name, description, context, schemaString);
   }
@@ -182,15 +181,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   function getSchema(bytes32 schemaId) public view returns (Schema memory) {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     return schemas[schemaId];
-  }
-
-  /**
-   * @notice Get the number of Schemas managed by the contract
-   * @return The number of Schemas already registered
-   * @dev Returns the length of the `schemaIds` array
-   */
-  function getSchemasNumber() public view returns (uint256) {
-    return schemaIds.length;
   }
 
   /**

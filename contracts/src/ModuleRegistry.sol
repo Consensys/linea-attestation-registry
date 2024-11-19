@@ -21,7 +21,7 @@ contract ModuleRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Modules, accessed by their address
   mapping(address id => Module module) public modules;
-  /// @dev The list of Module addresses
+  /// @dev Deprecated: The `moduleAddresses` variable is no longer used. It was used to store the modules addresses.
   address[] public moduleAddresses;
 
   /// @notice Error thrown when an invalid Router address is given
@@ -117,7 +117,6 @@ contract ModuleRegistry is OwnableUpgradeable {
     if (bytes(modules[moduleAddress].name).length > 0) revert ModuleAlreadyExists();
 
     modules[moduleAddress] = Module(moduleAddress, name, description);
-    moduleAddresses.push(moduleAddress);
     emit ModuleRegistered(name, description, moduleAddress);
   }
 
@@ -237,15 +236,6 @@ contract ModuleRegistry is OwnableUpgradeable {
         operationType
       );
     }
-  }
-
-  /**
-   * @notice Get the number of Modules managed by the contract
-   * @return The number of Modules already registered
-   * @dev Returns the length of the `moduleAddresses` array
-   */
-  function getModulesNumber() public view returns (uint256) {
-    return moduleAddresses.length;
   }
 
   /**

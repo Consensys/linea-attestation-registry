@@ -399,6 +399,10 @@ export default class PortalExamples {
       console.log(await this.veraxSdk.portal.getPortalByAddress(portalAddress));
     }
 
+    if (methodName.toLowerCase() == "getPortalsNumber".toLowerCase() || methodName == "") {
+      console.log(await this.veraxSdk.portal.getPortalsNumber());
+    }
+
     if (methodName.toLowerCase() == "isPortalRegistered".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);

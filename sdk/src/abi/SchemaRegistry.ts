@@ -193,19 +193,6 @@ export const abiSchemaRegistry = [
   },
   {
     inputs: [],
-    name: "getSchemasNumber",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "initialize",
     outputs: [],
     stateMutability: "nonpayable",

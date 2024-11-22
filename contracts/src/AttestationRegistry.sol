@@ -221,7 +221,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @notice Bulk revokes a list of attestations for the given identifiers
    * @param attestationIds the IDs of the attestations to revoke
    */
-  function bulkRevoke(bytes32[] memory attestationIds) external {
+  function bulkRevoke(bytes32[] calldata attestationIds) external {
     for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
       revoke(attestationIds[i]);
     }

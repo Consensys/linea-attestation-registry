@@ -9,11 +9,10 @@ import { AttestationPayload } from "../../../src/types/Structs.sol";
 import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
 import { PortalRegistryMock } from "../../mocks/PortalRegistryMock.sol";
 import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
-import { Pausable } from "@openzeppelin/contracts/security/Pausable.sol";
 import { IERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 contract PausablePortalTest is Test {
-  address portalOwner = makeAddr("portalOwner");
+  address public portalOwner = makeAddr("portalOwner");
   PausablePortal public pausablePortal;
   address[] public modules = new address[](0);
   ModuleRegistryMock public moduleRegistryMock = new ModuleRegistryMock();

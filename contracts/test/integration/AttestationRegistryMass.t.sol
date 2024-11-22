@@ -6,7 +6,7 @@ import { AttestationRegistry } from "../../src/AttestationRegistry.sol";
 import { PortalRegistry } from "../../src/PortalRegistry.sol";
 import { SchemaRegistry } from "../../src/SchemaRegistry.sol";
 import { ModuleRegistry } from "../../src/ModuleRegistry.sol";
-import { DefaultPortal } from "../../src/DefaultPortal.sol";
+import { DefaultPortalV2 } from "../../src/DefaultPortalV2.sol";
 import { Attestation, AttestationPayload } from "../../src/types/Structs.sol";
 import { Router } from "../../src/Router.sol";
 
@@ -20,7 +20,7 @@ contract AttestationRegistryMassTest is Test {
   bytes32 public schemaId;
   AttestationPayload[] public payloadsToAttest;
   bytes[][] public validationPayloads;
-  DefaultPortal public defaultPortal;
+  DefaultPortalV2 public defaultPortal;
 
   event Initialized(uint8 version);
   event AttestationRegistered(bytes32 indexed attestationId);
@@ -57,7 +57,7 @@ contract AttestationRegistryMassTest is Test {
     portalRegistry.setIssuer(portalOwner);
     vm.prank(portalOwner);
     address[] memory modules = new address[](0);
-    defaultPortal = new DefaultPortal(modules, address(router));
+    defaultPortal = new DefaultPortalV2(modules, address(router));
 
     vm.prank(portalOwner);
     portalRegistry.register(address(defaultPortal), "Name", "Description", true, "Linea");

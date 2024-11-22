@@ -107,10 +107,7 @@ contract ModuleRegistry is OwnableUpgradeable {
     // Check if moduleAddress is a smart contract address
     if (!isContractAddress(moduleAddress)) revert ModuleAddressInvalid();
     // Check if module has implemented AbstractModule or AbstractModuleV2
-    if (
-      !ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId) &&
-      !ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModuleV2).interfaceId)
-    ) {
+    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModuleV2).interfaceId)) {
       revert ModuleInvalid();
     }
     // Module address is used to identify uniqueness of the module

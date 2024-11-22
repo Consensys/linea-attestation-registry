@@ -5,7 +5,7 @@ import { Test } from "forge-std/Test.sol";
 import { AbstractPortal } from "../src/abstracts/AbstractPortal.sol";
 import { DefaultPortal } from "../src/DefaultPortal.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
-import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
+import { OldVersionModule } from "./mocks/OldVersionModuleMock.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
@@ -13,7 +13,7 @@ import { ERC165Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/int
 import { Router } from "./../src/Router.sol";
 
 contract DefaultPortalTest is Test {
-  CorrectModule public correctModule = new CorrectModule();
+  OldVersionModule public correctModule = new OldVersionModule();
   address[] public modules = new address[](1);
   DefaultPortal public defaultPortal;
   ModuleRegistryMock public moduleRegistryMock = new ModuleRegistryMock();

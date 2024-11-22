@@ -8,9 +8,9 @@ import { AttestationRegistry } from "../../src/AttestationRegistry.sol";
 import { ModuleRegistry } from "../../src/ModuleRegistry.sol";
 import { SchemaRegistry } from "../../src/SchemaRegistry.sol";
 import { PortalRegistry } from "../../src/PortalRegistry.sol";
-import { IssuersModule } from "../../src/stdlib/IssuersModule.sol";
-import { SenderModule } from "../../src/stdlib/SenderModule.sol";
-import { DefaultPortal } from "../../src/DefaultPortal.sol";
+import { IssuersModuleV2 } from "../../src/stdlib/IssuersModuleV2.sol";
+import { SenderModuleV2 } from "../../src/stdlib/SenderModuleV2.sol";
+import { DefaultPortalV2 } from "../../src/DefaultPortalV2.sol";
 
 contract IssuersPortalTest is Test {
   address public issuerAddress = makeAddr("issuer");
@@ -19,10 +19,10 @@ contract IssuersPortalTest is Test {
   PortalRegistry public portalRegistry = new PortalRegistry(false);
   ModuleRegistry public moduleRegistry = new ModuleRegistry();
   AttestationRegistry public attestationRegistry = new AttestationRegistry();
-  IssuersModule public issuersModule;
-  SenderModule public senderModule;
+  IssuersModuleV2 public issuersModule;
+  SenderModuleV2 public senderModule;
   bytes32 public schemaId = bytes32(0);
-  DefaultPortal public issuersPortal;
+  DefaultPortalV2 public issuersPortal;
 
   event Initialized(uint8 version);
   event AttestationRegistered(bytes32 indexed attestationId);
@@ -42,8 +42,8 @@ contract IssuersPortalTest is Test {
     moduleRegistry.updateRouter(address(router));
     attestationRegistry.updateRouter(address(router));
 
-    issuersModule = new IssuersModule(address(portalRegistry));
-    senderModule = new SenderModule(address(portalRegistry));
+    issuersModule = new IssuersModuleV2(address(portalRegistry));
+    senderModule = new SenderModuleV2(address(portalRegistry));
 
     portalRegistry.setIssuer(issuerAddress);
     vm.stopPrank();
@@ -67,12 +67,12 @@ contract IssuersPortalTest is Test {
     modules[1] = address(issuersModule);
 
     vm.recordLogs();
-    portalRegistry.deployDefaultPortal(modules, "IssuersPortal", "IssuersPortal description", true, "Verax");
+    portalRegistry.deployDefaultPortalV2(modules, "IssuersPortal", "IssuersPortal description", true, "Verax");
     Vm.Log[] memory entries = vm.getRecordedLogs();
 
     // Get the address of the Portal that was just deployed and registered
     (, , address portalAddress) = abi.decode(entries[0].data, (string, string, address));
-    issuersPortal = DefaultPortal(portalAddress);
+    issuersPortal = DefaultPortalV2(portalAddress);
 
     address[] memory senders = new address[](1);
     senders[0] = address(0);

@@ -13,9 +13,7 @@ import { IPortal } from "../interfaces/IPortal.sol";
 /**
  * @title Abstract Portal
  * @author Consensys
- * @notice This contract is an abstracts contract with basic Portal logic
- *         to be inherited. We strongly encourage all Portals to implement
- *         this contract.
+ * @notice Deprecated. Use the AbstractPortalV2 contract instead.
  */
 abstract contract AbstractPortal is IPortal {
   IRouter public router;

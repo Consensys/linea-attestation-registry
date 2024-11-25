@@ -7,7 +7,7 @@ import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol
 /**
  * @title Abstract Module
  * @author Consensys
- * @notice Defines the minimal Module interface
+ * @notice Deprecated. Use the AbstractModuleV2 contract instead.
  */
 abstract contract AbstractModule is IERC165 {
   /// @notice Error thrown when someone else than the portal's owner is trying to revoke

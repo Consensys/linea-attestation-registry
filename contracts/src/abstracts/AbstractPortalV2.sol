@@ -6,7 +6,7 @@ import { ModuleRegistry } from "../ModuleRegistry.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
 import { OperationType } from "../types/Enums.sol";
 import { AttestationPayload } from "../types/Structs.sol";
-import { IERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+import { ERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import { IRouter } from "../interfaces/IRouter.sol";
 import { IPortal } from "../interfaces/IPortal.sol";
 
@@ -17,7 +17,7 @@ import { IPortal } from "../interfaces/IPortal.sol";
  *         to be inherited. We strongly encourage all Portals to implement
  *         this contract.
  */
-abstract contract AbstractPortalV2 is IPortal {
+abstract contract AbstractPortalV2 is IPortal, ERC165 {
   IRouter public router;
   address[] public modules;
   ModuleRegistry public moduleRegistry;
@@ -191,11 +191,11 @@ abstract contract AbstractPortalV2 is IPortal {
    * @param interfaceID the interface identifier checked in this call
    * @return The list of modules addresses linked to the Portal
    */
-  function supportsInterface(bytes4 interfaceID) public pure virtual override returns (bool) {
+  function supportsInterface(bytes4 interfaceID) public view virtual override returns (bool) {
     return
       interfaceID == type(AbstractPortalV2).interfaceId ||
       interfaceID == type(IPortal).interfaceId ||
-      interfaceID == type(IERC165).interfaceId;
+      super.supportsInterface(interfaceID);
   }
 
   /**

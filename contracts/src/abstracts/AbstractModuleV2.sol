@@ -3,14 +3,14 @@ pragma solidity 0.8.21;
 
 import { OperationType } from "../types/Enums.sol";
 import { AttestationPayload } from "../types/Structs.sol";
-import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import { ERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 /**
  * @title Abstract Module V2
  * @author Consensys
  * @notice Defines the minimal Module V2 interface
  */
-abstract contract AbstractModuleV2 is IERC165 {
+abstract contract AbstractModuleV2 is ERC165 {
   /// @notice Error thrown when someone else than the portal's owner is trying to revoke
   error OnlyPortalOwner();
 
@@ -38,7 +38,7 @@ abstract contract AbstractModuleV2 is IERC165 {
    * @param interfaceID The ID of the interface to check.
    * @return A boolean indicating interface support.
    */
-  function supportsInterface(bytes4 interfaceID) public pure virtual override returns (bool) {
-    return interfaceID == type(AbstractModuleV2).interfaceId || interfaceID == type(IERC165).interfaceId;
+  function supportsInterface(bytes4 interfaceID) public view virtual override returns (bool) {
+    return interfaceID == type(AbstractModuleV2).interfaceId || super.supportsInterface(interfaceID);
   }
 }

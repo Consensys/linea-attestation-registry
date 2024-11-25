@@ -250,10 +250,11 @@ contract PortalRegistryTest is Test {
   }
 
   function test_revoke() public {
+    address portalAddress = address(validPortalMock);
     vm.expectEmit();
-    emit PortalRegistered(expectedName, expectedDescription, address(validPortalMock));
+    emit PortalRegistered(expectedName, expectedDescription, portalAddress);
     vm.prank(user);
-    portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
+    portalRegistry.register(portalAddress, expectedName, expectedDescription, true, expectedOwnerName);
 
     bool isRegistered = portalRegistry.isRegistered(address(validPortalMock));
     assertEq(isRegistered, true);

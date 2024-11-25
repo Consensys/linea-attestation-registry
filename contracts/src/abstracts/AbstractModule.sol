@@ -2,14 +2,14 @@
 pragma solidity 0.8.21;
 
 import { AttestationPayload } from "../types/Structs.sol";
-import { IERC165 } from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import { ERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 /**
  * @title Abstract Module
  * @author Consensys
  * @notice Deprecated. Use the AbstractModuleV2 contract instead.
  */
-abstract contract AbstractModule is IERC165 {
+abstract contract AbstractModule is ERC165 {
   /// @notice Error thrown when someone else than the portal's owner is trying to revoke
   error OnlyPortalOwner();
 
@@ -32,7 +32,7 @@ abstract contract AbstractModule is IERC165 {
    * @param interfaceID The ID of the interface to check.
    * @return A boolean indicating interface support.
    */
-  function supportsInterface(bytes4 interfaceID) public pure virtual override returns (bool) {
-    return interfaceID == type(AbstractModule).interfaceId || interfaceID == type(IERC165).interfaceId;
+  function supportsInterface(bytes4 interfaceID) public view virtual override returns (bool) {
+    return interfaceID == type(AbstractModule).interfaceId || super.supportsInterface(interfaceID);
   }
 }

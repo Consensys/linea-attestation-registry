@@ -1,0 +1,289 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.21;
+
+import { Test } from "forge-std/Test.sol";
+import { AbstractPortalV2 } from "../src/abstracts/AbstractPortalV2.sol";
+import { DefaultPortalV2 } from "../src/DefaultPortalV2.sol";
+import { AttestationPayload } from "../src/types/Structs.sol";
+import { OldVersionModule } from "./mocks/OldVersionModuleMock.sol";
+import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
+import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
+import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
+import { ERC165Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
+import { Router } from "./../src/Router.sol";
+
+contract DefaultPortalV2Test is Test {
+  OldVersionModule public correctModule = new OldVersionModule();
+  address[] public modules = new address[](1);
+  DefaultPortalV2 public defaultPortal;
+  ModuleRegistryMock public moduleRegistryMock = new ModuleRegistryMock();
+  PortalRegistryMock public portalRegistryMock = new PortalRegistryMock();
+  AttestationRegistryMock public attestationRegistryMock = new AttestationRegistryMock();
+  Router public router = new Router();
+  address public portalOwner = makeAddr("portalOwner");
+  address public recipient = makeAddr("recipient");
+
+  event Initialized(uint8 version);
+  event PortalRegistered(string name, string description, address portalAddress);
+  event AttestationRegistered();
+  event BulkAttestationsRegistered();
+  event ModulesRunForAttestation();
+  event ModulesBulkRunForAttestation();
+  event ModulesBulkRunForAttestationV2();
+  event AttestationRevoked(bytes32 attestationId);
+  event BulkAttestationsRevoked(bytes32[] attestationId);
+
+  function setUp() public {
+    router.initialize();
+    router.updateModuleRegistry(address(moduleRegistryMock));
+    router.updateAttestationRegistry(address(attestationRegistryMock));
+    router.updatePortalRegistry(address(portalRegistryMock));
+
+    modules.push(address(correctModule));
+    defaultPortal = new DefaultPortalV2(modules, address(router));
+
+    vm.prank(portalOwner);
+    portalRegistryMock.register(address(defaultPortal), "Name", "Description", true, "Owner name");
+  }
+
+  function test_setup() public view {
+    assertEq(address(defaultPortal.modules(0)), address(modules[0]));
+    assertEq(address(defaultPortal.moduleRegistry()), address(moduleRegistryMock));
+    assertEq(address(defaultPortal.attestationRegistry()), address(attestationRegistryMock));
+    assertEq(address(defaultPortal.portalRegistry()), address(portalRegistryMock));
+    assertEq(portalRegistryMock.getPortalByAddress(address(defaultPortal)).ownerAddress, portalOwner);
+  }
+
+  function test_getModules() public view {
+    address[] memory _modules = defaultPortal.getModules();
+    assertEq(_modules, modules);
+  }
+
+  function test_attest() public {
+    // Create attestation payload
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
+      bytes("subject"),
+      new bytes(1)
+    );
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    defaultPortal.attest(attestationPayload, validationPayload);
+  }
+
+  function test_bulkAttest(AttestationPayload[2] memory attestationsPayloads) public {
+    vm.assume(bytes32(attestationsPayloads[0].schemaId) != 0);
+    vm.assume(bytes32(attestationsPayloads[1].schemaId) != 0);
+    // Create attestations payloads
+    AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
+    payloadsToAttest[0] = attestationsPayloads[0];
+    payloadsToAttest[1] = attestationsPayloads[1];
+
+    // Create validation payloads
+    bytes[] memory validationPayload1 = new bytes[](1);
+    bytes[] memory validationPayload2 = new bytes[](1);
+
+    bytes[][] memory validationPayloads = new bytes[][](2);
+    validationPayloads[0] = validationPayload1;
+    validationPayloads[1] = validationPayload2;
+
+    vm.expectEmit(true, true, true, true);
+    emit ModulesBulkRunForAttestationV2();
+    vm.expectEmit(true, true, true, true);
+    emit BulkAttestationsRegistered();
+    defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
+  }
+
+  function test_replace() public {
+    // Create attestation payload
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
+      bytes("subject"),
+      new bytes(1)
+    );
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    defaultPortal.attest(attestationPayload, validationPayload);
+    vm.prank(portalOwner);
+    defaultPortal.replace(bytes32(abi.encode(1)), attestationPayload, validationPayload);
+  }
+
+  function test_replaceFail_OnlyOwner() public {
+    // Create attestation payload
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
+      bytes("subject"),
+      new bytes(1)
+    );
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    defaultPortal.attest(attestationPayload, validationPayload);
+    vm.prank(makeAddr("random"));
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
+    defaultPortal.replace(bytes32(abi.encode(1)), attestationPayload, validationPayload);
+  }
+
+  function test_bulkReplace(AttestationPayload[2] memory attestationPayloads) public {
+    vm.assume(bytes32(attestationPayloads[0].schemaId) != 0);
+    vm.assume(bytes32(attestationPayloads[1].schemaId) != 0);
+    // Create attestations payloads
+    AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
+    payloadsToAttest[0] = attestationPayloads[0];
+    payloadsToAttest[1] = attestationPayloads[1];
+
+    // Create validation payloads
+    bytes[] memory validationPayload1 = new bytes[](1);
+    bytes[] memory validationPayload2 = new bytes[](1);
+
+    bytes[][] memory validationPayloads = new bytes[][](2);
+    validationPayloads[0] = validationPayload1;
+    validationPayloads[1] = validationPayload2;
+
+    bytes32[] memory attestationIds = new bytes32[](2);
+    attestationIds[0] = bytes32(abi.encode(1));
+    attestationIds[1] = bytes32(abi.encode(2));
+
+    defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
+    vm.prank(portalOwner);
+    defaultPortal.bulkReplace(attestationIds, payloadsToAttest, validationPayloads);
+  }
+
+  function test_bulkReplaceFail_OnlyOwner(AttestationPayload[2] memory attestationPayloads) public {
+    vm.assume(bytes32(attestationPayloads[0].schemaId) != 0);
+    vm.assume(bytes32(attestationPayloads[1].schemaId) != 0);
+    // Create attestations payloads
+    AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
+    payloadsToAttest[0] = attestationPayloads[0];
+    payloadsToAttest[1] = attestationPayloads[1];
+
+    // Create validation payloads
+    bytes[] memory validationPayload1 = new bytes[](1);
+    bytes[] memory validationPayload2 = new bytes[](1);
+
+    bytes[][] memory validationPayloads = new bytes[][](2);
+    validationPayloads[0] = validationPayload1;
+    validationPayloads[1] = validationPayload2;
+
+    bytes32[] memory attestationIds = new bytes32[](2);
+    attestationIds[0] = bytes32(abi.encode(1));
+    attestationIds[1] = bytes32(abi.encode(2));
+
+    defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
+    vm.prank(makeAddr("random"));
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
+    defaultPortal.bulkReplace(attestationIds, payloadsToAttest, validationPayloads);
+  }
+
+  function test_revoke_byPortalOwner() public {
+    // Create attestation payload
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
+      bytes("subject"),
+      new bytes(1)
+    );
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+
+    // Do register the attestation
+    vm.prank(makeAddr("attester"));
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    defaultPortal.attest(attestationPayload, validationPayload);
+
+    // Revoke the attestation as portal owner
+    vm.prank(portalOwner);
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRevoked(bytes32(abi.encode(1)));
+    defaultPortal.revoke(bytes32(abi.encode(1)));
+  }
+
+  function test_revokeFail_OnlyOwner() public {
+    // Create attestation payload
+    AttestationPayload memory attestationPayload = AttestationPayload(
+      bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
+      bytes("subject"),
+      new bytes(1)
+    );
+
+    // Create validation payload
+    bytes[] memory validationPayload = new bytes[](2);
+
+    // Do register the attestation
+    vm.prank(makeAddr("attester"));
+    vm.expectEmit(true, true, true, true);
+    emit AttestationRegistered();
+    defaultPortal.attest(attestationPayload, validationPayload);
+
+    // Revoke the attestation as a random user
+    vm.prank(makeAddr("random"));
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
+    defaultPortal.revoke(bytes32(abi.encode(1)));
+  }
+
+  function test_bulkRevoke() public {
+    bytes32[] memory attestationsToRevoke = new bytes32[](2);
+    attestationsToRevoke[0] = bytes32("1");
+    attestationsToRevoke[1] = bytes32("2");
+
+    vm.expectEmit(true, true, true, true);
+    emit BulkAttestationsRevoked(attestationsToRevoke);
+    vm.prank(portalOwner);
+    defaultPortal.bulkRevoke(attestationsToRevoke);
+  }
+
+  function test_supportsInterface() public view {
+    bool isIERC165Supported = defaultPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);
+    assertEq(isIERC165Supported, true);
+    bool isAbstractPortalV2Supported = defaultPortal.supportsInterface(type(AbstractPortalV2).interfaceId);
+    assertEq(isAbstractPortalV2Supported, true);
+  }
+
+  function test_withdraw_byOwner() public {
+    // Fund the portal contract with 1 ether
+    vm.deal(address(defaultPortal), 1 ether);
+
+    // Set the amount to withdraw
+    uint256 withdrawAmount = 0.5 ether;
+    uint256 recipientInitialBalance = recipient.balance;
+
+    // Attempt withdrawal by the owner
+    vm.prank(portalOwner);
+    defaultPortal.withdraw(payable(recipient), withdrawAmount);
+
+    // Verify the recipient's balance has increased by the withdrawal amount
+    assertEq(recipient.balance, recipientInitialBalance + withdrawAmount);
+  }
+
+  function test_withdrawFail_OnlyPortalOwner() public {
+    // Attempt withdrawal by a non-owner address
+    uint256 withdrawAmount = 0.5 ether;
+    vm.prank(makeAddr("nonOwner"));
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
+
+    defaultPortal.withdraw(payable(recipient), withdrawAmount);
+  }
+
+  function test_withdrawFail_InsufficientBalance() public {
+    // Fund the portal contract with less than the requested amount
+    vm.deal(address(defaultPortal), 0.25 ether);
+
+    // Attempt withdrawal of 0.5 ether
+    uint256 withdrawAmount = 0.5 ether;
+    vm.prank(portalOwner);
+    vm.expectRevert(AbstractPortalV2.WithdrawFail.selector);
+
+    defaultPortal.withdraw(payable(recipient), withdrawAmount);
+  }
+}

@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
+import { RouterManager } from "../src/RouterManager.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { CorrectModuleV2 } from "./mocks/CorrectModuleV2Mock.sol";
 import { Portal } from "../src/types/Structs.sol";
@@ -77,7 +78,7 @@ contract PortalRegistryTest is Test {
   function test_updateRouter_RouterInvalid() public {
     PortalRegistry testPortalRegistry = new PortalRegistry(false);
 
-    vm.expectRevert(PortalRegistry.RouterInvalid.selector);
+    vm.expectRevert(RouterManager.RouterInvalid.selector);
     vm.prank(address(0));
     testPortalRegistry.updateRouter(address(0));
   }

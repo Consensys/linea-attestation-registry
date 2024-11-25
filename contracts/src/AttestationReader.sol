@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import { RouterManager } from "./RouterManager.sol";
 import { Attestation as EASAttestation, IEAS } from "./interfaces/IEAS.sol";
 import { Attestation } from "./types/Structs.sol";
 import { AttestationRegistry } from "./AttestationRegistry.sol";
@@ -13,17 +13,13 @@ import { IRouter } from "./interfaces/IRouter.sol";
  * @author Consensys
  * @notice This contract allows to read attestations stored by EAS or Verax
  */
-contract AttestationReader is OwnableUpgradeable {
+contract AttestationReader is RouterManager {
   IRouter public router;
   IEAS public easRegistry;
 
-  /// @notice Error thrown when an invalid Router address is given
-  error RouterInvalid();
   /// @notice Error thrown when an invalid EAS registry address is given
   error EASAddressInvalid();
 
-  /// @notice Event emitted when the router is updated
-  event RouterUpdated(address routerAddress);
   /// @notice Event emitted when the EAS registry address is updated
   event EASRegistryAddressUpdated(address easRegistryAddress);
 
@@ -40,13 +36,11 @@ contract AttestationReader is OwnableUpgradeable {
   }
 
   /**
-   * @notice Changes the address for the Router
-   * @dev Only the registry owner can call this method
+   * @dev Changes the address for the Router
+   * @param _router the new Router address
    */
-  function updateRouter(address _router) public onlyOwner {
-    if (_router == address(0)) revert RouterInvalid();
+  function _setRouter(address _router) internal override {
     router = IRouter(_router);
-    emit RouterUpdated(_router);
   }
 
   /**

@@ -5,7 +5,7 @@ import { OperationType } from "./types/Enums.sol";
 import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./abstracts/AbstractModule.sol";
 import { AbstractModuleV2 } from "./abstracts/AbstractModuleV2.sol";
-import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import { RouterManager } from "./RouterManager.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
@@ -17,15 +17,13 @@ import { uncheckedInc32 } from "./Common.sol";
  * @author Consensys
  * @notice This contract aims to manage the Modules used by the Portals, including their discoverability
  */
-contract ModuleRegistry is OwnableUpgradeable {
+contract ModuleRegistry is RouterManager {
   IRouter public router;
   /// @dev The list of Modules, accessed by their address
   mapping(address id => Module module) public modules;
   /// @dev Deprecated: The `moduleAddresses` variable is no longer used. It was used to store the modules addresses.
   address[] public moduleAddresses;
 
-  /// @notice Error thrown when an invalid Router address is given
-  error RouterInvalid();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
   /// @notice Error thrown when an identical Module was already registered
@@ -45,8 +43,6 @@ contract ModuleRegistry is OwnableUpgradeable {
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
-  /// @notice Event emitted when the router is updated
-  event RouterUpdated(address routerAddress);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -70,13 +66,11 @@ contract ModuleRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Changes the address for the Router
-   * @dev Only the registry owner can call this method
+   * @dev Changes the address for the Router
+   * @param _router the new Router address
    */
-  function updateRouter(address _router) public onlyOwner {
-    if (_router == address(0)) revert RouterInvalid();
+  function _setRouter(address _router) internal override {
     router = IRouter(_router);
-    emit RouterUpdated(_router);
   }
 
   /**

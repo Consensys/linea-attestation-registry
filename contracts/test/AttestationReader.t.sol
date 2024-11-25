@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
+import { RouterManager } from "../src/RouterManager.sol";
 import { AttestationReader } from "../src/AttestationReader.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
 import { AttestationRegistry } from "../src/AttestationRegistry.sol";
@@ -60,7 +61,7 @@ contract AttestationReaderTest is Test {
   function test_updateRouter_RouterInvalid() public {
     AttestationReader testAttestationReader = new AttestationReader();
 
-    vm.expectRevert(AttestationReader.RouterInvalid.selector);
+    vm.expectRevert(RouterManager.RouterInvalid.selector);
     vm.prank(address(0));
     testAttestationReader.updateRouter(address(0));
   }

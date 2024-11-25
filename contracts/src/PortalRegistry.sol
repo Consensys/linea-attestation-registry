@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import { RouterManager } from "./RouterManager.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { AbstractPortalV2 } from "./abstracts/AbstractPortalV2.sol";
@@ -15,7 +15,7 @@ import { uncheckedInc256 } from "./Common.sol";
  * @author Consensys
  * @notice This contract aims to manage the Portals used by attestation issuers
  */
-contract PortalRegistry is OwnableUpgradeable {
+contract PortalRegistry is RouterManager {
   IRouter public router;
 
   mapping(address id => Portal portal) private portals;
@@ -27,8 +27,6 @@ contract PortalRegistry is OwnableUpgradeable {
 
   bool private isTestnet;
 
-  /// @notice Error thrown when an invalid Router address is given
-  error RouterInvalid();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
   /// @notice Error thrown when attempting to register a Portal twice
@@ -56,8 +54,6 @@ contract PortalRegistry is OwnableUpgradeable {
   event IssuerRemoved(address issuerAddress);
   /// @notice Event emitted when a Portal is revoked
   event PortalRevoked(address portalAddress);
-  /// @notice Event emitted when the router is updated
-  event RouterUpdated(address routerAddress);
   /// @notice Event emitted when the `isTestnet` flag is updated
   event IsTestnetUpdated(bool isTestnet);
 
@@ -75,13 +71,11 @@ contract PortalRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Changes the address for the Router
-   * @dev Only the registry owner can call this method
+   * @dev Changes the address for the Router
+   * @param _router the new Router address
    */
-  function updateRouter(address _router) public onlyOwner {
-    if (_router == address(0)) revert RouterInvalid();
+  function _setRouter(address _router) internal override {
     router = IRouter(_router);
-    emit RouterUpdated(_router);
   }
 
   /**

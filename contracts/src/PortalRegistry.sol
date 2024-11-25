@@ -195,7 +195,7 @@ contract PortalRegistry is OwnableUpgradeable {
    * @param description the portal description
    * @param ownerName name of this portal's owner
    */
-  function deployDefaultPortalV2(
+  function deployDefaultPortal(
     address[] calldata modules,
     string calldata name,
     string calldata description,

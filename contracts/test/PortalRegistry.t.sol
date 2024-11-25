@@ -294,21 +294,21 @@ contract PortalRegistryTest is Test {
     portalRegistry.revoke(makeAddr("randomAddress"));
   }
 
-  function test_deployDefaultPortalV2() public {
+  function test_deployDefaultPortal() public {
     CorrectModuleV2 correctModule = new CorrectModuleV2();
     address[] memory modules = new address[](1);
     modules[0] = address(correctModule);
     vm.prank(user);
-    portalRegistry.deployDefaultPortalV2(modules, expectedName, expectedDescription, true, expectedOwnerName);
+    portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription, true, expectedOwnerName);
   }
 
-  function test_deployDefaultPortalV2_OnlyAllowlisted() public {
+  function test_deployDefaultPortal_OnlyAllowlisted() public {
     CorrectModuleV2 correctModule = new CorrectModuleV2();
     address[] memory modules = new address[](1);
     modules[0] = address(correctModule);
     vm.expectRevert(PortalRegistry.OnlyAllowlisted.selector);
     vm.prank(makeAddr("InvalidUser"));
-    portalRegistry.deployDefaultPortalV2(modules, expectedName, expectedDescription, true, expectedOwnerName);
+    portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription, true, expectedOwnerName);
   }
 
   function test_getPortals_PortalNotRegistered() public {

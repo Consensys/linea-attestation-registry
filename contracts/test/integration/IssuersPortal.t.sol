@@ -67,7 +67,7 @@ contract IssuersPortalTest is Test {
     modules[1] = address(issuersModule);
 
     vm.recordLogs();
-    portalRegistry.deployDefaultPortalV2(modules, "IssuersPortal", "IssuersPortal description", true, "Verax");
+    portalRegistry.deployDefaultPortal(modules, "IssuersPortal", "IssuersPortal description", true, "Verax");
     Vm.Log[] memory entries = vm.getRecordedLogs();
 
     // Get the address of the Portal that was just deployed and registered

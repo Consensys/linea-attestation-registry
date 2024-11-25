@@ -91,7 +91,7 @@ contract EASPortal is AbstractPortal {
    *                  as this ID won't be incremented before the end of the transaction.
    *                  If you need to check the attestation ID, please use the `replace` method.
    */
-  function bulkAttest(AttestationRequest[] memory attestationsRequests) external payable {
+  function bulkAttest(AttestationRequest[] calldata attestationsRequests) external payable {
     for (uint256 i = 0; i < attestationsRequests.length; i = uncheckedInc256(i)) {
       attest(attestationsRequests[i]);
     }

@@ -85,7 +85,7 @@ contract AttestationRegistryMock {
     return attestations[attestationId];
   }
 
-  function generateAttestationId(uint256 id) internal view returns (bytes32) {
+  function generateAttestationId(uint256 id) internal pure returns (bytes32) {
     // This is a mock implementation, 1000 is considered as chain prefix
     return bytes32(abi.encode(1000 + id));
   }

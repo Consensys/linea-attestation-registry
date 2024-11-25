@@ -13,7 +13,7 @@ contract EASRegistryMock is IEAS {
     return attestations[uid];
   }
 
-  function addAttestation(Attestation memory attestation) external {
+  function addAttestation(Attestation calldata attestation) external {
     attestations[attestation.uid] = attestation;
   }
 }

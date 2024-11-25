@@ -9,7 +9,6 @@ import { DefaultPortal } from "./DefaultPortal.sol";
 import { Portal } from "./types/Structs.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
 import { IPortal } from "./interfaces/IPortal.sol";
-import { uncheckedInc256 } from "./Common.sol";
 
 /**
  * @title Portal Registry
@@ -198,10 +197,10 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function deployDefaultPortal(
     address[] calldata modules,
-    string memory name,
-    string memory description,
+    string calldata name,
+    string calldata description,
     bool isRevocable,
-    string memory ownerName
+    string calldata ownerName
   ) external onlyAllowlisted(msg.sender) {
     DefaultPortal defaultPortal = new DefaultPortal(modules, address(router));
     register(address(defaultPortal), name, description, isRevocable, ownerName);

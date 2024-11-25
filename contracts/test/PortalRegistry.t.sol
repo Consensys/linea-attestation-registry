@@ -12,8 +12,6 @@ import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
 import { ValidPortalMock } from "./mocks/ValidPortalMock.sol";
 import { InvalidPortalMock } from "./mocks/InvalidPortalMock.sol";
 import { IPortalImplementation } from "./mocks/IPortalImplementation.sol";
-import "../src/PortalRegistry.sol";
-import "../src/PortalRegistry.sol";
 
 contract PortalRegistryTest is Test {
   address public user = makeAddr("user");

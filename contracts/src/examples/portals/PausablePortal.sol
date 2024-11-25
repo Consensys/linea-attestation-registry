@@ -3,10 +3,8 @@ pragma solidity 0.8.21;
 
 import { Pausable } from "@openzeppelin/contracts/security/Pausable.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-import { IERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import { AbstractPortal } from "../../abstracts/AbstractPortal.sol";
-import { Attestation, AttestationPayload } from "../../types/Structs.sol";
-import { IPortal } from "../../interfaces/IPortal.sol";
+import { AttestationPayload } from "../../types/Structs.sol";
 
 /**
  * @title Pausable Portal

@@ -59,6 +59,8 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @param attestationPayload the payload to attest
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
+   * @dev WARNING: Ensure that at most one module processes `msg.value` to avoid accounting issues,
+   *               as the total `msg.value` is forwarded to all modules.
    */
   function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
     moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
@@ -73,6 +75,8 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @param attestationPayload the payload to attest
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
+   * @dev WARNING: Ensure that at most one module processes `msg.value` to avoid accounting issues,
+   *               as the total `msg.value` is forwarded to all modules.
    */
   function attestV2(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
     moduleRegistry.runModulesV2(
@@ -97,6 +101,8 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
    *                  as this ID won't be incremented before the end of the transaction.
    *                  If you need to check the attestation ID, please use the `attest` method.
+   * @dev WARNING: Ensure that at most one module processes `msg.value` to avoid accounting issues,
+   *               as the total `msg.value` is forwarded to all modules.
    */
   function bulkAttest(AttestationPayload[] memory attestationsPayloads, bytes[][] memory validationPayloads) public {
     moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
@@ -113,6 +119,8 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
    *                  as this ID won't be incremented before the end of the transaction.
    *                  If you need to check the attestation ID, please use the `attestV2` method.
+   * @dev WARNING: Ensure that at most one module processes `msg.value` to avoid accounting issues,
+   *               as the total `msg.value` is forwarded to all modules.
    */
   function bulkAttestV2(AttestationPayload[] memory attestationPayloads, bytes[][] memory validationPayloads) public {
     moduleRegistry.bulkRunModulesV2(
@@ -135,6 +143,8 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @param attestationPayload the attestation payload to create the new attestation and register it
    * @param validationPayloads the payloads to validate via the modules to issue the attestation
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
+   * @dev WARNING: Ensure that at most one module processes `msg.value` to avoid accounting issues,
+   *               as the total `msg.value` is forwarded to all modules.
    */
   function replace(
     bytes32 attestationId,
@@ -154,6 +164,8 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @param attestationPayload the attestation payload to create the new attestation and register it
    * @param validationPayloads the payloads to validate via the modules to issue the attestation
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
+   * @dev WARNING: Ensure that at most one module processes `msg.value` to avoid accounting issues,
+   *               as the total `msg.value` is forwarded to all modules.
    */
   function replaceV2(
     bytes32 attestationId,
@@ -183,6 +195,8 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
    *                  as this ID won't be incremented before the end of the transaction.
    *                  If you need to check the attestation ID, please use the `replace` method.
+   * @dev WARNING: Ensure that at most one module processes `msg.value` to avoid accounting issues,
+   *               as the total `msg.value` is forwarded to all modules.
    */
   function bulkReplace(
     bytes32[] memory attestationIds,
@@ -204,6 +218,8 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
    *                  as this ID won't be incremented before the end of the transaction.
    *                  If you need to check the attestation ID, please use the `replaceV2` method.
+   * @dev WARNING: Ensure that at most one module processes `msg.value` to avoid accounting issues,
+   *               as the total `msg.value` is forwarded to all modules.
    */
   function bulkReplaceV2(
     bytes32[] memory attestationIds,
@@ -228,7 +244,7 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @notice Revokes an attestation for the given identifier
    * @param attestationId the ID of the attestation to revoke
    * @dev By default, revocation is only possible by the portal owner
-   * We strongly encourage implementing such a rule in your Portal if you intend on overriding this method
+   *      We strongly encourage implementing such a rule in your Portal if you intend on overriding this method
    */
   function revoke(bytes32 attestationId) public {
     _onRevoke(attestationId);

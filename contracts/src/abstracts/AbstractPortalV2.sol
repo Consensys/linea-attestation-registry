@@ -219,6 +219,16 @@ abstract contract AbstractPortalV2 is IPortal {
   ) internal virtual {}
 
   /**
+   * @notice Optional method run when attesting a batch of payloads
+   * @param attestationsPayloads the payloads to attest
+   * @param validationPayloads the payloads to validate in order to issue the attestations
+   */
+  function _onBulkAttest(
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) internal virtual {}
+
+  /**
    * @notice Optional method run when an attestation is replaced
    * @dev    IMPORTANT NOTE: By default, replacement is only possible by the portal owner
    * @param attestationId the ID of the attestation being replaced
@@ -234,16 +244,6 @@ abstract contract AbstractPortalV2 is IPortal {
   ) internal virtual {
     if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
   }
-
-  /**
-   * @notice Optional method run when attesting a batch of payloads
-   * @param attestationsPayloads the payloads to attest
-   * @param validationPayloads the payloads to validate in order to issue the attestations
-   */
-  function _onBulkAttest(
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
-  ) internal virtual {}
 
   /**
    * @notice Optional method run when replacing a batch of payloads

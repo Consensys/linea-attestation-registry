@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import { RouterManager } from "./RouterManager.sol";
 import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
@@ -13,7 +13,7 @@ import { uncheckedInc256 } from "./Common.sol";
  * @author Consensys
  * @notice This contract stores a registry of all attestations
  */
-contract AttestationRegistry is OwnableUpgradeable {
+contract AttestationRegistry is RouterManager {
   IRouter public router;
 
   uint16 private version;
@@ -25,8 +25,6 @@ contract AttestationRegistry is OwnableUpgradeable {
 
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
-  /// @notice Error thrown when an invalid Router address is given
-  error RouterInvalid();
   /// @notice Error thrown when an attestation is not registered in the AttestationRegistry
   error AttestationNotAttested();
   /// @notice Error thrown when an attempt is made to revoke an attestation by an entity other than the attesting portal
@@ -52,8 +50,6 @@ contract AttestationRegistry is OwnableUpgradeable {
   event AttestationRevoked(bytes32 attestationId);
   /// @notice Event emitted when the version number is incremented
   event VersionUpdated(uint16 version);
-  /// @notice Event emitted when the router is updated
-  event RouterUpdated(address routerAddress);
   /// @notice Event emitted when the chain prefix is updated
   event ChainPrefixUpdated(uint256 chainPrefix);
 
@@ -80,13 +76,11 @@ contract AttestationRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Changes the address for the Router
-   * @dev Only the registry owner can call this method
+   * @dev Changes the address for the Router
+   * @param _router the new Router address
    */
-  function updateRouter(address _router) public onlyOwner {
-    if (_router == address(0)) revert RouterInvalid();
+  function _setRouter(address _router) internal override {
     router = IRouter(_router);
-    emit RouterUpdated(_router);
   }
 
   /**

@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
+import { RouterManager } from "../src/RouterManager.sol";
 import { AttestationRegistry } from "../src/AttestationRegistry.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
@@ -119,7 +120,7 @@ contract AttestationRegistryTest is Test {
   function test_updateRouter_InvalidParameter() public {
     AttestationRegistry testAttestationRegistry = new AttestationRegistry();
 
-    vm.expectRevert(AttestationRegistry.RouterInvalid.selector);
+    vm.expectRevert(RouterManager.RouterInvalid.selector);
     vm.prank(address(0));
     testAttestationRegistry.updateRouter(address(0));
   }

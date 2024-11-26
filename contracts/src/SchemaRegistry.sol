@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import { RouterManager } from "./RouterManager.sol";
 import { Schema } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
@@ -12,7 +12,7 @@ import { uncheckedInc256 } from "./Common.sol";
  * @author Consensys
  * @notice This contract aims to manage the Schemas used by the Portals, including their discoverability
  */
-contract SchemaRegistry is OwnableUpgradeable {
+contract SchemaRegistry is RouterManager {
   IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) private schemas;
@@ -21,8 +21,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   /// @dev Associates a Schema ID with the address of the Issuer who created it
   mapping(bytes32 id => address issuer) private schemasIssuers;
 
-  /// @notice Error thrown when an invalid Router address is given
-  error RouterInvalid();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
   /// @notice Error thrown when any address which is not a portal registry tries to call a method
@@ -44,8 +42,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
   /// @notice Event emitted when a Schema context is updated
   event SchemaContextUpdated(bytes32 indexed id);
-  /// @notice Event emitted when the router is updated
-  event RouterUpdated(address routerAddress);
   /// @notice Event emitted when the schema issuer is updated
   event SchemaIssuerUpdated(bytes32 schemaId, address schemaIssuerAddress);
 
@@ -81,13 +77,11 @@ contract SchemaRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Changes the address for the Router
-   * @dev Only the registry owner can call this method
+   * @dev Changes the address for the Router
+   * @param _router the new Router address
    */
-  function updateRouter(address _router) public onlyOwner {
-    if (_router == address(0)) revert RouterInvalid();
+  function _setRouter(address _router) internal override {
     router = IRouter(_router);
-    emit RouterUpdated(_router);
   }
 
   /**

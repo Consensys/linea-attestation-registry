@@ -23,13 +23,12 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const { data: attesterEnsAddress } = useEnsName({
     address: attestation.attester as Address,
     chainId: mainnet.id,
-    enabled: true,
   });
 
   const { data: subjectEnsAddress } = useEnsName({
     address: attestation.subject as Address,
     chainId: mainnet.id,
-    enabled: isAddress(attestation.subject),
+    query: { enabled: isAddress(attestation.subject) },
   });
 
   const displayAttesterEnsNameOrAddress = useCallback(() => {

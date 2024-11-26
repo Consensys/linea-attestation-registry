@@ -41,7 +41,7 @@ export const Portal = () => {
   const { data: portalOwnerEnsAddress } = useEnsName({
     address: portal?.ownerAddress as Address,
     chainId: mainnet.id,
-    enabled: !isLoading,
+    query: { enabled: !isLoading },
   });
 
   const displayPortalOwnerEnsAddress = useCallback(() => {

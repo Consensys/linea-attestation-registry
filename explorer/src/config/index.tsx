@@ -1,7 +1,17 @@
 import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { getDefaultConfig } from "connectkit";
-import { Chain, createConfig, mainnet } from "wagmi";
-import { arbitrum, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
+import { createConfig, http } from "wagmi";
+import {
+  arbitrum,
+  arbitrumSepolia,
+  base,
+  baseSepolia,
+  bsc,
+  bscTestnet,
+  linea,
+  lineaSepolia,
+  mainnet,
+} from "wagmi/chains";
 
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
 import ArbitrumIconDark from "@/assets/networks/arbitrum-dark.svg?react";
@@ -17,36 +27,6 @@ import LineaMainnetIconDark from "@/assets/networks/linea-dark.svg?react";
 import LineaSepoliaIcon from "@/assets/networks/linea-sepolia.svg?react";
 import LineaMainnetIcon from "@/assets/networks/linea.svg?react";
 import { INetwork } from "@/interfaces/config";
-
-const lineaSepolia = {
-  id: 59_141,
-  name: "Linea Sepolia Testnet",
-  network: "linea-sepolia",
-  nativeCurrency: { name: "Linea Ether", symbol: "ETH", decimals: 18 },
-  rpcUrls: {
-    default: {
-      http: ["https://rpc.sepolia.linea.build"],
-      webSocket: ["wss://rpc.sepolia.linea.build"],
-    },
-    public: {
-      http: ["https://rpc.sepolia.linea.build"],
-      webSocket: ["wss://rpc.sepolia.linea.build"],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: "Etherscan",
-      url: "https://sepolia.lineascan.build",
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: "0xca11bde05977b3631167028862be2a173976ca11",
-      blockCreated: 227427,
-    },
-  },
-  testnet: true,
-} as const satisfies Chain;
 
 const chains: INetwork[] = [
   {
@@ -151,14 +131,25 @@ const chains: INetwork[] = [
   },
 ];
 
+const infuraApiKey: string = import.meta.env.VITE_INFURA_API_KEY;
+
 const config = createConfig(
   getDefaultConfig({
-    autoConnect: true,
-    infuraId: import.meta.env.VITE_INFURA_API_KEY,
-    walletConnectProjectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "",
-    chains: [...chains.map((el) => el.chain), mainnet],
     appName: "Verax | Explorer",
     appIcon: veraxColoredIcon,
+    walletConnectProjectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "",
+    chains: [mainnet, ...chains.map((el) => el.chain)],
+    transports: {
+      [mainnet.id]: http(`https://mainnet.infura.io/v3/${infuraApiKey}`),
+      [arbitrum.id]: http(`https://arbitrum-mainnet.infura.io/v3/${infuraApiKey}`),
+      [arbitrumSepolia.id]: http(`https://arbitrum-sepolia.infura.io/v3/${infuraApiKey}`),
+      [base.id]: http(`https://base-mainnet.infura.io/v3/${infuraApiKey}`),
+      [baseSepolia.id]: http(`https://base-sepolia.infura.io/v3/${infuraApiKey}`),
+      [bsc.id]: http(`https://bsc-mainnet.infura.io/v3/${infuraApiKey}`),
+      [bscTestnet.id]: http(`https://bsc-testnet.infura.io/v3/${infuraApiKey}`),
+      [linea.id]: http(`https://linea-mainnet.infura.io/v3/${infuraApiKey}`),
+      [lineaSepolia.id]: http(`https://linea-sepolia.infura.io/v3/${infuraApiKey}`),
+    },
   }),
 );
 

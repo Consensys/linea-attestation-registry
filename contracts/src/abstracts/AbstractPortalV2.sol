@@ -202,7 +202,7 @@ abstract contract AbstractPortalV2 is IPortal {
    * @notice Defines the address of the entity issuing attestations to the subject
    * @dev We strongly encourage a reflection when overriding this rule: who should be set as the attester?
    */
-  function getAttester() public view virtual returns (address) {
+  function getAttester() internal view virtual returns (address) {
     return msg.sender;
   }
 

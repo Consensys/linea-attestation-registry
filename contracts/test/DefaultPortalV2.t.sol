@@ -243,6 +243,17 @@ contract DefaultPortalV2Test is Test {
     defaultPortal.bulkRevoke(attestationsToRevoke);
   }
 
+  function test_bulkRevoke_OnlyOwner() public {
+    bytes32[] memory attestationsToRevoke = new bytes32[](2);
+    attestationsToRevoke[0] = bytes32("1");
+    attestationsToRevoke[1] = bytes32("2");
+
+    // Revoke the attestation as a random user
+    vm.prank(makeAddr("random"));
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
+    defaultPortal.bulkRevoke(attestationsToRevoke);
+  }
+
   function test_supportsInterface() public view {
     bool isIERC165Supported = defaultPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);
     assertEq(isIERC165Supported, true);

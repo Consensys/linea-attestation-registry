@@ -23,8 +23,6 @@ contract SchemaRegistry is RouterManager {
 
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
-  /// @notice Error thrown when any address which is not a portal registry tries to call a method
-  error OnlyPortalRegistry();
   /// @notice Error thrown when a non-assigned issuer tries to call a method that can only be called by an assigned issuer
   error OnlyAssignedIssuer();
   /// @notice Error thrown when an invalid Issuer address is given
@@ -63,16 +61,6 @@ contract SchemaRegistry is RouterManager {
    */
   modifier onlyAllowlisted(address user) {
     if (!PortalRegistry(router.getPortalRegistry()).isAllowlisted(user)) revert OnlyAllowlisted();
-    _;
-  }
-
-  /**
-   * @notice Checks if the caller is the portal registry.
-   * @param caller the caller address
-   */
-  modifier onlyPortalRegistry(address caller) {
-    bool isCallerPortalRegistry = router.getPortalRegistry() == caller;
-    if (!isCallerPortalRegistry) revert OnlyPortalRegistry();
     _;
   }
 

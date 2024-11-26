@@ -4,11 +4,11 @@ pragma solidity 0.8.21;
 import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
-import { AbstractPortal } from "./abstracts/AbstractPortal.sol";
-import { DefaultPortal } from "./DefaultPortal.sol";
+import { AbstractPortalV2 } from "./abstracts/AbstractPortalV2.sol";
+import { DefaultPortalV2 } from "./DefaultPortalV2.sol";
 import { Portal } from "./types/Structs.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
-import { IPortal } from "./interfaces/IPortal.sol";
+import { uncheckedInc256 } from "./Common.sol";
 
 /**
  * @title Portal Registry
@@ -161,11 +161,11 @@ contract PortalRegistry is OwnableUpgradeable {
     // Check if the owner's name is not empty
     if (bytes(ownerName).length == 0) revert PortalOwnerNameMissing();
 
-    // Check if portal has implemented AbstractPortal
-    if (!ERC165CheckerUpgradeable.supportsInterface(id, type(IPortal).interfaceId)) revert PortalInvalid();
+    // Check if portal has implemented AbstractPortalV2
+    if (!ERC165CheckerUpgradeable.supportsInterface(id, type(AbstractPortalV2).interfaceId)) revert PortalInvalid();
 
     // Get the array of modules implemented by the portal
-    address[] memory modules = AbstractPortal(id).getModules();
+    address[] memory modules = AbstractPortalV2(id).getModules();
 
     // Add portal to mapping
     Portal memory newPortal = Portal(id, msg.sender, modules, isRevocable, name, description, ownerName);
@@ -189,7 +189,7 @@ contract PortalRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Deploys and registers a clone of default portal
+   * @notice Deploys and registers a clone of default portal V2
    * @param modules the modules addresses
    * @param name the portal name
    * @param description the portal description
@@ -202,7 +202,7 @@ contract PortalRegistry is OwnableUpgradeable {
     bool isRevocable,
     string calldata ownerName
   ) external onlyAllowlisted(msg.sender) {
-    DefaultPortal defaultPortal = new DefaultPortal(modules, address(router));
+    DefaultPortalV2 defaultPortal = new DefaultPortalV2(modules, address(router));
     register(address(defaultPortal), name, description, isRevocable, ownerName);
   }
 

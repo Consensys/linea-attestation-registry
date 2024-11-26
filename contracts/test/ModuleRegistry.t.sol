@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { ModuleRegistry } from "../src/ModuleRegistry.sol";
-import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
+import { OldVersionModule } from "./mocks/OldVersionModuleMock.sol";
 import { CorrectModuleV2 } from "./mocks/CorrectModuleV2Mock.sol";
 import { IncorrectModule } from "./mocks/IncorrectModuleMock.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
@@ -18,7 +18,7 @@ contract ModuleRegistryTest is Test {
   address public portalRegistryAddress;
   string private expectedName = "Name";
   string private expectedDescription = "Description";
-  address private expectedAddress = address(new CorrectModule());
+  address private expectedAddress = address(new CorrectModuleV2());
   address private user = makeAddr("user");
   AttestationPayload private attestationPayload;
 
@@ -124,27 +124,19 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.register(expectedName, expectedDescription, address(incorrectModule));
   }
 
+  function test_register_old_version_ModuleInvalid() public {
+    OldVersionModule oldVersionModule = new OldVersionModule();
+    vm.expectRevert(ModuleRegistry.ModuleInvalid.selector);
+    vm.prank(user);
+    moduleRegistry.register(expectedName, expectedDescription, address(oldVersionModule));
+  }
+
   function test_register_ModuleAlreadyExists() public {
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.expectRevert(ModuleRegistry.ModuleAlreadyExists.selector);
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
-  }
-
-  function test_runModules() public {
-    // Register 2 modules
-    address[] memory moduleAddresses = new address[](2);
-    moduleAddresses[0] = address(new CorrectModule());
-    moduleAddresses[1] = address(new CorrectModule());
-    vm.startPrank(user);
-    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
-    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
-    vm.stopPrank();
-    // Create validation payload
-    bytes[] memory validationPayload = new bytes[](2);
-
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
   function test_runModulesV2() public {
@@ -243,8 +235,8 @@ contract ModuleRegistryTest is Test {
   function test_runModules_ModuleNotRegistered() public {
     // Create 2 modules without registration
     address[] memory moduleAddresses = new address[](2);
-    moduleAddresses[0] = address(new CorrectModule());
-    moduleAddresses[1] = address(new CorrectModule());
+    moduleAddresses[0] = address(new OldVersionModule());
+    moduleAddresses[1] = address(new OldVersionModule());
 
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](2);
@@ -274,31 +266,6 @@ contract ModuleRegistryTest is Test {
       address(makeAddr("attester")),
       OperationType.Attest
     );
-  }
-
-  function test_bulkRunModules() public {
-    // Register 2 modules
-    address[] memory moduleAddresses = new address[](2);
-    moduleAddresses[0] = address(new CorrectModule());
-    moduleAddresses[1] = address(new CorrectModule());
-    vm.startPrank(user);
-    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
-    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
-
-    // Create validation payloads
-    bytes[] memory validationPayload1 = new bytes[](2);
-    bytes[] memory validationPayload2 = new bytes[](2);
-
-    bytes[][] memory validationPayloads = new bytes[][](2);
-    validationPayloads[0] = validationPayload1;
-    validationPayloads[1] = validationPayload2;
-
-    AttestationPayload[] memory attestationPayloads = new AttestationPayload[](2);
-    attestationPayloads[0] = attestationPayload;
-    attestationPayloads[1] = attestationPayload;
-
-    moduleRegistry.bulkRunModules(moduleAddresses, attestationPayloads, validationPayloads);
-    vm.stopPrank();
   }
 
   function test_bulkRunModulesV2() public {

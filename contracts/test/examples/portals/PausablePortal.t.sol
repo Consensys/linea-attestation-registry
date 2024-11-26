@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import { Test } from "forge-std/Test.sol";
 import { PausablePortal } from "../../../src/examples/portals/PausablePortal.sol";
 import { Router } from "../../../src/Router.sol";
-import { AbstractPortal } from "../../../src/abstracts/AbstractPortal.sol";
+import { AbstractPortalV2 } from "../../../src/abstracts/AbstractPortalV2.sol";
 import { AttestationPayload } from "../../../src/types/Structs.sol";
 import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
 import { PortalRegistryMock } from "../../mocks/PortalRegistryMock.sol";
@@ -103,36 +103,6 @@ contract PausablePortalTest is Test {
     pausablePortal.attest(attestationPayload, validationPayload);
   }
 
-  function test_attestV2_unpaused() public {
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32(uint256(1)),
-      uint64(block.timestamp + 30 days),
-      abi.encode(makeAddr("user")),
-      new bytes(1)
-    );
-    bytes[] memory validationPayload = new bytes[](0);
-
-    vm.expectEmit(true, true, true, true);
-    emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
-  }
-
-  function test_attestV2_paused() public {
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32(uint256(1)),
-      uint64(block.timestamp + 30 days),
-      abi.encode(makeAddr("user")),
-      new bytes(1)
-    );
-    bytes[] memory validationPayload = new bytes[](0);
-
-    vm.prank(address(this));
-    pausablePortal.pause();
-
-    vm.expectRevert("Pausable: paused");
-    pausablePortal.attestV2(attestationPayload, validationPayload);
-  }
-
   function test_bulkAttest_unpaused() public {
     AttestationPayload memory attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
@@ -178,51 +148,6 @@ contract PausablePortalTest is Test {
     pausablePortal.bulkAttest(attestationPayloads, validationPayloads);
   }
 
-  function test_bulkAttestV2_unpaused() public {
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32(uint256(1)),
-      uint64(block.timestamp + 30 days),
-      abi.encode(makeAddr("user")),
-      new bytes(1)
-    );
-    AttestationPayload[] memory attestationPayloads = new AttestationPayload[](2);
-    attestationPayloads[0] = attestationPayload;
-    attestationPayloads[1] = attestationPayload;
-
-    bytes[] memory validationPayload = new bytes[](2);
-    bytes[][] memory validationPayloads = new bytes[][](2);
-    validationPayloads[0] = validationPayload;
-    validationPayloads[1] = validationPayload;
-
-    vm.prank(address(0));
-    vm.expectEmit(true, true, true, true);
-    emit BulkAttestationsRegistered();
-    pausablePortal.bulkAttestV2(attestationPayloads, validationPayloads);
-  }
-
-  function test_bulkAttestV2_paused() public {
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32(uint256(1)),
-      uint64(block.timestamp + 30 days),
-      abi.encode(makeAddr("user")),
-      new bytes(1)
-    );
-    AttestationPayload[] memory attestationPayloads = new AttestationPayload[](2);
-    attestationPayloads[0] = attestationPayload;
-    attestationPayloads[1] = attestationPayload;
-
-    bytes[] memory validationPayload = new bytes[](2);
-    bytes[][] memory validationPayloads = new bytes[][](2);
-    validationPayloads[0] = validationPayload;
-    validationPayloads[1] = validationPayload;
-
-    vm.prank(address(this));
-    pausablePortal.pause();
-
-    vm.expectRevert("Pausable: paused");
-    pausablePortal.bulkAttestV2(attestationPayloads, validationPayloads);
-  }
-
   function test_replace_unpaused() public {
     AttestationPayload memory attestationPayload = AttestationPayload(
       bytes32(uint256(1)),
@@ -234,7 +159,7 @@ contract PausablePortalTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
 
     vm.prank(portalOwner);
     vm.expectEmit(true, true, true, true);
@@ -253,7 +178,7 @@ contract PausablePortalTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
 
     vm.prank(address(this));
     pausablePortal.pause();
@@ -274,10 +199,10 @@ contract PausablePortalTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
 
     vm.prank(makeAddr("wrongOwner"));
-    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
     pausablePortal.replace(bytes32(uint256(1)), attestationPayload, validationPayload);
   }
 
@@ -356,7 +281,7 @@ contract PausablePortalTest is Test {
     attestationIds[1] = bytes32(uint256(2));
 
     vm.prank(makeAddr("wrongOwner"));
-    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
     pausablePortal.bulkReplace(attestationIds, attestationPayloads, validationPayloads);
   }
 
@@ -371,7 +296,7 @@ contract PausablePortalTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
 
     vm.prank(portalOwner);
     vm.expectEmit(true, true, true, true);
@@ -390,7 +315,7 @@ contract PausablePortalTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
 
     vm.prank(address(this));
     pausablePortal.pause();
@@ -411,10 +336,10 @@ contract PausablePortalTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
 
     vm.prank(makeAddr("wrongOwner"));
-    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
     pausablePortal.revoke(bytes32(uint256(1)));
   }
 
@@ -429,10 +354,10 @@ contract PausablePortalTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
 
     bytes32[] memory attestationIds = new bytes32[](2);
     attestationIds[0] = bytes32(uint256(1));
@@ -455,10 +380,10 @@ contract PausablePortalTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
 
     bytes32[] memory attestationIds = new bytes32[](2);
     attestationIds[0] = bytes32(uint256(1));
@@ -483,24 +408,24 @@ contract PausablePortalTest is Test {
 
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    pausablePortal.attestV2(attestationPayload, validationPayload);
+    pausablePortal.attest(attestationPayload, validationPayload);
 
     bytes32[] memory attestationIds = new bytes32[](2);
     attestationIds[0] = bytes32(uint256(1));
     attestationIds[1] = bytes32(uint256(2));
 
     vm.prank(makeAddr("wrongOwner"));
-    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
     pausablePortal.bulkRevoke(attestationIds);
   }
 
   function testSupportsInterface() public view {
     bool isIERC165Supported = pausablePortal.supportsInterface(type(IERC165).interfaceId);
     assertTrue(isIERC165Supported);
-    bool isEASAbstractPortalSupported = pausablePortal.supportsInterface(type(AbstractPortal).interfaceId);
-    assertTrue(isEASAbstractPortalSupported);
+    bool isEASAbstractPortalV2Supported = pausablePortal.supportsInterface(type(AbstractPortalV2).interfaceId);
+    assertTrue(isEASAbstractPortalV2Supported);
   }
 }

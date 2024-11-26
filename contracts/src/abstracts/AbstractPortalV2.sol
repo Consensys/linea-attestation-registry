@@ -11,11 +11,13 @@ import { IRouter } from "../interfaces/IRouter.sol";
 import { IPortal } from "../interfaces/IPortal.sol";
 
 /**
- * @title Abstract Portal
+ * @title Abstract Portal V2
  * @author Consensys
- * @notice Deprecated. Use the AbstractPortalV2 contract instead.
+ * @notice This contract is an abstracts contract with basic Portal logic
+ *         to be inherited. We strongly encourage all Portals to implement
+ *         this contract.
  */
-abstract contract AbstractPortal is IPortal {
+abstract contract AbstractPortalV2 is IPortal {
   IRouter public router;
   address[] public modules;
   ModuleRegistry public moduleRegistry;
@@ -61,20 +63,6 @@ abstract contract AbstractPortal is IPortal {
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
    */
   function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
-    moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
-
-    _onAttest(attestationPayload, getAttester(), msg.value);
-
-    attestationRegistry.attest(attestationPayload, getAttester());
-  }
-
-  /**
-   * @notice Attest the schema with given attestationPayload and validationPayload
-   * @param attestationPayload the payload to attest
-   * @param validationPayloads the payloads to validate via the modules to issue the attestations
-   * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
-   */
-  function attestV2(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
     moduleRegistry.runModulesV2(
       modules,
       attestationPayload,
@@ -85,25 +73,9 @@ abstract contract AbstractPortal is IPortal {
       OperationType.Attest
     );
 
-    _onAttestV2(attestationPayload, validationPayloads, msg.value);
+    _onAttest(attestationPayload, validationPayloads, msg.value);
 
     attestationRegistry.attest(attestationPayload, getAttester());
-  }
-
-  /**
-   * @notice Bulk attest the schema with payloads to attest and validation payloads
-   * @param attestationsPayloads the payloads to attest
-   * @param validationPayloads the payloads to validate via the modules to issue the attestations
-   * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
-   *                  as this ID won't be incremented before the end of the transaction.
-   *                  If you need to check the attestation ID, please use the `attest` method.
-   */
-  function bulkAttest(AttestationPayload[] memory attestationsPayloads, bytes[][] memory validationPayloads) public {
-    moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
-
-    _onBulkAttest(attestationsPayloads, validationPayloads);
-
-    attestationRegistry.bulkAttest(attestationsPayloads, getAttester());
   }
 
   /**
@@ -114,7 +86,7 @@ abstract contract AbstractPortal is IPortal {
    *                  as this ID won't be incremented before the end of the transaction.
    *                  If you need to check the attestation ID, please use the `attestV2` method.
    */
-  function bulkAttestV2(AttestationPayload[] memory attestationPayloads, bytes[][] memory validationPayloads) public {
+  function bulkAttest(AttestationPayload[] memory attestationPayloads, bytes[][] memory validationPayloads) public {
     moduleRegistry.bulkRunModulesV2(
       modules,
       attestationPayloads,
@@ -141,25 +113,6 @@ abstract contract AbstractPortal is IPortal {
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayloads
   ) public payable {
-    moduleRegistry.runModules(modules, attestationPayload, validationPayloads, msg.value);
-
-    _onReplace(attestationId, attestationPayload, getAttester(), msg.value);
-
-    attestationRegistry.replace(attestationId, attestationPayload, getAttester());
-  }
-
-  /**
-   * @notice Replaces the attestation for the given identifier and replaces it with a new attestation
-   * @param attestationId the ID of the attestation to replace
-   * @param attestationPayload the attestation payload to create the new attestation and register it
-   * @param validationPayloads the payloads to validate via the modules to issue the attestation
-   * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
-   */
-  function replaceV2(
-    bytes32 attestationId,
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayloads
-  ) public payable {
     moduleRegistry.runModulesV2(
       modules,
       attestationPayload,
@@ -182,30 +135,9 @@ abstract contract AbstractPortal is IPortal {
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
    * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
    *                  as this ID won't be incremented before the end of the transaction.
-   *                  If you need to check the attestation ID, please use the `replace` method.
-   */
-  function bulkReplace(
-    bytes32[] memory attestationIds,
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
-  ) public {
-    moduleRegistry.bulkRunModules(modules, attestationsPayloads, validationPayloads);
-
-    _onBulkReplace(attestationIds, attestationsPayloads, validationPayloads);
-
-    attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, getAttester());
-  }
-
-  /**
-   * @notice Bulk replaces the attestation for the given identifiers and replaces them with new attestations
-   * @param attestationIds the list of IDs of the attestations to replace
-   * @param attestationsPayloads the list of attestation payloads to create the new attestations and register them
-   * @param validationPayloads the payloads to validate via the modules to issue the attestations
-   * @dev DISCLAIMER: This method may have unexpected behavior if one of the Module checks is done on the attestation ID
-   *                  as this ID won't be incremented before the end of the transaction.
    *                  If you need to check the attestation ID, please use the `replaceV2` method.
    */
-  function bulkReplaceV2(
+  function bulkReplace(
     bytes32[] memory attestationIds,
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
@@ -261,7 +193,7 @@ abstract contract AbstractPortal is IPortal {
    */
   function supportsInterface(bytes4 interfaceID) public pure virtual override returns (bool) {
     return
-      interfaceID == type(AbstractPortal).interfaceId ||
+      interfaceID == type(AbstractPortalV2).interfaceId ||
       interfaceID == type(IPortal).interfaceId ||
       interfaceID == type(IERC165).interfaceId;
   }
@@ -276,19 +208,11 @@ abstract contract AbstractPortal is IPortal {
 
   /**
    * @notice Optional method run before a payload is attested
-   * @param attestationPayload the attestation payload supposed to be attested
-   * @param attester the address of the attester
-   * @param value the value sent with the attestation
-   */
-  function _onAttest(AttestationPayload memory attestationPayload, address attester, uint256 value) internal virtual {}
-
-  /**
-   * @notice Optional method run before a payload is attested
    * @param attestationPayload the attestation payload to attest
    * @param validationPayloads the payloads to validate via the modules
    * @param value the value sent with the attestation
    */
-  function _onAttestV2(
+  function _onAttest(
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayloads,
     uint256 value

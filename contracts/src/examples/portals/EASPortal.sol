@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractPortal } from "../../abstracts/AbstractPortal.sol";
+import { AbstractPortalV2 } from "../../abstracts/AbstractPortalV2.sol";
 import { AttestationPayload } from "../../types/Structs.sol";
 import { uncheckedInc256 } from "../../Common.sol";
 
@@ -10,7 +10,7 @@ import { uncheckedInc256 } from "../../Common.sol";
  * @author Consensys
  * @notice This is an example of how to maintain interoperability with EAS - https://attest.sh
  */
-contract EASPortal is AbstractPortal {
+contract EASPortal is AbstractPortalV2 {
   // @notice This struct is defined in EAS's src' codebase
   // solhint-disable-next-line max-line-length
   // this definition was taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L9
@@ -46,9 +46,9 @@ contract EASPortal is AbstractPortal {
    * @param router Router's address
    * @dev This sets the addresses for the AttestationRegistry, ModuleRegistry and PortalRegistry
    */
-  constructor(address[] memory modules, address router) AbstractPortal(modules, router) {}
+  constructor(address[] memory modules, address router) AbstractPortalV2(modules, router) {}
 
-  /// @inheritdoc AbstractPortal
+  /// @inheritdoc AbstractPortalV2
   function withdraw(address payable to, uint256 amount) external override {}
 
   /**
@@ -98,7 +98,7 @@ contract EASPortal is AbstractPortal {
   }
 
   /**
-   * @inheritdoc AbstractPortal
+   * @inheritdoc AbstractPortalV2
    * @notice This portal doesn't allow for an attestation to be revoked
    */
   function _onRevoke(bytes32 /*attestationId*/) internal pure override {
@@ -106,7 +106,7 @@ contract EASPortal is AbstractPortal {
   }
 
   /**
-   * @inheritdoc AbstractPortal
+   * @inheritdoc AbstractPortalV2
    * @notice This portal doesn't allow for attestations to be revoked
    */
   function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal pure override {

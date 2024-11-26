@@ -5,11 +5,11 @@ import { AbstractModule } from "../../src/abstracts/AbstractModule.sol";
 import { AttestationPayload } from "../../src/types/Structs.sol";
 
 /**
- * @title Correct Module
+ * @title Old Version Module
  * @author Consensys
- * @notice This contract illustrates a valid Module that follows the AbstractModule interface
+ * @notice This contract illustrates an old version of Module that follows the AbstractModule interface
  */
-contract CorrectModule is AbstractModule {
+contract OldVersionModule is AbstractModule {
   /// @dev This empty method prevents Foundry from counting this contract in code coverage
   function test() public {}
 

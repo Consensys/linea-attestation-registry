@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import { Test } from "forge-std/Test.sol";
 import { EASPortal } from "../../../src/examples/portals/EASPortal.sol";
 import { Router } from "../../../src/Router.sol";
-import { AbstractPortal } from "../../../src/abstracts/AbstractPortal.sol";
+import { AbstractPortalV2 } from "../../../src/abstracts/AbstractPortalV2.sol";
 import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
 import { ERC165Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
@@ -153,7 +153,7 @@ contract EASPortalTest is Test {
   function test_supportsInterface() public view {
     bool isIERC165Supported = easPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);
     assertEq(isIERC165Supported, true);
-    bool isEASAbstractPortalSupported = easPortal.supportsInterface(type(AbstractPortal).interfaceId);
+    bool isEASAbstractPortalSupported = easPortal.supportsInterface(type(AbstractPortalV2).interfaceId);
     assertEq(isEASAbstractPortalSupported, true);
   }
 }

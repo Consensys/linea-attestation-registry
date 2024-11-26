@@ -2,8 +2,8 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { AbstractPortal } from "../src/abstracts/AbstractPortal.sol";
-import { DefaultPortal } from "../src/DefaultPortal.sol";
+import { AbstractPortalV2 } from "../src/abstracts/AbstractPortalV2.sol";
+import { DefaultPortalV2 } from "../src/DefaultPortalV2.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
 import { OldVersionModule } from "./mocks/OldVersionModuleMock.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
@@ -12,10 +12,10 @@ import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { ERC165Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
 import { Router } from "./../src/Router.sol";
 
-contract DefaultPortalTest is Test {
+contract DefaultPortalV2Test is Test {
   OldVersionModule public correctModule = new OldVersionModule();
   address[] public modules = new address[](1);
-  DefaultPortal public defaultPortal;
+  DefaultPortalV2 public defaultPortal;
   ModuleRegistryMock public moduleRegistryMock = new ModuleRegistryMock();
   PortalRegistryMock public portalRegistryMock = new PortalRegistryMock();
   AttestationRegistryMock public attestationRegistryMock = new AttestationRegistryMock();
@@ -40,7 +40,7 @@ contract DefaultPortalTest is Test {
     router.updatePortalRegistry(address(portalRegistryMock));
 
     modules.push(address(correctModule));
-    defaultPortal = new DefaultPortal(modules, address(router));
+    defaultPortal = new DefaultPortalV2(modules, address(router));
 
     vm.prank(portalOwner);
     portalRegistryMock.register(address(defaultPortal), "Name", "Description", true, "Owner name");
@@ -74,45 +74,7 @@ contract DefaultPortalTest is Test {
     defaultPortal.attest(attestationPayload, validationPayload);
   }
 
-  function test_attestV2() public {
-    // Create attestation payload
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32(uint256(1)),
-      uint64(block.timestamp + 1 days),
-      bytes("subject"),
-      new bytes(1)
-    );
-    // Create validation payload
-    bytes[] memory validationPayload = new bytes[](2);
-    vm.expectEmit(true, true, true, true);
-    emit AttestationRegistered();
-    defaultPortal.attestV2(attestationPayload, validationPayload);
-  }
-
   function test_bulkAttest(AttestationPayload[2] memory attestationsPayloads) public {
-    vm.assume(bytes32(attestationsPayloads[0].schemaId) != 0);
-    vm.assume(bytes32(attestationsPayloads[1].schemaId) != 0);
-    // Create attestations payloads
-    AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
-    payloadsToAttest[0] = attestationsPayloads[0];
-    payloadsToAttest[1] = attestationsPayloads[1];
-
-    // Create validation payloads
-    bytes[] memory validationPayload1 = new bytes[](1);
-    bytes[] memory validationPayload2 = new bytes[](1);
-
-    bytes[][] memory validationPayloads = new bytes[][](2);
-    validationPayloads[0] = validationPayload1;
-    validationPayloads[1] = validationPayload2;
-
-    vm.expectEmit(true, true, true, true);
-    emit ModulesBulkRunForAttestation();
-    vm.expectEmit(true, true, true, true);
-    emit BulkAttestationsRegistered();
-    defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
-  }
-
-  function test_bulkAttestV2(AttestationPayload[2] memory attestationsPayloads) public {
     vm.assume(bytes32(attestationsPayloads[0].schemaId) != 0);
     vm.assume(bytes32(attestationsPayloads[1].schemaId) != 0);
     // Create attestations payloads
@@ -132,7 +94,7 @@ contract DefaultPortalTest is Test {
     emit ModulesBulkRunForAttestationV2();
     vm.expectEmit(true, true, true, true);
     emit BulkAttestationsRegistered();
-    defaultPortal.bulkAttestV2(payloadsToAttest, validationPayloads);
+    defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
   }
 
   function test_replace() public {
@@ -166,25 +128,8 @@ contract DefaultPortalTest is Test {
     emit AttestationRegistered();
     defaultPortal.attest(attestationPayload, validationPayload);
     vm.prank(makeAddr("random"));
-    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
     defaultPortal.replace(bytes32(abi.encode(1)), attestationPayload, validationPayload);
-  }
-
-  function test_replaceV2() public {
-    // Create attestation payload
-    AttestationPayload memory attestationPayload = AttestationPayload(
-      bytes32(uint256(1)),
-      uint64(block.timestamp + 1 days),
-      bytes("subject"),
-      new bytes(1)
-    );
-    // Create validation payload
-    bytes[] memory validationPayload = new bytes[](2);
-    vm.expectEmit(true, true, true, true);
-    emit AttestationRegistered();
-    defaultPortal.attestV2(attestationPayload, validationPayload);
-    vm.prank(portalOwner);
-    defaultPortal.replaceV2(bytes32(abi.encode(1)), attestationPayload, validationPayload);
   }
 
   function test_bulkReplace(AttestationPayload[2] memory attestationPayloads) public {
@@ -234,33 +179,8 @@ contract DefaultPortalTest is Test {
 
     defaultPortal.bulkAttest(payloadsToAttest, validationPayloads);
     vm.prank(makeAddr("random"));
-    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
     defaultPortal.bulkReplace(attestationIds, payloadsToAttest, validationPayloads);
-  }
-
-  function test_bulkReplaceV2(AttestationPayload[2] memory attestationPayloads) public {
-    vm.assume(bytes32(attestationPayloads[0].schemaId) != 0);
-    vm.assume(bytes32(attestationPayloads[1].schemaId) != 0);
-    // Create attestations payloads
-    AttestationPayload[] memory payloadsToAttest = new AttestationPayload[](2);
-    payloadsToAttest[0] = attestationPayloads[0];
-    payloadsToAttest[1] = attestationPayloads[1];
-
-    // Create validation payloads
-    bytes[] memory validationPayload1 = new bytes[](1);
-    bytes[] memory validationPayload2 = new bytes[](1);
-
-    bytes[][] memory validationPayloads = new bytes[][](2);
-    validationPayloads[0] = validationPayload1;
-    validationPayloads[1] = validationPayload2;
-
-    bytes32[] memory attestationIds = new bytes32[](2);
-    attestationIds[0] = bytes32(abi.encode(1));
-    attestationIds[1] = bytes32(abi.encode(2));
-
-    defaultPortal.bulkAttestV2(payloadsToAttest, validationPayloads);
-    vm.prank(portalOwner);
-    defaultPortal.bulkReplaceV2(attestationIds, payloadsToAttest, validationPayloads);
   }
 
   function test_revoke_byPortalOwner() public {
@@ -308,7 +228,7 @@ contract DefaultPortalTest is Test {
 
     // Revoke the attestation as a random user
     vm.prank(makeAddr("random"));
-    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
     defaultPortal.revoke(bytes32(abi.encode(1)));
   }
 
@@ -326,8 +246,8 @@ contract DefaultPortalTest is Test {
   function test_supportsInterface() public view {
     bool isIERC165Supported = defaultPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);
     assertEq(isIERC165Supported, true);
-    bool isAbstractPortalSupported = defaultPortal.supportsInterface(type(AbstractPortal).interfaceId);
-    assertEq(isAbstractPortalSupported, true);
+    bool isAbstractPortalV2Supported = defaultPortal.supportsInterface(type(AbstractPortalV2).interfaceId);
+    assertEq(isAbstractPortalV2Supported, true);
   }
 
   function test_withdraw_byOwner() public {
@@ -350,7 +270,7 @@ contract DefaultPortalTest is Test {
     // Attempt withdrawal by a non-owner address
     uint256 withdrawAmount = 0.5 ether;
     vm.prank(makeAddr("nonOwner"));
-    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
+    vm.expectRevert(AbstractPortalV2.OnlyPortalOwner.selector);
 
     defaultPortal.withdraw(payable(recipient), withdrawAmount);
   }
@@ -362,7 +282,7 @@ contract DefaultPortalTest is Test {
     // Attempt withdrawal of 0.5 ether
     uint256 withdrawAmount = 0.5 ether;
     vm.prank(portalOwner);
-    vm.expectRevert(AbstractPortal.WithdrawFail.selector);
+    vm.expectRevert(AbstractPortalV2.WithdrawFail.selector);
 
     defaultPortal.withdraw(payable(recipient), withdrawAmount);
   }

@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import { Test } from "forge-std/Test.sol";
 import { NFTPortal } from "../../../src/examples/portals/NFTPortal.sol";
 import { Router } from "../../../src/Router.sol";
-import { AbstractPortal } from "../../../src/abstracts/AbstractPortal.sol";
+import { AbstractPortalV2 } from "../../../src/abstracts/AbstractPortalV2.sol";
 import { AttestationPayload } from "../../../src/types/Structs.sol";
 import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
@@ -65,7 +65,7 @@ contract NFTPortalTest is Test {
     assertTrue(isIERC165Supported);
     bool isIERC721Supported = nftPortal.supportsInterface(type(IERC721).interfaceId);
     assertTrue(isIERC721Supported);
-    bool isEASAbstractPortalSupported = nftPortal.supportsInterface(type(AbstractPortal).interfaceId);
-    assertTrue(isEASAbstractPortalSupported);
+    bool isEASAbstractPortalV2Supported = nftPortal.supportsInterface(type(AbstractPortalV2).interfaceId);
+    assertTrue(isEASAbstractPortalV2Supported);
   }
 }

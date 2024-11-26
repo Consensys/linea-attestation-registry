@@ -249,6 +249,87 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
+  async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
+    return this.simulatePortalRegistryContract("register", [id, name, description, isRevocable, ownerName]);
+  }
+
+  async register(
+    id: Address,
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+    waitForConfirmation: boolean = false,
+  ) {
+    const request = await this.simulateRegister(id, name, description, isRevocable, ownerName);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+  }
+
+  async simulateDeployDefaultPortal(
+    modules: Address[],
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+  ) {
+    return this.simulatePortalRegistryContract("deployDefaultPortal", [
+      modules,
+      name,
+      description,
+      isRevocable,
+      ownerName,
+    ]);
+  }
+
+  async deployDefaultPortal(
+    modules: Address[],
+    name: string,
+    description: string,
+    isRevocable: boolean,
+    ownerName: string,
+    waitForConfirmation: boolean = false,
+  ) {
+    const request = await this.simulateDeployDefaultPortal(modules, name, description, isRevocable, ownerName);
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+  }
+
+  async getPortalByAddress(address: Address) {
+    return await this.web3Client.readContract({
+      address: this.conf.portalRegistryAddress,
+      abi: abiPortalRegistry,
+      functionName: "getPortal",
+      args: [address],
+    });
+  }
+
+  async isPortalRegistered(id: Address) {
+    return this.executePortalRegistryReadMethod("isRegistered", [id]);
+  }
+  private async executePortalRegistryReadMethod(functionName: string, args: unknown[]) {
+    return this.web3Client.readContract({
+      abi: abiPortalRegistry,
+      address: this.conf.portalRegistryAddress,
+      functionName,
+      args,
+    });
+  }
+
+  private async simulatePortalRegistryContract(functionName: string, args: unknown[]) {
+    if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
+    try {
+      const { request } = await this.web3Client.simulateContract({
+        address: this.conf.portalRegistryAddress,
+        abi: abiPortalRegistry,
+        functionName,
+        account: this.walletClient.account,
+        args,
+      });
+
+      return request;
+    } catch (err) {
+      handleError(ActionType.Simulation, err);
+    }
+  }
   private async simulatePortalContract(
     portalAddress: Address,
     functionName: string,
@@ -273,59 +354,5 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     } catch (err) {
       handleError(ActionType.Simulation, err);
     }
-  }
-
-  async simulateRegister(id: Address, name: string, description: string, isRevocable: boolean, ownerName: string) {
-    return this.simulatePortalRegistryContract("register", [id, name, description, isRevocable, ownerName]);
-  }
-
-  async register(
-    id: Address,
-    name: string,
-    description: string,
-    isRevocable: boolean,
-    ownerName: string,
-    waitForConfirmation: boolean = false,
-  ) {
-    const request = await this.simulateRegister(id, name, description, isRevocable, ownerName);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
-  }
-
-  private async simulatePortalRegistryContract(functionName: string, args: unknown[]) {
-    if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
-    try {
-      const { request } = await this.web3Client.simulateContract({
-        address: this.conf.portalRegistryAddress,
-        abi: abiPortalRegistry,
-        functionName,
-        account: this.walletClient.account,
-        args,
-      });
-
-      return request;
-    } catch (err) {
-      handleError(ActionType.Simulation, err);
-    }
-  }
-
-  async getPortalByAddress(address: Address) {
-    return await this.web3Client.readContract({
-      address: this.conf.portalRegistryAddress,
-      abi: abiPortalRegistry,
-      functionName: "getPortal",
-      args: [address],
-    });
-  }
-
-  async isPortalRegistered(id: Address) {
-    return this.executePortalRegistryReadMethod("isRegistered", [id]);
-  }
-  private async executePortalRegistryReadMethod(functionName: string, args: unknown[]) {
-    return this.web3Client.readContract({
-      abi: abiPortalRegistry,
-      address: this.conf.portalRegistryAddress,
-      functionName,
-      args,
-    });
   }
 }

@@ -23,6 +23,10 @@ contract AttestationRegistry is RouterManager {
 
   uint256 private chainPrefix;
 
+  /// @notice Error thrown when the Router address remains unchanged
+  error RouterAlreadyUpdated();
+  /// @notice Error thrown when the chain prefix remains unchanged
+  error ChainPrefixAlreadyUpdated();
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
   /// @notice Error thrown when an attestation is not registered in the AttestationRegistry
@@ -80,6 +84,8 @@ contract AttestationRegistry is RouterManager {
    * @param _router the new Router address
    */
   function _setRouter(address _router) internal override {
+    if (_router == address(router)) revert RouterAlreadyUpdated();
+
     router = IRouter(_router);
   }
 
@@ -88,6 +94,8 @@ contract AttestationRegistry is RouterManager {
    * @dev Only the registry owner can call this method
    */
   function updateChainPrefix(uint256 _chainPrefix) public onlyOwner {
+    if (_chainPrefix == chainPrefix) revert ChainPrefixAlreadyUpdated();
+
     chainPrefix = _chainPrefix;
     emit ChainPrefixUpdated(_chainPrefix);
   }

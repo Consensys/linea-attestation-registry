@@ -17,8 +17,12 @@ contract AttestationReader is RouterManager {
   IRouter public router;
   IEAS public easRegistry;
 
+  /// @notice Error thrown when the Router address remains unchanged
+  error RouterAlreadyUpdated();
   /// @notice Error thrown when an invalid EAS registry address is given
   error EASAddressInvalid();
+  /// @notice Error thrown when the EAS registry address remains unchanged
+  error EASRegistryAddressAlreadyUpdated();
 
   /// @notice Event emitted when the EAS registry address is updated
   event EASRegistryAddressUpdated(address easRegistryAddress);
@@ -40,6 +44,8 @@ contract AttestationReader is RouterManager {
    * @param _router the new Router address
    */
   function _setRouter(address _router) internal override {
+    if (_router == address(router)) revert RouterAlreadyUpdated();
+
     router = IRouter(_router);
   }
 
@@ -50,6 +56,8 @@ contract AttestationReader is RouterManager {
    */
   function updateEASRegistryAddress(address _easRegistryAddress) public onlyOwner {
     if (_easRegistryAddress == address(0)) revert EASAddressInvalid();
+    if (_easRegistryAddress == address(easRegistry)) revert EASRegistryAddressAlreadyUpdated();
+
     easRegistry = IEAS(_easRegistryAddress);
     emit EASRegistryAddressUpdated(_easRegistryAddress);
   }

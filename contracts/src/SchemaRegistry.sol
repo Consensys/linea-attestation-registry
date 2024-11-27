@@ -21,6 +21,12 @@ contract SchemaRegistry is RouterManager {
   /// @dev Associates a Schema ID with the address of the Issuer who created it
   mapping(bytes32 id => address issuer) private schemasIssuers;
 
+  /// @notice Error thrown when the Router address remains unchanged
+  error RouterAlreadyUpdated();
+  /// @notice Error thrown when attempting to set a schema issuer that is already set
+  error SchemaIssuerAlreadySet();
+  /// @notice Error thrown when the schema context remains unchanged
+  error SchemaContextAlreadyUpdated();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
   /// @notice Error thrown when any address which is not a portal registry tries to call a method
@@ -81,6 +87,8 @@ contract SchemaRegistry is RouterManager {
    * @param _router the new Router address
    */
   function _setRouter(address _router) internal override {
+    if (_router == address(router)) revert RouterAlreadyUpdated();
+
     router = IRouter(_router);
   }
 
@@ -94,6 +102,8 @@ contract SchemaRegistry is RouterManager {
   function updateSchemaIssuer(bytes32 schemaId, address issuer) public onlyOwner {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (issuer == address(0)) revert IssuerInvalid();
+    if (schemasIssuers[schemaId] == issuer) revert SchemaIssuerAlreadySet();
+
     schemasIssuers[schemaId] = issuer;
     emit SchemaIssuerUpdated(schemaId, issuer);
   }
@@ -163,6 +173,10 @@ contract SchemaRegistry is RouterManager {
   function updateContext(bytes32 schemaId, string memory context) public {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (schemasIssuers[schemaId] != msg.sender) revert OnlyAssignedIssuer();
+    if (keccak256(abi.encodePacked(schemas[schemaId].context)) == keccak256(abi.encodePacked(context))) {
+      revert SchemaContextAlreadyUpdated();
+    }
+
     schemas[schemaId].context = context;
     emit SchemaContextUpdated(schemaId);
   }

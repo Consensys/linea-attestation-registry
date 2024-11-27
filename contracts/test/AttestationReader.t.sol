@@ -66,6 +66,18 @@ contract AttestationReaderTest is Test {
     testAttestationReader.updateRouter(address(0));
   }
 
+  function test_updateRouter_RouterAlreadyUpdated() public {
+    AttestationReader testAttestationReader = new AttestationReader();
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
+    vm.prank(address(0));
+    testAttestationReader.updateRouter(address(1));
+
+    vm.expectRevert(AttestationReader.RouterAlreadyUpdated.selector);
+    vm.prank(address(0));
+    testAttestationReader.updateRouter(address(1));
+  }
+
   function test_updateEASRegistryAddress() public {
     AttestationReader testAttestationReader = new AttestationReader();
 
@@ -83,6 +95,18 @@ contract AttestationReaderTest is Test {
     vm.expectRevert(AttestationReader.EASAddressInvalid.selector);
     vm.prank(address(0));
     testAttestationReader.updateEASRegistryAddress(address(0));
+  }
+
+  function test_updateEASRegistryAddress_EASRegistryAddressAlreadyUpdated() public {
+    AttestationReader testAttestationReader = new AttestationReader();
+    vm.expectEmit(true, true, true, true);
+    emit EASRegistryAddressUpdated(address(1));
+    vm.prank(address(0));
+    testAttestationReader.updateEASRegistryAddress(address(1));
+
+    vm.expectRevert(AttestationReader.EASRegistryAddressAlreadyUpdated.selector);
+    vm.prank(address(0));
+    testAttestationReader.updateEASRegistryAddress(address(1));
   }
 
   function test_getAttestation_fromEAS() public {

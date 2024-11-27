@@ -83,6 +83,18 @@ contract PortalRegistryTest is Test {
     testPortalRegistry.updateRouter(address(0));
   }
 
+  function test_updateRouter_RouterAlreadyUpdated() public {
+    PortalRegistry testPortalRegistry = new PortalRegistry(false);
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
+    vm.prank(address(0));
+    testPortalRegistry.updateRouter(address(1));
+
+    vm.expectRevert(PortalRegistry.RouterAlreadyUpdated.selector);
+    vm.prank(address(0));
+    testPortalRegistry.updateRouter(address(1));
+  }
+
   function test_setIssuer() public {
     vm.startPrank(address(0));
     address issuerAddress = makeAddr("Issuer");
@@ -113,6 +125,17 @@ contract PortalRegistryTest is Test {
 
     bool isIssuer = portalRegistry.isIssuer(address(0));
     assertEq(isIssuer, false);
+  }
+
+  function test_setIssuer_IssuerAlreadySet() public {
+    vm.startPrank(address(0));
+    address issuerAddress = makeAddr("Issuer");
+    vm.expectEmit();
+    emit IssuerAdded(issuerAddress);
+    portalRegistry.setIssuer(issuerAddress);
+
+    vm.expectRevert(PortalRegistry.IssuerAlreadySet.selector);
+    portalRegistry.setIssuer(issuerAddress);
   }
 
   function test_setIsTestnet_true() public {
@@ -154,6 +177,15 @@ contract PortalRegistryTest is Test {
 
     isTestnet = portalRegistry.getIsTestnet();
     assertEq(isTestnet, false);
+  }
+
+  function test_setIsTestnet_TestnetStatusAlreadyUpdated() public {
+    bool isTestnet = portalRegistry.getIsTestnet();
+    assertEq(isTestnet, false);
+
+    vm.prank(address(0));
+    vm.expectRevert(PortalRegistry.TestnetStatusAlreadyUpdated.selector);
+    portalRegistry.setIsTestnet(false);
   }
 
   function test_removeIssuer() public {

@@ -27,6 +27,12 @@ contract PortalRegistry is RouterManager {
 
   bool private isTestnet;
 
+  /// @notice Error thrown when the Router address remains unchanged
+  error RouterAlreadyUpdated();
+  /// @notice Error thrown when attempting to set an issuer that is already set
+  error IssuerAlreadySet();
+  /// @notice Error thrown when the testnet flag remains unchanged
+  error TestnetStatusAlreadyUpdated();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
   /// @notice Error thrown when attempting to register a Portal twice
@@ -75,6 +81,8 @@ contract PortalRegistry is RouterManager {
    * @param _router the new Router address
    */
   function _setRouter(address _router) internal override {
+    if (_router == address(router)) revert RouterAlreadyUpdated();
+
     router = IRouter(_router);
   }
 
@@ -84,6 +92,7 @@ contract PortalRegistry is RouterManager {
    */
   function setIssuer(address issuer) public onlyOwner {
     if (issuer == address(0)) revert AddressInvalid();
+    if (issuers[issuer]) revert IssuerAlreadySet();
 
     issuers[issuer] = true;
     emit IssuerAdded(issuer);
@@ -94,6 +103,8 @@ contract PortalRegistry is RouterManager {
    * @param _isTestnet the flag defining the testnet status
    */
   function setIsTestnet(bool _isTestnet) public onlyOwner {
+    if (isTestnet == _isTestnet) revert TestnetStatusAlreadyUpdated();
+
     isTestnet = _isTestnet;
     emit IsTestnetUpdated(_isTestnet);
   }

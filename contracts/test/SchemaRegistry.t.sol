@@ -67,6 +67,19 @@ contract SchemaRegistryTest is Test {
     testSchemaRegistry.updateRouter(address(0));
   }
 
+  function test_updateRouter_RouterAlreadyUpdated() public {
+    SchemaRegistry testSchemaRegistry = new SchemaRegistry();
+
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
+    vm.prank(address(0));
+    testSchemaRegistry.updateRouter(address(1));
+
+    vm.expectRevert(SchemaRegistry.RouterAlreadyUpdated.selector);
+    vm.prank(address(0));
+    testSchemaRegistry.updateRouter(address(1));
+  }
+
   function test_updateSchemaIssuer() public {
     vm.prank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
@@ -88,6 +101,19 @@ contract SchemaRegistryTest is Test {
     vm.prank(address(0));
     vm.expectRevert(SchemaRegistry.IssuerInvalid.selector);
     schemaRegistry.updateSchemaIssuer(expectedId, address(0));
+  }
+
+  function test_updateSchemaIssuer_SchemaIssuerAlreadySet() public {
+    vm.prank(user);
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    vm.expectEmit(true, true, true, true);
+    emit SchemaIssuerUpdated(expectedId, address(2));
+    vm.prank(address(0));
+    schemaRegistry.updateSchemaIssuer(expectedId, address(2));
+
+    vm.prank(address(0));
+    vm.expectRevert(SchemaRegistry.SchemaIssuerAlreadySet.selector);
+    schemaRegistry.updateSchemaIssuer(expectedId, address(2));
   }
 
   function test_bulkUpdateSchemasIssuers() public {
@@ -202,6 +228,19 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     schemaRegistry.updateContext(expectedId, "");
     assertEq(schemaRegistry.getSchema(expectedId).context, "");
+    vm.stopPrank();
+  }
+
+  function test_updateContext_SchemaContextAlreadyUpdated() public {
+    vm.expectEmit();
+    emit SchemaCreated(expectedId, expectedName, expectedDescription, expectedContext, expectedString);
+    vm.startPrank(user);
+    // create a schema
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+
+    vm.expectRevert(SchemaRegistry.SchemaContextAlreadyUpdated.selector);
+    // update the context with the same value
+    schemaRegistry.updateContext(expectedId, expectedContext);
     vm.stopPrank();
   }
 

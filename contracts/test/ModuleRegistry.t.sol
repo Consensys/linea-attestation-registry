@@ -71,6 +71,18 @@ contract ModuleRegistryTest is Test {
     testModuleRegistry.updateRouter(address(0));
   }
 
+  function test_updateRouter_RouterAlreadyUpdated() public {
+    ModuleRegistry testModuleRegistry = new ModuleRegistry();
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
+    vm.prank(address(0));
+    testModuleRegistry.updateRouter(address(1));
+
+    vm.expectRevert(ModuleRegistry.RouterAlreadyUpdated.selector);
+    vm.prank(address(0));
+    testModuleRegistry.updateRouter(address(1));
+  }
+
   function test_isContractAddress() public view {
     // isContractAddress should return false for EOA address
     address eoaAddress = vm.addr(1);

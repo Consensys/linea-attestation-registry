@@ -24,6 +24,8 @@ contract ModuleRegistry is RouterManager {
   /// @dev Deprecated: The `moduleAddresses` variable is no longer used. It was used to store the modules addresses.
   address[] public moduleAddresses;
 
+  /// @notice Error thrown when the Router address remains unchanged
+  error RouterAlreadyUpdated();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
   /// @notice Error thrown when an identical Module was already registered
@@ -70,6 +72,8 @@ contract ModuleRegistry is RouterManager {
    * @param _router the new Router address
    */
   function _setRouter(address _router) internal override {
+    if (_router == address(router)) revert RouterAlreadyUpdated();
+
     router = IRouter(_router);
   }
 

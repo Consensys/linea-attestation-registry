@@ -97,6 +97,26 @@ contract AttestationRegistryTest is Test {
     assertEq(routerAddress, address(1));
   }
 
+  function test_updateRouter_InvalidParameter() public {
+    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
+
+    vm.expectRevert(RouterManager.RouterInvalid.selector);
+    vm.prank(address(0));
+    testAttestationRegistry.updateRouter(address(0));
+  }
+
+  function test_updateRouter_RouterAlreadyUpdated() public {
+    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
+    vm.expectEmit(true, true, true, true);
+    emit RouterUpdated(address(1));
+    vm.prank(address(0));
+    testAttestationRegistry.updateRouter(address(1));
+
+    vm.expectRevert(AttestationRegistry.RouterAlreadyUpdated.selector);
+    vm.prank(address(0));
+    testAttestationRegistry.updateRouter(address(1));
+  }
+
   function test_updateChainPrefix() public {
     AttestationRegistry testAttestationRegistry = new AttestationRegistry();
 
@@ -117,12 +137,17 @@ contract AttestationRegistryTest is Test {
     assertEq(chainPrefix, 0x0001000000000000000000000000000000000000000000000000000000000000);
   }
 
-  function test_updateRouter_InvalidParameter() public {
+  function test_updateChainPrefix_ChainPrefixAlreadyUpdated() public {
     AttestationRegistry testAttestationRegistry = new AttestationRegistry();
 
-    vm.expectRevert(RouterManager.RouterInvalid.selector);
+    vm.expectEmit(true, true, true, true);
+    emit ChainPrefixUpdated(initialChainPrefix);
     vm.prank(address(0));
-    testAttestationRegistry.updateRouter(address(0));
+    testAttestationRegistry.updateChainPrefix(initialChainPrefix);
+
+    vm.expectRevert(AttestationRegistry.ChainPrefixAlreadyUpdated.selector);
+    vm.prank(address(0));
+    testAttestationRegistry.updateChainPrefix(initialChainPrefix);
   }
 
   function test_attest(AttestationPayload memory attestationPayload) public {

@@ -1,76 +1,84 @@
 # Verax Attestation Registry - Contracts
 
-Verax is mainly composed of a set of smart contracts that allows anyone to read and write attestations of any type and
-any subject.
+Verax is mainly composed of a set of smart contracts that allows anyone to read and write Attestations.
 
-## Foundry Installation
+## Pre-requisites
 
-**Using Foundryup**
+- [Node.js](https://nodejs.org/en/) (>= 18)
+- [pnpm](https://pnpm.io/installation) (>=9.10.0)
+- [Foundry](https://book.getfoundry.sh/getting-started/installation)
 
-Foundryup is the Foundry toolchain installer. Open your terminal and run the following command:
+## Development commands
 
-`curl -L https://foundry.paradigm.xyz | bash` This will install Foundryup, then simply follow the instructions
-on-screen, which will make the foundryup command available in your CLI.
-
-Running foundryup by itself will install the latest (nightly) precompiled binaries: forge, cast, anvil and chisel. See
-foundryup --help for more options, like installing from a specific version or commit.
-
-ℹ️ Note
-
-If you're on Windows, you will need to install and use Git BASH or WSL, as your terminal, since Foundryup currently does
-not support Powershell or Cmd.
-
-For more details on installation, see the [installation guide](https://book.getfoundry.sh/getting-started/installation)
-in the book.
-
-If you're experiencing any issues while installing, check out the [FAQ](https://book.getfoundry.sh/faq).
-
-## Forge - build and test
-
-We can build the project with forge build:
+### Build contracts
 
 ```bash
 forge build
 ```
 
-And run the tests with forge test:
+### Test contracts
 
 ```bash
 forge test
 ```
 
-And get the coverage with forge coverage:
+### Generate a coverage report
 
 ```bash
 forge coverage
 ```
 
-## Verax contracts deployment
+## Deployment of a new Verax instance
 
-1. Copy the `.env.example` file to a `.env` file
-2. Fill it with your Infura key
-3. Add your private key
-4. To verify the contracts on the dedicated explorer, also add your Etherscan/Lineascan/Arbiscan API key
-5. Deploy all contracts via the `pnpm run deploy NETWORK_NAME` command (replacing `NETWORK_NAME` with the name of the
-   targeted network)
-6. Note down the summarized addresses (proxies), and the total logs can be of interest too
-7. Gather the first list of issuers addresses
-8. Set the issuers via the PortalRegistry’s `setIssuers` method
-9. Deploy an instance of DefaultPortal via the PortalRegistry’s `deployDefaultPortal` method and note down its address
-10. Verify this contract via `npx hardhat verify --network NETWORK_NAME ADDRESS` (replacing `NETWORK_NAME` with the name
-    of the targeted network and `ADDRESS` with the address of the freshly deployed `DefaultPortal`)
-11. Update the network files via `pnpm run reimport NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the
-    targeted network)
+### 1. Environment setup
+
+1. Copy an `.env.NETWORK` file from the `env` folder to a `.env` file: `cp env/.env.linea .env`
+2. Fill it with your Infura key, your private key and your chain explorer API key
+3. Update the `hardhat.config.ts` file with:
+   1. A new entry to the `networks` object
+   2. A new entry to the `etherscan.apiKey` object
+   3. A new entry to the `etherscan.customChains` array
+4. Add a new entry to the `script/utils.ts` file to define:
+   1. If the network is a testnet or a mainnet (cf. `isTestnet`)
+   2. The network's dedicated chain prefix (cf. `chainPrefix`)
+
+### 2. Registries deployments
+
+1. Run the `pnpm run deploy NETWORK_NAME` command (replacing `NETWORK_NAME` with the name of the targeted network)
+2. Note down the summarized addresses (proxies), and the total logs can be of interest too
+3. Add the addresses of the Verax registries to the `.env.NETWORK` and your `.env` files
+
+### 3. EAS compatibility
+
+If the targeted network benefits from an EAS instance, you can deploy the contract enabling the EAS-Verax compatibility.
+
+1. Add the address of the EAS registry to the `EAS_REGISTRY_ADDRESS` value in your `.env` file
+2. Run the `pnpm run deploy:eas NETWORK_NAME` command (replacing `NETWORK_NAME` with the name of the targeted network)
+3. Note down the Attestation Reader contract address
+4. Add the Attestation Reader contract address to the `.env.NETWORK` and your `.env` files
+
+### 4. Platform bootstrapping
+
+#### 4.1. On a mainnet instance
+
+1. Gather the first list of Issuer addresses
+2. Set the issuers via the PortalRegistry’s `setIssuers` method
+
+#### 4.2. On all instances
+
+1. Deploy an instance of DefaultPortal via the PortalRegistry’s `deployDefaultPortal` method and note down its address
+2. Verify this contract via `npx hardhat verify --network NETWORK_NAME ADDRESS` (replacing `NETWORK_NAME` with the name
+   of the targeted network and `ADDRESS` with the address of the freshly deployed `DefaultPortal`)
 
 ## Verax contracts upgrade
 
-### 1. Check all registries implementations follow the upgradeability rules
+### 1. Check all registry implementations follow the upgradeability rules
 
 Run `pnpm run check:implementations` to check if the local versions of the registries follow the upgradeability rules.
 
 :warning: Note: this is a static check, not run against the already deployed contracts.
 
-### 2. Check all registries implementations are upgradeable
+### 2. Check all registry implementations are upgradeable
 
 Run `pnpm run check:upgradeability NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to
 check if the already deployed registries are upgradable to the new local versions.
@@ -79,8 +87,9 @@ check if the already deployed registries are upgradable to the new local version
 
 ## 3. Do upgrade
 
-1. Check that your `.env` file contains the address of all the proxies for the targeted network
-2. Upgrade only the implementations that changed since the last upgrade via the `pnpm run upgrade NETWORK_NAME` command
+1. Check your `.env` file contains the address of all the proxies for the targeted network
+2. Upgrade only the implementations that have changed since the last upgrade via the `pnpm run upgrade NETWORK_NAME`
+   command
 3. _Optional_: Upgrade all the implementations by forcing their re-deployment via the
    `pnpm run upgrade:force NETWORK_NAME` command
 
@@ -94,7 +103,7 @@ on the targeted network!.
 Run `pnpm run reimport NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to re-generate the
 network files describing the deployed contracts.
 
-:warning: Note: This step is mandatory to avoid being de-synchronized.
+:warning: Note: This step is mandatory to avoid being desynchronized.
 
 ## Utils
 

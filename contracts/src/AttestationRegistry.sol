@@ -293,20 +293,23 @@ contract AttestationRegistry is RouterManager {
   }
 
   /**
-   * @notice Checks if an address owns a given attestation following ERC-1155
+   * @notice Checks if an address owns a valid attestation following the ERC-1155 interface
    * @param account The address of the token holder
    * @param id ID of the attestation
    * @return The _owner's balance of the attestations on a given attestation ID
+   * @dev Only considers non-revoked, non-replaced and non-expired attestations
    */
   function balanceOf(address account, uint256 id) public view returns (uint256) {
     bytes32 attestationId = generateAttestationId(id);
     Attestation memory attestation = attestations[attestationId];
-    if (attestation.subject.length > 20 && keccak256(attestation.subject) == keccak256(abi.encode(account))) {
-      return 1;
-    }
-    if (attestation.subject.length == 20 && keccak256(attestation.subject) == keccak256(abi.encodePacked(account))) {
-      return 1;
-    }
+
+    if (attestation.attestationId == bytes32(0)) return 0;
+    if (attestation.revoked == true) return 0;
+    if (attestation.expirationDate != 0 && attestation.expirationDate < block.timestamp) return 0;
+
+    if (attestation.subject.length == 32 && abi.decode(attestation.subject, (address)) == account) return 1;
+    if (attestation.subject.length == 20 && address(uint160(bytes20(attestation.subject))) == account) return 1;
+
     return 0;
   }
 

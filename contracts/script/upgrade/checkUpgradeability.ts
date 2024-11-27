@@ -31,10 +31,8 @@ async function main() {
   const portalRegistryProxyAddress = process.env.PORTAL_REGISTRY_ADDRESS ?? "";
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
 
-  // @ts-expect-error-next-line - constructorArgs is not part of the type
   await upgrades.validateUpgrade(portalRegistryProxyAddress, PortalRegistry, {
     kind: "transparent",
-    constructorArgs: [false],
   });
 
   console.log("Checking SchemaRegistry...");

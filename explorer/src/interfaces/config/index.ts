@@ -1,6 +1,5 @@
 import { Conf } from "@verax-attestation-registry/verax-sdk";
-import { Hex } from "viem";
-import { Chain } from "wagmi";
+import { Chain, Hex } from "viem";
 
 export interface INetwork {
   name: string;

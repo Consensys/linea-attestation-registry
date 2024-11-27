@@ -1,5 +1,6 @@
 import { Address } from "viem";
-import { mainnet, useEnsName } from "wagmi";
+import { useEnsName } from "wagmi";
+import { mainnet } from "wagmi/chains";
 
 import { cropString } from "@/utils/stringUtils";
 

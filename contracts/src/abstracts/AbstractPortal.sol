@@ -316,6 +316,16 @@ abstract contract AbstractPortal is IPortal, ERC165 {
   ) internal virtual {}
 
   /**
+   * @notice Optional method run when attesting a batch of payloads
+   * @param attestationsPayloads the payloads to attest
+   * @param validationPayloads the payloads to validate in order to issue the attestations
+   */
+  function _onBulkAttest(
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
+  ) internal virtual {}
+
+  /**
    * @notice Optional method run when an attestation is replaced
    * @dev    IMPORTANT NOTE: By default, replacement is only possible by the portal owner
    * @param attestationId the ID of the attestation being replaced
@@ -330,16 +340,6 @@ abstract contract AbstractPortal is IPortal, ERC165 {
     address attester,
     uint256 value
   ) internal virtual onlyPortalOwner {}
-
-  /**
-   * @notice Optional method run when attesting a batch of payloads
-   * @param attestationsPayloads the payloads to attest
-   * @param validationPayloads the payloads to validate in order to issue the attestations
-   */
-  function _onBulkAttest(
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
-  ) internal virtual {}
 
   /**
    * @notice Optional method run when replacing a batch of payloads

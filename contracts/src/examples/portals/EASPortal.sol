@@ -48,9 +48,6 @@ contract EASPortal is AbstractPortalV2 {
    */
   constructor(address[] memory modules, address router) AbstractPortalV2(modules, router) {}
 
-  /// @inheritdoc AbstractPortalV2
-  function withdraw(address payable to, uint256 amount) external override {}
-
   /**
    * @notice Issues a Verax attestation based on an EAS attestation
    * @param attestationRequest the EAS payload to attest

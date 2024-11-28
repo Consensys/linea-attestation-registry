@@ -22,7 +22,7 @@ abstract contract AbstractPortal is IPortal, ERC165 {
   AttestationRegistry public attestationRegistry;
   PortalRegistry public portalRegistry;
 
-  /// @notice Error thrown when someone else than the portal's owner is trying to revoke
+  /// @notice Error thrown when someone else than the portal's owner is trying to revoke or replace
   error OnlyPortalOwner();
 
   /// @notice Error thrown when withdrawing funds fails
@@ -42,14 +42,19 @@ abstract contract AbstractPortal is IPortal, ERC165 {
     portalRegistry = PortalRegistry(router.getPortalRegistry());
   }
 
+  /// @notice Modifier to enforce only the portal owner can perform certain actions
+  modifier onlyPortalOwner() {
+    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+    _;
+  }
+
   /**
    * @notice Withdraw funds from the Portal
    * @param to the address to send the funds to
    * @param amount the amount to withdraw
    * @dev Only the Portal owner can withdraw funds
    */
-  function withdraw(address payable to, uint256 amount) external virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+  function withdraw(address payable to, uint256 amount) external virtual onlyPortalOwner {
     (bool s, ) = to.call{ value: amount }("");
     if (!s) revert WithdrawFail();
   }
@@ -317,15 +322,14 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @param attestationPayload the attestation payload to create attestation and register it
    * @param attester the address of the attester
    * @param value the value sent with the attestation
+   * @dev This method now uses the `onlyPortalOwner` modifier to enforce ownership rules
    */
   function _onReplace(
     bytes32 attestationId,
     AttestationPayload memory attestationPayload,
     address attester,
     uint256 value
-  ) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
+  ) internal virtual onlyPortalOwner {}
 
   /**
    * @notice Optional method run when attesting a batch of payloads
@@ -343,28 +347,25 @@ abstract contract AbstractPortal is IPortal, ERC165 {
    * @param attestationIds the IDs of the attestations being replaced
    * @param attestationsPayloads the payloads to replace
    * @param validationPayloads the payloads to validate in order to replace the attestations
+   * @dev This method now uses the `onlyPortalOwner` modifier to enforce ownership rules
    */
   function _onBulkReplace(
     bytes32[] memory attestationIds,
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
+  ) internal virtual onlyPortalOwner {}
 
   /**
-   * @notice Optional method run when an attestation is revoked or replaced
+   * @notice Optional method run when an attestation is revoked
    * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
+   * @dev This method now uses the `onlyPortalOwner` modifier to enforce ownership rules
    */
-  function _onRevoke(bytes32 /*attestationId*/) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
+  function _onRevoke(bytes32 attestationId) internal virtual onlyPortalOwner {}
 
   /**
    * @notice Optional method run when a batch of attestations are revoked or replaced
    * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
+   * @dev This method now uses the `onlyPortalOwner` modifier to enforce ownership rules
    */
-  function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
+  function _onBulkRevoke(bytes32[] memory attestationIds) internal virtual onlyPortalOwner {}
 }

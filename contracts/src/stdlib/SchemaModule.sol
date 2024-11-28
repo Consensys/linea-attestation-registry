@@ -22,7 +22,7 @@ contract SchemaModule is AbstractModule {
   error SchemaNotAuthorized();
 
   modifier onlyPortalOwner(address portal) {
-    if (msg.sender != portalRegistry.getPortalByAddress(portal).ownerAddress) revert OnlyPortalOwner();
+    if (msg.sender != portalRegistry.getPortalOwner(portal)) revert OnlyPortalOwner();
     _;
   }
 

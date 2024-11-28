@@ -51,7 +51,7 @@ contract DefaultPortalTest is Test {
     assertEq(address(defaultPortal.moduleRegistry()), address(moduleRegistryMock));
     assertEq(address(defaultPortal.attestationRegistry()), address(attestationRegistryMock));
     assertEq(address(defaultPortal.portalRegistry()), address(portalRegistryMock));
-    assertEq(portalRegistryMock.getPortalByAddress(address(defaultPortal)).ownerAddress, portalOwner);
+    assertEq(portalRegistryMock.getPortalOwner(address(defaultPortal)), portalOwner);
   }
 
   function test_getModules() public view {

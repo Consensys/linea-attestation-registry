@@ -247,7 +247,7 @@ contract AttestationRegistry is RouterManager {
    */
   function isRevocable(address portalId) public view returns (bool) {
     PortalRegistry portalRegistry = PortalRegistry(router.getPortalRegistry());
-    return portalRegistry.getPortalByAddress(portalId).isRevocable;
+    return portalRegistry.getPortalRevocability(portalId);
   }
 
   /**

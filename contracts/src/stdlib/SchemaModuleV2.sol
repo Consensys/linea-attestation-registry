@@ -26,7 +26,7 @@ contract SchemaModuleV2 is AbstractModuleV2 {
   event SchemasAuthorized(address indexed portal, bytes32[] schemas, bool[] authorizedStatus);
 
   modifier onlyPortalOwner(address portal) {
-    if (msg.sender != portalRegistry.getPortalByAddress(portal).ownerAddress) revert OnlyPortalOwner();
+    if (msg.sender != portalRegistry.getPortalOwner(portal)) revert OnlyPortalOwner();
     _;
   }
 

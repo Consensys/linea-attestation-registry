@@ -223,6 +223,26 @@ contract PortalRegistry is RouterManager {
   }
 
   /**
+   * @notice Get the owner address of a Portal
+   * @param portalAddress The address of the Portal
+   * @return The Portal owner address
+   */
+  function getPortalOwner(address portalAddress) external view returns (address) {
+    if (!isRegistered(portalAddress)) revert PortalNotRegistered();
+    return portals[portalAddress].ownerAddress;
+  }
+
+  /**
+   * @notice Get a Portal's revocability
+   * @param portalAddress The address of the Portal
+   * @return The Portal revocability
+   */
+  function getPortalRevocability(address portalAddress) external view returns (bool) {
+    if (!isRegistered(portalAddress)) revert PortalNotRegistered();
+    return portals[portalAddress].isRevocable;
+  }
+
+  /**
    * @notice Check if a Portal is registered
    * @param id The address of the Portal
    * @return True if the Portal is registered, false otherwise

@@ -84,7 +84,7 @@ contract PortalRegistryTest is Test {
   }
 
   function test_updateRouter_RouterAlreadyUpdated() public {
-    PortalRegistry testPortalRegistry = new PortalRegistry(false);
+    PortalRegistry testPortalRegistry = new PortalRegistry();
     vm.expectEmit(true, true, true, true);
     emit RouterUpdated(address(1));
     vm.prank(address(0));
@@ -137,7 +137,7 @@ contract PortalRegistryTest is Test {
     vm.expectRevert(PortalRegistry.IssuerAlreadySet.selector);
     portalRegistry.setIssuer(issuerAddress);
   }
-  
+
   function test_setIsTestnet() public {
     PortalRegistry testnetPortalRegistry = new PortalRegistry();
 

@@ -32,6 +32,14 @@ contract PortalRegistryNotAllowlistedMock {
     return portals[id];
   }
 
+  function getPortalOwner(address portalAddress) external view returns (address) {
+    return portals[portalAddress].ownerAddress;
+  }
+
+  function getPortalRevocability(address portalAddress) external view returns (bool) {
+    return portals[portalAddress].isRevocable;
+  }
+
   function setIssuer(address issuer) public {
     issuers[issuer] = true;
   }

@@ -332,9 +332,37 @@ contract PortalRegistryTest is Test {
     portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription, true, expectedOwnerName);
   }
 
-  function test_getPortals_PortalNotRegistered() public {
+  function test_getPortalByAddress_PortalNotRegistered() public {
     vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
     portalRegistry.getPortalByAddress(address(validPortalMock));
+  }
+
+  function test_getPortalOwner() public {
+    address portalAddress = address(validPortalMock);
+    vm.prank(user);
+    portalRegistry.register(portalAddress, expectedName, expectedDescription, true, expectedOwnerName);
+
+    address ownerAddress = portalRegistry.getPortalOwner(portalAddress);
+    assertEq(ownerAddress, user);
+  }
+
+  function test_getPortalOwner_PortalNotRegistered() public {
+    vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
+    portalRegistry.getPortalOwner(address(validPortalMock));
+  }
+
+  function test_getPortalRevocability() public {
+    address portalAddress = address(validPortalMock);
+    vm.prank(user);
+    portalRegistry.register(portalAddress, expectedName, expectedDescription, true, expectedOwnerName);
+
+    bool revocability = portalRegistry.getPortalRevocability(portalAddress);
+    assertEq(revocability, true);
+  }
+
+  function test_getPortalRevocability_PortalNotRegistered() public {
+    vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
+    portalRegistry.getPortalRevocability(address(validPortalMock));
   }
 
   function test_isRegistered() public {

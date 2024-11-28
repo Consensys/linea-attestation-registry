@@ -302,6 +302,24 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     });
   }
 
+  async getPortalOwner(address: Address) {
+    return await this.web3Client.readContract({
+      address: this.conf.portalRegistryAddress,
+      abi: abiPortalRegistry,
+      functionName: "getPortalOwner",
+      args: [address],
+    });
+  }
+
+  async getPortalRevocability(address: Address) {
+    return await this.web3Client.readContract({
+      address: this.conf.portalRegistryAddress,
+      abi: abiPortalRegistry,
+      functionName: "getPortalRevocability",
+      args: [address],
+    });
+  }
+
   async getPortalsNumber() {
     return super.findTotalCount();
   }

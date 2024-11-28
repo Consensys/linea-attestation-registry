@@ -70,9 +70,7 @@ contract PausablePortal is AbstractPortalV2, Pausable, Ownable {
     AttestationPayload memory /*attestationPayload*/,
     address /*attester*/,
     uint256 /*value*/
-  ) internal virtual override whenNotPaused {
-    if (msg.sender != portalRegistry.getPortalOwner(address(this))) revert OnlyPortalOwner();
-  }
+  ) internal virtual override whenNotPaused {}
 
   /**
    * @inheritdoc AbstractPortalV2
@@ -82,23 +80,17 @@ contract PausablePortal is AbstractPortalV2, Pausable, Ownable {
     bytes32[] memory /*attestationIds*/,
     AttestationPayload[] memory /*attestationsPayloads*/,
     bytes[][] memory /*validationPayloads*/
-  ) internal virtual override whenNotPaused {
-    if (msg.sender != portalRegistry.getPortalOwner(address(this))) revert OnlyPortalOwner();
-  }
+  ) internal virtual override whenNotPaused {}
 
   /**
    * @inheritdoc AbstractPortalV2
    * @dev Only the owner of the portal can revoke an attestation
    */
-  function _onRevoke(bytes32 /*attestationId*/) internal virtual override whenNotPaused {
-    if (msg.sender != portalRegistry.getPortalOwner(address(this))) revert OnlyPortalOwner();
-  }
+  function _onRevoke(bytes32 /*attestationId*/) internal virtual override whenNotPaused {}
 
   /**
    * @inheritdoc AbstractPortalV2
    * @dev Only the owner of the portal can bulk revoke attestations
    */
-  function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal virtual override whenNotPaused {
-    if (msg.sender != portalRegistry.getPortalOwner(address(this))) revert OnlyPortalOwner();
-  }
+  function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal virtual override whenNotPaused {}
 }

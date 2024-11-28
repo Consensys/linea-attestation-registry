@@ -64,16 +64,17 @@ contract PortalRegistry is RouterManager {
   event IsTestnetUpdated(bool isTestnet);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
-  constructor(bool _isTestnet) {
+  constructor() {
     _disableInitializers();
-    isTestnet = _isTestnet;
   }
 
   /**
-   * @notice Contract initialization
+   * @notice Contract initialization with testnet status
+   * @param _isTestnet Boolean indicating if the deployment is on a testnet
    */
-  function initialize() public initializer {
+  function initialize(bool _isTestnet) public initializer {
     __Ownable_init();
+    isTestnet = _isTestnet;
   }
 
   /**

@@ -40,7 +40,7 @@ contract PortalRegistryTest is Test {
     router = new Router();
     router.initialize();
 
-    portalRegistry = new PortalRegistry(false);
+    portalRegistry = new PortalRegistry();
     router.updatePortalRegistry(address(portalRegistry));
 
     moduleRegistryAddress = address(new ModuleRegistryMock());
@@ -61,11 +61,11 @@ contract PortalRegistryTest is Test {
 
   function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    portalRegistry.initialize();
+    portalRegistry.initialize(false);
   }
 
   function test_updateRouter() public {
-    PortalRegistry testPortalRegistry = new PortalRegistry(false);
+    PortalRegistry testPortalRegistry = new PortalRegistry();
 
     vm.expectEmit(true, true, true, true);
     emit RouterUpdated(address(1));
@@ -76,7 +76,7 @@ contract PortalRegistryTest is Test {
   }
 
   function test_updateRouter_RouterInvalid() public {
-    PortalRegistry testPortalRegistry = new PortalRegistry(false);
+    PortalRegistry testPortalRegistry = new PortalRegistry();
 
     vm.expectRevert(RouterManager.RouterInvalid.selector);
     vm.prank(address(0));
@@ -84,7 +84,7 @@ contract PortalRegistryTest is Test {
   }
 
   function test_updateRouter_RouterAlreadyUpdated() public {
-    PortalRegistry testPortalRegistry = new PortalRegistry(false);
+    PortalRegistry testPortalRegistry = new PortalRegistry();
     vm.expectEmit(true, true, true, true);
     emit RouterUpdated(address(1));
     vm.prank(address(0));
@@ -138,32 +138,19 @@ contract PortalRegistryTest is Test {
     portalRegistry.setIssuer(issuerAddress);
   }
 
-  function test_setIsTestnet_true() public {
-    bool isTestnet = portalRegistry.getIsTestnet();
+  function test_setIsTestnet() public {
+    PortalRegistry testnetPortalRegistry = new PortalRegistry();
+
+    bool isTestnet = testnetPortalRegistry.getIsTestnet();
     assertEq(isTestnet, false);
 
     vm.prank(address(0));
     vm.expectEmit();
     emit IsTestnetUpdated(true);
-    portalRegistry.setIsTestnet(true);
-
-    isTestnet = portalRegistry.getIsTestnet();
-    assertEq(isTestnet, true);
-  }
-
-  function test_setIsTestnet_false() public {
-    PortalRegistry testnetPortalRegistry = new PortalRegistry(true);
-
-    bool isTestnet = testnetPortalRegistry.getIsTestnet();
-    assertEq(isTestnet, true);
-
-    vm.prank(address(0));
-    vm.expectEmit();
-    emit IsTestnetUpdated(false);
-    testnetPortalRegistry.setIsTestnet(false);
+    testnetPortalRegistry.setIsTestnet(true);
 
     isTestnet = testnetPortalRegistry.getIsTestnet();
-    assertEq(isTestnet, false);
+    assertEq(isTestnet, true);
   }
 
   function test_setIsTestnet_OnlyOwner() public {
@@ -358,13 +345,16 @@ contract PortalRegistryTest is Test {
   }
 
   function test_isAllowlisted_Testnet() public {
-    PortalRegistry testnetPortalRegistry = new PortalRegistry(true);
+    PortalRegistry testnetPortalRegistry = new PortalRegistry();
+    vm.prank(address(0));
+    testnetPortalRegistry.setIsTestnet(true);
+
     address userAddress = makeAddr("User");
     assertEq(testnetPortalRegistry.isAllowlisted(userAddress), true);
   }
 
   function test_isAllowlisted_Testnet_fail() public {
-    PortalRegistry mainnetPortalRegistry = new PortalRegistry(false);
+    PortalRegistry mainnetPortalRegistry = new PortalRegistry();
     address userAddress = makeAddr("User");
     assertEq(mainnetPortalRegistry.isAllowlisted(userAddress), false);
   }
@@ -383,7 +373,10 @@ contract PortalRegistryTest is Test {
   }
 
   function test_isAllowlisted_TestnetAndIssuer() public {
-    PortalRegistry testnetPortalRegistry = new PortalRegistry(true);
+    PortalRegistry testnetPortalRegistry = new PortalRegistry();
+    vm.prank(address(0));
+    testnetPortalRegistry.setIsTestnet(true);
+
     address userAddress = makeAddr("User");
     vm.prank(address(0));
     testnetPortalRegistry.setIssuer(userAddress);
@@ -391,7 +384,7 @@ contract PortalRegistryTest is Test {
   }
 
   function test_isAllowlisted_TestnetAndIssuer_fail() public {
-    PortalRegistry mainnetPortalRegistry = new PortalRegistry(false);
+    PortalRegistry mainnetPortalRegistry = new PortalRegistry();
     address userAddress = makeAddr("User");
     assertEq(mainnetPortalRegistry.isAllowlisted(userAddress), false);
   }

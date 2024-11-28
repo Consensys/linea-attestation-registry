@@ -101,10 +101,12 @@ contract AttestationRegistry is RouterManager {
   }
 
   /**
-   * @notice Registers an attestation to the AttestationRegistry
-   * @param attestationPayload the attestation payload to create attestation and register it
-   * @param attester the account address issuing the attestation
-   * @dev This method is only callable by a registered Portal
+   * @notice Registers an attestation in the AttestationRegistry.
+   * @param attestationPayload The payload used to create and register the attestation.
+   * @param attester The address of the account issuing the attestation.
+   * @dev This function can only be called by a registered Portal.
+   * @dev While it might not align with typical business rules, it is technically
+   *      possible to register expired attestations.
    */
   function attest(AttestationPayload calldata attestationPayload, address attester) public onlyPortals(msg.sender) {
     // Verify the schema id exists

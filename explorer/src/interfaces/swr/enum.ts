@@ -14,4 +14,5 @@ export enum SWRKeys {
   GET_PORTAL_BY_ID = "getPortalByID",
   GET_PORTAL_MODULE_LIST = "getPortalModuleList",
   GET_PORTAL_LIST = "getPortalList",
+  GET_RECENT_ATTESTATION_GLOBAL = "GET_RECENT_ATTESTATION_GLOBAL",
 }

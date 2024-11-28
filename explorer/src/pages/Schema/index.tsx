@@ -11,7 +11,7 @@ import { useNetworkContext } from "@/providers/network-provider/context";
 import { RecentAttestations } from "./components/RecentAttestations";
 import { SchemaLoadingSkeleton } from "./components/SchemaLoadingSkeleton";
 
-export const Schema = () => {
+export const Schema: React.FC = () => {
   const { id } = useParams();
   const {
     sdk,
@@ -25,7 +25,9 @@ export const Schema = () => {
   } = useSWR(
     `${SWRKeys.GET_SCHEMA_BY_ID}/${id}/${chain.id}`,
     async () => {
-      if (id && regexEthAddress.byNumberOfChar[64].test(id)) return sdk.schema.findOneById(id);
+      if (id && regexEthAddress.byNumberOfChar[64].test(id)) {
+        return sdk.schema.findOneById(id);
+      }
     },
     {
       shouldRetryOnError: false,
@@ -34,8 +36,11 @@ export const Schema = () => {
   );
 
   if (isLoading || isValidating) return <SchemaLoadingSkeleton />;
+
   if (!schema) return <NotFoundPage page="schema" id={id} />;
+
   const isContextURL = urlRegex.test(schema.context);
+
   return (
     <section className="flex flex-col gap-6 w-full mb-10 md:mb-20 xl:max-w-[1200px] xl:m-auto">
       <div className="flex flex-col px-5 md:px-10 gap-6">
@@ -55,6 +60,7 @@ export const Schema = () => {
             <a
               href={schema.context}
               target="_blank"
+              rel="noopener noreferrer"
               className="cursor-pointer hover:underline overflow-hidden text-ellipsis sm:max-w-[320px] whitespace-nowrap dark:text-text-secondaryDark"
             >
               {schema.context}

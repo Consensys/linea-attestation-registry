@@ -9,19 +9,23 @@ import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
 
-export const RecentAttestations: React.FC<{ schemaId: string }> = ({ schemaId }) => {
+export const RecentAttestations: React.FC<{ schemaId?: string }> = ({ schemaId }) => {
   const {
     sdk,
     network: { chain, network },
   } = useNetworkContext();
 
-  const { data: attestations, isLoading } = useSWR(
-    `${SWRKeys.GET_RECENT_ATTESTATION}/${schemaId}/${chain.id}`,
-    () => sdk.attestation.findBy(5, 0, { schema: schemaId }, "attestedDate", "desc"),
-    {
-      shouldRetryOnError: false,
-    },
-  );
+  const fetchKey = schemaId
+    ? `${SWRKeys.GET_RECENT_ATTESTATION}/${schemaId}/${chain.id}`
+    : `${SWRKeys.GET_RECENT_ATTESTATION_GLOBAL}/${chain.id}`;
+
+  const fetchFunction = schemaId
+    ? () => sdk.attestation.findBy(5, 0, { schema: schemaId }, "attestedDate", "desc")
+    : () => sdk.attestation.findBy(5, 0, {}, "attestedDate", "desc");
+
+  const { data: attestations, isLoading } = useSWR(fetchKey, fetchFunction, {
+    shouldRetryOnError: false,
+  });
 
   const columnsSkeletonRef = useRef(columnsSkeleton(columns({ sortByDate: false }), attestationColumnsOption));
   const data = isLoading

@@ -38,7 +38,7 @@ contract ERC1271ModuleV2 is AbstractModuleV2 {
   event SignersAuthorized(address indexed portal, address[] signers, bool[] authorizationStatus);
 
   modifier onlyPortalOwner(address portal) {
-    if (msg.sender != portalRegistry.getPortalByAddress(portal).ownerAddress) revert OnlyPortalOwner();
+    if (msg.sender != portalRegistry.getPortalOwner(portal)) revert OnlyPortalOwner();
     _;
   }
 

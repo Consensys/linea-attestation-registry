@@ -27,7 +27,7 @@ contract ERC1271Module is ERC1271, AbstractModule {
   error InvalidSignature(string msg);
 
   modifier onlyPortalOwner(address portal) {
-    if (msg.sender != portalRegistry.getPortalByAddress(portal).ownerAddress) revert OnlyPortalOwner();
+    if (msg.sender != portalRegistry.getPortalOwner(portal)) revert OnlyPortalOwner();
     _;
   }
 

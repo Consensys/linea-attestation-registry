@@ -64,16 +64,17 @@ contract PortalRegistry is RouterManager {
   event IsTestnetUpdated(bool isTestnet);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
-  constructor(bool _isTestnet) {
+  constructor() {
     _disableInitializers();
-    isTestnet = _isTestnet;
   }
 
   /**
-   * @notice Contract initialization
+   * @notice Contract initialization with testnet status
+   * @param _isTestnet Boolean indicating if the deployment is on a testnet
    */
-  function initialize() public initializer {
+  function initialize(bool _isTestnet) public initializer {
     __Ownable_init();
+    isTestnet = _isTestnet;
   }
 
   /**
@@ -219,6 +220,26 @@ contract PortalRegistry is RouterManager {
   function getPortalByAddress(address id) public view returns (Portal memory) {
     if (!isRegistered(id)) revert PortalNotRegistered();
     return portals[id];
+  }
+
+  /**
+   * @notice Get the owner address of a Portal
+   * @param portalAddress The address of the Portal
+   * @return The Portal owner address
+   */
+  function getPortalOwner(address portalAddress) external view returns (address) {
+    if (!isRegistered(portalAddress)) revert PortalNotRegistered();
+    return portals[portalAddress].ownerAddress;
+  }
+
+  /**
+   * @notice Get a Portal's revocability
+   * @param portalAddress The address of the Portal
+   * @return The Portal revocability
+   */
+  function getPortalRevocability(address portalAddress) external view returns (bool) {
+    if (!isRegistered(portalAddress)) revert PortalNotRegistered();
+    return portals[portalAddress].isRevocable;
   }
 
   /**

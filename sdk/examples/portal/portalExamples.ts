@@ -399,6 +399,24 @@ export default class PortalExamples {
       console.log(await this.veraxSdk.portal.getPortalByAddress(portalAddress));
     }
 
+    if (methodName.toLowerCase() == "getPortalOwner".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const portalAddress = params?.portalAddress
+        ? (params.portalAddress as Address)
+        : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
+      console.log(await this.veraxSdk.portal.getPortalOwner(portalAddress));
+    }
+
+    if (methodName.toLowerCase() == "getPortalRevocability".toLowerCase() || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const portalAddress = params?.portalAddress
+        ? (params.portalAddress as Address)
+        : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
+      console.log(await this.veraxSdk.portal.getPortalRevocability(portalAddress));
+    }
+
     if (methodName.toLowerCase() == "getPortalsNumber".toLowerCase() || methodName == "") {
       console.log(await this.veraxSdk.portal.getPortalsNumber());
     }

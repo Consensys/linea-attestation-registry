@@ -101,10 +101,12 @@ contract AttestationRegistry is RouterManager {
   }
 
   /**
-   * @notice Registers an attestation to the AttestationRegistry
-   * @param attestationPayload the attestation payload to create attestation and register it
-   * @param attester the account address issuing the attestation
-   * @dev This method is only callable by a registered Portal
+   * @notice Registers an attestation in the AttestationRegistry.
+   * @param attestationPayload The payload used to create and register the attestation.
+   * @param attester The address of the account issuing the attestation.
+   * @dev This function can only be called by a registered Portal.
+   * @dev While it might not align with typical business rules, it is technically
+   *      possible to register expired attestations.
    */
   function attest(AttestationPayload calldata attestationPayload, address attester) public onlyPortals(msg.sender) {
     // Verify the schema id exists
@@ -118,6 +120,7 @@ contract AttestationRegistry is RouterManager {
     attestationIdCounter++;
     // Generate the full attestation ID, padded with the chain prefix
     bytes32 id = generateAttestationId(attestationIdCounter);
+    assert(id != 0x0 && !isRegistered(id));
     // Create attestation
     attestations[id] = Attestation(
       id,
@@ -152,6 +155,7 @@ contract AttestationRegistry is RouterManager {
       attestationIdCounter++;
       // Generate the full attestation ID, padded with the chain prefix
       bytes32 id = generateAttestationId(attestationIdCounter);
+      assert(id != 0x0 && !isRegistered(id));
       // Create attestation
       attestations[id] = Attestation(
         id,
@@ -245,7 +249,7 @@ contract AttestationRegistry is RouterManager {
    */
   function isRevocable(address portalId) public view returns (bool) {
     PortalRegistry portalRegistry = PortalRegistry(router.getPortalRegistry());
-    return portalRegistry.getPortalByAddress(portalId).isRevocable;
+    return portalRegistry.getPortalRevocability(portalId);
   }
 
   /**
@@ -293,20 +297,23 @@ contract AttestationRegistry is RouterManager {
   }
 
   /**
-   * @notice Checks if an address owns a given attestation following ERC-1155
+   * @notice Checks if an address owns a valid attestation following the ERC-1155 interface
    * @param account The address of the token holder
    * @param id ID of the attestation
    * @return The _owner's balance of the attestations on a given attestation ID
+   * @dev Only considers non-revoked, non-replaced and non-expired attestations
    */
   function balanceOf(address account, uint256 id) public view returns (uint256) {
     bytes32 attestationId = generateAttestationId(id);
     Attestation memory attestation = attestations[attestationId];
-    if (attestation.subject.length > 20 && keccak256(attestation.subject) == keccak256(abi.encode(account))) {
-      return 1;
-    }
-    if (attestation.subject.length == 20 && keccak256(attestation.subject) == keccak256(abi.encodePacked(account))) {
-      return 1;
-    }
+
+    if (attestation.attestationId == bytes32(0)) return 0;
+    if (attestation.revoked == true) return 0;
+    if (attestation.expirationDate != 0 && attestation.expirationDate < block.timestamp) return 0;
+
+    if (attestation.subject.length == 32 && abi.decode(attestation.subject, (address)) == account) return 1;
+    if (attestation.subject.length == 20 && address(uint160(bytes20(attestation.subject))) == account) return 1;
+
     return 0;
   }
 
@@ -340,6 +347,9 @@ contract AttestationRegistry is RouterManager {
    * @return The next attestation ID
    */
   function getNextAttestationId() public view returns (bytes32) {
-    return generateAttestationId(attestationIdCounter + 1);
+    uint256 nextattestationId = attestationIdCounter + 1;
+    bytes32 id = generateAttestationId(nextattestationId);
+    assert(id != 0x0 && !isRegistered(id));
+    return id;
   }
 }

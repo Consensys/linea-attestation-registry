@@ -156,7 +156,7 @@ contract AttestationReaderTest is Test {
       bytes32(0),
       abi.decode(attestationPayload.subject, (address)),
       attester,
-      PortalRegistry(router.getPortalRegistry()).getPortalByAddress(portal).isRevocable,
+      PortalRegistry(router.getPortalRegistry()).getPortalRevocability(portal),
       attestationPayload.attestationData
     );
     return attestation;

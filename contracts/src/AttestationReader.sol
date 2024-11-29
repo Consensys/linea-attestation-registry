@@ -98,7 +98,7 @@ contract AttestationReader is RouterManager {
         bytes32(0),
         subject,
         veraxAttestation.attester,
-        PortalRegistry(router.getPortalRegistry()).getPortalByAddress(veraxAttestation.portal).isRevocable,
+        PortalRegistry(router.getPortalRegistry()).getPortalRevocability(veraxAttestation.portal),
         veraxAttestation.attestationData
       );
   }

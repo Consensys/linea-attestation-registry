@@ -598,22 +598,7 @@ contract AttestationRegistryTest is Test {
     vm.stopPrank();
   }
 
-  function test_balanceOf_notFound(AttestationPayload memory attestationPayload) public {
-    vm.assume(attestationPayload.subject.length != 0);
-    vm.assume(attestationPayload.attestationData.length != 0);
-    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
-    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
-    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
-
-    vm.startPrank(portal);
-    attestationPayload.subject = abi.encode(address(1234));
-    attestationRegistry.attest(attestationPayload, attester);
-
-    uint256 balance = attestationRegistry.balanceOf(address(1), 1);
-    assertEq(balance, 0);
-  }
-
-  function test_balanceOf_subjectEncodedAddress(AttestationPayload memory attestationPayload) public {
+  function test_balanceOf_attestationNotFound(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
@@ -624,19 +609,94 @@ contract AttestationRegistryTest is Test {
     attestationPayload.subject = abi.encode(address(1));
     attestationRegistry.attest(attestationPayload, attester);
 
+    uint256 balance = attestationRegistry.balanceOf(address(1), 1234);
+    assertEq(balance, 0);
+  }
+
+  function test_balanceOf_attestationRevoked() public {
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+
+    AttestationPayload memory attestationPayload;
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    attestationPayload.expirationDate = 0;
+    attestationPayload.subject = abi.encode(address(1));
+    attestationPayload.attestationData = abi.encode("data");
+
+    vm.startPrank(portal);
+    attestationRegistry.attest(attestationPayload, attester);
+    vm.startPrank(portal);
+    attestationRegistry.revoke(0x0003000000000000000000000000000000000000000000000000000000000001);
+
+    uint256 balance = attestationRegistry.balanceOf(address(1), 1);
+    assertEq(balance, 0);
+  }
+
+  function test_balanceOf_attestationExpired() public {
+    // Sets the block timestamp to 1641070800
+    vm.warp(1641070800);
+
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+
+    AttestationPayload memory attestationPayload;
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    attestationPayload.expirationDate = block.timestamp > 1 days ? uint64(block.timestamp - 1 days) : 0;
+    attestationPayload.subject = abi.encode(address(1));
+    attestationPayload.attestationData = abi.encode("data");
+
+    vm.startPrank(portal);
+    attestationRegistry.attest(attestationPayload, attester);
+
+    uint256 balance = attestationRegistry.balanceOf(address(1), 1);
+    assertEq(balance, 0);
+  }
+
+  function test_balanceOf_subjectNotFound() public {
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+
+    AttestationPayload memory attestationPayload;
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    attestationPayload.expirationDate = 0;
+    attestationPayload.subject = abi.encode(address(1234));
+    attestationPayload.attestationData = abi.encode("data");
+
+    vm.startPrank(portal);
+    attestationRegistry.attest(attestationPayload, attester);
+
+    uint256 balance = attestationRegistry.balanceOf(address(1), 1);
+    assertEq(balance, 0);
+  }
+
+  function test_balanceOf_subjectEncodedAddress() public {
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+
+    AttestationPayload memory attestationPayload;
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    attestationPayload.expirationDate = 0;
+    attestationPayload.subject = abi.encode(address(1));
+    attestationPayload.attestationData = abi.encode("data");
+
+    vm.startPrank(portal);
+    attestationRegistry.attest(attestationPayload, attester);
+
     uint256 balance = attestationRegistry.balanceOf(address(1), 1);
     assertEq(balance, 1);
   }
 
-  function test_balanceOf_subjectPackedEncodedAddress(AttestationPayload memory attestationPayload) public {
-    vm.assume(attestationPayload.subject.length != 0);
-    vm.assume(attestationPayload.attestationData.length != 0);
+  function test_balanceOf_subjectPackedEncodedAddress() public {
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
-    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
     schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
 
-    vm.startPrank(portal);
+    AttestationPayload memory attestationPayload;
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    attestationPayload.expirationDate = 0;
     attestationPayload.subject = abi.encodePacked(address(1));
+    attestationPayload.attestationData = abi.encode("data");
+
+    vm.startPrank(portal);
     attestationRegistry.attest(attestationPayload, attester);
 
     uint256 balance = attestationRegistry.balanceOf(address(1), 1);

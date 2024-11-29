@@ -51,7 +51,7 @@ contract DefaultPortalTest is Test {
     assertEq(address(defaultPortal.moduleRegistry()), address(moduleRegistryMock));
     assertEq(address(defaultPortal.attestationRegistry()), address(attestationRegistryMock));
     assertEq(address(defaultPortal.portalRegistry()), address(portalRegistryMock));
-    assertEq(portalRegistryMock.getPortalByAddress(address(defaultPortal)).ownerAddress, portalOwner);
+    assertEq(portalRegistryMock.getPortalOwner(address(defaultPortal)), portalOwner);
   }
 
   function test_getModules() public view {
@@ -320,6 +320,17 @@ contract DefaultPortalTest is Test {
     vm.expectEmit(true, true, true, true);
     emit BulkAttestationsRevoked(attestationsToRevoke);
     vm.prank(portalOwner);
+    defaultPortal.bulkRevoke(attestationsToRevoke);
+  }
+
+  function test_bulkRevoke_OnlyOwner() public {
+    bytes32[] memory attestationsToRevoke = new bytes32[](2);
+    attestationsToRevoke[0] = bytes32("1");
+    attestationsToRevoke[1] = bytes32("2");
+
+    // Revoke the attestation as a random user
+    vm.prank(makeAddr("random"));
+    vm.expectRevert(AbstractPortal.OnlyPortalOwner.selector);
     defaultPortal.bulkRevoke(attestationsToRevoke);
   }
 

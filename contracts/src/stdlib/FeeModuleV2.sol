@@ -23,7 +23,7 @@ contract FeeModuleV2 is AbstractModuleV2 {
   error InvalidAttestationFee();
 
   modifier onlyPortalOwner(address portal) {
-    if (msg.sender != portalRegistry.getPortalByAddress(portal).ownerAddress) revert OnlyPortalOwner();
+    if (msg.sender != portalRegistry.getPortalOwner(portal)) revert OnlyPortalOwner();
     _;
   }
 

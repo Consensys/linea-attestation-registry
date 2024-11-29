@@ -45,13 +45,20 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
   }
 
   /**
+   * @notice Modifier to enforce only the portal owner can perform certain actions.
+   */
+  modifier onlyPortalOwner() {
+    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+    _;
+  }
+
+  /**
    * @notice Withdraw funds from the Portal
    * @param to the address to send the funds to
    * @param amount the amount to withdraw
    * @dev Only the Portal owner can withdraw funds
    */
-  function withdraw(address payable to, uint256 amount) external virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+  function withdraw(address payable to, uint256 amount) external virtual onlyPortalOwner {
     (bool s, ) = to.call{ value: amount }("");
     if (!s) revert WithdrawFail();
   }
@@ -112,7 +119,7 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
     bytes32 attestationId,
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayloads
-  ) public payable {
+  ) public payable onlyPortalOwner {
     moduleRegistry.runModulesV2(
       modules,
       attestationPayload,
@@ -141,7 +148,7 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
     bytes32[] memory attestationIds,
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) public {
+  ) public onlyPortalOwner {
     moduleRegistry.bulkRunModulesV2(
       modules,
       attestationsPayloads,
@@ -162,7 +169,7 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    * @dev By default, revocation is only possible by the portal owner
    * We strongly encourage implementing such a rule in your Portal if you intend on overriding this method
    */
-  function revoke(bytes32 attestationId) public {
+  function revoke(bytes32 attestationId) public onlyPortalOwner {
     _onRevoke(attestationId);
 
     attestationRegistry.revoke(attestationId);
@@ -172,7 +179,7 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    * @notice Bulk revokes a list of attestations for the given identifiers
    * @param attestationIds the IDs of the attestations to revoke
    */
-  function bulkRevoke(bytes32[] memory attestationIds) public {
+  function bulkRevoke(bytes32[] memory attestationIds) public onlyPortalOwner {
     _onBulkRevoke(attestationIds);
 
     attestationRegistry.bulkRevoke(attestationIds);
@@ -189,7 +196,7 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
   /**
    * @notice Verifies that a specific interface is implemented by the Portal, following ERC-165 specification
    * @param interfaceID the interface identifier checked in this call
-   * @return The list of modules addresses linked to the Portal
+   * @return True if the interface is supported, false otherwise
    */
   function supportsInterface(bytes4 interfaceID) public view virtual override returns (bool) {
     return
@@ -207,15 +214,22 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
   }
 
   /**
-   * @notice Optional method run before a payload is attested
-   * @param attestationPayload the attestation payload to attest
-   * @param validationPayloads the payloads to validate via the modules
-   * @param value the value sent with the attestation
+   * @notice Optional hooks for specific operations
    */
   function _onAttest(
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayloads,
     uint256 value
+  ) internal virtual {}
+
+  /**
+   * @notice Optional method run when attesting a batch of payloads
+   * @param attestationsPayloads the payloads to attest
+   * @param validationPayloads the payloads to validate in order to issue the attestations
+   */
+  function _onBulkAttest(
+    AttestationPayload[] memory attestationsPayloads,
+    bytes[][] memory validationPayloads
   ) internal virtual {}
 
   /**
@@ -231,18 +245,6 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
     AttestationPayload memory attestationPayload,
     address attester,
     uint256 value
-  ) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
-
-  /**
-   * @notice Optional method run when attesting a batch of payloads
-   * @param attestationsPayloads the payloads to attest
-   * @param validationPayloads the payloads to validate in order to issue the attestations
-   */
-  function _onBulkAttest(
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
   ) internal virtual {}
 
   /**
@@ -256,23 +258,17 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
     bytes32[] memory attestationIds,
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
-  ) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
+  ) internal virtual {}
 
   /**
    * @notice Optional method run when an attestation is revoked or replaced
    * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
    */
-  function _onRevoke(bytes32 /*attestationId*/) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
+  function _onRevoke(bytes32 /*attestationId*/) internal virtual {}
 
   /**
    * @notice Optional method run when a batch of attestations are revoked or replaced
    * @dev    IMPORTANT NOTE: By default, revocation is only possible by the portal owner
    */
-  function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal virtual {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
-  }
+  function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal virtual {}
 }

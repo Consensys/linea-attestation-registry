@@ -7,9 +7,8 @@ import Okapi from "@/assets/issuers/okapi-black.svg?react";
 import OkapiDark from "@/assets/issuers/okapi-white.svg?react";
 import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
-import PadoDark from "@/assets/issuers/pado-dark.svg?react";
-import Pado from "@/assets/issuers/pado.svg?react";
 import PassportXyz from "@/assets/issuers/passport-xyz.svg?react";
+import Primus from "@/assets/issuers/primus.svg?react";
 import PrivadoID from "@/assets/issuers/privado-id.svg?react";
 import Reclaim from "@/assets/issuers/reclaim.svg?react";
 import Reputex from "@/assets/issuers/reputex.svg?react";
@@ -79,24 +78,22 @@ export const issuersData: IIssuer[] = [
     ],
   },
   {
-    name: "PADO Labs",
-    logo: Pado,
-    logoDark: PadoDark,
+    name: "Primus Labs",
+    logo: Primus,
     keywords: ["zk-attestations"],
     description:
-      "PADO is a zkAttestation protocol, dedicated to bringing Internet data into web3 smart contracts, expanding the capabilities of smart contracts, and enabling the monetization of personal data within data flows under privacy protection.",
-    CTALink: "https://www.padolabs.org/events",
-    CTATitle: "Go to Pado",
+      "Primus is a zkAttestation protocol, dedicated to bringing Internet data into web3 smart contracts, expanding the capabilities of smart contracts, and enabling the monetization of personal data within data flows under privacy protection.",
+    CTALink: "https://primuslabs.xyz/",
+    CTATitle: "Go to Primus Labs",
     address: "0xDB736B13E2f522dBE18B2015d0291E4b193D8eF6",
     attestationDefinitions: [
       {
         name: "Binance KYC",
-        logo: Pado,
-        logoDark: PadoDark,
-        description: "PADO uses MPC-TLS and ZKP technology to attest you have a valid KYC on Binance",
+        logo: Primus,
+        description: "Primus uses MPC-TLS and ZKP technology to attest you have a valid KYC on Binance",
         portal: "0xc4b7dcba12866f6f8181b949ca443232c4e94334",
         schema: "0x84fdf5748d9af166503472ff5deb0cd5f61f006169424805fd5554356ac6df10",
-        url: "https://padolabs.org/events",
+        url: "https://primuslabs.xyz/dataVerification",
         chainId: "0xe708",
       },
     ],

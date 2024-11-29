@@ -120,6 +120,7 @@ contract AttestationRegistry is RouterManager {
     attestationIdCounter++;
     // Generate the full attestation ID, padded with the chain prefix
     bytes32 id = generateAttestationId(attestationIdCounter);
+    assert(id != 0x0 && !isRegistered(id));
     // Create attestation
     attestations[id] = Attestation(
       id,
@@ -154,6 +155,7 @@ contract AttestationRegistry is RouterManager {
       attestationIdCounter++;
       // Generate the full attestation ID, padded with the chain prefix
       bytes32 id = generateAttestationId(attestationIdCounter);
+      assert(id != 0x0 && !isRegistered(id));
       // Create attestation
       attestations[id] = Attestation(
         id,
@@ -345,6 +347,9 @@ contract AttestationRegistry is RouterManager {
    * @return The next attestation ID
    */
   function getNextAttestationId() public view returns (bytes32) {
-    return generateAttestationId(attestationIdCounter + 1);
+    uint256 nextattestationId = attestationIdCounter + 1;
+    bytes32 id = generateAttestationId(nextattestationId);
+    assert(id != 0x0 && !isRegistered(id));
+    return id;
   }
 }

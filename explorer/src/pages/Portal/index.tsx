@@ -15,6 +15,7 @@ import { useNetworkContext } from "@/providers/network-provider/context";
 
 import { PortalLoadingSkeleton } from "./components/PortalLoadingSkeleton";
 import { PortalModules } from "./components/PortalModules";
+import { RecentAttestations } from "../Schema/components/RecentAttestations";
 
 export const Portal = () => {
   const { id } = useParams();
@@ -92,6 +93,7 @@ export const Portal = () => {
           ))}
         </div>
       </div>
+      <RecentAttestations portalId={portal.id} />
       <PortalModules portalModules={portal.modules} />
     </section>
   );

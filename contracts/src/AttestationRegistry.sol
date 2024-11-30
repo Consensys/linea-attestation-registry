@@ -182,8 +182,8 @@ contract AttestationRegistry is RouterManager {
    * @param attester the account address issuing the attestation
    */
   function replace(bytes32 attestationId, AttestationPayload calldata attestationPayload, address attester) public {
-    attest(attestationPayload, attester);
     revoke(attestationId);
+    attest(attestationPayload, attester);
     bytes32 replacedBy = generateAttestationId(attestationIdCounter);
     attestations[attestationId].replacedBy = replacedBy;
 

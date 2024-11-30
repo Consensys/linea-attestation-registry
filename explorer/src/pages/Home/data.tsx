@@ -1,6 +1,8 @@
 import ZeroXScore from "@/assets/issuers/0xscore.svg?react";
 import Aspecta from "@/assets/issuers/aspecta.svg?react";
 import Automata from "@/assets/issuers/automata.svg?react";
+import GitcoinDark from "@/assets/issuers/gitcoin-dark.svg?react";
+import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
 import Hapi from "@/assets/issuers/hapi.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
 import Okapi from "@/assets/issuers/okapi-black.svg?react";
@@ -14,6 +16,7 @@ import PrivadoID from "@/assets/issuers/privado-id.svg?react";
 import Reclaim from "@/assets/issuers/reclaim.svg?react";
 import Reputex from "@/assets/issuers/reputex.svg?react";
 import RubyScore from "@/assets/issuers/rubyscore.svg?react";
+import Sovs from "@/assets/issuers/sovs.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import Zeronym from "@/assets/issuers/zeronym-black.svg?react";
 import ZeronymDark from "@/assets/issuers/zeronym-white.svg?react";
@@ -421,6 +424,29 @@ export const issuersData: IIssuer[] = [
         portal: "0xdb5b4874c0948a5a7a1bf7f68708f60c274a8a47",
         schema: "0xc51f34fd0d447bb8df012a3e48750a2fef499117a75988d80d098318e8c47b7e",
         url: "https://reputex.io/verax",
+        chainId: "0xe708",
+      },
+    ],
+  },
+  {
+    name: "Gitcoin",
+    logo: Gitcoin,
+    logoDark: GitcoinDark,
+    keywords: ["Sovereignty"],
+    description:
+      "Gitcoin provides the tools, expertise, and services that empower ecosystems to launch and scale impactful grants programs—without the administrative burden.",
+    CTALink: "https://www.gitcoin.co/",
+    CTATitle: "Go To Gitcoin",
+    address: "0xbf7877303b90297e7489aa1c067106331dff7288",
+    attestationDefinitions: [
+      {
+        name: "Sovs.xyz",
+        logo: Sovs,
+        description:
+          "By making an explicit attestation of personal sovereignty, your support for the emerging world of network states will be written into the permanent history of the liberation of humanity, cryptographically etched on the Linea blockchain.",
+        portal: "0x888d41df5d93a59da278562b21d7ba00ffd899d3",
+        schema: "0xd20a542d667c057bd5c612a6afd26fa04fef98affdb8b4cbde80401c6de73afe",
+        url: "https://www.sovs.xyz/",
         chainId: "0xe708",
       },
     ],

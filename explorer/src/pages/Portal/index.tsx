@@ -1,4 +1,5 @@
 import { t } from "i18next";
+import { ArrowUpRight } from "lucide-react";
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
@@ -12,6 +13,7 @@ import { EMPTY_STRING } from "@/constants";
 import { regexEthAddress } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { getBlockExplorerLink } from "@/utils";
 
 import { PortalLoadingSkeleton } from "./components/PortalLoadingSkeleton";
 import { PortalModules } from "./components/PortalModules";
@@ -60,10 +62,12 @@ export const Portal = () => {
     {
       title: t("portal.id"),
       subtitle: portal.id,
+      link: chain ? `${getBlockExplorerLink(chain)}/${portal.id}` : "#",
     },
     {
       title: t("portal.ownerAddress"),
       subtitle: displayPortalOwnerEnsAddress(),
+      link: chain ? `${getBlockExplorerLink(chain)}/${portal.ownerAddress}` : "#",
     },
     {
       title: t("portal.revokable.title"),
@@ -85,10 +89,21 @@ export const Portal = () => {
           <hr className="border-border-card dark:border-border-cardDark" />
         </div>
         <div className="flex flex-col gap-6 px-5 md:px-10 xl:flex-row xl:justify-between">
-          {list.map(({ title, subtitle }) => (
+          {list.map(({ title, subtitle, link }) => (
             <div key={title} className="flex flex-col gap-2">
               <p className="text-xs text-text-quaternary not-italic font-normal uppercase">{title}</p>
-              <p className="break-words dark:text-text-secondaryDark">{subtitle}</p>
+              {link ? (
+                <a
+                  href={link}
+                  target="_blank"
+                  className="break-words dark:text-text-secondaryDark hover:underline flex items-center gap-2"
+                >
+                  {subtitle}
+                  <ArrowUpRight width="1rem" height="auto" />
+                </a>
+              ) : (
+                <p className="break-words dark:text-text-secondaryDark">{subtitle}</p>
+              )}
             </div>
           ))}
         </div>

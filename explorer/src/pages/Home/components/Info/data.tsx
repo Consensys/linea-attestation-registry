@@ -18,7 +18,7 @@ export const infoData = [
     title: t("home.info.aboutVerax"),
     button: {
       name: t("common.actions.learnMore"),
-      url: "https://ver.ax",
+      url: "https://www.ver.ax",
     },
     additionalClass: "bg-surface-darkGrey dark:bg-surface-darkGreyDark",
   },

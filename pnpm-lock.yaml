@@ -103,8 +103,8 @@ importers:
         specifier: ^8.10.7
         version: 8.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@verax-attestation-registry/verax-sdk':
-        specifier: 2.1.3
-        version: 2.1.3(@graphql-mesh/types@0.98.4)(@graphql-tools/utils@10.2.0(graphql@16.8.1))(@types/node@20.12.12)(@types/react@18.3.2)(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2)(utf-8-validate@5.0.10)
+        specifier: 2.2.0
+        version: 2.2.0(@graphql-mesh/types@0.98.4)(@graphql-tools/utils@10.2.0(graphql@16.8.1))(@types/node@20.12.12)(@types/react@18.3.2)(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2)(utf-8-validate@5.0.10)
       abitype:
         specifier: ^0.10.3
         version: 0.10.3(typescript@5.2.2)
@@ -5216,8 +5216,8 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  '@verax-attestation-registry/verax-sdk@2.1.3':
-    resolution: {integrity: sha512-8wXMWskN82q3fs62pmanagPHQXAqiJIo7mQxgNufHJlC3ye/StmSwIizmIjlZ7xauYQGjaR19fbExg3+Qxqt7w==}
+  '@verax-attestation-registry/verax-sdk@2.2.0':
+    resolution: {integrity: sha512-Exoe005jqxSU0DmggMUSA5jTuqQacO3ObB7hRfaVLw0oH/c50GWBM7ZxhUe7FUXWY/eK1Vvd8rZl1E1ClWWGDw==}
 
   '@vercel/webpack-asset-relocator-loader@1.7.3':
     resolution: {integrity: sha512-vizrI18v8Lcb1PmNNUBz7yxPxxXoOeuaVEjTG9MjvDrphjiSxFZrRJ5tIghk+qdLFRCXI5HBCshgobftbmrC5g==}
@@ -20171,7 +20171,7 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@verax-attestation-registry/verax-sdk@2.1.3(@graphql-mesh/types@0.98.4)(@graphql-tools/utils@10.2.0(graphql@16.8.1))(@types/node@20.12.12)(@types/react@18.3.2)(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2)(utf-8-validate@5.0.10)':
+  '@verax-attestation-registry/verax-sdk@2.2.0(@graphql-mesh/types@0.98.4)(@graphql-tools/utils@10.2.0(graphql@16.8.1))(@types/node@20.12.12)(@types/react@18.3.2)(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tslib@2.6.2)(typescript@5.2.2)(utf-8-validate@5.0.10)':
     dependencies:
       '@graphql-mesh/cache-localforage': 0.95.8(@graphql-mesh/types@0.98.4)(@graphql-mesh/utils@0.95.8)(graphql@16.8.1)(tslib@2.6.2)
       '@graphql-mesh/cross-helpers': 0.4.2(@graphql-tools/utils@10.2.0(graphql@16.8.1))(graphql@16.8.1)

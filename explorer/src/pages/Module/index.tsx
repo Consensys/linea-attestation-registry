@@ -10,6 +10,7 @@ import { useNetworkContext } from "@/providers/network-provider/context";
 import { getBlockExplorerLink } from "@/utils";
 
 import { ModuleLoadingSkeleton } from "./components/ModuleLoadingSkeleton";
+import { ModulePortals } from "./components/ModulePortals";
 
 export const Module = () => {
   const { id } = useParams();
@@ -60,6 +61,7 @@ export const Module = () => {
           <ArrowUpRight height="auto" width="1rem" />
         </a>
       </div>
+      <ModulePortals moduleId={module.moduleAddress} />
     </section>
   );
 };

@@ -20,7 +20,12 @@ export const Portals: React.FC<IPortalProps> = ({ address }) => {
   const location = useLocation();
 
   const { data: portals } = useSWR(`${SWRKeys.GET_PORTALS_BY_ISSUER}/${address}`, () =>
-    sdk.portal.findBy(undefined, undefined, { ownerAddress: address }),
+    sdk.portal.findBy(undefined, undefined, { ownerAddress: address }).then((portalList) =>
+      portalList.map((portal) => ({
+        ...portal,
+        id: portal.id as `0x${string}`,
+      })),
+    ),
   );
 
   if (!portals) return null;

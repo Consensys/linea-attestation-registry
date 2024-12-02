@@ -55,3 +55,29 @@ export const columns = ({ chain }: { chain: Chain }): ColumnDef<Portal>[] => [
     },
   },
 ];
+
+export const portalColumnsOption = {
+  name: {
+    width: "25%",
+  },
+  description: {
+    width: "50%",
+  },
+  owner: {
+    width: "25%",
+  },
+};
+
+export const skeletonPortals = (count: number) =>
+  Array(count)
+    .fill(null)
+    .map((_, index) => ({
+      id: `0x${index.toString(16).padStart(40, "0")}` as `0x${string}`,
+      name: "",
+      description: "",
+      ownerAddress: "0x0000000000000000000000000000000000000000" as `0x${string}`,
+      ownerName: "",
+      modules: [] as `0x${string}`[],
+      isRevocable: false,
+      attestationCounter: 0,
+    }));

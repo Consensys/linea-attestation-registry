@@ -35,7 +35,7 @@ const chains: INetwork[] = [
     veraxEnv: {
       ...VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND,
       subgraphUrl:
-        "https://gateway-arbitrum.network.thegraph.com/api/3b8bfe072786fa4a76463cf486f4985b/subgraphs/id/ESRDQ5djmucKeqxNz7JGVHr621sjGEEsY6M6JibjJ9u3",
+        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/ESRDQ5djmucKeqxNz7JGVHr621sjGEEsY6M6JibjJ9u3",
     },
     img: <LineaMainnetIcon />,
     imgDark: <LineaMainnetIconDark />,
@@ -48,7 +48,7 @@ const chains: INetwork[] = [
     veraxEnv: {
       ...VeraxSdk.DEFAULT_LINEA_SEPOLIA_FRONTEND,
       subgraphUrl:
-        "https://gateway-arbitrum.network.thegraph.com/api/3b8bfe072786fa4a76463cf486f4985b/subgraphs/id/2gfRmZ1e1uJKpCQsUrvxJmRivNa7dvvuULoc8SJabR8v",
+        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/2gfRmZ1e1uJKpCQsUrvxJmRivNa7dvvuULoc8SJabR8v",
     },
     img: <LineaSepoliaIcon />,
     network: "linea-sepolia",
@@ -60,7 +60,7 @@ const chains: INetwork[] = [
     veraxEnv: {
       ...VeraxSdk.DEFAULT_ARBITRUM_FRONTEND,
       subgraphUrl:
-        "https://gateway-arbitrum.network.thegraph.com/api/3b8bfe072786fa4a76463cf486f4985b/subgraphs/id/ELQZyXzGu5MVA6kMCpMh5zNqdU8gqhtynM9yVRQ4bZoA",
+        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/ELQZyXzGu5MVA6kMCpMh5zNqdU8gqhtynM9yVRQ4bZoA",
     },
     img: <ArbitrumIcon />,
     imgDark: <ArbitrumIconDark />,
@@ -73,7 +73,7 @@ const chains: INetwork[] = [
     veraxEnv: {
       ...VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA_FRONTEND,
       subgraphUrl:
-        "https://gateway-arbitrum.network.thegraph.com/api/3b8bfe072786fa4a76463cf486f4985b/subgraphs/id/5RBJNNUvaoekU2yJsbmEZ1R62Mo3imWy7nMgNj97ZG8u",
+        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/5RBJNNUvaoekU2yJsbmEZ1R62Mo3imWy7nMgNj97ZG8u",
     },
     img: <ArbitrumSepoliaIcon />,
     network: "arbitrum-sepolia",
@@ -85,7 +85,7 @@ const chains: INetwork[] = [
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BASE_FRONTEND,
       subgraphUrl:
-        "https://gateway-arbitrum.network.thegraph.com/api/3b8bfe072786fa4a76463cf486f4985b/subgraphs/id/fje2qXNP7KeRBZDPFv1VCERchv9PZyZokPRWNZkWtXk",
+        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/fje2qXNP7KeRBZDPFv1VCERchv9PZyZokPRWNZkWtXk",
     },
     img: <BaseMainnetIcon />,
     imgDark: <BaseIconDark />,
@@ -98,7 +98,7 @@ const chains: INetwork[] = [
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BASE_SEPOLIA_FRONTEND,
       subgraphUrl:
-        "https://gateway-arbitrum.network.thegraph.com/api/3b8bfe072786fa4a76463cf486f4985b/subgraphs/id/EbruygUvdowo7dmsumFmRq2hRu81K88mWsLo5r3jxY3S",
+        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/EbruygUvdowo7dmsumFmRq2hRu81K88mWsLo5r3jxY3S",
     },
     img: <BaseSepoliaIcon />,
     network: "base-sepolia",
@@ -110,7 +110,7 @@ const chains: INetwork[] = [
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BSC_FRONTEND,
       subgraphUrl:
-        "https://gateway-arbitrum.network.thegraph.com/api/3b8bfe072786fa4a76463cf486f4985b/subgraphs/id/8VfLNCBXCFKkcfmRSLDZ6J36NG5rRCUzEgByRJXCzSoW",
+        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/8VfLNCBXCFKkcfmRSLDZ6J36NG5rRCUzEgByRJXCzSoW",
     },
     img: <BscMainnetIcon />,
     imgDark: <BscMainnetIconDark />,
@@ -123,7 +123,7 @@ const chains: INetwork[] = [
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BSC_TESTNET_FRONTEND,
       subgraphUrl:
-        "https://gateway-arbitrum.network.thegraph.com/api/3b8bfe072786fa4a76463cf486f4985b/subgraphs/id/6iFYkMd9xbQcEcddHs6vbTMarra7d2NUt9S1qtNmWtaV",
+        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/6iFYkMd9xbQcEcddHs6vbTMarra7d2NUt9S1qtNmWtaV",
     },
     img: <BscTestnetIcon />,
     network: "bsc-testnet",

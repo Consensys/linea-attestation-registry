@@ -6,6 +6,7 @@ import { Chain } from "viem";
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
+import { EMPTY_0X_STRING, EMPTY_STRING, ZERO } from "@/constants";
 import { toPortalById } from "@/routes/constants";
 import { getBlockExplorerLink } from "@/utils";
 import { cropString } from "@/utils/stringUtils";
@@ -73,11 +74,11 @@ export const skeletonPortals = (count: number) =>
     .fill(null)
     .map((_, index) => ({
       id: `0x${index.toString(16).padStart(40, "0")}` as `0x${string}`,
-      name: "",
-      description: "",
-      ownerAddress: "0x0000000000000000000000000000000000000000" as `0x${string}`,
-      ownerName: "",
+      name: EMPTY_STRING,
+      description: EMPTY_STRING,
+      ownerAddress: `${EMPTY_0X_STRING}${"0".repeat(40)}` as `0x${string}`,
+      ownerName: EMPTY_STRING,
       modules: [] as `0x${string}`[],
       isRevocable: false,
-      attestationCounter: 0,
+      attestationCounter: ZERO,
     }));

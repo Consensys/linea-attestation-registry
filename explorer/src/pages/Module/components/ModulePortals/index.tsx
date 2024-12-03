@@ -20,9 +20,8 @@ export const ModulePortals: React.FC<{ moduleId: Address }> = ({ moduleId }) => 
   const { data: portals, isLoading } = useSWR(
     `${SWRKeys.GET_MODULE_PORTAL_LIST}/${moduleId}/${chain.id}`,
     async () => {
-      const allPortals = await sdk.portal.findBy(100, 0);
-      const portalList = allPortals.filter((portal) => portal.modules.includes(moduleId));
-      return portalList.slice(0, 5).map((portal) => ({
+      const portalList = await sdk.portal.findBy(5, 0, { modules_contains: [moduleId] }, "attestationCounter", "desc");
+      return portalList.map((portal) => ({
         ...portal,
         id: portal.id as `0x${string}`,
       }));

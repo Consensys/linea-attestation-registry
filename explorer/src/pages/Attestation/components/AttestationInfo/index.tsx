@@ -1,12 +1,13 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Info } from "lucide-react";
 import { useCallback } from "react";
 import { Address, Hex, hexToNumber, isAddress } from "viem";
 import { mainnet } from "viem/chains";
 import { useEnsName } from "wagmi";
 
 import { Link } from "@/components/Link";
+import { Tooltip } from "@/components/Tooltip";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { CHAIN_ID_ROUTE, toAttestationsBySubject, toPortalById } from "@/routes/constants";
 import { getBlockExplorerLink } from "@/utils";
@@ -51,9 +52,13 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
 
   const blockExplorerLink = getBlockExplorerLink(chain);
 
-  const list: Array<{ title: string; value: string; to?: string; link?: string }> = [
+  const list: Array<{ title: string; value: string; to?: string; link?: string; tooltip?: string }> = [
     createDateListItem(t("attestation.info.attested"), attestedDate.toString()),
-    createDateListItem(t("attestation.info.expirationDate"), expirationDate.toString()),
+    {
+      ...createDateListItem(t("attestation.info.expirationDate"), expirationDate.toString()),
+      tooltip:
+        "The validity of this Attestation is determined by the Issuer, and consumers may choose to adhere to or ignore this expiration date.",
+    },
     {
       title: t("attestation.info.revoked.title"),
       value: revoked ? t("attestation.info.revoked.yes") : t("attestation.info.revoked.no"),
@@ -84,7 +89,14 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
       <div className="gap-6 flex flex-col items-start w-full md:flex-wrap md:h-[170px] md:content-between xl:flex-nowrap xl:h-auto">
         {list.map((item) => (
           <div key={item.title} className="inline-flex gap-2 w-full justify-between text-xs items-center md:w-auto">
-            <div className="min-w-[120px] font-normal text-text-quaternary">{item.title.toUpperCase()}</div>
+            <div className="min-w-[120px] font-normal text-text-quaternary flex items-center gap-2">
+              {item.title.toUpperCase()}
+              {item.tooltip && (
+                <Tooltip content={item.tooltip}>
+                  <Info className="w-4 h-4 text-text-quaternary cursor-help" />
+                </Tooltip>
+              )}
+            </div>
             {item.to && (
               <Link
                 to={item.to}

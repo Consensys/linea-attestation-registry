@@ -52,13 +52,9 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
 
   const blockExplorerLink = getBlockExplorerLink(chain);
 
-  const list: Array<{ title: string; value: string; to?: string; link?: string; tooltip?: string }> = [
+  const list: Array<{ title: string; value: string; to?: string; link?: string }> = [
     createDateListItem(t("attestation.info.attested"), attestedDate.toString()),
-    {
-      ...createDateListItem(t("attestation.info.expirationDate"), expirationDate.toString()),
-      tooltip:
-        "The validity of this Attestation is determined by the Issuer, and consumers may choose to adhere to or ignore this expiration date.",
-    },
+    createDateListItem(t("attestation.info.expirationDate"), expirationDate.toString()),
     {
       title: t("attestation.info.revoked.title"),
       value: revoked ? t("attestation.info.revoked.yes") : t("attestation.info.revoked.no"),
@@ -87,12 +83,12 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
         #{displayAmountWithComma(hexToNumber(`0x${(id as Hex).substring(6)}`))}
       </div>
       <div className="gap-6 flex flex-col items-start w-full md:flex-wrap md:h-[170px] md:content-between xl:flex-nowrap xl:h-auto">
-        {list.map((item) => (
+        {list.map((item, index) => (
           <div key={item.title} className="inline-flex gap-2 w-full justify-between text-xs items-center md:w-auto">
             <div className="min-w-[120px] font-normal text-text-quaternary flex items-center gap-2">
               {item.title.toUpperCase()}
-              {item.tooltip && (
-                <Tooltip content={item.tooltip}>
+              {index === 1 && (
+                <Tooltip content="The validity of this Attestation is determined by the Issuer, and consumers may choose to adhere to or ignore this expiration date.">
                   <Info className="w-4 h-4 text-text-quaternary cursor-help" />
                 </Tooltip>
               )}

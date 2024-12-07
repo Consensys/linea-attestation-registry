@@ -7,6 +7,7 @@ import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { EMPTY_STRING, ZERO, ZERO_ADDRESS } from "@/constants";
+import { ColumnsOptions } from "@/interfaces/components";
 import { toPortalById } from "@/routes/constants";
 import { getBlockExplorerLink } from "@/utils";
 import { cropString } from "@/utils/stringUtils";
@@ -57,15 +58,19 @@ export const columns = ({ chain }: { chain: Chain }): ColumnDef<Portal>[] => [
   },
 ];
 
-export const portalColumnsOption = {
-  name: {
-    width: "25%",
+export const portalColumnsOption: ColumnsOptions = {
+  0: {
+    minWidth: 150,
+    maxWidth: 200,
+    isRandomWidth: true,
   },
-  description: {
-    width: "50%",
+  1: {
+    minWidth: 200,
+    maxWidth: 400,
+    isRandomWidth: true,
   },
-  owner: {
-    width: "25%",
+  2: {
+    width: 150,
   },
 };
 

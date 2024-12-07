@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import { arbitrum, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
 
 import { lineaSepolia } from "@/config";
@@ -10,7 +11,7 @@ export const DASH = "-";
 export const ZERO_STRING = "0";
 export const TEN = 10;
 export const ZERO = 0;
-export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as `0x${string}`;
+export const ZERO_ADDRESS: Address = "0x0000000000000000000000000000000000000000";
 export const ITEMS_PER_PAGE_DEFAULT = 10;
 export const ITEMS_SEARCHED_DEFAULT = 100;
 export const CURRENT_PAGE_DEFAULT = 1;

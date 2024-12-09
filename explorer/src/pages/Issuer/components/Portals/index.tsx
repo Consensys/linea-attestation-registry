@@ -44,13 +44,13 @@ export const Portals: React.FC<IPortalProps> = ({ address }) => {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {portals.map(({ id, name, description, attestationCounter }) => (
-              <tr key={id}>
+            {portals.map((portal) => (
+              <tr key={portal.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-xs font-medium">
                   <Button
-                    name={name}
+                    name={portal.name}
                     handler={() =>
-                      navigate(toPortalById(id).replace(CHAIN_ID_ROUTE, network), {
+                      navigate(toPortalById(portal.id).replace(CHAIN_ID_ROUTE, network), {
                         state: { from: location.pathname },
                       })
                     }
@@ -58,8 +58,8 @@ export const Portals: React.FC<IPortalProps> = ({ address }) => {
                     iconRight={<ArrowRight />}
                   />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-xs">{description}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-xs font-medium">{attestationCounter}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-xs">{portal.description}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-xs font-medium">{portal.attestationCounter}</td>
               </tr>
             ))}
           </tbody>

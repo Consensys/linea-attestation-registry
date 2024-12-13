@@ -1,6 +1,6 @@
 import { Attestation } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
-import { ArrowUpRight, Info } from "lucide-react";
+import { Info } from "lucide-react";
 import { useCallback } from "react";
 import { Address, Hex, hexToNumber, isAddress } from "viem";
 import { mainnet } from "viem/chains";
@@ -85,36 +85,23 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
       <div className="gap-6 flex flex-col items-start w-full md:flex-wrap md:h-[170px] md:content-between xl:flex-nowrap xl:h-auto">
         {list.map((item, index) => (
           <div key={item.title} className="inline-flex gap-2 w-full justify-between text-xs items-center md:w-auto">
-            <div className="min-w-[120px] font-normal text-text-quaternary flex items-center gap-2">
+            <div className="w-[140px] font-normal text-text-quaternary flex items-center gap-2">
               {item.title.toUpperCase()}
               {index === 1 && (
                 <Tooltip content="The validity of this Attestation is determined by the Issuer, and consumers may choose to adhere to or ignore this expiration date.">
-                  <Info className="w-4 h-4 text-text-quaternary cursor-help" />
+                  <Info className="w-4 h-4 text-text-quaternary cursor-help flex-shrink-0" />
                 </Tooltip>
               )}
             </div>
-            {item.to && (
+            {item.to ? (
               <Link
                 to={item.to}
-                className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline"
+                className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap overflow-hidden text-ellipsis md:text-base hover:underline"
               >
                 {item.value}
               </Link>
-            )}
-
-            {item.link && (
-              <a
-                href={item.link}
-                target="_blank"
-                className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base hover:underline flex items-center gap-2"
-              >
-                {item.value}
-                <ArrowUpRight width="1rem" height="auto" />
-              </a>
-            )}
-
-            {!item.to && !item.link && (
-              <div className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap self-stretch overflow-hidden text-ellipsis md:text-base">
+            ) : (
+              <div className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap text-right md:text-base">
                 {item.value}
               </div>
             )}

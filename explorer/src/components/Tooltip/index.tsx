@@ -56,7 +56,7 @@ export const Tooltip: React.FC<TooltipProps> = ({ content, children, placement =
           ref={refs.setFloating}
           style={{ ...floatingStyles, zIndex: 1000 }}
           {...getFloatingProps()}
-          className={`p-2 rounded-md ${
+          className={`p-2 rounded-md min-w-[250px] ${
             isDarkMode ? "bg-whiteDefault text-blackDefault" : "bg-blackDefault text-whiteDefault"
           }`}
         >

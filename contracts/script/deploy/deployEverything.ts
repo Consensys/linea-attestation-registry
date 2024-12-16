@@ -24,9 +24,13 @@ async function main() {
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  await run("verify:verify", {
-    address: routerProxyAddress,
-  });
+  try {
+    await run("verify:verify", {
+      address: routerProxyAddress,
+    });
+  } catch (e) {
+    console.log("Verification failed for Router");
+  }
 
   console.log(`Router successfully deployed and verified!`);
   console.log(`Proxy is at ${routerProxyAddress}`);
@@ -48,9 +52,13 @@ async function main() {
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  await run("verify:verify", {
-    address: attestationRegistryProxyAddress,
-  });
+  try {
+    await run("verify:verify", {
+      address: attestationRegistryProxyAddress,
+    });
+  } catch (e) {
+    console.log("Verification failed for AttestationRegistry");
+  }
 
   console.log(`AttestationRegistry successfully deployed and verified!`);
   console.log(`Proxy is at ${attestationRegistryProxyAddress}`);
@@ -69,9 +77,13 @@ async function main() {
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  await run("verify:verify", {
-    address: moduleRegistryProxyAddress,
-  });
+  try {
+    await run("verify:verify", {
+      address: moduleRegistryProxyAddress,
+    });
+  } catch (e) {
+    console.log("Verification failed for ModuleRegistry");
+  }
 
   console.log(`ModuleRegistry successfully deployed and verified!`);
   console.log(`Proxy is at ${moduleRegistryProxyAddress}`);
@@ -90,9 +102,13 @@ async function main() {
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  await run("verify:verify", {
-    address: portalRegistryProxyAddress,
-  });
+  try {
+    await run("verify:verify", {
+      address: portalRegistryProxyAddress,
+    });
+  } catch (e) {
+    console.log("Verification failed for PortalRegistry");
+  }
 
   console.log(`PortalRegistry successfully deployed and verified!`);
   console.log(`Proxy is at ${portalRegistryProxyAddress}`);
@@ -111,9 +127,13 @@ async function main() {
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  await run("verify:verify", {
-    address: schemaRegistryProxyAddress,
-  });
+  try {
+    await run("verify:verify", {
+      address: schemaRegistryProxyAddress,
+    });
+  } catch (e) {
+    console.log("Verification failed for SchemaRegistry");
+  }
 
   console.log(`SchemaRegistry successfully deployed and verified!`);
   console.log(`Proxy is at ${schemaRegistryProxyAddress}`);

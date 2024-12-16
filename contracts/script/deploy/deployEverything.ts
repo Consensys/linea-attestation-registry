@@ -28,7 +28,12 @@ async function main() {
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  await verifyContract(routerProxyAddress, [], shouldVerify);
+  try {
+    await verifyContract( routerProxyAddress,
+    [], shouldVerify);
+  } catch (e) {
+    console.log("Verification failed for Router");
+  }
 
   console.log(`Router successfully deployed${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${routerProxyAddress}`);

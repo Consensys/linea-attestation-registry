@@ -59,7 +59,7 @@ pnpm i
 
 ## Contributing
 
-Verax Attestation Registry is a community-lead initiative, with developers from various companies and different
+Verax Attestation Registry is a community-led initiative, with developers from various companies and different
 backgrounds. While we are more than happy to get help from multiple sources, we need to rely on strong Ways of Working.
 
 Don't hesitate to check our [Contribution Guide](./CONTRIBUTING.md) before pushing your first code to the repo!

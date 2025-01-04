@@ -8,7 +8,7 @@
 
 <!-- <h4 align="center"><a href="https://docs.ver.ax/">Verax</a> * Attestation Registry simplifies managing attestations on EVM chains, enhancing data discoverability for dApps across the network.</h4> -->
 
-#### *[Verax](https://docs.ver.ax/) Attestation Registry simplifies the process managing attestations on EVM chains, enhancing data discoverability for dApps across the network.*
+_[Verax](https://docs.ver.ax/) Attestation Registry simplifies the process managing attestations on EVM chains, enhancing data discoverability for dApps across the network._
 
 <br>
 

@@ -6,12 +6,29 @@
   <br>
 </h1>
 
-<h4 align="center"><a href="https://docs.ver.ax/">Verax</a> is a shared registry for storing attestations of
-public interest on EVM
-chains, designed to enhance data discoverability and consumption for dApps across
-the network.</h4>
+<!-- <h4 align="center"><a href="https://docs.ver.ax/">Verax</a> * Attestation Registry simplifies managing attestations on EVM chains, enhancing data discoverability for dApps across the network.</h4> -->
 
-<p align="center">
+#### *[Verax](https://docs.ver.ax/) Attestation Registry simplifies the process managing attestations on EVM chains, enhancing data discoverability for dApps across the network.*
+
+<br>
+
+## Table of Contents
++ [Introduction](#introduction)
++ [Links](#links)
++ [Repository Organisation](#repository-organisation)
++ [Getting Started](#getting-started)
++ [Contributing](#contributing)
++ [Contract Addresses](#contract-addresses)
++ [Subgraphs URLs](#subgraphs-urls)
++ [Network Prefixes](#network-prefixes)
++ [License](#license)
+
+</br>
+
+## Introduction
+The Verax Attestation Registry is a community-driven platform designed to store and manage attestations on EVM-compatible chains, enhancing data discoverability and accessibility for decentralized applications (dApps). Serving as a shared ecosystem resource for developers and users, Verax aims to streamline how data is consumed and utilized across networks. This document provides a comprehensive guide to understanding the Verax Attestation Registry, its structure, and its use. It outlines the project's purpose, offers setup instructions, details the repository's organization, and highlights key resources such as deployed contract addresses and subgraph URLs. Additionally, it fosters community collaboration through contribution guidelines and introduces tools like the SDK and MetaMask Snap to simplify integration with dApps.
+
+<!-- <p align="center">
   <a href="#links">Links</a> •
   <a href="#repository-organisation">Repository Organisation</a> •
   <a href="#getting-started">Getting Started</a> •
@@ -20,14 +37,16 @@ the network.</h4>
   <a href="#subgraphs-urls">Subgraphs URLs</a> •
   <a href="#network-prefixes">Network Prefixes</a> •
   <a href="#license">License</a>
-</p>
+</p> -->
+
+</br>
 
 ## Links
 
-📚 [Documentation](https://docs.ver.ax/)  
-🔍 [Subgraphs](#subgraphs-addresses)  
-🧱 [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)  
-🌍 [Explorer](https://explorer.ver.ax)
++ [Documentation](https://docs.ver.ax/)  
++ [Subgraphs](#subgraphs-addresses)  
++ [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)  
++ [Explorer](https://explorer.ver.ax)
 
 ## Repository Organisation
 
@@ -59,25 +78,30 @@ pnpm i
 
 ## Contributing
 
-Verax Attestation Registry is a community-led initiative, with developers from various companies and different
-backgrounds. While we are more than happy to get help from multiple sources, we need to rely on strong Ways of Working.
+<!-- Verax Attestation Registry is a community-led initiative, with developers from various companies and different
+backgrounds. While we are more than happy to get help from multiple sources, we need to rely on strong Ways of Working. --> The Verax Attestation Registry is a community-driven project, with contributions from developers across different companies and backgrounds. While we value the support from various contributors, we rely on strong, structured processes to ensure the project’s success.
+<br>
 
-Don't hesitate to check our [Contribution Guide](./CONTRIBUTING.md) before pushing your first code to the repo!
+<!-- Don't hesitate to check our [Contribution Guide](./CONTRIBUTING.md) before pushing your first code to the repo!-->
+We welcome contributions to Verax! Please check our [Contribution Guide](./CONTRIBUTING.md) Guide for instructions on how to contribute to the project.
 
-## Contracts Addresses
 
-The main contracts (i.e. the "registries") and the helpers contracts are deployed on:
+<br>
 
-- Linea Sepolia
+## Contract Addresses
+
+Here is the list of contract addresses and subgraph URLs for each chain, along with links for easy access:
+
+<!-- - Linea Sepolia
 - Linea Mainnet
 - Arbitrum Sepolia
 - Arbitrum Mainnet
 - Base Sepolia
 - Base Mainnet
 - BSC Testnet
-- BSC Mainnet
+- BSC Mainnet -->
 
-Here are the addresses on those networks:
+<!-- Here are the addresses on those networks: -->
 
 <details>
   <summary>Linea Sepolia</summary>
@@ -215,8 +239,41 @@ Here are the addresses on those networks:
 
 </details>
 
-## Subgraphs URLs
+</br>
 
+## Subgraph URLs
+
+Subgraphs index data from smart contracts like `Router`, `AttestationRegistry`, `ModuleRegistry`, `PortalRegistry`, and `SchemaRegistry`. They facilitate efficient querying and interaction with blockchain data.
+
+### Subgraph V1
+
+| **Network**           | **Environment** | **Subgraph URL**                                                                                                      | **Backup URL**                                                                                                       |
+|------------------------|-----------------|----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| Linea                 | Sepolia         | [V1 Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.12)                        | -                                                                                                                   |
+| Linea                 | Mainnet         | [V1 Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1)                                 | [Backup](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)               |
+| Arbitrum              | Sepolia         | [V1 Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum-sepolia/v0.0.3)                   | -                                                                                                                   |
+| Arbitrum              | Mainnet         | [V1 Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum/v0.0.1)                           | -                                                                                                                   |
+| Base                  | Sepolia         | [V1 Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.2)                           | -                                                                                                                   |
+| Base                  | Mainnet         | [V1 Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.2)                                   | -                                                                                                                   |
+| BSC                   | Testnet         | [V1 BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1)                             | -                                                                                                                   |
+| BSC                   | Mainnet         | [V1 BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc/v0.0.1)                                     | -                                                                                                                   |
+
+### Subgraph V2
+
+| **Network**           | **Environment** | **Subgraph URL**                                                                                                      | **Backup URL**                                                                                                       |
+|------------------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| Linea                 | Sepolia         | [V2 Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-linea-sepolia/v0.0.2)                        | -                                                                                                                   |
+| Linea                 | Mainnet         | [V2 Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-linea/v0.0.1)                                 | [Backup](https://api.goldsky.com/api/public/project_clxx488osyuf501vygg71f86w/subgraphs/verax-v2-linea/0.0.1/gn)    |
+| Arbitrum              | Sepolia         | [V2 Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum-sepolia/v0.0.2)                   | -                                                                                                                   |
+| Arbitrum              | Mainnet         | [V2 Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum/v0.0.2)                           | -                                                                                                                   |
+| Base                  | Sepolia         | [V2 Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-base-sepolia/v0.0.2)                           | -                                                                                                                   |
+| Base                  | Mainnet         | [V2 Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-base/v0.0.1)                                   | -                                                                                                                   |
+| BSC                   | Testnet         | [V2 BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc-testnet/v0.0.1)                             | -                                                                                                                   |
+| BSC                   | Mainnet         | [V2 BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc/v0.0.1)                                     | -                                                                                                                   |
+
+
+<!-- ## Subgraphs URLs
+The Subgraphs listed for each blockchain network, such as V1 and V2, index data from smart contracts like Router, AttestationRegistry, ModuleRegistry, PortalRegistry, and SchemaRegistry. They enable efficient querying and interaction with blockchain data tailored to each contract's functionality.
 ### Subgraph V1
 
 - [Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.12)
@@ -239,22 +296,47 @@ Here are the addresses on those networks:
 - [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-base-sepolia/v0.0.2)
 - [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-base/v0.0.1)
 - [BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc-testnet/v0.0.1)
-- [BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc/v0.0.1)
+- [BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc/v0.0.1) -->
 
 ## Network Prefixes
 
-To easily differentiate the networks on which an attestation has been made, we use network prefixes for the Attestation
-ID. This prefix is defined in the `contracts/script/utils.ts` file.
+<!-- To easily differentiate the networks on which an attestation has been made, we use network prefixes for the Attestation
+ID. This prefix is defined in the `contracts/script/utils.ts` file. --> 
+Network prefixes help differentiate where attestations are made. These prefixes are defined in the `contracts/script/utils.ts` file.
 
-- Linea Sepolia - `0x0000`
+
+
+| **Network**           | **Environment** | **Prefix**  |
+|-----------------------|:-----------------:|-----------|
+| Linea                 | Sepolia         | `0x0000`    |
+| Linea                 | Mainnet         | `0x0000`    |
+| Arbitrum              | Sepolia         | `0x0001`    |
+| Arbitrum              | Mainnet         | `0x0001`    |
+| Base                  | Sepolia         | `0x0005`    |
+| Base                  | Mainnet         | `0x0005`    |
+| BSC                   | Testnet         | `0x0006`    |
+| BSC                   | Mainnet         | `0x0006`    |
+
+</b>
+
+
+### Notes:
++ Use the prefix to identify and validate attestations specific to a network.
++ Ensure consistency with the definitions in `utils.ts` when integrating prefixes into your application.
+<!-- - Linea Sepolia - `0x0000`
 - Linea Mainnet - `0x0000`
 - Arbitrum Sepolia - `0x0001`
 - Arbitrum Mainnet - `0x0001`
 - Base Sepolia - `0x0005`
 - Base Mainnet - `0x0005`
 - BSC Testnet - `0x0006`
-- BSC Mainnet - `0x0006`
+- BSC Mainnet - `0x0006` -->
 
 ## License
 
 [MIT](./LICENSE)
+
+<!-- ## ADDING NEW NETWORK
+
+STEP 1:
+- WHy DEPLOY SUBGRAPH, Verax SDK, Explorer -->

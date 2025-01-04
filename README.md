@@ -78,8 +78,8 @@ pnpm i
 
 ## Contributing
 
-<!-- Verax Attestation Registry is a community-led initiative, with developers from various companies and different
-backgrounds. While we are more than happy to get help from multiple sources, we need to rely on strong Ways of Working. --> The Verax Attestation Registry is a community-driven project, with contributions from developers across different companies and backgrounds. While we value the support from various contributors, we rely on strong, structured processes to ensure the project’s success.
+<!-- Verax Attestation Registry is a community-led initiative, with developers from various companies and 
+backgrounds. While we are more than happy to get help from multiple sources, we must rely on strong Ways of Working. --> The Verax Attestation Registry is a community-driven project, with contributions from developers across different companies and backgrounds. While we value the support from various contributors, we rely on strong, structured processes to ensure the project’s success.
 <br>
 
 <!-- Don't hesitate to check our [Contribution Guide](./CONTRIBUTING.md) before pushing your first code to the repo!-->
@@ -92,152 +92,52 @@ We welcome contributions to Verax! Please check our [Contribution Guide](./CONTR
 
 Here is the list of contract addresses and subgraph URLs for each chain, along with links for easy access:
 
-<!-- - Linea Sepolia
-- Linea Mainnet
-- Arbitrum Sepolia
-- Arbitrum Mainnet
-- Base Sepolia
-- Base Mainnet
-- BSC Testnet
-- BSC Mainnet -->
-
-<!-- Here are the addresses on those networks: -->
-
-<details>
-  <summary>Linea Sepolia</summary>
-
-- Router =
-  [0xAfA952790492DDeB474012cEA12ba34B788ab39F](https://sepolia.lineascan.build/address/0xAfA952790492DDeB474012cEA12ba34B788ab39F)
-- AttestationRegistry =
-  [0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F](https://sepolia.lineascan.build/address/0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F)
-- ModuleRegistry =
-  [0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa](https://sepolia.lineascan.build/address/0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa)
-- PortalRegistry =
-  [0xF35fe79104e157703dbCC3Baa72a81A99591744D](https://sepolia.lineascan.build/address/0xF35fe79104e157703dbCC3Baa72a81A99591744D)
-- SchemaRegistry =
-  [0x90b8542d7288a83EC887229A7C727989C3b56209](https://sepolia.lineascan.build/address/0x90b8542d7288a83EC887229A7C727989C3b56209)
-
-</details>
-
-<details>
-  <summary>Linea Mainnet</summary>
-
-- Router =
-  [0x4d3a380A03f3a18A5dC44b01119839D8674a552E](https://lineascan.build/address/0x4d3a380A03f3a18A5dC44b01119839D8674a552E)
-- AttestationRegistry =
-  [0x3de3893aa4Cdea029e84e75223a152FD08315138](https://lineascan.build/address/0x3de3893aa4Cdea029e84e75223a152FD08315138)
-- ModuleRegistry =
-  [0xf851513A732996F22542226341748f3C9978438f](https://lineascan.build/address/0xf851513A732996F22542226341748f3C9978438f)
-- PortalRegistry =
-  [0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083](https://lineascan.build/address/0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083)
-- SchemaRegistry =
-  [0x0f95dCec4c7a93F2637eb13b655F2223ea036B59](https://lineascan.build/address/0x0f95dCec4c7a93F2637eb13b655F2223ea036B59)
-- AttestationReader =
-  [0x40871e247CF6b8fd8794c9c56bB5c2b8a4FA3B6c](https://lineascan.build/address/0x40871e247CF6b8fd8794c9c56bB5c2b8a4FA3B6c)
-
-</details>
-
-<details>
-  <summary>Arbitrum Sepolia</summary>
-
-- Router =
-  [0x374B686137eC0DB442a8d833451f8C12cD4B5De4](https://sepolia.arbiscan.io/address/0x374B686137eC0DB442a8d833451f8C12cD4B5De4)
-- AttestationRegistry =
-  [0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5](https://sepolia.arbiscan.io/address/0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5)
-- ModuleRegistry =
-  [0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6](https://sepolia.arbiscan.io/address/0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6)
-- PortalRegistry =
-  [0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE](https://sepolia.arbiscan.io/address/0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE)
-- SchemaRegistry =
-  [0x025531b655D9EE335B8E6cc4C118b313f26ACc8F](https://sepolia.arbiscan.io/address/0x025531b655D9EE335B8E6cc4C118b313f26ACc8F)
-
-</details>
-
-<details>
-  <summary>Arbitrum Mainnet</summary>
-
-- Router =
-  [0xa77196867bB03D04786EF636cDdD82f37A1248a9](https://arbiscan.io/address/0xa77196867bB03D04786EF636cDdD82f37A1248a9)
-- AttestationRegistry =
-  [0x335E9719e8eFE2a19A92E07BC4836160fC31cd7C](https://arbiscan.io/address/0x335E9719e8eFE2a19A92E07BC4836160fC31cd7C)
-- ModuleRegistry =
-  [0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba](https://arbiscan.io/address/0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba)
-- PortalRegistry =
-  [0x4042D0A54f997EE3a1b0F51e4813654199BFd8bD](https://arbiscan.io/address/0x4042D0A54f997EE3a1b0F51e4813654199BFd8bD)
-- SchemaRegistry =
-  [0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27](https://arbiscan.io/address/0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27)
-- AttestationReader =
-  [0x324C060A26444c3fB9B93e03d31e8cfF4b1715C1](https://arbiscan.io/address/0x324C060A26444c3fB9B93e03d31e8cfF4b1715C1)
-
-</details>
-
-<details>
-  <summary>Base Sepolia</summary>
-
-- Router =
-  [0xE235826514945186227918325D3E5b5f873861A6](https://sepolia.basescan.org/address/0xE235826514945186227918325D3E5b5f873861A6)
-- AttestationRegistry =
-  [0x374B686137eC0DB442a8d833451f8C12cD4B5De4](https://sepolia.basescan.org/address/0x374B686137eC0DB442a8d833451f8C12cD4B5De4)
-- ModuleRegistry =
-  [0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6](https://sepolia.basescan.org/address/0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6)
-- PortalRegistry =
-  [0x025531b655D9EE335B8E6cc4C118b313f26ACc8F](https://sepolia.basescan.org/address/0x025531b655D9EE335B8E6cc4C118b313f26ACc8F)
-- SchemaRegistry =
-  [0x66D2F3DCc970343b83a6263E20832184fa71CFe7](https://sepolia.basescan.org/address/0x66D2F3DCc970343b83a6263E20832184fa71CFe7)
-- AttestationReader =
-  [0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7](https://sepolia.basescan.org/address/0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7)
-
-</details>
-
-<details>
-  <summary>Base Mainnet</summary>
-
-- Router =
-  [0x63b2d528805Fc9373586366705852FA89debd4d0](https://basescan.org/address/0x63b2d528805Fc9373586366705852FA89debd4d0)
-- AttestationRegistry =
-  [0xA0080DBd35711faD39258E45d9A5D798852b05D4](https://basescan.org/address/0xA0080DBd35711faD39258E45d9A5D798852b05D4)
-- ModuleRegistry =
-  [0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff](https://basescan.org/address/0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff)
-- PortalRegistry =
-  [0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6](https://basescan.org/address/0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6)
-- SchemaRegistry =
-  [0x8081dCd745f160c148Eb5be510F78628A0951c31](https://basescan.org/address/0x8081dCd745f160c148Eb5be510F78628A0951c31)
-- AttestationReader =
-  [0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C](https://basescan.org/address/0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C)
-
-</details>
-
-<details>
-  <summary>BSC Testnet</summary>
-
-- Router =
-  [0x90b8542d7288a83EC887229A7C727989C3b56209](https://testnet.bscscan.com/address/0x90b8542d7288a83EC887229A7C727989C3b56209)
-- AttestationRegistry =
-  [0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe](https://testnet.bscscan.com/address/0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe)
-- ModuleRegistry =
-  [0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a](https://testnet.bscscan.com/address/0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a)
-- PortalRegistry =
-  [0xA4a7517F62216BD42e42a67dF09C25adc72A5897](https://testnet.bscscan.com/address/0xA4a7517F62216BD42e42a67dF09C25adc72A5897)
-- SchemaRegistry =
-  [0x51929da151eC2C5a5881C750E5b9941eACC46c1d](https://testnet.bscscan.com/address/0x51929da151eC2C5a5881C750E5b9941eACC46c1d)
-
-</details>
-
-<details>
-  <summary>BSC</summary>
-
-- Router =
-  [0x7a5C1fAC7fF9908a8b2ED479e060619213116A47](https://bscscan.com/address/0x7a5C1fAC7fF9908a8b2ED479e060619213116A47)
-- AttestationRegistry =
-  [0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261](https://bscscan.com/address/0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261)
-- ModuleRegistry =
-  [0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB](https://bscscan.com/address/0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB)
-- PortalRegistry =
-  [0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0](https://bscscan.com/address/0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0)
-- SchemaRegistry =
-  [0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd](https://bscscan.com/address/0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd)
-
-</details>
+| **Network**         | **Contract**            | **Address**                                   |
+|----------------------|-------------------------|-----------------------------------------------|
+| **Linea Sepolia**    | Router                 | `0xAfA952790492DDeB474012cEA12ba34B788ab39F` |
+|                      | AttestationRegistry    | `0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F` |
+|                      | ModuleRegistry         | `0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa` |
+|                      | PortalRegistry         | `0xF35fe79104e157703dbCC3Baa72a81A99591744D` |
+|                      | SchemaRegistry         | `0x90b8542d7288a83EC887229A7C727989C3b56209` |
+| **Linea Mainnet**    | Router                 | `0x4d3a380A03f3a18A5dC44b01119839D8674a552E` |
+|                      | AttestationRegistry    | `0x3de3893aa4Cdea029e84e75223a152FD08315138` |
+|                      | ModuleRegistry         | `0xf851513A732996F22542226341748f3C9978438f` |
+|                      | PortalRegistry         | `0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083` |
+|                      | SchemaRegistry         | `0x0f95dCec4c7a93F2637eb13b655F2223ea036B59` |
+|                      | AttestationReader      | `0x40871e247CF6b8fd8794c9c56bB5c2b8a4FA3B6c` |
+| **Arbitrum Sepolia** | Router                 | `0x374B686137eC0DB442a8d833451f8C12cD4B5De4` |
+|                      | AttestationRegistry    | `0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5` |
+|                      | ModuleRegistry         | `0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6` |
+|                      | PortalRegistry         | `0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE` |
+|                      | SchemaRegistry         | `0x025531b655D9EE335B8E6cc4C118b313f26ACc8F` |
+| **Arbitrum Mainnet** | Router                 | `0xa77196867bB03D04786EF636cDdD82f37A1248a9` |
+|                      | AttestationRegistry    | `0x335E9719e8eFE2a19A92E07BC4836160fC31cd7C` |
+|                      | ModuleRegistry         | `0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba` |
+|                      | PortalRegistry         | `0x4042D0A54f997EE3a1b0F51e4813654199BFd8bD` |
+|                      | SchemaRegistry         | `0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27` |
+|                      | AttestationReader      | `0x324C060A26444c3fB9B93e03d31e8cfF4b1715C1` |
+| **Base Sepolia**     | Router                 | `0xE235826514945186227918325D3E5b5f873861A6` |
+|                      | AttestationRegistry    | `0x374B686137eC0DB442a8d833451f8C12cD4B5De4` |
+|                      | ModuleRegistry         | `0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6` |
+|                      | PortalRegistry         | `0x025531b655D9EE335B8E6cc4C118b313f26ACc8F` |
+|                      | SchemaRegistry         | `0x66D2F3DCc970343b83a6263E20832184fa71CFe7` |
+|                      | AttestationReader      | `0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7` |
+| **Base Mainnet**     | Router                 | `0x63b2d528805Fc9373586366705852FA89debd4d0` |
+|                      | AttestationRegistry    | `0xA0080DBd35711faD39258E45d9A5D798852b05D4` |
+|                      | ModuleRegistry         | `0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff` |
+|                      | PortalRegistry         | `0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6` |
+|                      | SchemaRegistry         | `0x8081dCd745f160c148Eb5be510F78628A0951c31` |
+|                      | AttestationReader      | `0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C` |
+| **BSC Testnet**      | Router                 | `0x90b8542d7288a83EC887229A7C727989C3b56209` |
+|                      | AttestationRegistry    | `0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe` |
+|                      | ModuleRegistry         | `0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a` |
+|                      | PortalRegistry         | `0xA4a7517F62216BD42e42a67dF09C25adc72A5897` |
+|                      | SchemaRegistry         | `0x51929da151eC2C5a5881C750E5b9941eACC46c1d` |
+| **BSC Mainnet**      | Router                 | `0x7a5C1fAC7fF9908a8b2ED479e060619213116A47` |
+|                      | AttestationRegistry    | `0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261` |
+|                      | ModuleRegistry         | `0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB` |
+|                      | PortalRegistry         | `0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0` |
+|                      | SchemaRegistry         | `0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd` |
 
 </br>
 
@@ -335,13 +235,13 @@ Network prefixes help differentiate where attestations are made. These prefixes 
 ## ADDING NEW NETWORK
 Adding a new network requires deploying Subgraphs, configuring Verax, and enabling Explorer integration to ensure seamless data indexing, attestation processing, and user interaction. Each step integrates the network into the system's infrastructure, making it fully operational and accessible. Below are the key steps and reasons for each action:
 
-1. Deploy Subgraphs
-Subgraphs index blockchain data, making it accessible for querying. Deploying a Subgraph for the new network ensures efficient interaction with the network's smart contracts. It enables efficient querying and data retrieval for critical components like `Router`, `AttestationRegistry`, `ModuleRegistry`, and others. Without this, other components cannot fetch or index network-specific data. For a step by step guide on how to [deploy subgraphs](https://github.com/Consensys/linea-attestation-registry/blob/dev/subgraph/README.md)
+1. Deploy Subgraphs:
+Subgraphs index blockchain data, making it accessible for querying. Deploying a Subgraph for the new network ensures efficient interaction with the network's smart contracts. It enables efficient querying and data retrieval for critical components like `Router`, `AttestationRegistry`, `ModuleRegistry`, and others. Without this, other components cannot fetch or index network-specific data. [deploy subgraphs](https://github.com/Consensys/linea-attestation-registry/blob/dev/subgraph/README.md)
 
-2. Integrate with Verax
+2. Integrate with Verax:
 Verax processes attestations and ensures that they are securely recorded and verifiable across networks. [Verax SDK](https://github.com/Consensys/linea-attestation-registry/blob/dev/sdk/README.md)
 
-4. Enable in Explorer
+4. Enable in Explorer: 
 Adding the network to the Explorer ensures users can access and visualize data, query attestations, and interact with the blockchain seamlessly. The Explorer provides a user interface to interact with the network's data and attestations. [Explorer](https://github.com/Consensys/linea-attestation-registry/blob/dev/explorer/README.md)
 
 ## License

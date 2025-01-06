@@ -44,17 +44,17 @@ describe("PortalDataMapper", () => {
     });
 
     it("should get 3 portals with a name containing 'eFrogs' ordered by ascending ID", async () => {
-      const partialName = "eFrogs";
+      const partialName = "Integration Tests";
       const result = await veraxSdk.portal.findBy(3, 0, { name_contains: partialName });
 
       expect(result).not.toBeNull();
       expect(result.length).toBe(3);
       expect(result[0].name).toContain(partialName);
-      expect(result[0].id).toEqual("0x0cb56f201e7afe02e542e2d2d42c34d4ce7203f7");
+      expect(result[0].id).toEqual("0x3c3e9149c9c14054c79f83a1d4b7003c1491f5b4");
       expect(result[1].name).toContain(partialName);
-      expect(result[1].id).toEqual("0x2b4af326976c29adb9846209b5f0eab09e1facc2");
+      expect(result[1].id).toEqual("0x42ff66bf60066219a3659aa7a7e3e93860958fec");
       expect(result[2].name).toContain(partialName);
-      expect(result[2].id).toEqual("0x79c06b913c42fd960b6917798c39edff292835f1");
+      expect(result[2].id).toEqual("0x63a7746518720b8d13cb4e626454f761fc8848e2");
     });
   });
 });

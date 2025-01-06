@@ -2,13 +2,12 @@ import { AttestationPayload, Portal } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
-import { Address } from "viem";
+import { Abi, Address } from "viem";
 import { encode } from "../utils/abiCoder";
 import { Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { handleError } from "../utils/errorHandler";
 import { executeTransaction } from "../utils/transactionSender";
-import { Abi } from "viem";
 
 export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filter, Portal_orderBy> {
   typeName = "portal";
@@ -95,6 +94,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
     value: bigint = 0n,
+    customAbi?: Abi,
   ) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
     if (!matchingSchema) {
@@ -109,6 +109,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         validationPayloads,
       ],
       value,
+      customAbi,
     );
   }
 
@@ -118,8 +119,15 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     validationPayloads: string[],
     waitForConfirmation: boolean = false,
     value: bigint = 0n,
+    customAbi?: Abi,
   ) {
-    const request = await this.simulateAttestV2(portalAddress, attestationPayload, validationPayloads, value);
+    const request = await this.simulateAttestV2(
+      portalAddress,
+      attestationPayload,
+      validationPayloads,
+      value,
+      customAbi,
+    );
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
@@ -327,6 +335,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
   async isPortalRegistered(id: Address) {
     return this.executePortalRegistryReadMethod("isRegistered", [id]);
   }
+
   private async executePortalRegistryReadMethod(functionName: string, args: unknown[]) {
     return this.web3Client.readContract({
       abi: abiPortalRegistry,
@@ -352,6 +361,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
       handleError(ActionType.Simulation, err);
     }
   }
+
   private async simulatePortalContract(
     portalAddress: Address,
     functionName: string,

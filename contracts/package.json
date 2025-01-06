@@ -28,7 +28,7 @@
     "copy": "ts-node script/copyOutputs.ts",
     "deploy": "npx hardhat run script/deploy/deployEverything.ts --network",
     "deploy:issuers": "npx hardhat run script/deploy/deployIssuers.ts --network",
-    "deploy:post": "npx hardhat run script/deploy/postDeployment.ts --network",
+    "deploy:eas": "npx hardhat run script/deploy/deployEas.ts --network",
     "deploy:stdlib": "npx hardhat run script/deploy/deployStdLib.ts --network",
     "lint": "pnpm solhint \"{script,src,test}/**/*.sol\" -c .solhint.json",
     "prepack": "./prepack.sh",

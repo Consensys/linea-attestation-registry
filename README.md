@@ -8,25 +8,35 @@
 
 <!-- <h4 align="center"><a href="https://docs.ver.ax/">Verax</a> * Attestation Registry simplifies managing attestations on EVM chains, enhancing data discoverability for dApps across the network.</h4> -->
 
-_[Verax](https://docs.ver.ax/) The Attestation Registry simplifies the process of managing attestations on EVM chains, enhancing data discoverability for dApps across the network._
+_[Verax](https://docs.ver.ax/) The Attestation Registry simplifies the process of managing attestations on EVM chains,
+enhancing data discoverability for dApps across the network._
 
 <br>
 
 ## Table of Contents
-+ [Introduction](#introduction)
-+ [Links](#links)
-+ [Repository Organisation](#repository-organisation)
-+ [Getting Started](#getting-started)
-+ [Contributing](#contributing)
-+ [Contract Addresses](#contract-addresses)
-+ [Subgraphs URLs](#subgraph-urls)
-+ [Network Prefixes](#network-prefixes)
-+ [License](#license)
+
+- [Introduction](#introduction)
+- [Links](#links)
+- [Repository Organisation](#repository-organisation)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [Contract Addresses](#contract-addresses)
+- [Subgraphs URLs](#subgraph-urls)
+- [Network Prefixes](#network-prefixes)
+- [License](#license)
 
 </br>
 
 ## Introduction
-The Verax Attestation Registry is a community-driven platform designed to store and manage attestations on EVM-compatible chains, enhancing data discoverability and accessibility for decentralized applications (dApps). Serving as a shared ecosystem resource for developers and users, Verax aims to streamline how data is consumed and utilized across networks. This document provides a comprehensive guide to understanding the Verax Attestation Registry, its structure, and its use. It outlines the project's purpose, offers setup instructions, details the repository's organization, and highlights key resources such as deployed contract addresses and subgraph URLs. Additionally, it fosters community collaboration through contribution guidelines and introduces tools like the SDK and MetaMask Snap to simplify integration with dApps.
+
+The Verax Attestation Registry is a community-driven platform designed to store and manage attestations on
+EVM-compatible chains, enhancing data discoverability and accessibility for decentralized applications (dApps). Serving
+as a shared ecosystem resource for developers and users, Verax aims to streamline how data is consumed and utilized
+across networks. This document provides a comprehensive guide to understanding the Verax Attestation Registry, its
+structure, and its use. It outlines the project's purpose, offers setup instructions, details the repository's
+organization, and highlights key resources such as deployed contract addresses and subgraph URLs. Additionally, it
+fosters community collaboration through contribution guidelines and introduces tools like the SDK and MetaMask Snap to
+simplify integration with dApps.
 
 <!-- <p align="center">
   <a href="#links">Links</a> •
@@ -43,10 +53,10 @@ The Verax Attestation Registry is a community-driven platform designed to store 
 
 ## Links
 
-+ [Documentation](https://docs.ver.ax/)  
-+ [Subgraphs](#subgraphs-addresses)  
-+ [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)  
-+ [Explorer](https://explorer.ver.ax)
+- [Documentation](https://docs.ver.ax/)
+- [Subgraphs](#subgraphs-addresses)
+- [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)
+- [Explorer](https://explorer.ver.ax)
 
 ## Repository Organisation
 
@@ -83,8 +93,9 @@ backgrounds. While we are more than happy to get help from multiple sources, we 
 <br>
 
 <!-- Don't hesitate to check our [Contribution Guide](./CONTRIBUTING.md) before pushing your first code to the repo!-->
-We welcome contributions to Verax! Please check our [Contribution Guide](./CONTRIBUTING.md) Guide for instructions on how to contribute to the project.
 
+We welcome contributions to Verax! Please check our [Contribution Guide](./CONTRIBUTING.md) Guide for instructions on
+how to contribute to the project.
 
 <br>
 
@@ -92,85 +103,85 @@ We welcome contributions to Verax! Please check our [Contribution Guide](./CONTR
 
 Here is the list of contract addresses and subgraph URLs for each chain, along with links for easy access:
 
-| **Network**         | **Contract**            | **Address**                                   |
-|----------------------|-------------------------|-----------------------------------------------|
-| **Linea Sepolia**    | Router                 | `0xAfA952790492DDeB474012cEA12ba34B788ab39F` |
-|                      | AttestationRegistry    | `0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F` |
-|                      | ModuleRegistry         | `0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa` |
-|                      | PortalRegistry         | `0xF35fe79104e157703dbCC3Baa72a81A99591744D` |
-|                      | SchemaRegistry         | `0x90b8542d7288a83EC887229A7C727989C3b56209` |
-| **Linea Mainnet**    | Router                 | `0x4d3a380A03f3a18A5dC44b01119839D8674a552E` |
-|                      | AttestationRegistry    | `0x3de3893aa4Cdea029e84e75223a152FD08315138` |
-|                      | ModuleRegistry         | `0xf851513A732996F22542226341748f3C9978438f` |
-|                      | PortalRegistry         | `0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083` |
-|                      | SchemaRegistry         | `0x0f95dCec4c7a93F2637eb13b655F2223ea036B59` |
-|                      | AttestationReader      | `0x40871e247CF6b8fd8794c9c56bB5c2b8a4FA3B6c` |
-| **Arbitrum Sepolia** | Router                 | `0x374B686137eC0DB442a8d833451f8C12cD4B5De4` |
-|                      | AttestationRegistry    | `0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5` |
-|                      | ModuleRegistry         | `0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6` |
-|                      | PortalRegistry         | `0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE` |
-|                      | SchemaRegistry         | `0x025531b655D9EE335B8E6cc4C118b313f26ACc8F` |
-| **Arbitrum Mainnet** | Router                 | `0xa77196867bB03D04786EF636cDdD82f37A1248a9` |
-|                      | AttestationRegistry    | `0x335E9719e8eFE2a19A92E07BC4836160fC31cd7C` |
-|                      | ModuleRegistry         | `0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba` |
-|                      | PortalRegistry         | `0x4042D0A54f997EE3a1b0F51e4813654199BFd8bD` |
-|                      | SchemaRegistry         | `0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27` |
-|                      | AttestationReader      | `0x324C060A26444c3fB9B93e03d31e8cfF4b1715C1` |
-| **Base Sepolia**     | Router                 | `0xE235826514945186227918325D3E5b5f873861A6` |
-|                      | AttestationRegistry    | `0x374B686137eC0DB442a8d833451f8C12cD4B5De4` |
-|                      | ModuleRegistry         | `0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6` |
-|                      | PortalRegistry         | `0x025531b655D9EE335B8E6cc4C118b313f26ACc8F` |
-|                      | SchemaRegistry         | `0x66D2F3DCc970343b83a6263E20832184fa71CFe7` |
-|                      | AttestationReader      | `0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7` |
-| **Base Mainnet**     | Router                 | `0x63b2d528805Fc9373586366705852FA89debd4d0` |
-|                      | AttestationRegistry    | `0xA0080DBd35711faD39258E45d9A5D798852b05D4` |
-|                      | ModuleRegistry         | `0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff` |
-|                      | PortalRegistry         | `0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6` |
-|                      | SchemaRegistry         | `0x8081dCd745f160c148Eb5be510F78628A0951c31` |
-|                      | AttestationReader      | `0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C` |
-| **BSC Testnet**      | Router                 | `0x90b8542d7288a83EC887229A7C727989C3b56209` |
-|                      | AttestationRegistry    | `0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe` |
-|                      | ModuleRegistry         | `0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a` |
-|                      | PortalRegistry         | `0xA4a7517F62216BD42e42a67dF09C25adc72A5897` |
-|                      | SchemaRegistry         | `0x51929da151eC2C5a5881C750E5b9941eACC46c1d` |
-| **BSC Mainnet**      | Router                 | `0x7a5C1fAC7fF9908a8b2ED479e060619213116A47` |
-|                      | AttestationRegistry    | `0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261` |
-|                      | ModuleRegistry         | `0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB` |
-|                      | PortalRegistry         | `0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0` |
-|                      | SchemaRegistry         | `0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd` |
+| **Network**          | **Contract**        | **Address**                                  |
+| -------------------- | ------------------- | -------------------------------------------- |
+| **Linea Sepolia**    | Router              | `0xAfA952790492DDeB474012cEA12ba34B788ab39F` |
+|                      | AttestationRegistry | `0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F` |
+|                      | ModuleRegistry      | `0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa` |
+|                      | PortalRegistry      | `0xF35fe79104e157703dbCC3Baa72a81A99591744D` |
+|                      | SchemaRegistry      | `0x90b8542d7288a83EC887229A7C727989C3b56209` |
+| **Linea Mainnet**    | Router              | `0x4d3a380A03f3a18A5dC44b01119839D8674a552E` |
+|                      | AttestationRegistry | `0x3de3893aa4Cdea029e84e75223a152FD08315138` |
+|                      | ModuleRegistry      | `0xf851513A732996F22542226341748f3C9978438f` |
+|                      | PortalRegistry      | `0xd5d61e4ECDf6d46A63BfdC262af92544DFc19083` |
+|                      | SchemaRegistry      | `0x0f95dCec4c7a93F2637eb13b655F2223ea036B59` |
+|                      | AttestationReader   | `0x40871e247CF6b8fd8794c9c56bB5c2b8a4FA3B6c` |
+| **Arbitrum Sepolia** | Router              | `0x374B686137eC0DB442a8d833451f8C12cD4B5De4` |
+|                      | AttestationRegistry | `0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5` |
+|                      | ModuleRegistry      | `0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6` |
+|                      | PortalRegistry      | `0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE` |
+|                      | SchemaRegistry      | `0x025531b655D9EE335B8E6cc4C118b313f26ACc8F` |
+| **Arbitrum Mainnet** | Router              | `0xa77196867bB03D04786EF636cDdD82f37A1248a9` |
+|                      | AttestationRegistry | `0x335E9719e8eFE2a19A92E07BC4836160fC31cd7C` |
+|                      | ModuleRegistry      | `0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba` |
+|                      | PortalRegistry      | `0x4042D0A54f997EE3a1b0F51e4813654199BFd8bD` |
+|                      | SchemaRegistry      | `0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27` |
+|                      | AttestationReader   | `0x324C060A26444c3fB9B93e03d31e8cfF4b1715C1` |
+| **Base Sepolia**     | Router              | `0xE235826514945186227918325D3E5b5f873861A6` |
+|                      | AttestationRegistry | `0x374B686137eC0DB442a8d833451f8C12cD4B5De4` |
+|                      | ModuleRegistry      | `0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6` |
+|                      | PortalRegistry      | `0x025531b655D9EE335B8E6cc4C118b313f26ACc8F` |
+|                      | SchemaRegistry      | `0x66D2F3DCc970343b83a6263E20832184fa71CFe7` |
+|                      | AttestationReader   | `0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7` |
+| **Base Mainnet**     | Router              | `0x63b2d528805Fc9373586366705852FA89debd4d0` |
+|                      | AttestationRegistry | `0xA0080DBd35711faD39258E45d9A5D798852b05D4` |
+|                      | ModuleRegistry      | `0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff` |
+|                      | PortalRegistry      | `0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6` |
+|                      | SchemaRegistry      | `0x8081dCd745f160c148Eb5be510F78628A0951c31` |
+|                      | AttestationReader   | `0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C` |
+| **BSC Testnet**      | Router              | `0x90b8542d7288a83EC887229A7C727989C3b56209` |
+|                      | AttestationRegistry | `0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe` |
+|                      | ModuleRegistry      | `0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a` |
+|                      | PortalRegistry      | `0xA4a7517F62216BD42e42a67dF09C25adc72A5897` |
+|                      | SchemaRegistry      | `0x51929da151eC2C5a5881C750E5b9941eACC46c1d` |
+| **BSC Mainnet**      | Router              | `0x7a5C1fAC7fF9908a8b2ED479e060619213116A47` |
+|                      | AttestationRegistry | `0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261` |
+|                      | ModuleRegistry      | `0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB` |
+|                      | PortalRegistry      | `0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0` |
+|                      | SchemaRegistry      | `0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd` |
 
 </br>
 
 ## Subgraph URLs
 
-Subgraphs index data from smart contracts like `Router`, `AttestationRegistry`, `ModuleRegistry`, `PortalRegistry`, and `SchemaRegistry`. They facilitate efficient querying and interaction with blockchain data.
+Subgraphs index data from smart contracts like `Router`, `AttestationRegistry`, `ModuleRegistry`, `PortalRegistry`, and
+`SchemaRegistry`. They facilitate efficient querying and interaction with blockchain data.
 
 ### Subgraph V1
 
-| **Network**           | **Environment** | **Subgraph URL**                                                                                                      | **Backup URL**                                                                                                       |
-|:------------------------------------------:|:-----------------:|:----------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------:|
-| Linea                 | Sepolia         | [V1 Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.12)                        | -                                                                                                                   |
-| Linea                 | Mainnet         | [V1 Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1)                                 | [Backup](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)               |
-| Arbitrum              | Sepolia         | [V1 Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum-sepolia/v0.0.3)                   | -                                                                                                                   |
-| Arbitrum              | Mainnet         | [V1 Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum/v0.0.1)                           | -                                                                                                                   |
-| Base                  | Sepolia         | [V1 Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.2)                           | -                                                                                                                   |
-| Base                  | Mainnet         | [V1 Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.2)                                   | -                                                                                                                   |
-| BSC                   | Testnet         | [V1 BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1)                             | -                                                                                                                   |
-| BSC                   | Mainnet         | [V1 BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc/v0.0.1)                                     | -                                                                                                                   |
+| **Network** | **Environment** |                                          **Subgraph URL**                                           |                                            **Backup URL**                                             |
+| :---------: | :-------------: | :-------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
+|    Linea    |     Sepolia     |   [V1 Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.12)    |                                                   -                                                   |
+|    Linea    |     Mainnet     |        [V1 Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1)        | [Backup](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql) |
+|  Arbitrum   |     Sepolia     | [V1 Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum-sepolia/v0.0.3) |                                                   -                                                   |
+|  Arbitrum   |     Mainnet     |     [V1 Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum/v0.0.1)     |                                                   -                                                   |
+|    Base     |     Sepolia     |     [V1 Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.2)     |                                                   -                                                   |
+|    Base     |     Mainnet     |         [V1 Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.2)         |                                                   -                                                   |
+|     BSC     |     Testnet     |      [V1 BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1)      |                                                   -                                                   |
+|     BSC     |     Mainnet     |          [V1 BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc/v0.0.1)          |                                                   -                                                   |
 
 ### Subgraph V2
 
-| **Network**           | **Environment** | **Subgraph URL**                                                                                                      | **Backup URL**                                                                                                       |
-|:------------------------:|:-----------------:|:-----------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------:|
-| Linea                 | Sepolia         | [V2 Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-linea-sepolia/v0.0.2)                        | -                                                                                                                   |
-| Linea                 | Mainnet         | [V2 Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-linea/v0.0.1)                                 | [Backup](https://api.goldsky.com/api/public/project_clxx488osyuf501vygg71f86w/subgraphs/verax-v2-linea/0.0.1/gn)    |
-| Arbitrum              | Sepolia         | [V2 Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum-sepolia/v0.0.2)                   | -                                                                                                                   |
-| Arbitrum              | Mainnet         | [V2 Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum/v0.0.2)                           | -                                                                                                                   |
-| Base                  | Sepolia         | [V2 Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-base-sepolia/v0.0.2)                           | -                                                                                                                   |
-| Base                  | Mainnet         | [V2 Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-base/v0.0.1)                                   | -                                                                                                                   |
-| BSC                   | Testnet         | [V2 BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc-testnet/v0.0.1)                             | -                                                                                                                   |
-| BSC                   | Mainnet         | [V2 BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc/v0.0.1)                                     | -                                                                                                                   |
-
+| **Network** | **Environment** |                                          **Subgraph URL**                                           |                                                  **Backup URL**                                                  |
+| :---------: | :-------------: | :-------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: |
+|    Linea    |     Sepolia     |    [V2 Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-linea-sepolia/v0.0.2)    |                                                        -                                                         |
+|    Linea    |     Mainnet     |        [V2 Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-linea/v0.0.1)        | [Backup](https://api.goldsky.com/api/public/project_clxx488osyuf501vygg71f86w/subgraphs/verax-v2-linea/0.0.1/gn) |
+|  Arbitrum   |     Sepolia     | [V2 Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum-sepolia/v0.0.2) |                                                        -                                                         |
+|  Arbitrum   |     Mainnet     |     [V2 Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum/v0.0.2)     |                                                        -                                                         |
+|    Base     |     Sepolia     |     [V2 Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-base-sepolia/v0.0.2)     |                                                        -                                                         |
+|    Base     |     Mainnet     |         [V2 Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-base/v0.0.1)         |                                                        -                                                         |
+|     BSC     |     Testnet     |      [V2 BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc-testnet/v0.0.1)      |                                                        -                                                         |
+|     BSC     |     Mainnet     |          [V2 BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc/v0.0.1)          |                                                        -                                                         |
 
 <!-- ## Subgraphs URLs
 The Subgraphs listed for each blockchain network, such as V1 and V2, index data from smart contracts like Router, AttestationRegistry, ModuleRegistry, PortalRegistry, and SchemaRegistry. They enable efficient querying and interaction with blockchain data tailored to each contract's functionality.
@@ -201,48 +212,57 @@ The Subgraphs listed for each blockchain network, such as V1 and V2, index data 
 ## Network Prefixes
 
 <!-- To easily differentiate the networks on which an attestation has been made, we use network prefixes for the Attestation
-ID. This prefix is defined in the `contracts/script/utils.ts` file. --> 
-Network prefixes help differentiate where attestations are made. These prefixes are defined in the `contracts/script/utils.ts` file.
+ID. This prefix is defined in the `contracts/script/utils.ts` file. -->
 
+Network prefixes help differentiate where attestations are made. These prefixes are defined in the
+`contracts/script/utils.ts` file.
 
-
-| **Network**           | **Environment** | **Prefix**  |
-|-----------------------|:-----------------:|-----------|
-| Linea                 | Sepolia         | `0x0000`    |
-| Linea                 | Mainnet         | `0x0000`    |
-| Arbitrum              | Sepolia         | `0x0001`    |
-| Arbitrum              | Mainnet         | `0x0001`    |
-| Base                  | Sepolia         | `0x0005`    |
-| Base                  | Mainnet         | `0x0005`    |
-| BSC                   | Testnet         | `0x0006`    |
-| BSC                   | Mainnet         | `0x0006`    |
+| **Network** | **Environment** | **Prefix** |
+| ----------- | :-------------: | ---------- |
+| Linea       |     Sepolia     | `0x0000`   |
+| Linea       |     Mainnet     | `0x0000`   |
+| Arbitrum    |     Sepolia     | `0x0001`   |
+| Arbitrum    |     Mainnet     | `0x0001`   |
+| Base        |     Sepolia     | `0x0005`   |
+| Base        |     Mainnet     | `0x0005`   |
+| BSC         |     Testnet     | `0x0006`   |
+| BSC         |     Mainnet     | `0x0006`   |
 
 </b>
 
-
 ### Notes:
-+ Use the prefix to identify and validate attestations specific to a network.
-+ Ensure consistency with the definitions in `utils.ts` when integrating prefixes into your application.
+
+- Use the prefix to identify and validate attestations specific to a network.
+- Ensure consistency with the definitions in `utils.ts` when integrating prefixes into your application.
 <!-- - Linea Sepolia - `0x0000`
-- Linea Mainnet - `0x0000`
-- Arbitrum Sepolia - `0x0001`
-- Arbitrum Mainnet - `0x0001`
-- Base Sepolia - `0x0005`
-- Base Mainnet - `0x0005`
-- BSC Testnet - `0x0006`
-- BSC Mainnet - `0x0006` -->
+
+* Linea Mainnet - `0x0000`
+* Arbitrum Sepolia - `0x0001`
+* Arbitrum Mainnet - `0x0001`
+* Base Sepolia - `0x0005`
+* Base Mainnet - `0x0005`
+* BSC Testnet - `0x0006`
+* BSC Mainnet - `0x0006` -->
 
 ## ADDING NEW NETWORK
-Adding a new network requires deploying Subgraphs, configuring Verax, and enabling Explorer integration to ensure seamless data indexing, attestation processing, and user interaction. Each step integrates the network into the system's infrastructure, making it fully operational and accessible. Below are the key steps and reasons for each action:
 
-1. Deploy Subgraphs:
-Subgraphs index blockchain data, making it accessible for querying. Deploying a Subgraph for the new network ensures efficient interaction with the network's smart contracts. It enables efficient querying and data retrieval for critical components like `Router`, `AttestationRegistry`, `ModuleRegistry`, and others. Without this, other components cannot fetch or index network-specific data. [deploy subgraphs](https://github.com/Consensys/linea-attestation-registry/blob/dev/subgraph/README.md)
+Adding a new network requires deploying Subgraphs, configuring Verax, and enabling Explorer integration to ensure
+seamless data indexing, attestation processing, and user interaction. Each step integrates the network into the system's
+infrastructure, making it fully operational and accessible. Below are the key steps and reasons for each action:
 
-2. Integrate with Verax:
-Verax processes attestations and ensures that they are securely recorded and verifiable across networks. [Verax SDK](https://github.com/Consensys/linea-attestation-registry/blob/dev/sdk/README.md)
+1. Deploy Subgraphs: Subgraphs index blockchain data, making it accessible for querying. Deploying a Subgraph for the
+   new network ensures efficient interaction with the network's smart contracts. It enables efficient querying and data
+   retrieval for critical components like `Router`, `AttestationRegistry`, `ModuleRegistry`, and others. Without this,
+   other components cannot fetch or index network-specific data.
+   [deploy subgraphs](https://github.com/Consensys/linea-attestation-registry/blob/dev/subgraph/README.md)
 
-4. Enable in Explorer: 
-Adding the network to the Explorer ensures users can access and visualize data, query attestations, and interact with the blockchain seamlessly. The Explorer provides a user interface to interact with the network's data and attestations. [Explorer](https://github.com/Consensys/linea-attestation-registry/blob/dev/explorer/README.md)
+2. Integrate with Verax: Verax processes attestations and ensures that they are securely recorded and verifiable across
+   networks. [Verax SDK](https://github.com/Consensys/linea-attestation-registry/blob/dev/sdk/README.md)
+
+3. Enable in Explorer: Adding the network to the Explorer ensures users can access and visualize data, query
+   attestations, and interact with the blockchain seamlessly. The Explorer provides a user interface to interact with
+   the network's data and attestations.
+   [Explorer](https://github.com/Consensys/linea-attestation-registry/blob/dev/explorer/README.md)
 
 ## License
 

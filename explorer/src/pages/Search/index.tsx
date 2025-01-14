@@ -10,7 +10,7 @@ import { DEFAULT_SEARCH_ELEMENTS } from "@/constants/components";
 import { EQueryParams } from "@/enums/queryParams";
 import { Page, SearchElementProps } from "@/interfaces/components";
 import { useNetworkContext } from "@/providers/network-provider/context.ts";
-import { CHAIN_ID_ROUTE, toAttestationsBySubject } from "@/routes/constants";
+import { CHAIN_ID_ROUTE, toAttestationById, toAttestationsBySubject } from "@/routes/constants";
 import { parseSearch } from "@/utils/searchUtils";
 
 import { SearchAttestationsReceived } from "./components/SearchAttestationsReceived";
@@ -40,12 +40,24 @@ export const Search = () => {
     setCount(newCount);
     setIsLoaded(newIsLoaded);
     setNotFound(newIsLoaded && newCount === 0);
-    if (isOnlyAttestationsFound(searchElements)) {
-      navigate(toAttestationsBySubject(search ?? "").replace(CHAIN_ID_ROUTE, network), {
-        state: { from: location.pathname },
-      });
+
+    // Check if the search is an attestation ID (either full hex or raw number)
+    const isAttestationId = parsedString.attestationIds && parsedString.attestationIds.length > 0;
+
+    if (isLoaded && isOnlyAttestationsFound(searchElements)) {
+      if (isAttestationId && parsedString.attestationIds) {
+        // If it's an attestation ID, navigate to the attestation page
+        navigate(toAttestationById(parsedString.attestationIds[0]).replace(CHAIN_ID_ROUTE, network), {
+          state: { from: location.pathname },
+        });
+      } else {
+        // Otherwise, navigate to the subject page
+        navigate(toAttestationsBySubject(search ?? "").replace(CHAIN_ID_ROUTE, network), {
+          state: { from: location.pathname },
+        });
+      }
     }
-  }, [searchElements, navigate, network, search]);
+  }, [searchElements, navigate, network, search, parsedString]);
 
   const updateSearchElement = (page: Page, count: number, loaded: boolean) => {
     setSearchElements((prev) => ({ ...prev, [page]: { loaded, count } }));

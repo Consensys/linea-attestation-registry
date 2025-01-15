@@ -10,7 +10,7 @@ import { DEFAULT_SEARCH_ELEMENTS } from "@/constants/components";
 import { EQueryParams } from "@/enums/queryParams";
 import { Page, SearchElementProps } from "@/interfaces/components";
 import { useNetworkContext } from "@/providers/network-provider/context.ts";
-import { CHAIN_ID_ROUTE, toAttestationsBySubject } from "@/routes/constants";
+import { CHAIN_ID_ROUTE, toAttestationById } from "@/routes/constants";
 import { parseSearch } from "@/utils/searchUtils";
 
 import { SearchAttestationsReceived } from "./components/SearchAttestationsReceived";
@@ -41,7 +41,7 @@ export const Search = () => {
     setIsLoaded(newIsLoaded);
     setNotFound(newIsLoaded && newCount === 0);
     if (isOnlyAttestationsFound(searchElements)) {
-      navigate(toAttestationsBySubject(search ?? "").replace(CHAIN_ID_ROUTE, network), {
+      navigate(toAttestationById(search ?? "").replace(CHAIN_ID_ROUTE, network), {
         state: { from: location.pathname },
       });
     }

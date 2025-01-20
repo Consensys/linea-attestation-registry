@@ -57,7 +57,7 @@ export const Search = () => {
         });
       }
     }
-  }, [searchElements, navigate, network, search, parsedString]);
+  }, [searchElements, navigate, network, search, parsedString, isLoaded]);
 
   const updateSearchElement = (page: Page, count: number, loaded: boolean) => {
     setSearchElements((prev) => ({ ...prev, [page]: { loaded, count } }));

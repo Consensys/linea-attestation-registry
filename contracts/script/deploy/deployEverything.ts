@@ -36,7 +36,7 @@ async function main() {
 
   console.log("Deploying AttestationRegistry...");
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");
-  const attestationRegistry = await upgrades.deployProxy(AttestationRegistry, [networkConfig.chainPrefix]);
+  const attestationRegistry = await upgrades.deployProxy(AttestationRegistry, [routerProxyAddress, networkConfig.chainPrefix]);
   await attestationRegistry.waitForDeployment();
   const attestationRegistryProxyAddress = await attestationRegistry.getAddress();
   const attestationRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
@@ -57,7 +57,7 @@ async function main() {
 
   console.log("Deploying ModuleRegistry...");
   const ModuleRegistry = await ethers.getContractFactory("ModuleRegistry");
-  const moduleRegistry = await upgrades.deployProxy(ModuleRegistry);
+  const moduleRegistry = await upgrades.deployProxy(ModuleRegistry, [routerProxyAddress]);
   await moduleRegistry.waitForDeployment();
   const moduleRegistryProxyAddress = await moduleRegistry.getAddress();
   const moduleRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
@@ -78,7 +78,7 @@ async function main() {
 
   console.log("Deploying PortalRegistry...");
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
-  const portalRegistry = await upgrades.deployProxy(PortalRegistry, [networkConfig.isTestnet]);
+  const portalRegistry = await upgrades.deployProxy(PortalRegistry, [routerProxyAddress, networkConfig.isTestnet]);
   await portalRegistry.waitForDeployment();
   const portalRegistryProxyAddress = await portalRegistry.getAddress();
   const portalRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
@@ -99,7 +99,7 @@ async function main() {
 
   console.log("Deploying SchemaRegistry...");
   const SchemaRegistry = await ethers.getContractFactory("SchemaRegistry");
-  const schemaRegistry = await upgrades.deployProxy(SchemaRegistry);
+  const schemaRegistry = await upgrades.deployProxy(SchemaRegistry, [routerProxyAddress]);
   await schemaRegistry.waitForDeployment();
   const schemaRegistryProxyAddress = await schemaRegistry.getAddress();
   const schemaRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
@@ -124,28 +124,6 @@ async function main() {
   await router.updatePortalRegistry(portalRegistryProxyAddress);
   await router.updateSchemaRegistry(schemaRegistryProxyAddress);
   console.log("Router updated with the registries addresses!");
-
-  console.log(`\n----\n`);
-
-  console.log(`Updating registries with the Router address...`);
-
-  console.log("Updating AttestationRegistry with the Router address...");
-  await attestationRegistry.updateRouter(routerProxyAddress);
-  console.log("AttestationRegistry updated!");
-
-  console.log("Updating ModuleRegistry with the Router address...");
-  await moduleRegistry.updateRouter(routerProxyAddress);
-  console.log("ModuleRegistry updated!");
-
-  console.log("Updating PortalRegistry with the Router address...");
-  await portalRegistry.updateRouter(routerProxyAddress);
-  console.log("PortalRegistry updated!");
-
-  console.log("Updating SchemaRegistry with the Router address...");
-  await schemaRegistry.updateRouter(routerProxyAddress);
-  console.log("SchemaRegistry updated!");
-
-  console.log("Registries updated with the Router address!");
 
   console.log(`\n----\n`);
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { RouterManager } from "./RouterManager.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import { Schema } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
@@ -12,7 +12,7 @@ import { uncheckedInc256 } from "./Common.sol";
  * @author Consensys
  * @notice This contract aims to manage the Schemas used by the Portals, including their discoverability
  */
-contract SchemaRegistry is RouterManager {
+contract SchemaRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) private schemas;
@@ -26,8 +26,6 @@ contract SchemaRegistry is RouterManager {
   /// @dev Associates a Schema ID with the address of the Issuer who created it
   mapping(bytes32 id => address issuer) private schemasIssuers;
 
-  /// @notice Error thrown when the Router address remains unchanged
-  error RouterAlreadyUpdated();
   /// @notice Error thrown when attempting to set a schema issuer that is already set
   error SchemaIssuerAlreadySet();
   /// @notice Error thrown when the schema context remains unchanged
@@ -61,9 +59,11 @@ contract SchemaRegistry is RouterManager {
 
   /**
    * @notice Contract initialization
+   * @param _router the address of the Router contract
    */
-  function initialize() public initializer {
+  function initialize(address _router) public initializer {
     __Ownable_init();
+    router = IRouter(_router);
   }
 
   /**
@@ -73,16 +73,6 @@ contract SchemaRegistry is RouterManager {
   modifier onlyAllowlisted(address user) {
     if (!PortalRegistry(router.getPortalRegistry()).isAllowlisted(user)) revert OnlyAllowlisted();
     _;
-  }
-
-  /**
-   * @dev Changes the address for the Router
-   * @param _router the new Router address
-   */
-  function _setRouter(address _router) internal override {
-    if (_router == address(router)) revert RouterAlreadyUpdated();
-
-    router = IRouter(_router);
   }
 
   /**

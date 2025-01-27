@@ -2,12 +2,12 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { RouterManager } from "../src/RouterManager.sol";
 import { SchemaRegistry } from "../src/SchemaRegistry.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistryNotAllowlistedMock } from "./mocks/PortalRegistryNotAllowlistedMock.sol";
 import { Schema } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
+import { TransparentUpgradeableProxy } from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
 contract SchemaRegistryTest is Test {
   SchemaRegistry private schemaRegistry;
@@ -31,10 +31,17 @@ contract SchemaRegistryTest is Test {
   function setUp() public {
     router = new Router();
     router.initialize();
-    schemaRegistry = new SchemaRegistry();
+
+    address proxyAdmin = makeAddr("proxyAdmin");
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new SchemaRegistry()),
+      address(proxyAdmin),
+      abi.encodeWithSelector(SchemaRegistry.initialize.selector, address(router))
+    );
+
+    schemaRegistry = SchemaRegistry(payable(address(proxy)));
+
     router.updateSchemaRegistry(address(schemaRegistry));
-    vm.prank(address(0));
-    schemaRegistry.updateRouter(address(router));
     PortalRegistryMock portalRegistryMock = new PortalRegistryMock();
     portalRegistryAddress = address(portalRegistryMock);
     router.updatePortalRegistry(portalRegistryAddress);
@@ -45,39 +52,7 @@ contract SchemaRegistryTest is Test {
 
   function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    schemaRegistry.initialize();
-  }
-
-  function test_updateRouter() public {
-    SchemaRegistry testSchemaRegistry = new SchemaRegistry();
-
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testSchemaRegistry.updateRouter(address(1));
-    address routerAddress = address(testSchemaRegistry.router());
-    assertEq(routerAddress, address(1));
-  }
-
-  function test_updateRouter_RouterInvalid() public {
-    SchemaRegistry testSchemaRegistry = new SchemaRegistry();
-
-    vm.expectRevert(RouterManager.RouterInvalid.selector);
-    vm.prank(address(0));
-    testSchemaRegistry.updateRouter(address(0));
-  }
-
-  function test_updateRouter_RouterAlreadyUpdated() public {
-    SchemaRegistry testSchemaRegistry = new SchemaRegistry();
-
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testSchemaRegistry.updateRouter(address(1));
-
-    vm.expectRevert(SchemaRegistry.RouterAlreadyUpdated.selector);
-    vm.prank(address(0));
-    testSchemaRegistry.updateRouter(address(1));
+    schemaRegistry.initialize(makeAddr("router"));
   }
 
   function test_updateSchemaIssuer() public {
@@ -85,20 +60,17 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.expectEmit(true, true, true, true);
     emit SchemaIssuerUpdated(expectedId, address(2));
-    vm.prank(address(0));
     schemaRegistry.updateSchemaIssuer(expectedId, address(2));
   }
 
   function test_updateSchemaIssuer_SchemaNotRegistered() public {
     vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
-    vm.prank(address(0));
     schemaRegistry.updateSchemaIssuer(expectedId, address(0));
   }
 
   function test_updateSchemaIssuer_IssuerInvalid() public {
     vm.prank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-    vm.prank(address(0));
     vm.expectRevert(SchemaRegistry.IssuerInvalid.selector);
     schemaRegistry.updateSchemaIssuer(expectedId, address(0));
   }
@@ -108,10 +80,8 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.expectEmit(true, true, true, true);
     emit SchemaIssuerUpdated(expectedId, address(2));
-    vm.prank(address(0));
     schemaRegistry.updateSchemaIssuer(expectedId, address(2));
 
-    vm.prank(address(0));
     vm.expectRevert(SchemaRegistry.SchemaIssuerAlreadySet.selector);
     schemaRegistry.updateSchemaIssuer(expectedId, address(2));
   }
@@ -121,20 +91,17 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.expectEmit(true, true, true, true);
     emit SchemaIssuerUpdated(expectedId, address(2));
-    vm.prank(address(0));
     schemaRegistry.bulkUpdateSchemasIssuers(expectedIds, address(2));
   }
 
   function test_bulkUpdateSchemasIssuers_SchemaNotRegistered() public {
     vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
-    vm.prank(address(0));
     schemaRegistry.bulkUpdateSchemasIssuers(expectedIds, address(0));
   }
 
   function test_bulkUpdateSchemasIssuers_IssuerInvalid() public {
     vm.prank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-    vm.prank(address(0));
     vm.expectRevert(SchemaRegistry.IssuerInvalid.selector);
     schemaRegistry.bulkUpdateSchemasIssuers(expectedIds, address(0));
   }

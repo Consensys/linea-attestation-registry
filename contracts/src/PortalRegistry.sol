@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { RouterManager } from "./RouterManager.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { AbstractPortalV2 } from "./abstracts/AbstractPortalV2.sol";
@@ -14,7 +14,7 @@ import { IRouter } from "./interfaces/IRouter.sol";
  * @author Consensys
  * @notice This contract aims to manage the Portals used by attestation issuers
  */
-contract PortalRegistry is RouterManager {
+contract PortalRegistry is OwnableUpgradeable {
   IRouter public router;
 
   mapping(address id => Portal portal) private portals;
@@ -74,21 +74,13 @@ contract PortalRegistry is RouterManager {
 
   /**
    * @notice Contract initialization with testnet status
+   * @param _router the address of the Router contract
    * @param _isTestnet Boolean indicating if the deployment is on a testnet
    */
-  function initialize(bool _isTestnet) public initializer {
+  function initialize(address _router, bool _isTestnet) public initializer {
     __Ownable_init();
-    isTestnet = _isTestnet;
-  }
-
-  /**
-   * @dev Changes the address for the Router
-   * @param _router the new Router address
-   */
-  function _setRouter(address _router) internal override {
-    if (_router == address(router)) revert RouterAlreadyUpdated();
-
     router = IRouter(_router);
+    isTestnet = _isTestnet;
   }
 
   /**

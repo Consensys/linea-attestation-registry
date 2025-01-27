@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import { OperationType } from "./types/Enums.sol";
 import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./abstracts/AbstractModule.sol";
 import { AbstractModuleV2 } from "./abstracts/AbstractModuleV2.sol";
-import { RouterManager } from "./RouterManager.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
@@ -17,7 +17,7 @@ import { uncheckedInc32 } from "./Common.sol";
  * @author Consensys
  * @notice This contract aims to manage the Modules used by the Portals, including their discoverability
  */
-contract ModuleRegistry is RouterManager {
+contract ModuleRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Modules, accessed by their address
   mapping(address id => Module module) public modules;
@@ -29,8 +29,6 @@ contract ModuleRegistry is RouterManager {
    */
   address[] private moduleAddresses;
 
-  /// @notice Error thrown when the Router address remains unchanged
-  error RouterAlreadyUpdated();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
   /// @notice Error thrown when an identical Module was already registered
@@ -58,9 +56,11 @@ contract ModuleRegistry is RouterManager {
 
   /**
    * @notice Contract initialization
+   * @param _router the address of the Router contract
    */
-  function initialize() public initializer {
+  function initialize(address _router) public initializer {
     __Ownable_init();
+    router = IRouter(_router);
   }
 
   /**
@@ -70,16 +70,6 @@ contract ModuleRegistry is RouterManager {
   modifier onlyAllowlisted(address user) {
     if (!PortalRegistry(router.getPortalRegistry()).isAllowlisted(user)) revert OnlyAllowlisted();
     _;
-  }
-
-  /**
-   * @dev Changes the address for the Router
-   * @param _router the new Router address
-   */
-  function _setRouter(address _router) internal override {
-    if (_router == address(router)) revert RouterAlreadyUpdated();
-
-    router = IRouter(_router);
   }
 
   /**

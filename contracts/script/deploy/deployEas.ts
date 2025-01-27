@@ -20,7 +20,7 @@ async function main() {
 
   console.log("Deploying AttestationReader...");
   const AttestationReader = await ethers.getContractFactory("AttestationReader");
-  const attestationReader = await upgrades.deployProxy(AttestationReader);
+  const attestationReader = await upgrades.deployProxy(AttestationReader, [routerProxyAddress]);
   await attestationReader.waitForDeployment();
   const attestationReaderProxyAddress = await attestationReader.getAddress();
   const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(
@@ -38,10 +38,6 @@ async function main() {
   console.log(`Implementation is at ${attestationReaderImplementationAddress}`);
 
   console.log(`\n----\n`);
-
-  console.log("Updating AttestationReader with the Router address...");
-  await attestationReader.updateRouter(routerProxyAddress);
-  console.log("AttestationReader updated with router address!");
 
   console.log("Updating AttestationReader with the EAS Registry address...");
   await attestationReader.updateEASRegistryAddress(easRegistryAddress);

@@ -11,14 +11,15 @@ import { PortalRegistry } from "../../src/PortalRegistry.sol";
 import { IssuersModuleV2 } from "../../src/stdlib/IssuersModuleV2.sol";
 import { SenderModuleV2 } from "../../src/stdlib/SenderModuleV2.sol";
 import { DefaultPortalV2 } from "../../src/DefaultPortalV2.sol";
+import { TransparentUpgradeableProxy } from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
 contract IssuersPortalTest is Test {
   address public issuerAddress = makeAddr("issuer");
   Router public router = new Router();
-  SchemaRegistry public schemaRegistry = new SchemaRegistry();
-  PortalRegistry public portalRegistry = new PortalRegistry();
-  ModuleRegistry public moduleRegistry = new ModuleRegistry();
-  AttestationRegistry public attestationRegistry = new AttestationRegistry();
+  SchemaRegistry public schemaRegistry;
+  PortalRegistry public portalRegistry;
+  ModuleRegistry public moduleRegistry;
+  AttestationRegistry public attestationRegistry;
   IssuersModuleV2 public issuersModule;
   SenderModuleV2 public senderModule;
   bytes32 public schemaId = bytes32(0);
@@ -29,18 +30,45 @@ contract IssuersPortalTest is Test {
   event BulkAttestationsRegistered();
 
   function setUp() public {
-    vm.startPrank(address(0));
-
     router.initialize();
-    router.updateSchemaRegistry(address(schemaRegistry));
-    router.updatePortalRegistry(address(portalRegistry));
-    router.updateModuleRegistry(address(moduleRegistry));
+
+    address proxyAdmin = makeAddr("proxyAdmin");
+
+    TransparentUpgradeableProxy proxyAttestationRegistry = new TransparentUpgradeableProxy(
+      address(new AttestationRegistry()),
+      address(proxyAdmin),
+      abi.encodeWithSelector(AttestationRegistry.initialize.selector, address(router))
+    );
+
+    attestationRegistry = AttestationRegistry(payable(address(proxyAttestationRegistry)));
     router.updateAttestationRegistry(address(attestationRegistry));
 
-    schemaRegistry.updateRouter(address(router));
-    portalRegistry.updateRouter(address(router));
-    moduleRegistry.updateRouter(address(router));
-    attestationRegistry.updateRouter(address(router));
+    TransparentUpgradeableProxy proxyPortalRegistry = new TransparentUpgradeableProxy(
+      address(new PortalRegistry()),
+      address(proxyAdmin),
+      abi.encodeWithSelector(PortalRegistry.initialize.selector, address(router), false)
+    );
+
+    portalRegistry = PortalRegistry(payable(address(proxyPortalRegistry)));
+    router.updatePortalRegistry(address(portalRegistry));
+
+    TransparentUpgradeableProxy proxySchemaRegistry = new TransparentUpgradeableProxy(
+      address(new SchemaRegistry()),
+      address(proxyAdmin),
+      abi.encodeWithSelector(SchemaRegistry.initialize.selector, address(router))
+    );
+
+    schemaRegistry = SchemaRegistry(payable(address(proxySchemaRegistry)));
+    router.updateSchemaRegistry(address(proxySchemaRegistry));
+
+    TransparentUpgradeableProxy proxyModuleRegistry = new TransparentUpgradeableProxy(
+      address(new ModuleRegistry()),
+      address(proxyAdmin),
+      abi.encodeWithSelector(ModuleRegistry.initialize.selector, address(router))
+    );
+
+    moduleRegistry = ModuleRegistry(payable(address(proxyModuleRegistry)));
+    router.updateModuleRegistry(address(moduleRegistry));
 
     issuersModule = new IssuersModuleV2(address(portalRegistry));
     senderModule = new SenderModuleV2(address(portalRegistry));

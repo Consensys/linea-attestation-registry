@@ -2,7 +2,6 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { RouterManager } from "../src/RouterManager.sol";
 import { AttestationReader } from "../src/AttestationReader.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
 import { AttestationRegistry } from "../src/AttestationRegistry.sol";
@@ -12,6 +11,7 @@ import { EASRegistryMock } from "./mocks/EASRegistryMock.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
 import { Attestation as EASAttestation } from "../src/interfaces/IEAS.sol";
 import { Router } from "../src/Router.sol";
+import { TransparentUpgradeableProxy } from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
 contract AttestationReaderTest is Test {
   address public portal = makeAddr("portal");
@@ -21,7 +21,6 @@ contract AttestationReaderTest is Test {
   address public attestationRegistryAddress;
   address public portalRegistryAddress;
   address public easRegistryAddress;
-  event RouterUpdated(address routerAddress);
   event EASRegistryAddressUpdated(address easRegistryAddress);
 
   function setUp() public {
@@ -31,11 +30,16 @@ contract AttestationReaderTest is Test {
     portalRegistryAddress = address(new PortalRegistryMock());
     attestationRegistryAddress = address(new AttestationRegistryMock());
     easRegistryAddress = address(new EASRegistryMock());
-    vm.startPrank(address(0));
-    attestationReader = new AttestationReader();
-    attestationReader.updateRouter(address(router));
+
+    address proxyAdmin = makeAddr("proxyAdmin");
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new AttestationReader()),
+      address(proxyAdmin),
+      abi.encodeWithSelector(AttestationReader.initialize.selector, address(router))
+    );
+
+    attestationReader = AttestationReader(payable(address(proxy)));
     attestationReader.updateEASRegistryAddress(easRegistryAddress);
-    vm.stopPrank();
     router.updatePortalRegistry(portalRegistryAddress);
     router.updateAttestationRegistry(attestationRegistryAddress);
 
@@ -44,38 +48,7 @@ contract AttestationReaderTest is Test {
 
   function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    attestationReader.initialize();
-  }
-
-  function test_updateRouter() public {
-    AttestationReader testAttestationReader = new AttestationReader();
-
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testAttestationReader.updateRouter(address(1));
-    address routerAddress = address(testAttestationReader.router());
-    assertEq(routerAddress, address(1));
-  }
-
-  function test_updateRouter_RouterInvalid() public {
-    AttestationReader testAttestationReader = new AttestationReader();
-
-    vm.expectRevert(RouterManager.RouterInvalid.selector);
-    vm.prank(address(0));
-    testAttestationReader.updateRouter(address(0));
-  }
-
-  function test_updateRouter_RouterAlreadyUpdated() public {
-    AttestationReader testAttestationReader = new AttestationReader();
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testAttestationReader.updateRouter(address(1));
-
-    vm.expectRevert(AttestationReader.RouterAlreadyUpdated.selector);
-    vm.prank(address(0));
-    testAttestationReader.updateRouter(address(1));
+    attestationReader.initialize(makeAddr("router"));
   }
 
   function test_updateEASRegistryAddress() public {

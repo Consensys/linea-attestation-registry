@@ -20,7 +20,7 @@ contract AttestationRegistryTest is Test {
   AttestationRegistryHarness public attestationRegistryHarness;
   address public portalRegistryAddress;
   address public schemaRegistryAddress;
-  uint256 public initialChainPrefix = 0x0003000000000000000000000000000000000000000000000000000000000000;
+  uint256 public initialChainPrefix = 0x0000000000000000000000000000000000000000000000000000000000000000;
 
   event Initialized(uint8 version);
   event AttestationRegistered(bytes32 indexed attestationId);
@@ -44,10 +44,6 @@ contract AttestationRegistryTest is Test {
     schemaRegistryAddress = address(new SchemaRegistryMock());
     vm.prank(address(0));
     attestationRegistry.updateRouter(address(router));
-    vm.prank(address(0));
-    attestationRegistry.updateChainPrefix(initialChainPrefix);
-    vm.prank(address(0));
-    attestationRegistryHarness.updateChainPrefix(initialChainPrefix);
 
     router.updatePortalRegistry(portalRegistryAddress);
     router.updateSchemaRegistry(schemaRegistryAddress);
@@ -115,39 +111,6 @@ contract AttestationRegistryTest is Test {
     vm.expectRevert(AttestationRegistry.RouterAlreadyUpdated.selector);
     vm.prank(address(0));
     testAttestationRegistry.updateRouter(address(1));
-  }
-
-  function test_updateChainPrefix() public {
-    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
-
-    vm.expectEmit(true, true, true, true);
-    emit ChainPrefixUpdated(initialChainPrefix);
-    vm.prank(address(0));
-    testAttestationRegistry.updateChainPrefix(initialChainPrefix);
-
-    uint256 chainPrefix = testAttestationRegistry.getChainPrefix();
-    assertEq(chainPrefix, initialChainPrefix);
-
-    vm.expectEmit(true, true, true, true);
-    emit ChainPrefixUpdated(0x0001000000000000000000000000000000000000000000000000000000000000);
-    vm.prank(address(0));
-    testAttestationRegistry.updateChainPrefix(0x0001000000000000000000000000000000000000000000000000000000000000);
-
-    chainPrefix = testAttestationRegistry.getChainPrefix();
-    assertEq(chainPrefix, 0x0001000000000000000000000000000000000000000000000000000000000000);
-  }
-
-  function test_updateChainPrefix_ChainPrefixAlreadyUpdated() public {
-    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
-
-    vm.expectEmit(true, true, true, true);
-    emit ChainPrefixUpdated(initialChainPrefix);
-    vm.prank(address(0));
-    testAttestationRegistry.updateChainPrefix(initialChainPrefix);
-
-    vm.expectRevert(AttestationRegistry.ChainPrefixAlreadyUpdated.selector);
-    vm.prank(address(0));
-    testAttestationRegistry.updateChainPrefix(initialChainPrefix);
   }
 
   function test_attest(AttestationPayload memory attestationPayload) public {
@@ -626,7 +589,7 @@ contract AttestationRegistryTest is Test {
     vm.startPrank(portal);
     attestationRegistry.attest(attestationPayload, attester);
     vm.startPrank(portal);
-    attestationRegistry.revoke(0x0003000000000000000000000000000000000000000000000000000000000001);
+    attestationRegistry.revoke(0x0000000000000000000000000000000000000000000000000000000000000001);
 
     uint256 balance = attestationRegistry.balanceOf(address(1), 1);
     assertEq(balance, 0);
@@ -741,10 +704,10 @@ contract AttestationRegistryTest is Test {
 
   function test_attestationRegistry() public view {
     bytes32 attestationId = attestationRegistryHarness.exposed_generateAttestationId(0);
-    assertEq(attestationId, 0x0003000000000000000000000000000000000000000000000000000000000000);
+    assertEq(attestationId, 0x0000000000000000000000000000000000000000000000000000000000000000);
 
     attestationId = attestationRegistryHarness.exposed_generateAttestationId(10);
-    assertEq(attestationId, 0x000300000000000000000000000000000000000000000000000000000000000a);
+    assertEq(attestationId, 0x000000000000000000000000000000000000000000000000000000000000000a);
   }
 
   function test_getNextAttestationId(AttestationPayload memory attestationPayload) public {

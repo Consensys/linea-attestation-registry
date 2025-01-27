@@ -90,17 +90,6 @@ contract AttestationRegistry is RouterManager {
   }
 
   /**
-   * @notice Changes the chain prefix for the attestation IDs
-   * @dev Only the registry owner can call this method
-   */
-  function updateChainPrefix(uint256 _chainPrefix) public onlyOwner {
-    if (_chainPrefix == chainPrefix) revert ChainPrefixAlreadyUpdated();
-
-    chainPrefix = _chainPrefix;
-    emit ChainPrefixUpdated(_chainPrefix);
-  }
-
-  /**
    * @notice Registers an attestation in the AttestationRegistry.
    * @param attestationPayload The payload used to create and register the attestation.
    * @param attester The address of the account issuing the attestation.

@@ -21,8 +21,13 @@ contract ModuleRegistry is RouterManager {
   IRouter public router;
   /// @dev The list of Modules, accessed by their address
   mapping(address id => Module module) public modules;
-  /// @dev Deprecated: The `moduleAddresses` variable is no longer used. It was used to store the modules addresses.
-  address[] public moduleAddresses;
+  /**
+   * @dev [DEPRECATED] This field is no longer used or updated.
+   * It previously stored the list of Module addresses, but its functionality has been deprecated.
+   * While this variable cannot be removed due to storage layout constraints in upgradeable contracts,
+   * it should not be relied upon as it no longer serves any purpose.
+   */
+  address[] private moduleAddresses;
 
   /// @notice Error thrown when the Router address remains unchanged
   error RouterAlreadyUpdated();

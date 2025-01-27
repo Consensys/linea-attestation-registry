@@ -8,7 +8,7 @@ import { AbstractPortalV2 } from "./abstracts/AbstractPortalV2.sol";
 import { DefaultPortalV2 } from "./DefaultPortalV2.sol";
 import { Portal } from "./types/Structs.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
-import { uncheckedInc256 } from "./Common.sol";
+import { IPortal } from "./interfaces/IPortal.sol";
 
 /**
  * @title Portal Registry
@@ -22,7 +22,12 @@ contract PortalRegistry is RouterManager {
 
   mapping(address issuerAddress => bool isIssuer) private issuers;
 
-  /// @dev Deprecated: The `portalAddresses` variable is no longer used. It was used to store the portals addresses.
+  /**
+   * @dev [DEPRECATED] This field is no longer used or updated.
+   * It previously stored the list of Portal addresses, but its functionality has been deprecated.
+   * While this variable cannot be removed due to storage layout constraints in upgradeable contracts,
+   * it should not be relied upon as it no longer serves any purpose.
+   */
   address[] private portalAddresses;
 
   bool private isTestnet;

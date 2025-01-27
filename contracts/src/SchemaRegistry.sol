@@ -16,8 +16,13 @@ contract SchemaRegistry is RouterManager {
   IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) private schemas;
-  /// @dev Deprecated: The `schemaIds` variable is no longer used. It was used to store the ids of schemas.
-  bytes32[] public schemaIds;
+  /**
+   * @dev [DEPRECATED] This field is no longer used or updated.
+   * It previously stored the list of Schema IDs, but its functionality has been deprecated.
+   * While this variable cannot be removed due to storage layout constraints in upgradeable contracts,
+   * it should not be relied upon as it no longer serves any purpose.
+   */
+  bytes32[] private schemaIds;
   /// @dev Associates a Schema ID with the address of the Issuer who created it
   mapping(bytes32 id => address issuer) private schemasIssuers;
 

@@ -62,13 +62,15 @@ contract EASPortal is AbstractPortalV2 {
       abi.encodePacked(attestationRequest.data.recipient),
       attestationRequest.data.data
     );
+
+    bytes32 attestationId = attestationRegistry.getNextAttestationId();
     super.attest(attestationPayload, validationPayload);
+
     // if refUID exists then create relationship attestation
     if (attestationRequest.data.refUID != 0) {
       if (!attestationRegistry.isRegistered(attestationRequest.data.refUID)) {
         revert ReferenceAttestationNotRegistered();
       }
-      bytes32 attestationId = attestationRegistry.getNextAttestationId();
 
       AttestationPayload memory relationshipAttestationPayload = AttestationPayload(
         _relationshipSchemaId,

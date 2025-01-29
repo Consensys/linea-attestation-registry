@@ -39,7 +39,13 @@ contract IssuersModuleV2 is AbstractModuleV2 {
     if (attestationPayload.subject.length != 32 && attestationPayload.subject.length != 20)
       revert UnauthorizedSubject();
 
-    if (attestationPayload.subject.length == 32) subject = abi.decode(attestationPayload.subject, (address));
+    if (attestationPayload.subject.length == 32) {
+      // Check if the first 12 bytes are zero
+      bytes memory rawSubject = bytes(attestationPayload.subject);
+      if (uint96(bytes12(rawSubject)) == 0) {
+        subject = abi.decode(rawSubject, (address));
+      }
+    }
     if (attestationPayload.subject.length == 20) subject = address(uint160(bytes20(attestationPayload.subject)));
 
     if (!portalRegistry.isIssuer(subject)) revert UnauthorizedSubject();

@@ -8,7 +8,6 @@ import { AbstractPortalV2 } from "./abstracts/AbstractPortalV2.sol";
 import { DefaultPortalV2 } from "./DefaultPortalV2.sol";
 import { Portal } from "./types/Structs.sol";
 import { IRouter } from "./interfaces/IRouter.sol";
-import { IPortal } from "./interfaces/IPortal.sol";
 
 /**
  * @title Portal Registry

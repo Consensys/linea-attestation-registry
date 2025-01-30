@@ -11,7 +11,6 @@ import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
 import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
 import { ValidPortalMock } from "./mocks/ValidPortalMock.sol";
-import { OldVersionPortalMock } from "./mocks/OldVersionPortalMock.sol";
 import { InvalidPortalMock } from "./mocks/InvalidPortalMock.sol";
 
 contract PortalRegistryTest is Test {
@@ -25,7 +24,6 @@ contract PortalRegistryTest is Test {
   string public expectedDescription = "Description";
   string public expectedOwnerName = "Owner Name";
   ValidPortalMock public validPortalMock;
-  OldVersionPortalMock public oldVersionPortalMock;
   InvalidPortalMock public invalidPortalMock = new InvalidPortalMock();
 
   event Initialized(uint8 version);
@@ -56,7 +54,6 @@ contract PortalRegistryTest is Test {
     portalRegistry.setIssuer(user);
 
     validPortalMock = new ValidPortalMock(new address[](0), address(router));
-    oldVersionPortalMock = new OldVersionPortalMock(new address[](1), address(router));
   }
 
   function test_initialize_ContractAlreadyInitialized() public {
@@ -261,12 +258,6 @@ contract PortalRegistryTest is Test {
     vm.expectRevert(PortalRegistry.PortalInvalid.selector);
     vm.prank(user);
     portalRegistry.register(address(invalidPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
-  }
-
-  function test_register_old_version_PortalInvalid() public {
-    vm.expectRevert(PortalRegistry.PortalInvalid.selector);
-    vm.prank(user);
-    portalRegistry.register(address(oldVersionPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
   }
 
   function test_revoke() public {

@@ -19,11 +19,18 @@ contract AttestationReader is OwnableUpgradeable {
 
   /// @notice Error thrown when an invalid EAS registry address is given
   error EASAddressInvalid();
+
   /// @notice Error thrown when the EAS registry address remains unchanged
   error EASRegistryAddressAlreadyUpdated();
 
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
+
   /// @notice Event emitted when the EAS registry address is updated
   event EASRegistryAddressUpdated(address easRegistryAddress);
+
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
 
   /**
    * @notice Contract initialization
@@ -31,7 +38,9 @@ contract AttestationReader is OwnableUpgradeable {
    */
   function initialize(address _router) public initializer {
     __Ownable_init();
+    if (_router == address(0)) revert RouterAddressInvalid();
     router = IRouter(_router);
+    emit RouterSet(_router);
   }
 
   /// @custom:oz-upgrades-unsafe-allow constructor

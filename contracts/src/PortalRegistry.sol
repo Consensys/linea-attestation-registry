@@ -31,8 +31,6 @@ contract PortalRegistry is OwnableUpgradeable {
 
   bool private isTestnet;
 
-  /// @notice Error thrown when the Router address remains unchanged
-  error RouterAlreadyUpdated();
   /// @notice Error thrown when attempting to set an issuer that is already set
   error IssuerAlreadySet();
   /// @notice Error thrown when the testnet flag remains unchanged
@@ -55,6 +53,8 @@ contract PortalRegistry is OwnableUpgradeable {
   error PortalNotRegistered();
   /// @notice Error thrown when an invalid address is given
   error AddressInvalid();
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
 
   /// @notice Event emitted when a Portal is registered
   event PortalRegistered(string name, string description, address portalAddress);
@@ -66,6 +66,10 @@ contract PortalRegistry is OwnableUpgradeable {
   event PortalRevoked(address portalAddress);
   /// @notice Event emitted when the `isTestnet` flag is updated
   event IsTestnetUpdated(bool isTestnet);
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
+  /// @notice Event emitted when the testnet status is set
+  event TestnetStatusSet(bool isTestnet);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -79,8 +83,13 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function initialize(address _router, bool _isTestnet) public initializer {
     __Ownable_init();
+
+    if (_router == address(0)) revert RouterAddressInvalid();
     router = IRouter(_router);
+    emit RouterSet(_router);
+
     isTestnet = _isTestnet;
+    emit TestnetStatusSet(_isTestnet);
   }
 
   /**

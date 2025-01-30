@@ -44,6 +44,8 @@ contract SchemaRegistry is OwnableUpgradeable {
   error SchemaStringMissing();
   /// @notice Error thrown when attempting to get a Schema that is not registered
   error SchemaNotRegistered();
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
 
   /// @notice Event emitted when a Schema is created and registered
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
@@ -51,6 +53,8 @@ contract SchemaRegistry is OwnableUpgradeable {
   event SchemaContextUpdated(bytes32 indexed id);
   /// @notice Event emitted when the schema issuer is updated
   event SchemaIssuerUpdated(bytes32 schemaId, address schemaIssuerAddress);
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -63,7 +67,9 @@ contract SchemaRegistry is OwnableUpgradeable {
    */
   function initialize(address _router) public initializer {
     __Ownable_init();
+    if (_router == address(0)) revert RouterAddressInvalid();
     router = IRouter(_router);
+    emit RouterSet(_router);
   }
 
   /**

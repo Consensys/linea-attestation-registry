@@ -45,9 +45,13 @@ contract ModuleRegistry is OwnableUpgradeable {
   error ModuleNotRegistered();
   /// @notice Error thrown when module addresses and validation payload length mismatch
   error ModuleValidationPayloadMismatch();
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -60,7 +64,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    */
   function initialize(address _router) public initializer {
     __Ownable_init();
+    if (_router == address(0)) revert RouterAddressInvalid();
     router = IRouter(_router);
+    emit RouterSet(_router);
   }
 
   /**

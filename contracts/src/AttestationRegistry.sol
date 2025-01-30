@@ -44,6 +44,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   error AlreadyRevoked();
   /// @notice Error thrown when an attempt is made to revoke an attestation based on a non-revocable schema
   error AttestationNotRevocable();
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
 
   /// @notice Event emitted when an attestation is registered
   event AttestationRegistered(bytes32 indexed attestationId);
@@ -55,6 +57,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   event VersionUpdated(uint16 version);
   /// @notice Event emitted when the chain prefix is set
   event ChainPrefixUpdated(uint256 chainPrefix);
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
 
   /**
    * @notice Checks if the caller is a registered portal
@@ -81,14 +85,16 @@ contract AttestationRegistry is OwnableUpgradeable {
   function initialize(address _router, uint256 _chainPrefix) public initializer {
     __Ownable_init();
 
+    if (_router == address(0)) revert RouterAddressInvalid();
+    router = IRouter(_router);
+    emit RouterSet(_router);
+
     if (_chainPrefix & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF != 0) {
       revert ChainPrefixFormatInvalid();
     }
 
     chainPrefix = _chainPrefix;
     emit ChainPrefixUpdated(_chainPrefix);
-
-    router = IRouter(_router);
   }
 
   /**

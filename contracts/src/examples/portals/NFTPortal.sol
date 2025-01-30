@@ -15,6 +15,9 @@ import { IPortal } from "../../interfaces/IPortal.sol";
 contract NFTPortal is AbstractPortalV2, ERC721 {
   mapping(address => uint256) private numberOfAttestationsPerOwner;
 
+  /// @dev Error thrown when the subject of an attestation is not a valid address
+  error SubjectNotAnAddress();
+
   /**
    * @notice Contract constructor
    * @param modules list of modules to use for the portal (can be empty)
@@ -44,19 +47,19 @@ contract NFTPortal is AbstractPortalV2, ERC721 {
     bytes32 attestationId = bytes32(tokenId);
     Attestation memory attestation = attestationRegistry.getAttestation(attestationId);
 
-    if (attestation.subject.length == 32) {
+    bytes memory subject = attestation.subject;
+    if (subject.length == 32) {
       // Check if the first 12 bytes are zero
-      bytes memory subject = bytes(attestation.subject);
       if (uint96(bytes12(subject)) == 0) {
         return abi.decode(subject, (address));
       }
     }
 
-    if (attestation.subject.length == 20) {
-      return address(uint160(bytes20(attestation.subject)));
+    if (subject.length == 20) {
+      return address(uint160(bytes20(subject)));
     }
 
-    return address(0);
+    revert SubjectNotAnAddress();
   }
 
   /**
@@ -72,9 +75,8 @@ contract NFTPortal is AbstractPortalV2, ERC721 {
 
     if (rawSubject.length == 32) {
       // Check if the first 12 bytes are zero
-      bytes memory subject = bytes(rawSubject);
-      if (uint96(bytes12(subject)) == 0) {
-        owner = abi.decode(subject, (address));
+      if (uint96(bytes12(rawSubject)) == 0) {
+        owner = abi.decode(rawSubject, (address));
       }
     }
 
@@ -82,7 +84,9 @@ contract NFTPortal is AbstractPortalV2, ERC721 {
       owner = address(uint160(bytes20(rawSubject)));
     }
 
-    numberOfAttestationsPerOwner[owner]++;
+    if (owner != address(0)) {
+      numberOfAttestationsPerOwner[owner]++;
+    }
   }
 
   /// @inheritdoc AbstractPortalV2

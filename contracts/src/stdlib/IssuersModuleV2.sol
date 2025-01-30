@@ -51,6 +51,6 @@ contract IssuersModuleV2 is AbstractModuleV2 {
     }
     if (attestationPayload.subject.length == 20) subject = address(uint160(bytes20(attestationPayload.subject)));
 
-    if (subject == address(0) || !portalRegistry.isIssuer(subject)) revert UnauthorizedSubject();
+    if (!portalRegistry.isIssuer(subject)) revert UnauthorizedSubject();
   }
 }

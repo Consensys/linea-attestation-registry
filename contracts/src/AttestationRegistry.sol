@@ -17,6 +17,7 @@ contract AttestationRegistry is RouterManager {
   IRouter public router;
 
   uint16 private version;
+
   uint32 private attestationIdCounter;
 
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
@@ -25,8 +26,8 @@ contract AttestationRegistry is RouterManager {
 
   /// @notice Error thrown when the Router address remains unchanged
   error RouterAlreadyUpdated();
-  /// @notice Error thrown when the chain prefix remains unchanged
-  error ChainPrefixAlreadyUpdated();
+  /// @notice Error thrown when the chain prefix format is invalid
+  error ChainPrefixFormatInvalid();
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
   /// @notice Error thrown when an attestation is not registered in the AttestationRegistry
@@ -54,7 +55,7 @@ contract AttestationRegistry is RouterManager {
   event AttestationRevoked(bytes32 attestationId);
   /// @notice Event emitted when the version number is incremented
   event VersionUpdated(uint16 version);
-  /// @notice Event emitted when the chain prefix is updated
+  /// @notice Event emitted when the chain prefix is set
   event ChainPrefixUpdated(uint256 chainPrefix);
 
   /**
@@ -74,9 +75,19 @@ contract AttestationRegistry is RouterManager {
 
   /**
    * @notice Contract initialization
+   * @param _chainPrefix defines the chain prefix to be used in the attestation ID
+   * @dev The `_chainPrefix` must be more than 0x0001000000000000000000000000000000000000000000000000000000000000
+   *      and the last 60 characters must be 0
    */
-  function initialize() public initializer {
+  function initialize(uint256 _chainPrefix) public initializer {
     __Ownable_init();
+
+    if (_chainPrefix & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF != 0) {
+      revert ChainPrefixFormatInvalid();
+    }
+
+    chainPrefix = _chainPrefix;
+    emit ChainPrefixUpdated(_chainPrefix);
   }
 
   /**

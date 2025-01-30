@@ -4,7 +4,6 @@ pragma solidity 0.8.21;
 import { AbstractModuleV2 } from "../abstracts/AbstractModuleV2.sol";
 import { OperationType } from "../types/Enums.sol";
 import { AttestationPayload, Attestation } from "../types/Structs.sol";
-import { Router } from "../Router.sol";
 import { AttestationRegistry } from "../AttestationRegistry.sol";
 import { PortalRegistry } from "../PortalRegistry.sol";
 
@@ -18,7 +17,8 @@ import { PortalRegistry } from "../PortalRegistry.sol";
  *      DISCLAIMER: This Module doesn't consider the chain prefix to generate the indexed attestation ID.
  */
 contract IndexerModuleV2 is AbstractModuleV2 {
-  Router public router;
+  AttestationRegistry public attestationRegistry;
+  PortalRegistry public portalRegistry;
 
   mapping(bytes subject => bytes32[] attestationIds) private attestationIdsBySubject;
   mapping(bytes subject => mapping(bytes32 schemaId => bytes32[] attestationIds))
@@ -36,16 +36,17 @@ contract IndexerModuleV2 is AbstractModuleV2 {
   event AttestationIndexed(bytes32 attestationId);
 
   modifier onlyRegisteredPortal(address portal) {
-    if (PortalRegistry(router.getPortalRegistry()).isRegistered(portal)) revert OnlyRegisteredPortal();
+    if (portalRegistry.isRegistered(portal)) revert OnlyRegisteredPortal();
     _;
   }
 
   /**
    * @dev Contract constructor sets the router.
-   * @param _router The address of the router.
+   * @param _attestationRegistry The address of the AttestationRegistry.
    */
-  constructor(address _router) {
-    router = Router(_router);
+  constructor(address _attestationRegistry, address _portalRegistry) {
+    attestationRegistry = AttestationRegistry(_attestationRegistry);
+    portalRegistry = PortalRegistry(_portalRegistry);
   }
 
   /**
@@ -73,7 +74,6 @@ contract IndexerModuleV2 is AbstractModuleV2 {
    * @param attestationId The ID of the attestation to index.
    */
   function indexAttestation(bytes32 attestationId) public {
-    AttestationRegistry attestationRegistry = AttestationRegistry(router.getAttestationRegistry());
     Attestation memory attestation = attestationRegistry.getAttestation(attestationId);
     _indexAttestation(attestation);
   }
@@ -189,7 +189,6 @@ contract IndexerModuleV2 is AbstractModuleV2 {
     address attester,
     address portal
   ) internal view returns (Attestation memory) {
-    AttestationRegistry attestationRegistry = AttestationRegistry(router.getAttestationRegistry());
     return
       Attestation(
         attestationRegistry.getNextAttestationId(),

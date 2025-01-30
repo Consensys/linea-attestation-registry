@@ -40,12 +40,6 @@ contract PausablePortal is AbstractPortalV2, Pausable, Ownable {
 
   /**
    * @inheritdoc AbstractPortalV2
-   * @dev By default, this Portal does not have any withdrawal logic
-   */
-  function withdraw(address payable to, uint256 amount) external virtual override {}
-
-  /**
-   * @inheritdoc AbstractPortalV2
    */
   function _onAttest(
     AttestationPayload memory attestationPayload,

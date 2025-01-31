@@ -44,8 +44,8 @@ contract SenderModuleV2 is AbstractModuleV2 {
    */
   function setAuthorizedSenders(
     address portal,
-    address[] memory senders,
-    bool[] memory authorizedStatus
+    address[] calldata senders,
+    bool[] calldata authorizedStatus
   ) public onlyPortalOwner(portal) {
     if (senders.length != authorizedStatus.length) revert ArrayLengthMismatch();
 
@@ -63,8 +63,8 @@ contract SenderModuleV2 is AbstractModuleV2 {
    * @notice If the transaction sender is not the expected address, an error is thrown
    */
   function run(
-    AttestationPayload memory /*attestationPayload*/,
-    bytes memory /*validationPayload*/,
+    AttestationPayload calldata /*attestationPayload*/,
+    bytes calldata /*validationPayload*/,
     address initialCaller,
     uint256 /*value*/,
     address /*attester*/,

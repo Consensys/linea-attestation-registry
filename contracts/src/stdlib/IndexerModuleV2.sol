@@ -57,8 +57,8 @@ contract IndexerModuleV2 is AbstractModuleV2 {
    * @notice If the signer of the transaction payload is not an expected address, an error is thrown
    */
   function run(
-    AttestationPayload memory attestationPayload,
-    bytes memory /*validationPayload*/,
+    AttestationPayload calldata attestationPayload,
+    bytes calldata /*validationPayload*/,
     address /*initialCaller*/,
     uint256 /*value*/,
     address attester,
@@ -185,7 +185,7 @@ contract IndexerModuleV2 is AbstractModuleV2 {
    * @return The built attestation.
    */
   function _buildAttestation(
-    AttestationPayload memory attestationPayload,
+    AttestationPayload calldata attestationPayload,
     address attester,
     address portal
   ) internal view returns (Attestation memory) {

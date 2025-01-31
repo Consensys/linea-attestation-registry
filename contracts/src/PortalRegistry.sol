@@ -156,10 +156,10 @@ contract PortalRegistry is OwnableUpgradeable {
    */
   function register(
     address id,
-    string memory name,
-    string memory description,
+    string calldata name,
+    string calldata description,
     bool isRevocable,
-    string memory ownerName
+    string calldata ownerName
   ) public onlyAllowlisted(msg.sender) {
     // Check if portal already exists
     if (portals[id].id != address(0)) revert PortalAlreadyExists();

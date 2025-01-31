@@ -19,8 +19,7 @@ contract PortalRegistryNotAllowlistedMock {
     bool isRevocable,
     string calldata ownerName
   ) external {
-    Portal memory newPortal = Portal(id, msg.sender, new address[](0), isRevocable, name, description, ownerName);
-    portals[id] = newPortal;
+    portals[id] = Portal(id, msg.sender, new address[](0), isRevocable, name, description, ownerName);
     emit PortalRegistered(name, description, id);
   }
 

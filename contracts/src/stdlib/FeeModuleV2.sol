@@ -44,7 +44,11 @@ contract FeeModuleV2 is AbstractModuleV2 {
    * @dev The length of `schemaIds` and `attestationFees` must be the same
    *      Only the Portal owner can call this function to set the fees on his Portal
    */
-  function setFees(address portal, bytes32[] memory schemaIds, uint256[] memory fees) public onlyPortalOwner(portal) {
+  function setFees(
+    address portal,
+    bytes32[] calldata schemaIds,
+    uint256[] calldata fees
+  ) public onlyPortalOwner(portal) {
     if (schemaIds.length != fees.length) revert ArrayLengthMismatch();
 
     for (uint256 i = 0; i < schemaIds.length; i++) {
@@ -61,8 +65,8 @@ contract FeeModuleV2 is AbstractModuleV2 {
    * @notice If the provided fee is not enough, an error is thrown
    */
   function run(
-    AttestationPayload memory attestationPayload,
-    bytes memory /*validationPayload*/,
+    AttestationPayload calldata attestationPayload,
+    bytes calldata /*validationPayload*/,
     address /*initialCaller*/,
     uint256 value,
     address /*attester*/,

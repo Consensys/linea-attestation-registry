@@ -28,8 +28,8 @@ contract IssuersModuleV2 is AbstractModuleV2 {
    * @notice If the Attestation subject is not an Issuer, an error is thrown
    */
   function run(
-    AttestationPayload memory attestationPayload,
-    bytes memory /*validationPayload*/,
+    AttestationPayload calldata attestationPayload,
+    bytes calldata /*validationPayload*/,
     address /*initialCaller*/,
     uint256 /*value*/,
     address /*attester*/,

@@ -53,7 +53,7 @@ contract EASPortal is AbstractPortalV2 {
    * @param attestationRequest the EAS payload to attest
    * @dev If a related EAS attestation exists, it will also be attested on Verax and linked via the dedicated Schema
    */
-  function attest(AttestationRequest memory attestationRequest) public payable {
+  function attest(AttestationRequest calldata attestationRequest) public payable {
     bytes[] memory validationPayload = new bytes[](0);
 
     AttestationPayload memory attestationPayload = AttestationPayload(

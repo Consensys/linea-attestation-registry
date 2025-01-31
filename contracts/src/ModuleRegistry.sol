@@ -98,8 +98,8 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @dev the module is stored in a mapping, the number of modules is incremented and an event is emitted
    */
   function register(
-    string memory name,
-    string memory description,
+    string calldata name,
+    string calldata description,
     address moduleAddress
   ) public onlyAllowlisted(msg.sender) {
     if (bytes(name).length == 0) revert ModuleNameMissing();
@@ -124,9 +124,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @dev check if modules are registered and execute run method for each module
    */
   function runModules(
-    address[] memory modulesAddresses,
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayloads,
+    address[] calldata modulesAddresses,
+    AttestationPayload calldata attestationPayload,
+    bytes[] calldata validationPayloads,
     uint256 value
   ) public {
     // If no module provided, bypass module validation
@@ -153,9 +153,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @dev check if modules are registered and execute the V2 run method for each module
    */
   function runModulesV2(
-    address[] memory modulesAddresses,
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayloads,
+    address[] calldata modulesAddresses,
+    AttestationPayload calldata attestationPayload,
+    bytes[] calldata validationPayloads,
     uint256 value,
     address initialCaller,
     address attester,
@@ -193,9 +193,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    *                  If you need to check the attestation ID, please use the `attest` method.
    */
   function bulkRunModules(
-    address[] memory modulesAddresses,
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
+    address[] calldata modulesAddresses,
+    AttestationPayload[] calldata attestationsPayloads,
+    bytes[][] calldata validationPayloads
   ) public {
     for (uint32 i = 0; i < attestationsPayloads.length; i = uncheckedInc32(i)) {
       runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i], 0);
@@ -214,9 +214,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    *                  If you need to check the attestation ID, please use the `attestV2` method.
    */
   function bulkRunModulesV2(
-    address[] memory modulesAddresses,
-    AttestationPayload[] memory attestationPayloads,
-    bytes[][] memory validationPayloads,
+    address[] calldata modulesAddresses,
+    AttestationPayload[] calldata attestationPayloads,
+    bytes[][] calldata validationPayloads,
     address initialCaller,
     address attester,
     OperationType operationType

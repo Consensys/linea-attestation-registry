@@ -104,7 +104,7 @@ contract ModuleRegistry is RouterManager {
     if (bytes(name).length == 0) revert ModuleNameMissing();
     // Check if moduleAddress is a smart contract address
     if (!isContractAddress(moduleAddress)) revert ModuleAddressInvalid();
-    // Check if module has implemented AbstractModule or AbstractModuleV2
+    // Check if module has implemented AbstractModuleV2
     if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModuleV2).interfaceId)) {
       revert ModuleInvalid();
     }

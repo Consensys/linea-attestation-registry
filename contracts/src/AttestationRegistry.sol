@@ -306,13 +306,10 @@ contract AttestationRegistry is OwnableUpgradeable {
 
     if (attestation.attestationId == bytes32(0)) return 0;
     if (attestation.revoked == true) return 0;
-    if (attestation.expirationDate != 0 && attestation.expirationDate < block.timestamp) return 0;
+    if (attestation.expirationDate != 0 && attestation.expirationDate <= block.timestamp) return 0;
 
-    if (
-      attestation.subject.length == 32 &&
-      uint96(bytes12(attestation.subject)) == 0 &&
-      abi.decode(attestation.subject, (address)) == account
-    ) return 1;
+    if (attestation.subject.length == 32 && bytes32(attestation.subject) == bytes32(uint256(uint160(account))))
+      return 1;
     if (attestation.subject.length == 20 && address(uint160(bytes20(attestation.subject))) == account) return 1;
 
     return 0;

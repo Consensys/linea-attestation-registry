@@ -632,6 +632,7 @@ contract AttestationRegistryTest is Test {
   function test_balanceOfBatch(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);
+    vm.assume(attestationPayload.expirationDate == 0 || attestationPayload.expirationDate > block.timestamp);
     SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
     attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
     schemaRegistryMock.createSchema("name", "description", "context", "schemaString");

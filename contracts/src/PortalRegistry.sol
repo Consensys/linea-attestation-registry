@@ -31,6 +31,8 @@ contract PortalRegistry is RouterManager {
   error RouterAlreadyUpdated();
   /// @notice Error thrown when attempting to set an issuer that is already set
   error IssuerAlreadySet();
+  /// @notice Error thrown when attempting to remove an issuer that is not set
+  error IssuerNotRegistered();
   /// @notice Error thrown when the testnet flag remains unchanged
   error TestnetStatusAlreadyUpdated();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
@@ -115,6 +117,8 @@ contract PortalRegistry is RouterManager {
    * @param issuer the address to be revoked as an issuer
    */
   function removeIssuer(address issuer) public onlyOwner {
+    if (issuer == address(0)) revert AddressInvalid();
+    if (!issuers[issuer]) revert IssuerNotRegistered();
     issuers[issuer] = false;
     // Emit event
     emit IssuerRemoved(issuer);

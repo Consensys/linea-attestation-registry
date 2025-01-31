@@ -22,6 +22,7 @@ contract ModuleRegistryTest is Test {
   address private expectedAddress = address(new CorrectModuleV2());
   address private user = makeAddr("user");
   AttestationPayload private attestationPayload;
+  address private proxyAdmin = makeAddr("proxyAdmin");
 
   event ModuleRegistered(string name, string description, address moduleAddress);
   event Initialized(uint8 version);
@@ -31,10 +32,9 @@ contract ModuleRegistryTest is Test {
     router = new Router();
     router.initialize();
 
-    address proxyAdmin = makeAddr("proxyAdmin");
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
       address(new ModuleRegistry()),
-      address(proxyAdmin),
+      proxyAdmin,
       abi.encodeWithSelector(ModuleRegistry.initialize.selector, address(router))
     );
 
@@ -86,11 +86,21 @@ contract ModuleRegistryTest is Test {
   function test_register_OnlyAllowlisted() public {
     PortalRegistryNotAllowlistedMock portalRegistryNotAllowlistedMock = new PortalRegistryNotAllowlistedMock();
     portalRegistryAddress = address(portalRegistryNotAllowlistedMock);
-    router.updatePortalRegistry(portalRegistryAddress);
+    Router newRouter = new Router();
+    newRouter.initialize();
+    newRouter.updatePortalRegistry(portalRegistryAddress);
+
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new ModuleRegistry()),
+      proxyAdmin,
+      abi.encodeWithSelector(ModuleRegistry.initialize.selector, address(newRouter))
+    );
+
+    ModuleRegistry newModuleRegistry = ModuleRegistry(payable(address(proxy)));
 
     vm.expectRevert(ModuleRegistry.OnlyAllowlisted.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
-    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
+    newModuleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.stopPrank();
   }
 

@@ -41,6 +41,14 @@ contract RouterTest is Test {
     router.updateAttestationRegistry(attestationRegistry);
   }
 
+  function test_updateAttestationRegistry_AlreadySet() public {
+    Router newRouter = new Router();
+    newRouter.initialize();
+    newRouter.updateAttestationRegistry(attestationRegistry);
+    vm.expectRevert(Router.RegistryAlreadySet.selector);
+    newRouter.updateAttestationRegistry(attestationRegistry);
+  }
+
   function test_updateModuleRegistry() public {
     vm.expectEmit();
     emit ModuleRegistryUpdated(moduleRegistry);
@@ -52,6 +60,14 @@ contract RouterTest is Test {
     vm.prank(user);
     vm.expectRevert("Ownable: caller is not the owner");
     router.updateModuleRegistry(moduleRegistry);
+  }
+
+  function test_updateModuleRegistry_AlreadySet() public {
+    Router newRouter = new Router();
+    newRouter.initialize();
+    newRouter.updateModuleRegistry(moduleRegistry);
+    vm.expectRevert(Router.RegistryAlreadySet.selector);
+    newRouter.updateModuleRegistry(moduleRegistry);
   }
 
   function test_updatePortalRegistry() public {
@@ -67,6 +83,14 @@ contract RouterTest is Test {
     router.updatePortalRegistry(portalRegistry);
   }
 
+  function test_updatePortalRegistry_AlreadySet() public {
+    Router newRouter = new Router();
+    newRouter.initialize();
+    newRouter.updatePortalRegistry(portalRegistry);
+    vm.expectRevert(Router.RegistryAlreadySet.selector);
+    newRouter.updatePortalRegistry(portalRegistry);
+  }
+
   function test_updateSchemaRegistry() public {
     vm.expectEmit();
     emit SchemaRegistryUpdated(schemaRegistry);
@@ -78,5 +102,13 @@ contract RouterTest is Test {
     vm.prank(user);
     vm.expectRevert("Ownable: caller is not the owner");
     router.updateSchemaRegistry(schemaRegistry);
+  }
+
+  function test_updateSchemaRegistry_AlreadySet() public {
+    Router newRouter = new Router();
+    newRouter.initialize();
+    newRouter.updateSchemaRegistry(schemaRegistry);
+    vm.expectRevert(Router.RegistryAlreadySet.selector);
+    newRouter.updateSchemaRegistry(schemaRegistry);
   }
 }

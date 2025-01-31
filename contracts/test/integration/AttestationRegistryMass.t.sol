@@ -38,7 +38,7 @@ contract AttestationRegistryMassTest is Test {
 
     TransparentUpgradeableProxy proxyAttestationRegistry = new TransparentUpgradeableProxy(
       address(new AttestationRegistry()),
-      address(proxyAdmin),
+      proxyAdmin,
       abi.encodeWithSelector(AttestationRegistry.initialize.selector, address(router))
     );
 
@@ -47,7 +47,7 @@ contract AttestationRegistryMassTest is Test {
 
     TransparentUpgradeableProxy proxyPortalRegistry = new TransparentUpgradeableProxy(
       address(new PortalRegistry()),
-      address(proxyAdmin),
+      proxyAdmin,
       abi.encodeWithSelector(PortalRegistry.initialize.selector, address(router), false)
     );
 
@@ -56,7 +56,7 @@ contract AttestationRegistryMassTest is Test {
 
     TransparentUpgradeableProxy proxySchemaRegistry = new TransparentUpgradeableProxy(
       address(new SchemaRegistry()),
-      address(proxyAdmin),
+      proxyAdmin,
       abi.encodeWithSelector(SchemaRegistry.initialize.selector, address(router))
     );
 
@@ -65,7 +65,7 @@ contract AttestationRegistryMassTest is Test {
 
     TransparentUpgradeableProxy proxyModuleRegistry = new TransparentUpgradeableProxy(
       address(new ModuleRegistry()),
-      address(proxyAdmin),
+      proxyAdmin,
       abi.encodeWithSelector(ModuleRegistry.initialize.selector, address(router))
     );
 

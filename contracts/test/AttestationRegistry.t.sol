@@ -48,7 +48,7 @@ contract AttestationRegistryTest is Test {
     address proxyAdmin = makeAddr("proxyAdmin");
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
       address(new AttestationRegistry()),
-      address(proxyAdmin),
+      proxyAdmin,
       abi.encodeWithSelector(AttestationRegistry.initialize.selector, address(router), initialChainPrefix)
     );
 

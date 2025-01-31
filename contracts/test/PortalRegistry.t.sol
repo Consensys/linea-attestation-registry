@@ -43,7 +43,7 @@ contract PortalRegistryTest is Test {
     address proxyAdmin = makeAddr("proxyAdmin");
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
       address(new PortalRegistry()),
-      address(proxyAdmin),
+      proxyAdmin,
       abi.encodeWithSelector(PortalRegistry.initialize.selector, address(router), false)
     );
 

@@ -34,7 +34,7 @@ contract AttestationReaderTest is Test {
     address proxyAdmin = makeAddr("proxyAdmin");
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
       address(new AttestationReader()),
-      address(proxyAdmin),
+      proxyAdmin,
       abi.encodeWithSelector(AttestationReader.initialize.selector, address(router))
     );
 

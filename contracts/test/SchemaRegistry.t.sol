@@ -21,6 +21,7 @@ contract SchemaRegistryTest is Test {
   address private user = makeAddr("user");
   address private unassignedUser = makeAddr("unassignedUser");
   bytes32[] private expectedIds;
+  address private proxyAdmin = makeAddr("proxyAdmin");
 
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
   event SchemaContextUpdated(bytes32 indexed id);
@@ -32,10 +33,9 @@ contract SchemaRegistryTest is Test {
     router = new Router();
     router.initialize();
 
-    address proxyAdmin = makeAddr("proxyAdmin");
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
       address(new SchemaRegistry()),
-      address(proxyAdmin),
+      proxyAdmin,
       abi.encodeWithSelector(SchemaRegistry.initialize.selector, address(router))
     );
 
@@ -127,11 +127,21 @@ contract SchemaRegistryTest is Test {
   function test_createSchema_OnlyAllowlisted() public {
     PortalRegistryNotAllowlistedMock portalRegistryNotAllowlistedMock = new PortalRegistryNotAllowlistedMock();
     portalRegistryAddress = address(portalRegistryNotAllowlistedMock);
-    router.updatePortalRegistry(portalRegistryAddress);
+    Router newRouter = new Router();
+    newRouter.initialize();
+    newRouter.updatePortalRegistry(portalRegistryAddress);
+
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new SchemaRegistry()),
+      proxyAdmin,
+      abi.encodeWithSelector(SchemaRegistry.initialize.selector, address(newRouter))
+    );
+
+    SchemaRegistry newSchemaRegistry = SchemaRegistry(payable(address(proxy)));
 
     vm.expectRevert(SchemaRegistry.OnlyAllowlisted.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
-    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    newSchemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.stopPrank();
   }
 

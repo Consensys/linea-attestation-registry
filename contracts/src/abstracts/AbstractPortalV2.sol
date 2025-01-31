@@ -48,7 +48,7 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    * @notice Modifier to enforce only the portal owner can perform certain actions.
    */
   modifier onlyPortalOwner() {
-    if (msg.sender != portalRegistry.getPortalByAddress(address(this)).ownerAddress) revert OnlyPortalOwner();
+    if (msg.sender != portalRegistry.getPortalOwner(address(this))) revert OnlyPortalOwner();
     _;
   }
 

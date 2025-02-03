@@ -25,7 +25,7 @@ the network.</h4>
 ## Links
 
 📚 [Documentation](https://docs.ver.ax/)  
-🔍 [Subgraphs](#subgraphs-addresses)  
+🔍 [Subgraphs](#subgraphs-urls)  
 🧱 [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)  
 🌍 [Explorer](https://explorer.ver.ax)
 
@@ -254,6 +254,16 @@ ID. This prefix is defined in the `contracts/script/utils.ts` file.
 - Base Mainnet - `0x0005`
 - BSC Testnet - `0x0006`
 - BSC Mainnet - `0x0006`
+
+## Deployment of a new Verax instance
+
+Deploying a new Verax instance requires four main steps to cover the four main parts of the stack. Even if these steps
+are independent, and must not be done right away, they should be done in order.
+
+1. Deploy the core contracts (cf. [documentation](contracts/README.md) in the `contracts` folder)
+2. Deploy the subgraph (cf. [documentation](subgraph/README.md) in the `subgraph` folder)
+3. Upgrade and deploy the SDK (cf. [documentation](sdk/README.md) in the `sdk` folder)
+4. Deploy the Explorer (cf. [documentation](explorer/README.md) in the `explorer` folder)
 
 ## License
 

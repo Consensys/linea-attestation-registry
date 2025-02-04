@@ -9,12 +9,14 @@ import { IPortal } from "../../interfaces/IPortal.sol";
 
 /**
  * @title NFT Portal
- * @author Consensys
  * @notice This contract aims to provide ERC 721 compatibility
  * @dev This Portal implements parts of ERC 721 - balanceOf and ownerOf functions
  */
 contract NFTPortal is AbstractPortalV2, ERC721 {
-  mapping(bytes owner => uint256 numberOfAttestations) private numberOfAttestationsPerOwner;
+  mapping(address => uint256) private numberOfAttestationsPerOwner;
+
+  /// @dev Error thrown when the subject of an attestation is not a valid address
+  error SubjectNotAnAddress();
 
   /**
    * @notice Contract constructor
@@ -33,7 +35,7 @@ contract NFTPortal is AbstractPortalV2, ERC721 {
    * @return The number of attestations owned by `owner`, possibly zero
    */
   function balanceOf(address owner) public view virtual override returns (uint256) {
-    return numberOfAttestationsPerOwner[abi.encode(owner)];
+    return numberOfAttestationsPerOwner[owner];
   }
 
   /**
@@ -44,7 +46,20 @@ contract NFTPortal is AbstractPortalV2, ERC721 {
   function ownerOf(uint256 tokenId) public view virtual override returns (address) {
     bytes32 attestationId = bytes32(tokenId);
     Attestation memory attestation = attestationRegistry.getAttestation(attestationId);
-    return abi.decode(attestation.subject, (address));
+
+    bytes memory subject = attestation.subject;
+    if (subject.length == 32) {
+      // Check if the first 12 bytes are zero
+      if (uint96(bytes12(subject)) == 0) {
+        return abi.decode(subject, (address));
+      }
+    }
+
+    if (subject.length == 20) {
+      return address(uint160(bytes20(subject)));
+    }
+
+    revert SubjectNotAnAddress();
   }
 
   /**
@@ -55,7 +70,23 @@ contract NFTPortal is AbstractPortalV2, ERC721 {
     bytes[] memory /*validationPayloads*/,
     uint256 /*value*/
   ) internal override {
-    numberOfAttestationsPerOwner[attestationPayload.subject]++;
+    address owner = address(0);
+    bytes memory rawSubject = attestationPayload.subject;
+
+    if (rawSubject.length == 32) {
+      // Check if the first 12 bytes are zero
+      if (uint96(bytes12(rawSubject)) == 0) {
+        owner = abi.decode(rawSubject, (address));
+      }
+    }
+
+    if (rawSubject.length == 20) {
+      owner = address(uint160(bytes20(rawSubject)));
+    }
+
+    if (owner != address(0)) {
+      numberOfAttestationsPerOwner[owner]++;
+    }
   }
 
   /// @inheritdoc AbstractPortalV2

@@ -85,7 +85,13 @@ contract AttestationReader is RouterManager {
   function _convertToEASAttestation(Attestation memory veraxAttestation) private view returns (EASAttestation memory) {
     address subject = address(0);
 
-    if (veraxAttestation.subject.length == 32) subject = abi.decode(veraxAttestation.subject, (address));
+    if (veraxAttestation.subject.length == 32) {
+      // Check if the first 12 bytes are zero
+      bytes memory rawSubject = veraxAttestation.subject;
+      if (uint96(bytes12(rawSubject)) == 0) {
+        subject = abi.decode(rawSubject, (address));
+      }
+    }
     if (veraxAttestation.subject.length == 20) subject = address(uint160(bytes20(veraxAttestation.subject)));
 
     return

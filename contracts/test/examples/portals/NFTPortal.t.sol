@@ -18,6 +18,9 @@ contract NFTPortalTest is Test {
   ModuleRegistryMock public moduleRegistryMock = new ModuleRegistryMock();
   AttestationRegistryMock public attestationRegistryMock = new AttestationRegistryMock();
   Router public router = new Router();
+  bytes20 public subject1 = bytes20(0x6eCfD8252C19aC2Bf4bd1cBdc026C001C93E179D);
+  bytes32 public subject2 = bytes32(uint256(0x0000000000006eCfD8252C19aC2Bf4bd1cBdc026C001C93E179D));
+  address public expectedSubject = 0x6eCfD8252C19aC2Bf4bd1cBdc026C001C93E179D;
 
   event Initialized(uint8 version);
   event AttestationRegistered();
@@ -30,11 +33,17 @@ contract NFTPortalTest is Test {
 
     nftPortal = new NFTPortal(modules, address(router));
 
-    // Create attestation payload
-    AttestationPayload memory attestationPayload = AttestationPayload(
+    // Create attestation payloads
+    AttestationPayload memory attestationPayload1 = AttestationPayload(
       bytes32(uint256(1)),
       uint64(block.timestamp + 1 days),
-      abi.encode(address(1)), // Convert address(1) to bytes and use as subject
+      abi.encodePacked(subject1),
+      new bytes(1)
+    );
+    AttestationPayload memory attestationPayload2 = AttestationPayload(
+      bytes32(uint256(1)),
+      uint64(block.timestamp + 1 days),
+      abi.encode(subject2),
       new bytes(1)
     );
     // Create validation payload
@@ -42,22 +51,22 @@ contract NFTPortalTest is Test {
     // Create 2 attestations
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    nftPortal.attest(attestationPayload, validationPayload);
+    nftPortal.attest(attestationPayload1, validationPayload);
     vm.expectEmit(true, true, true, true);
     emit AttestationRegistered();
-    nftPortal.attest(attestationPayload, validationPayload);
+    nftPortal.attest(attestationPayload2, validationPayload);
   }
 
   function test_balanceOf() public view {
-    uint256 balance = nftPortal.balanceOf(address(1));
+    uint256 balance = nftPortal.balanceOf(expectedSubject);
     assertEq(balance, 2);
   }
 
   function test_ownerOf() public view {
     address ownerOfFirstAttestation = nftPortal.ownerOf(1);
+    assertEq(ownerOfFirstAttestation, expectedSubject);
     address ownerOfSecondAttestation = nftPortal.ownerOf(2);
-    assertEq(ownerOfFirstAttestation, address(1));
-    assertEq(ownerOfSecondAttestation, address(1));
+    assertEq(ownerOfSecondAttestation, expectedSubject);
   }
 
   function testSupportsInterface() public view {

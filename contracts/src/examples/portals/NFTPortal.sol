@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { IERC721, ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { AbstractPortalV2 } from "../../abstracts/AbstractPortalV2.sol";
-import { AttestationPayload } from "../../types/Structs.sol";
+import { Attestation, AttestationPayload } from "../../types/Structs.sol";
 
 /**
  * @title NFT Portal

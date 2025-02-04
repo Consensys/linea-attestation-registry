@@ -54,7 +54,7 @@ contract IndexerModuleV2Test is Test {
     attestationRegistry.attest(payload1, user);
     attestationRegistry.attest(payload2, user);
 
-    indexerModule = new IndexerModuleV2(address(router));
+    indexerModule = new IndexerModuleV2(address(attestationRegistry), address(portalRegistry));
 
     indexerModule.indexAttestation(bytes32(abi.encode(1)));
 
@@ -63,10 +63,11 @@ contract IndexerModuleV2Test is Test {
 
   function test_run() public {
     address[] memory modules = new address[](0);
+    bytes32 expectedAttestationId = attestationRegistry.getNextAttestationId();
     ValidPortalMock validPortal = new ValidPortalMock(modules, address(router));
     vm.prank(address(validPortal));
     vm.expectEmit({ emitter: address(indexerModule) });
-    emit AttestationIndexed(bytes32(abi.encode(3)));
+    emit AttestationIndexed(expectedAttestationId);
     indexerModule.run(
       payload3,
       bytes(""),
@@ -76,7 +77,7 @@ contract IndexerModuleV2Test is Test {
       address(validPortal),
       OperationType.Attest
     );
-    assertEq(indexerModule.getIndexedAttestationStatus(bytes32(abi.encode(3))), true);
+    assertEq(indexerModule.getIndexedAttestationStatus(expectedAttestationId), true);
   }
 
   function test_indexAttestation() public {

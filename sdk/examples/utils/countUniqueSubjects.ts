@@ -11,7 +11,7 @@ const fetchSubjectsFromFile = async (fileSuffix: number): Promise<string[]> => {
 
 async function main() {
   const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_MAINNET);
-  const attestationNumber = await veraxSdk.utils.getAttestationIdCounter();
+  const attestationNumber = await veraxSdk.attestation.getAttestationIdCounter();
   const filesNumber = Math.ceil(Number(attestationNumber) / BATCH_SIZE);
 
   const allSubjects: string[][] = [];

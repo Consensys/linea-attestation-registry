@@ -196,13 +196,38 @@ export const abiPortalRegistry = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "getPortalsCount",
+    inputs: [
+      {
+        internalType: "address",
+        name: "portalAddress",
+        type: "address",
+      },
+    ],
+    name: "getPortalOwner",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "address",
         name: "",
-        type: "uint256",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "portalAddress",
+        type: "address",
+      },
+    ],
+    name: "getPortalRevocability",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
       },
     ],
     stateMutability: "view",

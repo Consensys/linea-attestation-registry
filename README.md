@@ -25,7 +25,7 @@ the network.</h4>
 ## Links
 
 📚 [Documentation](https://docs.ver.ax/)  
-🔍 [Subgraphs](#subgraphs-addresses)  
+🔍 [Subgraphs](#subgraphs-urls)  
 🧱 [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)  
 🌍 [Explorer](https://explorer.ver.ax)
 
@@ -49,6 +49,7 @@ Each package has its own README file for more details and installation process d
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/en/) (>= 18)
+- [pnpm](https://pnpm.io/installation) (>=9.10.0)
 
 ### Global setup
 
@@ -58,7 +59,7 @@ pnpm i
 
 ## Contributing
 
-Verax Attestation Registry is a community-lead initiative, with developers from various companies and different
+Verax Attestation Registry is a community-led initiative, with developers from various companies and different
 backgrounds. While we are more than happy to get help from multiple sources, we need to rely on strong Ways of Working.
 
 Don't hesitate to check our [Contribution Guide](./CONTRIBUTING.md) before pushing your first code to the repo!
@@ -71,7 +72,6 @@ The main contracts (i.e. the "registries") and the helpers contracts are deploye
 - Linea Mainnet
 - Arbitrum Sepolia
 - Arbitrum Mainnet
-- Arbitrum Nova
 - Base Sepolia
 - Base Mainnet
 - BSC Testnet
@@ -126,8 +126,6 @@ Here are the addresses on those networks:
   [0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE](https://sepolia.arbiscan.io/address/0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE)
 - SchemaRegistry =
   [0x025531b655D9EE335B8E6cc4C118b313f26ACc8F](https://sepolia.arbiscan.io/address/0x025531b655D9EE335B8E6cc4C118b313f26ACc8F)
-- AttestationReader =
-  [0xBdC45324AB9A7e82Ae15324a3d8352b513Ee2788](https://sepolia.arbiscan.io/address/0xBdC45324AB9A7e82Ae15324a3d8352b513Ee2788)
 
 </details>
 
@@ -150,24 +148,6 @@ Here are the addresses on those networks:
 </details>
 
 <details>
-  <summary>Arbitrum Nova</summary>
-
-- Router =
-  [0xC81B5149D9Cd49195D00EFb16FED89f3Ba78E03B](https://nova.arbiscan.io/address/0xc81b5149d9cd49195d00efb16fed89f3ba78e03b)
-- AttestationRegistry =
-  [0xB9Cf26ED827Eb4A7079e8dedB0ea93D932A2e3e8](https://nova.arbiscan.io/address/0xB9Cf26ED827Eb4A7079e8dedB0ea93D932A2e3e8)
-- ModuleRegistry =
-  [0x46F7471cd2C1d69Cb5e62c1a34F3fCAf81304Fc3](https://nova.arbiscan.io/address/0x46F7471cd2C1d69Cb5e62c1a34F3fCAf81304Fc3)
-- PortalRegistry =
-  [0xADc8da3d3388dEe74C7134fC4AEe1cF866Da5d38](https://nova.arbiscan.io/address/0xADc8da3d3388dEe74C7134fC4AEe1cF866Da5d38)
-- SchemaRegistry =
-  [0x9b5BABcEbf0E8550da1eCDe5674783179B6557FB](https://nova.arbiscan.io/address/0x9b5BABcEbf0E8550da1eCDe5674783179B6557FB)
-- AttestationReader =
-  [0x7A22D0Fba31a4d5b5E4F5263379B4dbf3707b48c](https://nova.arbiscan.io/address/0x7A22D0Fba31a4d5b5E4F5263379B4dbf3707b48c)
-
-</details>
-
-<details>
   <summary>Base Sepolia</summary>
 
 - Router =
@@ -180,6 +160,8 @@ Here are the addresses on those networks:
   [0x025531b655D9EE335B8E6cc4C118b313f26ACc8F](https://sepolia.basescan.org/address/0x025531b655D9EE335B8E6cc4C118b313f26ACc8F)
 - SchemaRegistry =
   [0x66D2F3DCc970343b83a6263E20832184fa71CFe7](https://sepolia.basescan.org/address/0x66D2F3DCc970343b83a6263E20832184fa71CFe7)
+- AttestationReader =
+  [0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7](https://sepolia.basescan.org/address/0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7)
 
 </details>
 
@@ -196,38 +178,8 @@ Here are the addresses on those networks:
   [0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6](https://basescan.org/address/0xcbf28432C25B400E645F0EaC05F8954e8EE7c0d6)
 - SchemaRegistry =
   [0x8081dCd745f160c148Eb5be510F78628A0951c31](https://basescan.org/address/0x8081dCd745f160c148Eb5be510F78628A0951c31)
-
-</details>
-
-<details>
-  <summary>BSC Testnet</summary>
-
-- Router =
-  [0x90b8542d7288a83EC887229A7C727989C3b56209](https://testnet.bscscan.com/address/0x90b8542d7288a83EC887229A7C727989C3b56209)
-- AttestationRegistry =
-  [0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe](https://testnet.bscscan.com/address/0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe)
-- ModuleRegistry =
-  [0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a](https://testnet.bscscan.com/address/0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a)
-- PortalRegistry =
-  [0xA4a7517F62216BD42e42a67dF09C25adc72A5897](https://testnet.bscscan.com/address/0xA4a7517F62216BD42e42a67dF09C25adc72A5897)
-- SchemaRegistry =
-  [0x51929da151eC2C5a5881C750E5b9941eACC46c1d](https://testnet.bscscan.com/address/0x51929da151eC2C5a5881C750E5b9941eACC46c1d)
-
-</details>
-
-<details>
-  <summary>BSC</summary>
-
-- Router =
-  [0x7a5C1fAC7fF9908a8b2ED479e060619213116A47](https://bscscan.com/address/0x7a5C1fAC7fF9908a8b2ED479e060619213116A47)
-- AttestationRegistry =
-  [0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261](https://bscscan.com/address/0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261)
-- ModuleRegistry =
-  [0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB](https://bscscan.com/address/0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB)
-- PortalRegistry =
-  [0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0](https://bscscan.com/address/0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0)
-- SchemaRegistry =
-  [0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd](https://bscscan.com/address/0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd)
+- AttestationReader =
+  [0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C](https://basescan.org/address/0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C)
 
 </details>
 
@@ -272,7 +224,6 @@ Here are the addresses on those networks:
 - [Linea Mainnet (Backup)](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
 - [Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum-sepolia/v0.0.3)
 - [Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum/v0.0.1)
-- [Arbitrum Nova](https://api.goldsky.com/api/public/project_clwsa54350ydv01wjbq5r17v1/subgraphs/verax-v1-arbitrum-nova/0.0.4/gn)
 - [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.2)
 - [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.2)
 - [BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1)
@@ -285,7 +236,6 @@ Here are the addresses on those networks:
 - [Linea Mainnet (Backup)](https://api.goldsky.com/api/public/project_clxx488osyuf501vygg71f86w/subgraphs/verax-v2-linea/0.0.1/gn)
 - [Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum-sepolia/v0.0.2)
 - [Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum/v0.0.2)
-- [Arbitrum Nova](https://api.goldsky.com/api/public/project_cm06hsedxpgls01xm39r67el8/subgraphs/verax-v2-arbitrum-nova/0.0.1/gn)
 - [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-base-sepolia/v0.0.2)
 - [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-base/v0.0.1)
 - [BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v2-bsc-testnet/v0.0.1)
@@ -300,11 +250,20 @@ ID. This prefix is defined in the `contracts/script/utils.ts` file.
 - Linea Mainnet - `0x0000`
 - Arbitrum Sepolia - `0x0001`
 - Arbitrum Mainnet - `0x0001`
-- Arbitrum Nova - `0x0002`
 - Base Sepolia - `0x0005`
 - Base Mainnet - `0x0005`
 - BSC Testnet - `0x0006`
 - BSC Mainnet - `0x0006`
+
+## Deployment of a new Verax instance
+
+Deploying a new Verax instance requires four main steps to cover the four main parts of the stack. Even if these steps
+are independent, and must not be done right away, they should be done in order.
+
+1. Deploy the core contracts (cf. [documentation](contracts/README.md) in the `contracts` folder)
+2. Deploy the subgraph (cf. [documentation](subgraph/README.md) in the `subgraph` folder)
+3. Upgrade and deploy the SDK (cf. [documentation](sdk/README.md) in the `sdk` folder)
+4. Deploy the Explorer (cf. [documentation](explorer/README.md) in the `explorer` folder)
 
 ## License
 

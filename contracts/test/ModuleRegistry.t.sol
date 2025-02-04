@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { ModuleRegistry } from "../src/ModuleRegistry.sol";
-import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
+import { OldVersionModule } from "./mocks/OldVersionModuleMock.sol";
 import { CorrectModuleV2 } from "./mocks/CorrectModuleV2Mock.sol";
 import { IncorrectModule } from "./mocks/IncorrectModuleMock.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
@@ -11,6 +11,7 @@ import { OperationType } from "../src/types/Enums.sol";
 import { PortalRegistryNotAllowlistedMock } from "./mocks/PortalRegistryNotAllowlistedMock.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
+import { TransparentUpgradeableProxy } from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
 contract ModuleRegistryTest is Test {
   ModuleRegistry private moduleRegistry;
@@ -18,9 +19,10 @@ contract ModuleRegistryTest is Test {
   address public portalRegistryAddress;
   string private expectedName = "Name";
   string private expectedDescription = "Description";
-  address private expectedAddress = address(new CorrectModule());
+  address private expectedAddress = address(new CorrectModuleV2());
   address private user = makeAddr("user");
   AttestationPayload private attestationPayload;
+  address private proxyAdmin = makeAddr("proxyAdmin");
 
   event ModuleRegistered(string name, string description, address moduleAddress);
   event Initialized(uint8 version);
@@ -29,10 +31,16 @@ contract ModuleRegistryTest is Test {
   function setUp() public {
     router = new Router();
     router.initialize();
-    moduleRegistry = new ModuleRegistry();
+
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new ModuleRegistry()),
+      proxyAdmin,
+      abi.encodeWithSelector(ModuleRegistry.initialize.selector, address(router))
+    );
+
+    moduleRegistry = ModuleRegistry(payable(address(proxy)));
+
     router.updateModuleRegistry(address(moduleRegistry));
-    vm.prank(address(0));
-    moduleRegistry.updateRouter(address(router));
     PortalRegistryMock portalRegistryMock = new PortalRegistryMock();
     portalRegistryAddress = address(portalRegistryMock);
     router.updatePortalRegistry(portalRegistryAddress);
@@ -48,26 +56,7 @@ contract ModuleRegistryTest is Test {
 
   function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    moduleRegistry.initialize();
-  }
-
-  function test_updateRouter() public {
-    ModuleRegistry testModuleRegistry = new ModuleRegistry();
-
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testModuleRegistry.updateRouter(address(1));
-    address routerAddress = address(testModuleRegistry.router());
-    assertEq(routerAddress, address(1));
-  }
-
-  function test_updateRouter_InvalidParameter() public {
-    ModuleRegistry testModuleRegistry = new ModuleRegistry();
-
-    vm.expectRevert(ModuleRegistry.RouterInvalid.selector);
-    vm.prank(address(0));
-    testModuleRegistry.updateRouter(address(0));
+    moduleRegistry.initialize(makeAddr("router"));
   }
 
   function test_isContractAddress() public view {
@@ -97,11 +86,21 @@ contract ModuleRegistryTest is Test {
   function test_register_OnlyAllowlisted() public {
     PortalRegistryNotAllowlistedMock portalRegistryNotAllowlistedMock = new PortalRegistryNotAllowlistedMock();
     portalRegistryAddress = address(portalRegistryNotAllowlistedMock);
-    router.updatePortalRegistry(portalRegistryAddress);
+    Router newRouter = new Router();
+    newRouter.initialize();
+    newRouter.updatePortalRegistry(portalRegistryAddress);
+
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new ModuleRegistry()),
+      proxyAdmin,
+      abi.encodeWithSelector(ModuleRegistry.initialize.selector, address(newRouter))
+    );
+
+    ModuleRegistry newModuleRegistry = ModuleRegistry(payable(address(proxy)));
 
     vm.expectRevert(ModuleRegistry.OnlyAllowlisted.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
-    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
+    newModuleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.stopPrank();
   }
 
@@ -124,37 +123,19 @@ contract ModuleRegistryTest is Test {
     moduleRegistry.register(expectedName, expectedDescription, address(incorrectModule));
   }
 
+  function test_register_old_version_ModuleInvalid() public {
+    OldVersionModule oldVersionModule = new OldVersionModule();
+    vm.expectRevert(ModuleRegistry.ModuleInvalid.selector);
+    vm.prank(user);
+    moduleRegistry.register(expectedName, expectedDescription, address(oldVersionModule));
+  }
+
   function test_register_ModuleAlreadyExists() public {
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.expectRevert(ModuleRegistry.ModuleAlreadyExists.selector);
     vm.prank(user);
     moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
-  }
-
-  function test_getModulesNumber() public {
-    uint256 modulesNumber = moduleRegistry.getModulesNumber();
-    assertEq(modulesNumber, 0);
-    vm.prank(user);
-    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
-
-    modulesNumber = moduleRegistry.getModulesNumber();
-    assertEq(modulesNumber, 1);
-  }
-
-  function test_runModules() public {
-    // Register 2 modules
-    address[] memory moduleAddresses = new address[](2);
-    moduleAddresses[0] = address(new CorrectModule());
-    moduleAddresses[1] = address(new CorrectModule());
-    vm.startPrank(user);
-    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
-    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
-    vm.stopPrank();
-    // Create validation payload
-    bytes[] memory validationPayload = new bytes[](2);
-
-    moduleRegistry.runModules(moduleAddresses, attestationPayload, validationPayload, 0);
   }
 
   function test_runModulesV2() public {
@@ -253,8 +234,8 @@ contract ModuleRegistryTest is Test {
   function test_runModules_ModuleNotRegistered() public {
     // Create 2 modules without registration
     address[] memory moduleAddresses = new address[](2);
-    moduleAddresses[0] = address(new CorrectModule());
-    moduleAddresses[1] = address(new CorrectModule());
+    moduleAddresses[0] = address(new OldVersionModule());
+    moduleAddresses[1] = address(new OldVersionModule());
 
     // Create validation payload
     bytes[] memory validationPayload = new bytes[](2);
@@ -284,31 +265,6 @@ contract ModuleRegistryTest is Test {
       address(makeAddr("attester")),
       OperationType.Attest
     );
-  }
-
-  function test_bulkRunModules() public {
-    // Register 2 modules
-    address[] memory moduleAddresses = new address[](2);
-    moduleAddresses[0] = address(new CorrectModule());
-    moduleAddresses[1] = address(new CorrectModule());
-    vm.startPrank(user);
-    moduleRegistry.register("Module1", "Description1", moduleAddresses[0]);
-    moduleRegistry.register("Module2", "Description2", moduleAddresses[1]);
-
-    // Create validation payloads
-    bytes[] memory validationPayload1 = new bytes[](2);
-    bytes[] memory validationPayload2 = new bytes[](2);
-
-    bytes[][] memory validationPayloads = new bytes[][](2);
-    validationPayloads[0] = validationPayload1;
-    validationPayloads[1] = validationPayload2;
-
-    AttestationPayload[] memory attestationPayloads = new AttestationPayload[](2);
-    attestationPayloads[0] = attestationPayload;
-    attestationPayloads[1] = attestationPayload;
-
-    moduleRegistry.bulkRunModules(moduleAddresses, attestationPayloads, validationPayloads);
-    vm.stopPrank();
   }
 
   function test_bulkRunModulesV2() public {
@@ -341,14 +297,6 @@ contract ModuleRegistryTest is Test {
       OperationType.BulkAttest
     );
     vm.stopPrank();
-  }
-
-  function test_getModuleAddress() public {
-    vm.prank(user);
-    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
-
-    address moduleAddress = moduleRegistry.moduleAddresses(0);
-    assertEq(moduleAddress, expectedAddress);
   }
 
   function test_isRegistered() public {

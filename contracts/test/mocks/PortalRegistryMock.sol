@@ -14,10 +14,10 @@ contract PortalRegistryMock {
 
   function register(
     address id,
-    string memory name,
-    string memory description,
+    string calldata name,
+    string calldata description,
     bool isRevocable,
-    string memory ownerName
+    string calldata ownerName
   ) external {
     Portal memory newPortal = Portal(id, msg.sender, new address[](0), isRevocable, name, description, ownerName);
     portals[id] = newPortal;
@@ -30,6 +30,14 @@ contract PortalRegistryMock {
 
   function getPortalByAddress(address id) public view returns (Portal memory) {
     return portals[id];
+  }
+
+  function getPortalOwner(address portalAddress) external view returns (address) {
+    return portals[portalAddress].ownerAddress;
+  }
+
+  function getPortalRevocability(address portalAddress) external view returns (bool) {
+    return portals[portalAddress].isRevocable;
   }
 
   function setIssuer(address issuer) public {

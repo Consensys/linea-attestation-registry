@@ -61,7 +61,7 @@ export function DataTable<TData, TValue>({ columns, data, link }: DataTableProps
                 className="table-row-transition hover:bg-jumbotronLight dark:hover:bg-jumbotronDark cursor-pointer"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="whitespace-nowrap text-text-secondary">
+                  <TableCell key={cell.id} className="whitespace-nowrap text-text-secondary first:w-[45%]">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

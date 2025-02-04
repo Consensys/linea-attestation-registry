@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractPortal } from "../../abstracts/AbstractPortal.sol";
+import { AbstractPortalV2 } from "../../abstracts/AbstractPortalV2.sol";
 import { AttestationPayload } from "../../types/Structs.sol";
 import { uncheckedInc256 } from "../../Common.sol";
 
@@ -10,7 +10,7 @@ import { uncheckedInc256 } from "../../Common.sol";
  * @author Consensys
  * @notice This is an example of how to maintain interoperability with EAS - https://attest.sh
  */
-contract EASPortal is AbstractPortal {
+contract EASPortal is AbstractPortalV2 {
   // @notice This struct is defined in EAS's src' codebase
   // solhint-disable-next-line max-line-length
   // this definition was taken from: https://github.com/ethereum-attestation-service/eas-contracts/blob/master/contracts/IEAS.sol#L9
@@ -46,17 +46,14 @@ contract EASPortal is AbstractPortal {
    * @param router Router's address
    * @dev This sets the addresses for the AttestationRegistry, ModuleRegistry and PortalRegistry
    */
-  constructor(address[] memory modules, address router) AbstractPortal(modules, router) {}
-
-  /// @inheritdoc AbstractPortal
-  function withdraw(address payable to, uint256 amount) external override {}
+  constructor(address[] memory modules, address router) AbstractPortalV2(modules, router) {}
 
   /**
    * @notice Issues a Verax attestation based on an EAS attestation
    * @param attestationRequest the EAS payload to attest
    * @dev If a related EAS attestation exists, it will also be attested on Verax and linked via the dedicated Schema
    */
-  function attest(AttestationRequest memory attestationRequest) public payable {
+  function attest(AttestationRequest calldata attestationRequest) public payable {
     bytes[] memory validationPayload = new bytes[](0);
 
     AttestationPayload memory attestationPayload = AttestationPayload(
@@ -65,15 +62,15 @@ contract EASPortal is AbstractPortal {
       abi.encodePacked(attestationRequest.data.recipient),
       attestationRequest.data.data
     );
+
+    bytes32 attestationId = attestationRegistry.getNextAttestationId();
     super.attest(attestationPayload, validationPayload);
+
     // if refUID exists then create relationship attestation
     if (attestationRequest.data.refUID != 0) {
       if (!attestationRegistry.isRegistered(attestationRequest.data.refUID)) {
         revert ReferenceAttestationNotRegistered();
       }
-
-      uint32 attestationIdCounter = attestationRegistry.getAttestationIdCounter();
-      bytes32 attestationId = bytes32(abi.encode(attestationIdCounter));
 
       AttestationPayload memory relationshipAttestationPayload = AttestationPayload(
         _relationshipSchemaId,
@@ -93,14 +90,14 @@ contract EASPortal is AbstractPortal {
    *                  as this ID won't be incremented before the end of the transaction.
    *                  If you need to check the attestation ID, please use the `replace` method.
    */
-  function bulkAttest(AttestationRequest[] memory attestationsRequests) external payable {
+  function bulkAttest(AttestationRequest[] calldata attestationsRequests) external payable {
     for (uint256 i = 0; i < attestationsRequests.length; i = uncheckedInc256(i)) {
       attest(attestationsRequests[i]);
     }
   }
 
   /**
-   * @inheritdoc AbstractPortal
+   * @inheritdoc AbstractPortalV2
    * @notice This portal doesn't allow for an attestation to be revoked
    */
   function _onRevoke(bytes32 /*attestationId*/) internal pure override {
@@ -108,7 +105,7 @@ contract EASPortal is AbstractPortal {
   }
 
   /**
-   * @inheritdoc AbstractPortal
+   * @inheritdoc AbstractPortalV2
    * @notice This portal doesn't allow for attestations to be revoked
    */
   function _onBulkRevoke(bytes32[] memory /*attestationIds*/) internal pure override {

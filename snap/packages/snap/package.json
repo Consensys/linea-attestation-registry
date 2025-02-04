@@ -20,7 +20,7 @@
     "lint": "pnpm run lint:eslint && pnpm run lint:misc --check",
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:fix": "pnpm run lint:eslint --fix && pnpm run lint:misc --write",
-    "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore",
+    "lint:misc": "prettier \"**/*.json\" \"**/*.md\" \"!CHANGELOG.md\" --ignore-path .gitignore",
     "prepublishOnly": "mm-snap manifest",
     "serve": "mm-snap serve",
     "start": "mm-snap watch",

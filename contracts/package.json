@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-contracts",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "description": "Verax Attestation Registry core smart contracts",
   "keywords": [
     "verax",
@@ -25,13 +25,14 @@
     "check:implementations": "npx hardhat run script/upgrade/checkImplementations.ts",
     "check:upgradeability": "npx hardhat run script/upgrade/checkUpgradeability.ts --network",
     "clean": "rm -rf lcov.info coverage artifacts cache_forge cache_hardhat cache out typechain-types build contracts",
+    "copy": "ts-node script/copyOutputs.ts",
     "deploy": "npx hardhat run script/deploy/deployEverything.ts --network",
     "deploy:issuers": "npx hardhat run script/deploy/deployIssuers.ts --network",
-    "deploy:post": "npx hardhat run script/deploy/postDeployment.ts --network",
+    "deploy:eas": "npx hardhat run script/deploy/deployEas.ts --network",
     "deploy:stdlib": "npx hardhat run script/deploy/deployStdLib.ts --network",
     "lint": "pnpm solhint \"{script,src,test}/**/*.sol\" -c .solhint.json",
-    "postpack": "./postpack.sh",
     "prepack": "./prepack.sh",
+    "postpack": "./postpack.sh",
     "prepublishOnly": "pnpm run clean && pnpm run lint && pnpm run build && pnpm run test",
     "publish:dry-run": "pnpm publish --dry-run --no-git-checks",
     "publish:public": "pnpm publish --access public --no-git-checks",
@@ -46,15 +47,15 @@
     "@openzeppelin/contracts-upgradeable": "4.9.6"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-ethers": "^3.0.5",
-    "@nomicfoundation/hardhat-foundry": "^1.1.1",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomicfoundation/hardhat-foundry": "^1.1.3",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "@openzeppelin/hardhat-upgrades": "^3.0.5",
+    "@openzeppelin/hardhat-upgrades": "^3.9.0",
     "@types/node": "^18.16.0",
     "dotenv": "^16.4.5",
-    "ethers": "^6.12.0",
-    "hardhat": "^2.22.3",
-    "solhint": "^4.5.4",
+    "ethers": "^6.13.5",
+    "hardhat": "^2.22.18",
+    "solhint": "^5.0.5",
     "solhint-plugin-prettier": "^0.1.0"
   }
 }

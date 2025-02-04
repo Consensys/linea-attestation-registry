@@ -17,36 +17,35 @@ contract AttestationReader is OwnableUpgradeable {
   IRouter public router;
   IEAS public easRegistry;
 
-  /// @notice Error thrown when an invalid Router address is given
-  error RouterInvalid();
   /// @notice Error thrown when an invalid EAS registry address is given
   error EASAddressInvalid();
 
-  /// @notice Event emitted when the router is updated
-  event RouterUpdated(address routerAddress);
+  /// @notice Error thrown when the EAS registry address remains unchanged
+  error EASRegistryAddressAlreadyUpdated();
+
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
+
   /// @notice Event emitted when the EAS registry address is updated
   event EASRegistryAddressUpdated(address easRegistryAddress);
 
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
+
   /**
    * @notice Contract initialization
+   * @param _router the address of the Router contract
    */
-  function initialize() public initializer {
+  function initialize(address _router) public initializer {
     __Ownable_init();
+    if (_router == address(0)) revert RouterAddressInvalid();
+    router = IRouter(_router);
+    emit RouterSet(_router);
   }
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
-  }
-
-  /**
-   * @notice Changes the address for the Router
-   * @dev Only the registry owner can call this method
-   */
-  function updateRouter(address _router) public onlyOwner {
-    if (_router == address(0)) revert RouterInvalid();
-    router = IRouter(_router);
-    emit RouterUpdated(_router);
   }
 
   /**
@@ -56,6 +55,8 @@ contract AttestationReader is OwnableUpgradeable {
    */
   function updateEASRegistryAddress(address _easRegistryAddress) public onlyOwner {
     if (_easRegistryAddress == address(0)) revert EASAddressInvalid();
+    if (_easRegistryAddress == address(easRegistry)) revert EASRegistryAddressAlreadyUpdated();
+
     easRegistry = IEAS(_easRegistryAddress);
     emit EASRegistryAddressUpdated(_easRegistryAddress);
   }
@@ -83,7 +84,13 @@ contract AttestationReader is OwnableUpgradeable {
   function _convertToEASAttestation(Attestation memory veraxAttestation) private view returns (EASAttestation memory) {
     address subject = address(0);
 
-    if (veraxAttestation.subject.length == 32) subject = abi.decode(veraxAttestation.subject, (address));
+    if (veraxAttestation.subject.length == 32) {
+      // Check if the first 12 bytes are zero
+      bytes memory rawSubject = veraxAttestation.subject;
+      if (uint96(bytes12(rawSubject)) == 0) {
+        subject = abi.decode(rawSubject, (address));
+      }
+    }
     if (veraxAttestation.subject.length == 20) subject = address(uint160(bytes20(veraxAttestation.subject)));
 
     return
@@ -96,7 +103,7 @@ contract AttestationReader is OwnableUpgradeable {
         bytes32(0),
         subject,
         veraxAttestation.attester,
-        PortalRegistry(router.getPortalRegistry()).getPortalByAddress(veraxAttestation.portal).isRevocable,
+        PortalRegistry(router.getPortalRegistry()).getPortalRevocability(veraxAttestation.portal),
         veraxAttestation.attestationData
       );
   }

@@ -38,7 +38,7 @@ contract ERC1271ModuleV2 is AbstractModuleV2 {
   event SignersAuthorized(address indexed portal, address[] signers, bool[] authorizationStatus);
 
   modifier onlyPortalOwner(address portal) {
-    if (msg.sender != portalRegistry.getPortalByAddress(portal).ownerAddress) revert OnlyPortalOwner();
+    if (msg.sender != portalRegistry.getPortalOwner(portal)) revert OnlyPortalOwner();
     _;
   }
 
@@ -57,8 +57,8 @@ contract ERC1271ModuleV2 is AbstractModuleV2 {
    */
   function setAuthorizedSigners(
     address portal,
-    address[] memory signers,
-    bool[] memory authorizationStatus
+    address[] calldata signers,
+    bool[] calldata authorizationStatus
   ) public onlyPortalOwner(portal) {
     if (signers.length != authorizationStatus.length) revert ArrayLengthMismatch();
 
@@ -77,8 +77,8 @@ contract ERC1271ModuleV2 is AbstractModuleV2 {
    * @notice If the signer of the transaction payload is not an expected address, an error is thrown
    */
   function run(
-    AttestationPayload memory attestationPayload,
-    bytes memory validationPayload,
+    AttestationPayload calldata attestationPayload,
+    bytes calldata validationPayload,
     address /*initialCaller*/,
     uint256 /*value*/,
     address /*attester*/,

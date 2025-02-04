@@ -2,7 +2,7 @@ import { AttestationPayload, Portal } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
-import { Address } from "viem";
+import { Abi, Address } from "viem";
 import { encode } from "../utils/abiCoder";
 import { Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
@@ -27,6 +27,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
     value: bigint = 0n,
+    customAbi?: Abi,
   ) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
     if (!matchingSchema) {
@@ -41,6 +42,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         validationPayloads,
       ],
       value,
+      customAbi,
     );
   }
 
@@ -50,8 +52,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     validationPayloads: string[],
     waitForConfirmation: boolean = false,
     value: bigint = 0n,
+    customAbi?: Abi,
   ) {
-    const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads, value);
+    const request = await this.simulateAttest(portalAddress, attestationPayload, validationPayloads, value, customAbi);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
@@ -59,6 +62,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     portalAddress: Address,
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
+    customAbi?: Abi,
   ) {
     const attestationPayloadsArg = [];
 
@@ -76,7 +80,55 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         attestationData,
       ]);
     }
-    return this.simulatePortalContract(portalAddress, "bulkAttest", [attestationPayloadsArg, validationPayloads]);
+    return this.simulatePortalContract(
+      portalAddress,
+      "bulkAttest",
+      [attestationPayloadsArg, validationPayloads],
+      0n,
+      customAbi,
+    );
+  }
+
+  async simulateAttestV2(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    value: bigint = 0n,
+    customAbi?: Abi,
+  ) {
+    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    if (!matchingSchema) {
+      throw new Error("No matching Schema");
+    }
+    const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
+    return this.simulatePortalContract(
+      portalAddress,
+      "attestV2",
+      [
+        [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
+        validationPayloads,
+      ],
+      value,
+      customAbi,
+    );
+  }
+
+  async attestV2(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    waitForConfirmation: boolean = false,
+    value: bigint = 0n,
+    customAbi?: Abi,
+  ) {
+    const request = await this.simulateAttestV2(
+      portalAddress,
+      attestationPayload,
+      validationPayloads,
+      value,
+      customAbi,
+    );
+    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
   async bulkAttest(
@@ -84,26 +136,32 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
     waitForConfirmation: boolean = false,
+    customAbi?: Abi,
   ) {
-    const request = await this.simulateBulkAttest(portalAddress, attestationPayloads, validationPayloads);
+    const request = await this.simulateBulkAttest(portalAddress, attestationPayloads, validationPayloads, customAbi);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
-  async simulateRevoke(portalAddress: Address, attestationId: string) {
-    return this.simulatePortalContract(portalAddress, "revoke", [attestationId]);
+  async simulateRevoke(portalAddress: Address, attestationId: string, customAbi?: Abi) {
+    return this.simulatePortalContract(portalAddress, "revoke", [attestationId], 0n, customAbi);
   }
 
-  async revoke(portalAddress: Address, attestationId: string, waitForConfirmation: boolean = false) {
-    const request = await this.simulateRevoke(portalAddress, attestationId);
+  async revoke(portalAddress: Address, attestationId: string, waitForConfirmation: boolean = false, customAbi?: Abi) {
+    const request = await this.simulateRevoke(portalAddress, attestationId, customAbi);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
-  async simulateBulkRevoke(portalAddress: Address, attestationIds: string[]) {
-    return this.simulatePortalContract(portalAddress, "bulkRevoke", [attestationIds]);
+  async simulateBulkRevoke(portalAddress: Address, attestationIds: string[], customAbi?: Abi) {
+    return this.simulatePortalContract(portalAddress, "bulkRevoke", [attestationIds], 0n, customAbi);
   }
 
-  async bulkRevoke(portalAddress: Address, attestationIds: string[], waitForConfirmation: boolean = false) {
-    const request = await this.simulateBulkRevoke(portalAddress, attestationIds);
+  async bulkRevoke(
+    portalAddress: Address,
+    attestationIds: string[],
+    waitForConfirmation: boolean = false,
+    customAbi?: Abi,
+  ) {
+    const request = await this.simulateBulkRevoke(portalAddress, attestationIds, customAbi);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
@@ -112,17 +170,24 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationId: string,
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
+    customAbi?: Abi,
   ) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
     if (!matchingSchema) {
       throw new Error("No matching Schema");
     }
     const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
-    return this.simulatePortalContract(portalAddress, "replace", [
-      attestationId,
-      [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
-      validationPayloads,
-    ]);
+    return this.simulatePortalContract(
+      portalAddress,
+      "replace",
+      [
+        attestationId,
+        [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
+        validationPayloads,
+      ],
+      0n,
+      customAbi,
+    );
   }
 
   async replace(
@@ -131,8 +196,15 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
     waitForConfirmation: boolean = false,
+    customAbi?: Abi,
   ) {
-    const request = await this.simulateReplace(portalAddress, attestationId, attestationPayload, validationPayloads);
+    const request = await this.simulateReplace(
+      portalAddress,
+      attestationId,
+      attestationPayload,
+      validationPayloads,
+      customAbi,
+    );
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
@@ -141,6 +213,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationIds: string[],
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
+    customAbi?: Abi,
   ) {
     const attestationPayloadsArg = [];
 
@@ -157,11 +230,13 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         attestationData,
       ]);
     }
-    return this.simulatePortalContract(portalAddress, "bulkReplace", [
-      attestationIds,
-      attestationPayloadsArg,
-      validationPayloads,
-    ]);
+    return this.simulatePortalContract(
+      portalAddress,
+      "bulkReplace",
+      [attestationIds, attestationPayloadsArg, validationPayloads],
+      0n,
+      customAbi,
+    );
   }
 
   async bulkReplace(
@@ -170,12 +245,14 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
     waitForConfirmation: boolean = false,
+    customAbi?: Abi,
   ) {
     const request = await this.simulateBulkReplace(
       portalAddress,
       attestationIds,
       attestationPayloads,
       validationPayloads,
+      customAbi,
     );
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
@@ -224,8 +301,35 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 
-  async getPortalByAddress(id: Address) {
-    return this.executePortalRegistryReadMethod("getPortalByAddress", [id]);
+  async getPortalByAddress(address: Address) {
+    return await this.web3Client.readContract({
+      address: this.conf.portalRegistryAddress,
+      abi: abiPortalRegistry,
+      functionName: "getPortal",
+      args: [address],
+    });
+  }
+
+  async getPortalOwner(address: Address) {
+    return await this.web3Client.readContract({
+      address: this.conf.portalRegistryAddress,
+      abi: abiPortalRegistry,
+      functionName: "getPortalOwner",
+      args: [address],
+    });
+  }
+
+  async getPortalRevocability(address: Address) {
+    return await this.web3Client.readContract({
+      address: this.conf.portalRegistryAddress,
+      abi: abiPortalRegistry,
+      functionName: "getPortalRevocability",
+      args: [address],
+    });
+  }
+
+  async getPortalsNumber() {
+    return super.findTotalCount();
   }
 
   async isPortalRegistered(id: Address) {
@@ -263,18 +367,21 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     functionName: string,
     args: unknown[],
     value: bigint = 0n,
+    customAbi?: Abi,
   ) {
     if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
+
+    const abi = [...abiDefaultPortal, ...(customAbi || [])];
+
     try {
       const { request } = await this.web3Client.simulateContract({
         address: portalAddress,
-        abi: abiDefaultPortal,
+        abi,
         functionName,
         account: this.walletClient.account,
         args,
         value,
       });
-
       return request;
     } catch (err) {
       handleError(ActionType.Simulation, err);

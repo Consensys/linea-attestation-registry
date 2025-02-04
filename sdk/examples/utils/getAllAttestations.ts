@@ -29,7 +29,7 @@ const fetchAllAttestations = async (batchNumber: number, veraxSdk: VeraxSdk) => 
 
 async function main() {
   const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_MAINNET);
-  const attestationNumber = await veraxSdk.utils.getAttestationIdCounter();
+  const attestationNumber = await veraxSdk.attestation.getAttestationIdCounter();
   const batchesNumber = Math.ceil(Number(attestationNumber) / BATCH_SIZE);
 
   console.log(`Creating ${batchesNumber} batches of ${BATCH_SIZE} items to get all ${attestationNumber} attestations.`);

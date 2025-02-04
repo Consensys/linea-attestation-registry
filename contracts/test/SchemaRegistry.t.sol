@@ -7,6 +7,7 @@ import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistryNotAllowlistedMock } from "./mocks/PortalRegistryNotAllowlistedMock.sol";
 import { Schema } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
+import { TransparentUpgradeableProxy } from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
 contract SchemaRegistryTest is Test {
   SchemaRegistry private schemaRegistry;
@@ -20,6 +21,7 @@ contract SchemaRegistryTest is Test {
   address private user = makeAddr("user");
   address private unassignedUser = makeAddr("unassignedUser");
   bytes32[] private expectedIds;
+  address private proxyAdmin = makeAddr("proxyAdmin");
 
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
   event SchemaContextUpdated(bytes32 indexed id);
@@ -30,10 +32,16 @@ contract SchemaRegistryTest is Test {
   function setUp() public {
     router = new Router();
     router.initialize();
-    schemaRegistry = new SchemaRegistry();
+
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new SchemaRegistry()),
+      proxyAdmin,
+      abi.encodeWithSelector(SchemaRegistry.initialize.selector, address(router))
+    );
+
+    schemaRegistry = SchemaRegistry(payable(address(proxy)));
+
     router.updateSchemaRegistry(address(schemaRegistry));
-    vm.prank(address(0));
-    schemaRegistry.updateRouter(address(router));
     PortalRegistryMock portalRegistryMock = new PortalRegistryMock();
     portalRegistryAddress = address(portalRegistryMock);
     router.updatePortalRegistry(portalRegistryAddress);
@@ -44,26 +52,7 @@ contract SchemaRegistryTest is Test {
 
   function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    schemaRegistry.initialize();
-  }
-
-  function test_updateRouter() public {
-    SchemaRegistry testSchemaRegistry = new SchemaRegistry();
-
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testSchemaRegistry.updateRouter(address(1));
-    address routerAddress = address(testSchemaRegistry.router());
-    assertEq(routerAddress, address(1));
-  }
-
-  function test_updateRouter_RouterInvalid() public {
-    SchemaRegistry testSchemaRegistry = new SchemaRegistry();
-
-    vm.expectRevert(SchemaRegistry.RouterInvalid.selector);
-    vm.prank(address(0));
-    testSchemaRegistry.updateRouter(address(0));
+    schemaRegistry.initialize(makeAddr("router"));
   }
 
   function test_updateSchemaIssuer() public {
@@ -71,22 +60,30 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.expectEmit(true, true, true, true);
     emit SchemaIssuerUpdated(expectedId, address(2));
-    vm.prank(address(0));
     schemaRegistry.updateSchemaIssuer(expectedId, address(2));
   }
 
   function test_updateSchemaIssuer_SchemaNotRegistered() public {
     vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
-    vm.prank(address(0));
     schemaRegistry.updateSchemaIssuer(expectedId, address(0));
   }
 
   function test_updateSchemaIssuer_IssuerInvalid() public {
     vm.prank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-    vm.prank(address(0));
     vm.expectRevert(SchemaRegistry.IssuerInvalid.selector);
     schemaRegistry.updateSchemaIssuer(expectedId, address(0));
+  }
+
+  function test_updateSchemaIssuer_SchemaIssuerAlreadySet() public {
+    vm.prank(user);
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    vm.expectEmit(true, true, true, true);
+    emit SchemaIssuerUpdated(expectedId, address(2));
+    schemaRegistry.updateSchemaIssuer(expectedId, address(2));
+
+    vm.expectRevert(SchemaRegistry.SchemaIssuerAlreadySet.selector);
+    schemaRegistry.updateSchemaIssuer(expectedId, address(2));
   }
 
   function test_bulkUpdateSchemasIssuers() public {
@@ -94,20 +91,17 @@ contract SchemaRegistryTest is Test {
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.expectEmit(true, true, true, true);
     emit SchemaIssuerUpdated(expectedId, address(2));
-    vm.prank(address(0));
     schemaRegistry.bulkUpdateSchemasIssuers(expectedIds, address(2));
   }
 
   function test_bulkUpdateSchemasIssuers_SchemaNotRegistered() public {
     vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
-    vm.prank(address(0));
     schemaRegistry.bulkUpdateSchemasIssuers(expectedIds, address(0));
   }
 
   function test_bulkUpdateSchemasIssuers_IssuerInvalid() public {
     vm.prank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-    vm.prank(address(0));
     vm.expectRevert(SchemaRegistry.IssuerInvalid.selector);
     schemaRegistry.bulkUpdateSchemasIssuers(expectedIds, address(0));
   }
@@ -133,11 +127,21 @@ contract SchemaRegistryTest is Test {
   function test_createSchema_OnlyAllowlisted() public {
     PortalRegistryNotAllowlistedMock portalRegistryNotAllowlistedMock = new PortalRegistryNotAllowlistedMock();
     portalRegistryAddress = address(portalRegistryNotAllowlistedMock);
-    router.updatePortalRegistry(portalRegistryAddress);
+    Router newRouter = new Router();
+    newRouter.initialize();
+    newRouter.updatePortalRegistry(portalRegistryAddress);
+
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new SchemaRegistry()),
+      proxyAdmin,
+      abi.encodeWithSelector(SchemaRegistry.initialize.selector, address(newRouter))
+    );
+
+    SchemaRegistry newSchemaRegistry = SchemaRegistry(payable(address(proxy)));
 
     vm.expectRevert(SchemaRegistry.OnlyAllowlisted.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
-    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+    newSchemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
     vm.stopPrank();
   }
 
@@ -204,6 +208,19 @@ contract SchemaRegistryTest is Test {
     vm.stopPrank();
   }
 
+  function test_updateContext_SchemaContextAlreadyUpdated() public {
+    vm.expectEmit();
+    emit SchemaCreated(expectedId, expectedName, expectedDescription, expectedContext, expectedString);
+    vm.startPrank(user);
+    // create a schema
+    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
+
+    vm.expectRevert(SchemaRegistry.SchemaContextAlreadyUpdated.selector);
+    // update the context with the same value
+    schemaRegistry.updateContext(expectedId, expectedContext);
+    vm.stopPrank();
+  }
+
   function test_getSchema() public {
     vm.startPrank(user);
     schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
@@ -218,26 +235,6 @@ contract SchemaRegistryTest is Test {
   function test_getSchema_SchemaNotRegistered() public {
     vm.expectRevert(SchemaRegistry.SchemaNotRegistered.selector);
     schemaRegistry.getSchema(bytes32("not registered"));
-  }
-
-  function test_getSchemasNumber() public {
-    uint256 schemasNumber = schemaRegistry.getSchemasNumber();
-    assertEq(schemasNumber, 0);
-    vm.startPrank(user);
-    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-
-    schemasNumber = schemaRegistry.getSchemasNumber();
-    assertEq(schemasNumber, 1);
-    vm.stopPrank();
-  }
-
-  function test_getSchemaIds() public {
-    vm.startPrank(user);
-    schemaRegistry.createSchema(expectedName, expectedDescription, expectedContext, expectedString);
-
-    bytes32 schemaId = schemaRegistry.schemaIds(0);
-    assertEq(schemaId, expectedId);
-    vm.stopPrank();
   }
 
   function test_isRegistered() public {

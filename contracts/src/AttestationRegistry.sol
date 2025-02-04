@@ -17,16 +17,17 @@ contract AttestationRegistry is OwnableUpgradeable {
   IRouter public router;
 
   uint16 private version;
+
   uint32 private attestationIdCounter;
 
   mapping(bytes32 attestationId => Attestation attestation) private attestations;
 
   uint256 private chainPrefix;
 
+  /// @notice Error thrown when the chain prefix format is invalid
+  error ChainPrefixFormatInvalid();
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
   error OnlyPortal();
-  /// @notice Error thrown when an invalid Router address is given
-  error RouterInvalid();
   /// @notice Error thrown when an attestation is not registered in the AttestationRegistry
   error AttestationNotAttested();
   /// @notice Error thrown when an attempt is made to revoke an attestation by an entity other than the attesting portal
@@ -43,6 +44,8 @@ contract AttestationRegistry is OwnableUpgradeable {
   error AlreadyRevoked();
   /// @notice Error thrown when an attempt is made to revoke an attestation based on a non-revocable schema
   error AttestationNotRevocable();
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
 
   /// @notice Event emitted when an attestation is registered
   event AttestationRegistered(bytes32 indexed attestationId);
@@ -52,10 +55,10 @@ contract AttestationRegistry is OwnableUpgradeable {
   event AttestationRevoked(bytes32 attestationId);
   /// @notice Event emitted when the version number is incremented
   event VersionUpdated(uint16 version);
-  /// @notice Event emitted when the router is updated
-  event RouterUpdated(address routerAddress);
-  /// @notice Event emitted when the chain prefix is updated
+  /// @notice Event emitted when the chain prefix is set
   event ChainPrefixUpdated(uint256 chainPrefix);
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
 
   /**
    * @notice Checks if the caller is a registered portal
@@ -74,35 +77,33 @@ contract AttestationRegistry is OwnableUpgradeable {
 
   /**
    * @notice Contract initialization
+   * @param _router the address of the Router contract
+   * @param _chainPrefix defines the chain prefix to be used in the attestation ID
+   * @dev The `_chainPrefix` must be more than 0x0001000000000000000000000000000000000000000000000000000000000000
+   *      and the last 60 characters must be 0
    */
-  function initialize() public initializer {
+  function initialize(address _router, uint256 _chainPrefix) public initializer {
     __Ownable_init();
-  }
 
-  /**
-   * @notice Changes the address for the Router
-   * @dev Only the registry owner can call this method
-   */
-  function updateRouter(address _router) public onlyOwner {
-    if (_router == address(0)) revert RouterInvalid();
+    if (_router == address(0)) revert RouterAddressInvalid();
     router = IRouter(_router);
-    emit RouterUpdated(_router);
-  }
+    emit RouterSet(_router);
 
-  /**
-   * @notice Changes the chain prefix for the attestation IDs
-   * @dev Only the registry owner can call this method
-   */
-  function updateChainPrefix(uint256 _chainPrefix) public onlyOwner {
+    if (_chainPrefix & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF != 0) {
+      revert ChainPrefixFormatInvalid();
+    }
+
     chainPrefix = _chainPrefix;
     emit ChainPrefixUpdated(_chainPrefix);
   }
 
   /**
-   * @notice Registers an attestation to the AttestationRegistry
-   * @param attestationPayload the attestation payload to create attestation and register it
-   * @param attester the account address issuing the attestation
-   * @dev This method is only callable by a registered Portal
+   * @notice Registers an attestation in the AttestationRegistry.
+   * @param attestationPayload The payload used to create and register the attestation.
+   * @param attester The address of the account issuing the attestation.
+   * @dev This function can only be called by a registered Portal.
+   * @dev While it might not align with typical business rules, it is technically
+   *      possible to register expired attestations.
    */
   function attest(AttestationPayload calldata attestationPayload, address attester) public onlyPortals(msg.sender) {
     // Verify the schema id exists
@@ -116,6 +117,7 @@ contract AttestationRegistry is OwnableUpgradeable {
     attestationIdCounter++;
     // Generate the full attestation ID, padded with the chain prefix
     bytes32 id = generateAttestationId(attestationIdCounter);
+    assert(id != 0x0 && !isRegistered(id));
     // Create attestation
     attestations[id] = Attestation(
       id,
@@ -150,6 +152,7 @@ contract AttestationRegistry is OwnableUpgradeable {
       attestationIdCounter++;
       // Generate the full attestation ID, padded with the chain prefix
       bytes32 id = generateAttestationId(attestationIdCounter);
+      assert(id != 0x0 && !isRegistered(id));
       // Create attestation
       attestations[id] = Attestation(
         id,
@@ -176,8 +179,8 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param attester the account address issuing the attestation
    */
   function replace(bytes32 attestationId, AttestationPayload calldata attestationPayload, address attester) public {
-    attest(attestationPayload, attester);
     revoke(attestationId);
+    attest(attestationPayload, attester);
     bytes32 replacedBy = generateAttestationId(attestationIdCounter);
     attestations[attestationId].replacedBy = replacedBy;
 
@@ -221,7 +224,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @notice Bulk revokes a list of attestations for the given identifiers
    * @param attestationIds the IDs of the attestations to revoke
    */
-  function bulkRevoke(bytes32[] memory attestationIds) external {
+  function bulkRevoke(bytes32[] calldata attestationIds) external {
     for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
       revoke(attestationIds[i]);
     }
@@ -243,7 +246,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    */
   function isRevocable(address portalId) public view returns (bool) {
     PortalRegistry portalRegistry = PortalRegistry(router.getPortalRegistry());
-    return portalRegistry.getPortalByAddress(portalId).isRevocable;
+    return portalRegistry.getPortalRevocability(portalId);
   }
 
   /**
@@ -291,20 +294,24 @@ contract AttestationRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Checks if an address owns a given attestation following ERC-1155
+   * @notice Checks if an address owns a valid attestation following the ERC-1155 interface
    * @param account The address of the token holder
    * @param id ID of the attestation
    * @return The _owner's balance of the attestations on a given attestation ID
+   * @dev Only considers non-revoked, non-replaced and non-expired attestations
    */
   function balanceOf(address account, uint256 id) public view returns (uint256) {
     bytes32 attestationId = generateAttestationId(id);
     Attestation memory attestation = attestations[attestationId];
-    if (attestation.subject.length > 20 && keccak256(attestation.subject) == keccak256(abi.encode(account))) {
+
+    if (attestation.attestationId == bytes32(0)) return 0;
+    if (attestation.revoked == true) return 0;
+    if (attestation.expirationDate != 0 && attestation.expirationDate <= block.timestamp) return 0;
+
+    if (attestation.subject.length == 32 && bytes32(attestation.subject) == bytes32(uint256(uint160(account))))
       return 1;
-    }
-    if (attestation.subject.length == 20 && keccak256(attestation.subject) == keccak256(abi.encodePacked(account))) {
-      return 1;
-    }
+    if (attestation.subject.length == 20 && address(uint160(bytes20(attestation.subject))) == account) return 1;
+
     return 0;
   }
 
@@ -314,7 +321,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param ids ID of the attestations
    * @return The _owner's balance of the attestation for a given address (i.e. balance for each (owner, id) pair)
    */
-  function balanceOfBatch(address[] memory accounts, uint256[] memory ids) public view returns (uint256[] memory) {
+  function balanceOfBatch(address[] calldata accounts, uint256[] calldata ids) public view returns (uint256[] memory) {
     if (accounts.length != ids.length) revert ArrayLengthMismatch();
     uint256[] memory result = new uint256[](accounts.length);
     for (uint256 i = 0; i < accounts.length; i = uncheckedInc256(i)) {
@@ -331,5 +338,16 @@ contract AttestationRegistry is OwnableUpgradeable {
   function generateAttestationId(uint256 id) internal view returns (bytes32) {
     // Combine the chain prefix and the ID
     return bytes32(abi.encode(chainPrefix + id));
+  }
+
+  /**
+   * @notice Get the next attestation ID including chain identifier
+   * @return The next attestation ID
+   */
+  function getNextAttestationId() public view returns (bytes32) {
+    uint256 nextAttestationId = attestationIdCounter + 1;
+    bytes32 id = generateAttestationId(nextAttestationId);
+    assert(id != 0x0 && !isRegistered(id));
+    return id;
   }
 }

@@ -4,9 +4,10 @@ pragma solidity 0.8.21;
 import { Test } from "forge-std/Test.sol";
 import { EASPortal } from "../../../src/examples/portals/EASPortal.sol";
 import { Router } from "../../../src/Router.sol";
-import { AbstractPortal } from "../../../src/abstracts/AbstractPortal.sol";
+import { AbstractPortalV2 } from "../../../src/abstracts/AbstractPortalV2.sol";
 import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
+import { PortalRegistryMock } from "../../mocks/PortalRegistryMock.sol";
 import { ERC165Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
 
 contract EASPortalTest is Test {
@@ -14,6 +15,7 @@ contract EASPortalTest is Test {
   EASPortal public easPortal;
   address[] public modules = new address[](0);
   ModuleRegistryMock public moduleRegistryMock = new ModuleRegistryMock();
+  PortalRegistryMock public portalRegistryMock = new PortalRegistryMock();
   AttestationRegistryMock public attestationRegistryMock = new AttestationRegistryMock();
   Router public router = new Router();
 
@@ -24,9 +26,12 @@ contract EASPortalTest is Test {
   function setUp() public {
     router.initialize();
     router.updateModuleRegistry(address(moduleRegistryMock));
+    router.updatePortalRegistry(address(portalRegistryMock));
     router.updateAttestationRegistry(address(attestationRegistryMock));
 
     easPortal = new EASPortal(modules, address(router));
+
+    portalRegistryMock.register(address(easPortal), "EASPortal", "EASPortal description", false, "EAS");
   }
 
   function test_attest() public {
@@ -68,7 +73,7 @@ contract EASPortalTest is Test {
     emit AttestationRegistered();
     easPortal.attest(attestationRequestWithoutRefUID);
 
-    bytes32 attestationIdWithoutRefUID = bytes32(abi.encode(1));
+    bytes32 attestationIdWithoutRefUID = attestationRegistryMock.getNextAttestationId();
 
     // Create second EAS attestation request with RefUID
     EASPortal.AttestationRequestData memory attestationRequestDataWithRefUID = EASPortal.AttestationRequestData(
@@ -134,6 +139,7 @@ contract EASPortalTest is Test {
 
   function test_revoke() public {
     vm.expectRevert(EASPortal.NoRevocation.selector);
+    vm.prank(address(this));
     easPortal.revoke(bytes32(uint256(1)));
   }
 
@@ -147,13 +153,14 @@ contract EASPortalTest is Test {
     replacingAttestations[1] = bytes32(uint256(3));
 
     vm.expectRevert(EASPortal.NoBulkRevocation.selector);
+    vm.prank(address(this));
     easPortal.bulkRevoke(attestationsToRevoke);
   }
 
   function test_supportsInterface() public view {
     bool isIERC165Supported = easPortal.supportsInterface(type(ERC165Upgradeable).interfaceId);
     assertEq(isIERC165Supported, true);
-    bool isEASAbstractPortalSupported = easPortal.supportsInterface(type(AbstractPortal).interfaceId);
+    bool isEASAbstractPortalSupported = easPortal.supportsInterface(type(AbstractPortalV2).interfaceId);
     assertEq(isEASAbstractPortalSupported, true);
   }
 }

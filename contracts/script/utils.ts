@@ -8,8 +8,6 @@ export const getNetworkConfig = (chainId: bigint): { isTestnet: boolean; chainPr
       return { isTestnet: true, chainPrefix: "0x0001000000000000000000000000000000000000000000000000000000000000" };
     case 42161n: // Arbitrum mainnet
       return { isTestnet: false, chainPrefix: "0x0001000000000000000000000000000000000000000000000000000000000000" };
-    case 42170n: // Arbitrum nova
-      return { isTestnet: false, chainPrefix: "0x0002000000000000000000000000000000000000000000000000000000000000" };
     case 84532n: // Base Sepolia
       return { isTestnet: true, chainPrefix: "0x0005000000000000000000000000000000000000000000000000000000000000" };
     case 8453n: // Base mainnet

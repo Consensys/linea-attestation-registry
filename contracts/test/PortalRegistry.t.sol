@@ -3,7 +3,7 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
-import { CorrectModule } from "./mocks/CorrectModuleMock.sol";
+import { CorrectModuleV2 } from "./mocks/CorrectModuleV2Mock.sol";
 import { Portal } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
 import { AttestationRegistryMock } from "./mocks/AttestationRegistryMock.sol";
@@ -11,9 +11,7 @@ import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { ModuleRegistryMock } from "./mocks/ModuleRegistryMock.sol";
 import { ValidPortalMock } from "./mocks/ValidPortalMock.sol";
 import { InvalidPortalMock } from "./mocks/InvalidPortalMock.sol";
-import { IPortalImplementation } from "./mocks/IPortalImplementation.sol";
-import "../src/PortalRegistry.sol";
-import "../src/PortalRegistry.sol";
+import { TransparentUpgradeableProxy } from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
 contract PortalRegistryTest is Test {
   address public user = makeAddr("user");
@@ -27,7 +25,6 @@ contract PortalRegistryTest is Test {
   string public expectedOwnerName = "Owner Name";
   ValidPortalMock public validPortalMock;
   InvalidPortalMock public invalidPortalMock = new InvalidPortalMock();
-  IPortalImplementation public iPortalImplementation = new IPortalImplementation();
 
   event Initialized(uint8 version);
   event PortalRegistered(string name, string description, address portalAddress);
@@ -41,19 +38,24 @@ contract PortalRegistryTest is Test {
     router = new Router();
     router.initialize();
 
-    portalRegistry = new PortalRegistry(false);
+    address proxyAdmin = makeAddr("proxyAdmin");
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new PortalRegistry()),
+      proxyAdmin,
+      abi.encodeWithSelector(PortalRegistry.initialize.selector, address(router), false)
+    );
+
+    portalRegistry = PortalRegistry(payable(address(proxy)));
+
     router.updatePortalRegistry(address(portalRegistry));
 
     moduleRegistryAddress = address(new ModuleRegistryMock());
     attestationRegistryAddress = address(new AttestationRegistryMock());
     schemaRegistryAddress = address(new SchemaRegistryMock());
-    vm.prank(address(0));
-    portalRegistry.updateRouter(address(router));
 
     router.updateModuleRegistry(moduleRegistryAddress);
     router.updateAttestationRegistry(attestationRegistryAddress);
     router.updateSchemaRegistry(schemaRegistryAddress);
-    vm.prank(address(0));
     portalRegistry.setIssuer(user);
 
     validPortalMock = new ValidPortalMock(new address[](0), address(router));
@@ -61,30 +63,10 @@ contract PortalRegistryTest is Test {
 
   function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    portalRegistry.initialize();
-  }
-
-  function test_updateRouter() public {
-    PortalRegistry testPortalRegistry = new PortalRegistry(false);
-
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testPortalRegistry.updateRouter(address(1));
-    address routerAddress = address(testPortalRegistry.router());
-    assertEq(routerAddress, address(1));
-  }
-
-  function test_updateRouter_RouterInvalid() public {
-    PortalRegistry testPortalRegistry = new PortalRegistry(false);
-
-    vm.expectRevert(PortalRegistry.RouterInvalid.selector);
-    vm.prank(address(0));
-    testPortalRegistry.updateRouter(address(0));
+    portalRegistry.initialize(makeAddr("router"), false);
   }
 
   function test_setIssuer() public {
-    vm.startPrank(address(0));
     address issuerAddress = makeAddr("Issuer");
     vm.expectEmit();
     emit IssuerAdded(issuerAddress);
@@ -106,8 +88,6 @@ contract PortalRegistryTest is Test {
   }
 
   function test_setIssuer_AddressInvalid() public {
-    vm.prank(address(0));
-
     vm.expectRevert(PortalRegistry.AddressInvalid.selector);
     portalRegistry.setIssuer(address(0));
 
@@ -115,32 +95,29 @@ contract PortalRegistryTest is Test {
     assertEq(isIssuer, false);
   }
 
-  function test_setIsTestnet_true() public {
-    bool isTestnet = portalRegistry.getIsTestnet();
+  function test_setIssuer_IssuerAlreadySet() public {
+    address issuerAddress = makeAddr("Issuer");
+    vm.expectEmit();
+    emit IssuerAdded(issuerAddress);
+    portalRegistry.setIssuer(issuerAddress);
+
+    vm.expectRevert(PortalRegistry.IssuerAlreadySet.selector);
+    portalRegistry.setIssuer(issuerAddress);
+  }
+
+  function test_setIsTestnet() public {
+    PortalRegistry testnetPortalRegistry = new PortalRegistry();
+
+    bool isTestnet = testnetPortalRegistry.getIsTestnet();
     assertEq(isTestnet, false);
 
     vm.prank(address(0));
     vm.expectEmit();
     emit IsTestnetUpdated(true);
-    portalRegistry.setIsTestnet(true);
-
-    isTestnet = portalRegistry.getIsTestnet();
-    assertEq(isTestnet, true);
-  }
-
-  function test_setIsTestnet_false() public {
-    PortalRegistry testnetPortalRegistry = new PortalRegistry(true);
-
-    bool isTestnet = testnetPortalRegistry.getIsTestnet();
-    assertEq(isTestnet, true);
-
-    vm.prank(address(0));
-    vm.expectEmit();
-    emit IsTestnetUpdated(false);
-    testnetPortalRegistry.setIsTestnet(false);
+    testnetPortalRegistry.setIsTestnet(true);
 
     isTestnet = testnetPortalRegistry.getIsTestnet();
-    assertEq(isTestnet, false);
+    assertEq(isTestnet, true);
   }
 
   function test_setIsTestnet_OnlyOwner() public {
@@ -156,8 +133,15 @@ contract PortalRegistryTest is Test {
     assertEq(isTestnet, false);
   }
 
+  function test_setIsTestnet_TestnetStatusAlreadyUpdated() public {
+    bool isTestnet = portalRegistry.getIsTestnet();
+    assertEq(isTestnet, false);
+
+    vm.expectRevert(PortalRegistry.TestnetStatusAlreadyUpdated.selector);
+    portalRegistry.setIsTestnet(false);
+  }
+
   function test_removeIssuer() public {
-    vm.startPrank(address(0));
     address issuerAddress = makeAddr("Issuer");
     portalRegistry.setIssuer(issuerAddress);
 
@@ -169,7 +153,6 @@ contract PortalRegistryTest is Test {
     portalRegistry.removeIssuer(issuerAddress);
     bool isIssuerAfterRemoval = portalRegistry.isIssuer(issuerAddress);
     assertEq(isIssuerAfterRemoval, false);
-    vm.stopPrank();
   }
 
   function test_register() public {
@@ -179,23 +162,8 @@ contract PortalRegistryTest is Test {
     vm.prank(user);
     portalRegistry.register(address(validPortalMock), expectedName, expectedDescription, true, expectedOwnerName);
 
-    uint256 portalCount = portalRegistry.getPortalsCount();
-    assertEq(portalCount, 1);
-
-    // Register a portal implementing IPortal
-    vm.expectEmit();
-    emit PortalRegistered("IPortalImplementation", "IPortalImplementation description", address(iPortalImplementation));
-    vm.prank(user);
-    portalRegistry.register(
-      address(iPortalImplementation),
-      "IPortalImplementation",
-      "IPortalImplementation description",
-      true,
-      expectedOwnerName
-    );
-
-    portalCount = portalRegistry.getPortalsCount();
-    assertEq(portalCount, 2);
+    bool isRegistered = portalRegistry.isRegistered(address(validPortalMock));
+    assertEq(isRegistered, true);
 
     Portal memory expectedPortal = Portal(
       address(validPortalMock),
@@ -260,43 +228,36 @@ contract PortalRegistryTest is Test {
   }
 
   function test_revoke() public {
-    address portalAddress = address(iPortalImplementation);
+    address portalAddress = address(validPortalMock);
     vm.expectEmit();
-    emit PortalRegistered("IPortalImplementation", "IPortalImplementation description", portalAddress);
+    emit PortalRegistered(expectedName, expectedDescription, portalAddress);
     vm.prank(user);
-    portalRegistry.register(
-      portalAddress,
-      "IPortalImplementation",
-      "IPortalImplementation description",
-      true,
-      expectedOwnerName
-    );
+    portalRegistry.register(portalAddress, expectedName, expectedDescription, true, expectedOwnerName);
 
-    uint256 portalCount = portalRegistry.getPortalsCount();
-    assertEq(portalCount, 1);
+    bool isRegistered = portalRegistry.isRegistered(address(validPortalMock));
+    assertEq(isRegistered, true);
 
     Portal memory expectedPortal = Portal(
-      portalAddress,
+      address(validPortalMock),
       user,
       new address[](0),
       true,
-      "IPortalImplementation",
-      "IPortalImplementation description",
+      expectedName,
+      expectedDescription,
       expectedOwnerName
     );
 
-    Portal memory registeredPortal = portalRegistry.getPortalByAddress(portalAddress);
+    Portal memory registeredPortal = portalRegistry.getPortalByAddress(address(validPortalMock));
     _assertPortal(registeredPortal, expectedPortal);
 
-    vm.prank(address(0));
-    emit PortalRevoked(portalAddress);
-    portalRegistry.revoke(portalAddress);
+    emit PortalRevoked(address(validPortalMock));
+    portalRegistry.revoke(address(validPortalMock));
 
-    portalCount = portalRegistry.getPortalsCount();
-    assertEq(portalCount, 0);
+    isRegistered = portalRegistry.isRegistered(address(validPortalMock));
+    assertEq(isRegistered, false);
 
     vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
-    portalRegistry.getPortalByAddress(portalAddress);
+    portalRegistry.getPortalByAddress(address(validPortalMock));
   }
 
   function test_revoke_OnlyOwner() public {
@@ -306,13 +267,12 @@ contract PortalRegistryTest is Test {
   }
 
   function test_revoke_NotRegistered() public {
-    vm.prank(address(0));
     vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
     portalRegistry.revoke(makeAddr("randomAddress"));
   }
 
   function test_deployDefaultPortal() public {
-    CorrectModule correctModule = new CorrectModule();
+    CorrectModuleV2 correctModule = new CorrectModuleV2();
     address[] memory modules = new address[](1);
     modules[0] = address(correctModule);
     vm.prank(user);
@@ -320,7 +280,7 @@ contract PortalRegistryTest is Test {
   }
 
   function test_deployDefaultPortal_OnlyAllowlisted() public {
-    CorrectModule correctModule = new CorrectModule();
+    CorrectModuleV2 correctModule = new CorrectModuleV2();
     address[] memory modules = new address[](1);
     modules[0] = address(correctModule);
     vm.expectRevert(PortalRegistry.OnlyAllowlisted.selector);
@@ -328,9 +288,37 @@ contract PortalRegistryTest is Test {
     portalRegistry.deployDefaultPortal(modules, expectedName, expectedDescription, true, expectedOwnerName);
   }
 
-  function test_getPortals_PortalNotRegistered() public {
+  function test_getPortalByAddress_PortalNotRegistered() public {
     vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
     portalRegistry.getPortalByAddress(address(validPortalMock));
+  }
+
+  function test_getPortalOwner() public {
+    address portalAddress = address(validPortalMock);
+    vm.prank(user);
+    portalRegistry.register(portalAddress, expectedName, expectedDescription, true, expectedOwnerName);
+
+    address ownerAddress = portalRegistry.getPortalOwner(portalAddress);
+    assertEq(ownerAddress, user);
+  }
+
+  function test_getPortalOwner_PortalNotRegistered() public {
+    vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
+    portalRegistry.getPortalOwner(address(validPortalMock));
+  }
+
+  function test_getPortalRevocability() public {
+    address portalAddress = address(validPortalMock);
+    vm.prank(user);
+    portalRegistry.register(portalAddress, expectedName, expectedDescription, true, expectedOwnerName);
+
+    bool revocability = portalRegistry.getPortalRevocability(portalAddress);
+    assertEq(revocability, true);
+  }
+
+  function test_getPortalRevocability_PortalNotRegistered() public {
+    vm.expectRevert(PortalRegistry.PortalNotRegistered.selector);
+    portalRegistry.getPortalRevocability(address(validPortalMock));
   }
 
   function test_isRegistered() public {
@@ -341,13 +329,16 @@ contract PortalRegistryTest is Test {
   }
 
   function test_isAllowlisted_Testnet() public {
-    PortalRegistry testnetPortalRegistry = new PortalRegistry(true);
+    PortalRegistry testnetPortalRegistry = new PortalRegistry();
+    vm.prank(address(0));
+    testnetPortalRegistry.setIsTestnet(true);
+
     address userAddress = makeAddr("User");
     assertEq(testnetPortalRegistry.isAllowlisted(userAddress), true);
   }
 
   function test_isAllowlisted_Testnet_fail() public {
-    PortalRegistry mainnetPortalRegistry = new PortalRegistry(false);
+    PortalRegistry mainnetPortalRegistry = new PortalRegistry();
     address userAddress = makeAddr("User");
     assertEq(mainnetPortalRegistry.isAllowlisted(userAddress), false);
   }
@@ -355,7 +346,6 @@ contract PortalRegistryTest is Test {
   function test_isAllowlisted_Issuer() public {
     address userAddress = makeAddr("User");
     assertEq(portalRegistry.isAllowlisted(userAddress), false);
-    vm.prank(address(0));
     portalRegistry.setIssuer(userAddress);
     assertEq(portalRegistry.isAllowlisted(userAddress), true);
   }
@@ -366,7 +356,10 @@ contract PortalRegistryTest is Test {
   }
 
   function test_isAllowlisted_TestnetAndIssuer() public {
-    PortalRegistry testnetPortalRegistry = new PortalRegistry(true);
+    PortalRegistry testnetPortalRegistry = new PortalRegistry();
+    vm.prank(address(0));
+    testnetPortalRegistry.setIsTestnet(true);
+
     address userAddress = makeAddr("User");
     vm.prank(address(0));
     testnetPortalRegistry.setIssuer(userAddress);
@@ -374,7 +367,7 @@ contract PortalRegistryTest is Test {
   }
 
   function test_isAllowlisted_TestnetAndIssuer_fail() public {
-    PortalRegistry mainnetPortalRegistry = new PortalRegistry(false);
+    PortalRegistry mainnetPortalRegistry = new PortalRegistry();
     address userAddress = makeAddr("User");
     assertEq(mainnetPortalRegistry.isAllowlisted(userAddress), false);
   }

@@ -16,17 +16,22 @@ contract SchemaRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Schemas, accessed by their ID
   mapping(bytes32 id => Schema schema) private schemas;
-  /// @dev The list of Schema IDs
-  bytes32[] public schemaIds;
+  /**
+   * @dev [DEPRECATED] This field is no longer used or updated.
+   * It previously stored the list of Schema IDs, but its functionality has been deprecated.
+   * While this variable cannot be removed due to storage layout constraints in upgradeable contracts,
+   * it should not be relied upon as it no longer serves any purpose.
+   */
+  bytes32[] private schemaIds;
   /// @dev Associates a Schema ID with the address of the Issuer who created it
   mapping(bytes32 id => address issuer) private schemasIssuers;
 
-  /// @notice Error thrown when an invalid Router address is given
-  error RouterInvalid();
+  /// @notice Error thrown when attempting to set a schema issuer that is already set
+  error SchemaIssuerAlreadySet();
+  /// @notice Error thrown when the schema context remains unchanged
+  error SchemaContextAlreadyUpdated();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
-  /// @notice Error thrown when any address which is not a portal registry tries to call a method
-  error OnlyPortalRegistry();
   /// @notice Error thrown when a non-assigned issuer tries to call a method that can only be called by an assigned issuer
   error OnlyAssignedIssuer();
   /// @notice Error thrown when an invalid Issuer address is given
@@ -39,15 +44,17 @@ contract SchemaRegistry is OwnableUpgradeable {
   error SchemaStringMissing();
   /// @notice Error thrown when attempting to get a Schema that is not registered
   error SchemaNotRegistered();
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
 
   /// @notice Event emitted when a Schema is created and registered
   event SchemaCreated(bytes32 indexed id, string name, string description, string context, string schemaString);
   /// @notice Event emitted when a Schema context is updated
   event SchemaContextUpdated(bytes32 indexed id);
-  /// @notice Event emitted when the router is updated
-  event RouterUpdated(address routerAddress);
   /// @notice Event emitted when the schema issuer is updated
   event SchemaIssuerUpdated(bytes32 schemaId, address schemaIssuerAddress);
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -56,9 +63,13 @@ contract SchemaRegistry is OwnableUpgradeable {
 
   /**
    * @notice Contract initialization
+   * @param _router the address of the Router contract
    */
-  function initialize() public initializer {
+  function initialize(address _router) public initializer {
     __Ownable_init();
+    if (_router == address(0)) revert RouterAddressInvalid();
+    router = IRouter(_router);
+    emit RouterSet(_router);
   }
 
   /**
@@ -71,26 +82,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   }
 
   /**
-   * @notice Checks if the caller is the portal registry.
-   * @param caller the caller address
-   */
-  modifier onlyPortalRegistry(address caller) {
-    bool isCallerPortalRegistry = router.getPortalRegistry() == caller;
-    if (!isCallerPortalRegistry) revert OnlyPortalRegistry();
-    _;
-  }
-
-  /**
-   * @notice Changes the address for the Router
-   * @dev Only the registry owner can call this method
-   */
-  function updateRouter(address _router) public onlyOwner {
-    if (_router == address(0)) revert RouterInvalid();
-    router = IRouter(_router);
-    emit RouterUpdated(_router);
-  }
-
-  /**
    * @notice Updates a given Schema's Issuer
    * @param schemaId the Schema's ID
    * @param issuer the address of the issuer who created the given Schema
@@ -100,6 +91,8 @@ contract SchemaRegistry is OwnableUpgradeable {
   function updateSchemaIssuer(bytes32 schemaId, address issuer) public onlyOwner {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (issuer == address(0)) revert IssuerInvalid();
+    if (schemasIssuers[schemaId] == issuer) revert SchemaIssuerAlreadySet();
+
     schemasIssuers[schemaId] = issuer;
     emit SchemaIssuerUpdated(schemaId, issuer);
   }
@@ -123,7 +116,7 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @return the schema ID
    * @dev encodes a schema string to unique bytes
    */
-  function getIdFromSchemaString(string memory schema) public pure returns (bytes32) {
+  function getIdFromSchemaString(string calldata schema) public pure returns (bytes32) {
     return keccak256(abi.encodePacked(schema));
   }
 
@@ -140,10 +133,10 @@ contract SchemaRegistry is OwnableUpgradeable {
    *      The caller is assigned as the creator of the Schema, via the `schemasIssuers` mapping
    */
   function createSchema(
-    string memory name,
-    string memory description,
-    string memory context,
-    string memory schemaString
+    string calldata name,
+    string calldata description,
+    string calldata context,
+    string calldata schemaString
   ) public onlyAllowlisted(msg.sender) {
     if (bytes(name).length == 0) revert SchemaNameMissing();
     if (bytes(schemaString).length == 0) revert SchemaStringMissing();
@@ -155,7 +148,6 @@ contract SchemaRegistry is OwnableUpgradeable {
     }
 
     schemas[schemaId] = Schema(name, description, context, schemaString);
-    schemaIds.push(schemaId);
     schemasIssuers[schemaId] = msg.sender;
     emit SchemaCreated(schemaId, name, description, context, schemaString);
   }
@@ -167,9 +159,13 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @dev Retrieve the Schema with given ID and update its context with new value and an event is emitted
    *      The caller must be the creator of the given Schema (through the `schemaIssuers` mapping)
    */
-  function updateContext(bytes32 schemaId, string memory context) public {
+  function updateContext(bytes32 schemaId, string calldata context) public {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (schemasIssuers[schemaId] != msg.sender) revert OnlyAssignedIssuer();
+    if (keccak256(abi.encodePacked(schemas[schemaId].context)) == keccak256(abi.encodePacked(context))) {
+      revert SchemaContextAlreadyUpdated();
+    }
+
     schemas[schemaId].context = context;
     emit SchemaContextUpdated(schemaId);
   }
@@ -182,15 +178,6 @@ contract SchemaRegistry is OwnableUpgradeable {
   function getSchema(bytes32 schemaId) public view returns (Schema memory) {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     return schemas[schemaId];
-  }
-
-  /**
-   * @notice Get the number of Schemas managed by the contract
-   * @return The number of Schemas already registered
-   * @dev Returns the length of the `schemaIds` array
-   */
-  function getSchemasNumber() public view returns (uint256) {
-    return schemaIds.length;
   }
 
   /**

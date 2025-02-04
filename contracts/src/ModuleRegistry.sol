@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import { OperationType } from "./types/Enums.sol";
 import { AttestationPayload, Module } from "./types/Structs.sol";
 import { AbstractModule } from "./abstracts/AbstractModule.sol";
 import { AbstractModuleV2 } from "./abstracts/AbstractModuleV2.sol";
-import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
@@ -21,11 +21,14 @@ contract ModuleRegistry is OwnableUpgradeable {
   IRouter public router;
   /// @dev The list of Modules, accessed by their address
   mapping(address id => Module module) public modules;
-  /// @dev The list of Module addresses
-  address[] public moduleAddresses;
+  /**
+   * @dev [DEPRECATED] This field is no longer used or updated.
+   * It previously stored the list of Module addresses, but its functionality has been deprecated.
+   * While this variable cannot be removed due to storage layout constraints in upgradeable contracts,
+   * it should not be relied upon as it no longer serves any purpose.
+   */
+  address[] private moduleAddresses;
 
-  /// @notice Error thrown when an invalid Router address is given
-  error RouterInvalid();
   /// @notice Error thrown when a non-allowlisted user tries to call a forbidden method
   error OnlyAllowlisted();
   /// @notice Error thrown when an identical Module was already registered
@@ -42,11 +45,13 @@ contract ModuleRegistry is OwnableUpgradeable {
   error ModuleNotRegistered();
   /// @notice Error thrown when module addresses and validation payload length mismatch
   error ModuleValidationPayloadMismatch();
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
 
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
-  /// @notice Event emitted when the router is updated
-  event RouterUpdated(address routerAddress);
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -55,9 +60,13 @@ contract ModuleRegistry is OwnableUpgradeable {
 
   /**
    * @notice Contract initialization
+   * @param _router the address of the Router contract
    */
-  function initialize() public initializer {
+  function initialize(address _router) public initializer {
     __Ownable_init();
+    if (_router == address(0)) revert RouterAddressInvalid();
+    router = IRouter(_router);
+    emit RouterSet(_router);
   }
 
   /**
@@ -67,16 +76,6 @@ contract ModuleRegistry is OwnableUpgradeable {
   modifier onlyAllowlisted(address user) {
     if (!PortalRegistry(router.getPortalRegistry()).isAllowlisted(user)) revert OnlyAllowlisted();
     _;
-  }
-
-  /**
-   * @notice Changes the address for the Router
-   * @dev Only the registry owner can call this method
-   */
-  function updateRouter(address _router) public onlyOwner {
-    if (_router == address(0)) revert RouterInvalid();
-    router = IRouter(_router);
-    emit RouterUpdated(_router);
   }
 
   /**
@@ -99,25 +98,21 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @dev the module is stored in a mapping, the number of modules is incremented and an event is emitted
    */
   function register(
-    string memory name,
-    string memory description,
+    string calldata name,
+    string calldata description,
     address moduleAddress
   ) public onlyAllowlisted(msg.sender) {
     if (bytes(name).length == 0) revert ModuleNameMissing();
     // Check if moduleAddress is a smart contract address
     if (!isContractAddress(moduleAddress)) revert ModuleAddressInvalid();
-    // Check if module has implemented AbstractModule or AbstractModuleV2
-    if (
-      !ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModule).interfaceId) &&
-      !ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModuleV2).interfaceId)
-    ) {
+    // Check if module has implemented AbstractModuleV2
+    if (!ERC165CheckerUpgradeable.supportsInterface(moduleAddress, type(AbstractModuleV2).interfaceId)) {
       revert ModuleInvalid();
     }
     // Module address is used to identify uniqueness of the module
     if (bytes(modules[moduleAddress].name).length > 0) revert ModuleAlreadyExists();
 
     modules[moduleAddress] = Module(moduleAddress, name, description);
-    moduleAddresses.push(moduleAddress);
     emit ModuleRegistered(name, description, moduleAddress);
   }
 
@@ -129,9 +124,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @dev check if modules are registered and execute run method for each module
    */
   function runModules(
-    address[] memory modulesAddresses,
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayloads,
+    address[] calldata modulesAddresses,
+    AttestationPayload calldata attestationPayload,
+    bytes[] calldata validationPayloads,
     uint256 value
   ) public {
     // If no module provided, bypass module validation
@@ -158,9 +153,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @dev check if modules are registered and execute the V2 run method for each module
    */
   function runModulesV2(
-    address[] memory modulesAddresses,
-    AttestationPayload memory attestationPayload,
-    bytes[] memory validationPayloads,
+    address[] calldata modulesAddresses,
+    AttestationPayload calldata attestationPayload,
+    bytes[] calldata validationPayloads,
     uint256 value,
     address initialCaller,
     address attester,
@@ -198,9 +193,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    *                  If you need to check the attestation ID, please use the `attest` method.
    */
   function bulkRunModules(
-    address[] memory modulesAddresses,
-    AttestationPayload[] memory attestationsPayloads,
-    bytes[][] memory validationPayloads
+    address[] calldata modulesAddresses,
+    AttestationPayload[] calldata attestationsPayloads,
+    bytes[][] calldata validationPayloads
   ) public {
     for (uint32 i = 0; i < attestationsPayloads.length; i = uncheckedInc32(i)) {
       runModules(modulesAddresses, attestationsPayloads[i], validationPayloads[i], 0);
@@ -219,9 +214,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    *                  If you need to check the attestation ID, please use the `attestV2` method.
    */
   function bulkRunModulesV2(
-    address[] memory modulesAddresses,
-    AttestationPayload[] memory attestationPayloads,
-    bytes[][] memory validationPayloads,
+    address[] calldata modulesAddresses,
+    AttestationPayload[] calldata attestationPayloads,
+    bytes[][] calldata validationPayloads,
     address initialCaller,
     address attester,
     OperationType operationType
@@ -237,15 +232,6 @@ contract ModuleRegistry is OwnableUpgradeable {
         operationType
       );
     }
-  }
-
-  /**
-   * @notice Get the number of Modules managed by the contract
-   * @return The number of Modules already registered
-   * @dev Returns the length of the `moduleAddresses` array
-   */
-  function getModulesNumber() public view returns (uint256) {
-    return moduleAddresses.length;
   }
 
   /**

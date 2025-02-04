@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-sdk",
-  "version": "2.0.0-beta.5",
+  "version": "2.2.2",
   "description": "Verax Attestation Registry SDK to interact with the subgraph and the contracts",
   "keywords": [
     "linea-attestation-registry",
@@ -34,8 +34,8 @@
     "test:ci": "cp .env.example .env && pnpm run test",
     "test:integration": "jest integration",
     "test:integration:ci": "cp .env.example .env && pnpm run test:integration",
-    "test:unit": "echo \"TODO\"",
-    "test:unit:ci": "cp .env.example .env && pnpm run test:unit"
+    "test:unit": "jest --testPathIgnorePatterns='integration'",
+    "test:unit:coverage": "pnpm run test:unit --coverage"
   },
   "dependencies": {
     "@graphql-mesh/cache-localforage": "^0.95.8",
@@ -50,7 +50,7 @@
     "axios": "^1.7.4",
     "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
-    "viem": "^2.9.26"
+    "viem": "^2.21.35"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.23.3",

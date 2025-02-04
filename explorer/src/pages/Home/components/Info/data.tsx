@@ -9,7 +9,7 @@ export const infoData = [
     title: t("home.info.issueYourAttestation"),
     button: {
       name: t("common.actions.getStarted"),
-      url: "https://github.com/Consensys/linea-attestation-registry",
+      url: "https://docs.ver.ax/verax-documentation/developer-guides/for-attestation-issuers",
     },
     additionalClass: "bg-surface-secondary dark:bg-surface-secondaryDark",
   },
@@ -18,7 +18,7 @@ export const infoData = [
     title: t("home.info.aboutVerax"),
     button: {
       name: t("common.actions.learnMore"),
-      url: "https://docs.ver.ax/verax-documentation/",
+      url: "https://www.ver.ax",
     },
     additionalClass: "bg-surface-darkGrey dark:bg-surface-darkGreyDark",
   },

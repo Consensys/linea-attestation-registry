@@ -1,4 +1,5 @@
-import { arbitrum, arbitrumNova, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
+import { Address } from "viem";
+import { arbitrum, arbitrumSepolia, base, baseSepolia, bsc, bscTestnet, linea } from "wagmi/chains";
 
 import { lineaSepolia } from "@/config";
 
@@ -10,6 +11,7 @@ export const DASH = "-";
 export const ZERO_STRING = "0";
 export const TEN = 10;
 export const ZERO = 0;
+export const ZERO_ADDRESS: Address = "0x0000000000000000000000000000000000000000";
 export const ITEMS_PER_PAGE_DEFAULT = 10;
 export const ITEMS_SEARCHED_DEFAULT = 100;
 export const CURRENT_PAGE_DEFAULT = 1;
@@ -28,9 +30,6 @@ export const links: Record<number, { trx?: string; address: string }> = {
   },
   [arbitrumSepolia.id]: {
     address: "https://sepolia.arbiscan.io/address",
-  },
-  [arbitrumNova.id]: {
-    address: "https://nova.arbiscan.io/address",
   },
   [base.id]: {
     address: "https://basescan.org/address",

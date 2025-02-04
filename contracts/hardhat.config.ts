@@ -13,6 +13,10 @@ const config: HardhatUserConfig = {
         version: "0.8.21",
         settings: {
           evmVersion: "paris",
+          optimizer: {
+            enabled: true,
+            runs: 150,
+          },
         },
       },
     ],
@@ -22,41 +26,35 @@ const config: HardhatUserConfig = {
     hardhat: {},
     "arbitrum-sepolia": {
       url: `https://arbitrum-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts:
-        process.env.PRIVATE_KEY_ARBITRUM_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_ARBITRUM_SEPOLIA] : [],
+      accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
     },
     arbitrum: {
       url: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts:
-        process.env.PRIVATE_KEY_ARBITRUM_MAINNET !== undefined ? [process.env.PRIVATE_KEY_ARBITRUM_MAINNET] : [],
-    },
-    "arbitrum-nova": {
-      url: "https://arbitrum-nova.publicnode.com",
-      accounts: process.env.PRIVATE_KEY_NOVA !== undefined ? [process.env.PRIVATE_KEY_NOVA] : [],
+      accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
     "base-sepolia": {
       url: `https://base-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: process.env.PRIVATE_KEY_LINEA_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_LINEA_SEPOLIA] : [],
+      accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
     },
     base: {
       url: `https://base-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
+      accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
     "bsc-testnet": {
-      url: `https://data-seed-prebsc-1-s1.binance.org:8545`,
-      accounts: process.env.PRIVATE_KEY_LINEA_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_LINEA_SEPOLIA] : [],
+      url: `https://bsc-testnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
     },
     bsc: {
-      url: `https://rpc.ankr.com/bsc`,
-      accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
+      url: `https://bsc-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
     "linea-sepolia": {
       url: `https://linea-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: process.env.PRIVATE_KEY_LINEA_SEPOLIA !== undefined ? [process.env.PRIVATE_KEY_LINEA_SEPOLIA] : [],
+      accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
     },
     linea: {
       url: `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
-      accounts: process.env.PRIVATE_KEY_LINEA_MAINNET !== undefined ? [process.env.PRIVATE_KEY_LINEA_MAINNET] : [],
+      accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
   },
   paths: {
@@ -66,7 +64,6 @@ const config: HardhatUserConfig = {
     apiKey: {
       "arbitrum-sepolia": process.env.ARBISCAN_API_KEY ?? "",
       arbitrum: process.env.ARBISCAN_API_KEY ?? "",
-      "arbitrum-nova": process.env.ARBISCAN_NOVA_API_KEY ?? "",
       "base-sepolia": process.env.BASESCAN_API_KEY ?? "",
       base: process.env.BASESCAN_API_KEY ?? "",
       "bsc-testnet": process.env.BSCSCAN_API_KEY ?? "",
@@ -89,14 +86,6 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api.arbiscan.io/api",
           browserURL: "https://arbiscan.io",
-        },
-      },
-      {
-        network: "arbitrum-nova",
-        chainId: 42170,
-        urls: {
-          apiURL: "https://api-nova.arbiscan.io/api",
-          browserURL: "https://nova.arbiscan.io/",
         },
       },
       {

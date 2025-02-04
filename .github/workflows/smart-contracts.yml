@@ -32,7 +32,7 @@ jobs:
       - name: Install Pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Install Node.js
@@ -92,7 +92,7 @@ jobs:
       - name: Install Pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Install Node.js
@@ -152,7 +152,7 @@ jobs:
         if: steps.check-changes.outputs.changed == 'true'
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Install Node.js
@@ -249,7 +249,7 @@ jobs:
         if: steps.check-changes.outputs.changed == 'true'
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Install Node.js
@@ -282,7 +282,7 @@ jobs:
         if: steps.check-changes.outputs.changed == 'true'
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
           run_install: false
 
       - name: Install Node.js
@@ -361,16 +361,6 @@ jobs:
       - name: Check contracts upgradeability on Arbitrum mainnet
         if: steps.check-changes.outputs.changed == 'true'
         run: pnpm run check:upgradeability arbitrum
-
-      - name: Create Arbitrum Nova env file
-        if: steps.check-changes.outputs.changed == 'true'
-        run: |
-          rm .env
-          cp ./env/.env.arbitrum-nova .env
-
-      - name: Check contracts upgradeability on Arbitrum Nova
-        if: steps.check-changes.outputs.changed == 'true'
-        run: pnpm run check:upgradeability arbitrum-nova
 
       - name: Create Base Sepolia env file
         if: steps.check-changes.outputs.changed == 'true'

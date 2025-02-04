@@ -1,18 +1,21 @@
 import ZeroXScore from "@/assets/issuers/0xscore.svg?react";
 import Aspecta from "@/assets/issuers/aspecta.svg?react";
 import Automata from "@/assets/issuers/automata.svg?react";
+import GitcoinDark from "@/assets/issuers/gitcoin-dark.svg?react";
+import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
 import Hapi from "@/assets/issuers/hapi.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
 import Okapi from "@/assets/issuers/okapi-black.svg?react";
 import OkapiDark from "@/assets/issuers/okapi-white.svg?react";
 import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
-import PadoDark from "@/assets/issuers/pado-dark.svg?react";
-import Pado from "@/assets/issuers/pado.svg?react";
 import PassportXyz from "@/assets/issuers/passport-xyz.svg?react";
+import Primus from "@/assets/issuers/primus.svg?react";
 import PrivadoID from "@/assets/issuers/privado-id.svg?react";
 import Reclaim from "@/assets/issuers/reclaim.svg?react";
+import Reputex from "@/assets/issuers/reputex.svg?react";
 import RubyScore from "@/assets/issuers/rubyscore.svg?react";
+import Sovs from "@/assets/issuers/sovs.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import Zeronym from "@/assets/issuers/zeronym-black.svg?react";
 import ZeronymDark from "@/assets/issuers/zeronym-white.svg?react";
@@ -78,24 +81,22 @@ export const issuersData: IIssuer[] = [
     ],
   },
   {
-    name: "PADO Labs",
-    logo: Pado,
-    logoDark: PadoDark,
+    name: "Primus Labs",
+    logo: Primus,
     keywords: ["zk-attestations"],
     description:
-      "PADO is a zkAttestation protocol, dedicated to bringing Internet data into web3 smart contracts, expanding the capabilities of smart contracts, and enabling the monetization of personal data within data flows under privacy protection.",
-    CTALink: "https://www.padolabs.org/events",
-    CTATitle: "Go to Pado",
+      "Primus is a zkAttestation protocol, dedicated to bringing Internet data into web3 smart contracts, expanding the capabilities of smart contracts, and enabling the monetization of personal data within data flows under privacy protection.",
+    CTALink: "https://primuslabs.xyz/",
+    CTATitle: "Go to Primus Labs",
     address: "0xDB736B13E2f522dBE18B2015d0291E4b193D8eF6",
     attestationDefinitions: [
       {
         name: "Binance KYC",
-        logo: Pado,
-        logoDark: PadoDark,
-        description: "PADO uses MPC-TLS and ZKP technology to attest you have a valid KYC on Binance",
+        logo: Primus,
+        description: "Primus uses MPC-TLS and ZKP technology to attest you have a valid KYC on Binance",
         portal: "0xc4b7dcba12866f6f8181b949ca443232c4e94334",
         schema: "0x84fdf5748d9af166503472ff5deb0cd5f61f006169424805fd5554356ac6df10",
-        url: "https://padolabs.org/events",
+        url: "https://primuslabs.xyz/dataVerification",
         chainId: "0xe708",
       },
     ],
@@ -396,6 +397,53 @@ export const issuersData: IIssuer[] = [
         portal: "0x3486d714c6e6f7257fa7f0bb8396161150b9f100",
         schema: "0x021fa993b2ac55b95340608478282821b89398de6fa14073b4d44a3564a8c79d",
         url: "https://verax.privado.id/",
+        chainId: "0xe708",
+      },
+    ],
+  },
+  {
+    name: "ReputeX",
+    logo: Reputex,
+    logoDark: Reputex,
+    keywords: ["Reputation"],
+    description:
+      "ReputeX is the Modular Web3 Reputation Layer, building a suite of Reputation, Credit and Engagement metrics specifically designed for the Web3 ecosystem.",
+    CTALink: "https://reputex.io",
+    CTATitle: "Go To ReputeX",
+    address: "0x92300aed0cb2b0d392dbf912085b01c4b2251b7d",
+    attestationDefinitions: [
+      {
+        name: "ReputeX Score",
+        logo: Reputex,
+        logoDark: Reputex,
+        description:
+          "Users can easily access their reputation scores by connecting their Web3 wallet to the ReputeX platform via the web app. Once connected, you can view and monitor your reputation score and take proactive measures to enhance it.",
+        portal: "0xdb5b4874c0948a5a7a1bf7f68708f60c274a8a47",
+        schema: "0xc51f34fd0d447bb8df012a3e48750a2fef499117a75988d80d098318e8c47b7e",
+        url: "https://reputex.io/verax",
+        chainId: "0xe708",
+      },
+    ],
+  },
+  {
+    name: "Gitcoin",
+    logo: Gitcoin,
+    logoDark: GitcoinDark,
+    keywords: ["Sovereignty"],
+    description:
+      "Gitcoin provides the tools, expertise, and services that empower ecosystems to launch and scale impactful grants programs—without the administrative burden.",
+    CTALink: "https://www.gitcoin.co/",
+    CTATitle: "Go To Gitcoin",
+    address: "0xbf7877303b90297e7489aa1c067106331dff7288",
+    attestationDefinitions: [
+      {
+        name: "Sovs.xyz",
+        logo: Sovs,
+        description:
+          "By making an explicit attestation of personal sovereignty, your support for the emerging world of network states will be written into the permanent history of the liberation of humanity, cryptographically etched on the Linea blockchain.",
+        portal: "0x888d41df5d93a59da278562b21d7ba00ffd899d3",
+        schema: "0xd20a542d667c057bd5c612a6afd26fa04fef98affdb8b4cbde80401c6de73afe",
+        url: "https://www.sovs.xyz/",
         chainId: "0xe708",
       },
     ],

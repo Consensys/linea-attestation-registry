@@ -1,77 +1,112 @@
 # Verax Attestation Registry - Contribution Guide
 
-Verax Attestation Registry is a community-led initiative, with developers from various companies and different
-backgrounds. While we are more than happy to get help from multiple sources, we need to rely on strong Ways of Working.
+Welcome to the Verax Attestation Registry! 🚀  
+We’re a **community-led initiative**, and we’re thrilled to have developers from diverse companies and backgrounds
+contributing to this project. To make collaboration smooth and effective, we’ve set up a few guidelines and best
+practices. Let’s dive in!
 
-## Project Management
+---
 
-We use Notion for meeting minutes and other WIP documents such as the functional backlog.  
-Task tracking is done through [GitHub issues](https://github.com/Consensys/linea-attestation-registry/issues) and
-[GitHub Project](https://github.com/orgs/Consensys/projects/17/views/2).
+## 🛠️ **Project Management**
 
-_Contact us to get access_
+We keep track of tasks and progress using:
 
-## Issue Lifecycle
+- **[GitHub Issues](https://github.com/Consensys/linea-attestation-registry/issues)**: For bugs, features, and
+  improvements.
+- **[GitHub Project Board](https://github.com/orgs/Consensys/projects/17/views/9)**: For an overview of ongoing work and
+  priorities.
 
-The lifecycle of an issue is as follows:
+---
 
-1. Draft
-2. Next Milestone
-3. Ready for development
-4. In progress
-5. Blocked
-6. Peer-review
-7. QA
-8. Done
-9. Released
-10. Won’t do
+## 🔄 **Issue Lifecycle**
 
-## Meetings
+Here’s the journey an issue takes:
 
-- Core contributors meet on Monday, Wednesday and Friday for a **sync call**.
-- **Technical Workshops** are held every Monday.
-- **Functional Reviews** are held every Thursday.
-- **Office Hours** are held every other Thursday.
+1. **Draft**: The idea is logged and under discussion.
+2. **Ready for Development**: Approved and ready for action.
+3. **In Progress**: Actively being worked on.
+4. **Peer Review**: Code submitted and under review.
+5. **Done**: Merged and considered complete.
+6. **Released**: Deployed and available to users.
 
-## Branching Model
+---
 
-Our project follows the GitFlow branching model.  
-Here's a brief overview of the branches we use:
+## 🌳 **Branching Model**
 
-- `main`: This branch contains the latest release of the project.
-- `release/VERSION_NUMBER`: This branch contains code that has been validated by the QA process and is ready for
-  release.
-- `dev`: This branch contains the latest features that have been developed but not yet released.
-- `feature/slug-name`: Each feature ticket has its own branch for development.
-- `bugfix/slug-name`: Each bug ticket has its own branch for development.
-- `chore/name`: Each task ticket has its own branch for development.
+We follow a **GitFlow branching model** to keep everything clean and organized.
 
-When creating a pull request, please follow the same naming pattern as branch naming: `feat: Title of the ticket`.  
-All commits of a PR are squashed and branches are deleted after merging.  
-Merging requires at least one peer-review from the code owners, but two are encouraged.  
-You cannot validate your own PR.  
-Rebasing is strongly encouraged.  
-Personal forks are allowed, but CI tests must pass before merging.
+### Key Branches:
 
-## Development
+- **`main`**: The latest stable release.
+- **`release/VERSION_NUMBER`**: Code validated and ready for release.
+- **`dev`**: The integration branch for the latest features under development.
+- **`feat/slug-name`**: A branch for each new feature.
+- **`fix/slug-name`**: A branch for bug fixes.
+- **`chore/name`**: A branch for tasks like dependency updates.
 
-Our code repository is hosted on GitHub.  
-We use the Foundry framework for Solidity development.  
-The project includes linters/formatters (prettier + eslint + solhint).  
-Continuous Integration and Continuous Deployment are handled via GitHub Actions.  
-The CI process includes Lint, Compile, Unit tests, and Coverage checks.  
-The CD process is still being defined.
+### Pull Requests:
 
-## Communication
+- Name your PR following the branch pattern: `feat(component-name): Title of the ticket`.
+- **Squash commits**: All commits in a PR are squashed into one before merging.
+- **Approval required**: At least one code owner must approve the PR (two are encouraged).
+- **No self-validation**: You cannot approve your own PR.
+- **Rebase encouraged**: Keep your branch up-to-date by rebasing it onto `dev`.
 
-All project communication is done through Discord.  
-This includes general discussions, updates and decision-making.  
-Please ensure you have joined our Discord server to stay updated and participate in the project discussions.
+CI tests must pass before merging. If you’re using a personal fork, CI will need approval from a code owner to run.
 
-## Bugs
+---
 
-If you encounter a bug, please report it through GitHub issues. When reporting a bug, please provide a clear description
-of the issue, steps to reproduce it, and if possible, a proposed solution or fix.  
-This will help us address the issue more effectively.
+## 🔧 **Development**
 
-Please use the `bugfix/slug-name` branch for developing bug fixes.
+We use the **Foundry framework** for Solidity development and follow these practices:
+
+- **Linters/Formatters**: Prettier, ESLint, and Solhint.
+- **Continuous Integration**: Managed with GitHub Actions, running linting, compilation, unit tests, and coverage
+  checks.
+
+---
+
+## 🛠️ **Bugs**
+
+Encountered a bug? Here’s what to do:
+
+1. Open an issue on [GitHub](https://github.com/Consensys/linea-attestation-registry/issues).
+2. Provide:
+
+- A clear description of the problem.
+- Steps to reproduce it.
+- (Optional) Your proposed solution.
+
+For fixes, create a `fix/slug-name` branch and submit a PR when ready.
+
+---
+
+## 📚 **Documentation**
+
+Clear documentation helps everyone. If you see gaps or have ideas for improvements:
+
+- **Request a new topic**: Open an issue.
+- **Write it yourself**: Open a PR in the documentation repository.
+- **Draft it elsewhere**: Use tools like Notion or Google Docs and share the link—we’ll handle the rest!
+
+---
+
+## 🚀 **Getting Started**
+
+Not sure where to start? Check out our
+[Good First Issues](https://github.com/Consensys/linea-attestation-registry/issues?q=is%3Aopen+is%3Aissue+label%3A%22Good+first+issue%22).
+These are beginner-friendly tasks with clear descriptions.\*\*
+
+Need help? Ping us on **[Discord](https://discord.gg/Sq4EmYdBEk)**. We’re here to guide you.
+
+---
+
+## 💬 **Communication**
+
+All project communication happens on **[Discord](https://discord.gg/Sq4EmYdBEk)**.  
+For complex changes or features, start a discussion on the **[Community Forum](https://community.ver.ax/)**. Once agreed
+upon, contributors can vote before development begins.
+
+---
+
+We’re excited to have you on board. Let’s build something amazing together!

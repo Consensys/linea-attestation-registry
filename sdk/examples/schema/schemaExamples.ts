@@ -93,10 +93,5 @@ export default class SchemaExamples {
         argv === "" ? "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738" : argv;
       console.log(await this.veraxSdk.schema.isRegistered(schemaId));
     }
-
-    if (methodName.toLowerCase() == "getSchemaIds".toLowerCase() || methodName == "") {
-      const index: number = argv === "" ? 0 : (argv as unknown as number);
-      console.log(await this.veraxSdk.schema.getSchemaIds(index));
-    }
   }
 }

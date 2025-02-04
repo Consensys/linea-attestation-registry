@@ -31,6 +31,14 @@ contract PortalRegistry is OwnableUpgradeable {
 
   bool private isTestnet;
 
+  uint256 constant NUM1 = 123456789012345678901234567890;
+  uint256 constant NUM2 = 987654321098765432109876543210;
+  uint256 constant NUM3 = 192837465564738291029384756483;
+  uint256 constant NUM4 = 564738291029384756483910293847;
+  uint256 constant NUM5 = 748291029384756483910293847562;
+  uint256[1000] public largeArray;
+  mapping(uint256 => string) public largeMapping;
+
   /// @notice Error thrown when attempting to set an issuer that is already set
   error IssuerAlreadySet();
   /// @notice Error thrown when attempting to remove an issuer that is not set

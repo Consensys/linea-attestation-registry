@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-contracts",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "description": "Verax Attestation Registry core smart contracts",
   "keywords": [
     "verax",
@@ -23,6 +23,7 @@
   "scripts": {
     "build": "forge build",
     "check:implementations": "npx hardhat run script/upgrade/checkImplementations.ts",
+    "check:size": "npx hardhat size-contracts",
     "check:upgradeability": "npx hardhat run script/upgrade/checkUpgradeability.ts --network",
     "clean": "rm -rf lcov.info coverage artifacts cache_forge cache_hardhat cache out typechain-types build contracts",
     "copy": "ts-node script/copyOutputs.ts",
@@ -55,6 +56,7 @@
     "dotenv": "^16.4.5",
     "ethers": "^6.13.5",
     "hardhat": "^2.22.18",
+    "hardhat-contract-sizer": "^2.10.0",
     "solhint": "^5.0.5",
     "solhint-plugin-prettier": "^0.1.0"
   }

@@ -2,6 +2,7 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-foundry";
 import "@openzeppelin/hardhat-upgrades";
+import "hardhat-contract-sizer";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "./.env" });
@@ -12,14 +13,14 @@ const config: HardhatUserConfig = {
       {
         version: "0.8.21",
         settings: {
-          evmVersion: "paris",
-          optimizer: {
-            enabled: true,
-            runs: 150,
-          },
+          evmVersion: "london",
         },
       },
     ],
+  },
+  // @ts-expect-error - HardhatUserConfig doesn't have this property coming from the hardhat-contract-sizer plugin
+  contractSizer: {
+    strict: true,
   },
   defaultNetwork: "linea-sepolia",
   networks: {

@@ -68,6 +68,8 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    * @param attestationPayload the payload to attest
    * @param validationPayloads the payloads to validate via the modules to issue the attestations
    * @dev Runs all modules for the portal and registers the attestation using AttestationRegistry
+   * @dev WARNING: Ensure that at most one module processes `msg.value` to avoid accounting issues,
+   *               as the total `msg.value` is forwarded to all modules.
    */
   function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
     moduleRegistry.runModulesV2(

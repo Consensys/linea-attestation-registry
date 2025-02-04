@@ -41,13 +41,6 @@ contract AttestationRegistryTest is Test {
 
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
       address(new AttestationRegistry()),
-      address(proxyAdmin),
-      abi.encodeWithSelector(AttestationRegistry.initialize.selector, initialChainPrefix)
-    );
-
-    address proxyAdmin = makeAddr("proxyAdmin");
-    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
-      address(new AttestationRegistry()),
       proxyAdmin,
       abi.encodeWithSelector(AttestationRegistry.initialize.selector, address(router), initialChainPrefix)
     );
@@ -88,7 +81,7 @@ contract AttestationRegistryTest is Test {
 
   function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    attestationRegistry.initialize(makeAddr("router"),initialChainPrefix);
+    attestationRegistry.initialize(makeAddr("router"), initialChainPrefix);
   }
 
   function test_attest(AttestationPayload memory attestationPayload) public {

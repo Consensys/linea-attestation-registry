@@ -37,7 +37,11 @@ contract IssuersPortalTest is Test {
     TransparentUpgradeableProxy proxyAttestationRegistry = new TransparentUpgradeableProxy(
       address(new AttestationRegistry()),
       proxyAdmin,
-      abi.encodeWithSelector(AttestationRegistry.initialize.selector, address(router))
+      abi.encodeWithSelector(
+        AttestationRegistry.initialize.selector,
+        address(router),
+        0x0003000000000000000000000000000000000000000000000000000000000000
+      )
     );
 
     attestationRegistry = AttestationRegistry(payable(address(proxyAttestationRegistry)));
@@ -133,7 +137,7 @@ contract IssuersPortalTest is Test {
 
     vm.prank(address(0), address(0));
     vm.expectEmit(address(attestationRegistry));
-    emit AttestationRegistered(0x0000000000000000000000000000000000000000000000000000000000000001);
+    emit AttestationRegistered(0x0003000000000000000000000000000000000000000000000000000000000001);
     issuersPortal.attest(attestationPayload, validationPayload);
   }
 }

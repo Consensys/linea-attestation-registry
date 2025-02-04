@@ -36,7 +36,10 @@ async function main() {
 
   console.log("Deploying AttestationRegistry...");
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");
-  const attestationRegistry = await upgrades.deployProxy(AttestationRegistry, [routerProxyAddress, networkConfig.chainPrefix]);
+  const attestationRegistry = await upgrades.deployProxy(AttestationRegistry, [
+    routerProxyAddress,
+    networkConfig.chainPrefix,
+  ]);
   await attestationRegistry.waitForDeployment();
   const attestationRegistryProxyAddress = await attestationRegistry.getAddress();
   const attestationRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(

@@ -39,7 +39,11 @@ contract AttestationRegistryMassTest is Test {
     TransparentUpgradeableProxy proxyAttestationRegistry = new TransparentUpgradeableProxy(
       address(new AttestationRegistry()),
       proxyAdmin,
-      abi.encodeWithSelector(AttestationRegistry.initialize.selector, address(router))
+      abi.encodeWithSelector(
+        AttestationRegistry.initialize.selector,
+        address(router),
+        0x0003000000000000000000000000000000000000000000000000000000000000
+      )
     );
 
     attestationRegistry = AttestationRegistry(payable(address(proxyAttestationRegistry)));

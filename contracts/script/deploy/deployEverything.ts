@@ -36,7 +36,7 @@ async function main() {
 
   console.log("Deploying AttestationRegistry...");
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");
-  const attestationRegistry = await upgrades.deployProxy(AttestationRegistry);
+  const attestationRegistry = await upgrades.deployProxy(AttestationRegistry, [networkConfig.chainPrefix]);
   await attestationRegistry.waitForDeployment();
   const attestationRegistryProxyAddress = await attestationRegistry.getAddress();
   const attestationRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
@@ -131,10 +131,6 @@ async function main() {
 
   console.log("Updating AttestationRegistry with the Router address...");
   await attestationRegistry.updateRouter(routerProxyAddress);
-  console.log("AttestationRegistry updated!");
-
-  console.log("Updating AttestationRegistry with the chain prefix...");
-  await attestationRegistry.updateChainPrefix(networkConfig.chainPrefix);
   console.log("AttestationRegistry updated!");
 
   console.log("Updating ModuleRegistry with the Router address...");

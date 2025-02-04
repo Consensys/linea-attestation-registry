@@ -89,9 +89,6 @@ contract NFTPortal is AbstractPortalV2, ERC721 {
     }
   }
 
-  /// @inheritdoc AbstractPortalV2
-  function withdraw(address payable to, uint256 amount) external override {}
-
   /**
    * @notice Verifies that a specific interface is implemented by the Portal, following ERC-165 specification
    * @param interfaceID the interface identifier checked in this call

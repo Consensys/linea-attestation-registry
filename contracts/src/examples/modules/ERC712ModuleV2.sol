@@ -35,8 +35,8 @@ contract ERC712ModuleV2 is AbstractModuleV2 {
    * @param initialCaller - The initial transaction sender
    */
   function run(
-    AttestationPayload memory /*attestationPayload*/,
-    bytes memory validationPayload,
+    AttestationPayload calldata /*attestationPayload*/,
+    bytes calldata validationPayload,
     address initialCaller,
     uint256 /*value*/,
     address /*attester*/,

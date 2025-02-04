@@ -45,8 +45,8 @@ contract SchemaModuleV2 is AbstractModuleV2 {
    */
   function setAuthorizedSchemaIds(
     address portal,
-    bytes32[] memory schemaIds,
-    bool[] memory authorizedStatus
+    bytes32[] calldata schemaIds,
+    bool[] calldata authorizedStatus
   ) public onlyPortalOwner(portal) {
     if (schemaIds.length != authorizedStatus.length) revert ArrayLengthMismatch();
 
@@ -64,8 +64,8 @@ contract SchemaModuleV2 is AbstractModuleV2 {
    * @notice If the Schema used in the attestation payload is not authorized for the Portal, an error is thrown
    */
   function run(
-    AttestationPayload memory attestationPayload,
-    bytes memory /*_validationPayload*/,
+    AttestationPayload calldata attestationPayload,
+    bytes calldata /*_validationPayload*/,
     address /*initialCaller*/,
     uint256 /*value*/,
     address /*attester*/,

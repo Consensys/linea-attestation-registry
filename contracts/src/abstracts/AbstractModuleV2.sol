@@ -24,8 +24,8 @@ abstract contract AbstractModuleV2 is ERC165 {
    * @param portal The issuing Portal's address
    */
   function run(
-    AttestationPayload memory attestationPayload,
-    bytes memory validationPayload,
+    AttestationPayload calldata attestationPayload,
+    bytes calldata validationPayload,
     address initialCaller,
     uint256 value,
     address attester,

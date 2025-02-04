@@ -116,7 +116,7 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @return the schema ID
    * @dev encodes a schema string to unique bytes
    */
-  function getIdFromSchemaString(string memory schema) public pure returns (bytes32) {
+  function getIdFromSchemaString(string calldata schema) public pure returns (bytes32) {
     return keccak256(abi.encodePacked(schema));
   }
 
@@ -133,10 +133,10 @@ contract SchemaRegistry is OwnableUpgradeable {
    *      The caller is assigned as the creator of the Schema, via the `schemasIssuers` mapping
    */
   function createSchema(
-    string memory name,
-    string memory description,
-    string memory context,
-    string memory schemaString
+    string calldata name,
+    string calldata description,
+    string calldata context,
+    string calldata schemaString
   ) public onlyAllowlisted(msg.sender) {
     if (bytes(name).length == 0) revert SchemaNameMissing();
     if (bytes(schemaString).length == 0) revert SchemaStringMissing();
@@ -159,7 +159,7 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @dev Retrieve the Schema with given ID and update its context with new value and an event is emitted
    *      The caller must be the creator of the given Schema (through the `schemaIssuers` mapping)
    */
-  function updateContext(bytes32 schemaId, string memory context) public {
+  function updateContext(bytes32 schemaId, string calldata context) public {
     if (!isRegistered(schemaId)) revert SchemaNotRegistered();
     if (schemasIssuers[schemaId] != msg.sender) revert OnlyAssignedIssuer();
     if (keccak256(abi.encodePacked(schemas[schemaId].context)) == keccak256(abi.encodePacked(context))) {

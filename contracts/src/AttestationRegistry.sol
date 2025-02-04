@@ -321,7 +321,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @param ids ID of the attestations
    * @return The _owner's balance of the attestation for a given address (i.e. balance for each (owner, id) pair)
    */
-  function balanceOfBatch(address[] memory accounts, uint256[] memory ids) public view returns (uint256[] memory) {
+  function balanceOfBatch(address[] calldata accounts, uint256[] calldata ids) public view returns (uint256[] memory) {
     if (accounts.length != ids.length) revert ArrayLengthMismatch();
     uint256[] memory result = new uint256[](accounts.length);
     for (uint256 i = 0; i < accounts.length; i = uncheckedInc256(i)) {
@@ -345,8 +345,8 @@ contract AttestationRegistry is OwnableUpgradeable {
    * @return The next attestation ID
    */
   function getNextAttestationId() public view returns (bytes32) {
-    uint256 nextattestationId = attestationIdCounter + 1;
-    bytes32 id = generateAttestationId(nextattestationId);
+    uint256 nextAttestationId = attestationIdCounter + 1;
+    bytes32 id = generateAttestationId(nextAttestationId);
     assert(id != 0x0 && !isRegistered(id));
     return id;
   }

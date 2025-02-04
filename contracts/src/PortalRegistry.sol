@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { RouterManager } from "./RouterManager.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 // solhint-disable-next-line max-line-length
 import { ERC165CheckerUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165CheckerUpgradeable.sol";
 import { AbstractPortalV2 } from "./abstracts/AbstractPortalV2.sol";
@@ -14,7 +14,7 @@ import { IRouter } from "./interfaces/IRouter.sol";
  * @author Consensys
  * @notice This contract aims to manage the Portals used by attestation issuers
  */
-contract PortalRegistry is RouterManager {
+contract PortalRegistry is OwnableUpgradeable {
   IRouter public router;
 
   mapping(address id => Portal portal) private portals;
@@ -31,8 +31,6 @@ contract PortalRegistry is RouterManager {
 
   bool private isTestnet;
 
-  /// @notice Error thrown when the Router address remains unchanged
-  error RouterAlreadyUpdated();
   /// @notice Error thrown when attempting to set an issuer that is already set
   error IssuerAlreadySet();
   /// @notice Error thrown when attempting to remove an issuer that is not set
@@ -57,6 +55,8 @@ contract PortalRegistry is RouterManager {
   error PortalNotRegistered();
   /// @notice Error thrown when an invalid address is given
   error AddressInvalid();
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
 
   /// @notice Event emitted when a Portal is registered
   event PortalRegistered(string name, string description, address portalAddress);
@@ -68,6 +68,10 @@ contract PortalRegistry is RouterManager {
   event PortalRevoked(address portalAddress);
   /// @notice Event emitted when the `isTestnet` flag is updated
   event IsTestnetUpdated(bool isTestnet);
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
+  /// @notice Event emitted when the testnet status is set
+  event TestnetStatusSet(bool isTestnet);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -76,21 +80,18 @@ contract PortalRegistry is RouterManager {
 
   /**
    * @notice Contract initialization with testnet status
+   * @param _router the address of the Router contract
    * @param _isTestnet Boolean indicating if the deployment is on a testnet
    */
-  function initialize(bool _isTestnet) public initializer {
+  function initialize(address _router, bool _isTestnet) public initializer {
     __Ownable_init();
-    isTestnet = _isTestnet;
-  }
 
-  /**
-   * @dev Changes the address for the Router
-   * @param _router the new Router address
-   */
-  function _setRouter(address _router) internal override {
-    if (_router == address(router)) revert RouterAlreadyUpdated();
-
+    if (_router == address(0)) revert RouterAddressInvalid();
     router = IRouter(_router);
+    emit RouterSet(_router);
+
+    isTestnet = _isTestnet;
+    emit TestnetStatusSet(_isTestnet);
   }
 
   /**

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { RouterManager } from "./RouterManager.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import { Attestation, AttestationPayload } from "./types/Structs.sol";
 import { PortalRegistry } from "./PortalRegistry.sol";
 import { SchemaRegistry } from "./SchemaRegistry.sol";
@@ -13,7 +13,7 @@ import { uncheckedInc256 } from "./Common.sol";
  * @author Consensys
  * @notice This contract stores a registry of all attestations
  */
-contract AttestationRegistry is RouterManager {
+contract AttestationRegistry is OwnableUpgradeable {
   IRouter public router;
 
   uint16 private version;
@@ -24,8 +24,6 @@ contract AttestationRegistry is RouterManager {
 
   uint256 private chainPrefix;
 
-  /// @notice Error thrown when the Router address remains unchanged
-  error RouterAlreadyUpdated();
   /// @notice Error thrown when the chain prefix format is invalid
   error ChainPrefixFormatInvalid();
   /// @notice Error thrown when a non-portal tries to call a method that can only be called by a portal
@@ -46,6 +44,8 @@ contract AttestationRegistry is RouterManager {
   error AlreadyRevoked();
   /// @notice Error thrown when an attempt is made to revoke an attestation based on a non-revocable schema
   error AttestationNotRevocable();
+  /// @notice Error thrown when the router address is the zero address
+  error RouterAddressInvalid();
 
   /// @notice Event emitted when an attestation is registered
   event AttestationRegistered(bytes32 indexed attestationId);
@@ -57,6 +57,8 @@ contract AttestationRegistry is RouterManager {
   event VersionUpdated(uint16 version);
   /// @notice Event emitted when the chain prefix is set
   event ChainPrefixUpdated(uint256 chainPrefix);
+  /// @notice Event emitted when the router address is set
+  event RouterSet(address router);
 
   /**
    * @notice Checks if the caller is a registered portal
@@ -75,12 +77,17 @@ contract AttestationRegistry is RouterManager {
 
   /**
    * @notice Contract initialization
+   * @param _router the address of the Router contract
    * @param _chainPrefix defines the chain prefix to be used in the attestation ID
    * @dev The `_chainPrefix` must be more than 0x0001000000000000000000000000000000000000000000000000000000000000
    *      and the last 60 characters must be 0
    */
-  function initialize(uint256 _chainPrefix) public initializer {
+  function initialize(address _router, uint256 _chainPrefix) public initializer {
     __Ownable_init();
+
+    if (_router == address(0)) revert RouterAddressInvalid();
+    router = IRouter(_router);
+    emit RouterSet(_router);
 
     if (_chainPrefix & 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF != 0) {
       revert ChainPrefixFormatInvalid();
@@ -88,16 +95,6 @@ contract AttestationRegistry is RouterManager {
 
     chainPrefix = _chainPrefix;
     emit ChainPrefixUpdated(_chainPrefix);
-  }
-
-  /**
-   * @dev Changes the address for the Router
-   * @param _router the new Router address
-   */
-  function _setRouter(address _router) internal override {
-    if (_router == address(router)) revert RouterAlreadyUpdated();
-
-    router = IRouter(_router);
   }
 
   /**

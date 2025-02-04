@@ -54,7 +54,7 @@ contract IndexerModuleV2Test is Test {
     attestationRegistry.attest(payload1, user);
     attestationRegistry.attest(payload2, user);
 
-    indexerModule = new IndexerModuleV2(address(router));
+    indexerModule = new IndexerModuleV2(address(attestationRegistry), address(portalRegistry));
 
     indexerModule.indexAttestation(bytes32(abi.encode(1)));
 

@@ -15,6 +15,8 @@ contract Router is IRouter, OwnableUpgradeable {
   address private PORTAL_REGISTRY;
   address private SCHEMA_REGISTRY;
 
+  error RegistryAlreadySet();
+
   event AttestationRegistryUpdated(address indexed registryAddress);
   event ModuleRegistryUpdated(address indexed registryAddress);
   event PortalRegistryUpdated(address indexed registryAddress);
@@ -34,6 +36,7 @@ contract Router is IRouter, OwnableUpgradeable {
    * @param _attestationRegistry The new address of the AttestationRegistry contract
    */
   function updateAttestationRegistry(address _attestationRegistry) public onlyOwner {
+    if (ATTESTATION_REGISTRY != address(0)) revert RegistryAlreadySet();
     ATTESTATION_REGISTRY = _attestationRegistry;
     emit AttestationRegistryUpdated(_attestationRegistry);
   }
@@ -48,6 +51,7 @@ contract Router is IRouter, OwnableUpgradeable {
    * @param _moduleRegistry The new address of the ModuleRegistry contract
    */
   function updateModuleRegistry(address _moduleRegistry) public onlyOwner {
+    if (MODULE_REGISTRY != address(0)) revert RegistryAlreadySet();
     MODULE_REGISTRY = _moduleRegistry;
     emit ModuleRegistryUpdated(_moduleRegistry);
   }
@@ -62,6 +66,7 @@ contract Router is IRouter, OwnableUpgradeable {
    * @param _portalRegistry The new address of the PortalRegistry contract
    */
   function updatePortalRegistry(address _portalRegistry) public onlyOwner {
+    if (PORTAL_REGISTRY != address(0)) revert RegistryAlreadySet();
     PORTAL_REGISTRY = _portalRegistry;
     emit PortalRegistryUpdated(_portalRegistry);
   }
@@ -76,6 +81,7 @@ contract Router is IRouter, OwnableUpgradeable {
    * @param _schemaRegistry The new address of the SchemaRegistry contract
    */
   function updateSchemaRegistry(address _schemaRegistry) public onlyOwner {
+    if (SCHEMA_REGISTRY != address(0)) revert RegistryAlreadySet();
     SCHEMA_REGISTRY = _schemaRegistry;
     emit SchemaRegistryUpdated(_schemaRegistry);
   }

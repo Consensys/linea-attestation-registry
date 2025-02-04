@@ -2,13 +2,13 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { RouterManager } from "../src/RouterManager.sol";
 import { AttestationRegistry } from "../src/AttestationRegistry.sol";
 import { PortalRegistryMock } from "./mocks/PortalRegistryMock.sol";
 import { PortalRegistry } from "../src/PortalRegistry.sol";
 import { SchemaRegistryMock } from "./mocks/SchemaRegistryMock.sol";
 import { Attestation, AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
+import { TransparentUpgradeableProxy } from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import { TransparentUpgradeableProxy } from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
 contract AttestationRegistryTest is Test {
@@ -41,8 +41,8 @@ contract AttestationRegistryTest is Test {
 
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
       address(new AttestationRegistry()),
-      address(proxyAdmin),
-      abi.encodeWithSelector(AttestationRegistry.initialize.selector, initialChainPrefix)
+      proxyAdmin,
+      abi.encodeWithSelector(AttestationRegistry.initialize.selector, address(router), initialChainPrefix)
     );
 
     attestationRegistry = AttestationRegistry(payable(address(proxy)));
@@ -50,7 +50,6 @@ contract AttestationRegistryTest is Test {
 
     portalRegistryAddress = address(new PortalRegistryMock());
     schemaRegistryAddress = address(new SchemaRegistryMock());
-    attestationRegistry.updateRouter(address(router));
 
     router.updatePortalRegistry(portalRegistryAddress);
     router.updateSchemaRegistry(schemaRegistryAddress);
@@ -82,49 +81,7 @@ contract AttestationRegistryTest is Test {
 
   function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    attestationRegistry.initialize(initialChainPrefix);
-  }
-
-  function test_initialize_chainPrefixCorrect() public {
-    vm.expectEmit(true, true, true, true);
-    emit ChainPrefixUpdated(initialChainPrefix);
-
-    new TransparentUpgradeableProxy(
-      address(new AttestationRegistry()),
-      proxyAdmin,
-      abi.encodeWithSelector(AttestationRegistry.initialize.selector, initialChainPrefix)
-    );
-  }
-
-  function test_updateRouter() public {
-    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
-
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testAttestationRegistry.updateRouter(address(1));
-    address routerAddress = address(testAttestationRegistry.router());
-    assertEq(routerAddress, address(1));
-  }
-
-  function test_updateRouter_InvalidParameter() public {
-    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
-
-    vm.expectRevert(RouterManager.RouterInvalid.selector);
-    vm.prank(address(0));
-    testAttestationRegistry.updateRouter(address(0));
-  }
-
-  function test_updateRouter_RouterAlreadyUpdated() public {
-    AttestationRegistry testAttestationRegistry = new AttestationRegistry();
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testAttestationRegistry.updateRouter(address(1));
-
-    vm.expectRevert(AttestationRegistry.RouterAlreadyUpdated.selector);
-    vm.prank(address(0));
-    testAttestationRegistry.updateRouter(address(1));
+    attestationRegistry.initialize(makeAddr("router"), initialChainPrefix);
   }
 
   function test_attest(AttestationPayload memory attestationPayload) public {

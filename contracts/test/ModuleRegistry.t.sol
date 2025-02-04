@@ -2,7 +2,6 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { RouterManager } from "../src/RouterManager.sol";
 import { ModuleRegistry } from "../src/ModuleRegistry.sol";
 import { OldVersionModule } from "./mocks/OldVersionModuleMock.sol";
 import { CorrectModuleV2 } from "./mocks/CorrectModuleV2Mock.sol";
@@ -12,6 +11,7 @@ import { OperationType } from "../src/types/Enums.sol";
 import { PortalRegistryNotAllowlistedMock } from "./mocks/PortalRegistryNotAllowlistedMock.sol";
 import { AttestationPayload } from "../src/types/Structs.sol";
 import { Router } from "../src/Router.sol";
+import { TransparentUpgradeableProxy } from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
 contract ModuleRegistryTest is Test {
   ModuleRegistry private moduleRegistry;
@@ -22,6 +22,7 @@ contract ModuleRegistryTest is Test {
   address private expectedAddress = address(new CorrectModuleV2());
   address private user = makeAddr("user");
   AttestationPayload private attestationPayload;
+  address private proxyAdmin = makeAddr("proxyAdmin");
 
   event ModuleRegistered(string name, string description, address moduleAddress);
   event Initialized(uint8 version);
@@ -30,10 +31,16 @@ contract ModuleRegistryTest is Test {
   function setUp() public {
     router = new Router();
     router.initialize();
-    moduleRegistry = new ModuleRegistry();
+
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new ModuleRegistry()),
+      proxyAdmin,
+      abi.encodeWithSelector(ModuleRegistry.initialize.selector, address(router))
+    );
+
+    moduleRegistry = ModuleRegistry(payable(address(proxy)));
+
     router.updateModuleRegistry(address(moduleRegistry));
-    vm.prank(address(0));
-    moduleRegistry.updateRouter(address(router));
     PortalRegistryMock portalRegistryMock = new PortalRegistryMock();
     portalRegistryAddress = address(portalRegistryMock);
     router.updatePortalRegistry(portalRegistryAddress);
@@ -49,38 +56,7 @@ contract ModuleRegistryTest is Test {
 
   function test_initialize_ContractAlreadyInitialized() public {
     vm.expectRevert("Initializable: contract is already initialized");
-    moduleRegistry.initialize();
-  }
-
-  function test_updateRouter() public {
-    ModuleRegistry testModuleRegistry = new ModuleRegistry();
-
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testModuleRegistry.updateRouter(address(1));
-    address routerAddress = address(testModuleRegistry.router());
-    assertEq(routerAddress, address(1));
-  }
-
-  function test_updateRouter_InvalidParameter() public {
-    ModuleRegistry testModuleRegistry = new ModuleRegistry();
-
-    vm.expectRevert(RouterManager.RouterInvalid.selector);
-    vm.prank(address(0));
-    testModuleRegistry.updateRouter(address(0));
-  }
-
-  function test_updateRouter_RouterAlreadyUpdated() public {
-    ModuleRegistry testModuleRegistry = new ModuleRegistry();
-    vm.expectEmit(true, true, true, true);
-    emit RouterUpdated(address(1));
-    vm.prank(address(0));
-    testModuleRegistry.updateRouter(address(1));
-
-    vm.expectRevert(ModuleRegistry.RouterAlreadyUpdated.selector);
-    vm.prank(address(0));
-    testModuleRegistry.updateRouter(address(1));
+    moduleRegistry.initialize(makeAddr("router"));
   }
 
   function test_isContractAddress() public view {
@@ -110,11 +86,21 @@ contract ModuleRegistryTest is Test {
   function test_register_OnlyAllowlisted() public {
     PortalRegistryNotAllowlistedMock portalRegistryNotAllowlistedMock = new PortalRegistryNotAllowlistedMock();
     portalRegistryAddress = address(portalRegistryNotAllowlistedMock);
-    router.updatePortalRegistry(portalRegistryAddress);
+    Router newRouter = new Router();
+    newRouter.initialize();
+    newRouter.updatePortalRegistry(portalRegistryAddress);
+
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      address(new ModuleRegistry()),
+      proxyAdmin,
+      abi.encodeWithSelector(ModuleRegistry.initialize.selector, address(newRouter))
+    );
+
+    ModuleRegistry newModuleRegistry = ModuleRegistry(payable(address(proxy)));
 
     vm.expectRevert(ModuleRegistry.OnlyAllowlisted.selector);
     vm.startPrank(makeAddr("InvalidIssuer"));
-    moduleRegistry.register(expectedName, expectedDescription, expectedAddress);
+    newModuleRegistry.register(expectedName, expectedDescription, expectedAddress);
     vm.stopPrank();
   }
 

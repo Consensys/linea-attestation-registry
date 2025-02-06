@@ -5,6 +5,13 @@ We’re a **community-led initiative**, and we’re thrilled to have developers 
 contributing to this project. To make collaboration smooth and effective, we’ve set up a few guidelines and best
 practices. Let’s dive in!
 
+### Guidelines for Non-Code and other Trivial Contributions
+
+Please keep in mind that we do not accept non-code contributions like fixing comments, typos or some other trivial
+fixes. Although we appreciate the extra help, managing lots of these small contributions is unfeasible, and puts extra
+pressure in our continuous delivery systems (running all tests, etc). Feel free to open an issue pointing to any of
+those errors, and we will batch them into a single change.
+
 ---
 
 ## 🛠️ **Project Management**

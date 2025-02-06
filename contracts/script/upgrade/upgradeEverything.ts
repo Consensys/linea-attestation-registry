@@ -32,11 +32,6 @@ async function main() {
     throw new Error("Schema proxy address not found");
   }
 
-  const attestationReaderProxyAddress = process.env.ATTESTATION_READER_ADDRESS;
-  if (!attestationReaderProxyAddress) {
-    throw new Error("Attestation reader proxy address not found");
-  }
-
   const network = await ethers.provider.getNetwork();
   const networkConfig = getNetworkConfig(network.chainId);
   console.log(
@@ -79,9 +74,7 @@ async function main() {
 
   console.log("Upgrading PortalRegistry, with proxy at", portalProxyAddress);
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
-  await upgrades.upgradeProxy(portalProxyAddress, PortalRegistry, {
-    constructorArgs: [networkConfig.isTestnet],
-  });
+  await upgrades.upgradeProxy(portalProxyAddress, PortalRegistry);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
@@ -99,19 +92,15 @@ async function main() {
 
   console.log(`\n----\n`);
 
-  console.log("Upgrading AttestationReader, with proxy at", attestationReaderProxyAddress);
-  const AttestationReader = await ethers.getContractFactory("AttestationReader");
-  await upgrades.upgradeProxy(attestationReaderProxyAddress, AttestationReader);
-
-  console.log(`AttestationReader successfully upgraded!`);
-
-  console.log(`\n----\n`);
-
   const routerImplementationAddress = await upgrades.erc1967.getImplementationAddress(routerProxyAddress);
 
-  await run("verify:verify", {
-    address: routerProxyAddress,
-  });
+  try {
+    await run("verify:verify", {
+      address: routerProxyAddress,
+    });
+  } catch (e) {
+    console.log(`Error verifying Router: ${e}`);
+  }
 
   console.log(`Router successfully upgraded and verified!`);
   console.log(`Proxy is at ${routerProxyAddress}`);
@@ -120,10 +109,13 @@ async function main() {
   console.log(`\n----\n`);
 
   const attestationImplementationAddress = await upgrades.erc1967.getImplementationAddress(attestationProxyAddress);
-
-  await run("verify:verify", {
-    address: attestationProxyAddress,
-  });
+  try {
+    await run("verify:verify", {
+      address: attestationProxyAddress,
+    });
+  } catch (e) {
+    console.log(`Error verifying AttestationRegistry: ${e}`);
+  }
 
   const newVersion = await attestationRegistry.getVersionNumber();
 
@@ -135,9 +127,13 @@ async function main() {
 
   const moduleImplementationAddress = await upgrades.erc1967.getImplementationAddress(moduleProxyAddress);
 
-  await run("verify:verify", {
-    address: moduleProxyAddress,
-  });
+  try {
+    await run("verify:verify", {
+      address: moduleProxyAddress,
+    });
+  } catch (e) {
+    console.log(`Error verifying ModuleRegistry: ${e}`);
+  }
 
   console.log(`ModuleRegistry successfully upgraded and verified!`);
   console.log(`Proxy is at ${moduleProxyAddress}`);
@@ -147,10 +143,13 @@ async function main() {
 
   const portalImplementationAddress = await upgrades.erc1967.getImplementationAddress(portalProxyAddress);
 
-  await run("verify:verify", {
-    address: portalProxyAddress,
-    constructorArguments: [networkConfig.isTestnet],
-  });
+  try {
+    await run("verify:verify", {
+      address: portalProxyAddress,
+    });
+  } catch (e) {
+    console.log(`Error verifying PortalRegistry: ${e}`);
+  }
 
   console.log(`PortalRegistry successfully upgraded and verified!`);
   console.log(`Proxy is at ${portalProxyAddress}`);
@@ -160,27 +159,17 @@ async function main() {
 
   const schemaImplementationAddress = await upgrades.erc1967.getImplementationAddress(schemaProxyAddress);
 
-  await run("verify:verify", {
-    address: schemaProxyAddress,
-  });
+  try {
+    await run("verify:verify", {
+      address: schemaProxyAddress,
+    });
+  } catch (e) {
+    console.log(`Error verifyingSchemaRegistry: ${e}`);
+  }
 
   console.log(`SchemaRegistry successfully upgraded and verified!`);
   console.log(`Proxy is at ${schemaProxyAddress}`);
   console.log(`Implementation is at ${schemaImplementationAddress}`);
-
-  console.log(`\n----\n`);
-
-  const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(
-    attestationReaderProxyAddress,
-  );
-
-  await run("verify:verify", {
-    address: attestationReaderProxyAddress,
-  });
-
-  console.log(`AttestationReader successfully upgraded and verified!`);
-  console.log(`Proxy is at ${attestationReaderProxyAddress}`);
-  console.log(`Implementation is at ${attestationReaderImplementationAddress}`);
 
   console.log(`\n----\n`);
 
@@ -190,7 +179,6 @@ async function main() {
   console.log(`ModuleRegistry = ${moduleProxyAddress}`);
   console.log(`PortalRegistry = ${portalProxyAddress}`);
   console.log(`SchemaRegistry = ${schemaProxyAddress}`);
-  console.log(`AttestationReader = ${attestationReaderProxyAddress}`);
 
   console.log(`All contracts were upgraded!`);
 }

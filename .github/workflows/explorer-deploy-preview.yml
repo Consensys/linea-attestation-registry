@@ -1,4 +1,4 @@
-name: Deploy preview explorer
+name: Explorer preview
 
 on:
   pull_request:

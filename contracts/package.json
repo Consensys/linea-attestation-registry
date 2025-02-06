@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-contracts",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "description": "Verax Attestation Registry core smart contracts",
   "keywords": [
     "verax",
@@ -23,12 +23,14 @@
   "scripts": {
     "build": "forge build",
     "check:implementations": "npx hardhat run script/upgrade/checkImplementations.ts",
+    "check:size": "npx hardhat size-contracts",
     "check:upgradeability": "npx hardhat run script/upgrade/checkUpgradeability.ts --network",
     "clean": "rm -rf lcov.info coverage artifacts cache_forge cache_hardhat cache out typechain-types build contracts",
     "copy": "ts-node script/copyOutputs.ts",
     "deploy": "npx hardhat run script/deploy/deployEverything.ts --network",
-    "deploy:issuers": "npx hardhat run script/deploy/deployIssuers.ts --network",
     "deploy:eas": "npx hardhat run script/deploy/deployEas.ts --network",
+    "deploy:issuers": "npx hardhat run script/deploy/deployIssuers.ts --network",
+    "deploy:post": "npx hardhat run script/deploy/postDeployment.ts --network",
     "deploy:stdlib": "npx hardhat run script/deploy/deployStdLib.ts --network",
     "lint": "pnpm solhint \"{script,src,test}/**/*.sol\" -c .solhint.json",
     "prepack": "./prepack.sh",
@@ -40,7 +42,7 @@
     "test": "forge test",
     "test:coverage": "forge coverage --report lcov && genhtml lcov.info -o coverage/html",
     "upgrade": "npx hardhat run script/upgrade/upgradeEverything.ts --network",
-    "upgrade:force": "npx hardhat run script/upgrade/forceUpgradeEverything.ts --network"
+    "upgrade:eas": "npx hardhat run script/upgrade/upgradeEas.ts --network"
   },
   "dependencies": {
     "@openzeppelin/contracts": "4.9.6",
@@ -55,6 +57,7 @@
     "dotenv": "^16.4.5",
     "ethers": "^6.13.5",
     "hardhat": "^2.22.18",
+    "hardhat-contract-sizer": "^2.10.0",
     "solhint": "^5.0.5",
     "solhint-plugin-prettier": "^0.1.0"
   }

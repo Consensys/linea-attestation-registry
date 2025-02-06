@@ -1,4 +1,4 @@
-name: Smart Contracts
+name: Contracts
 
 on:
   pull_request:
@@ -417,3 +417,80 @@ jobs:
         run: |
           echo "## Upgradeability check result" >> $GITHUB_STEP_SUMMARY
           echo "✅ No change detected in the contracts" >> $GITHUB_STEP_SUMMARY
+
+  size-contracts:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: contracts
+
+    needs: build-contracts
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - id: check-changes
+        run: |
+          if [ -n "$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '^contracts/')" ]; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Install Pnpm
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: Get pnpm store directory
+        if: steps.check-changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        if: steps.check-changes.outputs.changed == 'true'
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Foundry
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Check contracts size
+        if: steps.check-changes.outputs.changed == 'true'
+        run: pnpm run check:size
+
+      - name: Add size summary
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          echo "## Contract size result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Contract size is below threshold" >> $GITHUB_STEP_SUMMARY
+
+      - name: Add coverage summary
+        if: steps.check-changes.outputs.changed == 'false'
+        run: |
+          echo "## Contract size result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ No contract change" >> $GITHUB_STEP_SUMMARY

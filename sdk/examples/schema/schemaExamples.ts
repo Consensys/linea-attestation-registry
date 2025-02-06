@@ -20,12 +20,12 @@ export default class SchemaExamples {
     }
 
     if (methodName.toLowerCase() == "simulateUpdateRouter".toLowerCase() || methodName == "") {
-      const routerAddress: Address = argv === "" ? "0x736c78b2f2cBf4F921E8551b2acB6A5Edc9177D5" : (argv as Address);
+      const routerAddress: Address = argv === "" ? "0x7d3fb2F1d03145fBa44ccdA23C49E632b5D2df71" : (argv as Address);
       console.log(await this.veraxSdk.schema.simulateUpdateRouter(routerAddress));
     }
 
     if (methodName.toLowerCase() == "updateRouter".toLowerCase() || methodName == "") {
-      const routerAddress: Address = argv === "" ? "0x736c78b2f2cBf4F921E8551b2acB6A5Edc9177D5" : (argv as Address);
+      const routerAddress: Address = argv === "" ? "0x7d3fb2F1d03145fBa44ccdA23C49E632b5D2df71" : (argv as Address);
       console.log(await this.veraxSdk.schema.updateRouter(routerAddress, waitForConfirmation));
     }
 

@@ -29,6 +29,16 @@ the network.</h4>
 🧱 [Verax SDK](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)  
 🌍 [Explorer](https://explorer.ver.ax)
 
+## Statuses
+
+[![Contracts](https://github.com/Consensys/linea-attestation-registry/actions/workflows/contracts.yml/badge.svg)](https://github.com/Consensys/linea-attestation-registry/actions/workflows/contracts.yml)
+[![Subgraph](https://github.com/Consensys/linea-attestation-registry/actions/workflows/subgraph.yml/badge.svg)](https://github.com/Consensys/linea-attestation-registry/actions/workflows/subgraph.yml)
+[![SDK](https://github.com/Consensys/linea-attestation-registry/actions/workflows/sdk.yml/badge.svg)](https://github.com/Consensys/linea-attestation-registry/actions/workflows/sdk.yml)
+[![Explorer](https://github.com/Consensys/linea-attestation-registry/actions/workflows/explorer-build.yml/badge.svg)](https://github.com/Consensys/linea-attestation-registry/actions/workflows/explorer-build.yml)
+
+[![npm](https://img.shields.io/npm/v/@verax-attestation-registry/verax-sdk?color=blue&label=Verax%20SDK)](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)
+[![npm](https://img.shields.io/npm/v/@verax-attestation-registry/verax-contracts?color=blue&label=Verax%20Contracts)](https://www.npmjs.com/package/@verax-attestation-registry/verax-contracts)
+
 ## Repository Organisation
 
 ```
@@ -93,6 +103,19 @@ Here are the addresses on those networks:
 - SchemaRegistry =
   [0x90b8542d7288a83EC887229A7C727989C3b56209](https://sepolia.lineascan.build/address/0x90b8542d7288a83EC887229A7C727989C3b56209)
 
+  <details>
+    <summary>Standard Library</summary>
+
+  - ECDSAModule: 0x43Ed26E6A6f020687F65cf61125a33EcFCa9D608
+  - ERC1271Module: 0x3130F70a771DccdE24680656Ab340b579BDF539E
+  - FeeModule: 0xC5555Bf0584AdE1c90DcDCA20Ac4b6814F009a4e
+  - IndexerModule: 0x30b493c00D05F6C3BA090d5FDa8743Fa8c075728
+  - IssuersModule: 0x0BF811Be65D88739BCdCB36515b2499Af02BE503
+  - SchemaModule: 0xC3969d728E5e6cf01a8B066d42918970Ee2a9eBe
+  - SenderModule: 0x006764D85A351f508Ec02DBCd010251c66BC849F
+
+  </details>
+
 </details>
 
 <details>
@@ -111,6 +134,19 @@ Here are the addresses on those networks:
 - AttestationReader =
   [0x40871e247CF6b8fd8794c9c56bB5c2b8a4FA3B6c](https://lineascan.build/address/0x40871e247CF6b8fd8794c9c56bB5c2b8a4FA3B6c)
 
+  <details>
+    <summary>Standard Library</summary>
+
+  - ECDSAModule: 0x2878bdc6A7615600e9b6Aa04f7802267891FFAE5
+  - ERC1271Module: 0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0
+  - FeeModule: 0xD2B60076a83C6f6fad2506aF51b297a8725e8E0b
+  - IndexerModule: 0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd
+  - IssuersModule: 0x5bfe4626632e424C616155e67319767239160871
+  - SchemaModule: 0x0EE9fCFc4A6eDB21F8bf8D2b694EA5C84F382c6E
+  - SenderModule: 0x2790E1E589aBDbC7Ee53390aacC995539228bC5f
+
+  </details>
+
 </details>
 
 <details>
@@ -126,6 +162,19 @@ Here are the addresses on those networks:
   [0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE](https://sepolia.arbiscan.io/address/0x1ceb52584B6C45C7049dc7fDC476bC138E4beaDE)
 - SchemaRegistry =
   [0x025531b655D9EE335B8E6cc4C118b313f26ACc8F](https://sepolia.arbiscan.io/address/0x025531b655D9EE335B8E6cc4C118b313f26ACc8F)
+
+  <details>
+    <summary>Standard Library</summary>
+
+  - ECDSAModule: 0x84D0c725CCe4eB7a7b95A4C36Bc0Ee5B5Df147d6
+  - ERC1271Module: 0xFa13B02636d888C46e504C16F267CF87131feB07
+  - FeeModule: 0x41b809c4B5c61FeBB0323F17aF179F7B16500fb3
+  - IndexerModule: 0xe0bA3B08dC6d08C95d39BE6e3dDa044f1a2896bF
+  - IssuersModule: 0xCA56378292Fa10d95fF03ADEFF0d349c1bbedb67
+  - SchemaModule: 0xc1d6Bf1E16A7BEe02d11FBA0FA9cD8ff87DdE715
+  - SenderModule: 0x6634535e7FA978D1e971130437B72454590B42e6
+
+  </details>
 
 </details>
 
@@ -145,6 +194,19 @@ Here are the addresses on those networks:
 - AttestationReader =
   [0x324C060A26444c3fB9B93e03d31e8cfF4b1715C1](https://arbiscan.io/address/0x324C060A26444c3fB9B93e03d31e8cfF4b1715C1)
 
+  <details>
+    <summary>Standard Library</summary>
+
+- ECDSAModule: 0x23178D693eB5D0cB2b4f2e4a4b4CDca9b063dC89
+- ERC1271Module: 0x2859B1140B50E3E5a19C194b98887c980266c174
+- FeeModule: 0x41b809c4B5c61FeBB0323F17aF179F7B16500fb3
+- IndexerModule: 0xDb88823B739cC0D091a6119DC9948DF31Fa7Ba15
+- IssuersModule: 0x7899A2eb994886db853414df7C8dE32515ADC0f5
+- SchemaModule: 0xbFF5440ea31bbd1e943a758C217B1F0720a9BAff
+- SenderModule: 0x5BE10EFD4FfeB4410b2BBC5c8a4A623b07df05a8
+
+  </details>
+
 </details>
 
 <details>
@@ -162,6 +224,19 @@ Here are the addresses on those networks:
   [0x66D2F3DCc970343b83a6263E20832184fa71CFe7](https://sepolia.basescan.org/address/0x66D2F3DCc970343b83a6263E20832184fa71CFe7)
 - AttestationReader =
   [0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7](https://sepolia.basescan.org/address/0xbCcC37Ea3bEeAE614817f53542F1F4FfAE5E19c7)
+
+  <details>
+    <summary>Standard Library</summary>
+
+- ECDSAModule: 0xc1d6Bf1E16A7BEe02d11FBA0FA9cD8ff87DdE715
+- ERC1271Module: 0x6634535e7FA978D1e971130437B72454590B42e6
+- FeeModule: 0x718e541B4ED7AbC9596454C8Fa118cB0E8A69550
+- IndexerModule: 0x0620C734A779fCE3F00fA68aFCe08B231019655E
+- IssuersModule: 0xEe57462A369fB886E66e00B4d46c0D69900aEf0d
+- SchemaModule: 0x2FEe3B89905D7a286254dBea7fF8fB83E8707D60
+- SenderModule: 0x5166b1749ea89069bC0f735A397EF636AeF9BD49
+
+  </details>
 
 </details>
 
@@ -181,6 +256,19 @@ Here are the addresses on those networks:
 - AttestationReader =
   [0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C](https://basescan.org/address/0xbEDd72a8cCfBEC4e575dCdC1659A891018051a5C)
 
+  <details>
+    <summary>Standard Library</summary>
+
+- ECDSAModule: 0x1Cfaa05f833EB9A45d3f0846De50D97c7a8f256F
+- ERC1271Module: 0xB20aF6D674E5F25Ce1De91B1B72b9e18320e13A2
+- FeeModule: 0xCacfE0C3bc2f160a072f4f72AAe964507f0964a0
+- IndexerModule: 0x5b4ECD59b6adf86ABBF607519638C1Ab5C95fd83
+- IssuersModule: 0xCce050D3027C4F6817f2F0e5f07e000Cc07AE0e0
+- SchemaModule: 0xe50837E0f22B341038D1ea0A40C4Fe2AF26E00B0
+- SenderModule: 0x1A8720d71541464e0e0D2cB8627Dadf6BdE757FF
+
+  </details>
+
 </details>
 
 <details>
@@ -196,6 +284,19 @@ Here are the addresses on those networks:
   [0xA4a7517F62216BD42e42a67dF09C25adc72A5897](https://testnet.bscscan.com/address/0xA4a7517F62216BD42e42a67dF09C25adc72A5897)
 - SchemaRegistry =
   [0x51929da151eC2C5a5881C750E5b9941eACC46c1d](https://testnet.bscscan.com/address/0x51929da151eC2C5a5881C750E5b9941eACC46c1d)
+
+  <details>
+    <summary>Standard Library</summary>
+
+- ECDSAModule: 0x84D0c725CCe4eB7a7b95A4C36Bc0Ee5B5Df147d6
+- ERC1271Module: 0xFa13B02636d888C46e504C16F267CF87131feB07
+- FeeModule: 0x41b809c4B5c61FeBB0323F17aF179F7B16500fb3
+- IndexerModule: 0xe0bA3B08dC6d08C95d39BE6e3dDa044f1a2896bF
+- IssuersModule: 0xCA56378292Fa10d95fF03ADEFF0d349c1bbedb67
+- SchemaModule: 0xc1d6Bf1E16A7BEe02d11FBA0FA9cD8ff87DdE715
+- SenderModule: 0x6634535e7FA978D1e971130437B72454590B42e6
+
+  </details>
 
 </details>
 
@@ -213,27 +314,25 @@ Here are the addresses on those networks:
 - SchemaRegistry =
   [0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd](https://bscscan.com/address/0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd)
 
+  <details>
+    <summary>Standard Library</summary>
+
+- ECDSAModule: 0xd580BD1259576C489543beBa99d4678453112A7f
+- ERC1271Module: 0x090AbB61eCDa7aD3a2FD83BA5b89bEd2946aA1c8
+- FeeModule: 0x88bA70cB465ed130D899e0709CC22757Fa4D3704
+- IndexerModule: 0x0B9223633DEF4455228fd1Ad0384a57eEaeE2303
+- IssuersModule: 0x8d3634274bD47c6A66e4b216fCcafF99F74460F9
+- SchemaModule: 0x65E3025c4B82f35918DeDd57f2058e7de7F92c33
+- SenderModule: 0xb439016Da49eA9bD036523F0B5416B0319027e8E
+
+  </details>
+
 </details>
 
 ## Subgraphs URLs
 
-### Subgraph V1
-
-- [Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-linea-sepolia/v0.0.12)
-- [Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-linea/v0.0.1)
-- [Linea Mainnet (Backup)](https://graph-query.linea.build/subgraphs/name/Consensys/linea-attestation-registry/graphql)
-- [Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum-sepolia/v0.0.3)
-- [Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-arbitrum/v0.0.1)
-- [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v1-base-sepolia/v0.0.2)
-- [Base Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-base/v0.0.2)
-- [BSC Testnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc-testnet/v0.0.1)
-- [BSC Mainnet](https://api.studio.thegraph.com/query/67521/verax-v1-bsc/v0.0.1)
-
-### Subgraph V2
-
 - [Linea Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-linea-sepolia/v0.0.2)
 - [Linea Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-linea/v0.0.1)
-- [Linea Mainnet (Backup)](https://api.goldsky.com/api/public/project_clxx488osyuf501vygg71f86w/subgraphs/verax-v2-linea/0.0.1/gn)
 - [Arbitrum Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum-sepolia/v0.0.2)
 - [Arbitrum Mainnet](https://api.studio.thegraph.com/query/67521/verax-v2-arbitrum/v0.0.2)
 - [Base Sepolia](https://api.studio.thegraph.com/query/67521/verax-v2-base-sepolia/v0.0.2)
@@ -244,7 +343,7 @@ Here are the addresses on those networks:
 ## Network Prefixes
 
 To easily differentiate the networks on which an attestation has been made, we use network prefixes for the Attestation
-ID. This prefix is defined in the `contracts/script/utils.ts` file.
+ID. This prefix is defined in the [contracts/script/utils.ts](contracts/script/utils.ts) file.
 
 - Linea Sepolia - `0x0000`
 - Linea Mainnet - `0x0000`
@@ -254,6 +353,7 @@ ID. This prefix is defined in the `contracts/script/utils.ts` file.
 - Base Mainnet - `0x0005`
 - BSC Testnet - `0x0006`
 - BSC Mainnet - `0x0006`
+- Ethereum Sepolia - `0x0008`
 
 ## Deployment of a new Verax instance
 
@@ -267,4 +367,4 @@ are independent, and must not be done right away, they should be done in order.
 
 ## License
 
-[MIT](./LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)

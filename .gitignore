@@ -21,6 +21,7 @@ cache_hardhat
 cache_forge
 artifacts
 typechain-types
+sepolia.json
 
 # Subgraph
 build

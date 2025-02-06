@@ -85,7 +85,11 @@ check if the already deployed registries are upgradable to the new local version
 
 :warning: Note: this is a dynamic check, run against the already deployed contracts.
 
-## 3. Do upgrade
+### 3. Check the contracts size
+
+Run `pnpm run check:size` to check if all the contracts have a size below the threshold for deployment (24KiB).
+
+### 4. Do upgrade
 
 1. Check your `.env` file contains the address of all the proxies for the targeted network
 2. Upgrade only the implementations that have changed since the last upgrade via the `pnpm run upgrade NETWORK_NAME`
@@ -95,7 +99,7 @@ check if the already deployed registries are upgradable to the new local version
 
 :warning: Note: Forcing the redeployment of all the implementations is more expensive!
 
-### 4. Update the network files
+### 5. Update the network files
 
 :warning: Note: this script must only be run on a branch/commit corresponding to the version of the contracts deployed
 on the targeted network!.
@@ -104,6 +108,21 @@ Run `pnpm run reimport NETWORK_NAME` (replacing `NETWORK_NAME` with the name of 
 network files describing the deployed contracts.
 
 :warning: Note: This step is mandatory to avoid being desynchronized.
+
+### 6. Deploy the contract library
+
+The core contracts are available on [npm](https://www.npmjs.com/package/@verax-attestation-registry/verax-contracts) as
+a library. To deploy the library, follow the steps below:
+
+1. Upgrade the package version in [package.json](./package.json)
+2. Test the deployment on npm
+   ```bash
+   pnpm run publish:dry-run
+   ```
+3. Deploy on npm
+   ```bash
+   pnpm run publish:public
+   ```
 
 ## Utils
 

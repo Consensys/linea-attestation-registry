@@ -2,6 +2,7 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-foundry";
 import "@openzeppelin/hardhat-upgrades";
+import "hardhat-contract-sizer";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "./.env" });
@@ -12,14 +13,17 @@ const config: HardhatUserConfig = {
       {
         version: "0.8.21",
         settings: {
-          evmVersion: "paris",
+          evmVersion: "london",
           optimizer: {
             enabled: true,
-            runs: 150,
+            runs: 1000,
           },
         },
       },
     ],
+  },
+  contractSizer: {
+    strict: true,
   },
   defaultNetwork: "linea-sepolia",
   networks: {
@@ -56,6 +60,10 @@ const config: HardhatUserConfig = {
       url: `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
+    sepolia: {
+      url: `https://sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
+    },
   },
   paths: {
     sources: "./src",
@@ -70,6 +78,7 @@ const config: HardhatUserConfig = {
       bsc: process.env.BSCSCAN_API_KEY ?? "",
       "linea-sepolia": process.env.LINEASCAN_API_KEY ?? "",
       linea: process.env.LINEASCAN_API_KEY ?? "",
+      sepolia: process.env.ETHERSCAN_API_KEY ?? "",
     },
     customChains: [
       {
@@ -134,6 +143,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api.lineascan.build/api",
           browserURL: "https://lineascan.build",
+        },
+      },
+      {
+        network: "sepolia",
+        chainId: 11155111,
+        urls: {
+          apiURL: "https://api-sepolia.etherscan.io/api",
+          browserURL: "https://sepolia.etherscan.io",
         },
       },
     ],

@@ -3,87 +3,85 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
 
-const PORTAL_REGISTRY_ADDRESS = process.env.PORTAL_REGISTRY_ADDRESS ?? "";
-const MODULE_REGISTRY_ADDRESS = process.env.MODULE_REGISTRY_ADDRESS ?? "";
-
 async function main() {
-  console.log(`START SCRIPT`);
+  console.log(`Deploying Standard Library...`);
+
+  const portalRegistryAddress = process.env.PORTAL_REGISTRY_ADDRESS;
+  const attestationRegistryAddress = process.env.ATTESTATION_REGISTRY_ADDRESS;
+  const moduleRegistryAddress = process.env.MODULE_REGISTRY_ADDRESS;
+
+  if (!portalRegistryAddress) {
+    throw new Error("PortalRegistry address not found");
+  }
+
+  if (!attestationRegistryAddress) {
+    throw new Error("PortalRegistry address not found");
+  }
+
+  if (!moduleRegistryAddress) {
+    throw new Error("PortalRegistry address not found");
+  }
 
   console.log("Deploying ECDSAModule...");
-  const ECDSAModule = await ethers.getContractFactory("ECDSAModule");
-  const ecdsaModule = await ECDSAModule.deploy(PORTAL_REGISTRY_ADDRESS);
+  const ECDSAModule = await ethers.getContractFactory("ECDSAModuleV2");
+  const ecdsaModule = await ECDSAModule.deploy(portalRegistryAddress);
   await ecdsaModule.waitForDeployment();
   const ecdsaModuleAddress = await ecdsaModule.getAddress();
   console.log(`ECDSAModule deployed to: ${ecdsaModuleAddress}`);
-  await run("verify:verify", {
-    address: ecdsaModuleAddress,
-    constructorArguments: [PORTAL_REGISTRY_ADDRESS],
-  });
 
   console.log(`\n----\n`);
 
   console.log("Deploying ERC1271Module...");
-  const ERC1271Module = await ethers.getContractFactory("ERC1271Module");
-  const erc1271Module = await ERC1271Module.deploy(PORTAL_REGISTRY_ADDRESS);
+  const ERC1271Module = await ethers.getContractFactory("ERC1271ModuleV2");
+  const erc1271Module = await ERC1271Module.deploy(portalRegistryAddress);
   await erc1271Module.waitForDeployment();
   const erc1271ModuleAddress = await erc1271Module.getAddress();
   console.log(`ERC1271Module deployed to: ${erc1271ModuleAddress}`);
-  await run("verify:verify", {
-    address: erc1271ModuleAddress,
-    constructorArguments: [PORTAL_REGISTRY_ADDRESS],
-  });
 
   console.log(`\n----\n`);
 
   console.log("Deploying FeeModule...");
-  const FeeModule = await ethers.getContractFactory("FeeModule");
-  const feeModule = await FeeModule.deploy(PORTAL_REGISTRY_ADDRESS);
+  const FeeModule = await ethers.getContractFactory("FeeModuleV2");
+  const feeModule = await FeeModule.deploy(portalRegistryAddress);
   await feeModule.waitForDeployment();
   const feeModuleAddress = await feeModule.getAddress();
   console.log(`FeeModule deployed to: ${feeModuleAddress}`);
-  await run("verify:verify", {
-    address: feeModuleAddress,
-    constructorArguments: [PORTAL_REGISTRY_ADDRESS],
-  });
 
   console.log(`\n----\n`);
 
   console.log("Deploying IndexerModule...");
-  const IndexerModule = await ethers.getContractFactory("IndexerModule");
-  const indexerModule = await IndexerModule.deploy(PORTAL_REGISTRY_ADDRESS);
+  const IndexerModule = await ethers.getContractFactory("IndexerModuleV2");
+  const indexerModule = await IndexerModule.deploy(attestationRegistryAddress, portalRegistryAddress);
   await indexerModule.waitForDeployment();
   const indexerModuleAddress = await indexerModule.getAddress();
   console.log(`IndexerModule deployed to: ${indexerModuleAddress}`);
-  await run("verify:verify", {
-    address: indexerModuleAddress,
-    constructorArguments: [PORTAL_REGISTRY_ADDRESS],
-  });
+
+  console.log(`\n----\n`);
+
+  console.log("Deploying IssuersModule...");
+  const IssuersModule = await ethers.getContractFactory("IssuersModuleV2");
+  const issuersModule = await IssuersModule.deploy(portalRegistryAddress);
+  await issuersModule.waitForDeployment();
+  const issuersModuleAddress = await issuersModule.getAddress();
+  console.log(`IssuersModule deployed to: ${issuersModuleAddress}`);
 
   console.log(`\n----\n`);
 
   console.log("Deploying SchemaModule...");
-  const SchemaModule = await ethers.getContractFactory("SchemaModule");
-  const schemaModule = await SchemaModule.deploy(PORTAL_REGISTRY_ADDRESS);
+  const SchemaModule = await ethers.getContractFactory("SchemaModuleV2");
+  const schemaModule = await SchemaModule.deploy(portalRegistryAddress);
   await schemaModule.waitForDeployment();
   const schemaModuleAddress = await schemaModule.getAddress();
   console.log(`SchemaModule deployed to: ${schemaModuleAddress}`);
-  await run("verify:verify", {
-    address: schemaModuleAddress,
-    constructorArguments: [PORTAL_REGISTRY_ADDRESS],
-  });
 
   console.log(`\n----\n`);
 
   console.log("Deploying SenderModule...");
-  const SenderModule = await ethers.getContractFactory("SenderModule");
-  const senderModule = await SenderModule.deploy(PORTAL_REGISTRY_ADDRESS);
+  const SenderModule = await ethers.getContractFactory("SenderModuleV2");
+  const senderModule = await SenderModule.deploy(portalRegistryAddress);
   await senderModule.waitForDeployment();
   const senderModuleAddress = await senderModule.getAddress();
   console.log(`SenderModule deployed to: ${senderModuleAddress}`);
-  await run("verify:verify", {
-    address: senderModuleAddress,
-    constructorArguments: [PORTAL_REGISTRY_ADDRESS],
-  });
 
   console.log(`\n----\n`);
 
@@ -91,8 +89,49 @@ async function main() {
 
   console.log(`\n----\n`);
 
+  console.log("Verifying modules...");
+
+  await run("verify:verify", {
+    address: ecdsaModuleAddress,
+    constructorArguments: [portalRegistryAddress],
+  });
+
+  await run("verify:verify", {
+    address: erc1271ModuleAddress,
+    constructorArguments: [portalRegistryAddress],
+  });
+
+  await run("verify:verify", {
+    address: feeModuleAddress,
+    constructorArguments: [portalRegistryAddress],
+  });
+
+  await run("verify:verify", {
+    address: indexerModuleAddress,
+    constructorArguments: [attestationRegistryAddress, portalRegistryAddress],
+  });
+
+  await run("verify:verify", {
+    address: issuersModuleAddress,
+    constructorArguments: [portalRegistryAddress],
+  });
+
+  await run("verify:verify", {
+    address: schemaModuleAddress,
+    constructorArguments: [portalRegistryAddress],
+  });
+
+  await run("verify:verify", {
+    address: senderModuleAddress,
+    constructorArguments: [portalRegistryAddress],
+  });
+
+  console.log("ALL MODULES VERIFIED!");
+
+  console.log(`\n----\n`);
+
   console.log("Registering modules on the ModuleRegistry...");
-  const moduleRegistry = await ethers.getContractAt("ModuleRegistry", MODULE_REGISTRY_ADDRESS);
+  const moduleRegistry = await ethers.getContractAt("ModuleRegistry", moduleRegistryAddress);
 
   const registerECDSAModule = await moduleRegistry.register(
     "ECDSAModule",
@@ -126,6 +165,14 @@ async function main() {
   await registerIndexerModule.wait();
   console.log("IndexerModule registered");
 
+  const registerIssuersModule = await moduleRegistry.register(
+    "IssuersModule",
+    "A standard library module deployed by Verax, allowing to attest Issuers",
+    issuersModuleAddress,
+  );
+  await registerIssuersModule.wait();
+  console.log("IssuersModule registered");
+
   const registerSchemaModule = await moduleRegistry.register(
     "SchemaModule",
     "A standard library module deployed by Verax, checking attestation schemas",
@@ -142,13 +189,12 @@ async function main() {
   await registerSenderModule.wait();
   console.log("SenderModule registered");
 
-  console.log("ALL MODULES REGISTERED!");
-
-  console.log("Module Addresses:");
+  console.log("Standard Library of Modules deployed and registered!");
   console.log("ECDSAModule: " + ecdsaModuleAddress);
   console.log("ERC1271Module: " + erc1271ModuleAddress);
   console.log("FeeModule: " + feeModuleAddress);
   console.log("IndexerModule: " + indexerModuleAddress);
+  console.log("IssuersModule: " + issuersModuleAddress);
   console.log("SchemaModule: " + schemaModuleAddress);
   console.log("SenderModule: " + senderModuleAddress);
 }

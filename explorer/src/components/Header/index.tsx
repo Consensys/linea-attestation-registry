@@ -4,7 +4,8 @@ import { ChevronDown } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { useLocation } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";
-import { useAccount } from "wagmi";
+import { useAccount, useEnsName } from "wagmi";
+import { mainnet } from "wagmi/chains";
 
 import BetaDark from "@/assets/logo/beta-dark.svg?react";
 import BetaLight from "@/assets/logo/beta-light-strong.svg?react";
@@ -41,6 +42,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
   const location = useLocation();
   const { address, isConnected } = useAccount();
   const { isDarkMode } = useTernaryDarkMode();
+  const { data: ensName } = useEnsName({ address, chainId: mainnet.id });
 
   const { network, setNetwork } = useNetworkContext();
   const screen = useWindowDimensions();
@@ -48,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
   const isHomePage = location.pathname === `/${network.network}`;
 
   const titleByScreen = screen.sm ? t("common.actions.connect") : t("common.actions.connectWallet");
-  const title = address && isConnected ? cropString(address) : titleByScreen;
+  const title = address && isConnected ? ensName || cropString(address) : titleByScreen;
 
   return (
     <header className="px-5 md:px-14 xl:px-[60px] py-3 inline-flex flex-col gap-5">

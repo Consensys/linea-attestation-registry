@@ -12,7 +12,7 @@ import { Attestation, AttestationPayload } from "../../types/Structs.sol";
  * @dev This Portal implements parts of ERC 721 - balanceOf and ownerOf functions
  */
 contract NFTPortal is AbstractPortalV2, ERC721 {
-  mapping(address => uint256) private numberOfAttestationsPerOwner;
+  mapping(address owner => uint256 attestationCounter) private numberOfAttestationsPerOwner;
 
   /// @dev Error thrown when the subject of an attestation is not a valid address
   error SubjectNotAnAddress();

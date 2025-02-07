@@ -1,4 +1,4 @@
-name: Build explorer
+name: Explorer
 
 on:
   pull_request:

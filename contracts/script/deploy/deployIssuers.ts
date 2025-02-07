@@ -25,7 +25,7 @@ async function main() {
   console.log(`----\n`);
 
   console.log("Deploying SenderModule...");
-  const senderModule = await ethers.deployContract("SenderModule", [portalRegistryAddress]);
+  const senderModule = await ethers.deployContract("SenderModuleV2", [portalRegistryAddress]);
   await senderModule.waitForDeployment();
   const senderModuleAddress = await senderModule.getAddress();
   console.log(`SenderModule successfully deployed!`);
@@ -46,11 +46,10 @@ async function main() {
   console.log(`----\n`);
 
   console.log("Deploying IssuersModule...");
-  const issuersModule = await ethers.deployContract("IssuersModule", [portalRegistryAddress]);
+  const issuersModule = await ethers.deployContract("IssuersModuleV2", [portalRegistryAddress]);
   await issuersModule.waitForDeployment();
   const issuersModuleAddress = await issuersModule.getAddress();
-  console.log(`IssuersModule successfully deployed!`);
-  console.log(`IssuersModule is at ${issuersModuleAddress}`);
+  console.log(`IssuersModule successfully deployed at ${issuersModuleAddress}`);
 
   console.log(`----\n`);
 
@@ -76,7 +75,6 @@ async function main() {
   );
 
   const txReceipt = await deploymentTx.wait();
-  console.log("txReceipt.logs", txReceipt?.logs);
 
   const portalRegisteredEvent = txReceipt?.logs?.find((log) => {
     return log instanceof EventLog && log.fragment.name === "PortalRegistered";
@@ -93,7 +91,7 @@ async function main() {
   console.log(`----\n`);
 
   console.log("Add Verax as an authorized sender...");
-  const senderModuleContract = await ethers.getContractAt("SenderModule", senderModuleAddress);
+  const senderModuleContract = await ethers.getContractAt("SenderModuleV2", senderModuleAddress);
   const txSenderModuleAuthorize = await senderModuleContract.setAuthorizedSenders(
     issuersPortalAddress,
     [(await ethers.getSigners())[0]],
@@ -119,18 +117,14 @@ async function createSchema(
   schemaContext: string,
   schemaString: string,
 ) {
-  console.log("Creating Schema...");
+  console.log(`Creating Schema '${schemaName}'...`);
   const schemaId = await schemaRegistry.getIdFromSchemaString(schemaString);
   const schemaExists = await schemaRegistry.isRegistered(schemaId);
 
-  console.log(`schemaExists = ${schemaExists}`);
-
   if (!schemaExists) {
     const tx = await schemaRegistry.createSchema(schemaName, schemaDescription, schemaContext, schemaString);
-    console.log("tx", tx);
     await tx.wait();
     const schemaCreated = await schemaRegistry.isRegistered(schemaId);
-    console.log("schemaCreated", schemaCreated);
 
     if (schemaCreated) {
       console.log(`Schema "${schemaName}" successfully created with ID ${schemaId}`);
@@ -138,7 +132,7 @@ async function createSchema(
       throw new Error(`Schema "${schemaName}" creation failed!`);
     }
   } else {
-    throw new Error(`Schema "${schemaName}" already exists with ID ${schemaId}`);
+    console.warn(`Schema "${schemaName}" already exists with ID ${schemaId}`);
   }
 }
 

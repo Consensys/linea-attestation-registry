@@ -3,7 +3,17 @@ import AttestationDataMapper from "./dataMapper/AttestationDataMapper";
 import SchemaDataMapper from "./dataMapper/SchemaDataMapper";
 import ModuleDataMapper from "./dataMapper/ModuleDataMapper";
 import PortalDataMapper from "./dataMapper/PortalDataMapper";
-import { Address, createPublicClient, createWalletClient, custom, Hex, http, PublicClient, Transport, WalletClient } from "viem";
+import {
+  Address,
+  createPublicClient,
+  createWalletClient,
+  custom,
+  Hex,
+  http,
+  PublicClient,
+  Transport,
+  WalletClient,
+} from "viem";
 import UtilsDataMapper from "./dataMapper/UtilsDataMapper";
 import { privateKeyToAccount } from "viem/accounts";
 import { Conf } from "./types";

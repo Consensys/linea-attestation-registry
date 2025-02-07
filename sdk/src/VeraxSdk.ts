@@ -3,7 +3,7 @@ import AttestationDataMapper from "./dataMapper/AttestationDataMapper";
 import SchemaDataMapper from "./dataMapper/SchemaDataMapper";
 import ModuleDataMapper from "./dataMapper/ModuleDataMapper";
 import PortalDataMapper from "./dataMapper/PortalDataMapper";
-import { Address, createPublicClient, createWalletClient, custom, Hex, http, PublicClient, WalletClient } from "viem";
+import { Address, createPublicClient, createWalletClient, custom, Hex, http, PublicClient, Transport, WalletClient } from "viem";
 import UtilsDataMapper from "./dataMapper/UtilsDataMapper";
 import { privateKeyToAccount } from "viem/accounts";
 import { Conf } from "./types";
@@ -22,6 +22,7 @@ export class VeraxSdk {
     moduleRegistryAddress: "0xf851513A732996F22542226341748f3C9978438f",
     schemaRegistryAddress: "0x0f95dCec4c7a93F2637eb13b655F2223ea036B59",
     attestationRegistryAddress: "0x3de3893aa4Cdea029e84e75223a152FD08315138",
+    rpcUrl: undefined, // Added rpcUrl
   };
 
   static DEFAULT_LINEA_MAINNET_FRONTEND: Conf = {
@@ -37,6 +38,7 @@ export class VeraxSdk {
     moduleRegistryAddress: "0x3C443B9f0c8ed3A3270De7A4815487BA3223C2Fa",
     schemaRegistryAddress: "0x90b8542d7288a83EC887229A7C727989C3b56209",
     attestationRegistryAddress: "0xDaf3C3632327343f7df0Baad2dc9144fa4e1001F",
+    rpcUrl: undefined,
   };
 
   static DEFAULT_LINEA_SEPOLIA_FRONTEND: Conf = {
@@ -52,6 +54,7 @@ export class VeraxSdk {
     moduleRegistryAddress: "0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6",
     schemaRegistryAddress: "0x025531b655D9EE335B8E6cc4C118b313f26ACc8F",
     attestationRegistryAddress: "0xee5e23492bf49C1F4CF0676b3bF49d78A6dD61c5",
+    rpcUrl: undefined,
   };
 
   static DEFAULT_ARBITRUM_SEPOLIA_FRONTEND: Conf = {
@@ -67,6 +70,7 @@ export class VeraxSdk {
     moduleRegistryAddress: "0x3acF4daAB6cbc01546Dd4a96c9665B398d48A4ba",
     schemaRegistryAddress: "0xE96072F46EA0e42e538762dDc0aFa4ED8AE6Ec27",
     attestationRegistryAddress: "0x335E9719e8eFE2a19A92E07BC4836160fC31cd7C",
+    rpcUrl: undefined,
   };
 
   static DEFAULT_ARBITRUM_FRONTEND: Conf = {
@@ -82,6 +86,7 @@ export class VeraxSdk {
     moduleRegistryAddress: "0xEC572277d4E87a64DcfA774ED219Dd4E69E4BDc6",
     schemaRegistryAddress: "0x66D2F3DCc970343b83a6263E20832184fa71CFe7",
     attestationRegistryAddress: "0x374B686137eC0DB442a8d833451f8C12cD4B5De4",
+    rpcUrl: undefined,
   };
 
   static DEFAULT_BASE_SEPOLIA_FRONTEND: Conf = {
@@ -97,6 +102,7 @@ export class VeraxSdk {
     moduleRegistryAddress: "0xAd0C12db58098A6665CBEf48f60eB67d81d1F1ff",
     schemaRegistryAddress: "0x8081dCd745f160c148Eb5be510F78628A0951c31",
     attestationRegistryAddress: "0xA0080DBd35711faD39258E45d9A5D798852b05D4",
+    rpcUrl: undefined,
   };
 
   static DEFAULT_BASE_FRONTEND: Conf = {
@@ -112,6 +118,7 @@ export class VeraxSdk {
     moduleRegistryAddress: "0x6c46c245918d4fcfC13F0a9e2e49d4E2739A353a",
     schemaRegistryAddress: "0x51929da151eC2C5a5881C750E5b9941eACC46c1d",
     attestationRegistryAddress: "0x5Cc4029f0dDae1FFE527385459D06d81DFD50EEe",
+    rpcUrl: undefined,
   };
 
   static DEFAULT_BSC_TESTNET_FRONTEND: Conf = {
@@ -127,6 +134,7 @@ export class VeraxSdk {
     moduleRegistryAddress: "0xD70a06f7A0f197D55Fa841fcF668782b2B8266eB",
     schemaRegistryAddress: "0x29205492435E1b06B20CeAeEC4AC41bcF595DFFd",
     attestationRegistryAddress: "0x3D8A3a8FF21bD295dbBD5319C399e2C4FD27F261",
+    rpcUrl: undefined,
   };
 
   static DEFAULT_BSC_FRONTEND: Conf = {
@@ -144,16 +152,18 @@ export class VeraxSdk {
   public utils: UtilsDataMapper;
 
   constructor(conf: Conf, publicAddress?: Address, privateKey?: Hex) {
+    const transport: Transport = conf.rpcUrl ? http(conf.rpcUrl) : http();
+
     this.web3Client = createPublicClient({
       chain: conf.chain,
-      transport: http(),
+      transport: transport,
     });
 
     if (conf.mode === SDKMode.BACKEND) {
       this.walletClient = createWalletClient({
         chain: conf.chain,
         account: privateKey ? privateKeyToAccount(privateKey) : undefined,
-        transport: http(),
+        transport: transport,
       });
     } else if (typeof window.ethereum !== "undefined") {
       this.walletClient = createWalletClient({

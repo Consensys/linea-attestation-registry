@@ -9,6 +9,7 @@ export interface Conf {
   moduleRegistryAddress: Address;
   schemaRegistryAddress: Address;
   attestationRegistryAddress: Address;
+  rpcUrl?: string;
 }
 
 export type AttestationPayload = {

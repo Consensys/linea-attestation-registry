@@ -139,7 +139,7 @@ npx hardhat verify --network NETWORK_NAME CONTRACT_ADDRESS --constructor-args co
 ### Removal of Issuers and Schemas ownership
 
 Issuers may have Schemas associated with them. When removing issuers, you will need to reassign schema ownership by
-calling the following methods :
+calling the following methods:
 
 1. updateSchemaIssuer
 2. bulkUpdateSchemasIssuers

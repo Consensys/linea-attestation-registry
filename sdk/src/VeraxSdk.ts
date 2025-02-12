@@ -154,14 +154,15 @@ export class VeraxSdk {
   public utils: UtilsDataMapper;
 
   constructor(conf: Conf, publicAddress?: Address, privateKey?: Hex) {
-    const transport: Transport =
-      conf.mode === SDKMode.FRONTEND
-        ? conf.rpcUrl
-          ? http(conf.rpcUrl)
-          : custom(window.ethereum)
-        : conf.rpcUrl
-        ? http(conf.rpcUrl)
-        : http();
+    let transport: Transport;
+
+    if (conf.rpcUrl) {
+      transport = http(conf.rpcUrl);
+    } else if (conf.mode === SDKMode.FRONTEND && typeof window.ethereum !== "undefined") {
+      transport = custom(window.ethereum);
+    } else {
+      transport = http();
+    }
 
     this.web3Client = createPublicClient({
       chain: conf.chain,

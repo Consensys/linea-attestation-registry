@@ -10,6 +10,7 @@ export interface Conf {
   schemaRegistryAddress: Address;
   attestationRegistryAddress: Address;
   rpcUrl?: string;
+  offchainConfig?: OffChainAttestationConfig;
 }
 
 export type AttestationPayload = {
@@ -28,6 +29,16 @@ export type Attestation = OnChainAttestation & {
 
 export type OffchainData = { schemaId: string; uri: string; error?: string };
 
+export interface IPFSConfig {
+  projectId: string;
+  projectSecret: string;
+  host?: string;
+  port?: number;
+  protocol?: string;
+  timeout?: number;
+  maxRetries?: number;
+}
+
 export type OnChainAttestation = {
   attestationId: string; // The unique identifier of the attestation.
   schema: Schema; // The Schema this attestation adheres to.
@@ -42,6 +53,7 @@ export type OnChainAttestation = {
   subject: string; // The ID of the attestee, EVM address, DID, URL, etc., tentatively decoded as an ETH address.
   encodedSubject: string; // The raw version of the subject, as it was registered on-chain.
   attestationData: string; // The attestation data.
+  ipfsConfig?: IPFSConfig;
 };
 
 export type Schema = {
@@ -70,6 +82,25 @@ export type OnChainModule = {
   moduleAddress: Address; // The address of the module.
   name: string; // The name of the module.
   description: string; // A description of the module.
+};
+
+export interface OffChainAttestationConfig {
+  projectId: string;
+  projectSecret: string;
+  ipfsConfig?: IPFSConfig;
+  subdomain?: string;
+  host?: string;
+  port?: number;
+  protocol?: string;
+  timeout?: number;
+  maxRetries?: number;
+}
+
+export type OffChainAttestationPayload = AttestationPayload & {
+  offchainData: {
+    payload: unknown;
+    schemaId: string;
+  };
 };
 
 declare global {

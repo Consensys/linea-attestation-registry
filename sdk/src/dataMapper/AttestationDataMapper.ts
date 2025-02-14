@@ -8,6 +8,9 @@ import { Address, Hex } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
 import { executeTransaction } from "../utils/transactionSender";
 import { getIPFSContent } from "../utils/ipfsClient";
+import { IPFSService } from "../utils/ipfsService";
+import { OffChainAttestationPayload } from "../types";
+import { encodeAbiParameters } from "viem";
 
 export default class AttestationDataMapper extends BaseDataMapper<
   Attestation,
@@ -221,5 +224,70 @@ export default class AttestationDataMapper extends BaseDataMapper<
     } catch (err) {
       handleError(ActionType.Simulation, err);
     }
+  }
+
+  async attestOffChain(attestationPayload: OffChainAttestationPayload, validationPayloads?: string[]) {
+    // Validate schema exists
+    const schema = await this.veraxSdk.schema.findOneById(attestationPayload.offchainData.schemaId);
+    if (!schema) {
+      throw new Error(`Schema ${attestationPayload.offchainData.schemaId} not found`);
+    }
+
+    // Upload payload to IPFS
+    if (!this.conf.offchainConfig?.ipfsConfig) {
+      throw new Error("IPFS configuration missing");
+    }
+
+    const ipfsService = new IPFSService(this.conf.offchainConfig.ipfsConfig);
+    const uri = await ipfsService.uploadToIPFS(attestationPayload.offchainData.payload);
+
+    // Prepare on-chain attestation with OFFCHAIN_DATA_SCHEMA
+    const onChainPayload = {
+      ...attestationPayload,
+      schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID,
+      attestationData: encodeAbiParameters(
+        [
+          { name: "schemaId", type: "bytes32" },
+          { name: "uri", type: "string" },
+        ],
+        [attestationPayload.offchainData.schemaId as `0x${string}`, uri],
+      ),
+    };
+
+    // Issue on-chain attestation
+    return this.simulateContract("attest", [onChainPayload, validationPayloads || []]);
+  }
+
+  async bulkAttestOffChain(attestationPayloads: OffChainAttestationPayload[], validationPayloads?: string[][]) {
+    if (!this.conf.offchainConfig?.ipfsConfig) {
+      throw new Error("IPFS configuration missing");
+    }
+    const ipfsService = new IPFSService(this.conf.offchainConfig.ipfsConfig);
+
+    // Process each payload in parallel
+    const onChainPayloads = await Promise.all(
+      attestationPayloads.map(async (payload) => {
+        const schema = await this.veraxSdk.schema.findOneById(payload.offchainData.schemaId);
+        if (!schema) {
+          throw new Error(`Schema ${payload.offchainData.schemaId} not found`);
+        }
+
+        const uri = await ipfsService.uploadToIPFS(payload.offchainData.payload);
+
+        return {
+          ...payload,
+          schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID,
+          attestationData: encodeAbiParameters(
+            [
+              { name: "schemaId", type: "bytes32" },
+              { name: "uri", type: "string" },
+            ],
+            [payload.offchainData.schemaId as `0x${string}`, uri],
+          ),
+        };
+      }),
+    );
+
+    return this.simulateContract("bulkAttest", [onChainPayloads, validationPayloads || []]);
   }
 }

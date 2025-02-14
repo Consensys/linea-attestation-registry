@@ -194,7 +194,7 @@ jobs:
         run: mv contracts/lcov.info .
 
       - name: Upload coverage report to Codecov
-        if: steps.check-changes.outputs.changed == 'true'
+        if: steps.check-changes.outputs.changed == 'true' && env.CODECOV_TOKEN != ''
         uses: codecov/codecov-action@v3
         with:
           files: ./lcov.info
@@ -210,16 +210,22 @@ jobs:
           minimum-coverage: 94
 
       - name: Add coverage summary
-        if: steps.check-changes.outputs.changed == 'true'
+        if: steps.check-changes.outputs.changed == 'true' && env.CODECOV_TOKEN != ''
         run: |
           echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
 
       - name: Add coverage summary
+        if: steps.check-changes.outputs.changed == 'true' && env.CODECOV_TOKEN == ''
+        run: |
+          echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Coverage not uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
+
+      - name: Add coverage summary
         if: steps.check-changes.outputs.changed == 'false'
         run: |
           echo "## Coverage result" >> $GITHUB_STEP_SUMMARY
-          echo "✅ No coverage report to upload" >> $GITHUB_STEP_SUMMARY
+          echo "✅ No coverage to upload to Codecov" >> $GITHUB_STEP_SUMMARY
 
   upgradeability-contracts:
     runs-on: ubuntu-latest

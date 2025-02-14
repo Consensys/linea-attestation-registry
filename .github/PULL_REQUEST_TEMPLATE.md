@@ -13,8 +13,9 @@ Fixes #
 
 ## Check list
 
-- [ ] My contribution follows the
-      [guidelines](https://github.com/Consensys/linea-attestation-registry/blob/dev/CONTRIBUTING.md) of this project
+- [ ] My contribution follows
+      the&nbsp;[guidelines](https://github.com/Consensys/linea-attestation-registry/blob/dev/CONTRIBUTING.md) of
+      this&nbsp;project
 - [ ] I have made corresponding changes to the documentation
 - [ ] Unit tests for any smart contract change
 - [ ] Contracts and functions are documented

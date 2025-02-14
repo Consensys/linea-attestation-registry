@@ -3,7 +3,17 @@ import AttestationDataMapper from "./dataMapper/AttestationDataMapper";
 import SchemaDataMapper from "./dataMapper/SchemaDataMapper";
 import ModuleDataMapper from "./dataMapper/ModuleDataMapper";
 import PortalDataMapper from "./dataMapper/PortalDataMapper";
-import { Address, createPublicClient, createWalletClient, custom, Hex, http, PublicClient, WalletClient } from "viem";
+import {
+  Address,
+  createPublicClient,
+  createWalletClient,
+  custom,
+  Hex,
+  http,
+  PublicClient,
+  Transport,
+  WalletClient,
+} from "viem";
 import UtilsDataMapper from "./dataMapper/UtilsDataMapper";
 import { privateKeyToAccount } from "viem/accounts";
 import { Conf } from "./types";
@@ -144,16 +154,26 @@ export class VeraxSdk {
   public utils: UtilsDataMapper;
 
   constructor(conf: Conf, publicAddress?: Address, privateKey?: Hex) {
+    let transport: Transport;
+
+    if (conf.rpcUrl) {
+      transport = http(conf.rpcUrl);
+    } else if (conf.mode === SDKMode.FRONTEND && typeof window.ethereum !== "undefined") {
+      transport = custom(window.ethereum);
+    } else {
+      transport = http();
+    }
+
     this.web3Client = createPublicClient({
       chain: conf.chain,
-      transport: http(),
+      transport,
     });
 
     if (conf.mode === SDKMode.BACKEND) {
       this.walletClient = createWalletClient({
         chain: conf.chain,
         account: privateKey ? privateKeyToAccount(privateKey) : undefined,
-        transport: http(),
+        transport,
       });
     } else if (typeof window.ethereum !== "undefined") {
       this.walletClient = createWalletClient({

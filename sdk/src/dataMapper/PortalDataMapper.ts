@@ -8,6 +8,8 @@ import { Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { handleError } from "../utils/errorHandler";
 import { executeTransaction } from "../utils/transactionSender";
+import { OffchainDataMapper, UploadOptions } from "./OffchainDataMapper";
+import { Constants } from "../utils/constants";
 
 export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filter, Portal_orderBy> {
   typeName = "portal";
@@ -386,5 +388,47 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     } catch (err) {
       handleError(ActionType.Simulation, err);
     }
+  }
+
+  async attestOffchain(
+    portalAddress: Address,
+    attestationPayload: AttestationPayload,
+    validationPayloads: string[],
+    offchainData: unknown,
+    options?: UploadOptions,
+    waitForConfirmation: boolean = false,
+  ) {
+    const offchainMapper = new OffchainDataMapper(options);
+
+    const schema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    if (!schema) {
+      throw new Error("Schema not found");
+    }
+    const schemaDefinition = { type: "object" as const, properties: JSON.parse(schema.schema) };
+    offchainMapper.validateOffchainSchema(attestationPayload.schemaId, schemaDefinition);
+
+    // Validate the offchain payload
+    offchainMapper.validateOffchainPayload(offchainData);
+
+    if (typeof offchainData !== "string" && typeof offchainData !== "object") {
+      throw new Error("Offchain data must be a string or object");
+    }
+    const uri = await offchainMapper.uploadToIpfs(offchainData as string | object);
+    if (!uri) {
+      throw new Error("Failed to upload data to IPFS");
+    }
+
+    const offchainAttestationPayload = {
+      ...attestationPayload,
+      schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID,
+      attestationData: [
+        {
+          schemaId: attestationPayload.schemaId,
+          uri: uri,
+        },
+      ],
+    };
+
+    return this.attest(portalAddress, offchainAttestationPayload, validationPayloads, waitForConfirmation);
   }
 }

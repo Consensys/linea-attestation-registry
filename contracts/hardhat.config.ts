@@ -29,39 +29,75 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {},
     "arbitrum-sepolia": {
-      url: `https://arbitrum-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      url: `${
+        process.env.INFURA_KEY
+          ? `https://arbitrum-sepolia.infura.io/v3/${process.env.INFURA_KEY}`
+          : "https://arbitrum-sepolia.gateway.tenderly.co"
+      }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
     },
     arbitrum: {
-      url: `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      url: `${
+        process.env.INFURA_KEY
+          ? `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_KEY}`
+          : "https://arbitrum.llamarpc.com"
+      }`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
     "base-sepolia": {
-      url: `https://base-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      url: `${
+        process.env.INFURA_KEY
+          ? `https://base-sepolia.infura.io/v3/${process.env.INFURA_KEY}`
+          : "https://sepolia.base.org"
+      }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
     },
     base: {
-      url: `https://base-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      url: `${
+        process.env.INFURA_KEY
+          ? `https://base-mainnet.infura.io/v3/${process.env.INFURA_KEY}`
+          : "https://mainnet.base.org"
+      }`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
     "bsc-testnet": {
-      url: `https://bsc-testnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      url: `${
+        process.env.INFURA_KEY
+          ? `https://bsc-testnet.infura.io/v3/${process.env.INFURA_KEY}`
+          : "https://bsc-testnet-rpc.publicnode.com"
+      }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
     },
     bsc: {
-      url: `https://bsc-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      url: `${
+        process.env.INFURA_KEY
+          ? `https://bsc-mainnet.infura.io/v3/${process.env.INFURA_KEY}`
+          : "https://binance.llamarpc.com"
+      }`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
     "linea-sepolia": {
-      url: `https://linea-sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      url: `${
+        process.env.INFURA_KEY
+          ? `https://linea-sepolia.infura.io/v3/${process.env.INFURA_KEY}`
+          : "https://rpc.sepolia.linea.build"
+      }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
     },
     linea: {
-      url: `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      url: `${
+        process.env.INFURA_KEY
+          ? `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY}`
+          : "https://rpc.linea.build"
+      }`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
     },
     sepolia: {
-      url: `https://sepolia.infura.io/v3/${process.env.INFURA_KEY ?? ""}`,
+      url: `${
+        process.env.INFURA_KEY
+          ? `https://sepolia.infura.io/v3/${process.env.INFURA_KEY}`
+          : "https://ethereum-sepolia-rpc.publicnode.com"
+      }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
     },
   },

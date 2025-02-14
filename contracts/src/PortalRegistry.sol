@@ -124,7 +124,7 @@ contract PortalRegistry is OwnableUpgradeable {
   function removeIssuer(address issuer) public onlyOwner {
     if (issuer == address(0)) revert AddressInvalid();
     if (!issuers[issuer]) revert IssuerNotRegistered();
-    issuers[issuer] = false;
+    delete issuers[issuer];
     // Emit event
     emit IssuerRemoved(issuer);
   }

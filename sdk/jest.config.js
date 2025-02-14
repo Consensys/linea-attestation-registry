@@ -7,6 +7,12 @@ const config = {
   },
   coverageDirectory: "coverage",
   coverageReporters: ["lcov", "text"],
+  moduleNameMapper: {
+    "^ipfs-http-client$": "<rootDir>/src/__mocks__/ipfs-http-client.ts",
+  },
+  setupFiles: ["<rootDir>/src/setupTests.ts"],
+  clearMocks: true,
+  resetMocks: true,
 };
 
 module.exports = config;

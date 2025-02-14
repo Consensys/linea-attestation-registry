@@ -127,15 +127,20 @@ describe("AttestationDataMapper", () => {
     });
 
     it("should set offchainData.error if IPFS request fails", async () => {
+      const mockAttestationWithOffchain = { ...mockAttestation };
+      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(mockAttestationWithOffchain);
       (decodeWithRetry as jest.Mock).mockReturnValue([
         { schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID, uri: "ipfs://QmHash" },
       ]);
       (getIPFSContent as jest.Mock).mockRejectedValue(new Error("IPFS Error"));
 
-      // Call findOneById, which will trigger enrichAttestation
       const result = await attestationDataMapper.findOneById("1");
 
-      expect(result?.offchainData?.error).toBe("IPFS Error");
+      expect(result?.offchainData).toEqual({
+        schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID,
+        uri: "ipfs://QmHash",
+        error: "IPFS Error",
+      });
     });
 
     it("should not enrich if schema ID is not offchain data", async () => {

@@ -1,4 +1,4 @@
-import { ethers, run, upgrades } from "hardhat";
+import { ethers, run } from "hardhat";
 import { getNetworkConfig } from "../utils";
 
 async function main() {
@@ -14,83 +14,80 @@ async function main() {
 
   console.log("Deploying Router implementation...");
   const Router = await ethers.getContractFactory("Router");
-  const routerImplementation = await upgrades.deployImplementation(Router);
-  console.log(`Router implementation deployed at: ${routerImplementation}`);
+  const router = await Router.deploy();
+  await router.waitForDeployment();
+  const routerAddress = await router.getAddress();
+  console.log(`Router implementation deployed at: ${routerAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
   await run("verify:verify", {
-    address: routerImplementation,
+    address: routerAddress,
   });
 
   console.log(`\n----\n`);
 
   console.log("Deploying AttestationRegistry implementation...");
   const AttestationRegistry = await ethers.getContractFactory("AttestationRegistry");
-  const attestationRegistryImplementation = await upgrades.deployImplementation(AttestationRegistry);
-  console.log(`AttestationRegistry implementation deployed at: ${attestationRegistryImplementation}`);
+  const attestationRegistry = await AttestationRegistry.deploy();
+  await attestationRegistry.waitForDeployment();
+  const attestationRegistryAddress = await attestationRegistry.getAddress();
+  console.log(`AttestationRegistry implementation deployed at: ${attestationRegistryAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
   await run("verify:verify", {
-    address: attestationRegistryImplementation,
+    address: attestationRegistryAddress,
   });
 
   console.log(`\n----\n`);
 
   console.log("Deploying ModuleRegistry implementation...");
   const ModuleRegistry = await ethers.getContractFactory("ModuleRegistry");
-  const moduleRegistryImplementation = await upgrades.deployImplementation(ModuleRegistry);
-  console.log(`ModuleRegistry implementation deployed at: ${moduleRegistryImplementation}`);
+  const moduleRegistry = await ModuleRegistry.deploy();
+  await moduleRegistry.waitForDeployment();
+  const moduleRegistryAddress = await moduleRegistry.getAddress();
+  console.log(`ModuleRegistry implementation deployed at: ${moduleRegistryAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
   await run("verify:verify", {
-    address: moduleRegistryImplementation,
+    address: moduleRegistryAddress,
   });
 
   console.log(`\n----\n`);
 
   console.log("Deploying PortalRegistry implementation...");
   const PortalRegistry = await ethers.getContractFactory("PortalRegistry");
-  const portalRegistryImplementation = await upgrades.deployImplementation(PortalRegistry);
-  console.log(`PortalRegistry implementation deployed at: ${portalRegistryImplementation}`);
+  const portalRegistry = await PortalRegistry.deploy();
+  await portalRegistry.waitForDeployment();
+  const portalRegistryAddress = await portalRegistry.getAddress();
+  console.log(`PortalRegistry implementation deployed at: ${portalRegistryAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
   await run("verify:verify", {
-    address: portalRegistryImplementation,
+    address: portalRegistryAddress,
   });
 
   console.log(`\n----\n`);
 
   console.log("Deploying SchemaRegistry implementation...");
   const SchemaRegistry = await ethers.getContractFactory("SchemaRegistry");
-  const schemaRegistryImplementation = await upgrades.deployImplementation(SchemaRegistry);
-  console.log(`SchemaRegistry implementation deployed at: ${schemaRegistryImplementation}`);
+  const schemaRegistry = await SchemaRegistry.deploy();
+  await schemaRegistry.waitForDeployment();
+  const schemaRegistryAddress = await schemaRegistry.getAddress();
+  console.log(`SchemaRegistry implementation deployed at: ${schemaRegistryAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
   await run("verify:verify", {
-    address: schemaRegistryImplementation,
-  });
-
-  console.log(`\n----\n`);
-
-  console.log("Deploying AttestationReader implementation...");
-  const AttestationReader = await ethers.getContractFactory("AttestationReader");
-  const attestationReaderImplementation = await upgrades.deployImplementation(AttestationReader);
-  console.log(`AttestationReader implementation deployed at: ${attestationReaderImplementation}`);
-
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-  await run("verify:verify", {
-    address: attestationReaderImplementation,
+    address: schemaRegistryAddress,
   });
 
   console.log(`\n----\n`);
 
   console.log(`** IMPLEMENTATION ADDRESSES SUMMARY **`);
-  console.log(`Router: ${routerImplementation}`);
-  console.log(`AttestationRegistry: ${attestationRegistryImplementation}`);
-  console.log(`ModuleRegistry: ${moduleRegistryImplementation}`);
-  console.log(`PortalRegistry: ${portalRegistryImplementation}`);
-  console.log(`SchemaRegistry: ${schemaRegistryImplementation}`);
-  console.log(`AttestationReader: ${attestationReaderImplementation}`);
+  console.log(`Router: ${routerAddress}`);
+  console.log(`AttestationRegistry: ${attestationRegistryAddress}`);
+  console.log(`ModuleRegistry: ${moduleRegistryAddress}`);
+  console.log(`PortalRegistry: ${portalRegistryAddress}`);
+  console.log(`SchemaRegistry: ${schemaRegistryAddress}`);
 
   console.log(`END IMPLEMENTATIONS DEPLOYMENT`);
 }

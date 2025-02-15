@@ -16,7 +16,7 @@ export const getNetworkConfig = (chainId: bigint): { isTestnet: boolean; chainPr
       return { isTestnet: true, chainPrefix: "0x0006000000000000000000000000000000000000000000000000000000000000" };
     case 56n: // BSC mainnet
       return { isTestnet: false, chainPrefix: "0x0006000000000000000000000000000000000000000000000000000000000000" };
-    case 11155111n: // Sepolia
+    case 11155111n: // Ethereum Sepolia
       return { isTestnet: true, chainPrefix: "0x0008000000000000000000000000000000000000000000000000000000000000" };
     default:
       throw new Error("Unknown network ID");

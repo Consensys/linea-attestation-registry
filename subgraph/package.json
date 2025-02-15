@@ -1,6 +1,6 @@
 {
   "name": "linea-attestation-registry-subgraph",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Subgraph to index the main objects of Verax",
   "keywords": [
     "linea-attestation-registry",
@@ -15,6 +15,9 @@
   "license": "MIT",
   "author": "Consensys",
   "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy",
     "build:arbitrum-one:v1": "pnpm run codegen:v1 && graph build subgraph-v1.arbitrum-one.yaml",
     "build:arbitrum-one:v2": "pnpm run codegen:v2 && graph build subgraph.arbitrum-one.yaml",
     "build:arbitrum-sepolia:v1": "pnpm run codegen:v1 && graph build subgraph-v1.arbitrum-sepolia.yaml",
@@ -53,9 +56,11 @@
     "test:coverage": "graph test -c",
     "test:docker": "graph test -d"
   },
+  "dependencies": {
+    "@graphprotocol/graph-ts": "0.30.0"
+  },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "0.73.0",
-    "@graphprotocol/graph-ts": "0.31.0",
+    "@graphprotocol/graph-cli": "0.49.0",
     "assemblyscript": "0.19.10",
     "matchstick-as": "0.6.0"
   }

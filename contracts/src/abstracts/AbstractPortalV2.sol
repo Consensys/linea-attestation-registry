@@ -82,9 +82,8 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
       OperationType.Attest
     );
 
-    _onAttest(attestationPayload, validationPayloads, msg.value);
-
     attestationRegistry.attest(attestationPayload, getAttester());
+    _onAttest(attestationPayload, validationPayloads, msg.value);
   }
 
   /**
@@ -105,9 +104,8 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
       OperationType.BulkAttest
     );
 
-    _onBulkAttest(attestationPayloads, validationPayloads);
-
     attestationRegistry.bulkAttest(attestationPayloads, getAttester());
+    _onBulkAttest(attestationPayloads, validationPayloads);
   }
 
   /**
@@ -132,9 +130,8 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
       OperationType.Replace
     );
 
-    _onReplace(attestationId, attestationPayload, getAttester(), msg.value);
-
     attestationRegistry.replace(attestationId, attestationPayload, getAttester());
+    _onReplace(attestationId, attestationPayload, getAttester(), msg.value);
   }
 
   /**
@@ -160,9 +157,8 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
       OperationType.BulkReplace
     );
 
-    _onBulkReplace(attestationIds, attestationsPayloads, validationPayloads);
-
     attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, getAttester());
+    _onBulkReplace(attestationIds, attestationsPayloads, validationPayloads);
   }
 
   /**
@@ -172,9 +168,8 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    * We strongly encourage implementing such a rule in your Portal if you intend on overriding this method
    */
   function revoke(bytes32 attestationId) public onlyPortalOwner {
-    _onRevoke(attestationId);
-
     attestationRegistry.revoke(attestationId);
+    _onRevoke(attestationId);
   }
 
   /**
@@ -182,9 +177,8 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    * @param attestationIds the IDs of the attestations to revoke
    */
   function bulkRevoke(bytes32[] memory attestationIds) public onlyPortalOwner {
-    _onBulkRevoke(attestationIds);
-
     attestationRegistry.bulkRevoke(attestationIds);
+    _onBulkRevoke(attestationIds);
   }
 
   /**

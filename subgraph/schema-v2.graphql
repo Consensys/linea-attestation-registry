@@ -87,6 +87,7 @@ type Audit @entity {
 type RegistryUpdate @entity {
   id: ID!
   registryType: String!
+  registryName: String!
   registryAddress: Bytes!
   auditInformation: AuditInformation!
 }

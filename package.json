@@ -1,6 +1,6 @@
 {
   "name": "linea-attestation-registry",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Core smart contracts to read and write attestations on Linea",
   "keywords": [
     "linea-attestation-registry",

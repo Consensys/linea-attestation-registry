@@ -12,6 +12,7 @@ function handleRegistryUpdate(registryAddress: Address, registryType: string, ev
   const eventId = event.transaction.hash.toHexString();
   const update = new RegistryUpdate(eventId);
   update.registryType = registryType;
+  update.registryName = `${registryType} Registry`;
   update.registryAddress = registryAddress;
   update.auditInformation = createAuditInformation(eventId, event);
   update.save();

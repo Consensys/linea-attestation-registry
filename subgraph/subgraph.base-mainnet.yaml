@@ -94,3 +94,12 @@ dataSources:
         - event: SchemaContextUpdated(indexed bytes32)
           handler: handleSchemaContextUpdated
       file: ./src/schema-registry.ts
+  - kind: ethereum
+    name: Router
+    network: base
+    source:
+      abi: Router
+      address: "0x4E797aD91EE5d467D878E71C65D564D5b2026bE9"
+      startBlock: 7731130
+    mapping:
+      # ...same mapping configuration as arbitrum-one...

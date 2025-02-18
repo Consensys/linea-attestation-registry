@@ -4,9 +4,9 @@ import { createAuditInformation } from "../src/utils";
 
 export function handleModuleRegistered(event: ModuleRegisteredEvent): void {
   const module = new Module(event.params.moduleAddress.toHexString().toLowerCase());
-  
+
   module.auditInformation = createAuditInformation(module.id, event);
-  
+
   incrementModulesCount();
 
   module.moduleAddress = event.params.moduleAddress;

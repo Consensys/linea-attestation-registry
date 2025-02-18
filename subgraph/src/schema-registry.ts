@@ -1,12 +1,16 @@
-import { SchemaContextUpdated, SchemaCreated as SchemaCreatedEvent, SchemaRegistry } from "../generated/SchemaRegistry/SchemaRegistry";
+import {
+  SchemaContextUpdated,
+  SchemaCreated as SchemaCreatedEvent,
+  SchemaRegistry,
+} from "../generated/SchemaRegistry/SchemaRegistry";
 import { Counter, Schema } from "../generated/schema";
 import { createAuditInformation } from "../src/utils";
 
 export function handleSchemaCreated(event: SchemaCreatedEvent): void {
   const schema = new Schema(event.params.id.toHexString());
-  
+
   schema.auditInformation = createAuditInformation(schema.id, event);
-  
+
   incrementSchemasCount();
 
   schema.name = event.params.name;

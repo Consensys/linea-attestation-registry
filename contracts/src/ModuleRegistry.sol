@@ -14,7 +14,6 @@ import { uncheckedInc32 } from "./Common.sol";
 
 /**
  * @title Module Registry
- * @author Consensys
  * @notice This contract aims to manage the Modules used by the Portals, including their discoverability
  */
 contract ModuleRegistry is OwnableUpgradeable {

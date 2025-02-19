@@ -21,7 +21,9 @@
     "lint": "eslint .",
     "prepare": "husky install",
     "prettier:check": "prettier --check \"**/*.{json,md,svg,yml,sol,js,jsx,ts,tsx,graphql}\"",
-    "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol,js,jsx,ts,tsx,graphql}\""
+    "prettier:write": "prettier --write \"**/*.{json,md,svg,yml,sol,js,jsx,ts,tsx,graphql}\"",
+    "prepare-subgraph": "ts-node subgraph/scripts/prepare.ts",
+    "build-subgraph": "npm run prepare-subgraph && graph build"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.10.0",

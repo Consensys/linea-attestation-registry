@@ -83,3 +83,12 @@ type Audit @entity {
   valueTransferred: BigInt
   gasPrice: BigInt
 }
+
+type RouterUpdate @entity {
+  id: ID!
+  registryType: String!
+  registryAddress: Bytes!
+  routerAddress: Bytes!
+  timestamp: BigInt!
+  auditInformation: AuditInformation!
+}

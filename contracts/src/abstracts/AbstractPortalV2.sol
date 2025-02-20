@@ -82,8 +82,9 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
       OperationType.Attest
     );
 
-    attestationRegistry.attest(attestationPayload, getAttester());
     _onAttest(attestationPayload, validationPayloads, msg.value);
+
+    attestationRegistry.attest(attestationPayload, getAttester());
   }
 
   /**
@@ -104,8 +105,9 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
       OperationType.BulkAttest
     );
 
-    attestationRegistry.bulkAttest(attestationPayloads, getAttester());
     _onBulkAttest(attestationPayloads, validationPayloads);
+
+    attestationRegistry.bulkAttest(attestationPayloads, getAttester());
   }
 
   /**
@@ -130,8 +132,9 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
       OperationType.Replace
     );
 
-    attestationRegistry.replace(attestationId, attestationPayload, getAttester());
     _onReplace(attestationId, attestationPayload, getAttester(), msg.value);
+
+    attestationRegistry.replace(attestationId, attestationPayload, getAttester());
   }
 
   /**
@@ -157,8 +160,9 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
       OperationType.BulkReplace
     );
 
-    attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, getAttester());
     _onBulkReplace(attestationIds, attestationsPayloads, validationPayloads);
+
+    attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, getAttester());
   }
 
   /**
@@ -168,8 +172,9 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    * We strongly encourage implementing such a rule in your Portal if you intend on overriding this method
    */
   function revoke(bytes32 attestationId) public onlyPortalOwner {
-    attestationRegistry.revoke(attestationId);
     _onRevoke(attestationId);
+
+    attestationRegistry.revoke(attestationId);
   }
 
   /**
@@ -177,8 +182,9 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    * @param attestationIds the IDs of the attestations to revoke
    */
   function bulkRevoke(bytes32[] memory attestationIds) public onlyPortalOwner {
-    attestationRegistry.bulkRevoke(attestationIds);
     _onBulkRevoke(attestationIds);
+
+    attestationRegistry.bulkRevoke(attestationIds);
   }
 
   /**

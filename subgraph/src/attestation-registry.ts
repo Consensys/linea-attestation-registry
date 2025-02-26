@@ -5,33 +5,16 @@ import {
   AttestationRevoked,
   VersionUpdated,
 } from "../generated/AttestationRegistry/AttestationRegistry";
-import { Attestation, Audit, AuditInformation, Counter, Portal, RegistryVersion, Schema } from "../generated/schema";
+import { Attestation, Counter, Portal, RegistryVersion, Schema } from "../generated/schema";
 import { BigInt, ByteArray, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import { createAuditInformation } from "../src/utils";
 
 export function handleAttestationRegistered(event: AttestationRegisteredEvent): void {
   const attestationRegistryContract = AttestationRegistry.bind(event.address);
   const attestationData = attestationRegistryContract.getAttestation(event.params.attestationId);
   const attestation = new Attestation(event.params.attestationId.toHexString().toLowerCase());
 
-  const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-  audit.blockNumber = event.block.number;
-  audit.transactionHash = event.transaction.hash;
-  audit.transactionTimestamp = event.block.timestamp;
-  audit.fromAddress = event.transaction.from;
-  audit.toAddress = event.transaction.to;
-  audit.valueTransferred = event.transaction.value;
-  audit.gasPrice = event.transaction.gasPrice;
-
-  audit.save();
-
-  const auditInformation = new AuditInformation(attestation.id);
-  auditInformation.creation = audit.id.toLowerCase();
-  auditInformation.lastModification = audit.id.toLowerCase();
-  auditInformation.modifications = [audit.id.toLowerCase()];
-
-  auditInformation.save();
-
-  attestation.auditInformation = auditInformation.id.toLowerCase();
+  attestation.auditInformation = createAuditInformation(attestation.id, event);
 
   incrementAttestationCount(attestationData.portal.toHexString(), attestationData.schemaId.toHexString());
 
@@ -116,28 +99,7 @@ export function handleAttestationRevoked(event: AttestationRevoked): void {
   if (attestation) {
     attestation.revoked = true;
     attestation.revocationDate = attestationData.revocationDate;
-
-    const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-    audit.blockNumber = event.block.number;
-    audit.transactionHash = event.transaction.hash;
-    audit.transactionTimestamp = event.block.timestamp;
-    audit.fromAddress = event.transaction.from;
-    audit.toAddress = event.transaction.to;
-    audit.valueTransferred = event.transaction.value;
-    audit.gasPrice = event.transaction.gasPrice;
-
-    audit.save();
-
-    const auditInformation = AuditInformation.load(attestation.id);
-    if (auditInformation !== null) {
-      auditInformation.lastModification = audit.id.toLowerCase();
-      auditInformation.modifications.push(audit.id.toLowerCase());
-
-      auditInformation.save();
-
-      attestation.auditInformation = auditInformation.id.toLowerCase();
-    }
-
+    attestation.auditInformation = createAuditInformation(attestation.id, event);
     attestation.save();
   }
 }
@@ -147,28 +109,7 @@ export function handleAttestationReplaced(event: AttestationReplaced): void {
 
   if (attestation) {
     attestation.replacedBy = event.params.replacedBy;
-
-    const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-    audit.blockNumber = event.block.number;
-    audit.transactionHash = event.transaction.hash;
-    audit.transactionTimestamp = event.block.timestamp;
-    audit.fromAddress = event.transaction.from;
-    audit.toAddress = event.transaction.to;
-    audit.valueTransferred = event.transaction.value;
-    audit.gasPrice = event.transaction.gasPrice;
-
-    audit.save();
-
-    const auditInformation = AuditInformation.load(attestation.id);
-    if (auditInformation !== null) {
-      auditInformation.lastModification = audit.id.toLowerCase();
-      auditInformation.modifications.push(audit.id.toLowerCase());
-
-      auditInformation.save();
-
-      attestation.auditInformation = auditInformation.id.toLowerCase();
-    }
-
+    attestation.auditInformation = createAuditInformation(attestation.id, event);
     attestation.save();
   }
 }
@@ -180,31 +121,7 @@ export function handleVersionUpdated(event: VersionUpdated): void {
     registryVersion = new RegistryVersion("registry-version");
   }
 
-  const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-  audit.blockNumber = event.block.number;
-  audit.transactionHash = event.transaction.hash;
-  audit.transactionTimestamp = event.block.timestamp;
-  audit.fromAddress = event.transaction.from;
-  audit.toAddress = event.transaction.to;
-  audit.valueTransferred = event.transaction.value;
-  audit.gasPrice = event.transaction.gasPrice;
-
-  audit.save();
-
-  let auditInformation = AuditInformation.load(registryVersion.id);
-  if (auditInformation === null) {
-    auditInformation = new AuditInformation(registryVersion.id);
-    auditInformation.creation = audit.id.toLowerCase();
-    auditInformation.lastModification = audit.id.toLowerCase();
-    auditInformation.modifications = [audit.id.toLowerCase()];
-  } else {
-    auditInformation.lastModification = audit.id.toLowerCase();
-    auditInformation.modifications.push(audit.id.toLowerCase());
-  }
-
-  auditInformation.save();
-
-  registryVersion.auditInformation = auditInformation.id.toLowerCase();
+  registryVersion.auditInformation = createAuditInformation(registryVersion.id, event);
 
   registryVersion.versionNumber = event.params.version;
   registryVersion.timestamp = event.block.timestamp;

@@ -6,32 +6,15 @@ import {
   PortalRegistry,
   PortalRevoked as PortalRevokedEvent,
 } from "../generated/PortalRegistry/PortalRegistry";
-import { Audit, AuditInformation, Counter, Issuer, Portal } from "../generated/schema";
+import { AuditInformation, Counter, Issuer, Portal } from "../generated/schema";
+import { createAuditInformation } from "../src/utils";
 
 export function handlePortalRegistered(event: PortalRegisteredEvent): void {
   const contract = PortalRegistry.bind(event.address);
   const portalData = contract.getPortalByAddress(event.params.portalAddress);
   const portal = new Portal(event.params.portalAddress.toHexString().toLowerCase());
 
-  const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-  audit.blockNumber = event.block.number;
-  audit.transactionHash = event.transaction.hash;
-  audit.transactionTimestamp = event.block.timestamp;
-  audit.fromAddress = event.transaction.from;
-  audit.toAddress = event.transaction.to;
-  audit.valueTransferred = event.transaction.value;
-  audit.gasPrice = event.transaction.gasPrice;
-
-  audit.save();
-
-  const auditInformation = new AuditInformation(portal.id);
-  auditInformation.creation = audit.id.toLowerCase();
-  auditInformation.lastModification = audit.id.toLowerCase();
-  auditInformation.modifications = [audit.id.toLowerCase()];
-
-  auditInformation.save();
-
-  portal.auditInformation = auditInformation.id.toLowerCase();
+  portal.auditInformation = createAuditInformation(portal.id, event);
 
   incrementPortalsCount();
 
@@ -65,27 +48,7 @@ export function handlePortalRevoked(event: PortalRevokedEvent): void {
 
 export function handleIssuerAdded(event: IssuerAdded): void {
   const issuer = new Issuer(event.params.issuerAddress.toHexString());
-
-  const audit = new Audit(event.transaction.hash.toHexString().toLowerCase());
-  audit.blockNumber = event.block.number;
-  audit.transactionHash = event.transaction.hash;
-  audit.transactionTimestamp = event.block.timestamp;
-  audit.fromAddress = event.transaction.from;
-  audit.toAddress = event.transaction.to;
-  audit.valueTransferred = event.transaction.value;
-  audit.gasPrice = event.transaction.gasPrice;
-
-  audit.save();
-
-  const auditInformation = new AuditInformation(issuer.id);
-  auditInformation.creation = audit.id.toLowerCase();
-  auditInformation.lastModification = audit.id.toLowerCase();
-  auditInformation.modifications = [audit.id.toLowerCase()];
-
-  auditInformation.save();
-
-  issuer.auditInformation = auditInformation.id.toLowerCase();
-
+  issuer.auditInformation = createAuditInformation(issuer.id, event);
   issuer.save();
 }
 

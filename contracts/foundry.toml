@@ -5,3 +5,39 @@ libs = ['node_modules', 'lib']
 test = 'test'
 cache_path = 'cache_forge'
 allow_paths = ["../node_modules"]
+
+# Version settings
+foundry_version = "stable"
+
+# Optimizer settings (Development)
+optimizer = true
+optimizer_runs = 1000
+via_ir = false
+
+# Test settings
+verbosity = 3
+fuzz = { runs = 1000 }
+
+# Gas reporting
+gas_reports = ["*"]
+gas_reports_ignore = []
+
+# Security settings
+deny_warnings = false # Temporarily disabled until examples are moved to a separate package (#927)
+
+# Fork settings
+fork_block_number = 0
+
+# Solidity compiler settings
+solc = "0.8.21"
+
+[profile.ci]
+fuzz = { runs = 10000 }
+verbosity = 4
+
+[profile.production]
+# Optimizer settings (Production)
+optimizer = true
+optimizer_runs = 1000000
+via_ir = true
+optimizer_details = { yul = true, deduplicate = true }

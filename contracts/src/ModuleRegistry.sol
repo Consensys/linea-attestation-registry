@@ -14,7 +14,6 @@ import { uncheckedInc32 } from "./Common.sol";
 
 /**
  * @title Module Registry
- * @author Consensys
  * @notice This contract aims to manage the Modules used by the Portals, including their discoverability
  */
 contract ModuleRegistry is OwnableUpgradeable {
@@ -51,7 +50,7 @@ contract ModuleRegistry is OwnableUpgradeable {
   /// @notice Event emitted when a Module is registered
   event ModuleRegistered(string name, string description, address moduleAddress);
   /// @notice Event emitted when the router address is set
-  event RouterSet(address router);
+  event RouterSet(address indexed router);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {

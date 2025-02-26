@@ -60,3 +60,30 @@ type RegistryVersion @entity {
   versionNumber: Int
   timestamp: BigInt
 }
+
+type AuditInformation @entity {
+  id: ID!
+  creation: Audit!
+  lastModification: Audit!
+  modifications: [Audit!]!
+}
+
+type Audit @entity {
+  id: ID!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+  transactionTimestamp: BigInt!
+  fromAddress: Bytes!
+  toAddress: Bytes
+  valueTransferred: BigInt
+  gasPrice: BigInt
+}
+
+type RouterUpdate @entity {
+  id: ID!
+  registryType: String!
+  registryAddress: Bytes!
+  routerAddress: Bytes!
+  timestamp: BigInt!
+  auditInformation: AuditInformation!
+}

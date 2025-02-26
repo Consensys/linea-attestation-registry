@@ -69,7 +69,7 @@ contract PortalRegistry is OwnableUpgradeable {
   /// @notice Event emitted when the `isTestnet` flag is updated
   event IsTestnetUpdated(bool isTestnet);
   /// @notice Event emitted when the router address is set
-  event RouterSet(address router);
+  event RouterSet(address indexed router);
   /// @notice Event emitted when the testnet status is set
   event TestnetStatusSet(bool isTestnet);
 

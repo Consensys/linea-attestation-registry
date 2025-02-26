@@ -54,7 +54,7 @@ contract SchemaRegistry is OwnableUpgradeable {
   /// @notice Event emitted when the schema issuer is updated
   event SchemaIssuerUpdated(bytes32 schemaId, address schemaIssuerAddress);
   /// @notice Event emitted when the router address is set
-  event RouterSet(address router);
+  event RouterSet(address indexed router);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {

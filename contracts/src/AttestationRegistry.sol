@@ -58,7 +58,7 @@ contract AttestationRegistry is OwnableUpgradeable {
   /// @notice Event emitted when the chain prefix is set
   event ChainPrefixUpdated(uint256 chainPrefix);
   /// @notice Event emitted when the router address is set
-  event RouterSet(address router);
+  event RouterSet(address indexed router);
 
   /**
    * @notice Checks if the caller is a registered portal

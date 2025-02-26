@@ -1,0 +1,6 @@
+{
+  "schemaRegistry": "0x0123456789abcdef0123456789abcdef01234567",
+  "moduleRegistry": "0x0123456789abcdef0123456789abcdef01234568",
+  "attestationRegistry": "0x0123456789abcdef0123456789abcdef01234569",
+  "attestationReader": "0x0123456789abcdef0123456789abcdef01234570"
+}

@@ -30,7 +30,7 @@ contract AttestationReader is OwnableUpgradeable {
   event EASRegistryAddressUpdated(address easRegistryAddress);
 
   /// @notice Event emitted when the router address is set
-  event RouterSet(address router);
+  event RouterSet(address indexed router);
 
   /**
    * @notice Contract initialization

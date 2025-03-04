@@ -2,10 +2,10 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { PausablePortal } from "../../../src/examples/portals/PausablePortal.sol";
-import { Router } from "../../../src/Router.sol";
-import { AbstractPortalV2 } from "../../../src/abstracts/AbstractPortalV2.sol";
-import { AttestationPayload } from "../../../src/types/Structs.sol";
+import { PausablePortal } from "../../src/portals/PausablePortal.sol";
+import { Router } from "@verax-attestation-registry/verax-contracts/Router.sol";
+import { AbstractPortalV2 } from "@verax-attestation-registry/verax-contracts/abstracts/AbstractPortalV2.sol";
+import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/types/Structs.sol";
 import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
 import { PortalRegistryMock } from "../../mocks/PortalRegistryMock.sol";
 import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";

@@ -3,11 +3,11 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { EASPortal } from "../../src/portals/EASPortal.sol";
-import { Router } from "@verax-attestation-registry/verax-contracts/Router.sol";
-import { AbstractPortalV2 } from "@verax-attestation-registry/verax-contracts/abstracts/AbstractPortalV2.sol";
-import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
-import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
-import { PortalRegistryMock } from "../../mocks/PortalRegistryMock.sol";
+import { Router } from "@verax-attestation-registry/verax-contracts/contracts/Router.sol";
+import { AbstractPortalV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractPortalV2.sol";
+import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
+import { ModuleRegistryMock } from "../mocks/ModuleRegistryMock.sol";
+import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 import { ERC165Upgradeable } from "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
 
 contract EASPortalTest is Test {

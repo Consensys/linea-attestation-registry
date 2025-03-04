@@ -3,8 +3,8 @@ pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
 import { ERC712ModuleV2, EIP712Domain, AbstractModuleV2 } from "../../src/modules/ERC712ModuleV2.sol";
-import { OperationType } from "@verax-attestation-registry/verax-contracts/types/Enums.sol";
-import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/types/Structs.sol";
+import { OperationType } from "@verax-attestation-registry/verax-contracts/contracts/types/Enums.sol";
+import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
 
 contract ERC712ModuleV2Test is Test {
   ERC712ModuleV2 private erc712Module;

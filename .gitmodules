@@ -10,3 +10,6 @@
     branch = "release-v4.9"
 	path = contracts/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "examples/lib/forge-std"]
+	path = examples/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std

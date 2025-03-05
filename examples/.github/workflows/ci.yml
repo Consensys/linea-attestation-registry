@@ -1,0 +1,39 @@
+name: Examples CI
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'examples/**'
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - 'examples/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Install dependencies
+        run: |
+          cd examples
+          forge install
+
+      - name: Build
+        run: |
+          cd examples
+          forge build
+
+      - name: Run tests
+        run: |
+          cd examples
+          forge test -vvv 

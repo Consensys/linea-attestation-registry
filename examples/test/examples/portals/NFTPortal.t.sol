@@ -2,10 +2,10 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { NFTPortal } from "../../../src/examples/portals/NFTPortal.sol";
-import { Router } from "../../../src/Router.sol";
-import { AbstractPortalV2 } from "../../../src/abstracts/AbstractPortalV2.sol";
-import { AttestationPayload } from "../../../src/types/Structs.sol";
+import { NFTPortal } from "../../../src/portals/NFTPortal.sol";
+import { Router } from "@verax-attestation-registry/verax-contracts/contracts/Router.sol";
+import { AbstractPortalV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractPortalV2.sol";
+import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
 import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
 import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
 import { IERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";

@@ -1,5 +1,6 @@
 packages:
   - 'contracts'
+  - 'examples'
   - 'explorer'
   - 'governance'
   - 'sdk'

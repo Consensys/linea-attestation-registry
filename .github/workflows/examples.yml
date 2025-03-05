@@ -1,0 +1,119 @@
+name: Examples
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+      - release/*
+  push:
+    branches:
+      - main
+      - dev
+      - release/*
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  build-examples:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: examples
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Show Foundry config
+        run: forge config
+
+      - name: Build Example Contracts
+        run: forge build
+
+      - name: Add build summary
+        run: |
+          echo "## Build result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Examples Built Successfully" >> $GITHUB_STEP_SUMMARY
+
+  test-examples:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: examples
+
+    env:
+      FOUNDRY_FUZZ_RUNS: 1000
+
+    needs: build-examples
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Run Example Unit Tests
+        run: forge test
+
+      - name: Run Hardhat Tests
+        run: npx hardhat test
+
+      - name: Add test summary
+        run: |
+          echo "## Example Unit Tests Result" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

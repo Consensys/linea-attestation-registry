@@ -45,6 +45,7 @@ forge coverage
 ### 2. Registries deployments
 
 1. Run the `pnpm run deploy NETWORK_NAME` command (replacing `NETWORK_NAME` with the name of the targeted network)
+   - If you want to skip contract verification (e.g., for networks without a functioning explorer), use `pnpm run deploy:no-verify NETWORK_NAME` instead
 2. Note down the summarized addresses (proxies), and the total logs can be of interest too
 3. Add the addresses of the Verax registries to the `.env.NETWORK` and your `.env` files
 
@@ -54,6 +55,7 @@ If the targeted network benefits from an EAS instance, you can deploy the contra
 
 1. Add the address of the EAS registry to the `EAS_REGISTRY_ADDRESS` value in your `.env` file
 2. Run the `pnpm run deploy:eas NETWORK_NAME` command (replacing `NETWORK_NAME` with the name of the targeted network)
+   - If you want to skip contract verification, use `pnpm run deploy:eas:no-verify NETWORK_NAME` instead
 3. Note down the Attestation Reader contract address
 4. Add the Attestation Reader contract address to the `.env.NETWORK` and your `.env` files
 
@@ -92,10 +94,10 @@ Run `pnpm run check:size` to check if all the contracts have a size below the th
 ### 4. Do upgrade
 
 1. Check your `.env` file contains the address of all the proxies for the targeted network
-2. Upgrade only the implementations that have changed since the last upgrade via the `pnpm run upgrade NETWORK_NAME`
-   command
-3. _Optional_: Upgrade all the implementations by forcing their re-deployment via the
-   `pnpm run upgrade:force NETWORK_NAME` command
+2. Upgrade only the implementations that have changed since the last upgrade via the `pnpm run upgrade NETWORK_NAME` command
+   - If you want to skip contract verification, use `pnpm run upgrade:no-verify NETWORK_NAME` instead
+3. _Optional_: If you need to upgrade EAS-related contracts, use the `pnpm run upgrade:eas NETWORK_NAME` command
+   - If you want to skip contract verification, use `pnpm run upgrade:eas:no-verify NETWORK_NAME` instead
 
 :warning: Note: Forcing the redeployment of all the implementations is more expensive!
 
@@ -143,3 +145,4 @@ calling the following methods :
 
 1. updateSchemaIssuer
 2. bulkUpdateSchemasIssuers
+

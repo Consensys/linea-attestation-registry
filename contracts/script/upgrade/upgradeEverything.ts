@@ -1,11 +1,15 @@
-import { ethers, run, upgrades } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 import dotenv from "dotenv";
-import { getNetworkConfig } from "../utils";
+import { getNetworkConfig, verifyContract } from "../utils";
 
 dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`Upgrading all contracts...`);
+
+  // Get verification flag from environment variable or command line argument
+  const shouldVerify = process.env.VERIFY_CONTRACTS !== "false";
+  console.log(`Contract verification is ${shouldVerify ? "enabled" : "disabled"}`);
 
   const routerProxyAddress = process.env.ROUTER_ADDRESS;
   if (!routerProxyAddress) {
@@ -95,31 +99,28 @@ async function main() {
   const routerImplementationAddress = await upgrades.erc1967.getImplementationAddress(routerProxyAddress);
 
   try {
-    await run("verify:verify", {
-      address: routerProxyAddress,
-    });
+    await verifyContract(routerProxyAddress, [], shouldVerify);
   } catch (e) {
     console.log(`Error verifying Router: ${e}`);
   }
 
-  console.log(`Router successfully upgraded and verified!`);
+  console.log(`Router successfully upgraded${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${routerProxyAddress}`);
   console.log(`Implementation is at ${routerImplementationAddress}`);
 
   console.log(`\n----\n`);
 
   const attestationImplementationAddress = await upgrades.erc1967.getImplementationAddress(attestationProxyAddress);
+
   try {
-    await run("verify:verify", {
-      address: attestationProxyAddress,
-    });
+    await verifyContract(attestationProxyAddress, [], shouldVerify);
   } catch (e) {
     console.log(`Error verifying AttestationRegistry: ${e}`);
   }
 
   const newVersion = await attestationRegistry.getVersionNumber();
 
-  console.log(`AttestationRegistry successfully upgraded to version ${newVersion} and verified!`);
+  console.log(`AttestationRegistry successfully upgraded to version ${newVersion}${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${attestationProxyAddress}`);
   console.log(`Implementation is at ${attestationImplementationAddress}`);
 
@@ -128,14 +129,12 @@ async function main() {
   const moduleImplementationAddress = await upgrades.erc1967.getImplementationAddress(moduleProxyAddress);
 
   try {
-    await run("verify:verify", {
-      address: moduleProxyAddress,
-    });
+    await verifyContract(moduleProxyAddress, [], shouldVerify);
   } catch (e) {
     console.log(`Error verifying ModuleRegistry: ${e}`);
   }
 
-  console.log(`ModuleRegistry successfully upgraded and verified!`);
+  console.log(`ModuleRegistry successfully upgraded${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${moduleProxyAddress}`);
   console.log(`Implementation is at ${moduleImplementationAddress}`);
 
@@ -144,14 +143,12 @@ async function main() {
   const portalImplementationAddress = await upgrades.erc1967.getImplementationAddress(portalProxyAddress);
 
   try {
-    await run("verify:verify", {
-      address: portalProxyAddress,
-    });
+    await verifyContract(portalProxyAddress, [], shouldVerify);
   } catch (e) {
     console.log(`Error verifying PortalRegistry: ${e}`);
   }
 
-  console.log(`PortalRegistry successfully upgraded and verified!`);
+  console.log(`PortalRegistry successfully upgraded${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${portalProxyAddress}`);
   console.log(`Implementation is at ${portalImplementationAddress}`);
 
@@ -160,14 +157,12 @@ async function main() {
   const schemaImplementationAddress = await upgrades.erc1967.getImplementationAddress(schemaProxyAddress);
 
   try {
-    await run("verify:verify", {
-      address: schemaProxyAddress,
-    });
+    await verifyContract(schemaProxyAddress, [], shouldVerify);
   } catch (e) {
-    console.log(`Error verifyingSchemaRegistry: ${e}`);
+    console.log(`Error verifying SchemaRegistry: ${e}`);
   }
 
-  console.log(`SchemaRegistry successfully upgraded and verified!`);
+  console.log(`SchemaRegistry successfully upgraded${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${schemaProxyAddress}`);
   console.log(`Implementation is at ${schemaImplementationAddress}`);
 

@@ -22,3 +22,37 @@ export const getNetworkConfig = (chainId: bigint): { isTestnet: boolean; chainPr
       throw new Error("Unknown network ID");
   }
 };
+
+/**
+ * Verifies a contract on the blockchain explorer if verification is enabled
+ * @param address The address of the contract to verify
+ * @param constructorArguments Optional constructor arguments for the contract
+ * @param shouldVerify Whether to perform verification (default: true)
+ * @returns A promise that resolves when verification is complete or skipped
+ */
+export const verifyContract = async (
+  address: string,
+  constructorArguments: unknown[] = [],
+  shouldVerify: boolean = true
+): Promise<void> => {
+  if (!shouldVerify) {
+    console.log(`Verification skipped for contract at ${address}`);
+    return;
+  }
+
+  try {
+    console.log(`Verifying contract at ${address}...`);
+    // Wait a bit before verification to ensure the contract is deployed and indexed
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    
+    const { run } = await import("hardhat");
+    await run("verify:verify", {
+      address,
+      constructorArguments: constructorArguments.length > 0 ? constructorArguments : undefined,
+    });
+    
+    console.log(`Contract at ${address} successfully verified!`);
+  } catch (error) {
+    console.error(`Verification failed for contract at ${address}:`, error);
+  }
+};

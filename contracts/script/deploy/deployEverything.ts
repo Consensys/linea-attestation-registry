@@ -1,11 +1,15 @@
-import { ethers, run, upgrades } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 import dotenv from "dotenv";
-import { getNetworkConfig } from "../utils";
+import { getNetworkConfig, verifyContract } from "../utils";
 
 dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`START SCRIPT`);
+
+  // Get verification flag from environment variable or command line argument
+  const shouldVerify = process.env.VERIFY_CONTRACTS !== "false";
+  console.log(`Contract verification is ${shouldVerify ? "enabled" : "disabled"}`);
 
   const network = await ethers.provider.getNetwork();
   const networkConfig = getNetworkConfig(network.chainId);
@@ -24,11 +28,9 @@ async function main() {
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  await run("verify:verify", {
-    address: routerProxyAddress,
-  });
+  await verifyContract(routerProxyAddress, [], shouldVerify);
 
-  console.log(`Router successfully deployed and verified!`);
+  console.log(`Router successfully deployed${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${routerProxyAddress}`);
   console.log(`Implementation is at ${routerImplementationAddress}`);
 
@@ -47,12 +49,9 @@ async function main() {
   );
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
+  await verifyContract(attestationRegistryProxyAddress, [], shouldVerify);
 
-  await run("verify:verify", {
-    address: attestationRegistryProxyAddress,
-  });
-
-  console.log(`AttestationRegistry successfully deployed and verified!`);
+  console.log(`AttestationRegistry successfully deployed${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${attestationRegistryProxyAddress}`);
   console.log(`Implementation is at ${attestationRegistryImplementationAddress}`);
 
@@ -68,12 +67,9 @@ async function main() {
   );
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
+  await verifyContract(moduleRegistryProxyAddress, [], shouldVerify);
 
-  await run("verify:verify", {
-    address: moduleRegistryProxyAddress,
-  });
-
-  console.log(`ModuleRegistry successfully deployed and verified!`);
+  console.log(`ModuleRegistry successfully deployed${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${moduleRegistryProxyAddress}`);
   console.log(`Implementation is at ${moduleRegistryImplementationAddress}`);
 
@@ -89,12 +85,9 @@ async function main() {
   );
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
+  await verifyContract(portalRegistryProxyAddress, [], shouldVerify);
 
-  await run("verify:verify", {
-    address: portalRegistryProxyAddress,
-  });
-
-  console.log(`PortalRegistry successfully deployed and verified!`);
+  console.log(`PortalRegistry successfully deployed${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${portalRegistryProxyAddress}`);
   console.log(`Implementation is at ${portalRegistryImplementationAddress}`);
 
@@ -110,12 +103,9 @@ async function main() {
   );
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
+  await verifyContract(schemaRegistryProxyAddress, [], shouldVerify);
 
-  await run("verify:verify", {
-    address: schemaRegistryProxyAddress,
-  });
-
-  console.log(`SchemaRegistry successfully deployed and verified!`);
+  console.log(`SchemaRegistry successfully deployed${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${schemaRegistryProxyAddress}`);
   console.log(`Implementation is at ${schemaRegistryImplementationAddress}`);
 

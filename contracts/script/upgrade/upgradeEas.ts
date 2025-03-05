@@ -1,10 +1,15 @@
-import { ethers, run, upgrades } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 import dotenv from "dotenv";
+import { verifyContract } from "../utils";
 
 dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`Upgrading EAS-related contracts...`);
+
+  // Get verification flag from environment variable or command line argument
+  const shouldVerify = process.env.VERIFY_CONTRACTS !== "false";
+  console.log(`Contract verification is ${shouldVerify ? "enabled" : "disabled"}`);
 
   const routerProxyAddress = process.env.ROUTER_ADDRESS;
   if (!routerProxyAddress) {
@@ -29,14 +34,12 @@ async function main() {
   );
 
   try {
-    await run("verify:verify", {
-      address: attestationReaderProxyAddress,
-    });
+    await verifyContract(attestationReaderProxyAddress, [], shouldVerify);
   } catch (e) {
     console.log(`Error verifying AttestationReader: ${e}`);
   }
 
-  console.log(`AttestationReader successfully upgraded and verified!`);
+  console.log(`AttestationReader successfully upgraded${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${attestationReaderProxyAddress}`);
   console.log(`Implementation is at ${attestationReaderImplementationAddress}`);
 

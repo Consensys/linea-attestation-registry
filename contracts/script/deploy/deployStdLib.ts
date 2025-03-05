@@ -1,10 +1,15 @@
-import { ethers, run } from "hardhat";
+import { ethers } from "hardhat";
 import dotenv from "dotenv";
+import { verifyContract } from "../utils";
 
 dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`Deploying Standard Library...`);
+
+  // Get verification flag from environment variable or command line argument
+  const shouldVerify = process.env.VERIFY_CONTRACTS !== "false";
+  console.log(`Contract verification is ${shouldVerify ? "enabled" : "disabled"}`);
 
   const portalRegistryAddress = process.env.PORTAL_REGISTRY_ADDRESS;
   const attestationRegistryAddress = process.env.ATTESTATION_REGISTRY_ADDRESS;
@@ -89,46 +94,21 @@ async function main() {
 
   console.log(`\n----\n`);
 
-  console.log("Verifying modules...");
+  if (shouldVerify) {
+    console.log("Verifying modules...");
 
-  await run("verify:verify", {
-    address: ecdsaModuleAddress,
-    constructorArguments: [portalRegistryAddress],
-  });
+    await verifyContract(ecdsaModuleAddress, [portalRegistryAddress], shouldVerify);
+    await verifyContract(erc1271ModuleAddress, [portalRegistryAddress], shouldVerify);
+    await verifyContract(feeModuleAddress, [portalRegistryAddress], shouldVerify);
+    await verifyContract(indexerModuleAddress, [attestationRegistryAddress, portalRegistryAddress], shouldVerify);
+    await verifyContract(issuersModuleAddress, [portalRegistryAddress], shouldVerify);
+    await verifyContract(schemaModuleAddress, [portalRegistryAddress], shouldVerify);
+    await verifyContract(senderModuleAddress, [portalRegistryAddress], shouldVerify);
 
-  await run("verify:verify", {
-    address: erc1271ModuleAddress,
-    constructorArguments: [portalRegistryAddress],
-  });
+    console.log("ALL MODULES VERIFIED!");
 
-  await run("verify:verify", {
-    address: feeModuleAddress,
-    constructorArguments: [portalRegistryAddress],
-  });
-
-  await run("verify:verify", {
-    address: indexerModuleAddress,
-    constructorArguments: [attestationRegistryAddress, portalRegistryAddress],
-  });
-
-  await run("verify:verify", {
-    address: issuersModuleAddress,
-    constructorArguments: [portalRegistryAddress],
-  });
-
-  await run("verify:verify", {
-    address: schemaModuleAddress,
-    constructorArguments: [portalRegistryAddress],
-  });
-
-  await run("verify:verify", {
-    address: senderModuleAddress,
-    constructorArguments: [portalRegistryAddress],
-  });
-
-  console.log("ALL MODULES VERIFIED!");
-
-  console.log(`\n----\n`);
+    console.log(`\n----\n`);
+  }
 
   console.log("Registering modules on the ModuleRegistry...");
   const moduleRegistry = await ethers.getContractAt("ModuleRegistry", moduleRegistryAddress);

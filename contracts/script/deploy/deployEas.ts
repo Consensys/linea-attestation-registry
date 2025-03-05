@@ -1,10 +1,15 @@
-import { ethers, run, upgrades } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 import dotenv from "dotenv";
+import { verifyContract } from "../utils";
 
 dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`START SCRIPT`);
+
+  // Get verification flag from environment variable or command line argument
+  const shouldVerify = process.env.VERIFY_CONTRACTS !== "false";
+  console.log(`Contract verification is ${shouldVerify ? "enabled" : "disabled"}`);
 
   const easRegistryAddress = process.env.EAS_REGISTRY_ADDRESS;
   if (!easRegistryAddress) {
@@ -29,11 +34,9 @@ async function main() {
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
-  await run("verify:verify", {
-    address: attestationReaderProxyAddress,
-  });
+  await verifyContract(attestationReaderProxyAddress, [], shouldVerify);
 
-  console.log(`AttestationReader successfully deployed and verified!`);
+  console.log(`AttestationReader successfully deployed${shouldVerify ? " and verified" : ""}!`);
   console.log(`Proxy is at ${attestationReaderProxyAddress}`);
   console.log(`Implementation is at ${attestationReaderImplementationAddress}`);
 

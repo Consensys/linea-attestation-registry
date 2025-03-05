@@ -357,13 +357,12 @@ ID. This prefix is defined in the [contracts/script/utils.ts](contracts/script/u
 
 ## Deployment of a new Verax instance
 
-Deploying a new Verax instance requires four main steps to cover the four main parts of the stack. Even if these steps
-are independent, and must not be done right away, they should be done in order.
-
-1. Deploy the core contracts (cf. [documentation](contracts/README.md) in the `contracts` folder)
-2. Deploy the subgraph (cf. [documentation](subgraph/README.md) in the `subgraph` folder)
-3. Upgrade and deploy the SDK (cf. [documentation](sdk/README.md) in the `sdk` folder)
-4. Deploy the Explorer (cf. [documentation](explorer/README.md) in the `explorer` folder)
+1. Deploy the contracts (see [contracts/README.md](contracts/README.md))
+   - This includes deploying the core contracts, verifying them on the block explorer, and optionally deploying the standard library and issuers
+   - A dedicated script for contract verification is also available for verifying contracts separately from deployment
+2. Deploy the subgraph (see [subgraph/README.md](subgraph/README.md))
+3. Update the SDK (see [sdk/README.md](sdk/README.md))
+4. Update the explorer (see [explorer/README.md](explorer/README.md))
 
 ## License
 

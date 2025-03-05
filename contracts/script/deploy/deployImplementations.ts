@@ -1,8 +1,12 @@
-import { ethers, run } from "hardhat";
-import { getNetworkConfig } from "../utils";
+import { ethers } from "hardhat";
+import { getNetworkConfig, verifyContract } from "../utils";
 
 async function main() {
   console.log(`START IMPLEMENTATIONS DEPLOYMENT`);
+
+  // Get verification flag from environment variable or command line argument
+  const shouldVerify = process.env.VERIFY_CONTRACTS !== "false";
+  console.log(`Contract verification is ${shouldVerify ? "enabled" : "disabled"}`);
 
   const network = await ethers.provider.getNetwork();
   const networkConfig = getNetworkConfig(network.chainId);
@@ -20,9 +24,7 @@ async function main() {
   console.log(`Router implementation deployed at: ${routerAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
-  await run("verify:verify", {
-    address: routerAddress,
-  });
+  await verifyContract(routerAddress, [], shouldVerify);
 
   console.log(`\n----\n`);
 
@@ -34,9 +36,7 @@ async function main() {
   console.log(`AttestationRegistry implementation deployed at: ${attestationRegistryAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
-  await run("verify:verify", {
-    address: attestationRegistryAddress,
-  });
+  await verifyContract(attestationRegistryAddress, [], shouldVerify);
 
   console.log(`\n----\n`);
 
@@ -48,9 +48,7 @@ async function main() {
   console.log(`ModuleRegistry implementation deployed at: ${moduleRegistryAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
-  await run("verify:verify", {
-    address: moduleRegistryAddress,
-  });
+  await verifyContract(moduleRegistryAddress, [], shouldVerify);
 
   console.log(`\n----\n`);
 
@@ -62,9 +60,7 @@ async function main() {
   console.log(`PortalRegistry implementation deployed at: ${portalRegistryAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
-  await run("verify:verify", {
-    address: portalRegistryAddress,
-  });
+  await verifyContract(portalRegistryAddress, [], shouldVerify);
 
   console.log(`\n----\n`);
 
@@ -76,9 +72,7 @@ async function main() {
   console.log(`SchemaRegistry implementation deployed at: ${schemaRegistryAddress}`);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
-  await run("verify:verify", {
-    address: schemaRegistryAddress,
-  });
+  await verifyContract(schemaRegistryAddress, [], shouldVerify);
 
   console.log(`\n----\n`);
 

@@ -2,11 +2,16 @@ import { ethers } from "hardhat";
 import dotenv from "dotenv";
 import { SchemaRegistry } from "../../typechain-types";
 import { EventLog } from "ethers";
+import { verifyContract } from "../utils";
 
 dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`START ISSUERS SCRIPT`);
+
+  // Get verification flag from environment variable or command line argument
+  const shouldVerify = process.env.VERIFY_CONTRACTS !== "false";
+  console.log(`Contract verification is ${shouldVerify ? "enabled" : "disabled"}`);
 
   const portalRegistryAddress = process.env.PORTAL_REGISTRY_ADDRESS ?? "";
   const moduleRegistryAddress = process.env.MODULE_REGISTRY_ADDRESS ?? "";
@@ -28,7 +33,10 @@ async function main() {
   const senderModule = await ethers.deployContract("SenderModuleV2", [portalRegistryAddress]);
   await senderModule.waitForDeployment();
   const senderModuleAddress = await senderModule.getAddress();
-  console.log(`SenderModule successfully deployed!`);
+  
+  await verifyContract(senderModuleAddress, [portalRegistryAddress], shouldVerify);
+  
+  console.log(`SenderModule successfully deployed${shouldVerify ? " and verified" : ""}!`);
   console.log(`SenderModule is at ${senderModuleAddress}`);
 
   console.log(`----\n`);
@@ -49,7 +57,10 @@ async function main() {
   const issuersModule = await ethers.deployContract("IssuersModuleV2", [portalRegistryAddress]);
   await issuersModule.waitForDeployment();
   const issuersModuleAddress = await issuersModule.getAddress();
-  console.log(`IssuersModule successfully deployed at ${issuersModuleAddress}`);
+  
+  await verifyContract(issuersModuleAddress, [portalRegistryAddress], shouldVerify);
+  
+  console.log(`IssuersModule successfully deployed${shouldVerify ? " and verified" : ""} at ${issuersModuleAddress}`);
 
   console.log(`----\n`);
 

@@ -1,3 +1,5 @@
+import { run } from "hardhat";
+
 export const getNetworkConfig = (chainId: bigint): { isTestnet: boolean; chainPrefix: `0x${string}` } => {
   switch (chainId) {
     case 59141n: // Linea Sepolia
@@ -45,7 +47,6 @@ export const verifyContract = async (
     // Wait a bit before verification to ensure the contract is deployed and indexed
     await new Promise((resolve) => setTimeout(resolve, 5000));
     
-    const { run } = await import("hardhat");
     await run("verify:verify", {
       address,
       constructorArguments: constructorArguments.length > 0 ? constructorArguments : undefined,

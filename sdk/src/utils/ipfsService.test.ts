@@ -33,17 +33,18 @@ describe("IPFSService", () => {
     });
 
     it("should handle timeouts", async () => {
-      mockAdd.mockImplementation(() => new Promise((_, reject) => {
-        setTimeout(() => reject(new Error("IPFS upload timeout")), 2000);
-      }));
+      mockAdd.mockImplementation(
+        () =>
+          new Promise((_, reject) => {
+            setTimeout(() => reject(new Error("IPFS upload timeout")), 2000);
+          }),
+      );
 
       await expect(service.uploadToIPFS("test data")).rejects.toThrow("IPFS upload timeout");
     }, 30000);
 
     it("should retry on failures", async () => {
-      mockAdd
-        .mockRejectedValueOnce(new Error("Temporary error"))
-        .mockResolvedValueOnce({ path: "mockHash" });
+      mockAdd.mockRejectedValueOnce(new Error("Temporary error")).mockResolvedValueOnce({ path: "mockHash" });
 
       const result = await service.uploadToIPFS("test data");
       expect(result).toBe("ipfs://mockHash");
@@ -68,8 +69,8 @@ describe("IPFSService", () => {
           name: { type: "string" },
           age: { type: "integer" },
           isActive: { type: "boolean" },
-          metadata: { type: "object", properties: {} }
-        }
+          metadata: { type: "object", properties: {} },
+        },
       };
       expect(service.validateOffchainSchema("mockId", validSchema)).toBe(true);
     });
@@ -79,28 +80,26 @@ describe("IPFSService", () => {
         type: "object",
         title: "Test Schema",
         description: "A test schema",
-        properties: { test: { type: "string" } }
+        properties: { test: { type: "string" } },
       };
       expect(() => service.validateOffchainSchema("", validSchema)).toThrow(
-        "Schema ID is required and must not be empty"
+        "Schema ID is required and must not be empty",
       );
     });
 
     it("should throw error for missing schema", () => {
       // @ts-expect-error Testing invalid input
-      expect(() => service.validateOffchainSchema("mockId", null)).toThrow(
-        "Schema must be a valid JSON Schema object"
-      );
+      expect(() => service.validateOffchainSchema("mockId", null)).toThrow("Schema must be a valid JSON Schema object");
     });
 
     it("should throw error for missing title", () => {
       const invalidSchema: SchemaDefinition = {
         type: "object",
         description: "Missing title",
-        properties: { test: { type: "string" } }
+        properties: { test: { type: "string" } },
       };
       expect(() => service.validateOffchainSchema("mockId", invalidSchema)).toThrow(
-        "Schema must have a non-empty title string"
+        "Schema must have a non-empty title string",
       );
     });
 
@@ -108,10 +107,10 @@ describe("IPFSService", () => {
       const invalidSchema: SchemaDefinition = {
         type: "object",
         title: "Test Schema",
-        properties: { test: { type: "string" } }
+        properties: { test: { type: "string" } },
       };
       expect(() => service.validateOffchainSchema("mockId", invalidSchema)).toThrow(
-        "Schema must have a non-empty description string"
+        "Schema must have a non-empty description string",
       );
     });
 
@@ -121,11 +120,11 @@ describe("IPFSService", () => {
         title: "Test Schema",
         description: "Invalid property type",
         properties: {
-          test: { type: "invalid" }
-        }
+          test: { type: "invalid" },
+        },
       };
       expect(() => service.validateOffchainSchema("mockId", invalidSchema)).toThrow(
-        "Property 'test' has unsupported type 'invalid'. Must be one of: string, number, integer, boolean, array, object"
+        "Property 'test' has unsupported type 'invalid'. Must be one of: string, number, integer, boolean, array, object",
       );
     });
   });
@@ -137,8 +136,8 @@ describe("IPFSService", () => {
       description: "A test schema",
       properties: {
         name: { type: "string" },
-        age: { type: "integer" }
-      }
+        age: { type: "integer" },
+      },
     };
 
     it("should validate valid payload", () => {
@@ -151,34 +150,24 @@ describe("IPFSService", () => {
     });
 
     it("should throw error for null payload", () => {
-      expect(() => service.validateOffchainPayload(null)).toThrow(
-        "Payload must be a non-array object"
-      );
+      expect(() => service.validateOffchainPayload(null)).toThrow("Payload must be a non-array object");
     });
 
     it("should throw error for empty object payload", () => {
-      expect(() => service.validateOffchainPayload({})).toThrow(
-        "Payload must contain at least one property"
-      );
+      expect(() => service.validateOffchainPayload({})).toThrow("Payload must contain at least one property");
     });
 
     it("should throw error for array payload", () => {
-      expect(() => service.validateOffchainPayload([])).toThrow(
-        "Payload must be a non-array object"
-      );
+      expect(() => service.validateOffchainPayload([])).toThrow("Payload must be a non-array object");
     });
 
     it("should throw error for non-object payload", () => {
-      expect(() => service.validateOffchainPayload("string")).toThrow(
-        "Payload must be a non-array object"
-      );
+      expect(() => service.validateOffchainPayload("string")).toThrow("Payload must be a non-array object");
     });
 
     it("should throw error for invalid payload against schema", () => {
       const invalidPayload = { name: 123, age: "invalid" };
-      expect(() => service.validateOffchainPayload(invalidPayload, validSchema)).toThrow(
-        "Payload validation failed"
-      );
+      expect(() => service.validateOffchainPayload(invalidPayload, validSchema)).toThrow("Payload validation failed");
     });
   });
 });

@@ -102,7 +102,9 @@ export class IPFSService {
       // Validate that property types are supported
       const validTypes = ["string", "number", "integer", "boolean", "array", "object"];
       if (!validTypes.includes(type)) {
-        throw new Error(`Property '${propName}' has unsupported type '${type}'. Must be one of: ${validTypes.join(", ")}`);
+        throw new Error(
+          `Property '${propName}' has unsupported type '${type}'. Must be one of: ${validTypes.join(", ")}`,
+        );
       }
     }
 
@@ -143,9 +145,9 @@ export class IPFSService {
       const valid = validate(payload);
 
       if (!valid) {
-        const errors = validate.errors?.map((err: ErrorObject) => 
-          `${err.instancePath || "root"} ${err.message}`
-        ).join(", ") || "Unknown validation error";
+        const errors =
+          validate.errors?.map((err: ErrorObject) => `${err.instancePath || "root"} ${err.message}`).join(", ") ||
+          "Unknown validation error";
         throw new Error(`Payload validation failed: ${errors}`);
       }
     }

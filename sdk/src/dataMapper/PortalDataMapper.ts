@@ -29,7 +29,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
   /**
    * Simulates issuing an off-chain attestation by first uploading the payload to IPFS
    * and then preparing an on-chain attestation with the IPFS URI.
-   * 
+   *
    * @param portalAddress - The address of the portal to issue the attestation through
    * @param attestationPayload - The payload containing both attestation and off-chain data
    * @param validationPayloads - Optional validation payloads for portal modules
@@ -41,7 +41,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     portalAddress: Address,
     attestationPayload: OffChainAttestationPayload,
     validationPayloads: string[] = [],
-    customAbi?: Abi
+    customAbi?: Abi,
   ) {
     // Validate input parameters
     if (!portalAddress) throw new Error("Portal address is required");
@@ -50,29 +50,25 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     }
 
     const { schemaId, payload } = attestationPayload.offchainData;
-    
+
     // Validate schema exists and is registered
     const schema = await this.veraxSdk.schema.findOneById(schemaId);
     if (!schema) {
       throw new Error(
-        `Schema ${schemaId} not found. The schema must be registered in the SchemaRegistry before issuing off-chain attestations.`
+        `Schema ${schemaId} not found. The schema must be registered in the SchemaRegistry before issuing off-chain attestations.`,
       );
     }
 
     // Validate IPFS configuration
     if (!this.conf.offchainConfig?.ipfsConfig) {
-      throw new Error(
-        "IPFS configuration missing. Please provide IPFS credentials in the SDK configuration."
-      );
+      throw new Error("IPFS configuration missing. Please provide IPFS credentials in the SDK configuration.");
     }
 
     // Validate payload against schema using IPFSService
     const ipfsService = new IPFSService(this.conf.offchainConfig.ipfsConfig);
     try {
       // Parse schema string into SchemaDefinition if needed
-      const schemaDefinition = typeof schema.schema === 'string' 
-        ? JSON.parse(schema.schema)
-        : schema.schema;
+      const schemaDefinition = typeof schema.schema === "string" ? JSON.parse(schema.schema) : schema.schema;
       ipfsService.validateOffchainPayload(payload, schemaDefinition);
     } catch (error) {
       if (error instanceof SyntaxError) {
@@ -82,9 +78,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     }
 
     // Convert payload to string if it's an object
-    const payloadString = typeof payload === "string" 
-      ? payload
-      : JSON.stringify(payload);
+    const payloadString = typeof payload === "string" ? payload : JSON.stringify(payload);
 
     // Upload to IPFS with retries and timeout
     let uri: string;
@@ -93,7 +87,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     } catch (error) {
       throw new Error(
         `Failed to upload payload to IPFS: ${(error as Error).message}. ` +
-        "Please check your IPFS configuration and network connection."
+          "Please check your IPFS configuration and network connection.",
       );
     }
 
@@ -125,19 +119,17 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
           validationPayloads,
         ],
         0n,
-        customAbi
+        customAbi,
       );
     } catch (error) {
-      throw new Error(
-        `Failed to simulate on-chain attestation: ${(error as Error).message}`
-      );
+      throw new Error(`Failed to simulate on-chain attestation: ${(error as Error).message}`);
     }
   }
 
   /**
    * Issues an off-chain attestation by uploading the payload to IPFS and creating
    * an on-chain attestation with the IPFS URI.
-   * 
+   *
    * @param portalAddress - The address of the portal to issue the attestation through
    * @param attestationPayload - The payload containing both attestation and off-chain data
    * @param validationPayloads - Optional validation payloads for portal modules
@@ -150,14 +142,9 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     attestationPayload: OffChainAttestationPayload,
     validationPayloads: string[] = [],
     waitForConfirmation: boolean = false,
-    customAbi?: Abi
+    customAbi?: Abi,
   ) {
-    const request = await this.simulateAttestOffChain(
-      portalAddress,
-      attestationPayload,
-      validationPayloads,
-      customAbi
-    );
+    const request = await this.simulateAttestOffChain(portalAddress, attestationPayload, validationPayloads, customAbi);
     return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
   }
 

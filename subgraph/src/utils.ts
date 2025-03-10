@@ -1,9 +1,9 @@
 import { ethereum } from "@graphprotocol/graph-ts";
-import { Audit, AuditInformation } from "../generated/schema";
+import { Audit as AuditEntity, AuditInformation as AuditInfoEntity } from "../generated/schema";
 
 export function createAuditInformation(eventId: string, event: ethereum.Event): string {
   const auditId = eventId + "-audit";
-  const audit = new Audit(auditId);
+  const audit = new AuditEntity(auditId);
   if (!event) return auditId;
 
   const txn = event.transaction;
@@ -18,11 +18,15 @@ export function createAuditInformation(eventId: string, event: ethereum.Event): 
   audit.gasPrice = txn.gasPrice;
   audit.save();
 
-  const auditInfo = new AuditInformation(eventId);
+  const auditInfo = new AuditInfoEntity(eventId);
   auditInfo.creation = auditId;
   auditInfo.lastModification = auditId;
   auditInfo.modifications = [auditId];
   auditInfo.save();
 
   return eventId;
+}
+
+export function getRegistryName(registryType: string): string {
+  return `${registryType} Registry`;
 }

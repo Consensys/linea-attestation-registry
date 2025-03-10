@@ -96,17 +96,19 @@ dataSources:
       file: ./src/schema-registry.ts
   - kind: ethereum
     name: Router
-    network: bsc-testnet
+    network: chapel
     source:
       abi: Router
-      address: "0x4E797aD91EE5d467D878E71C65D564D5b2026bE9"
-      startBlock: 34645879
+      address: "0x90b8542d7288a83EC887229A7C727989C3b56209"
+      startBlock: 41312659
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - RegistryUpdate
+        - Audit
+        - AuditInformation
       abis:
         - name: Router
           file: ./abis/Router.json

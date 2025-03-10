@@ -99,14 +99,16 @@ dataSources:
     network: base
     source:
       abi: Router
-      address: "0x4E797aD91EE5d467D878E71C65D564D5b2026bE9"
-      startBlock: 7731130
+      address: "0x5A5A30aB3d6A6DD3463512793C7c36E9B47615e8"
+      startBlock: 13666866
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - RegistryUpdate
+        - Audit
+        - AuditInformation
       abis:
         - name: Router
           file: ./abis/Router.json

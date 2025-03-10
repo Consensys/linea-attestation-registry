@@ -6,13 +6,13 @@ import {
   SchemaRegistryUpdated,
 } from "../generated/Router/Router";
 import { RegistryUpdate } from "../generated/schema";
-import { createAuditInformation } from "../src/utils";
+import { createAuditInformation, getRegistryName } from "../src/utils";
 
 function handleRegistryUpdate(registryAddress: Address, registryType: string, event: ethereum.Event): void {
   const eventId = event.transaction.hash.toHexString();
   const update = new RegistryUpdate(eventId);
   update.registryType = registryType;
-  update.registryName = `${registryType} Registry`;
+  update.registryName = getRegistryName(registryType);
   update.registryAddress = registryAddress;
   update.auditInformation = createAuditInformation(eventId, event);
   update.save();

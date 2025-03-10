@@ -103,6 +103,21 @@ export type OffChainAttestationPayload = AttestationPayload & {
   };
 };
 
+export type UploadOptions = {
+  timeout?: number;
+  maxRetries?: number;
+  retryDelay?: number;
+  ipfsUrl?: string;
+};
+
+export interface SchemaDefinition {
+  title?: string;
+  description?: string;
+  properties: Record<string, unknown>;
+  required?: string[];
+  type: "object";
+}
+
 declare global {
   interface Window {
     ethereum: EIP1193Provider;

@@ -257,37 +257,4 @@ export default class AttestationDataMapper extends BaseDataMapper<
     // Issue on-chain attestation
     return this.simulateContract("attest", [onChainPayload, validationPayloads || []]);
   }
-
-  async bulkAttestOffChain(attestationPayloads: OffChainAttestationPayload[], validationPayloads?: string[][]) {
-    if (!this.conf.offchainConfig?.ipfsConfig) {
-      throw new Error("IPFS configuration missing");
-    }
-    const ipfsService = new IPFSService(this.conf.offchainConfig.ipfsConfig);
-
-    // Process each payload in parallel
-    const onChainPayloads = await Promise.all(
-      attestationPayloads.map(async (payload) => {
-        const schema = await this.veraxSdk.schema.findOneById(payload.offchainData.schemaId);
-        if (!schema) {
-          throw new Error(`Schema ${payload.offchainData.schemaId} not found`);
-        }
-
-        const uri = await ipfsService.uploadToIPFS(payload.offchainData.payload);
-
-        return {
-          ...payload,
-          schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID,
-          attestationData: encodeAbiParameters(
-            [
-              { name: "schemaId", type: "bytes32" },
-              { name: "uri", type: "string" },
-            ],
-            [payload.offchainData.schemaId as `0x${string}`, uri],
-          ),
-        };
-      }),
-    );
-
-    return this.simulateContract("bulkAttest", [onChainPayloads, validationPayloads || []]);
-  }
 }

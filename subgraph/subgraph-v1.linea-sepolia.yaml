@@ -15,6 +15,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Attestation
+        - RegistryVersion
       abis:
         - name: AttestationRegistry
           file: ./abis/AttestationRegistry.json
@@ -27,7 +28,9 @@ dataSources:
           handler: handleAttestationReplaced
         - event: VersionUpdated(uint16)
           handler: handleVersionUpdated
-      file: ./src/attestation-registry-v1.ts
+        - event: RouterSet(indexed address)
+          handler: handleAttestationRegistryRouterSet
+      file: ./src/router.ts
   - kind: ethereum
     name: ModuleRegistry
     network: linea-sepolia
@@ -41,13 +44,16 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Module
+        - RegistryVersion
       abis:
         - name: ModuleRegistry
           file: ./abis/ModuleRegistry.json
       eventHandlers:
         - event: ModuleRegistered(string,string,address)
           handler: handleModuleRegistered
-      file: ./src/module-registry-v1.ts
+        - event: RouterSet(indexed address)
+          handler: handleModuleRegistryRouterSet
+      file: ./src/router.ts
   - kind: ethereum
     name: PortalRegistry
     network: linea-sepolia
@@ -61,6 +67,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Portal
+        - RegistryVersion
       abis:
         - name: PortalRegistry
           file: ./abis/PortalRegistry.json
@@ -71,7 +78,9 @@ dataSources:
           handler: handleIssuerAdded
         - event: IssuerRemoved(address)
           handler: handleIssuerRemoved
-      file: ./src/portal-registry-v1.ts
+        - event: RouterSet(indexed address)
+          handler: handlePortalRegistryRouterSet
+      file: ./src/router.ts
   - kind: ethereum
     name: SchemaRegistry
     network: linea-sepolia
@@ -85,6 +94,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Schema
+        - RegistryVersion
       abis:
         - name: SchemaRegistry
           file: ./abis/SchemaRegistry.json
@@ -93,4 +103,6 @@ dataSources:
           handler: handleSchemaCreated
         - event: SchemaContextUpdated(indexed bytes32)
           handler: handleSchemaContextUpdated
-      file: ./src/schema-registry-v1.ts
+        - event: RouterSet(indexed address)
+          handler: handleSchemaRegistryRouterSet
+      file: ./src/router.ts

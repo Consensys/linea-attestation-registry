@@ -127,7 +127,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
   async updateRouter(routerAddress: Address, options?: TransactionOptions) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation || false);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async simulateMassImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
@@ -151,13 +151,9 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return this.simulateContract("massImport", [attestationPayloadsArg, portalAddress]);
   }
 
-  async massImport(
-    portalAddress: Address,
-    attestationPayloads: AttestationPayload[],
-    options?: TransactionOptions,
-  ) {
+  async massImport(portalAddress: Address, attestationPayloads: AttestationPayload[], options?: TransactionOptions) {
     const request = await this.simulateMassImport(portalAddress, attestationPayloads);
-    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation || false);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async simulateIncrementVersionNumber() {
@@ -166,7 +162,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
   async incrementVersionNumber(options?: TransactionOptions) {
     const request = await this.simulateIncrementVersionNumber();
-    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation || false);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async isRegistered(attestationId: string) {

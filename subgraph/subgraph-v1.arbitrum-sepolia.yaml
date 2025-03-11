@@ -119,4 +119,6 @@ dataSources:
           handler: handleModuleRegistryUpdated
         - event: PortalRegistryUpdated(indexed address)
           handler: handlePortalRegistryUpdated
-      file: ./src/router.ts
+        - event: SchemaRegistryUpdated(indexed address)
+          handler: handleSchemaRegistryUpdated
+      file: ./src/router-v1.ts

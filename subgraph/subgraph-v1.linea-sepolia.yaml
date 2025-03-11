@@ -121,4 +121,4 @@ dataSources:
           handler: handlePortalRegistryUpdated
         - event: SchemaRegistryUpdated(indexed address)
           handler: handleSchemaRegistryUpdated
-      file: ./src/router.ts
+      file: ./src/router-v1.ts

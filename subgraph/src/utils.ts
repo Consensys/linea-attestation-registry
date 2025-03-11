@@ -13,7 +13,10 @@ export function createAuditInformation(eventId: string, event: ethereum.Event): 
   audit.transactionHash = txn.hash;
   audit.transactionTimestamp = block.timestamp;
   audit.fromAddress = txn.from;
-  audit.toAddress = txn.to || txn.from;
+  // Only set toAddress for regular transactions (not contract creations)
+  if (txn.to) {
+    audit.toAddress = txn.to;
+  }
   audit.valueTransferred = txn.value;
   audit.gasPrice = txn.gasPrice;
   audit.save();

@@ -99,7 +99,7 @@ dataSources:
     network: arbitrum-one
     source:
       abi: Router
-      address: "0x5A5A30aB3d6A6DD3463512793C7c36E9B47615e8"
+      address: "0xa77196867bB03D04786EF636cDdD82f37A1248a9"
       startBlock: 149970435
     mapping:
       kind: ethereum/events

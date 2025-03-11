@@ -99,7 +99,7 @@ dataSources:
     network: linea-sepolia
     source:
       abi: Router
-      address: "0x5A5A30aB3d6A6DD3463512793C7c36E9B47615e8"
+      address: "0xAfA952790492DDeB474012cEA12ba34B788ab39F"
       startBlock: 487966
     mapping:
       kind: ethereum/events

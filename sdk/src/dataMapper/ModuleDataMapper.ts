@@ -1,6 +1,6 @@
 import { Address } from "viem";
 import { Module_filter, Module_orderBy } from "../../.graphclient";
-import { AttestationPayload, Module } from "../types";
+import { AttestationPayload, Module, TransactionOptions } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiModuleRegistry } from "../abi/ModuleRegistry";
@@ -21,25 +21,25 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     return this.simulateContract("updateRouter", [routerAddress]);
   }
 
-  async updateRouter(routerAddress: Address, waitForConfirmation: boolean = false) {
+  async updateRouter(routerAddress: Address, options?: TransactionOptions) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async simulateRegister(name: string, description: string, moduleAddress: Address) {
     return this.simulateContract("register", [name, description, moduleAddress]);
   }
 
-  async register(name: string, description: string, moduleAddress: Address, waitForConfirmation: boolean = false) {
+  async register(name: string, description: string, moduleAddress: Address, options?: TransactionOptions) {
     const request = await this.simulateRegister(name, description, moduleAddress);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async simulateRunModules(
     modulesAddresses: Address[],
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
-    value: number,
+    value?: bigint,
   ) {
     const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
     if (!matchingSchema) {
@@ -50,7 +50,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
       modulesAddresses,
       [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
       validationPayloads,
-      `0x${value}`,
+      value ? `0x${value}` : undefined,
     ]);
   }
 
@@ -58,11 +58,15 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     modulesAddresses: Address[],
     attestationPayload: AttestationPayload,
     validationPayloads: string[],
-    value: number,
-    waitForConfirmation: boolean = false,
+    options?: TransactionOptions,
   ) {
-    const request = await this.simulateRunModules(modulesAddresses, attestationPayload, validationPayloads, value);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    const request = await this.simulateRunModules(
+      modulesAddresses,
+      attestationPayload,
+      validationPayloads,
+      options?.value,
+    );
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async simulateBulkRunModules(
@@ -92,10 +96,10 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     modulesAddresses: Address[],
     attestationPayloads: AttestationPayload[],
     validationPayloads: string[][],
-    waitForConfirmation: boolean = false,
+    options?: TransactionOptions,
   ) {
     const request = await this.simulateBulkRunModules(modulesAddresses, attestationPayloads, validationPayloads);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async isContractAddress(contractAddress: Address) {

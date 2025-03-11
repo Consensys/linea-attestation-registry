@@ -1,6 +1,6 @@
 import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
-import { Attestation, AttestationPayload, OffchainData, Schema } from "../types";
+import { Attestation, AttestationPayload, OffchainData, Schema, TransactionOptions } from "../types";
 import { ActionType, Constants } from "../utils/constants";
 import { Attestation_filter, Attestation_orderBy, OrderDirection } from "../../.graphclient";
 import { handleError } from "../utils/errorHandler";
@@ -125,9 +125,9 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return this.simulateContract("updateRouter", [routerAddress]);
   }
 
-  async updateRouter(routerAddress: Address, waitForConfirmation: boolean = false) {
+  async updateRouter(routerAddress: Address, options?: TransactionOptions) {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async simulateMassImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
@@ -151,22 +151,18 @@ export default class AttestationDataMapper extends BaseDataMapper<
     return this.simulateContract("massImport", [attestationPayloadsArg, portalAddress]);
   }
 
-  async massImport(
-    portalAddress: Address,
-    attestationPayloads: AttestationPayload[],
-    waitForConfirmation: boolean = false,
-  ) {
+  async massImport(portalAddress: Address, attestationPayloads: AttestationPayload[], options?: TransactionOptions) {
     const request = await this.simulateMassImport(portalAddress, attestationPayloads);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async simulateIncrementVersionNumber() {
     return this.simulateContract("incrementVersionNumber", []);
   }
 
-  async incrementVersionNumber(waitForConfirmation: boolean = false) {
+  async incrementVersionNumber(options?: TransactionOptions) {
     const request = await this.simulateIncrementVersionNumber();
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async isRegistered(attestationId: string) {

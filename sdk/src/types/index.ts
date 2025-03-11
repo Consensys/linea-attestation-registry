@@ -1,4 +1,4 @@
-import { Address, Chain, EIP1193Provider } from "viem";
+import { Address, Abi, Chain, EIP1193Provider } from "viem";
 import { SDKMode } from "../utils/constants";
 
 export interface Conf {
@@ -70,6 +70,12 @@ export type OnChainModule = {
   moduleAddress: Address; // The address of the module.
   name: string; // The name of the module.
   description: string; // A description of the module.
+};
+
+export type TransactionOptions = {
+  waitForConfirmation?: boolean;
+  value?: bigint;
+  customAbi?: Abi;
 };
 
 declare global {

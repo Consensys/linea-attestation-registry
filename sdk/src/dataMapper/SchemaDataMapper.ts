@@ -1,6 +1,6 @@
 import { Address, TransactionReceipt } from "viem";
 import { Schema_filter, Schema_orderBy } from "../../.graphclient";
-import { Schema } from "../types";
+import { Schema, TransactionOptions } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiSchemaRegistry } from "../abi/SchemaRegistry";
@@ -22,36 +22,27 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
     return this.simulateContract("updateRouter", [routerAddress]);
   }
 
-  async updateRouter(
-    routerAddress: Address,
-    waitForConfirmation: boolean = false,
-  ): Promise<Partial<TransactionReceipt>> {
+  async updateRouter(routerAddress: Address, options?: TransactionOptions): Promise<Partial<TransactionReceipt>> {
     const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async simulateCreate(name: string, description: string, context: string, schemaString: string) {
     return this.simulateContract("createSchema", [name, description, context, schemaString]);
   }
 
-  async create(
-    name: string,
-    description: string,
-    context: string,
-    schemaString: string,
-    waitForConfirmation: boolean = false,
-  ) {
+  async create(name: string, description: string, context: string, schemaString: string, options?: TransactionOptions) {
     const request = await this.simulateCreate(name, description, context, schemaString);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async simulateUpdateContext(schemaId: string, context: string) {
     return this.simulateContract("updateContext", [schemaId, context]);
   }
 
-  async updateContext(schemaId: string, context: string, waitForConfirmation: boolean = false) {
+  async updateContext(schemaId: string, context: string, options?: TransactionOptions) {
     const request = await this.simulateUpdateContext(schemaId, context);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async getIdFromSchemaString(schema: string) {

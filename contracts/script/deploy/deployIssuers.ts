@@ -33,9 +33,9 @@ async function main() {
   const senderModule = await ethers.deployContract("SenderModuleV2", [portalRegistryAddress]);
   await senderModule.waitForDeployment();
   const senderModuleAddress = await senderModule.getAddress();
-  
+
   await verifyContract(senderModuleAddress, [portalRegistryAddress], shouldVerify);
-  
+
   console.log(`SenderModule successfully deployed${shouldVerify ? " and verified" : ""}!`);
   console.log(`SenderModule is at ${senderModuleAddress}`);
 
@@ -57,9 +57,9 @@ async function main() {
   const issuersModule = await ethers.deployContract("IssuersModuleV2", [portalRegistryAddress]);
   await issuersModule.waitForDeployment();
   const issuersModuleAddress = await issuersModule.getAddress();
-  
+
   await verifyContract(issuersModuleAddress, [portalRegistryAddress], shouldVerify);
-  
+
   console.log(`IssuersModule successfully deployed${shouldVerify ? " and verified" : ""} at ${issuersModuleAddress}`);
 
   console.log(`----\n`);

@@ -35,7 +35,7 @@ export const getNetworkConfig = (chainId: bigint): { isTestnet: boolean; chainPr
 export const verifyContract = async (
   address: string,
   constructorArguments: unknown[] = [],
-  shouldVerify: boolean = true
+  shouldVerify: boolean = true,
 ): Promise<void> => {
   if (!shouldVerify) {
     console.log(`Verification skipped for contract at ${address}`);
@@ -46,12 +46,12 @@ export const verifyContract = async (
     console.log(`Verifying contract at ${address}...`);
     // Wait a bit before verification to ensure the contract is deployed and indexed
     await new Promise((resolve) => setTimeout(resolve, 5000));
-    
+
     await run("verify:verify", {
       address,
       constructorArguments: constructorArguments.length > 0 ? constructorArguments : undefined,
     });
-    
+
     console.log(`Contract at ${address} successfully verified!`);
   } catch (error) {
     console.error(`Verification failed for contract at ${address}:`, error);

@@ -120,7 +120,9 @@ async function main() {
 
   const newVersion = await attestationRegistry.getVersionNumber();
 
-  console.log(`AttestationRegistry successfully upgraded to version ${newVersion}${shouldVerify ? " and verified" : ""}!`);
+  console.log(
+    `AttestationRegistry successfully upgraded to version ${newVersion}${shouldVerify ? " and verified" : ""}!`,
+  );
   console.log(`Proxy is at ${attestationProxyAddress}`);
   console.log(`Implementation is at ${attestationImplementationAddress}`);
 

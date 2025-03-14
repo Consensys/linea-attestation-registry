@@ -93,12 +93,9 @@ export type TransactionOptions = {
 export interface OffChainAttestationConfig {
   projectId: string;
   projectSecret: string;
-  ipfsConfig?: IPFSConfig;
-  subdomain?: string;
   host?: string;
   port?: number;
   protocol?: string;
-  timeout?: number;
   maxRetries?: number;
 }
 
@@ -107,13 +104,6 @@ export type OffChainAttestationPayload = AttestationPayload & {
     payload: unknown;
     schemaId: string;
   };
-};
-
-export type UploadOptions = {
-  timeout?: number;
-  maxRetries?: number;
-  retryDelay?: number;
-  ipfsUrl?: string;
 };
 
 export interface SchemaDefinition {

@@ -18,7 +18,7 @@ describe("ipfsClient", () => {
       });
 
       const content = await getIPFSContent(ipfsHash);
-      expect(axios.get).toHaveBeenCalledWith(`https://cloudflare-ipfs.com/ipfs/${ipfsHash}`);
+      expect(axios.get).toHaveBeenCalledWith(`https://ipfs.io/ipfs/${ipfsHash}`);
       expect(content).toBe(mockIPFSData);
     });
 
@@ -28,7 +28,7 @@ describe("ipfsClient", () => {
       (axios.get as jest.Mock).mockRejectedValueOnce(mockError);
 
       await expect(getIPFSContent(ipfsHash)).rejects.toThrow("Network error");
-      expect(axios.get).toHaveBeenCalledWith(`https://cloudflare-ipfs.com/ipfs/${ipfsHash}`);
+      expect(axios.get).toHaveBeenCalledWith(`https://ipfs.io/ipfs/${ipfsHash}`);
     });
   });
 });

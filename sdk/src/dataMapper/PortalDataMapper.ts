@@ -1,5 +1,5 @@
-import { AttestationPayload, Portal, TransactionOptions } from "../types";
-import { ActionType } from "../utils/constants";
+import { AttestationPayload, OffChainAttestationPayload, Portal, TransactionOptions } from "../types";
+import { ActionType, Constants } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
 import { Abi, Address, WriteContractParameters } from "viem";
@@ -8,10 +8,7 @@ import { Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { handleError } from "../utils/errorHandler";
 import { executeTransaction } from "../utils/transactionSender";
-import { Constants } from "../utils/constants";
 import { IPFSService } from "../utils/ipfsService";
-import { OffChainAttestationPayload } from "../types";
-import { encodeAbiParameters } from "viem";
 
 export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filter, Portal_orderBy> {
   typeName = "portal";
@@ -25,128 +22,6 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         ownerName
         attestationCounter
   }`;
-
-  /**
-   * Simulates issuing an off-chain attestation by first uploading the payload to IPFS
-   * and then preparing an on-chain attestation with the IPFS URI.
-   *
-   * @param portalAddress - The address of the portal to issue the attestation through
-   * @param attestationPayload - The payload containing both attestation and off-chain data
-   * @param validationPayloads - Optional validation payloads for portal modules
-   * @param customAbi - Optional custom ABI for the portal contract
-   * @returns A simulated transaction request
-   * @throws {Error} If schema validation fails or IPFS upload fails
-   */
-  async simulateAttestOffChain(
-    portalAddress: Address,
-    attestationPayload: OffChainAttestationPayload,
-    validationPayloads: string[] = [],
-    customAbi?: Abi,
-  ) {
-    // Validate input parameters
-    if (!portalAddress) throw new Error("Portal address is required");
-    if (!attestationPayload?.offchainData) {
-      throw new Error("Attestation payload with offchainData is required");
-    }
-
-    const { schemaId, payload } = attestationPayload.offchainData;
-
-    // Validate schema exists and is registered
-    const schema = await this.veraxSdk.schema.findOneById(schemaId);
-    if (!schema) {
-      throw new Error(
-        `Schema ${schemaId} not found. The schema must be registered in the SchemaRegistry before issuing off-chain attestations.`,
-      );
-    }
-
-    // Validate IPFS configuration
-    if (!this.conf.offchainConfig?.ipfsConfig) {
-      throw new Error("IPFS configuration missing. Please provide IPFS credentials in the SDK configuration.");
-    }
-
-    // Validate payload against schema using IPFSService
-    const ipfsService = new IPFSService(this.conf.offchainConfig.ipfsConfig);
-    try {
-      // Parse schema string into SchemaDefinition if needed
-      const schemaDefinition = typeof schema.schema === "string" ? JSON.parse(schema.schema) : schema.schema;
-      ipfsService.validateOffchainPayload(payload, schemaDefinition);
-    } catch (error) {
-      if (error instanceof SyntaxError) {
-        throw new Error(`Invalid schema format for ${schemaId}: Schema must be a valid JSON object`);
-      }
-      throw new Error(`Invalid payload for schema ${schemaId}: ${(error as Error).message}`);
-    }
-
-    // Convert payload to string if it's an object
-    const payloadString = typeof payload === "string" ? payload : JSON.stringify(payload);
-
-    // Upload to IPFS with retries and timeout
-    let uri: string;
-    try {
-      uri = await ipfsService.uploadToIPFS(payloadString);
-    } catch (error) {
-      throw new Error(
-        `Failed to upload payload to IPFS: ${(error as Error).message}. ` +
-          "Please check your IPFS configuration and network connection.",
-      );
-    }
-
-    // Prepare on-chain attestation using the OFFCHAIN_DATA_SCHEMA
-    const onChainPayload = {
-      ...attestationPayload,
-      schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID,
-      attestationData: encodeAbiParameters(
-        [
-          { name: "schemaId", type: "bytes32" },
-          { name: "uri", type: "string" },
-        ],
-        [schemaId as `0x${string}`, uri],
-      ),
-    };
-
-    // Issue on-chain attestation through the portal
-    try {
-      return await this.simulatePortalContract(
-        portalAddress,
-        "attest",
-        [
-          [
-            onChainPayload.schemaId,
-            onChainPayload.expirationDate,
-            onChainPayload.subject,
-            onChainPayload.attestationData,
-          ],
-          validationPayloads,
-        ],
-        0n,
-        customAbi,
-      );
-    } catch (error) {
-      throw new Error(`Failed to simulate on-chain attestation: ${(error as Error).message}`);
-    }
-  }
-
-  /**
-   * Issues an off-chain attestation by uploading the payload to IPFS and creating
-   * an on-chain attestation with the IPFS URI.
-   *
-   * @param portalAddress - The address of the portal to issue the attestation through
-   * @param attestationPayload - The payload containing both attestation and off-chain data
-   * @param validationPayloads - Optional validation payloads for portal modules
-   * @param waitForConfirmation - Whether to wait for transaction confirmation
-   * @param customAbi - Optional custom ABI for the portal contract
-   * @returns The transaction response
-   */
-  async attestOffChain(
-    portalAddress: Address,
-    attestationPayload: OffChainAttestationPayload,
-    validationPayloads: string[] = [],
-    waitForConfirmation: boolean = false,
-    customAbi?: Abi,
-  ) {
-    const request = await this.simulateAttestOffChain(portalAddress, attestationPayload, validationPayloads, customAbi);
-    return executeTransaction(request, this.web3Client, this.walletClient, waitForConfirmation);
-  }
 
   async simulateAttest(
     portalAddress: Address,
@@ -210,6 +85,64 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
       options?.value,
       options?.customAbi,
     );
+  }
+
+  async simulateAttestOffChain(
+    portalAddress: Address,
+    attestationPayload: OffChainAttestationPayload,
+    validationPayloads: string[] = [],
+    options?: TransactionOptions,
+  ) {
+    if (!attestationPayload?.offchainData) {
+      throw new Error("Attestation payload with offchainData is required");
+    }
+
+    const { schemaId, payload } = attestationPayload.offchainData;
+
+    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
+    if (!matchingSchema) {
+      throw new Error("No matching Schema");
+    }
+
+    // Validate IPFS configuration
+    if (!this.conf.offchainConfig?.projectId || !this.conf.offchainConfig?.projectSecret) {
+      throw new Error("IPFS configuration missing projectId or projectSecret");
+    }
+
+    const ipfsService = new IPFSService(this.conf.offchainConfig);
+
+    // Upload to IPFS
+    let uri: string;
+    try {
+      uri = await ipfsService.uploadToIPFS(payload);
+    } catch (error) {
+      throw new Error(`Failed to upload payload to IPFS: ${(error as Error).message}`);
+    }
+
+    // Prepare onchain Attestation using the OFFCHAIN_DATA_SCHEMA
+    const onChainPayload: AttestationPayload = {
+      ...attestationPayload,
+      schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID,
+      attestationData: [
+        {
+          schemaId,
+          uri,
+        },
+      ],
+    };
+
+    // Issue onchain Attestation through the Portal
+    return this.simulateAttest(portalAddress, onChainPayload, validationPayloads, options);
+  }
+
+  async attestOffChain(
+    portalAddress: Address,
+    attestationPayload: OffChainAttestationPayload,
+    validationPayloads: string[] = [],
+    options?: TransactionOptions,
+  ) {
+    const request = await this.simulateAttestOffChain(portalAddress, attestationPayload, validationPayloads, options);
+    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async bulkAttest(

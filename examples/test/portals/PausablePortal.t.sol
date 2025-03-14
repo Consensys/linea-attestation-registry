@@ -2,13 +2,13 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { PausablePortal } from "../../../src/examples/portals/PausablePortal.sol";
-import { Router } from "../../../src/Router.sol";
-import { AbstractPortalV2 } from "../../../src/abstracts/AbstractPortalV2.sol";
-import { AttestationPayload } from "../../../src/types/Structs.sol";
-import { AttestationRegistryMock } from "../../mocks/AttestationRegistryMock.sol";
-import { PortalRegistryMock } from "../../mocks/PortalRegistryMock.sol";
-import { ModuleRegistryMock } from "../../mocks/ModuleRegistryMock.sol";
+import { PausablePortal } from "../../src/portals/PausablePortal.sol";
+import { Router } from "@verax-attestation-registry/verax-contracts/contracts/Router.sol";
+import { AbstractPortalV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractPortalV2.sol";
+import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
+import { AttestationRegistryMock } from "../mocks/AttestationRegistryMock.sol";
+import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
+import { ModuleRegistryMock } from "../mocks/ModuleRegistryMock.sol";
 import { IERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 contract PausablePortalTest is Test {

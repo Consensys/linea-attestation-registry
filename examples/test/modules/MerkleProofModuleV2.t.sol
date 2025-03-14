@@ -2,11 +2,11 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { AbstractModuleV2 } from "../../../src/abstracts/AbstractModuleV2.sol";
-import { MerkleProofModuleV2 } from "../../../src/examples/modules/MerkleProofModuleV2.sol";
-import { OperationType } from "../../../src/types/Enums.sol";
-import { AttestationPayload } from "../../../src/types/Structs.sol";
-import { uncheckedInc256 } from "../../../src/Common.sol";
+import { AbstractModuleV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractModuleV2.sol";
+import { MerkleProofModuleV2 } from "../../src/modules/MerkleProofModuleV2.sol";
+import { OperationType } from "@verax-attestation-registry/verax-contracts/contracts/types/Enums.sol";
+import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
+import { uncheckedInc256 } from "@verax-attestation-registry/verax-contracts/contracts/Common.sol";
 
 contract MerkleProofModuleV2Test is Test {
   MerkleProofModuleV2 private merkleProofModule;

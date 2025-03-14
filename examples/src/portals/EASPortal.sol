@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractPortalV2 } from "../../abstracts/AbstractPortalV2.sol";
-import { AttestationPayload } from "../../types/Structs.sol";
-import { uncheckedInc256 } from "../../Common.sol";
-
+import { AbstractPortalV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractPortalV2.sol";
+import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
+import { uncheckedInc256 } from "@verax-attestation-registry/verax-contracts/contracts/Common.sol";
 /**
  * @title EAS Portal
  * @author Consensys

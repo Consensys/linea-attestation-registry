@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractModuleV2 } from "../../abstracts/AbstractModuleV2.sol";
-import { OperationType } from "../../types/Enums.sol";
-import { AttestationPayload } from "../../types/Structs.sol";
-import { uncheckedInc256 } from "../../Common.sol";
+import { AbstractModuleV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractModuleV2.sol";
+import { OperationType } from "@verax-attestation-registry/verax-contracts/contracts/types/Enums.sol";
+import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
+import { uncheckedInc256 } from "@verax-attestation-registry/verax-contracts/contracts/Common.sol";
 
 contract MerkleProofModuleV2 is AbstractModuleV2 {
   error MerkelProofVerifyFailed();

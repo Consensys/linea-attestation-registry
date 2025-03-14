@@ -6,3 +6,4 @@ packages:
   - 'snap/packages/**'
   - 'subgraph'
   - 'website'
+  - 'examples'

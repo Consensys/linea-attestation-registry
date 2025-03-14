@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AbstractModuleV2 } from "../../abstracts/AbstractModuleV2.sol";
-import { OperationType } from "../../types/Enums.sol";
-import { AttestationPayload } from "../../types/Structs.sol";
+import { AbstractModuleV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractModuleV2.sol";
+import { OperationType } from "@verax-attestation-registry/verax-contracts/contracts/types/Enums.sol";
+import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
 
 /**
  * @notice Definition of EIP-712 domain

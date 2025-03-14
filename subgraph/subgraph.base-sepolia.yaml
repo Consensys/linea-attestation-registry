@@ -94,3 +94,31 @@ dataSources:
         - event: SchemaContextUpdated(indexed bytes32)
           handler: handleSchemaContextUpdated
       file: ./src/schema-registry.ts
+  - kind: ethereum
+    name: Router
+    network: base-sepolia
+    source:
+      abi: Router
+      address: "0xE235826514945186227918325D3E5b5f873861A6"
+      startBlock: 9174253
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - RegistryUpdate
+        - Audit
+        - AuditInformation
+      abis:
+        - name: Router
+          file: ./abis/Router.json
+      eventHandlers:
+        - event: AttestationRegistryUpdated(indexed address)
+          handler: handleAttestationRegistryUpdated
+        - event: ModuleRegistryUpdated(indexed address)
+          handler: handleModuleRegistryUpdated
+        - event: PortalRegistryUpdated(indexed address)
+          handler: handlePortalRegistryUpdated
+        - event: SchemaRegistryUpdated(indexed address)
+          handler: handleSchemaRegistryUpdated
+      file: ./src/router.ts

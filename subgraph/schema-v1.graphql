@@ -60,29 +60,3 @@ type RegistryVersion @entity {
   versionNumber: Int
   timestamp: BigInt
 }
-
-type RegistryUpdate @entity {
-  id: ID!
-  registryType: String!
-  registryName: String!
-  registryAddress: Bytes!
-  auditInformation: String!
-}
-
-type Audit @entity {
-  id: ID!
-  blockNumber: BigInt!
-  transactionHash: Bytes!
-  transactionTimestamp: BigInt!
-  fromAddress: Bytes!
-  toAddress: Bytes!
-  valueTransferred: BigInt!
-  gasPrice: BigInt!
-}
-
-type AuditInformation @entity {
-  id: ID!
-  creation: String!
-  lastModification: String!
-  modifications: [String!]!
-}

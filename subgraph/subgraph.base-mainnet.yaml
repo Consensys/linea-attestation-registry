@@ -99,8 +99,8 @@ dataSources:
     network: base
     source:
       abi: Router
-      address: "0x5A5A30aB3d6A6DD3463512793C7c36E9B47615e8"
-      startBlock: 13666866
+      address: "0x63b2d528805Fc9373586366705852FA89debd4d0"
+      startBlock: 13666919
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

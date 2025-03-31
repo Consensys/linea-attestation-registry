@@ -28,6 +28,28 @@ import LineaSepoliaIcon from "@/assets/networks/linea-sepolia.svg?react";
 import LineaMainnetIcon from "@/assets/networks/linea.svg?react";
 import { INetwork } from "@/interfaces/config";
 
+const infuraApiKey: string = import.meta.env.VITE_INFURA_API_KEY;
+
+const rpcUrls = {
+  [mainnet.id]: `https://mainnet.infura.io/v3/${infuraApiKey}`,
+  [arbitrum.id]: `https://arbitrum-mainnet.infura.io/v3/${infuraApiKey}`,
+  [arbitrumSepolia.id]: `https://arbitrum-sepolia.infura.io/v3/${infuraApiKey}`,
+  [base.id]: `https://base-mainnet.infura.io/v3/${infuraApiKey}`,
+  [baseSepolia.id]: `https://base-sepolia.infura.io/v3/${infuraApiKey}`,
+  [bsc.id]: `https://bsc-mainnet.infura.io/v3/${infuraApiKey}`,
+  [bscTestnet.id]: `https://bsc-testnet.infura.io/v3/${infuraApiKey}`,
+  [linea.id]: `https://linea-mainnet.infura.io/v3/${infuraApiKey}`,
+  [lineaSepolia.id]: `https://linea-sepolia.infura.io/v3/${infuraApiKey}`,
+};
+
+const transports = Object.entries(rpcUrls).reduce(
+  (acc, [chainId, url]) => ({
+    ...acc,
+    [chainId]: http(url),
+  }),
+  {},
+);
+
 const chains: INetwork[] = [
   {
     name: "Linea Mainnet",
@@ -36,6 +58,7 @@ const chains: INetwork[] = [
       ...VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND,
       subgraphUrl:
         "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/ESRDQ5djmucKeqxNz7JGVHr621sjGEEsY6M6JibjJ9u3",
+      rpcUrl: rpcUrls[linea.id],
     },
     img: <LineaMainnetIcon />,
     imgDark: <LineaMainnetIconDark />,
@@ -49,6 +72,7 @@ const chains: INetwork[] = [
       ...VeraxSdk.DEFAULT_LINEA_SEPOLIA_FRONTEND,
       subgraphUrl:
         "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/2gfRmZ1e1uJKpCQsUrvxJmRivNa7dvvuULoc8SJabR8v",
+      rpcUrl: rpcUrls[lineaSepolia.id],
     },
     img: <LineaSepoliaIcon />,
     network: "linea-sepolia",
@@ -61,6 +85,7 @@ const chains: INetwork[] = [
       ...VeraxSdk.DEFAULT_ARBITRUM_FRONTEND,
       subgraphUrl:
         "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/ELQZyXzGu5MVA6kMCpMh5zNqdU8gqhtynM9yVRQ4bZoA",
+      rpcUrl: rpcUrls[arbitrum.id],
     },
     img: <ArbitrumIcon />,
     imgDark: <ArbitrumIconDark />,
@@ -74,6 +99,7 @@ const chains: INetwork[] = [
       ...VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA_FRONTEND,
       subgraphUrl:
         "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/5RBJNNUvaoekU2yJsbmEZ1R62Mo3imWy7nMgNj97ZG8u",
+      rpcUrl: rpcUrls[arbitrumSepolia.id],
     },
     img: <ArbitrumSepoliaIcon />,
     network: "arbitrum-sepolia",
@@ -86,6 +112,7 @@ const chains: INetwork[] = [
       ...VeraxSdk.DEFAULT_BASE_FRONTEND,
       subgraphUrl:
         "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/fje2qXNP7KeRBZDPFv1VCERchv9PZyZokPRWNZkWtXk",
+      rpcUrl: rpcUrls[base.id],
     },
     img: <BaseMainnetIcon />,
     imgDark: <BaseIconDark />,
@@ -99,6 +126,7 @@ const chains: INetwork[] = [
       ...VeraxSdk.DEFAULT_BASE_SEPOLIA_FRONTEND,
       subgraphUrl:
         "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/EbruygUvdowo7dmsumFmRq2hRu81K88mWsLo5r3jxY3S",
+      rpcUrl: rpcUrls[baseSepolia.id],
     },
     img: <BaseSepoliaIcon />,
     network: "base-sepolia",
@@ -111,6 +139,7 @@ const chains: INetwork[] = [
       ...VeraxSdk.DEFAULT_BSC_FRONTEND,
       subgraphUrl:
         "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/8VfLNCBXCFKkcfmRSLDZ6J36NG5rRCUzEgByRJXCzSoW",
+      rpcUrl: rpcUrls[bsc.id],
     },
     img: <BscMainnetIcon />,
     imgDark: <BscMainnetIconDark />,
@@ -124,6 +153,7 @@ const chains: INetwork[] = [
       ...VeraxSdk.DEFAULT_BSC_TESTNET_FRONTEND,
       subgraphUrl:
         "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/6iFYkMd9xbQcEcddHs6vbTMarra7d2NUt9S1qtNmWtaV",
+      rpcUrl: rpcUrls[bscTestnet.id],
     },
     img: <BscTestnetIcon />,
     network: "bsc-testnet",
@@ -131,25 +161,13 @@ const chains: INetwork[] = [
   },
 ];
 
-const infuraApiKey: string = import.meta.env.VITE_INFURA_API_KEY;
-
 const config = createConfig(
   getDefaultConfig({
     appName: "Verax | Explorer",
     appIcon: veraxColoredIcon,
     walletConnectProjectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "",
     chains: [mainnet, ...chains.map((el) => el.chain)],
-    transports: {
-      [mainnet.id]: http(`https://mainnet.infura.io/v3/${infuraApiKey}`),
-      [arbitrum.id]: http(`https://arbitrum-mainnet.infura.io/v3/${infuraApiKey}`),
-      [arbitrumSepolia.id]: http(`https://arbitrum-sepolia.infura.io/v3/${infuraApiKey}`),
-      [base.id]: http(`https://base-mainnet.infura.io/v3/${infuraApiKey}`),
-      [baseSepolia.id]: http(`https://base-sepolia.infura.io/v3/${infuraApiKey}`),
-      [bsc.id]: http(`https://bsc-mainnet.infura.io/v3/${infuraApiKey}`),
-      [bscTestnet.id]: http(`https://bsc-testnet.infura.io/v3/${infuraApiKey}`),
-      [linea.id]: http(`https://linea-mainnet.infura.io/v3/${infuraApiKey}`),
-      [lineaSepolia.id]: http(`https://linea-sepolia.infura.io/v3/${infuraApiKey}`),
-    },
+    transports,
   }),
 );
 

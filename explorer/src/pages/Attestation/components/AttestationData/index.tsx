@@ -10,7 +10,7 @@ import { HelperIndicator } from "@/components/HelperIndicator";
 import { EMPTY_STRING, THOUSAND } from "@/constants";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 
-import { getAttestationData, isDecodedData } from "./utils";
+import { getAttestationData } from "./utils";
 
 export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const screen = useWindowDimensions();
@@ -21,7 +21,7 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const { isDarkMode } = useTernaryDarkMode();
 
   const { decodedData, decodedPayload } = attestation;
-  const data = isDecodedData(decodedPayload, decodedData) ? getAttestationData(decodedPayload ?? decodedData) : null;
+  const data = getAttestationData(decodedPayload ?? decodedData);
 
   const handleCopy = (text: string, result: boolean) => {
     if (!result || !text) return;

@@ -1,6 +1,6 @@
 import BaseDataMapper from "./BaseDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
-import { decode, encode } from "../utils/abiCoder";
+import { decodeWithRetry, encode } from "../utils/abiCoder";
 import { Hex } from "viem";
 
 export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unknown> {
@@ -25,6 +25,6 @@ export default class UtilsDataMapper extends BaseDataMapper<object, unknown, unk
   }
 
   decode(schema: string, attestationData: Hex): readonly unknown[] {
-    return decode(schema, attestationData);
+    return decodeWithRetry(schema, attestationData);
   }
 }

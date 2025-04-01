@@ -1,6 +1,6 @@
 import UtilsDataMapper from "./UtilsDataMapper";
 import { abiAttestationRegistry } from "../abi/AttestationRegistry";
-import { encode, decode } from "../utils/abiCoder";
+import { decodeWithRetry, encode } from "../utils/abiCoder";
 import { PublicClient, WalletClient } from "viem";
 import { lineaSepolia } from "viem/chains";
 import { Conf } from "../types";
@@ -8,7 +8,7 @@ import { SDKMode, VeraxSdk } from "../VeraxSdk";
 
 jest.mock("../utils/abiCoder", () => ({
   encode: jest.fn(),
-  decode: jest.fn(),
+  decodeWithRetry: jest.fn(),
 }));
 
 describe("UtilsDataMapper", () => {
@@ -65,11 +65,11 @@ describe("UtilsDataMapper", () => {
       const attestationData = "0xdata";
       const mockDecoded = ["value1", "value2"];
 
-      (decode as jest.Mock).mockReturnValue(mockDecoded);
+      (decodeWithRetry as jest.Mock).mockReturnValue(mockDecoded);
 
       const result = utilsDataMapper.decode(schema, attestationData);
       expect(result).toEqual(mockDecoded);
-      expect(decode).toHaveBeenCalledWith(schema, attestationData);
+      expect(decodeWithRetry).toHaveBeenCalledWith(schema, attestationData);
     });
   });
 });

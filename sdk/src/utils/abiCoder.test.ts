@@ -1,5 +1,5 @@
-import { encode, decode, decodeWithRetry } from "./abiCoder";
-import { encodeAbiParameters, decodeAbiParameters, parseAbiParameters } from "viem";
+import { decodeWithRetry, encode } from "./abiCoder";
+import { decodeAbiParameters, encodeAbiParameters, parseAbiParameters } from "viem";
 
 // Mock viem functions
 jest.mock("viem", () => ({
@@ -11,6 +11,7 @@ jest.mock("viem", () => ({
 // Mocking the BaseError as it's not a constructible error
 const BaseErrorMock = class extends Error {
   shortMessage: string;
+
   constructor(message: string) {
     super(message);
     this.shortMessage = message;
@@ -39,23 +40,6 @@ describe("abiCoder", () => {
     });
   });
 
-  describe("decode", () => {
-    it("should decode attestation data with the given schema", () => {
-      const schema = "uint256";
-      const attestationData = "0xabc123";
-      const mockDecodedData = [123];
-
-      (parseAbiParameters as jest.Mock).mockReturnValue([schema]);
-      (decodeAbiParameters as jest.Mock).mockReturnValue(mockDecodedData);
-
-      const result = decode(schema, attestationData);
-
-      expect(parseAbiParameters).toHaveBeenCalledWith(schema);
-      expect(decodeAbiParameters).toHaveBeenCalledWith([schema], attestationData);
-      expect(result).toBe(mockDecodedData);
-    });
-  });
-
   describe("decodeWithRetry", () => {
     it("should decode successfully without retry", () => {
       const schema = "(uint256)";
@@ -70,6 +54,23 @@ describe("abiCoder", () => {
       expect(parseAbiParameters).toHaveBeenCalledWith(schema);
       expect(decodeAbiParameters).toHaveBeenCalledWith([schema], attestationData);
       expect(result).toBe(mockDecodedData);
+    });
+
+    it("should be able to ignore the word 'tuple' in a Schema", () => {
+      const rawSchema =
+        "bool passing_score, uint8 score_decimals, uint128 scorer_id, uint32 score, uint32 threshold, tuple(string provider, uint256 score)[] stamps";
+      const expectedSchema =
+        "bool passing_score, uint8 score_decimals, uint128 scorer_id, uint32 score, uint32 threshold, (string provider, uint256 score)[] stamps";
+      const attestationData = "0xabc123";
+      const mockDecodedData = [123];
+
+      (parseAbiParameters as jest.Mock).mockReturnValue([rawSchema]);
+      (decodeAbiParameters as jest.Mock).mockReturnValue(mockDecodedData);
+
+      decodeWithRetry(rawSchema, attestationData);
+
+      expect(parseAbiParameters).not.toHaveBeenCalledWith(rawSchema);
+      expect(parseAbiParameters).toHaveBeenCalledWith(`(${expectedSchema})`);
     });
 
     it("should retry with prefixed encoded parenthesis if no result initially", () => {

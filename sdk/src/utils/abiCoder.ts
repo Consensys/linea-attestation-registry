@@ -6,10 +6,6 @@ export function encode(schema: string, values: unknown[]): Hex {
   return encodeAbiParameters(parseAbiParameters(schema), values);
 }
 
-export function decode(schema: string, attestationData: Hex): readonly unknown[] {
-  return decodeAbiParameters(parseAbiParameters(schema), attestationData);
-}
-
 export function decodeWithRetry(schema: string, attestationData: Hex): readonly unknown[] {
   const wrappedSchema = schema.startsWith("(") ? schema : `(${schema})`;
   let result = decodeWrapped(wrappedSchema, attestationData);
@@ -31,12 +27,14 @@ function decodeWrapped(schema: string, attestationData: Hex): readonly unknown[]
 }
 
 function tryParse(schema: string): readonly AbiParameter[] {
+  const preparedSchema = schema.replaceAll("tuple(", "(");
+
   try {
-    return parseAbiParameters(schema);
+    return parseAbiParameters(preparedSchema);
   } catch (e) {
     if ((e as BaseError).shortMessage === "Invalid ABI parameter.") {
       try {
-        return parseAbiParameters(reverseSchema(schema));
+        return parseAbiParameters(reverseSchema(preparedSchema));
       } catch (e) {
         return [];
       }

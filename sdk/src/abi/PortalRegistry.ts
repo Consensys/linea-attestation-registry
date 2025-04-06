@@ -6,7 +6,22 @@ export const abiPortalRegistry = [
   },
   {
     inputs: [],
-    name: "OnlyIssuer",
+    name: "AddressInvalid",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "IssuerAlreadySet",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "IssuerNotRegistered",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "OnlyAllowlisted",
     type: "error",
   },
   {
@@ -46,7 +61,12 @@ export const abiPortalRegistry = [
   },
   {
     inputs: [],
-    name: "RouterInvalid",
+    name: "RouterAddressInvalid",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "TestnetStatusAlreadyUpdated",
     type: "error",
   },
   {
@@ -60,6 +80,45 @@ export const abiPortalRegistry = [
       },
     ],
     name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "isTestnet",
+        type: "bool",
+      },
+    ],
+    name: "IsTestnetUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "issuerAddress",
+        type: "address",
+      },
+    ],
+    name: "IssuerAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "issuerAddress",
+        type: "address",
+      },
+    ],
+    name: "IssuerRemoved",
     type: "event",
   },
   {
@@ -107,6 +166,45 @@ export const abiPortalRegistry = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "portalAddress",
+        type: "address",
+      },
+    ],
+    name: "PortalRevoked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "router",
+        type: "address",
+      },
+    ],
+    name: "RouterSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "isTestnet",
+        type: "bool",
+      },
+    ],
+    name: "TestnetStatusSet",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "address[]",
@@ -137,6 +235,19 @@ export const abiPortalRegistry = [
     name: "deployDefaultPortal",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getIsTestnet",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -234,10 +345,40 @@ export const abiPortalRegistry = [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "address",
+        name: "_router",
+        type: "address",
+      },
+      {
+        internalType: "bool",
+        name: "_isTestnet",
+        type: "bool",
+      },
+    ],
     name: "initialize",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+    ],
+    name: "isAllowlisted",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -345,6 +486,19 @@ export const abiPortalRegistry = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "id",
+        type: "address",
+      },
+    ],
+    name: "revoke",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "router",
     outputs: [
@@ -355,6 +509,19 @@ export const abiPortalRegistry = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bool",
+        name: "_isTestnet",
+        type: "bool",
+      },
+    ],
+    name: "setIsTestnet",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -379,19 +546,6 @@ export const abiPortalRegistry = [
       },
     ],
     name: "transferOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_router",
-        type: "address",
-      },
-    ],
-    name: "updateRouter",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

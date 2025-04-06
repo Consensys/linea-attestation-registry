@@ -6,17 +6,37 @@ export const abiSchemaRegistry = [
   },
   {
     inputs: [],
-    name: "OnlyIssuer",
+    name: "IssuerInvalid",
     type: "error",
   },
   {
     inputs: [],
-    name: "RouterInvalid",
+    name: "OnlyAllowlisted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "OnlyAssignedIssuer",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "RouterAddressInvalid",
     type: "error",
   },
   {
     inputs: [],
     name: "SchemaAlreadyExists",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SchemaContextAlreadyUpdated",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SchemaIssuerAlreadySet",
     type: "error",
   },
   {
@@ -70,6 +90,32 @@ export const abiSchemaRegistry = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "address",
+        name: "router",
+        type: "address",
+      },
+    ],
+    name: "RouterSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "id",
+        type: "bytes32",
+      },
+    ],
+    name: "SchemaContextUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "bytes32",
         name: "id",
@@ -102,6 +148,43 @@ export const abiSchemaRegistry = [
     ],
     name: "SchemaCreated",
     type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "schemaId",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "schemaIssuerAddress",
+        type: "address",
+      },
+    ],
+    name: "SchemaIssuerUpdated",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32[]",
+        name: "schemaIdsToUpdate",
+        type: "bytes32[]",
+      },
+      {
+        internalType: "address",
+        name: "issuer",
+        type: "address",
+      },
+    ],
+    name: "bulkUpdateSchemasIssuers",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [
@@ -192,7 +275,13 @@ export const abiSchemaRegistry = [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "address",
+        name: "_router",
+        type: "address",
+      },
+    ],
     name: "initialize",
     outputs: [],
     stateMutability: "nonpayable",
@@ -253,25 +342,6 @@ export const abiSchemaRegistry = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "schemaIds",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "address",
         name: "newOwner",
         type: "address",
@@ -303,12 +373,17 @@ export const abiSchemaRegistry = [
   {
     inputs: [
       {
+        internalType: "bytes32",
+        name: "schemaId",
+        type: "bytes32",
+      },
+      {
         internalType: "address",
-        name: "_router",
+        name: "issuer",
         type: "address",
       },
     ],
-    name: "updateRouter",
+    name: "updateSchemaIssuer",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

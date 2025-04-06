@@ -36,6 +36,11 @@ export const abiAttestationRegistry = [
   },
   {
     inputs: [],
+    name: "ChainPrefixFormatInvalid",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "OnlyAttestingPortal",
     type: "error",
   },
@@ -46,7 +51,7 @@ export const abiAttestationRegistry = [
   },
   {
     inputs: [],
-    name: "RouterInvalid",
+    name: "RouterAddressInvalid",
     type: "error",
   },
   {
@@ -104,6 +109,19 @@ export const abiAttestationRegistry = [
     inputs: [
       {
         indexed: false,
+        internalType: "uint256",
+        name: "chainPrefix",
+        type: "uint256",
+      },
+    ],
+    name: "ChainPrefixUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: "uint8",
         name: "version",
         type: "uint8",
@@ -129,6 +147,19 @@ export const abiAttestationRegistry = [
       },
     ],
     name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "router",
+        type: "address",
+      },
+    ],
+    name: "RouterSet",
     type: "event",
   },
   {
@@ -426,6 +457,32 @@ export const abiAttestationRegistry = [
   },
   {
     inputs: [],
+    name: "getChainPrefix",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getNextAttestationId",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "getVersionNumber",
     outputs: [
       {
@@ -451,7 +508,18 @@ export const abiAttestationRegistry = [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "address",
+        name: "_router",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_chainPrefix",
+        type: "uint256",
+      },
+    ],
     name: "initialize",
     outputs: [],
     stateMutability: "nonpayable",
@@ -635,19 +703,6 @@ export const abiAttestationRegistry = [
       },
     ],
     name: "transferOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_router",
-        type: "address",
-      },
-    ],
-    name: "updateRouter",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

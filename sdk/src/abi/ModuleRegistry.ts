@@ -41,12 +41,12 @@ export const abiModuleRegistry = [
   },
   {
     inputs: [],
-    name: "OnlyIssuer",
+    name: "OnlyAllowlisted",
     type: "error",
   },
   {
     inputs: [],
-    name: "RouterInvalid",
+    name: "RouterAddressInvalid",
     type: "error",
   },
   {
@@ -107,6 +107,19 @@ export const abiModuleRegistry = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "router",
+        type: "address",
+      },
+    ],
+    name: "RouterSet",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "address[]",
@@ -152,7 +165,73 @@ export const abiModuleRegistry = [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "address[]",
+        name: "modulesAddresses",
+        type: "address[]",
+      },
+      {
+        components: [
+          {
+            internalType: "bytes32",
+            name: "schemaId",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint64",
+            name: "expirationDate",
+            type: "uint64",
+          },
+          {
+            internalType: "bytes",
+            name: "subject",
+            type: "bytes",
+          },
+          {
+            internalType: "bytes",
+            name: "attestationData",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct AttestationPayload[]",
+        name: "attestationPayloads",
+        type: "tuple[]",
+      },
+      {
+        internalType: "bytes[][]",
+        name: "validationPayloads",
+        type: "bytes[][]",
+      },
+      {
+        internalType: "address",
+        name: "initialCaller",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "attester",
+        type: "address",
+      },
+      {
+        internalType: "enum OperationType",
+        name: "operationType",
+        type: "uint8",
+      },
+    ],
+    name: "bulkRunModulesV2",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_router",
+        type: "address",
+      },
+    ],
     name: "initialize",
     outputs: [],
     stateMutability: "nonpayable",
@@ -191,25 +270,6 @@ export const abiModuleRegistry = [
         internalType: "bool",
         name: "",
         type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "moduleAddresses",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
       },
     ],
     stateMutability: "view",
@@ -353,12 +413,64 @@ export const abiModuleRegistry = [
   {
     inputs: [
       {
+        internalType: "address[]",
+        name: "modulesAddresses",
+        type: "address[]",
+      },
+      {
+        components: [
+          {
+            internalType: "bytes32",
+            name: "schemaId",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint64",
+            name: "expirationDate",
+            type: "uint64",
+          },
+          {
+            internalType: "bytes",
+            name: "subject",
+            type: "bytes",
+          },
+          {
+            internalType: "bytes",
+            name: "attestationData",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct AttestationPayload",
+        name: "attestationPayload",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes[]",
+        name: "validationPayloads",
+        type: "bytes[]",
+      },
+      {
+        internalType: "uint256",
+        name: "value",
+        type: "uint256",
+      },
+      {
         internalType: "address",
-        name: "newOwner",
+        name: "initialCaller",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "attester",
+        type: "address",
+      },
+      {
+        internalType: "enum OperationType",
+        name: "operationType",
+        type: "uint8",
+      },
     ],
-    name: "transferOwnership",
+    name: "runModulesV2",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -367,11 +479,11 @@ export const abiModuleRegistry = [
     inputs: [
       {
         internalType: "address",
-        name: "_router",
+        name: "newOwner",
         type: "address",
       },
     ],
-    name: "updateRouter",
+    name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

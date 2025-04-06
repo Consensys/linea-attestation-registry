@@ -1,5 +1,31 @@
 export const abiDefaultPortal = [
   {
+    inputs: [
+      {
+        internalType: "address[]",
+        name: "modules",
+        type: "address[]",
+      },
+      {
+        internalType: "address",
+        name: "router",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "OnlyPortalOwner",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "WithdrawFail",
+    type: "error",
+  },
+  {
     inputs: [],
     name: "AlreadyRevoked",
     type: "error",
@@ -31,6 +57,11 @@ export const abiDefaultPortal = [
   },
   {
     inputs: [],
+    name: "ChainPrefixFormatInvalid",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "OnlyAttestingPortal",
     type: "error",
   },
@@ -41,7 +72,7 @@ export const abiDefaultPortal = [
   },
   {
     inputs: [],
-    name: "RouterInvalid",
+    name: "RouterAddressInvalid",
     type: "error",
   },
   {
@@ -86,7 +117,32 @@ export const abiDefaultPortal = [
   },
   {
     inputs: [],
-    name: "OnlyIssuer",
+    name: "OnlyAllowlisted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "RouterAddressInvalid",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "AddressInvalid",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "IssuerAlreadySet",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "IssuerNotRegistered",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "OnlyAllowlisted",
     type: "error",
   },
   {
@@ -126,7 +182,47 @@ export const abiDefaultPortal = [
   },
   {
     inputs: [],
+    name: "RouterAddressInvalid",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "TestnetStatusAlreadyUpdated",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "IssuerInvalid",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "OnlyAllowlisted",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "OnlyAssignedIssuer",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "RouterAddressInvalid",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "SchemaAlreadyExists",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SchemaContextAlreadyUpdated",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SchemaIssuerAlreadySet",
     type: "error",
   },
   {
@@ -136,512 +232,329 @@ export const abiDefaultPortal = [
   },
   {
     inputs: [],
+    name: "SchemaNotRegistered",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "SchemaStringMissing",
     type: "error",
   },
   {
-    type: "function",
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "bytes32",
+            name: "schemaId",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint64",
+            name: "expirationDate",
+            type: "uint64",
+          },
+          {
+            internalType: "bytes",
+            name: "subject",
+            type: "bytes",
+          },
+          {
+            internalType: "bytes",
+            name: "attestationData",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct AttestationPayload",
+        name: "attestationPayload",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes[]",
+        name: "validationPayloads",
+        type: "bytes[]",
+      },
+    ],
     name: "attest",
-    inputs: [
-      {
-        name: "attestationPayload",
-        type: "tuple",
-        internalType: "struct AttestationPayload",
-        components: [
-          {
-            name: "schemaId",
-            type: "bytes32",
-            internalType: "bytes32",
-          },
-          {
-            name: "expirationDate",
-            type: "uint64",
-            internalType: "uint64",
-          },
-          {
-            name: "subject",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "attestationData",
-            type: "bytes",
-            internalType: "bytes",
-          },
-        ],
-      },
-      {
-        name: "validationPayloads",
-        type: "bytes[]",
-        internalType: "bytes[]",
-      },
-    ],
     outputs: [],
     stateMutability: "payable",
+    type: "function",
   },
   {
-    type: "function",
-    name: "attestV2",
-    inputs: [
-      {
-        name: "attestationPayload",
-        type: "tuple",
-        internalType: "struct AttestationPayload",
-        components: [
-          {
-            name: "schemaId",
-            type: "bytes32",
-            internalType: "bytes32",
-          },
-          {
-            name: "expirationDate",
-            type: "uint64",
-            internalType: "uint64",
-          },
-          {
-            name: "subject",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "attestationData",
-            type: "bytes",
-            internalType: "bytes",
-          },
-        ],
-      },
-      {
-        name: "validationPayloads",
-        type: "bytes[]",
-        internalType: "bytes[]",
-      },
-    ],
-    outputs: [],
-    stateMutability: "payable",
-  },
-  {
-    type: "function",
-    name: "attestationRegistry",
     inputs: [],
+    name: "attestationRegistry",
     outputs: [
       {
+        internalType: "contract AttestationRegistry",
         name: "",
         type: "address",
-        internalType: "contract AttestationRegistry",
       },
     ],
     stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    name: "bulkAttest",
     inputs: [
       {
-        name: "attestationsPayloads",
-        type: "tuple[]",
-        internalType: "struct AttestationPayload[]",
         components: [
           {
+            internalType: "bytes32",
             name: "schemaId",
             type: "bytes32",
-            internalType: "bytes32",
           },
           {
+            internalType: "uint64",
             name: "expirationDate",
             type: "uint64",
-            internalType: "uint64",
           },
           {
+            internalType: "bytes",
             name: "subject",
             type: "bytes",
-            internalType: "bytes",
           },
           {
+            internalType: "bytes",
             name: "attestationData",
             type: "bytes",
-            internalType: "bytes",
           },
         ],
-      },
-      {
-        name: "validationPayloads",
-        type: "bytes[][]",
-        internalType: "bytes[][]",
-      },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "bulkAttestV2",
-    inputs: [
-      {
+        internalType: "struct AttestationPayload[]",
         name: "attestationPayloads",
         type: "tuple[]",
-        internalType: "struct AttestationPayload[]",
-        components: [
-          {
-            name: "schemaId",
-            type: "bytes32",
-            internalType: "bytes32",
-          },
-          {
-            name: "expirationDate",
-            type: "uint64",
-            internalType: "uint64",
-          },
-          {
-            name: "subject",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "attestationData",
-            type: "bytes",
-            internalType: "bytes",
-          },
-        ],
       },
       {
+        internalType: "bytes[][]",
         name: "validationPayloads",
         type: "bytes[][]",
-        internalType: "bytes[][]",
       },
     ],
+    name: "bulkAttest",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    type: "function",
+    inputs: [
+      {
+        internalType: "bytes32[]",
+        name: "attestationIds",
+        type: "bytes32[]",
+      },
+      {
+        components: [
+          {
+            internalType: "bytes32",
+            name: "schemaId",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint64",
+            name: "expirationDate",
+            type: "uint64",
+          },
+          {
+            internalType: "bytes",
+            name: "subject",
+            type: "bytes",
+          },
+          {
+            internalType: "bytes",
+            name: "attestationData",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct AttestationPayload[]",
+        name: "attestationsPayloads",
+        type: "tuple[]",
+      },
+      {
+        internalType: "bytes[][]",
+        name: "validationPayloads",
+        type: "bytes[][]",
+      },
+    ],
     name: "bulkReplace",
-    inputs: [
-      {
-        name: "attestationIds",
-        type: "bytes32[]",
-        internalType: "bytes32[]",
-      },
-      {
-        name: "attestationsPayloads",
-        type: "tuple[]",
-        internalType: "struct AttestationPayload[]",
-        components: [
-          {
-            name: "schemaId",
-            type: "bytes32",
-            internalType: "bytes32",
-          },
-          {
-            name: "expirationDate",
-            type: "uint64",
-            internalType: "uint64",
-          },
-          {
-            name: "subject",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "attestationData",
-            type: "bytes",
-            internalType: "bytes",
-          },
-        ],
-      },
-      {
-        name: "validationPayloads",
-        type: "bytes[][]",
-        internalType: "bytes[][]",
-      },
-    ],
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    type: "function",
-    name: "bulkReplaceV2",
     inputs: [
       {
+        internalType: "bytes32[]",
         name: "attestationIds",
         type: "bytes32[]",
-        internalType: "bytes32[]",
-      },
-      {
-        name: "attestationsPayloads",
-        type: "tuple[]",
-        internalType: "struct AttestationPayload[]",
-        components: [
-          {
-            name: "schemaId",
-            type: "bytes32",
-            internalType: "bytes32",
-          },
-          {
-            name: "expirationDate",
-            type: "uint64",
-            internalType: "uint64",
-          },
-          {
-            name: "subject",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "attestationData",
-            type: "bytes",
-            internalType: "bytes",
-          },
-        ],
-      },
-      {
-        name: "validationPayloads",
-        type: "bytes[][]",
-        internalType: "bytes[][]",
       },
     ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
     name: "bulkRevoke",
-    inputs: [
-      {
-        name: "attestationIds",
-        type: "bytes32[]",
-        internalType: "bytes32[]",
-      },
-    ],
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    type: "function",
-    name: "getAttester",
     inputs: [],
-    outputs: [
-      {
-        name: "",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
     name: "getModules",
-    inputs: [],
     outputs: [
       {
+        internalType: "address[]",
         name: "",
         type: "address[]",
-        internalType: "address[]",
       },
     ],
     stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    name: "moduleRegistry",
     inputs: [],
+    name: "moduleRegistry",
     outputs: [
       {
+        internalType: "contract ModuleRegistry",
         name: "",
         type: "address",
-        internalType: "contract ModuleRegistry",
       },
     ],
     stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    name: "modules",
     inputs: [
       {
+        internalType: "uint256",
         name: "",
         type: "uint256",
-        internalType: "uint256",
       },
     ],
+    name: "modules",
     outputs: [
       {
-        name: "",
-        type: "address",
         internalType: "address",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "portalRegistry",
-    inputs: [],
-    outputs: [
-      {
         name: "",
         type: "address",
-        internalType: "contract PortalRegistry",
       },
     ],
     stateMutability: "view",
+    type: "function",
   },
   {
+    inputs: [],
+    name: "portalRegistry",
+    outputs: [
+      {
+        internalType: "contract PortalRegistry",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "attestationId",
+        type: "bytes32",
+      },
+      {
+        components: [
+          {
+            internalType: "bytes32",
+            name: "schemaId",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint64",
+            name: "expirationDate",
+            type: "uint64",
+          },
+          {
+            internalType: "bytes",
+            name: "subject",
+            type: "bytes",
+          },
+          {
+            internalType: "bytes",
+            name: "attestationData",
+            type: "bytes",
+          },
+        ],
+        internalType: "struct AttestationPayload",
+        name: "attestationPayload",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes[]",
+        name: "validationPayloads",
+        type: "bytes[]",
+      },
+    ],
     name: "replace",
-    inputs: [
-      {
-        name: "attestationId",
-        type: "bytes32",
-        internalType: "bytes32",
-      },
-      {
-        name: "attestationPayload",
-        type: "tuple",
-        internalType: "struct AttestationPayload",
-        components: [
-          {
-            name: "schemaId",
-            type: "bytes32",
-            internalType: "bytes32",
-          },
-          {
-            name: "expirationDate",
-            type: "uint64",
-            internalType: "uint64",
-          },
-          {
-            name: "subject",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "attestationData",
-            type: "bytes",
-            internalType: "bytes",
-          },
-        ],
-      },
-      {
-        name: "validationPayloads",
-        type: "bytes[]",
-        internalType: "bytes[]",
-      },
-    ],
     outputs: [],
     stateMutability: "payable",
+    type: "function",
   },
   {
-    type: "function",
-    name: "replaceV2",
     inputs: [
       {
+        internalType: "bytes32",
         name: "attestationId",
         type: "bytes32",
-        internalType: "bytes32",
-      },
-      {
-        name: "attestationPayload",
-        type: "tuple",
-        internalType: "struct AttestationPayload",
-        components: [
-          {
-            name: "schemaId",
-            type: "bytes32",
-            internalType: "bytes32",
-          },
-          {
-            name: "expirationDate",
-            type: "uint64",
-            internalType: "uint64",
-          },
-          {
-            name: "subject",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "attestationData",
-            type: "bytes",
-            internalType: "bytes",
-          },
-        ],
-      },
-      {
-        name: "validationPayloads",
-        type: "bytes[]",
-        internalType: "bytes[]",
       },
     ],
-    outputs: [],
-    stateMutability: "payable",
-  },
-  {
-    type: "function",
     name: "revoke",
-    inputs: [
-      {
-        name: "attestationId",
-        type: "bytes32",
-        internalType: "bytes32",
-      },
-    ],
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    type: "function",
-    name: "router",
     inputs: [],
+    name: "router",
     outputs: [
       {
+        internalType: "contract IRouter",
         name: "",
         type: "address",
-        internalType: "contract IRouter",
       },
     ],
     stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    name: "supportsInterface",
     inputs: [
       {
+        internalType: "bytes4",
         name: "interfaceID",
         type: "bytes4",
-        internalType: "bytes4",
       },
     ],
+    name: "supportsInterface",
     outputs: [
       {
+        internalType: "bool",
         name: "",
         type: "bool",
-        internalType: "bool",
       },
     ],
-    stateMutability: "pure",
+    stateMutability: "view",
+    type: "function",
   },
   {
-    type: "function",
-    name: "withdraw",
     inputs: [
       {
+        internalType: "address payable",
         name: "to",
         type: "address",
-        internalType: "address payable",
       },
       {
+        internalType: "uint256",
         name: "amount",
         type: "uint256",
-        internalType: "uint256",
       },
     ],
+    name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
-  },
-  {
-    type: "error",
-    name: "OnlyPortalOwner",
-    inputs: [],
+    type: "function",
   },
 ];

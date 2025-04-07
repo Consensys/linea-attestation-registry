@@ -524,6 +524,22 @@ contract AttestationRegistryTest is Test {
     vm.stopPrank();
   }
 
+  function test_balanceOf(AttestationPayload memory attestationPayload) public {
+    vm.assume(attestationPayload.subject.length != 0);
+    vm.assume(attestationPayload.attestationData.length != 0);
+    vm.assume(attestationPayload.expirationDate > block.timestamp);
+    SchemaRegistryMock schemaRegistryMock = SchemaRegistryMock(router.getSchemaRegistry());
+    attestationPayload.schemaId = schemaRegistryMock.getIdFromSchemaString("schemaString");
+    schemaRegistryMock.createSchema("name", "description", "context", "schemaString");
+
+    vm.startPrank(portal);
+    attestationPayload.subject = abi.encode(address(1));
+    attestationRegistry.attest(attestationPayload, attester);
+
+    uint256 balance = attestationRegistry.balanceOf(address(1), 1);
+    assertEq(balance, 1);
+  }
+
   function test_balanceOf_attestationNotFound(AttestationPayload memory attestationPayload) public {
     vm.assume(attestationPayload.subject.length != 0);
     vm.assume(attestationPayload.attestationData.length != 0);

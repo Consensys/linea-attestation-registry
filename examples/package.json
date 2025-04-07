@@ -20,9 +20,10 @@
   ],
   "scripts": {
     "build": "forge build",
-    "test": "forge test",
-    "test:hardhat": "npx hardhat test",
-    "clean": "rm -rf cache_forge out artifacts cache"
+    "clean": "rm -rf cache_forge out artifacts cache",
+    "compile": "forge compile",
+    "lint": "pnpm solhint \"{src,test}/**/*.sol\" -c ../contracts/.solhint.json",
+    "test": "forge test"
   },
   "dependencies": {
     "@openzeppelin/contracts": "4.9.6",
@@ -30,11 +31,6 @@
     "@verax-attestation-registry/verax-contracts": "10.0.0"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-ethers": "^3.0.8",
-    "@nomicfoundation/hardhat-foundry": "^1.1.3",
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "@openzeppelin/hardhat-upgrades": "^3.9.0",
-    "hardhat": "^2.22.18",
     "solhint": "^5.0.5"
   }
 }

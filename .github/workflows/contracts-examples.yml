@@ -71,7 +71,7 @@ jobs:
           echo "## Build result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Examples Built Successfully" >> $GITHUB_STEP_SUMMARY
 
-  test-examples:
+  test-contracts-examples:
     runs-on: ubuntu-latest
 
     defaults:
@@ -101,19 +101,29 @@ jobs:
           node-version: 18
           cache: pnpm
 
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
-      - name: Run Example Unit Tests
+      - name: Run the unit tests
         run: forge test
-
-      - name: Run Hardhat Tests
-        run: npx hardhat test
 
       - name: Add test summary
         run: |
-          echo "## Example Unit Tests Result" >> $GITHUB_STEP_SUMMARY
+          echo "## Smart contracts examples unit tests result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

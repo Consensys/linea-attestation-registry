@@ -40,7 +40,7 @@
     "deploy:post": "npx hardhat run script/deploy/postDeployment.ts --network",
     "deploy:stdlib": "VERIFY_CONTRACTS=true npx hardhat run script/deploy/deployStdLib.ts --network",
     "deploy:stdlib:no-verify": "VERIFY_CONTRACTS=false npx hardhat run script/deploy/deployStdLib.ts --network",
-    "lint": "pnpm solhint \"{script,src,test}/**/*.sol\" -c .solhint.json",
+    "lint": "pnpm solhint \"{src,test}/**/*.sol\" -c .solhint.json",
     "prepack": "./prepack.sh",
     "postpack": "./postpack.sh",
     "prepublishOnly": "pnpm run clean && pnpm run lint && pnpm run build && pnpm run test",

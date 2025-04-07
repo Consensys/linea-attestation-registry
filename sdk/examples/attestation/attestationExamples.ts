@@ -1,6 +1,7 @@
 import { Address } from "viem";
 import { VeraxSdk } from "../../src/VeraxSdk";
 import { Attestation_filter } from "../../.graphclient";
+import { DEFAULT_ATTESTATION_ID, DEFAULT_PORTAL_ADDRESS_4, DEFAULT_SUBJECT } from "../constants";
 
 export default class AttestationExamples {
   private veraxSdk: VeraxSdk;
@@ -9,105 +10,34 @@ export default class AttestationExamples {
     this.veraxSdk = _veraxSdk;
   }
 
-  async run(argv: string, methodName: string = "", waitForConfirmation = false) {
+  async run(argv: string, methodName: string = "") {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
-      const attestationId: string =
-        argv === "" ? "0x0000000000000000000000000000000000000000000000000000000000000129" : argv;
+      const attestationId: string = argv === "" ? DEFAULT_ATTESTATION_ID : argv;
       console.log(await this.veraxSdk.attestation.findOneById(attestationId));
     }
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
-      const filter: Attestation_filter | undefined =
-        argv !== "" ? JSON.parse(argv) : { attester_not: "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d" };
+      const filter: Attestation_filter | undefined = argv !== "" ? JSON.parse(argv) : { attester_not: DEFAULT_SUBJECT };
       console.log(await this.veraxSdk.attestation.findBy(2, 0, filter, "attestedDate", "desc"));
     }
 
     if (methodName.toLowerCase() == "getRelatedAttestations".toLowerCase() || methodName == "") {
-      const attestationId: string =
-        argv === "" ? "0x0000000000000000000000000000000000000000000000000000000000000001" : argv;
+      const attestationId: string = argv === "" ? DEFAULT_ATTESTATION_ID : argv;
       console.log(await this.veraxSdk.attestation.getRelatedAttestations(attestationId));
     }
 
-    if (methodName.toLowerCase() == "simulateUpdateRouter".toLowerCase() || methodName == "") {
-      const routerAddress: Address = argv === "" ? "0x7d3fb2F1d03145fBa44ccdA23C49E632b5D2df71" : (argv as Address);
-      console.log(await this.veraxSdk.attestation.simulateUpdateRouter(routerAddress));
-    }
-
-    if (methodName.toLowerCase() == "updateRouter".toLowerCase() || methodName == "") {
-      const routerAddress: Address = argv === "" ? "0x7d3fb2F1d03145fBa44ccdA23C49E632b5D2df71" : (argv as Address);
-      console.log(await this.veraxSdk.attestation.updateRouter(routerAddress, waitForConfirmation));
-    }
-
-    if (methodName.toLowerCase() == "simulateMassImport".toLowerCase() || methodName == "") {
-      let params;
-      if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
-
-      const attestationPayloads = params?.attestationPayloads ?? [
-        {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
-        },
-        {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
-        },
-      ];
-      console.log(await this.veraxSdk.attestation.simulateMassImport(portalAddress, attestationPayloads));
-    }
-
-    if (methodName.toLowerCase() == "massImport".toLowerCase() || methodName == "") {
-      let params;
-      if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
-
-      const attestationPayloads = params?.attestationPayloads ?? [
-        {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
-        },
-        {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
-        },
-      ];
-      console.log(await this.veraxSdk.attestation.massImport(portalAddress, attestationPayloads, waitForConfirmation));
-    }
-
-    if (methodName.toLowerCase() == "simulateIncrementVersionNumber".toLowerCase() || methodName == "") {
-      console.log(await this.veraxSdk.attestation.simulateIncrementVersionNumber());
-    }
-
-    if (methodName.toLowerCase() == "incrementVersionNumber".toLowerCase() || methodName == "") {
-      console.log(await this.veraxSdk.attestation.incrementVersionNumber(waitForConfirmation));
-    }
-
     if (methodName.toLowerCase() == "isRegistered".toLowerCase() || methodName == "") {
-      const attestationId: string =
-        argv === "" ? "0x0000000000000000000000000000000000000000000000000000000000000129" : argv;
+      const attestationId: string = argv === "" ? DEFAULT_ATTESTATION_ID : argv;
       console.log(await this.veraxSdk.attestation.isRegistered(attestationId));
     }
 
     if (methodName.toLowerCase() == "isRevocable".toLowerCase() || methodName == "") {
-      const portalId: string = argv === "" ? "0xeea25bc2ec56cae601df33b8fc676673285e12cc" : argv;
+      const portalId: string = argv === "" ? DEFAULT_PORTAL_ADDRESS_4 : argv;
       console.log(await this.veraxSdk.attestation.isRevocable(portalId));
     }
 
     if (methodName.toLowerCase() == "getAttestation".toLowerCase() || methodName == "") {
-      const attestationId: string =
-        argv === "" ? "0x0000000000000000000000000000000000000000000000000000000000000129" : argv;
+      const attestationId: string = argv === "" ? DEFAULT_ATTESTATION_ID : argv;
       console.log(await this.veraxSdk.attestation.getAttestation(attestationId));
     }
 
@@ -122,8 +52,8 @@ export default class AttestationExamples {
     if (methodName.toLowerCase() == "balanceOf".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const account = params?.account ? (params.account as Address) : "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d";
-      const id = params?.id ? (params.id as unknown as number) : 1;
+      const account = params?.account ? (params.account as Address) : DEFAULT_SUBJECT;
+      const id = params?.id ? (params.id as unknown as number) : 765;
 
       console.log(await this.veraxSdk.attestation.balanceOf(account, id));
     }
@@ -131,12 +61,12 @@ export default class AttestationExamples {
     if (methodName.toLowerCase() == "balanceOfBatch".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const accounts = params?.accounts
+      const accounts: Address[] = params?.accounts
         ? (params.accounts as Address[])
-        : ["0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d", "0x6ecfd8252c19ac2bf4bd1cbdc026c001c93e179d"];
-      const ids = params?.ids ? (params.ids as number[]) : [1, 2];
+        : [DEFAULT_SUBJECT, DEFAULT_SUBJECT];
+      const ids = params?.ids ? (params.ids as number[]) : [650, 765];
 
-      console.log(await this.veraxSdk.attestation.balanceOfBatch(accounts as Address[], ids));
+      console.log(await this.veraxSdk.attestation.balanceOfBatch(accounts, ids));
     }
   }
 }

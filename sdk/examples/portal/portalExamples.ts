@@ -1,5 +1,16 @@
 import { Address } from "viem";
 import { VeraxSdk } from "../../src/VeraxSdk";
+import {
+  DEFAULT_PORTAL_ADDRESS,
+  DEFAULT_PORTAL_ADDRESS_2,
+  DEFAULT_SCHEMA_ID,
+  DEFAULT_SUBJECT,
+  DEFAULT_EXPIRATION_DATE,
+  DEFAULT_ATTESTATION_DATA,
+  DEFAULT_ATTESTATION_ID,
+  DEFAULT_ATTESTATION_ID_1,
+  DEFAULT_PORTAL_ADDRESS_3,
+} from "../constants";
 
 export default class PortalExamples {
   private veraxSdk: VeraxSdk;
@@ -10,25 +21,23 @@ export default class PortalExamples {
 
   async run(argv: string, methodName: string = "", waitForConfirmation = false) {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
-      const portalId: string = argv === "" ? "0x1495341ab1019798dd08976f4a3e5ab0e095510b" : argv;
+      const portalId: string = argv === "" ? DEFAULT_PORTAL_ADDRESS : argv;
       console.log(await this.veraxSdk.portal.findOneById(portalId));
     }
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
-      console.log(await this.veraxSdk.portal.findBy(2, 0, { ownerName: "Alain" }, "name", "desc"));
+      console.log(await this.veraxSdk.portal.findBy(2, 0, { ownerName: "alain.linea.eth" }, "name", "desc"));
     }
 
     if (methodName.toLowerCase() == "simulateAttest".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS;
       const attestationPayload = params?.attestationPayload ?? {
-        schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-        expirationDate: 1693583329,
-        subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-        attestationData: [{ isBuidler: true }],
+        schemaId: DEFAULT_SCHEMA_ID,
+        expirationDate: DEFAULT_EXPIRATION_DATE,
+        subject: DEFAULT_SUBJECT,
+        attestationData: DEFAULT_ATTESTATION_DATA,
       };
       const validationPayloads = params?.validationPayloads ?? [];
       console.log(await this.veraxSdk.portal.simulateAttest(portalAddress, attestationPayload, validationPayloads));
@@ -37,74 +46,38 @@ export default class PortalExamples {
     if (methodName.toLowerCase() == "attest" || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS;
       const attestationPayload = params?.attestationPayload ?? {
-        schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-        expirationDate: 1693583329,
-        subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-        attestationData: [{ isBuidler: true }],
+        schemaId: DEFAULT_SCHEMA_ID,
+        expirationDate: DEFAULT_EXPIRATION_DATE,
+        subject: DEFAULT_SUBJECT,
+        attestationData: DEFAULT_ATTESTATION_DATA,
       };
       const validationPayloads = params?.validationPayloads ?? [];
       console.log(
-        await this.veraxSdk.portal.attest(portalAddress, attestationPayload, validationPayloads, waitForConfirmation),
-      );
-    }
-
-    if (methodName.toLowerCase() == "simulateAttestV2".toLowerCase() || methodName == "") {
-      let params;
-      if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xA93162E5de5c1dcb4762cda08A26aeE4C5b9F264";
-      const attestationPayload = params?.attestationPayload ?? {
-        schemaId: "0x2049fef3764ceceb65a9a4a001b3824dac1d05cf5a46c3f4436cf23d280b87de",
-        expirationDate: Math.floor(Date.now() / 1000) + 2592000,
-        subject: "0x6eCfD8252C19aC2Bf4bd1cBdc026C001C93E179D",
-        attestationData: [{ hasCompletedTutorial: true }],
-      };
-      const validationPayloads = params?.validationPayloads ?? [];
-      console.log(await this.veraxSdk.portal.simulateAttestV2(portalAddress, attestationPayload, validationPayloads));
-    }
-
-    if (methodName.toLowerCase() == "attestV2".toLowerCase() || methodName == "") {
-      let params;
-      if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xA93162E5de5c1dcb4762cda08A26aeE4C5b9F264";
-      const attestationPayload = params?.attestationPayload ?? {
-        schemaId: "0x2049fef3764ceceb65a9a4a001b3824dac1d05cf5a46c3f4436cf23d280b87de",
-        expirationDate: Math.floor(Date.now() / 1000) + 2592000,
-        subject: "0x6eCfD8252C19aC2Bf4bd1cBdc026C001C93E179D",
-        attestationData: [{ hasCompletedTutorial: true }],
-      };
-      const validationPayloads = params?.validationPayloads ?? [];
-      console.log(
-        await this.veraxSdk.portal.attestV2(portalAddress, attestationPayload, validationPayloads, waitForConfirmation),
+        await this.veraxSdk.portal.attest(portalAddress, attestationPayload, validationPayloads, {
+          waitForConfirmation,
+        }),
       );
     }
 
     if (methodName.toLowerCase() == "simulateBulkAttest".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
 
       const attestationPayloads = params?.attestationPayloads ?? [
         {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
+          schemaId: DEFAULT_SCHEMA_ID,
+          expirationDate: DEFAULT_EXPIRATION_DATE,
+          subject: DEFAULT_SUBJECT,
+          attestationData: DEFAULT_ATTESTATION_DATA,
         },
         {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
+          schemaId: DEFAULT_SCHEMA_ID,
+          expirationDate: DEFAULT_EXPIRATION_DATE,
+          subject: DEFAULT_SUBJECT,
+          attestationData: DEFAULT_ATTESTATION_DATA,
         },
       ];
       const validationPayloads = params?.validationPayloads ?? [[], []];
@@ -116,63 +89,50 @@ export default class PortalExamples {
     if (methodName.toLowerCase() == "bulkAttest".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
 
       const attestationPayloads = params?.attestationPayloads ?? [
         {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
+          schemaId: DEFAULT_SCHEMA_ID,
+          expirationDate: 0,
+          subject: DEFAULT_SUBJECT,
+          attestationData: DEFAULT_ATTESTATION_DATA,
         },
         {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
+          schemaId: DEFAULT_SCHEMA_ID,
+          expirationDate: 0,
+          subject: DEFAULT_SUBJECT,
+          attestationData: DEFAULT_ATTESTATION_DATA,
         },
       ];
       const validationPayloads = params?.validationPayloads ?? [[], []];
       console.log(
-        await this.veraxSdk.portal.bulkAttest(
-          portalAddress,
-          attestationPayloads,
-          validationPayloads,
+        await this.veraxSdk.portal.bulkAttest(portalAddress, attestationPayloads, validationPayloads, {
           waitForConfirmation,
-        ),
+        }),
       );
-    }
-
-    if (methodName.toLowerCase() == "revoke" || methodName == "") {
-      let params;
-      if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
-      const attestationId =
-        params?.attestationId ?? "0x0000000000000000000000000000000000000000000000000000000000000001";
-      console.log(await this.veraxSdk.portal.revoke(portalAddress, attestationId, waitForConfirmation));
     }
 
     if (methodName.toLowerCase() == "simulateRevoke".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
-      const attestationId =
-        params?.attestationId ?? "0x0000000000000000000000000000000000000000000000000000000000000001";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
+      const attestationId = params?.attestationId ?? DEFAULT_ATTESTATION_ID;
       console.log(await this.veraxSdk.portal.simulateRevoke(portalAddress, attestationId));
+    }
+
+    if (methodName.toLowerCase() == "revoke" || methodName == "") {
+      let params;
+      if (argv !== "") params = JSON.parse(argv);
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
+      const attestationId = params?.attestationId ?? DEFAULT_ATTESTATION_ID_1;
+      console.log(await this.veraxSdk.portal.revoke(portalAddress, attestationId, { waitForConfirmation }));
     }
 
     if (methodName.toLowerCase() == "simulateBulkRevoke".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
       const attestationIds = params?.attestationIds ?? [
         "0x00000000000000000000000000000000000000000000000000000000000010a0",
         "0x00000000000000000000000000000000000000000000000000000000000010a1",
@@ -183,31 +143,25 @@ export default class PortalExamples {
     if (methodName.toLowerCase() == "bulkRevoke".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
       const attestationIds = params?.attestationIds ?? [
         "0x00000000000000000000000000000000000000000000000000000000000010a0",
         "0x00000000000000000000000000000000000000000000000000000000000010a1",
       ];
-      console.log(await this.veraxSdk.portal.bulkRevoke(portalAddress, attestationIds, waitForConfirmation));
+      console.log(await this.veraxSdk.portal.bulkRevoke(portalAddress, attestationIds, { waitForConfirmation }));
     }
 
     if (methodName.toLowerCase() == "simulateReplace".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
-      const attestationId = params?.attestationId
-        ? (params.attestationId as Address)
-        : "0x0000000000000000000000000000000000000000000000000000000000000001";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
+      const attestationId = params?.attestationId ? (params.attestationId as Address) : DEFAULT_ATTESTATION_ID_1;
 
       const attestationPayload = params?.attestationPayload ?? {
-        schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-        expirationDate: 1693583329,
-        subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-        attestationData: [{ isBuidler: true }],
+        schemaId: DEFAULT_SCHEMA_ID,
+        expirationDate: DEFAULT_EXPIRATION_DATE,
+        subject: DEFAULT_SUBJECT,
+        attestationData: DEFAULT_ATTESTATION_DATA,
       };
       const validationPayloads = params?.validationPayloads ?? [];
       console.log(
@@ -223,56 +177,43 @@ export default class PortalExamples {
     if (methodName.toLowerCase() == "replace".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
-      const attestationId = params?.attestationId
-        ? (params.attestationId as Address)
-        : "0x0000000000000000000000000000000000000000000000000000000000000001";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
+      const attestationId = params?.attestationId ? (params.attestationId as Address) : DEFAULT_ATTESTATION_ID_1;
 
       const attestationPayload = params?.attestationPayload ?? {
-        schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-        expirationDate: 1693583329,
-        subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-        attestationData: [{ isBuidler: true }],
+        schemaId: DEFAULT_SCHEMA_ID,
+        expirationDate: DEFAULT_EXPIRATION_DATE,
+        subject: DEFAULT_SUBJECT,
+        attestationData: DEFAULT_ATTESTATION_DATA,
       };
       const validationPayloads = params?.validationPayloads ?? [];
       console.log(
-        await this.veraxSdk.portal.replace(
-          portalAddress,
-          attestationId,
-          attestationPayload,
-          validationPayloads,
+        await this.veraxSdk.portal.replace(portalAddress, attestationId, attestationPayload, validationPayloads, {
           waitForConfirmation,
-        ),
+        }),
       );
     }
 
     if (methodName.toLowerCase() == "simulateBulkReplace".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
       const attestationIds = params?.attestationIds
         ? (params.attestationIds as string[])
-        : [
-            "0x0000000000000000000000000000000000000000000000000000000000000001",
-            "0x0000000000000000000000000000000000000000000000000000000000000002",
-          ];
+        : [DEFAULT_ATTESTATION_ID_1, "0x0000000000000000000000000000000000000000000000000000000000000002"];
 
       const attestationPayloads = params?.attestationPayloads ?? [
         {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
+          schemaId: DEFAULT_SCHEMA_ID,
+          expirationDate: DEFAULT_EXPIRATION_DATE,
+          subject: DEFAULT_SUBJECT,
+          attestationData: DEFAULT_ATTESTATION_DATA,
         },
         {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
+          schemaId: DEFAULT_SCHEMA_ID,
+          expirationDate: DEFAULT_EXPIRATION_DATE,
+          subject: DEFAULT_SUBJECT,
+          attestationData: DEFAULT_ATTESTATION_DATA,
         },
       ];
       const validationPayloads = params?.validationPayloads ?? [[], []];
@@ -289,39 +230,30 @@ export default class PortalExamples {
     if (methodName.toLowerCase() == "bulkReplace".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS_2;
       const attestationIds = params?.attestationIds
         ? (params.attestationIds as string[])
-        : [
-            "0x0000000000000000000000000000000000000000000000000000000000000001",
-            "0x0000000000000000000000000000000000000000000000000000000000000002",
-          ];
+        : [DEFAULT_ATTESTATION_ID_1, "0x0000000000000000000000000000000000000000000000000000000000000002"];
 
       const attestationPayloads = params?.attestationPayloads ?? [
         {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
+          schemaId: DEFAULT_SCHEMA_ID,
+          expirationDate: DEFAULT_EXPIRATION_DATE,
+          subject: DEFAULT_SUBJECT,
+          attestationData: DEFAULT_ATTESTATION_DATA,
         },
         {
-          schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-          expirationDate: 1693583329,
-          subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-          attestationData: [{ isBuidler: true }],
+          schemaId: DEFAULT_SCHEMA_ID,
+          expirationDate: DEFAULT_EXPIRATION_DATE,
+          subject: DEFAULT_SUBJECT,
+          attestationData: DEFAULT_ATTESTATION_DATA,
         },
       ];
       const validationPayloads = params?.validationPayloads ?? [[], []];
       console.log(
-        await this.veraxSdk.portal.bulkReplace(
-          portalAddress,
-          attestationIds,
-          attestationPayloads,
-          validationPayloads,
+        await this.veraxSdk.portal.bulkReplace(portalAddress, attestationIds, attestationPayloads, validationPayloads, {
           waitForConfirmation,
-        ),
+        }),
       );
     }
 
@@ -329,7 +261,7 @@ export default class PortalExamples {
       let params;
       if (argv !== "") params = JSON.parse(argv);
       const { id, name, description, isRevocable, ownerName } = params ?? {
-        id: "0xD39c439cD3Ae5E1F3c7d13985aDAC90846284904",
+        id: DEFAULT_PORTAL_ADDRESS_3,
         name: "test",
         description: "example",
         isRevocable: true,
@@ -342,14 +274,14 @@ export default class PortalExamples {
       let params;
       if (argv !== "") params = JSON.parse(argv);
       const { id, name, description, isRevocable, ownerName } = params ?? {
-        id: "0xD39c439cD3Ae5E1F3c7d13985aDAC90846284904",
+        id: DEFAULT_PORTAL_ADDRESS_3,
         name: "test",
         description: "example",
         isRevocable: true,
         ownerName: "test",
       };
       console.log(
-        await this.veraxSdk.portal.register(id, name, description, isRevocable, ownerName, waitForConfirmation),
+        await this.veraxSdk.portal.register(id, name, description, isRevocable, ownerName, { waitForConfirmation }),
       );
     }
 
@@ -379,41 +311,30 @@ export default class PortalExamples {
         ownerName: "test",
       };
       console.log(
-        await this.veraxSdk.portal.deployDefaultPortal(
-          modules,
-          name,
-          description,
-          isRevocable,
-          ownerName,
+        await this.veraxSdk.portal.deployDefaultPortal(modules, name, description, isRevocable, ownerName, {
           waitForConfirmation,
-        ),
+        }),
       );
     }
 
     if (methodName.toLowerCase() == "getPortalByAddress".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS;
       console.log(await this.veraxSdk.portal.getPortalByAddress(portalAddress));
     }
 
     if (methodName.toLowerCase() == "getPortalOwner".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS;
       console.log(await this.veraxSdk.portal.getPortalOwner(portalAddress));
     }
 
     if (methodName.toLowerCase() == "getPortalRevocability".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS;
       console.log(await this.veraxSdk.portal.getPortalRevocability(portalAddress));
     }
 
@@ -424,9 +345,7 @@ export default class PortalExamples {
     if (methodName.toLowerCase() == "isPortalRegistered".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
-      const portalAddress = params?.portalAddress
-        ? (params.portalAddress as Address)
-        : "0x8b833796869b5debb9b06370d6d47016f0d7973b";
+      const portalAddress = params?.portalAddress ? (params.portalAddress as Address) : DEFAULT_PORTAL_ADDRESS;
       console.log(await this.veraxSdk.portal.isPortalRegistered(portalAddress));
     }
   }

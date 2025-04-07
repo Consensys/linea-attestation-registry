@@ -19,8 +19,7 @@
     "declarationDir": "./lib/types"
   },
   "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "esm": false
   },
   "include": ["**/*.ts", ".graphclient/**/*.ts"]
 }

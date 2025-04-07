@@ -1,5 +1,6 @@
 import { Address } from "viem";
 import { VeraxSdk } from "../../src/VeraxSdk";
+import { DEFAULT_SCHEMA_ID, DEFAULT_SCHEMA_STRING } from "../constants";
 
 export default class SchemaExamples {
   private veraxSdk: VeraxSdk;
@@ -10,23 +11,12 @@ export default class SchemaExamples {
 
   async run(argv: string, methodName: string = "", waitForConfirmation = false) {
     if (methodName.toLowerCase() == "findOneById".toLowerCase() || methodName == "") {
-      const schemaId: string =
-        argv === "" ? "0x01f031da36192c34057c764239eb77bb6ec8ebfb808f72a7bb172f37a5bec31f" : argv;
+      const schemaId: string = argv === "" ? DEFAULT_SCHEMA_ID : argv;
       console.log(await this.veraxSdk.schema.findOneById(schemaId));
     }
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
-      console.log(await this.veraxSdk.schema.findBy(2, 0, { description: "Gitcoin Passport Score" }, "name", "desc"));
-    }
-
-    if (methodName.toLowerCase() == "simulateUpdateRouter".toLowerCase() || methodName == "") {
-      const routerAddress: Address = argv === "" ? "0x7d3fb2F1d03145fBa44ccdA23C49E632b5D2df71" : (argv as Address);
-      console.log(await this.veraxSdk.schema.simulateUpdateRouter(routerAddress));
-    }
-
-    if (methodName.toLowerCase() == "updateRouter".toLowerCase() || methodName == "") {
-      const routerAddress: Address = argv === "" ? "0x7d3fb2F1d03145fBa44ccdA23C49E632b5D2df71" : (argv as Address);
-      console.log(await this.veraxSdk.schema.updateRouter(routerAddress, waitForConfirmation));
+      console.log(await this.veraxSdk.schema.findBy(2, 0, { description: "Hapi Test" }, "name", "desc"));
     }
 
     if (methodName.toLowerCase() == "simulateCreate".toLowerCase() || methodName == "") {
@@ -36,7 +26,7 @@ export default class SchemaExamples {
         name: "test",
         description: "example",
         context: "test",
-        schemaString: "(bool isBuidler)",
+        schemaString: DEFAULT_SCHEMA_STRING,
       };
       console.log(await this.veraxSdk.schema.simulateCreate(name, description, context, schemaString));
     }
@@ -48,16 +38,16 @@ export default class SchemaExamples {
         name: "test",
         description: "example",
         context: "test",
-        schemaString: "(bool isBuidler)",
+        schemaString: DEFAULT_SCHEMA_STRING,
       };
-      console.log(await this.veraxSdk.schema.create(name, description, context, schemaString, waitForConfirmation));
+      console.log(await this.veraxSdk.schema.create(name, description, context, schemaString, { waitForConfirmation }));
     }
 
     if (methodName.toLowerCase() == "simulateUpdateContext".toLowerCase() || methodName == "") {
       let params;
       if (argv !== "") params = JSON.parse(argv);
       const { schemaId, context } = params ?? {
-        schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+        schemaId: DEFAULT_SCHEMA_ID,
         context: "new context",
       };
       console.log(await this.veraxSdk.schema.simulateUpdateContext(schemaId, context));
@@ -67,20 +57,19 @@ export default class SchemaExamples {
       let params;
       if (argv !== "") params = JSON.parse(argv);
       const { schemaId, context } = params ?? {
-        schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
+        schemaId: DEFAULT_SCHEMA_ID,
         context: "new context",
       };
-      console.log(await this.veraxSdk.schema.updateContext(schemaId, context, waitForConfirmation));
+      console.log(await this.veraxSdk.schema.updateContext(schemaId, context, { waitForConfirmation }));
     }
 
     if (methodName.toLowerCase() == "getIdFromSchemaString".toLowerCase() || methodName == "") {
-      const schemaString: string = argv === "" ? "(bool isBuidler)" : argv;
+      const schemaString: string = argv === "" ? DEFAULT_SCHEMA_STRING : argv;
       console.log(await this.veraxSdk.schema.getIdFromSchemaString(schemaString));
     }
 
     if (methodName.toLowerCase() == "getSchema".toLowerCase() || methodName == "") {
-      const schemaId: string =
-        argv === "" ? "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738" : argv;
+      const schemaId: string = argv === "" ? DEFAULT_SCHEMA_ID : argv;
       console.log(await this.veraxSdk.schema.getSchema(schemaId));
     }
 
@@ -89,8 +78,7 @@ export default class SchemaExamples {
     }
 
     if (methodName.toLowerCase() == "isRegistered".toLowerCase() || methodName == "") {
-      const schemaId: string =
-        argv === "" ? "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738" : argv;
+      const schemaId: string = argv === "" ? DEFAULT_SCHEMA_ID : argv;
       console.log(await this.veraxSdk.schema.isRegistered(schemaId));
     }
   }

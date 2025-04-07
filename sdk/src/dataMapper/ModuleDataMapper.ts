@@ -1,4 +1,4 @@
-import { Address } from "viem";
+import { Address, WriteContractParameters } from "viem";
 import { Module_filter, Module_orderBy } from "../../.graphclient";
 import { AttestationPayload, Module, TransactionOptions } from "../types";
 import { ActionType } from "../utils/constants";
@@ -16,15 +16,6 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
         name
         description
   }`;
-
-  async simulateUpdateRouter(routerAddress: Address) {
-    return this.simulateContract("updateRouter", [routerAddress]);
-  }
-
-  async updateRouter(routerAddress: Address, options?: TransactionOptions) {
-    const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
-  }
 
   async simulateRegister(name: string, description: string, moduleAddress: Address) {
     return this.simulateContract("register", [name, description, moduleAddress]);
@@ -127,7 +118,7 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     });
   }
 
-  private async simulateContract(functionName: string, args: unknown[]) {
+  private async simulateContract(functionName: string, args: unknown[]): Promise<WriteContractParameters> {
     if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({

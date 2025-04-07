@@ -4,7 +4,7 @@ import { Attestation, AttestationPayload, OffchainData, Schema, TransactionOptio
 import { ActionType, Constants } from "../utils/constants";
 import { Attestation_filter, Attestation_orderBy, OrderDirection } from "../../.graphclient";
 import { handleError } from "../utils/errorHandler";
-import { Address, Hex } from "viem";
+import { Address, Hex, WriteContractParameters } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
 import { executeTransaction } from "../utils/transactionSender";
 import { getIPFSContent } from "../utils/ipfsClient";
@@ -121,15 +121,6 @@ export default class AttestationDataMapper extends BaseDataMapper<
     );
   }
 
-  async simulateUpdateRouter(routerAddress: Address) {
-    return this.simulateContract("updateRouter", [routerAddress]);
-  }
-
-  async updateRouter(routerAddress: Address, options?: TransactionOptions) {
-    const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
-  }
-
   async simulateMassImport(portalAddress: Address, attestationPayloads: AttestationPayload[]) {
     const attestationPayloadsArg = [];
 
@@ -202,7 +193,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
     });
   }
 
-  private async simulateContract(functionName: string, args: unknown[]) {
+  private async simulateContract(functionName: string, args: unknown[]): Promise<WriteContractParameters> {
     if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({

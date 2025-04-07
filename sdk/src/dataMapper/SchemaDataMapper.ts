@@ -1,4 +1,4 @@
-import { Address, TransactionReceipt } from "viem";
+import { WriteContractParameters } from "viem";
 import { Schema_filter, Schema_orderBy } from "../../.graphclient";
 import { Schema, TransactionOptions } from "../types";
 import { ActionType } from "../utils/constants";
@@ -17,15 +17,6 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
         schema
         attestationCounter
   }`;
-
-  async simulateUpdateRouter(routerAddress: Address) {
-    return this.simulateContract("updateRouter", [routerAddress]);
-  }
-
-  async updateRouter(routerAddress: Address, options?: TransactionOptions): Promise<Partial<TransactionReceipt>> {
-    const request = await this.simulateUpdateRouter(routerAddress);
-    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
-  }
 
   async simulateCreate(name: string, description: string, context: string, schemaString: string) {
     return this.simulateContract("createSchema", [name, description, context, schemaString]);
@@ -70,7 +61,7 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
     });
   }
 
-  private async simulateContract(functionName: string, args: unknown[]) {
+  private async simulateContract(functionName: string, args: unknown[]): Promise<WriteContractParameters> {
     if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({

@@ -2,7 +2,7 @@ import { AttestationPayload, Portal, TransactionOptions } from "../types";
 import { ActionType } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
-import { Abi, Address } from "viem";
+import { Abi, Address, WriteContractParameters } from "viem";
 import { encode } from "../utils/abiCoder";
 import { Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
@@ -84,39 +84,6 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
       options?.value,
       options?.customAbi,
     );
-  }
-
-  async simulateAttestV2(
-    portalAddress: Address,
-    attestationPayload: AttestationPayload,
-    validationPayloads: string[],
-    options?: TransactionOptions,
-  ) {
-    const matchingSchema = await this.veraxSdk.schema.findOneById(attestationPayload.schemaId);
-    if (!matchingSchema) {
-      throw new Error("No matching Schema");
-    }
-    const attestationData = encode(matchingSchema.schema, attestationPayload.attestationData);
-    return this.simulatePortalContract(
-      portalAddress,
-      "attestV2",
-      [
-        [attestationPayload.schemaId, attestationPayload.expirationDate, attestationPayload.subject, attestationData],
-        validationPayloads,
-      ],
-      options?.value,
-      options?.customAbi,
-    );
-  }
-
-  async attestV2(
-    portalAddress: Address,
-    attestationPayload: AttestationPayload,
-    validationPayloads: string[],
-    options?: TransactionOptions,
-  ) {
-    const request = await this.simulateAttestV2(portalAddress, attestationPayload, validationPayloads, options);
-    return executeTransaction(request, this.web3Client, this.walletClient, options?.waitForConfirmation);
   }
 
   async bulkAttest(
@@ -291,7 +258,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     return await this.web3Client.readContract({
       address: this.conf.portalRegistryAddress,
       abi: abiPortalRegistry,
-      functionName: "getPortal",
+      functionName: "getPortalByAddress",
       args: [address],
     });
   }
@@ -331,7 +298,10 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     });
   }
 
-  private async simulatePortalRegistryContract(functionName: string, args: unknown[]) {
+  private async simulatePortalRegistryContract(
+    functionName: string,
+    args: unknown[],
+  ): Promise<WriteContractParameters> {
     if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
     try {
       const { request } = await this.web3Client.simulateContract({
@@ -354,7 +324,7 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     args: unknown[],
     value: bigint = 0n,
     customAbi?: Abi,
-  ) {
+  ): Promise<WriteContractParameters> {
     if (!this.walletClient) throw new Error("VeraxSDK - Wallet not available");
 
     const abi = [...abiDefaultPortal, ...(customAbi || [])];

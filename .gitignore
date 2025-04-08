@@ -26,7 +26,6 @@ sepolia.json
 # Subgraph
 build
 generated
-subgraph.yaml
 .bin
 .latest.json
 .docker

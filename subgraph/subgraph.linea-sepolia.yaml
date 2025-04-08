@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema-v2.graphql
+  file: ./schema.graphql
 dataSources:
   - kind: ethereum
     name: AttestationRegistry

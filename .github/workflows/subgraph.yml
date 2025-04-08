@@ -52,11 +52,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build the subgraph V1
-        run: pnpm run build:linea-sepolia:v1
-
-      - name: Build the subgraph V2
-        run: pnpm run build:linea-sepolia:v2
+      - name: Build the subgraph
+        run: pnpm run build:linea-sepolia
 
       - name: Run the unit tests
         run: pnpm run test

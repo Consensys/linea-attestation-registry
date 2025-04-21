@@ -13,15 +13,8 @@ import VeraxLogoDarkMode from "@/assets/logo/verax-logo-dark.svg?react";
 import VeraxLogo from "@/assets/logo/verax-logo-light.svg?react";
 import { LightDarkModeSwitcher } from "@/components/LightDarkModeSwitcher";
 import { Link } from "@/components/Link";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { chains } from "@/config";
+import { NetworkTypeToggle } from "@/components/NetworkTypeToggle";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
-import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
 
@@ -30,8 +23,6 @@ import { Button } from "../Buttons";
 import { EButtonType } from "../Buttons/enum";
 import { NavigationList } from "../NavigationList";
 import { SearchInput } from "../SearchInput";
-
-import "./styles.css";
 
 interface HeaderProps {
   isOpened: boolean;
@@ -44,10 +35,9 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
   const { isDarkMode } = useTernaryDarkMode();
   const { data: ensName } = useEnsName({ address, chainId: mainnet.id });
 
-  const { network, setNetwork } = useNetworkContext();
   const screen = useWindowDimensions();
   const isAdaptive = !screen.xl;
-  const isHomePage = location.pathname === `/${network.network}`;
+  const isHomePage = location.pathname === "/";
 
   const titleByScreen = screen.sm ? t("common.actions.connect") : t("common.actions.connectWallet");
   const title = address && isConnected ? ensName || cropString(address) : titleByScreen;
@@ -73,32 +63,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
         </div>
         <div className="justify-end items-center gap-4 flex flex-1">
           {!screen.sm && !isHomePage && <SearchInput />}
-          {!isAdaptive && <LightDarkModeSwitcher />}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="DropdownMenuTrigger select-none w-[72px] p-2 rounded-md outline-none hover:bg-jumbotronLight dark:hover:bg-jumbotronDark justify-start items-center gap-2 inline-flex transition dark:text-whiteDefault">
-              {isDarkMode && network.imgDark ? network.imgDark : network.img}
-              <ChevronDown className="header-arrow w-6 h-6 relative" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="flex flex-col gap-2 bg-surface-primary dark:bg-blackDefault dark:border-border-cardDark">
-              {chains.map((chain) => (
-                <DropdownMenuItem
-                  key={chain.name}
-                  className="flex gap-2 focus:bg-jumbotronLight dark:focus:bg-jumbotronDark dark:text-whiteDefault cursor-pointer transition"
-                  onClick={() => setNetwork(chain)}
-                >
-                  <div
-                    style={{
-                      width: "24px",
-                      height: "24px",
-                    }}
-                  >
-                    {isDarkMode && chain.imgDark ? chain.imgDark : chain.img}
-                  </div>
-                  {chain.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <NetworkTypeToggle className="mx-2" />
           <ConnectKitButton.Custom>
             {({ isConnected, show }) => {
               if (!show) return <></>;
@@ -114,6 +79,7 @@ export const Header: React.FC<HeaderProps> = ({ isOpened, setIsOpened }) => {
               );
             }}
           </ConnectKitButton.Custom>
+          {!isAdaptive && <LightDarkModeSwitcher />}
           {isAdaptive && <MenuButton isOpened={isOpened} setIsOpened={setIsOpened} />}
         </div>
       </div>

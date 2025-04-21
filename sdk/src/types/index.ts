@@ -120,7 +120,6 @@ export type CrossChainClient = {
 export enum ChainName {
   LINEA_MAINNET = "verax-v2-linea",
   LINEA_SEPOLIA = "verax-v2-linea-sepolia",
-  ARBITRUM_NOVA = "verax-v2-arbitrum-nova",
   ARBITRUM_SEPOLIA = "verax-v2-arbitrum-sepolia",
   ARBITRUM_MAINNET = "verax-v2-arbitrum",
   BASE_MAINNET = "verax-v2-base",

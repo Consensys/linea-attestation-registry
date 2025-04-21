@@ -1,4 +1,4 @@
-import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
+import { ChainName, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { getDefaultConfig } from "connectkit";
 import { createConfig, http } from "wagmi";
 import {
@@ -26,7 +26,7 @@ import BscMainnetIcon from "@/assets/networks/bsc.svg?react";
 import LineaMainnetIconDark from "@/assets/networks/linea-dark.svg?react";
 import LineaSepoliaIcon from "@/assets/networks/linea-sepolia.svg?react";
 import LineaMainnetIcon from "@/assets/networks/linea.svg?react";
-import { INetwork } from "@/interfaces/config";
+import { INetwork, NetworkName } from "@/interfaces/config";
 
 const infuraApiKey: string = import.meta.env.VITE_INFURA_API_KEY;
 
@@ -52,7 +52,7 @@ const transports = Object.entries(rpcUrls).reduce(
 
 const chains: INetwork[] = [
   {
-    name: "Linea Mainnet",
+    name: "Linea",
     chain: linea,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND,
@@ -62,8 +62,9 @@ const chains: INetwork[] = [
     },
     img: <LineaMainnetIcon />,
     imgDark: <LineaMainnetIconDark />,
-    network: "linea",
+    network: NetworkName.LINEA,
     prefix: "0x0000",
+    subgraphName: ChainName.LINEA_MAINNET,
   },
   {
     name: "Linea Sepolia",
@@ -75,8 +76,9 @@ const chains: INetwork[] = [
       rpcUrl: rpcUrls[lineaSepolia.id],
     },
     img: <LineaSepoliaIcon />,
-    network: "linea-sepolia",
+    network: NetworkName.LINEA_SEPOLIA,
     prefix: "0x0000",
+    subgraphName: ChainName.LINEA_SEPOLIA,
   },
   {
     name: "Arbitrum",
@@ -89,8 +91,9 @@ const chains: INetwork[] = [
     },
     img: <ArbitrumIcon />,
     imgDark: <ArbitrumIconDark />,
-    network: "arbitrum",
+    network: NetworkName.ARBITRUM,
     prefix: "0x0001",
+    subgraphName: ChainName.ARBITRUM_MAINNET,
   },
   {
     name: "Arbitrum Sepolia",
@@ -102,11 +105,12 @@ const chains: INetwork[] = [
       rpcUrl: rpcUrls[arbitrumSepolia.id],
     },
     img: <ArbitrumSepoliaIcon />,
-    network: "arbitrum-sepolia",
+    network: NetworkName.ARBITRUM_SEPOLIA,
     prefix: "0x0001",
+    subgraphName: ChainName.ARBITRUM_SEPOLIA,
   },
   {
-    name: "Base Mainnet",
+    name: "Base",
     chain: base,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BASE_FRONTEND,
@@ -116,8 +120,9 @@ const chains: INetwork[] = [
     },
     img: <BaseMainnetIcon />,
     imgDark: <BaseIconDark />,
-    network: "base-mainnet",
+    network: NetworkName.BASE_MAINNET,
     prefix: "0x0005",
+    subgraphName: ChainName.BASE_MAINNET,
   },
   {
     name: "Base Sepolia",
@@ -129,11 +134,12 @@ const chains: INetwork[] = [
       rpcUrl: rpcUrls[baseSepolia.id],
     },
     img: <BaseSepoliaIcon />,
-    network: "base-sepolia",
+    network: NetworkName.BASE_SEPOLIA,
     prefix: "0x0005",
+    subgraphName: ChainName.BASE_SEPOLIA,
   },
   {
-    name: "BSC Mainnet",
+    name: "BSC",
     chain: bsc,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BSC_FRONTEND,
@@ -143,8 +149,9 @@ const chains: INetwork[] = [
     },
     img: <BscMainnetIcon />,
     imgDark: <BscMainnetIconDark />,
-    network: "bsc-mainnet",
+    network: NetworkName.BSC_MAINNET,
     prefix: "0x0006",
+    subgraphName: ChainName.BSC_MAINNET,
   },
   {
     name: "BSC Testnet",
@@ -156,8 +163,9 @@ const chains: INetwork[] = [
       rpcUrl: rpcUrls[bscTestnet.id],
     },
     img: <BscTestnetIcon />,
-    network: "bsc-testnet",
+    network: NetworkName.BSC_TESTNET,
     prefix: "0x0006",
+    subgraphName: ChainName.BSC_TESTNET,
   },
 ];
 

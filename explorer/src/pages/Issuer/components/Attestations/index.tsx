@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
-import { APP_ROUTES, CHAIN_ID_ROUTE } from "@/routes/constants";
+import { APP_ROUTES } from "@/routes/constants";
 import { formatNumber } from "@/utils/amountUtils";
 
 import { IAttestationProps } from "./interface";
@@ -12,10 +12,7 @@ import { IAttestationProps } from "./interface";
 import "./styles.css";
 
 export const Attestations: React.FC<IAttestationProps> = ({ address }) => {
-  const {
-    sdk,
-    network: { network },
-  } = useNetworkContext();
+  const { sdk } = useNetworkContext();
   const navigate = useNavigate();
   const location = useLocation();
   const { data: portals, isLoading } = useSWR(`${SWRKeys.GET_PORTALS_BY_ISSUER}/${address}`, () =>
@@ -29,7 +26,7 @@ export const Attestations: React.FC<IAttestationProps> = ({ address }) => {
       portal_in: portals?.map((portal) => portal.id),
     };
     const whereClause = `?where=${encodeURIComponent(JSON.stringify(whereClauseJSON))}`;
-    navigate(APP_ROUTES.ATTESTATIONS.replace(CHAIN_ID_ROUTE, network) + whereClause, {
+    navigate(APP_ROUTES.ATTESTATIONS + whereClause, {
       state: { from: location.pathname },
     });
   };

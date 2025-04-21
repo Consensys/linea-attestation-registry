@@ -2,7 +2,7 @@ import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/
 import { ConnectKitButton } from "connectkit";
 import { t } from "i18next";
 import { ArchiveIcon, Check, Copy, Wallet } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import useSWR from "swr";
 import { useAccount } from "wagmi";
@@ -11,25 +11,27 @@ import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { InfoBlock } from "@/components/InfoBlock";
 import { THOUSAND } from "@/constants";
+import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { EQueryParams } from "@/enums/queryParams";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { mainnets, testnets } from "@/utils";
 import { cropString } from "@/utils/stringUtils";
 
 import { CardView } from "../Attestations/components/CardView";
 import { TitleAndSwitcher } from "../Attestations/components/TitleAndSwitcher";
 
 export const MyAttestations: React.FC = () => {
-  const {
-    sdk,
-    network: { chain },
-  } = useNetworkContext();
+  const { sdk } = useNetworkContext();
+  const { networkType } = useNetwork();
   const { address } = useAccount();
 
   const { sm } = useWindowDimensions();
 
   const [copied, setCopied] = useState<boolean>(false);
+
+  const chainsForQuery = useMemo(() => (networkType === "mainnet" ? mainnets : testnets), [networkType]);
 
   const handleCopy = (text: string, result: boolean) => {
     if (!result || !text) return;
@@ -44,16 +46,19 @@ export const MyAttestations: React.FC = () => {
   const searchParams = new URLSearchParams(window.location.search);
   const sortByDateDirection = searchParams.get(EQueryParams.SORT_BY_DATE);
 
-  const { data: attestationsList } = useSWR(
-    `${SWRKeys.GET_ATTESTATION_LIST}/${address}/${sortByDateDirection}/${chain.id}`,
-    () =>
-      sdk.attestation.findBy(
+  const { data: attestationsList, isLoading } = useSWR(
+    `${SWRKeys.GET_ATTESTATION_LIST}/${address}/${sortByDateDirection}`,
+    async () => {
+      const rawAttestations = await sdk.attestation.findByMultiChain(
+        chainsForQuery,
         undefined,
         undefined,
         { subject: address },
         "attestedDate",
         (sortByDateDirection as OrderDirection) || "desc",
-      ),
+      );
+      return rawAttestations.sort((a, b) => b.attestedDate - a.attestedDate);
+    },
   );
 
   return (
@@ -87,7 +92,11 @@ export const MyAttestations: React.FC = () => {
           }
         />
       ) : !attestationsList || !attestationsList.length ? (
-        <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.emptyList")} />
+        isLoading ? (
+          <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.isLoading")} />
+        ) : (
+          <InfoBlock icon={<ArchiveIcon />} message={t("attestation.messages.emptyList")} />
+        )
       ) : (
         <CardView attestationsList={attestationsList}></CardView>
       )}

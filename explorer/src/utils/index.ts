@@ -1,3 +1,4 @@
+import { ChainName } from "@verax-attestation-registry/verax-sdk";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Chain } from "viem";
@@ -21,3 +22,17 @@ export function getBlockExplorerLink(chain: Chain) {
     return `${links[chain.id].address}`;
   }
 }
+
+export const mainnets = [
+  ChainName.ARBITRUM_MAINNET,
+  ChainName.BASE_MAINNET,
+  ChainName.BSC_MAINNET,
+  ChainName.LINEA_MAINNET,
+];
+export const testnets = [
+  ChainName.ARBITRUM_SEPOLIA,
+  ChainName.BASE_SEPOLIA,
+  ChainName.BSC_TESTNET,
+  ChainName.LINEA_SEPOLIA,
+];
+export const allChains = [...mainnets, ...testnets];

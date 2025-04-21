@@ -2,19 +2,22 @@ import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/
 import AttestationDataMapper from "@verax-attestation-registry/verax-sdk/lib/types/src/dataMapper/AttestationDataMapper";
 
 import { ITEMS_SEARCHED_DEFAULT } from "@/constants";
+import { NetworkType } from "@/contexts/NetworkContext.ts";
 import { ResultParseSearch } from "@/interfaces/components";
-import { isNotNullOrUndefined } from "@/utils";
+import { isNotNullOrUndefined, mainnets, testnets } from "@/utils";
 import { uniqMap } from "@/utils/searchUtils";
 
 export const loadAttestationReceivedList = async (
   attestation: AttestationDataMapper,
   parsedString: Partial<ResultParseSearch>,
   sortByDateDirection: string | null,
+  networkType: NetworkType,
 ) => {
   const [listBySubject] = parsedString.address
     ? await Promise.all(
         parsedString.address.map(async (address) => {
-          return attestation.findBy(
+          return attestation.findByMultiChain(
+            networkType === "mainnet" ? mainnets : testnets,
             ITEMS_SEARCHED_DEFAULT,
             undefined,
             {

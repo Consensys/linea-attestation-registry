@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "attestation": "ts-node examples/attestation/index.ts",
-    "build": "pnpm run clean && tsc --p ./tsconfig.build.json && esbuild src/VeraxSdk.ts --bundle --platform=browser --define:process.env.NODE_ENV='\"production\"' --define:process.env.NODE_DEBUG='false' --outfile=lib/src/VeraxSdk.js --format=esm && node -e \"const fs = require('fs'); const content = fs.readFileSync('lib/src/VeraxSdk.js', 'utf8'); fs.writeFileSync('lib/src/VeraxSdk.js', content.replace(/var asyncImport = \\(moduleName\\) => import\\(`\\$\\{moduleName\\}`\\);/g, ''));\"",
+    "build": "pnpm run clean && tsc --p ./tsconfig.build.json && esbuild src/VeraxSdk.ts --bundle --platform=browser --define:process.env.NODE_ENV='\"production\"' --define:process.env.NODE_DEBUG='false' --outfile=lib/src/VeraxSdk.js --format=esm && ts-node scripts/fix-imports.ts",
     "clean": "rm -rf ./lib",
     "generate": "graphclient build",
     "module": "ts-node examples/module/index.ts",
@@ -54,7 +54,7 @@
     "@graphql-mesh/utils": "^0.104.2",
     "@graphql-yoga/plugin-persisted-operations": "^3.13.4",
     "@whatwg-node/fetch": "^0.10.5",
-    "axios": "^1.12.4",
+    "axios": "^1.12.2",
     "browserify-fs": "^1.0.0",
     "dotenv": "^16.4.7",
     "graphql": "16.10.0",

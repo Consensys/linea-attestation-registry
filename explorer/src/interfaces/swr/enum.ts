@@ -3,6 +3,7 @@ export enum SWRKeys {
   GET_SCHEMAS_LIST = "getSchemasList",
   GET_SCHEMAS_COUNT = "getSchemasCount",
   GET_SCHEMA_BY_ID = "getSchemaByID",
+  GET_ALL_SCHEMAS = "getAllSchemas",
   GET_RELATED_ATTESTATION = "getRelatedAttestations",
   GET_ATTESTATION_LIST = "getAttestationList",
   GET_ATTESTATION_COUNT = "getAttestationCount",

@@ -1,61 +1,26 @@
-import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
-import { FC, PropsWithChildren, useCallback, useState } from "react";
-import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
-import { useAccount, useSwitchChain } from "wagmi";
-import { Chain } from "wagmi/chains";
+import { FC, PropsWithChildren, useMemo } from "react";
 
-import { INetwork } from "@/interfaces/config";
+import { defaultChain } from "@/config";
+import { useNetwork } from "@/contexts/NetworkContext";
 
-import { NetworkContext } from "./context";
+import { NetworkContext, getFilteredChains, getSDKForAttestationId, getSDKForChain, getSDKForNetwork } from "./context";
 
 export const NetworkContextProvider: FC<PropsWithChildren> = ({ children }): JSX.Element => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { networkType } = useNetwork();
 
-  const { isConnected } = useAccount();
-  const { chain: currentChain } = useAccount();
-  const { switchChainAsync } = useSwitchChain();
-  const retrievedNetwork = useLoaderData() as INetwork;
+  const contextValue = useMemo(() => {
+    const filteredChains = getFilteredChains(networkType);
+    const defaultNetwork = filteredChains.length > 0 ? filteredChains[0] : defaultChain;
+    const sdk = getSDKForNetwork(defaultNetwork);
 
-  const [network, setNetwork] = useState<INetwork>(retrievedNetwork);
-  const [sdk, setSdk] = useState<VeraxSdk>(new VeraxSdk(network.veraxEnv));
+    return {
+      sdk,
+      getSDKForChain: (chainName: Parameters<typeof getSDKForChain>[0]) => getSDKForChain(chainName, networkType),
+      getSDKForNetwork,
+      getSDKForAttestationId: (id: string) => getSDKForAttestationId(id, networkType),
+      getFilteredChains,
+    };
+  }, [networkType]);
 
-  const switchUserNetwork = useCallback(
-    async (pendingChain: Chain, currentChainId?: number) => {
-      if (!isConnected || currentChainId === pendingChain.id) {
-        return true;
-      }
-
-      try {
-        await switchChainAsync?.({ chainId: pendingChain.id });
-        return true;
-      } catch (error) {
-        console.error(`Error: while switching network: ${pendingChain.name} \n\n`, error);
-        return false;
-      }
-    },
-    [isConnected, switchChainAsync],
-  );
-
-  const setNetworkHandler = async (params: INetwork) => {
-    const isSuccess = await switchUserNetwork(params.chain, currentChain?.id);
-    if (!isSuccess) return;
-
-    const path = location.pathname.replace(network.network, params.network);
-    navigate(path, { state: { from: location.pathname } });
-    setSdk(new VeraxSdk(params.veraxEnv));
-    setNetwork(params);
-  };
-
-  return (
-    <NetworkContext.Provider
-      value={{
-        sdk,
-        network,
-        setNetwork: setNetworkHandler,
-      }}
-    >
-      {children}
-    </NetworkContext.Provider>
-  );
+  return <NetworkContext.Provider value={contextValue}>{children}</NetworkContext.Provider>;
 };

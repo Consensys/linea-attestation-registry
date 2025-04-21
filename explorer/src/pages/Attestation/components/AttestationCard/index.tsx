@@ -1,7 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import moment from "moment";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
-import useSWR from "swr";
 import { useTernaryDarkMode } from "usehooks-ts";
 
 import circleInfo from "@/assets/icons/circle-info.svg";
@@ -9,44 +8,43 @@ import StampLogo from "@/assets/logo/stamp-logo.svg?react";
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { Tooltip } from "@/components/Tooltip";
-import { SWRKeys } from "@/interfaces/swr/enum";
+import { NETWORK_TOOLTIP_STYLE } from "@/constants/components";
+import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { issuersData } from "@/pages/Home/data";
 import { IIssuer } from "@/pages/Home/interface";
-import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
+import { NetworkResolver } from "@/utils/networkResolver.ts";
 
 import { IAttestationCardProps } from "./interface";
 
 export const AttestationCard: React.FC<IAttestationCardProps> = ({
   id,
-  schemaId,
-  portalId,
+  schema,
+  portal,
   issuanceDate,
   expiryDate,
   revoked,
 }) => {
-  const {
-    sdk,
-    network: { chain, network },
-  } = useNetworkContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const { networkType } = useNetwork();
   const { isDarkMode } = useTernaryDarkMode();
   const isExpired = expiryDate ? new Date(expiryDate * 1000) < new Date() : false;
+  const networkName = NetworkResolver.getNetworkNameFromAttestationId(id, networkType);
 
   // Function to find issuer data by schemaId and portalId
   const findIssuerData = () => {
     let issuer = issuersData.find((issuer) =>
       issuer.attestationDefinitions.some(
         (definition) =>
-          definition.schema.toLowerCase() === schemaId.toLowerCase() &&
-          definition.portal.toLowerCase() === portalId.toLowerCase(),
+          definition.schema.toLowerCase() === schema.id.toLowerCase() &&
+          definition.portal.toLowerCase() === portal.id.toLowerCase(),
       ),
     ) as IIssuer;
 
     if (!issuer) {
       issuer = issuersData.find((issuer) =>
-        issuer.attestationDefinitions.some((definition) => definition.portal.toLowerCase() === portalId.toLowerCase()),
+        issuer.attestationDefinitions.some((definition) => definition.portal.toLowerCase() === portal.id.toLowerCase()),
       ) as IIssuer;
     }
 
@@ -56,28 +54,8 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
   // Fallback to schema if issuer data not found
   const issuerData = findIssuerData();
   const attestationDefinitions = issuerData?.attestationDefinitions.find(
-    (definition) => definition.schema.toLowerCase() === schemaId.toLowerCase(),
+    (definition) => definition.schema.toLowerCase() === schema.id.toLowerCase(),
   );
-
-  const { data: schema, isLoading: isSchemaLoading } = useSWR(
-    !issuerData && !attestationDefinitions ? `${SWRKeys.GET_SCHEMA_BY_ID}/${schemaId}/${chain.id}` : null,
-    async () => sdk.schema.findOneById(schemaId),
-    {
-      shouldRetryOnError: false,
-      revalidateOnFocus: false,
-    },
-  );
-
-  const { data: portal, isLoading: isPortalLoading } = useSWR(
-    !issuerData ? `${SWRKeys.GET_PORTAL_BY_ID}/${portalId}/${chain.id}` : null,
-    async () => sdk.portal.findOneById(schemaId),
-    {
-      shouldRetryOnError: false,
-      revalidateOnFocus: false,
-    },
-  );
-
-  if (!issuerData && isSchemaLoading && isPortalLoading) return null;
 
   const logo = attestationDefinitions?.logo ?? issuerData?.logo ?? StampLogo;
   const logoDark = attestationDefinitions?.logoDark ?? issuerData?.logoDark ?? logo ?? StampLogo;
@@ -90,7 +68,7 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
     description.length > maxDescriptionLength ? `${description.slice(0, maxDescriptionLength)}...` : description;
 
   const handleViewDetailsClick = (id: string) => {
-    navigate(generatePath(APP_ROUTES.ATTESTATION_BY_ID, { chainId: network, id }), {
+    navigate(generatePath(APP_ROUTES.ATTESTATION_BY_ID, { id }), {
       state: { from: location.pathname },
     });
   };
@@ -116,13 +94,26 @@ export const AttestationCard: React.FC<IAttestationCardProps> = ({
             Revoked
           </div>
         )}
-        <div className="flex items-start gap-3 text-xl md:text-md font-semibold text-blackDefault dark:text-whiteDefault">
-          <div className="w-[2.5rem] h-[2.5rem] md:w-[3rem] md:h-[3rem] flex items-center mr-2 justify-center">
-            {displayLogo()}
+        <div className="flex items-start justify-between gap-3 text-xl md:text-md font-semibold text-blackDefault dark:text-whiteDefault">
+          <div className="flex items-start gap-3">
+            <div className="w-[2.5rem] h-[2.5rem] md:w-[3rem] md:h-[3rem] flex items-center mr-2 justify-center">
+              {displayLogo()}
+            </div>
+            <div className="flex flex-col">
+              <div>{name}</div>
+              <div className="text-sm font-normal text-blackDefault dark:text-whiteDefault">{issuerName}</div>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <div>{name}</div>
-            <div className="text-sm font-normal text-blackDefault dark:text-whiteDefault">{issuerName}</div>
+          <div className="flex items-center w-[24px]">
+            <Tooltip
+              content={<div style={NETWORK_TOOLTIP_STYLE}>{networkName}</div>}
+              placement="top"
+              isDarkMode={isDarkMode}
+              minWidth="auto"
+              compact
+            >
+              {NetworkResolver.getNetworkLogoByAttestationId(id, isDarkMode, networkType)}
+            </Tooltip>
           </div>
         </div>
         {description && (

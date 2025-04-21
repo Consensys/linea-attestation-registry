@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { WagmiProvider } from "wagmi";
 
 import { config } from "@/config";
+import { NetworkProvider } from "@/contexts/NetworkProvider";
 import { Layout } from "@/pages/Layout";
 
 import { NetworkContextProvider } from "./network-provider";
@@ -15,11 +16,13 @@ export const Providers = () => {
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <ConnectKitProvider>
-          <NetworkContextProvider>
-            <Layout>
-              <Outlet />
-            </Layout>
-          </NetworkContextProvider>
+          <NetworkProvider>
+            <NetworkContextProvider>
+              <Layout>
+                <Outlet />
+              </Layout>
+            </NetworkContextProvider>
+          </NetworkProvider>
         </ConnectKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

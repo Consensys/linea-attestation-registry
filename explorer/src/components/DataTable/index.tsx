@@ -1,33 +1,35 @@
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { Attestation, Module, Schema } from "@verax-attestation-registry/verax-sdk";
+import { Attestation, ChainName, Module, Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import { generatePath, useNavigate } from "react-router-dom";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useNetworkContext } from "@/providers/network-provider/context";
+import { NetworkResolver } from "@/utils/networkResolver.ts";
 
 import { DataTableProps } from "./interfaces";
 
 type TRowOriginal = Schema | Attestation | Module;
 
-export function DataTable<TData, TValue>({ columns, data, link }: DataTableProps<TData, TValue>) {
-  const navigate = useNavigate();
-
-  const {
-    network: { network },
-  } = useNetworkContext();
-
+export function DataTable<TData, TValue>({ columns, data, link, linkParams }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+  const navigate = useNavigate();
 
   const trClickHandler = (original: TRowOriginal) => {
     const id = original.id;
     if (!link || !id) return;
 
-    navigate(generatePath(link, { chainId: network, id }), {
+    if (original.chainName && !linkParams) {
+      const network = NetworkResolver.getNetworkSlugFromChainName(original.chainName as ChainName);
+      linkParams = { network };
+    }
+
+    const params = { id, ...(linkParams || {}) };
+
+    navigate(generatePath(link, params), {
       state: { from: location.pathname },
     });
   };

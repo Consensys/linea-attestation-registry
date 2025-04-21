@@ -1,49 +1,80 @@
+import { Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import useSWR from "swr";
+import { useTernaryDarkMode } from "usehooks-ts";
 
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
-import { ITEMS_PER_PAGE_DEFAULT, ZERO } from "@/constants";
+import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { columns, schemaColumnsOption, skeletonSchemas } from "@/constants/columns/schema";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
+import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { EQueryParams } from "@/enums/queryParams";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
-import { getItemsByPage, pageBySearchParams } from "@/utils/paginationUtils";
+import { mainnets, testnets } from "@/utils";
+import { pageBySearchParams } from "@/utils/paginationUtils";
+
+interface UniqueSchema extends Schema {
+  networks: string[];
+  networkCount: number;
+}
 
 export const Schemas: React.FC = () => {
-  const {
-    sdk,
-    network: { chain },
-  } = useNetworkContext();
+  const { sdk } = useNetworkContext();
+  const { networkType } = useNetwork();
+  const { isDarkMode } = useTernaryDarkMode();
 
-  const { data: schemasCount } = useSWR(
-    `${SWRKeys.GET_SCHEMAS_COUNT}/${chain.id}`,
-    () => sdk.schema.getSchemasNumber() as Promise<number>,
+  const chainsForQuery = useMemo(() => (networkType === "mainnet" ? mainnets : testnets), [networkType]);
+
+  const { data: allSchemas, isLoading: isLoadingSchemas } = useSWR(`${SWRKeys.GET_ALL_SCHEMAS}`, () =>
+    sdk.schema.findByMultiChain(chainsForQuery),
   );
 
-  const totalItems = schemasCount ? Number(schemasCount) : ZERO;
+  const uniqueSchemas = useMemo(() => {
+    if (!allSchemas) return [];
+
+    const schemasMap = new Map<string, UniqueSchema>();
+
+    allSchemas.forEach((schema: Schema) => {
+      if (schemasMap.has(schema.id)) {
+        const existingSchema = schemasMap.get(schema.id)!;
+        existingSchema.networks.push(schema.chainName!);
+        existingSchema.networkCount = existingSchema.networks.length;
+      } else {
+        schemasMap.set(schema.id, {
+          ...schema,
+          networks: [schema.chainName!],
+          networkCount: 1,
+        });
+      }
+    });
+
+    return Array.from(schemasMap.values());
+  }, [allSchemas]);
+
+  const totalItems = uniqueSchemas.length;
   const searchParams = new URLSearchParams(window.location.search);
   const page = pageBySearchParams(searchParams, totalItems);
   const itemsPerPage = Number(searchParams.get(EQueryParams.ITEMS_PER_PAGE)) || ITEMS_PER_PAGE_DEFAULT;
 
-  const [skip, setSkip] = useState<number>(getItemsByPage(page, itemsPerPage));
+  const [currentPage, setCurrentPage] = useState<number>(page);
 
-  const { data: schemasList, isLoading } = useSWR(
-    `${SWRKeys.GET_SCHEMAS_LIST}/${itemsPerPage}/${skip}/${chain.id}`,
-    () => sdk.schema.findBy(itemsPerPage, skip),
-  );
+  const paginatedSchemas = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return uniqueSchemas.slice(startIndex, startIndex + itemsPerPage);
+  }, [uniqueSchemas, currentPage, itemsPerPage]);
 
   const handlePage = (retrievedPage: number) => {
-    setSkip(getItemsByPage(retrievedPage, itemsPerPage));
+    setCurrentPage(retrievedPage);
   };
 
-  const columnsSkeletonRef = useRef(columnsSkeleton(columns(), schemaColumnsOption));
-  const data = isLoading
+  const columnsSkeletonRef = useRef(columnsSkeleton(columns({ isDarkMode }), schemaColumnsOption));
+  const data = isLoadingSchemas
     ? { columns: columnsSkeletonRef.current, list: skeletonSchemas(itemsPerPage) }
-    : { columns: columns(), list: schemasList || [] };
+    : { columns: columns({ isDarkMode }), list: paginatedSchemas || [] };
 
   return (
     <div className="container mt-5 md:mt-8">
@@ -54,7 +85,7 @@ export const Schemas: React.FC = () => {
       </div>
       <div>
         <DataTable columns={data.columns} data={data.list} link={APP_ROUTES.SCHEMA_BY_ID} />
-        {Boolean(schemasCount) && <Pagination itemsCount={totalItems} handlePage={handlePage} />}
+        {Boolean(totalItems) && <Pagination itemsCount={totalItems} handlePage={handlePage} />}
       </div>
     </div>
   );

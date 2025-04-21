@@ -6,15 +6,11 @@ import { useTernaryDarkMode } from "usehooks-ts";
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { AttestationDefinition } from "@/pages/Home/interface.ts";
-import { useNetworkContext } from "@/providers/network-provider/context";
-import { APP_ROUTES, CHAIN_ID_ROUTE } from "@/routes/constants";
+import { APP_ROUTES } from "@/routes/constants";
 
 import { ISchemasProps } from "./interface";
 
 export const Schemas: React.FC<ISchemasProps> = ({ issuerSchemas }) => {
-  const {
-    network: { network },
-  } = useNetworkContext();
   const navigate = useNavigate();
   const location = useLocation();
   const { isDarkMode } = useTernaryDarkMode();
@@ -27,7 +23,7 @@ export const Schemas: React.FC<ISchemasProps> = ({ issuerSchemas }) => {
       schema_: { id: schema },
     };
     const whereClause = `?where=${encodeURIComponent(JSON.stringify(whereClauseJSON))}`;
-    navigate(APP_ROUTES.ATTESTATIONS.replace(CHAIN_ID_ROUTE, network) + whereClause, {
+    navigate(APP_ROUTES.ATTESTATIONS + whereClause, {
       state: { from: location.pathname },
     });
   };

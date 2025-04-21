@@ -13,6 +13,7 @@ import { Address, Hex, WriteContractParameters } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
 import { executeTransaction } from "../utils/transactionSender";
 import { getIPFSContent } from "../utils/ipfsClient";
+import { VeraxSdk } from "../VeraxSdk";
 
 export default class AttestationDataMapper extends BaseDataMapper<
   Attestation,
@@ -103,6 +104,21 @@ export default class AttestationDataMapper extends BaseDataMapper<
     );
 
     return attestations;
+  }
+
+  async getAttestationCountMultiChain(chainNames: ChainName[]): Promise<number> {
+    const countPromises = chainNames.map(async (chainName) => {
+      try {
+        const count = await this.executeReadMethodForChain(chainName, "getAttestationIdCounter", []);
+        return typeof count === "number" ? count : 0;
+      } catch (error) {
+        return 0;
+      }
+    });
+
+    const counts = await Promise.all(countPromises);
+
+    return counts.reduce((sum, count) => sum + count, 0);
   }
 
   private mapToAttestations(attestationsResult: MultichainAttestationsQueryQuery): Attestation[] {
@@ -261,6 +277,26 @@ export default class AttestationDataMapper extends BaseDataMapper<
       functionName,
       args,
     });
+  }
+
+  private async executeReadMethodForChain(chainName: ChainName, functionName: string, args: unknown[]) {
+    const registryAddresses = {
+      [ChainName.LINEA_MAINNET]: VeraxSdk.DEFAULT_LINEA_MAINNET.attestationRegistryAddress,
+      [ChainName.LINEA_SEPOLIA]: VeraxSdk.DEFAULT_LINEA_SEPOLIA.attestationRegistryAddress,
+      [ChainName.ARBITRUM_MAINNET]: VeraxSdk.DEFAULT_ARBITRUM.attestationRegistryAddress,
+      [ChainName.ARBITRUM_SEPOLIA]: VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA.attestationRegistryAddress,
+      [ChainName.BASE_MAINNET]: VeraxSdk.DEFAULT_BASE.attestationRegistryAddress,
+      [ChainName.BASE_SEPOLIA]: VeraxSdk.DEFAULT_BASE_SEPOLIA.attestationRegistryAddress,
+      [ChainName.BSC_MAINNET]: VeraxSdk.DEFAULT_BSC.attestationRegistryAddress,
+      [ChainName.BSC_TESTNET]: VeraxSdk.DEFAULT_BSC_TESTNET.attestationRegistryAddress,
+    };
+
+    const contractAddress = registryAddresses[chainName] as Address;
+    if (!contractAddress) {
+      throw new Error(`No contract address found for chain ${chainName}`);
+    }
+
+    return this.executeReadMethod(functionName, args);
   }
 
   private async simulateContract(functionName: string, args: unknown[]): Promise<WriteContractParameters> {

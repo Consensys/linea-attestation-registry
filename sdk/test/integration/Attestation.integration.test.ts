@@ -52,7 +52,11 @@ describe("AttestationDataMapper", () => {
     });
 
     it("should return the expected decoded attestation even if the Schema contains the word 'tuple'", async () => {
-      veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_MAINNET);
+      veraxSdk = new VeraxSdk({
+        ...VeraxSdk.DEFAULT_LINEA_MAINNET,
+        subgraphUrl:
+          "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/ESRDQ5djmucKeqxNz7JGVHr621sjGEEsY6M6JibjJ9u3",
+      });
 
       const attestationId = "0x00000000000000000000000000000000000000000000000000000000005f6df7";
       const expectedDecodedPayload = [

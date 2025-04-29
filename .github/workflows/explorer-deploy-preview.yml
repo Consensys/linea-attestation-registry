@@ -49,7 +49,7 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         if: steps.check-changes.outputs.changed == 'true'
         name: Setup pnpm cache
         with:

@@ -200,7 +200,7 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    * @param interfaceID the interface identifier checked in this call
    * @return True if the interface is supported, false otherwise
    */
-  function supportsInterface(bytes4 interfaceID) public view virtual override returns (bool) {
+  function supportsInterface(bytes4 interfaceID) public view virtual returns (bool) {
     return
       interfaceID == type(AbstractPortalV2).interfaceId ||
       interfaceID == type(IPortal).interfaceId ||

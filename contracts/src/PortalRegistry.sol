@@ -84,7 +84,7 @@ contract PortalRegistry is OwnableUpgradeable {
    * @param _isTestnet Boolean indicating if the deployment is on a testnet
    */
   function initialize(address _router, bool _isTestnet) public initializer {
-    __Ownable_init();
+    __Ownable_init(msg.sender);
 
     if (_router == address(0)) revert RouterAddressInvalid();
     router = IRouter(_router);

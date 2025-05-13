@@ -83,7 +83,7 @@ contract AttestationRegistry is OwnableUpgradeable {
    *      and the last 60 characters must be 0
    */
   function initialize(address _router, uint256 _chainPrefix) public initializer {
-    __Ownable_init();
+    __Ownable_init(msg.sender);
 
     if (_router == address(0)) revert RouterAddressInvalid();
     router = IRouter(_router);

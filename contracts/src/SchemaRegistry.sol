@@ -66,7 +66,7 @@ contract SchemaRegistry is OwnableUpgradeable {
    * @param _router the address of the Router contract
    */
   function initialize(address _router) public initializer {
-    __Ownable_init();
+    __Ownable_init(msg.sender);
     if (_router == address(0)) revert RouterAddressInvalid();
     router = IRouter(_router);
     emit RouterSet(_router);

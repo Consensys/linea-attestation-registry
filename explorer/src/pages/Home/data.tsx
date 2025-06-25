@@ -458,14 +458,14 @@ export const issuersData: IIssuer[] = [
       "Humanode is a Layer 1 secured by private biometric verification (cryptobiometrics), ensuring that each node represents a unique, real human. By eliminating reliance on tokens or computational power for validation, Humanode provides robust Sybil resistance, empowering an egalitarian, decentralized ecosystem where governance and participation are driven by human authenticity.",
     CTALink: "https://humanode.io",
     CTATitle: "Go To Humanode",
-    address: "0x4D9D252C6Ef94184b4a2f15Fb682b01294e876A1",
+    address: "0x4d9d252c6ef94184b4a2f15fb682b01294e876a1",
     attestationDefinitions: [
       {
         name: "Humanode Biomapper",
         logo: Humanode,
         description:
           "Proof of uniqueness and existence for real humans—without revealing identity. One person, one address. No duplicates, no fakes.",
-        portal: "0x460dD1346867771A4aC9B84fa868f42D3D9843fa",
+        portal: "0x460dd1346867771a4ac9b84fa868f42d3d9843fa",
         schema: "0x08ef3cfbb86ea1725133631777c20450a9029b36b5009148115dcfe4f3b2f99b",
         url: "https://biomapper.hmnd.app",
         chainId: "0xe708",

@@ -59,7 +59,7 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         with:
-          args: deploy --dir=./explorer/dist --filter explorer --prod
+          args: deploy --dir=./explorer/dist --filter explorer --prod --no-build
 
       - name: Add explorer deployment summary
         run: |

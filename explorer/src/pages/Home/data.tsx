@@ -467,7 +467,7 @@ export const issuersData: IIssuer[] = [
           "Proof of uniqueness and existence for real humans—without revealing identity. One person, one address. No duplicates, no fakes.",
         portal: "0x460dd1346867771a4ac9b84fa868f42d3d9843fa",
         schema: "0x08ef3cfbb86ea1725133631777c20450a9029b36b5009148115dcfe4f3b2f99b",
-        url: "https://biomapper.hmnd.app",
+        url: "https://link.humanode.io/verax",
         chainId: "0xe708",
       },
     ],

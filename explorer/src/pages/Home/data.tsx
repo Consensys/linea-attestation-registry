@@ -17,6 +17,8 @@ import Reclaim from "@/assets/issuers/reclaim.svg?react";
 import Reputex from "@/assets/issuers/reputex.svg?react";
 import RubyScore from "@/assets/issuers/rubyscore.svg?react";
 import Sovs from "@/assets/issuers/sovs.svg?react";
+import Sumsub from "@/assets/issuers/sumsub-black.svg?react";
+import SumsubDark from "@/assets/issuers/sumsub.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import Zeronym from "@/assets/issuers/zeronym-black.svg?react";
 import ZeronymDark from "@/assets/issuers/zeronym-white.svg?react";
@@ -468,6 +470,40 @@ export const issuersData: IIssuer[] = [
         portal: "0x460dd1346867771a4ac9b84fa868f42d3d9843fa",
         schema: "0x08ef3cfbb86ea1725133631777c20450a9029b36b5009148115dcfe4f3b2f99b",
         url: "https://link.humanode.io/verax",
+        chainId: "0xe708",
+      },
+    ],
+  },
+  {
+    name: "Sumsub",
+    logo: Sumsub,
+    logoDark: SumsubDark,
+    keywords: [
+      "Proof of Personhood Verification",
+      "Identity",
+      "Liveness",
+      "KYC",
+      "Proof of KYC",
+      "Reusable Identity",
+      "Reusable KYC",
+      "Sumsub ID",
+      "KYC Sharing",
+    ],
+    description:
+      "Sumsub is the no. 1 IDV/KYC provider for the crypto space, serving over 1000 crypto customers, such as major exchanges, wallets, on/off ramps and many others. Besides Identity Verification and KYC, Sumsub also provides KYB, Transaction Monitoring, Travel Rule and Fraud Prevention solutusion. Sumsub also launched the Reusable Identity solution, including Sumsub ID, which allows users to store their pre-verified KYC data with Sumsub and use it seamlessly in subsequent onboarding across the whole Sumsub network. Users can also issue on-chain credentials to prove certain attributes about themselves programmatically.",
+    CTALink: "https://sumsub.com/",
+    CTATitle: "Go To Sumsub",
+    address: "0x887f94c1283697c607b321860bd95263ac0e2467",
+    attestationDefinitions: [
+      {
+        name: "Proof of Personhood Verification",
+        logo: Sumsub,
+        logoDark: SumsubDark,
+        description:
+          "Sumsub’s Proof of Personhood and Uniqueness attestation on Verax proves that the individual controlling the private keys to a specific wallet is a human and also that they have not created the same attestation from another wallet.",
+        portal: "0x501e742cf30ece300e3e8cb45a975c15057d5b46",
+        schema: "0x39d02301e928bea8be757163a804167b7f7eaa5ac01c39bc3d2e6da5a65cd23f",
+        url: "https://id.sumsub.com/linea-liveness",
         chainId: "0xe708",
       },
     ],

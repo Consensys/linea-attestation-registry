@@ -131,8 +131,9 @@ export function handleVersionUpdated(event: VersionUpdated): void {
 
 function tupleToStringArray(tuple: ethereum.Tuple): string[] {
   const tempStringArray: string[] = [];
+  const length = tuple.length;
 
-  for (let i = 0; i < tuple.length; i++) {
+  for (let i = 0; i < length; i++) {
     tempStringArray.push(valueToString(tuple[i]));
   }
 

@@ -4,24 +4,21 @@ import Automata from "@/assets/issuers/automata.svg?react";
 import GitcoinDark from "@/assets/issuers/gitcoin-dark.svg?react";
 import Gitcoin from "@/assets/issuers/gitcoin.svg?react";
 import Hapi from "@/assets/issuers/hapi.svg?react";
+import HumanPassport from "@/assets/issuers/human-passport.svg?react";
 import Humanode from "@/assets/issuers/humanode.svg?react";
 import Nomis from "@/assets/issuers/nomis.svg?react";
 import Okapi from "@/assets/issuers/okapi-black.svg?react";
 import OkapiDark from "@/assets/issuers/okapi-white.svg?react";
 import OpenId3 from "@/assets/issuers/openid3.svg?react";
 import Orange from "@/assets/issuers/orange.svg?react";
-import PassportXyz from "@/assets/issuers/passport-xyz.svg?react";
 import Primus from "@/assets/issuers/primus.svg?react";
 import PrivadoID from "@/assets/issuers/privado-id.svg?react";
-import Reclaim from "@/assets/issuers/reclaim.svg?react";
 import Reputex from "@/assets/issuers/reputex.svg?react";
 import RubyScore from "@/assets/issuers/rubyscore.svg?react";
 import Sovs from "@/assets/issuers/sovs.svg?react";
 import Sumsub from "@/assets/issuers/sumsub-black.svg?react";
 import SumsubDark from "@/assets/issuers/sumsub.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
-import Zeronym from "@/assets/issuers/zeronym-black.svg?react";
-import ZeronymDark from "@/assets/issuers/zeronym-white.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
 
@@ -62,23 +59,33 @@ export const issuersData: IIssuer[] = [
     ],
   },
   {
-    name: "Passport XYZ",
-    logo: PassportXyz,
-    keywords: ["reputation", "wallet score"],
+    name: "Human Passport",
+    logo: HumanPassport,
+    keywords: ["reputation", "wallet score", "proof of personhood"],
     description:
-      "Passport XYZ enables web3 users to fairly participate in rewards, governance, and other community programs by helping partners better identify high-quality unique humans participating in their ecosystem.",
-    CTALink: "https://passport.gitcoin.co/#/verax/dashboard",
+      "Human Passport is an identity verification application and Sybil resistance protocol with more than 2M users. It enables users to collect verifiable credentials, or Stamps, that prove their identity and trustworthiness without exposing personally identifying information. To date, Human Passport has protected over $450M in airdrop and grant funds.",
+    CTALink: "https://app.passport.xyz/#/verax/dashboard",
     CTATitle: "Get your Passport",
     address: "0x96DB2c6D93A8a12089f7a6EdA5464e967308AdEd",
     attestationDefinitions: [
       {
         name: "Unique Humanity Score",
-        logo: PassportXyz,
+        logo: HumanPassport,
         description:
-          "Passport XYZ's Unique Humanity Score is the sum of different verifiable credentials, which together represents how unique and human the associated account is. Partners typically require users to have a score of 20+ to participate in various programs.",
+          "Human Passport's Unique Humanity Score is the sum of different verifiable credentials, which together represents how unique and human the associated account is. Partners typically require users to have a score of 20+ to participate in various programs.",
         portal: "0xcaa9e817f02486ce076560b77a86235ef91c5d5d",
         schema: "0x01f031da36192c34057c764239eb77bb6ec8ebfb808f72a7bb172f37a5bec31f",
-        url: "https://passport.gitcoin.co/#/verax/dashboard",
+        url: "https://app.passport.xyz/#/verax/dashboard",
+        chainId: "0xe708",
+      },
+      {
+        name: "Proof of personhood",
+        logo: HumanPassport,
+        description:
+          "Holonym provides various methods to prove that you are a human while protecting your privacy with zero-knowledge proofs",
+        portal: "0x5631aecf3283922b6bf36d7485eb460f244bfac1",
+        schema: "0x1c14fd320660a59a50eb1f795116193a59c26f2463c0705b79d8cb97aa9f419b",
+        url: "https://passport.human.tech/",
         chainId: "0xe708",
       },
     ],
@@ -278,19 +285,6 @@ export const issuersData: IIssuer[] = [
     ],
   },
   {
-    name: "Reclaim Protocol",
-    logo: Reclaim,
-    keywords: ["zk-attestations"],
-    description:
-      "Reclaim Protocol bridges web2 and web3 by allowing users to manage their personal data. Interoperable technology enables the secure extraction and moving of any piece of personal information. Anything visible in the UI of a web service can be seamlessly transformed into anonymous zero-knowledge proof. The main areas of interest for Reclaim include user data enrichment, Sybil resistance for web3, proof-of-humanity methodologies, and web2 commercial use cases.",
-    CTALink: "https://publish-credentials.reclaimprotocol.org/create-credential",
-    CTATitle: "Go To Reclaim Protocol",
-    address: "0xc15718EEC68DbCA02C4B4215B87beef46C3106d5",
-    attestationDefinitions: [
-      // TODO: add Reclaim Protocol's information
-    ],
-  },
-  {
     name: "RubyScore",
     logo: RubyScore,
     keywords: ["reputation", "wallet score"],
@@ -308,29 +302,6 @@ export const issuersData: IIssuer[] = [
         portal: "0xb9cc0bb020cf55197c4c3d826ac87cadba51f272",
         schema: "0xce6351ef35f71cd649b75be11a4d08a8420811e21db89085b27f56c9eeac1578",
         url: "https://rubyscore.io/attestation",
-        chainId: "0xe708",
-      },
-    ],
-  },
-  {
-    name: "Zeronym by Holonym",
-    logo: Zeronym,
-    logoDark: ZeronymDark,
-    keywords: ["Proof of Personhood"],
-    description: "Prove your personhood with Zeronym by Holonym without revealing any information about your identity",
-    CTALink: "https://holonym.id/",
-    CTATitle: "Go To Holonym",
-    address: "0xdca2e9ae8423d7b0f94d7f9fc09e698a45f3c851",
-    attestationDefinitions: [
-      {
-        name: "Proof of personhood",
-        logo: Zeronym,
-        logoDark: ZeronymDark,
-        description:
-          "Holonym provides various methods to prove that you are a human while protecting your privacy with zero-knowledge proofs",
-        portal: "0x5631aecf3283922b6bf36d7485eb460f244bfac1",
-        schema: "0x1c14fd320660a59a50eb1f795116193a59c26f2463c0705b79d8cb97aa9f419b",
-        url: "",
         chainId: "0xe708",
       },
     ],

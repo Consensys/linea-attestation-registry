@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Trans } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTernaryDarkMode } from "usehooks-ts";
 
 import archive from "@/assets/icons/archive.svg";
 import magnifyingGlass from "@/assets/icons/magnifying-glass.svg";
@@ -9,8 +10,7 @@ import { EMPTY_STRING } from "@/constants";
 import { DEFAULT_SEARCH_ELEMENTS } from "@/constants/components";
 import { EQueryParams } from "@/enums/queryParams";
 import { Page, SearchElementProps } from "@/interfaces/components";
-import { useNetworkContext } from "@/providers/network-provider/context.ts";
-import { CHAIN_ID_ROUTE, toAttestationById, toAttestationsBySubject } from "@/routes/constants";
+import { toAttestationById, toAttestationsBySubject } from "@/routes/constants";
 import { parseSearch } from "@/utils/searchUtils";
 
 import { SearchAttestationsReceived } from "./components/SearchAttestationsReceived";
@@ -18,15 +18,12 @@ import { SearchModules } from "./components/SearchModules";
 import { SearchPortals } from "./components/SearchPortals";
 import { SearchSchemas } from "./components/SearchSchemas";
 
-//todo: load more and loading for child
 export const Search = () => {
   const navigate = useNavigate();
+  const { isDarkMode } = useTernaryDarkMode();
   const [searchParams] = useSearchParams();
   const search = searchParams.get(EQueryParams.SEARCH_QUERY);
-  const {
-    network: { prefix, network },
-  } = useNetworkContext();
-  const parsedString = useMemo(() => parseSearch(search, prefix), [search, prefix]);
+  const parsedString = useMemo(() => parseSearch(search), [search]);
 
   const [searchElements, setSearchElements] = useState<SearchElementProps>(DEFAULT_SEARCH_ELEMENTS);
   const [notFound, setNotFound] = useState(false);
@@ -47,17 +44,17 @@ export const Search = () => {
     if (isLoaded && isOnlyAttestationsFound(searchElements)) {
       if (isAttestationId && parsedString.attestationIds) {
         // If it's an attestation ID, navigate to the attestation page
-        navigate(toAttestationById(parsedString.attestationIds[0]).replace(CHAIN_ID_ROUTE, network), {
+        navigate(toAttestationById(parsedString.attestationIds[0]), {
           state: { from: location.pathname },
         });
       } else {
         // Otherwise, navigate to the subject page
-        navigate(toAttestationsBySubject(search ?? "").replace(CHAIN_ID_ROUTE, network), {
+        navigate(toAttestationsBySubject(search ?? ""), {
           state: { from: location.pathname },
         });
       }
     }
-  }, [searchElements, navigate, network, search, parsedString, isLoaded]);
+  }, [searchElements, navigate, search, parsedString, isLoaded]);
 
   const updateSearchElement = (page: Page, count: number, loaded: boolean) => {
     setSearchElements((prev) => ({ ...prev, [page]: { loaded, count } }));
@@ -111,21 +108,25 @@ export const Search = () => {
         <SearchAttestationsReceived
           search={search || EMPTY_STRING}
           parsedString={parsedString}
+          isDarkMode={isDarkMode}
           getSearchData={(count, loaded) => updateSearchElement("attestation", count, loaded)}
         />
         <SearchSchemas
           search={search || EMPTY_STRING}
           parsedString={parsedString}
+          isDarkMode={isDarkMode}
           getSearchData={(count, loaded) => updateSearchElement("schema", count, loaded)}
         />
         <SearchModules
           search={search || EMPTY_STRING}
           parsedString={parsedString}
+          isDarkMode={isDarkMode}
           getSearchData={(count, loaded) => updateSearchElement("module", count, loaded)}
         />
         <SearchPortals
           search={search || EMPTY_STRING}
           parsedString={parsedString}
+          isDarkMode={isDarkMode}
           getSearchData={(count, loaded) => updateSearchElement("portal", count, loaded)}
         />
       </div>

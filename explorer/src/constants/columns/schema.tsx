@@ -1,16 +1,28 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Schema } from "@verax-attestation-registry/verax-sdk";
+import { ChainName, Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
+import { Tooltip } from "@/components/Tooltip";
+import { NETWORK_TOOLTIP_STYLE } from "@/constants/components";
 import { ColumnsOptions } from "@/interfaces/components";
 import { toSchemaById } from "@/routes/constants";
+import { NetworkResolver } from "@/utils/networkResolver.ts";
 
-import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "..";
+import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
 
-export const columns = (): ColumnDef<Schema>[] => [
+interface ColumnsProps {
+  isDarkMode: boolean;
+}
+
+interface SchemaWithNetworks extends Schema {
+  networks?: string[];
+  networkCount?: number;
+}
+
+export const columns = ({ isDarkMode }: ColumnsProps): ColumnDef<SchemaWithNetworks>[] => [
   {
     accessorKey: "name",
     header: () => (
@@ -22,11 +34,34 @@ export const columns = (): ColumnDef<Schema>[] => [
     cell: ({ row }) => {
       const name = row.getValue("name") as string;
       const id = row.original.id;
+      const networks = row.original.networks || [row.original.chainName as string];
+      const networkCount = row.original.networkCount || 1;
+
+      const primaryNetwork = networks[0] as ChainName;
+      const networkName = NetworkResolver.getNetworkNameFromChainName(primaryNetwork);
 
       return (
-        <Link to={toSchemaById(id)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
-          {name}
-        </Link>
+        <div className="flex space-x-2 items-center">
+          <div className="flex items-center">
+            <Tooltip
+              content={<div style={NETWORK_TOOLTIP_STYLE}>{networkName}</div>}
+              placement="top"
+              isDarkMode={isDarkMode}
+              minWidth="auto"
+              compact
+            >
+              <div className="w-[24px]">{NetworkResolver.getNetworkLogoByChainName(primaryNetwork, isDarkMode)}</div>
+            </Tooltip>
+            {networkCount > 1 && (
+              <div className="ml-1 text-xs font-semibold bg-gray-200 dark:bg-gray-700 rounded-full px-1.5 py-0.5">
+                +{networkCount - 1}
+              </div>
+            )}
+          </div>
+          <Link to={toSchemaById(id)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+            {name}
+          </Link>
+        </div>
       );
     },
   },

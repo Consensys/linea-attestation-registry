@@ -10,31 +10,31 @@ import { EnsNameDisplay } from "@/components/EnsNameDisplay";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
 import { SortByDate } from "@/components/SortByDate";
+import { Tooltip } from "@/components/Tooltip";
+import { NETWORK_TOOLTIP_STYLE } from "@/constants/components";
+import { NetworkType } from "@/contexts/NetworkContext.ts";
 import { ColumnsOptions } from "@/interfaces/components";
 import { SWRCell } from "@/pages/Attestations/components/SWRCell";
-import {
-  CHAIN_ID_ROUTE,
-  toAttestationById,
-  toAttestationsBySubject,
-  toPortalById,
-  toSchemaById,
-} from "@/routes/constants";
+import { toAttestationById, toAttestationsBySubject, toPortalById, toSchemaById } from "@/routes/constants";
 import { displayAmountWithComma } from "@/utils/amountUtils";
+import { NetworkResolver } from "@/utils/networkResolver";
 import { cropString } from "@/utils/stringUtils";
 
 import { EMPTY_0X_STRING, EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
 
 interface ColumnsProps {
-  sortByDate: boolean;
-  chain: Chain;
-  network: string;
+  sortByDate?: boolean;
+  chain?: Chain;
+  networkType: NetworkType;
+  isDarkMode: boolean;
 }
 
 export const columns = ({
   sortByDate = true,
   chain,
-  network,
-}: Partial<ColumnsProps> = {}): ColumnDef<Attestation>[] => [
+  isDarkMode,
+  networkType,
+}: ColumnsProps): ColumnDef<Attestation>[] => [
   {
     accessorKey: "id",
     header: () => (
@@ -45,10 +45,25 @@ export const columns = ({
     ),
     cell: ({ row }) => {
       const id = row.getValue("id");
+      const networkName = NetworkResolver.getNetworkNameFromAttestationId(row.original.id, networkType);
+
       return (
-        <Link to={toAttestationById(id as string)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
-          {displayAmountWithComma(hexToNumber(`0x${(id as Hex).substring(6)}`))}
-        </Link>
+        <div className="flex space-x-2 items-center">
+          <Tooltip
+            content={<div style={NETWORK_TOOLTIP_STYLE}>{networkName}</div>}
+            placement="top"
+            isDarkMode={isDarkMode}
+            minWidth="auto"
+            compact
+          >
+            <div className="w-[24px]">
+              {NetworkResolver.getNetworkLogoByAttestationId(row.original.id, isDarkMode, networkType)}
+            </div>
+          </Tooltip>
+          <Link to={toAttestationById(id as string)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+            {displayAmountWithComma(hexToNumber(`0x${(id as Hex).substring(6)}`))}
+          </Link>
+        </div>
       );
     },
   },
@@ -62,8 +77,8 @@ export const columns = ({
     ),
     cell: ({ row }) => {
       const portal = row.getValue("portal") as Portal;
-
-      return <SWRCell data={portal} to={toPortalById(portal.id)} />;
+      const network = NetworkResolver.getNetworkFromAttestationId(row.original.id, networkType);
+      return <SWRCell data={portal} to={toPortalById(portal.id, network)} />;
     },
   },
   {
@@ -91,11 +106,7 @@ export const columns = ({
       const subjectDisplay = isValidAddress ? <EnsNameDisplay address={subject as Address} /> : cropString(subject);
 
       return (
-        <Link
-          to={toAttestationsBySubject(subject).replace(CHAIN_ID_ROUTE, network ?? "")}
-          className="hover:underline"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <Link to={toAttestationsBySubject(subject)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
           {subjectDisplay}
         </Link>
       );

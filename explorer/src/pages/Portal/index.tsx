@@ -3,13 +3,17 @@ import { ArrowUpRight } from "lucide-react";
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
+import { useTernaryDarkMode } from "usehooks-ts";
 import { Address } from "viem";
 import { mainnet } from "viem/chains";
 import { useEnsName } from "wagmi";
 
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
+import { Tooltip } from "@/components/Tooltip";
+import { chains } from "@/config";
 import { EMPTY_STRING } from "@/constants";
+import { NETWORK_TOOLTIP_STYLE } from "@/constants/components";
 import { regexEthAddress } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -20,20 +24,23 @@ import { PortalModules } from "./components/PortalModules";
 import { RecentAttestations } from "../Schema/components/RecentAttestations";
 
 export const Portal = () => {
-  const { id } = useParams();
-  const {
-    sdk,
-    network: { chain },
-  } = useNetworkContext();
+  const { id, network } = useParams();
+  const { getSDKForNetwork } = useNetworkContext();
+  const { isDarkMode } = useTernaryDarkMode();
+
+  const networkConfig = chains.find((chain) => chain.network === network);
 
   const {
     data: portal,
     isLoading,
     isValidating,
   } = useSWR(
-    `${SWRKeys.GET_PORTAL_BY_ID}/${id}/${chain.id}`,
+    `${SWRKeys.GET_PORTAL_BY_ID}/${id}/${network}`,
     async () => {
-      if (id && regexEthAddress.byNumberOfChar[42].test(id)) return sdk.portal.findOneById(id || EMPTY_STRING);
+      if (id && regexEthAddress.byNumberOfChar[42].test(id) && networkConfig) {
+        const sdk = getSDKForNetwork(networkConfig);
+        return sdk.portal.findOneById(id || EMPTY_STRING);
+      }
     },
     {
       shouldRetryOnError: false,
@@ -56,18 +63,22 @@ export const Portal = () => {
   }, [portalOwnerEnsAddress, portal?.ownerAddress]);
 
   if (isLoading || isValidating) return <PortalLoadingSkeleton />;
-  if (!portal) return <NotFoundPage page="portal" id={id} />;
+  if (!portal || !networkConfig) return <NotFoundPage page="portal" id={id} />;
+
+  const blockExplorerLink = getBlockExplorerLink(networkConfig.chain);
+
+  const networkLogo = isDarkMode && networkConfig.imgDark ? networkConfig.imgDark : networkConfig.img;
 
   const list = [
     {
       title: t("portal.id"),
       subtitle: portal.id,
-      link: chain ? `${getBlockExplorerLink(chain)}/${portal.id}` : "#",
+      link: `${blockExplorerLink}/${portal.id}`,
     },
     {
       title: t("portal.ownerAddress"),
       subtitle: displayPortalOwnerEnsAddress(),
-      link: chain ? `${getBlockExplorerLink(chain)}/${portal.ownerAddress}` : "#",
+      link: `${blockExplorerLink}/${portal.ownerAddress}`,
     },
     {
       title: t("portal.revokable.title"),
@@ -81,9 +92,22 @@ export const Portal = () => {
         <div className="flex flex-col px-5 md:px-10 gap-6">
           <Back />
           <div className="flex flex-col gap-3">
-            <p className="text-page-portal dark:text-page-portalDark text-2xl not-italic font-semibold md:text-[2rem]">
-              {portal.name}
-            </p>
+            <div className="flex items-center">
+              <p className="text-page-portal dark:text-page-portalDark text-2xl not-italic font-semibold md:text-[2rem] mr-3">
+                {portal.name}
+              </p>
+              {networkConfig && networkLogo && (
+                <Tooltip
+                  content={<div style={NETWORK_TOOLTIP_STYLE}>{networkConfig.name}</div>}
+                  placement="top"
+                  isDarkMode={isDarkMode}
+                  minWidth="auto"
+                  compact
+                >
+                  <div className="w-[24px]">{networkLogo}</div>
+                </Tooltip>
+              )}
+            </div>
             <p className="text-text-quaternary text-base not-italic">{portal.description}</p>
           </div>
           <hr className="border-border-card dark:border-border-cardDark" />
@@ -109,7 +133,7 @@ export const Portal = () => {
         </div>
       </div>
       <RecentAttestations portalId={portal.id} />
-      <PortalModules portalModules={portal.modules} />
+      <PortalModules portalModules={portal.modules} network={network} />
     </section>
   );
 };

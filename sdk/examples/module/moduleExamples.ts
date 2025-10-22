@@ -1,6 +1,6 @@
 import { Address } from "viem";
 import { parseEther } from "viem";
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
 import {
   DEFAULT_MODULE_ADDRESS,
   DEFAULT_MODULE_ADDRESS_2,
@@ -9,6 +9,7 @@ import {
   DEFAULT_EXPIRATION_DATE,
   DEFAULT_ATTESTATION_DATA_2,
 } from "../constants";
+import { Module_filter } from "../../.graphclient";
 
 export default class ModuleExamples {
   private veraxSdk: VeraxSdk;
@@ -25,6 +26,21 @@ export default class ModuleExamples {
 
     if (methodName.toLowerCase() == "findBy".toLowerCase() || methodName == "") {
       console.log(await this.veraxSdk.module.findBy(2, 0, { name: "test" }, "name", "desc"));
+    }
+
+    if (methodName.toLowerCase() == "findByMultiChain".toLowerCase() || methodName == "") {
+      const filter: Module_filter | undefined =
+        argv !== "" ? JSON.parse(argv) : { name_contains: "CliqueSchemaChecker" };
+      console.log(
+        await this.veraxSdk.module.findByMultiChain(
+          [ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET],
+          2,
+          0,
+          filter,
+          undefined,
+          undefined,
+        ),
+      );
     }
 
     if (methodName.toLowerCase() == "simulateRegister".toLowerCase() || methodName == "") {

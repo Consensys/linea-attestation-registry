@@ -1,23 +1,28 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Module } from "@verax-attestation-registry/verax-sdk";
+import { ChainName, Module } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
-import { Chain } from "viem";
 
+import LineaMainnetIconDark from "@/assets/networks/linea-dark.svg?react";
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
+import { Tooltip } from "@/components/Tooltip";
+import { chains } from "@/config";
+import { NETWORK_TOOLTIP_STYLE } from "@/constants/components";
 import { ColumnsOptions } from "@/interfaces/components";
+import { NetworkName } from "@/interfaces/config";
 import { toModuleById } from "@/routes/constants";
 import { getBlockExplorerLink } from "@/utils";
+import { NetworkResolver } from "@/utils/networkResolver.ts";
 import { cropString } from "@/utils/stringUtils";
 
-import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
+import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT, ZERO_ADDRESS } from "../index";
 
 interface ColumnsProps {
-  chain: Chain;
+  isDarkMode: boolean;
 }
 
-export const columns = ({ chain }: Partial<ColumnsProps> = {}): ColumnDef<Module>[] => [
+export const columns = ({ isDarkMode }: ColumnsProps): ColumnDef<Module>[] => [
   {
     accessorKey: "name",
     header: () => (
@@ -28,10 +33,25 @@ export const columns = ({ chain }: Partial<ColumnsProps> = {}): ColumnDef<Module
     ),
     cell: ({ row }) => {
       const { name, id } = row.original;
+      const chainName = row.original.chainName as ChainName;
+      const network = NetworkResolver.getNetworkSlugFromChainName(chainName);
+      const networkName = NetworkResolver.getNetworkNameFromChainName(chainName);
+
       return (
-        <Link to={toModuleById(id)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
-          {name}
-        </Link>
+        <div className="flex space-x-2 items-center">
+          <Tooltip
+            content={<div style={NETWORK_TOOLTIP_STYLE}>{networkName}</div>}
+            placement="top"
+            isDarkMode={isDarkMode}
+            minWidth="auto"
+            compact
+          >
+            <div className="w-[24px]">{NetworkResolver.getNetworkLogoByChainName(chainName, isDarkMode)}</div>
+          </Tooltip>
+          <Link to={toModuleById(id, network)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+            {name}
+          </Link>
+        </div>
       );
     },
   },
@@ -46,12 +66,16 @@ export const columns = ({ chain }: Partial<ColumnsProps> = {}): ColumnDef<Module
     cell: ({ row }) => {
       const address = row.original.moduleAddress;
       const id = row.original.id;
+      const chainName = row.original.chainName as ChainName;
+      const network = NetworkResolver.getNetworkSlugFromChainName(chainName);
+      const networkConfig = chains.find((chain) => chain.network === network);
+      const blockExplorerLink = networkConfig ? getBlockExplorerLink(networkConfig.chain) : "";
 
       return (
         <TdHandler
-          valueUrl={chain ? `${getBlockExplorerLink(chain)}/${address}` : "#"}
+          valueUrl={`${blockExplorerLink}/${address}`}
           value={cropString(address)}
-          to={toModuleById(id)}
+          to={toModuleById(id, network)}
         />
       );
     },
@@ -60,10 +84,11 @@ export const columns = ({ chain }: Partial<ColumnsProps> = {}): ColumnDef<Module
 
 export const skeletonModules = (itemPerPage = ITEMS_PER_PAGE_DEFAULT): Array<Module> =>
   Array.from(
-    Array(itemPerPage).map((_, index) => ({
-      id: index.toString(),
-      moduleAddress: `0x${index}`,
-      name: EMPTY_STRING,
+    Array(itemPerPage).map(() => ({
+      network: <LineaMainnetIconDark />,
+      id: ZERO_ADDRESS,
+      moduleAddress: ZERO_ADDRESS,
+      name: NetworkName.LINEA,
       description: EMPTY_STRING,
     })),
   );

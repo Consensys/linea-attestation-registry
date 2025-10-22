@@ -6,7 +6,6 @@ import { useTernaryDarkMode } from "usehooks-ts";
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { Chips } from "@/components/Chips";
-import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
 
 import { IIssuerProps } from "./interface";
@@ -16,9 +15,6 @@ export const Issuer: React.FC<IIssuerProps> = ({ issuer }) => {
   const location = useLocation();
   const { isDarkMode } = useTernaryDarkMode();
 
-  const {
-    network: { network },
-  } = useNetworkContext();
   const IssuerLogo = isDarkMode && issuer.logoDark ? issuer.logoDark : issuer.logo;
 
   return (
@@ -42,23 +38,12 @@ export const Issuer: React.FC<IIssuerProps> = ({ issuer }) => {
         ))}
       </div>
       <div className="text-sm font-normal text-text-darkGrey dark:text-tertiary">{issuer.description}</div>
-      {/* TODO: uncomment when data will be available */}
-      {/* <div className="flex flex-wrap gap-4">
-        <div>
-          <div className="text-xl md:text-2xl font-semibold">24k</div>
-          <div className="text-xs font-normal text-text-darkGrey">Attestations</div>
-        </div>
-        <div>
-          <div className="text-xl md:text-2xl font-semibold">13</div>
-          <div className="text-xs font-normal text-text-darkGrey">Schemas</div>
-        </div>
-      </div> */}
       <div className="flex flex-1 flex-col lg:flex-row lg:items-end gap-4 justify-end lg:justify-start">
         <Button
           isSmall
           name={t("common.actions.details")}
           handler={() =>
-            navigate(generatePath(APP_ROUTES.ISSUER_BY_ID, { chainId: network, id: issuer.address }), {
+            navigate(generatePath(APP_ROUTES.ISSUER_BY_ID, { id: issuer.address }), {
               state: { from: location.pathname },
             })
           }

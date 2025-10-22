@@ -69,8 +69,6 @@ export const AttestationLoadingSkeleton = () => {
               </div>
             </div>
           </div>
-          {/* TODO: uncomment when RelatedAttestations component will be available */}
-          {/* <RelatedAttestationsSkeleton /> */}
         </div>
       </div>
     </div>

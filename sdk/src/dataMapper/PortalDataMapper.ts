@@ -1,10 +1,10 @@
-import { AttestationPayload, OffChainAttestationPayload, Portal, TransactionOptions } from "../types";
+import { AttestationPayload, ChainName, OffChainAttestationPayload, Portal, TransactionOptions } from "../types";
 import { ActionType, Constants } from "../utils/constants";
 import BaseDataMapper from "./BaseDataMapper";
 import { abiDefaultPortal } from "../abi/DefaultPortal";
 import { Abi, Address, WriteContractParameters } from "viem";
 import { encode } from "../utils/abiCoder";
-import { Portal_filter, Portal_orderBy } from "../../.graphclient";
+import { MultichainPortalsQueryQuery, OrderDirection, Portal_filter, Portal_orderBy } from "../../.graphclient";
 import { abiPortalRegistry } from "../abi/PortalRegistry";
 import { handleError } from "../utils/errorHandler";
 import { executeTransaction } from "../utils/transactionSender";
@@ -22,6 +22,40 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
         ownerName
         attestationCounter
   }`;
+
+  async findByMultiChain(
+    chainNames: ChainName[],
+    first?: number,
+    skip?: number,
+    where?: Portal_filter,
+    orderBy?: Portal_orderBy,
+    orderDirection?: OrderDirection,
+  ) {
+    const portalsResult = await this.crossChainClient.MultichainPortalsQuery({
+      chainNames: chainNames,
+      first: first,
+      skip: skip,
+      where: where,
+      orderBy: orderBy,
+      orderDirection: orderDirection,
+    });
+
+    return this.mapToPortals(portalsResult);
+  }
+
+  private mapToPortals(portalsResult: MultichainPortalsQueryQuery): Portal[] {
+    return portalsResult.multichainPortals.map((pickPortal) => ({
+      id: pickPortal.id as Address,
+      chainName: pickPortal.chainName || "",
+      ownerAddress: pickPortal.ownerAddress,
+      modules: pickPortal.modules as Address[],
+      isRevocable: pickPortal.isRevocable,
+      name: pickPortal.name,
+      description: pickPortal.description,
+      ownerName: pickPortal.ownerName,
+      attestationCounter: pickPortal.attestationCounter || 0,
+    }));
+  }
 
   async simulateAttest(
     portalAddress: Address,

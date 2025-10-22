@@ -108,7 +108,8 @@
     },
     "messages": {
       "attestationsConnectWallet": "Connect wallet to see your attestations",
-      "emptyList": "You don’t have any attestations yet"
+      "emptyList": "You don’t have any attestations yet",
+      "isLoading": "Attestations are loading..."
     }
   },
   "module": {

@@ -17,9 +17,18 @@ interface TooltipProps {
   children: React.ReactNode;
   placement?: "top" | "bottom" | "left" | "right";
   isDarkMode?: boolean;
+  minWidth?: string;
+  compact?: boolean;
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({ content, children, placement = "bottom", isDarkMode = false }) => {
+export const Tooltip: React.FC<TooltipProps> = ({
+  content,
+  children,
+  placement = "bottom",
+  isDarkMode = false,
+  minWidth,
+  compact = false,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const { refs, floatingStyles, context } = useFloating({
     open: isVisible,
@@ -42,6 +51,12 @@ export const Tooltip: React.FC<TooltipProps> = ({ content, children, placement =
 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover, focus, dismiss, role]);
 
+  const tooltipStyles = {
+    ...floatingStyles,
+    zIndex: 1000,
+    minWidth: minWidth,
+  };
+
   return (
     <div
       className="relative inline-block"
@@ -54,9 +69,9 @@ export const Tooltip: React.FC<TooltipProps> = ({ content, children, placement =
       {isVisible && (
         <div
           ref={refs.setFloating}
-          style={{ ...floatingStyles, zIndex: 1000 }}
+          style={tooltipStyles}
           {...getFloatingProps()}
-          className={`p-2 rounded-md min-w-[250px] ${
+          className={`${compact ? "p-1" : "p-2"} rounded-md ${
             isDarkMode ? "bg-whiteDefault text-blackDefault" : "bg-blackDefault text-whiteDefault"
           }`}
         >

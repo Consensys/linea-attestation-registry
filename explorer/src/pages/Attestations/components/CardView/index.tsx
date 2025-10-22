@@ -11,8 +11,8 @@ export const CardView: React.FC<ICardViewProps> = ({ attestationsList }) => {
             <AttestationCard
               key={attestation.id}
               id={attestation.id}
-              schemaId={attestation.schema.id}
-              portalId={attestation.portal.id}
+              schema={attestation.schema}
+              portal={attestation.portal}
               issuanceDate={attestation.attestedDate}
               expiryDate={attestation.expirationDate}
               revoked={attestation.revoked}

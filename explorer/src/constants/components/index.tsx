@@ -9,6 +9,13 @@ import { Info } from "@/components/NavigationList/components/Info";
 import { IInfoListItem, NavigationProps, SearchElementProps } from "@/interfaces/components";
 import { APP_ROUTES } from "@/routes/constants";
 
+// Styles constants
+export const NETWORK_TOOLTIP_STYLE = {
+  fontSize: "0.7rem",
+  padding: "2px 4px",
+  whiteSpace: "nowrap",
+} as const;
+
 export const DEFAULT_ROUTES: Array<NavigationProps> = [
   {
     name: t("common.routes.attestations"),
@@ -60,6 +67,5 @@ export const DEFAULT_SEARCH_ELEMENTS: SearchElementProps = {
   attestation: { count: 0, loaded: false },
   schema: { count: 0, loaded: false },
   module: { count: 0, loaded: false },
-  //todo add SearchPortal
   portal: { count: 0, loaded: true },
 };

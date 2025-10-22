@@ -36,7 +36,7 @@ const removeSubstringFromArray = (inputString: string, substringsToRemove: Array
   return inputString.replace(regex, EMPTY_STRING).trim();
 };
 
-export const parseSearch = (search: string | null, chainPrefix: Hex): Partial<ResultParseSearch> => {
+export const parseSearch = (search: string | null, chainPrefix?: Hex): Partial<ResultParseSearch> => {
   if (!search) return {};
 
   const splitSearchBySpace = search.split(SPACE_STRING);
@@ -65,7 +65,6 @@ export const parseSearch = (search: string | null, chainPrefix: Hex): Partial<Re
       : searchWithoutUrlsAddressIds;
 
   return {
-    //todo decodedData and attestationData
     address: defaultAddresses.length ? defaultAddresses : undefined,
     attestationIds: attestationIds.length ? attestationIds : undefined,
     schemasIds: longAddresses.length ? longAddresses : undefined,

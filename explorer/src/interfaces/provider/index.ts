@@ -1,9 +1,12 @@
-import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
+import { ChainName, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 
-import { INetwork } from "../config";
+import { NetworkType } from "@/contexts/NetworkContext";
+import { INetwork } from "@/interfaces/config";
 
 export interface NetworkContextState {
   sdk: VeraxSdk;
-  network: INetwork;
-  setNetwork: (params: INetwork) => void;
+  getSDKForChain: (chainName: ChainName, networkType?: NetworkType) => VeraxSdk;
+  getSDKForNetwork: (network: INetwork) => VeraxSdk;
+  getSDKForAttestationId: (id: string, networkType?: NetworkType) => VeraxSdk | null;
+  getFilteredChains: (networkType: NetworkType) => INetwork[];
 }

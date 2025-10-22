@@ -6,6 +6,7 @@ on:
       - main
       - dev
       - release/*
+      - feat/multichain
   push:
     branches:
       - main

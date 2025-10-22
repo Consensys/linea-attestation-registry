@@ -1,6 +1,6 @@
 import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
 import { Check, Copy } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
@@ -8,26 +8,28 @@ import { isAddress } from "viem";
 
 import { Title } from "@/components/Title";
 import { THOUSAND } from "@/constants";
+import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { EQueryParams } from "@/enums/queryParams";
 import useWindowDimensions from "@/hooks/useWindowDimensions.ts";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
+import { mainnets, testnets } from "@/utils";
 import { cropString } from "@/utils/stringUtils.ts";
 
 import { CardView } from "../Attestations/components/CardView";
 
 export const Subject: React.FC = () => {
   const { subject } = useParams();
-  const {
-    sdk,
-    network: { chain },
-  } = useNetworkContext();
+  const { sdk } = useNetworkContext();
+  const { networkType } = useNetwork();
   const searchParams = new URLSearchParams(window.location.search);
   const sortByDateDirection = searchParams.get(EQueryParams.SORT_BY_DATE);
 
   const { sm } = useWindowDimensions();
 
   const [copied, setCopied] = useState<boolean>(false);
+
+  const chainsForQuery = useMemo(() => (networkType === "mainnet" ? mainnets : testnets), [networkType]);
 
   const handleCopy = (text: string, result: boolean) => {
     if (!result || !text) return;
@@ -40,15 +42,18 @@ export const Subject: React.FC = () => {
   const CopyIcon = copied ? Check : Copy;
 
   const { data: attestationsList } = useSWR(
-    `${SWRKeys.GET_ATTESTATION_LIST}/${subject}/${sortByDateDirection}/${chain.id}`,
-    () =>
-      sdk.attestation.findBy(
+    `${SWRKeys.GET_ATTESTATION_LIST}/${subject}/${sortByDateDirection}`,
+    async () => {
+      const rawAttestations = await sdk.attestation.findByMultiChain(
+        chainsForQuery,
         undefined,
         undefined,
         { subject },
         "attestedDate",
         (sortByDateDirection as OrderDirection) || "desc",
-      ),
+      );
+      return rawAttestations.sort((a, b) => b.attestedDate - a.attestedDate);
+    },
   );
 
   return (

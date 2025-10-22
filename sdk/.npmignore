@@ -1,15 +1,26 @@
-.graphclient
-!dist/.graphclient
-examples
-node_modules
+# Source files (not needed in published package)
 src
-!dist/src
 test
-*.test.*
-.env
-.env.example
+examples
+
+# Configuration files
 .graphclientrc.yml
-.npmignore
+tsconfig*.json
 babel-jest.config.cjs
 jest.config.js
-tsconfig.json
+
+# Build artifacts to exclude
+lib
+.graphclient
+
+# Environment files
+.env
+.env.example
+
+# Test files
+*.test.*
+*.spec.*
+
+# Misc
+.DS_Store
+.npmignore

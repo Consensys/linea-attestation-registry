@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-sdk",
-  "version": "3.0.0-beta-5",
+  "version": "4.0.0",
   "description": "Verax Attestation Registry SDK to interact with the subgraph and the contracts",
   "keywords": [
     "linea-attestation-registry",
@@ -9,32 +9,47 @@
     "ethereum",
     "foundry",
     "smart-contracts",
-    "solidity"
+    "solidity",
+    "verax",
+    "esm",
+    "typescript"
   ],
   "repository": "github.com/Consensys/linea-attestation-registry",
   "license": "MIT",
   "author": "Consensys",
-  "type": "commonjs",
-  "main": "./lib/src/VeraxSdk.js",
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
-  "types": "./lib/types/src/VeraxSdk.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "lib/**/*"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "attestation": "ts-node examples/attestation/index.ts",
-    "build": "pnpm run clean && tsc --p ./tsconfig.build.json && esbuild src/VeraxSdk.ts --bundle --platform=browser --define:process.env.NODE_ENV='\"production\"' --define:process.env.NODE_DEBUG='false' --outfile=lib/src/VeraxSdk.js --format=esm && ts-node scripts/fix-imports.ts",
-    "clean": "rm -rf ./lib",
+    "attestation": "tsx examples/attestation/index.ts",
+    "build": "pnpm run generate && tsup",
+    "clean": "rm -rf ./dist ./lib",
     "generate": "graphclient build",
-    "module": "ts-node examples/module/index.ts",
-    "prepack": "npm run build",
-    "portal": "ts-node examples/portal/index.ts",
+    "module": "tsx examples/module/index.ts",
+    "prepack": "pnpm run build",
+    "portal": "tsx examples/portal/index.ts",
     "publish:public": "pnpm publish --access public --no-git-checks",
-    "schema": "ts-node examples/schema/index.ts",
+    "schema": "tsx examples/schema/index.ts",
     "test": "jest",
     "test:ci": "cp .env.example .env && pnpm run test",
     "test:integration": "jest integration",
@@ -58,8 +73,7 @@
     "browserify-fs": "^1.0.0",
     "dotenv": "^16.4.7",
     "graphql": "16.10.0",
-    "ipfs-http-client": "^60.0.1",
-    "viem": "^2.26.2"
+    "ipfs-http-client": "^60.0.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.26.10",
@@ -71,10 +85,15 @@
     "@types/node": "^18.16.20",
     "babel-jest": "^29.7.0",
     "babel-plugin-transform-import-meta": "^2.3.2",
-    "esbuild": "^0.25.2",
+    "esbuild-visualizer": "^0.7.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.2",
-    "typescript": "5.5.4"
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.6",
+    "typescript": "5.5.4",
+    "viem": "^2.26.2"
+  },
+  "peerDependencies": {
+    "viem": "^2.0.0"
   }
 }

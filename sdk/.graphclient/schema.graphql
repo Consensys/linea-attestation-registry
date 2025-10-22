@@ -756,10 +756,7 @@ enum Counter_orderBy {
   schemas
 }
 
-"""
-8 bytes signed integer
-
-"""
+"""8 bytes signed integer"""
 scalar Int8
 
 type Issuer {
@@ -1282,10 +1279,7 @@ enum Schema_orderBy {
   auditInformation__id
 }
 
-"""
-A string representation of microseconds UNIX timestamp (16 digits)
-
-"""
+"""A string representation of microseconds UNIX timestamp (16 digits)"""
 scalar Timestamp
 
 type _Block_ {

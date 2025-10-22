@@ -2,9 +2,9 @@
 pragma solidity 0.8.21;
 
 import { Test } from "forge-std/Test.sol";
-import { IssuersModuleV2 } from "../../../src/stdlib/IssuersModuleV2.sol";
-import { OperationType } from "../../../src/types/Enums.sol";
-import { AttestationPayload } from "../../../src/types/Structs.sol";
+import { IssuersModuleV2 } from "../../src/stdlib/IssuersModuleV2.sol";
+import { OperationType } from "../../src/types/Enums.sol";
+import { AttestationPayload } from "../../src/types/Structs.sol";
 import { PortalRegistryMock } from "../mocks/PortalRegistryMock.sol";
 
 contract IssuersModuleV2Test is Test {

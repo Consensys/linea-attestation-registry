@@ -1,1 +1,0 @@
-export { defaultSnapOrigin } from './snap';

@@ -1,4 +1,3 @@
-# directories
 node_modules
 coverage
 lib
@@ -6,4 +5,4 @@ typechain-types
 generated
 build
 .graphclient
-snap
+dist

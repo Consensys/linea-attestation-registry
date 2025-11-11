@@ -21,6 +21,7 @@ export interface Conf {
   attestationRegistryAddress: Address;
   rpcUrl?: string;
   offchainConfig?: OffChainAttestationConfig;
+  subgraphUrlOverrides?: Partial<Record<ChainName, string>>;
 }
 
 export type AttestationPayload = {

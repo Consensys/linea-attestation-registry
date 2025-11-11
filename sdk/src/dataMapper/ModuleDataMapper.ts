@@ -25,7 +25,8 @@ export default class ModuleDataMapper extends BaseDataMapper<Module, Module_filt
     orderBy?: Module_orderBy,
     orderDirection?: OrderDirection,
   ) {
-    const modulesResult = await this.crossChainClient.MultichainModulesQuery({
+    const crossChainClient = await this.getCrossChainClient();
+    const modulesResult = await crossChainClient.MultichainModulesQuery({
       chainNames: chainNames,
       first: first,
       skip: skip,

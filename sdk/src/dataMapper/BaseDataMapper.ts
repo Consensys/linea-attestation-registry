@@ -3,12 +3,14 @@ import { Conf, CrossChainClient } from "../types";
 import { getBuiltGraphSDK, OrderDirection } from "../../.graphclient";
 import { VeraxSdk } from "../VeraxSdk";
 import { stringifyWhereClause, subgraphCall } from "../utils/graphClientHelper";
+import { getCustomGraphSDK } from "../utils/graphClientBuilder";
+import { getConfiguredSubgraphUrl } from "../utils/urlResolver";
 
 export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   protected readonly conf: Conf;
   protected readonly web3Client: PublicClient;
   protected readonly walletClient: WalletClient | undefined;
-  protected readonly crossChainClient: CrossChainClient;
+  private crossChainClientPromise: Promise<CrossChainClient> | null = null;
   protected readonly veraxSdk: VeraxSdk;
   protected abstract typeName: string;
   protected abstract gqlInterface: string;
@@ -18,13 +20,27 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
     this.web3Client = _web3Client;
     this.veraxSdk = _veraxSdk;
     this.walletClient = _walletClient;
-    this.crossChainClient = getBuiltGraphSDK();
+  }
+
+  protected async getCrossChainClient(): Promise<CrossChainClient> {
+    if (!this.crossChainClientPromise) {
+      // Initialize the client lazily on first use
+      if (this.conf.subgraphUrlOverrides) {
+        // Use custom SDK builder with URL overrides
+        this.crossChainClientPromise = getCustomGraphSDK(this.conf.subgraphUrlOverrides);
+      } else {
+        // Use default SDK without overrides
+        this.crossChainClientPromise = Promise.resolve(getBuiltGraphSDK());
+      }
+    }
+    return this.crossChainClientPromise;
   }
 
   async findOneById(id: string) {
     const query = `query get_${this.typeName} { ${this.typeName}(id: "${id}") ${this.gqlInterface} }`;
 
-    const { data, status } = await subgraphCall(query, this.conf.subgraphUrl);
+    const subgraphUrl = getConfiguredSubgraphUrl(this.conf);
+    const { data, status } = await subgraphCall(query, subgraphUrl);
 
     if (status != 200) {
       throw new Error(`Error(s) while fetching ${this.typeName}`);
@@ -47,7 +63,8 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
         }
     `;
 
-    const { data, status } = await subgraphCall(query, this.conf.subgraphUrl);
+    const subgraphUrl = getConfiguredSubgraphUrl(this.conf);
+    const { data, status } = await subgraphCall(query, subgraphUrl);
 
     if (status != 200) {
       throw new Error(`Error(s) while fetching ${this.typeName}s`);
@@ -59,7 +76,8 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   async findTotalCount() {
     const query = `query get_${this.typeName}_Counter { counters { ${this.typeName}s } }`;
 
-    const { data, status } = await subgraphCall(query, this.conf.subgraphUrl);
+    const subgraphUrl = getConfiguredSubgraphUrl(this.conf);
+    const { data, status } = await subgraphCall(query, subgraphUrl);
 
     if (status != 200) {
       throw new Error(`Error(s) while fetching total count of ${this.typeName}s`);

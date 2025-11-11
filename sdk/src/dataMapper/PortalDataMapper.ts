@@ -31,7 +31,8 @@ export default class PortalDataMapper extends BaseDataMapper<Portal, Portal_filt
     orderBy?: Portal_orderBy,
     orderDirection?: OrderDirection,
   ) {
-    const portalsResult = await this.crossChainClient.MultichainPortalsQuery({
+    const crossChainClient = await this.getCrossChainClient();
+    const portalsResult = await crossChainClient.MultichainPortalsQuery({
       chainNames: chainNames,
       first: first,
       skip: skip,

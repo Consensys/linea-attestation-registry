@@ -1,4 +1,4 @@
-import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { OrderDirection } from "@verax-attestation-registry/verax-sdk";
 import { ConnectKitButton } from "connectkit";
 import { t } from "i18next";
 import { ArchiveIcon, Check, Copy, Wallet } from "lucide-react";

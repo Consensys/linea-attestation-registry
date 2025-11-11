@@ -28,6 +28,8 @@ import LineaSepoliaIcon from "@/assets/networks/linea-sepolia.svg?react";
 import LineaMainnetIcon from "@/assets/networks/linea.svg?react";
 import { INetwork, NetworkName } from "@/interfaces/config";
 
+import { getSubgraphUrlOverrides } from "./subgraphUrls";
+
 const infuraApiKey: string = import.meta.env.VITE_INFURA_API_KEY;
 
 const rpcUrls = {
@@ -50,14 +52,16 @@ const transports = Object.entries(rpcUrls).reduce(
   {},
 );
 
+// Get centralized subgraph URL overrides
+const subgraphUrlOverrides = getSubgraphUrlOverrides();
+
 const chains: INetwork[] = [
   {
     name: "Linea",
     chain: linea,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND,
-      subgraphUrl:
-        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/ESRDQ5djmucKeqxNz7JGVHr621sjGEEsY6M6JibjJ9u3",
+      subgraphUrlOverrides,
       rpcUrl: rpcUrls[linea.id],
     },
     img: <LineaMainnetIcon />,
@@ -71,8 +75,7 @@ const chains: INetwork[] = [
     chain: lineaSepolia,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_LINEA_SEPOLIA_FRONTEND,
-      subgraphUrl:
-        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/2gfRmZ1e1uJKpCQsUrvxJmRivNa7dvvuULoc8SJabR8v",
+      subgraphUrlOverrides,
       rpcUrl: rpcUrls[lineaSepolia.id],
     },
     img: <LineaSepoliaIcon />,
@@ -85,8 +88,7 @@ const chains: INetwork[] = [
     chain: arbitrum,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_ARBITRUM_FRONTEND,
-      subgraphUrl:
-        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/ELQZyXzGu5MVA6kMCpMh5zNqdU8gqhtynM9yVRQ4bZoA",
+      subgraphUrlOverrides,
       rpcUrl: rpcUrls[arbitrum.id],
     },
     img: <ArbitrumIcon />,
@@ -100,8 +102,7 @@ const chains: INetwork[] = [
     chain: arbitrumSepolia,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA_FRONTEND,
-      subgraphUrl:
-        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/5RBJNNUvaoekU2yJsbmEZ1R62Mo3imWy7nMgNj97ZG8u",
+      subgraphUrlOverrides,
       rpcUrl: rpcUrls[arbitrumSepolia.id],
     },
     img: <ArbitrumSepoliaIcon />,
@@ -114,8 +115,7 @@ const chains: INetwork[] = [
     chain: base,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BASE_FRONTEND,
-      subgraphUrl:
-        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/fje2qXNP7KeRBZDPFv1VCERchv9PZyZokPRWNZkWtXk",
+      subgraphUrlOverrides,
       rpcUrl: rpcUrls[base.id],
     },
     img: <BaseMainnetIcon />,
@@ -129,8 +129,7 @@ const chains: INetwork[] = [
     chain: baseSepolia,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BASE_SEPOLIA_FRONTEND,
-      subgraphUrl:
-        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/EbruygUvdowo7dmsumFmRq2hRu81K88mWsLo5r3jxY3S",
+      subgraphUrlOverrides,
       rpcUrl: rpcUrls[baseSepolia.id],
     },
     img: <BaseSepoliaIcon />,
@@ -143,8 +142,7 @@ const chains: INetwork[] = [
     chain: bsc,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BSC_FRONTEND,
-      subgraphUrl:
-        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/8VfLNCBXCFKkcfmRSLDZ6J36NG5rRCUzEgByRJXCzSoW",
+      subgraphUrlOverrides,
       rpcUrl: rpcUrls[bsc.id],
     },
     img: <BscMainnetIcon />,
@@ -158,8 +156,7 @@ const chains: INetwork[] = [
     chain: bscTestnet,
     veraxEnv: {
       ...VeraxSdk.DEFAULT_BSC_TESTNET_FRONTEND,
-      subgraphUrl:
-        "https://gateway.thegraph.com/api/649414afdd14301c7a2f6d141f717ed1/subgraphs/id/6iFYkMd9xbQcEcddHs6vbTMarra7d2NUt9S1qtNmWtaV",
+      subgraphUrlOverrides,
       rpcUrl: rpcUrls[bscTestnet.id],
     },
     img: <BscTestnetIcon />,

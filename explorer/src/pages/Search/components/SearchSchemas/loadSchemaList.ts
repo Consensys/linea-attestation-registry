@@ -1,4 +1,4 @@
-import SchemaDataMapper from "@verax-attestation-registry/verax-sdk/lib/types/src/dataMapper/SchemaDataMapper";
+import { SchemaDataMapper } from "@verax-attestation-registry/verax-sdk";
 
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { NetworkType } from "@/contexts/NetworkContext.ts";

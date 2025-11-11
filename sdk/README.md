@@ -22,6 +22,43 @@ pnpm add @verax-attestation-registry/verax-sdk
 Check the
 [SDK documentation](https://docs.ver.ax/verax-documentation/developer-guides/using-the-sdk#user-content-getting-started)
 
+## Using Custom Subgraph URLs
+
+By default, the SDK uses free-tier subgraph URLs from The Graph Studio, which have rate limits. For production
+applications, you can override these URLs with your own endpoints that use The Graph API keys for higher rate limits.
+
+### Basic Usage
+
+```typescript
+import { VeraxSdk, ChainName } from "@verax-attestation-registry/verax-sdk";
+
+const sdk = new VeraxSdk({
+  ...VeraxSdk.DEFAULT_LINEA_MAINNET,
+  subgraphUrlOverrides: {
+    [ChainName.LINEA_MAINNET]: "https://gateway.thegraph.com/api/YOUR_API_KEY/subgraphs/id/...",
+    [ChainName.ARBITRUM_MAINNET]: "https://gateway.thegraph.com/api/YOUR_API_KEY/subgraphs/id/...",
+  },
+});
+```
+
+### How It Works
+
+The SDK uses **cascading fallback logic** to resolve subgraph URLs for any chain:
+
+1. **First**: Check `subgraphUrlOverrides[chainName]` (your custom URL)
+2. **Then**: Check `subgraphUrl` (if querying the configured chain)
+3. **Finally**: Use default free-tier URL
+
+This unified approach works for **both single-chain and multi-chain queries**, providing consistent behavior throughout
+the SDK.
+
+### Benefits
+
+- **Higher rate limits** - Use paid API keys to avoid throttling
+- **Production-ready** - Suitable for high-traffic applications
+- **Flexible** - Override only the chains you need
+- **Consistent** - Same logic for all query types
+
 ## CLI examples
 
 cf. [CLI examples](./doc/cli-examples.md)

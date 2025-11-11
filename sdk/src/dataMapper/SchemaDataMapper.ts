@@ -26,7 +26,8 @@ export default class SchemaDataMapper extends BaseDataMapper<Schema, Schema_filt
     orderBy?: Schema_orderBy,
     orderDirection?: OrderDirection,
   ) {
-    const schemasResult = await this.crossChainClient.MultichainSchemasQuery({
+    const crossChainClient = await this.getCrossChainClient();
+    const schemasResult = await crossChainClient.MultichainSchemasQuery({
       chainNames: chainNames,
       first: first,
       skip: skip,

@@ -1,5 +1,4 @@
-import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
-import AttestationDataMapper from "@verax-attestation-registry/verax-sdk/lib/types/src/dataMapper/AttestationDataMapper";
+import { AttestationDataMapper, OrderDirection } from "@verax-attestation-registry/verax-sdk";
 
 import { ITEMS_SEARCHED_DEFAULT } from "@/constants";
 import { NetworkType } from "@/contexts/NetworkContext.ts";

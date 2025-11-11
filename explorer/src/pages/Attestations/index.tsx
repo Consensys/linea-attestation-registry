@@ -1,9 +1,10 @@
-import { Attestation, ChainName } from "@verax-attestation-registry/verax-sdk";
 import {
+  Attestation,
   Attestation_filter,
   Attestation_orderBy,
+  ChainName,
   OrderDirection,
-} from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+} from "@verax-attestation-registry/verax-sdk";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";

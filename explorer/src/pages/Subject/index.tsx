@@ -1,4 +1,4 @@
-import { OrderDirection } from "@verax-attestation-registry/verax-sdk/lib/types/.graphclient";
+import { OrderDirection } from "@verax-attestation-registry/verax-sdk";
 import { Check, Copy } from "lucide-react";
 import { useMemo, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";

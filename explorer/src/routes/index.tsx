@@ -15,6 +15,7 @@ import { Subject } from "@/pages/Subject";
 import { Providers } from "@/providers";
 
 import { APP_ROUTES } from "./constants";
+import { LineaRedirect } from "./LineaRedirect";
 import { NotFoundPage } from "./NotFoundPage";
 
 export const router = createBrowserRouter(
@@ -32,6 +33,7 @@ export const router = createBrowserRouter(
       <Route path={APP_ROUTES.MODULE_BY_ID} element={<Module />} />
       <Route path={APP_ROUTES.SEARCH} element={<Search />} />
       <Route path={APP_ROUTES.PORTAL_BY_ID} element={<Portal />} />
+      <Route path="/linea/*" element={<LineaRedirect />} />
       <Route path={APP_ROUTES.DEFAULT} element={<NotFoundPage />} />
     </Route>,
   ),

@@ -69,6 +69,7 @@ jobs:
         env:
           VITE_WALLETCONNECT_PROJECT_ID: ${{ secrets.VITE_WALLETCONNECT_PROJECT_ID }}
           VITE_INFURA_API_KEY: ${{ secrets.VITE_INFURA_API_KEY }}
+          VITE_THE_GRAPH_API_KEY: ${{ secrets.VITE_THE_GRAPH_API_KEY }}
 
       - name: Deploy to Netlify
         if: steps.check-changes.outputs.changed == 'true'
@@ -83,6 +84,7 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_STAGING }}
+          VITE_THE_GRAPH_API_KEY: ${{ secrets.VITE_THE_GRAPH_API_KEY }}
         timeout-minutes: 1
 
       - name: Add explorer deployment summary

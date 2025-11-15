@@ -6,9 +6,6 @@ test = 'test'
 cache_path = 'cache_forge'
 allow_paths = ["../node_modules"]
 
-# Version settings
-foundry_version = "stable"
-
 # Optimizer settings (Development)
 optimizer = true
 optimizer_runs = 1000
@@ -21,9 +18,6 @@ fuzz = { runs = 1000 }
 # Gas reporting
 gas_reports = ["*"]
 gas_reports_ignore = []
-
-# Security settings
-deny_warnings = false # Temporarily disabled until examples are moved to a separate package (#927)
 
 # Fork settings
 fork_block_number = 0

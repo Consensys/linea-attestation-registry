@@ -18,4 +18,3 @@ export const LineaRedirect = () => {
 
   return null;
 };
-

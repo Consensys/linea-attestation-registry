@@ -52,6 +52,7 @@ jobs:
         env:
           VITE_WALLETCONNECT_PROJECT_ID: ${{ secrets.VITE_WALLETCONNECT_PROJECT_ID }}
           VITE_INFURA_API_KEY: ${{ secrets.VITE_INFURA_API_KEY }}
+          VITE_THE_GRAPH_API_KEY: ${{ secrets.VITE_THE_GRAPH_API_KEY }}
 
       - name: Deploy explorer to Netlify
         uses: netlify/actions/cli@master

@@ -47,10 +47,6 @@ jobs:
         **/tests/**
       languages-config: |
         [
-          {
-            "language": "javascript",
-            "build_mode": "none"
-          }
         ]
     secrets:
       project-metrics-token: ${{ secrets.SECURITY_SCAN_METRICS_TOKEN }}

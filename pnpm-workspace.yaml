@@ -1,11 +1,8 @@
-# 3 days
-minimumReleaseAge: 4320
-minimumReleaseAgeExclude:
-  - '@verax-attestation-registry/verax-sdk'
-
 packages:
   - contracts
   - examples
   - explorer
   - sdk
   - subgraph
+
+minimumReleaseAge: 4320

@@ -46,4 +46,15 @@ contract ModuleRegistryMock {
   ) public {
     emit ModulesBulkRunForAttestationV2();
   }
+
+  function bulkRunModulesV2WithAttesters(
+    address[] memory /*modulesAddresses*/,
+    AttestationPayload[] memory /*attestationPayloads*/,
+    bytes[][] memory /*validationPayloads*/,
+    address /*initialCaller*/,
+    address[] memory /*attesters*/,
+    OperationType /*operationType*/
+  ) public {
+    emit ModulesBulkRunForAttestationV2();
+  }
 }

@@ -6,3 +6,9 @@ packages:
   - subgraph
 
 minimumReleaseAge: 4320
+
+minimumReleaseAgeExclude:
+  - 'react'
+  - 'react-dom'
+  - '@types/react'
+  - '@types/react-dom'

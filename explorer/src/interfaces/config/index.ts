@@ -1,4 +1,5 @@
 import { ChainName, Conf } from "@verax-attestation-registry/verax-sdk";
+import { ReactElement } from "react";
 import { Chain, Hex } from "viem";
 
 export enum NetworkName {
@@ -16,8 +17,8 @@ export interface INetwork {
   name: string;
   chain: Chain;
   veraxEnv: Conf;
-  img: JSX.Element;
-  imgDark?: JSX.Element;
+  img: ReactElement;
+  imgDark?: ReactElement;
   network: NetworkName;
   prefix: Hex;
   subgraphName: ChainName;

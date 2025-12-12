@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, HTMLMotionProps } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect } from "react";
 
 import { slideBurgerMenuAnimation } from "@/constants/theme/animation";
@@ -6,6 +6,8 @@ import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 import { LightDarkModeSwitcher } from "../LightDarkModeSwitcher";
 import { NavigationList } from "../NavigationList";
+
+const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div"> & { className?: string }>;
 
 export const BurgerMenu: React.FC<{ isOpened: boolean; setIsOpened: Dispatch<SetStateAction<boolean>> }> = ({
   isOpened,
@@ -20,7 +22,7 @@ export const BurgerMenu: React.FC<{ isOpened: boolean; setIsOpened: Dispatch<Set
   return (
     <AnimatePresence>
       {isOpened && (
-        <motion.div
+        <MotionDiv
           initial="close"
           animate="open"
           variants={slideBurgerMenuAnimation}
@@ -31,7 +33,7 @@ export const BurgerMenu: React.FC<{ isOpened: boolean; setIsOpened: Dispatch<Set
           <div className="absolute left-6 md:left-20 bottom-5 md:bottom-8">
             <LightDarkModeSwitcher isMobile />
           </div>
-        </motion.div>
+        </MotionDiv>
       )}
     </AnimatePresence>
   );

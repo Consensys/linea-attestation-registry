@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 import { EButtonType } from "./enum";
 
 export interface IButtonsProps {
@@ -5,8 +7,8 @@ export interface IButtonsProps {
   handler(): void;
   buttonType: EButtonType;
   disabled?: boolean;
-  iconLeft?: JSX.Element;
-  iconRight?: JSX.Element;
+  iconLeft?: ReactElement;
+  iconRight?: ReactElement;
   height?: string;
   className?: string;
   isSmall?: boolean;

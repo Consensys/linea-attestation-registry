@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 export interface IInfoListItem {
   title: string;
   logo: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -7,7 +9,7 @@ export interface IInfoListItem {
 export interface NavigationProps {
   name: string;
   route?: string;
-  submenu?: JSX.Element;
+  submenu?: ReactElement;
 }
 
 export type Page = "schema" | "portal" | "attestation" | "module";

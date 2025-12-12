@@ -1,12 +1,12 @@
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 
 import { EMPTY_STRING } from "@/constants";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 interface ListItemWithSubmenuProps {
   name: string;
-  submenu: JSX.Element;
+  submenu: ReactElement;
 }
 
 export const ListItemWithSubmenu: React.FC<ListItemWithSubmenuProps> = ({ name, submenu }) => {

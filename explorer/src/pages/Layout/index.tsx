@@ -1,11 +1,11 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { useTernaryDarkMode } from "usehooks-ts";
 
 import { BurgerMenu } from "@/components/BurgerMenu";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
-export const Layout: React.FC<PropsWithChildren> = ({ children }): JSX.Element => {
+export const Layout: React.FC<PropsWithChildren> = ({ children }): ReactElement => {
   const { isDarkMode } = useTernaryDarkMode();
   const [isBurgerOpened, setIsBurgerOpened] = useState<boolean>(false);
 

@@ -1,8 +1,5 @@
 import { ethers, upgrades } from "hardhat";
-import dotenv from "dotenv";
 import { getNetworkConfig, verifyContract } from "../utils";
-
-dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`START SCRIPT`);
@@ -62,9 +59,8 @@ async function main() {
   const moduleRegistry = await upgrades.deployProxy(ModuleRegistry, [routerProxyAddress]);
   await moduleRegistry.waitForDeployment();
   const moduleRegistryProxyAddress = await moduleRegistry.getAddress();
-  const moduleRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
-    moduleRegistryProxyAddress,
-  );
+  const moduleRegistryImplementationAddress =
+    await upgrades.erc1967.getImplementationAddress(moduleRegistryProxyAddress);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
   await verifyContract(moduleRegistryProxyAddress, [], shouldVerify);
@@ -80,9 +76,8 @@ async function main() {
   const portalRegistry = await upgrades.deployProxy(PortalRegistry, [routerProxyAddress, networkConfig.isTestnet]);
   await portalRegistry.waitForDeployment();
   const portalRegistryProxyAddress = await portalRegistry.getAddress();
-  const portalRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
-    portalRegistryProxyAddress,
-  );
+  const portalRegistryImplementationAddress =
+    await upgrades.erc1967.getImplementationAddress(portalRegistryProxyAddress);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
   await verifyContract(portalRegistryProxyAddress, [], shouldVerify);
@@ -98,9 +93,8 @@ async function main() {
   const schemaRegistry = await upgrades.deployProxy(SchemaRegistry, [routerProxyAddress]);
   await schemaRegistry.waitForDeployment();
   const schemaRegistryProxyAddress = await schemaRegistry.getAddress();
-  const schemaRegistryImplementationAddress = await upgrades.erc1967.getImplementationAddress(
-    schemaRegistryProxyAddress,
-  );
+  const schemaRegistryImplementationAddress =
+    await upgrades.erc1967.getImplementationAddress(schemaRegistryProxyAddress);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
   await verifyContract(schemaRegistryProxyAddress, [], shouldVerify);

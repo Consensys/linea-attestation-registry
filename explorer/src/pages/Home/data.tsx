@@ -1,3 +1,5 @@
+import { IIssuer } from "./interface";
+
 import ZeroXScore from "@/assets/issuers/0xscore.svg?react";
 import Aspecta from "@/assets/issuers/aspecta.svg?react";
 import Automata from "@/assets/issuers/automata.svg?react";
@@ -21,8 +23,6 @@ import SumsubDark from "@/assets/issuers/sumsub.svg?react";
 import Trusta from "@/assets/issuers/trusta.svg?react";
 import ZkPassDark from "@/assets/issuers/zkpass-dark.svg?react";
 import ZkPass from "@/assets/issuers/zkpass.svg?react";
-
-import { IIssuer } from "./interface";
 
 export const issuersData: IIssuer[] = [
   {

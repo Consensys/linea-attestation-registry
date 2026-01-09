@@ -1,6 +1,10 @@
 import { t } from "i18next";
 import useSWR from "swr";
 
+import { loadAttestationReceivedList } from "./loadAttestationReceivedList.ts";
+import { SearchComponentProps } from "../interfaces";
+import { SearchWrapper } from "../SearchWrapper";
+
 import { DataTable } from "@/components/DataTable";
 import { columns } from "@/constants/columns/attestation";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
@@ -8,10 +12,6 @@ import { EQueryParams } from "@/enums/queryParams.ts";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
-
-import { loadAttestationReceivedList } from "./loadAttestationReceivedList.ts";
-import { SearchComponentProps } from "../interfaces";
-import { SearchWrapper } from "../SearchWrapper";
 
 export const SearchAttestationsReceived: React.FC<SearchComponentProps> = ({
   getSearchData,

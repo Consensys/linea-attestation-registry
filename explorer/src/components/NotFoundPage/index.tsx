@@ -2,12 +2,12 @@ import { t } from "i18next";
 import { ChevronLeft } from "lucide-react";
 import { Hex, hexToNumber } from "viem";
 
+import { NotFoundPageProps } from "./interfaces";
+import { getNotFoundPageData } from "./utils";
+
 import archive from "@/assets/icons/archive.svg";
 import { Link } from "@/components/Link";
 import { displayAmountWithComma } from "@/utils/amountUtils";
-
-import { NotFoundPageProps } from "./interfaces";
-import { getNotFoundPageData } from "./utils";
 
 export const NotFoundPage: React.FC<NotFoundPageProps> = ({ id, page }) => {
   const pageData = getNotFoundPageData(page, id);

@@ -1,0 +1,22 @@
+name: "Setup Environment"
+description: "Setup Node.js and pnpm with caching"
+
+# All versions are read from package.json:
+#   - Node.js version from "engines.node"
+#   - pnpm version from "packageManager"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version-file: "package.json"
+        cache: "pnpm"
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile

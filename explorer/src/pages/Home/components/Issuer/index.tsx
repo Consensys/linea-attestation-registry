@@ -3,12 +3,12 @@ import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import { IIssuerProps } from "./interface";
+
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { Chips } from "@/components/Chips";
 import { APP_ROUTES } from "@/routes/constants";
-
-import { IIssuerProps } from "./interface";
 
 export const Issuer: React.FC<IIssuerProps> = ({ issuer }) => {
   const navigate = useNavigate();

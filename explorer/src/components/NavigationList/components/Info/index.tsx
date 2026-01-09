@@ -17,6 +17,7 @@ const DesktopLink: React.FC<IInfoListItem> = ({ title, logo, url }) => {
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
       className="w-52 rounded px-2 py-[10px] flex gap-2 items-center text-text-tertiary dark:text-tertiary hover:bg-jumbotronLight dark:hover:bg-jumbotronDark hover:text-text-primary dark:hover:text-whiteDefault  text-base font-medium transition group"
+      rel="noreferrer"
     >
       <Logo className="group-hover:svg-dark-blue dark:group-hover:svg-white [&>path]:transition [&>rect]:transition [&>g>path]:transition" />
       <span className="flex-1">{title}</span>
@@ -45,6 +46,7 @@ export const Info: React.FC = () => {
                 ? "dark:text-tertiary dark:hover:text-whiteDefault"
                 : "text-text-tertiary hover:text-text-primary"
             } group`}
+            rel="noreferrer"
           >
             <Logo className="h-6 w-auto group-hover:svg-dark-blue [&>path]:transition [&>rect]:transition [&>g>path]:transition" />
             <span>{items.title}</span>

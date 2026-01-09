@@ -1,11 +1,11 @@
-import { AnimatePresence, motion, HTMLMotionProps } from "framer-motion";
+import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect } from "react";
-
-import { slideBurgerMenuAnimation } from "@/constants/theme/animation";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 import { LightDarkModeSwitcher } from "../LightDarkModeSwitcher";
 import { NavigationList } from "../NavigationList";
+
+import { slideBurgerMenuAnimation } from "@/constants/theme/animation";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 const MotionDiv = motion.div as React.FC<HTMLMotionProps<"div"> & { className?: string }>;
 

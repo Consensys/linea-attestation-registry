@@ -1,6 +1,6 @@
-import { Page } from "@/interfaces/components";
-
 import { IHelperIndicatorProps } from "./interface";
+
+import { Page } from "@/interfaces/components";
 
 const getIndicatorColorClass = (page: Page): string => {
   switch (page) {

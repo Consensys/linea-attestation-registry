@@ -3,12 +3,12 @@ import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import { ISchemasProps } from "./interface";
+
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { AttestationDefinition } from "@/pages/Home/interface.ts";
 import { APP_ROUTES } from "@/routes/constants";
-
-import { ISchemasProps } from "./interface";
 
 export const Schemas: React.FC<ISchemasProps> = ({ issuerSchemas }) => {
   const navigate = useNavigate();

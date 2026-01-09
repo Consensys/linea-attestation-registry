@@ -3,11 +3,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
-import { EQueryParams } from "@/enums/queryParams";
-
 import { IBasicPaginationProps } from "./interface";
 import { PerPageSelector } from "../PerPageSelector";
+
+import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
+import { EQueryParams } from "@/enums/queryParams";
 
 export const BasicPagination = ({ handlePage }: IBasicPaginationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();

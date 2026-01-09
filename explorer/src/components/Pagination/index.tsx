@@ -3,13 +3,13 @@ import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-r
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { IPaginationProps } from "./interface";
+import { PerPageSelector } from "./PerPageSelector";
+
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { EQueryParams } from "@/enums/queryParams";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { pageBySearchParams } from "@/utils/paginationUtils";
-
-import { IPaginationProps } from "./interface";
-import { PerPageSelector } from "./PerPageSelector";
 
 export const Pagination = ({ itemsCount, handlePage }: IPaginationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();

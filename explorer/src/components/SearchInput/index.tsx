@@ -14,6 +14,8 @@ export const SearchInput: React.FC<{ className?: string; height?: string }> = ({
   const [searchQuery, setSearchQuery] = useState<string>(search || EMPTY_STRING);
   const handleSearch = useHandleSearch();
 
+  // Sync local state from URL search param (one-way: URL → state)
+  // `searchQuery` is intentionally omitted to avoid infinite loop
   useEffect(() => {
     if (!search && searchQuery) setSearchQuery(EMPTY_STRING);
     if (search) setSearchQuery(search);

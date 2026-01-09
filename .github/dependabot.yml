@@ -1,0 +1,134 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # Root workspace (linting, formatting tools)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps(root)"
+    labels:
+      - "dependencies"
+      - "root"
+    groups:
+      eslint:
+        patterns:
+          - "eslint"
+          - "@typescript-eslint/*"
+      prettier:
+        patterns:
+          - "prettier"
+          - "prettier-plugin-*"
+
+  # SDK
+  - package-ecosystem: "npm"
+    directory: "/sdk"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps(sdk)"
+    labels:
+      - "dependencies"
+      - "sdk"
+    groups:
+      graphql-mesh:
+        patterns:
+          - "@graphql-mesh/*"
+          - "@graphql-yoga/*"
+          - "@graphql-typed-document-node/*"
+          - "graphql"
+      babel:
+        patterns:
+          - "@babel/*"
+      jest:
+        patterns:
+          - "jest"
+          - "@jest/*"
+          - "@types/jest"
+          - "babel-jest"
+          - "ts-jest"
+
+  # Contracts
+  - package-ecosystem: "npm"
+    directory: "/contracts"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps(contracts)"
+    labels:
+      - "dependencies"
+      - "contracts"
+    groups:
+      hardhat:
+        patterns:
+          - "hardhat"
+          - "@nomicfoundation/*"
+      openzeppelin:
+        patterns:
+          - "@openzeppelin/*"
+
+  # Examples
+  - package-ecosystem: "npm"
+    directory: "/examples"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps(examples)"
+    labels:
+      - "dependencies"
+      - "examples"
+
+  # Explorer
+  - package-ecosystem: "npm"
+    directory: "/explorer"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps(explorer)"
+    labels:
+      - "dependencies"
+      - "explorer"
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      wagmi:
+        patterns:
+          - "wagmi"
+          - "@wagmi/*"
+          - "viem"
+      radix:
+        patterns:
+          - "@radix-ui/*"
+      tanstack:
+        patterns:
+          - "@tanstack/*"
+
+  # Subgraph
+  - package-ecosystem: "npm"
+    directory: "/subgraph"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps(subgraph)"
+    labels:
+      - "dependencies"
+      - "subgraph"
+    groups:
+      graph:
+        patterns:
+          - "@graphprotocol/*"

@@ -26,11 +26,11 @@
     "test": "forge test"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "4.9.6",
-    "@openzeppelin/contracts-upgradeable": "4.9.6",
+    "@openzeppelin/contracts": "catalog:solidity",
+    "@openzeppelin/contracts-upgradeable": "catalog:solidity",
     "@verax-attestation-registry/verax-contracts": "10.0.0"
   },
   "devDependencies": {
-    "solhint": "^5.0.5"
+    "solhint": "catalog:solidity"
   }
 }

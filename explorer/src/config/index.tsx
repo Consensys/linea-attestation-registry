@@ -13,6 +13,8 @@ import {
   mainnet,
 } from "wagmi/chains";
 
+import { getSubgraphUrlOverrides } from "./subgraphUrls";
+
 import veraxColoredIcon from "@/assets/logo/verax-colored-icon.svg";
 import ArbitrumIconDark from "@/assets/networks/arbitrum-dark.svg?react";
 import ArbitrumSepoliaIcon from "@/assets/networks/arbitrum-sepolia.svg?react";
@@ -27,8 +29,6 @@ import LineaMainnetIconDark from "@/assets/networks/linea-dark.svg?react";
 import LineaSepoliaIcon from "@/assets/networks/linea-sepolia.svg?react";
 import LineaMainnetIcon from "@/assets/networks/linea.svg?react";
 import { INetwork, NetworkName } from "@/interfaces/config";
-
-import { getSubgraphUrlOverrides } from "./subgraphUrls";
 
 const infuraApiKey: string = import.meta.env.VITE_INFURA_API_KEY;
 

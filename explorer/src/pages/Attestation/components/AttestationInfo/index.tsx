@@ -7,6 +7,8 @@ import { Address, Hex, hexToNumber, isAddress } from "viem";
 import { mainnet } from "viem/chains";
 import { useEnsName } from "wagmi";
 
+import { createDateListItem } from "./utils";
+
 import { Link } from "@/components/Link";
 import { Tooltip } from "@/components/Tooltip";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
@@ -15,8 +17,6 @@ import { getBlockExplorerLink } from "@/utils";
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { NetworkResolver } from "@/utils/networkResolver";
 import { cropString } from "@/utils/stringUtils";
-
-import { createDateListItem } from "./utils";
 
 export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
   const { networkType } = useNetwork();
@@ -132,6 +132,7 @@ export const AttestationInfo: React.FC<Attestation> = ({ ...attestation }) => {
                 href={item.link}
                 target="_blank"
                 className="text-text-secondary dark:text-text-secondaryDark whitespace-nowrap overflow-hidden text-ellipsis md:text-base hover:underline flex items-center gap-2"
+                rel="noreferrer"
               >
                 {item.value}
                 <ArrowUpRight width="1rem" height="auto" />

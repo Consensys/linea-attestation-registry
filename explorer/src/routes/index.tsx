@@ -1,5 +1,9 @@
 import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 
+import { APP_ROUTES } from "./constants";
+import { LineaRedirect } from "./LineaRedirect";
+import { NotFoundPage } from "./NotFoundPage";
+
 import { Attestation } from "@/pages/Attestation";
 import { Attestations } from "@/pages/Attestations";
 import { Home } from "@/pages/Home";
@@ -14,11 +18,7 @@ import { Search } from "@/pages/Search";
 import { Subject } from "@/pages/Subject";
 import { Providers } from "@/providers";
 
-import { APP_ROUTES } from "./constants";
-import { LineaRedirect } from "./LineaRedirect";
-import { NotFoundPage } from "./NotFoundPage";
-
-export const router = createBrowserRouter(
+export const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<Providers />}>
       <Route path={APP_ROUTES.HOME} element={<Home />} />

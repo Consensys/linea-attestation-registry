@@ -1,25 +1,19 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../tsconfig.node.json",
   "compilerOptions": {
-    "module": "CommonJS",
+    "composite": true,
     "target": "ES2021",
-    "moduleResolution": "Node",
-    "strict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
+    "lib": ["ES2021", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "sourceMap": true,
     "checkJs": true,
     "allowJs": true,
-    "declaration": true,
-    "declarationMap": true,
-    "allowSyntheticDefaultImports": true,
-    "outDir": "./lib",
-    "sourceMap": true,
-    "noEmit": false,
-    "lib": ["ES2021", "DOM"],
-    "declarationDir": "./lib/types"
+    "types": ["node", "jest"]
   },
-  "ts-node": {
-    "esm": false
-  },
-  "include": ["**/*.ts", ".graphclient/**/*.ts"]
+  "include": ["src/**/*.ts", "examples/**/*.ts", "test/**/*.ts", ".graphclient/**/*.ts"],
+  "exclude": ["node_modules", "dist", "lib"]
 }

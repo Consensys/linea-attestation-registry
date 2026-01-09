@@ -56,20 +56,20 @@
     "verify": "npx hardhat run script/verify.ts --network"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "4.9.6",
-    "@openzeppelin/contracts-upgradeable": "4.9.6"
+    "@openzeppelin/contracts": "catalog:solidity",
+    "@openzeppelin/contracts-upgradeable": "catalog:solidity"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.1.0",
     "@nomicfoundation/hardhat-foundry": "^1.2.0",
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@openzeppelin/hardhat-upgrades": "^3.9.1",
-    "@types/node": "^22.18.12",
+    "@types/node": "catalog:types",
     "dotenv": "^17.2.3",
     "ethers": "^6.15.0",
     "hardhat": "^2.26.3",
     "hardhat-contract-sizer": "^2.10.1",
-    "solhint": "^5.0.5",
+    "solhint": "catalog:solidity",
     "solhint-plugin-prettier": "^0.1.0"
   }
 }

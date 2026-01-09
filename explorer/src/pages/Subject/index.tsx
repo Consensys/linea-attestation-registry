@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import { isAddress } from "viem";
 
+import { CardView } from "../Attestations/components/CardView";
+
 import { Title } from "@/components/Title";
 import { THOUSAND } from "@/constants";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
@@ -15,8 +17,6 @@ import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { mainnets, testnets } from "@/utils";
 import { cropString } from "@/utils/stringUtils.ts";
-
-import { CardView } from "../Attestations/components/CardView";
 
 export const Subject: React.FC = () => {
   const { subject } = useParams();

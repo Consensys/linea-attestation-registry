@@ -1,9 +1,9 @@
 import { FC, PropsWithChildren, ReactElement, useMemo } from "react";
 
+import { NetworkContext, getFilteredChains, getSDKForAttestationId, getSDKForChain, getSDKForNetwork } from "./context";
+
 import { defaultChain } from "@/config";
 import { useNetwork } from "@/contexts/NetworkContext";
-
-import { NetworkContext, getFilteredChains, getSDKForAttestationId, getSDKForChain, getSDKForNetwork } from "./context";
 
 export const NetworkContextProvider: FC<PropsWithChildren> = ({ children }): ReactElement => {
   const { networkType } = useNetwork();

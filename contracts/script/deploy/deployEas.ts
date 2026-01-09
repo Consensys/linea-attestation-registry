@@ -1,8 +1,5 @@
 import { ethers, upgrades } from "hardhat";
-import dotenv from "dotenv";
 import { verifyContract } from "../utils";
-
-dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`START SCRIPT`);
@@ -28,9 +25,8 @@ async function main() {
   const attestationReader = await upgrades.deployProxy(AttestationReader, [routerProxyAddress]);
   await attestationReader.waitForDeployment();
   const attestationReaderProxyAddress = await attestationReader.getAddress();
-  const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(
-    attestationReaderProxyAddress,
-  );
+  const attestationReaderImplementationAddress =
+    await upgrades.erc1967.getImplementationAddress(attestationReaderProxyAddress);
 
   await new Promise((resolve) => setTimeout(resolve, 5000));
 

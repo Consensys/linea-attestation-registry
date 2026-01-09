@@ -5,6 +5,8 @@ import moment from "moment";
 import { Address, Chain, Hex } from "viem";
 import { hexToNumber, isAddress } from "viem/utils";
 
+import { EMPTY_0X_STRING, EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
+
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { EnsNameDisplay } from "@/components/EnsNameDisplay";
 import { HelperIndicator } from "@/components/HelperIndicator";
@@ -19,8 +21,6 @@ import { toAttestationById, toAttestationsBySubject, toPortalById, toSchemaById 
 import { displayAmountWithComma } from "@/utils/amountUtils";
 import { NetworkResolver } from "@/utils/networkResolver";
 import { cropString } from "@/utils/stringUtils";
-
-import { EMPTY_0X_STRING, EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
 
 interface ColumnsProps {
   sortByDate?: boolean;

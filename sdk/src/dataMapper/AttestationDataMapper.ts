@@ -112,7 +112,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
       try {
         const count = await this.executeReadMethodForChain(chainName, "getAttestationIdCounter", []);
         return typeof count === "number" ? count : 0;
-      } catch (error) {
+      } catch (_error) {
         return 0;
       }
     });

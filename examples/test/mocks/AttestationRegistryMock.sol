@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.21;
 
-import { AttestationPayload, Attestation } from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
+import {
+  AttestationPayload,
+  Attestation
+} from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
 
 contract AttestationRegistryMock {
   uint16 public version;

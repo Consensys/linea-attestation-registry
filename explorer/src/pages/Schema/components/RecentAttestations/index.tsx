@@ -22,14 +22,14 @@ export const RecentAttestations: React.FC<{ schemaId?: string; portalId?: string
   const fetchKey = schemaId
     ? `${SWRKeys.GET_RECENT_ATTESTATION_SCHEMA}/${schemaId}`
     : portalId
-    ? `${SWRKeys.GET_RECENT_ATTESTATION_PORTAL}/${portalId}`
-    : `${SWRKeys.GET_RECENT_ATTESTATION_GLOBAL}`;
+      ? `${SWRKeys.GET_RECENT_ATTESTATION_PORTAL}/${portalId}`
+      : `${SWRKeys.GET_RECENT_ATTESTATION_GLOBAL}`;
 
   const fetchFunction = schemaId
     ? () => sdk.attestation.findByMultiChain(chainsForQuery, 5, 0, { schema: schemaId }, "attestedDate", "desc")
     : portalId
-    ? () => sdk.attestation.findByMultiChain(chainsForQuery, 5, 0, { portal: portalId }, "attestedDate", "desc")
-    : () => sdk.attestation.findByMultiChain(chainsForQuery, 5, 0, {}, "attestedDate", "desc");
+      ? () => sdk.attestation.findByMultiChain(chainsForQuery, 5, 0, { portal: portalId }, "attestedDate", "desc")
+      : () => sdk.attestation.findByMultiChain(chainsForQuery, 5, 0, {}, "attestedDate", "desc");
 
   const { data: attestations, isLoading } = useSWR(fetchKey, fetchFunction, {
     shouldRetryOnError: false,

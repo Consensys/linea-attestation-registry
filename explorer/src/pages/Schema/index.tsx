@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import { RecentAttestations } from "./components/RecentAttestations";
+import { SchemaLoadingSkeleton } from "./components/SchemaLoadingSkeleton";
+
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { Tooltip } from "@/components/Tooltip";
@@ -13,9 +16,6 @@ import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { mainnets, testnets } from "@/utils";
 import { NetworkResolver } from "@/utils/networkResolver.ts";
-
-import { RecentAttestations } from "./components/RecentAttestations";
-import { SchemaLoadingSkeleton } from "./components/SchemaLoadingSkeleton";
 
 export const Schema: React.FC = () => {
   const { id } = useParams();

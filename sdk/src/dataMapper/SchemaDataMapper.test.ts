@@ -65,7 +65,7 @@ describe("SchemaDataMapper", () => {
   test("findOneById should throw an error if the response status is not 200", async () => {
     (subgraphCall as jest.Mock).mockResolvedValue({ status: 500 });
 
-    await expect(schemaDataMapper.findOneById("1")).rejects.toThrowError("Error(s) while fetching schema");
+    await expect(schemaDataMapper.findOneById("1")).rejects.toThrow("Error(s) while fetching schema");
   });
 
   test("findBy should return schemas if found", async () => {
@@ -119,6 +119,6 @@ describe("SchemaDataMapper", () => {
   test("findBy should throw an error if the response status is not 200", async () => {
     (subgraphCall as jest.Mock).mockResolvedValue({ status: 500 });
 
-    await expect(schemaDataMapper.findBy()).rejects.toThrowError("Error(s) while fetching schemas");
+    await expect(schemaDataMapper.findBy()).rejects.toThrow("Error(s) while fetching schemas");
   });
 });

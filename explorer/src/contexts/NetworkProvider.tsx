@@ -46,7 +46,7 @@ export const NetworkProvider: FC<PropsWithChildren> = ({ children }) => {
 
     try {
       return NetworkResolver.getNetworkFromAttestationId(entityId);
-    } catch (error) {
+    } catch (_error) {
       return null;
     }
   };

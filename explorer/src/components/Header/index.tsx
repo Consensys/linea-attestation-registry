@@ -7,6 +7,12 @@ import { useTernaryDarkMode } from "usehooks-ts";
 import { useAccount, useEnsName } from "wagmi";
 import { mainnet } from "wagmi/chains";
 
+import { Button } from "../Buttons";
+import { MenuButton } from "./components/MenuButtons";
+import { EButtonType } from "../Buttons/enum";
+import { NavigationList } from "../NavigationList";
+import { SearchInput } from "../SearchInput";
+
 import BetaDark from "@/assets/logo/beta-dark.svg?react";
 import BetaLight from "@/assets/logo/beta-light-strong.svg?react";
 import VeraxLogoDarkMode from "@/assets/logo/verax-logo-dark.svg?react";
@@ -17,12 +23,6 @@ import { NetworkTypeToggle } from "@/components/NetworkTypeToggle";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { APP_ROUTES } from "@/routes/constants";
 import { cropString } from "@/utils/stringUtils";
-
-import { MenuButton } from "./components/MenuButtons";
-import { Button } from "../Buttons";
-import { EButtonType } from "../Buttons/enum";
-import { NavigationList } from "../NavigationList";
-import { SearchInput } from "../SearchInput";
 
 interface HeaderProps {
   isOpened: boolean;

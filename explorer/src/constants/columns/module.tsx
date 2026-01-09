@@ -2,6 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ChainName, Module } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 
+import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT, ZERO_ADDRESS } from "../index";
+
 import LineaMainnetIconDark from "@/assets/networks/linea-dark.svg?react";
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { HelperIndicator } from "@/components/HelperIndicator";
@@ -15,8 +17,6 @@ import { toModuleById } from "@/routes/constants";
 import { getBlockExplorerLink } from "@/utils";
 import { NetworkResolver } from "@/utils/networkResolver.ts";
 import { cropString } from "@/utils/stringUtils";
-
-import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT, ZERO_ADDRESS } from "../index";
 
 interface ColumnsProps {
   isDarkMode: boolean;

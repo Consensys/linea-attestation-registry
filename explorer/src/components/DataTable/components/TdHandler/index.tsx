@@ -1,8 +1,8 @@
 import { ChevronRight } from "lucide-react";
 
-import { Link } from "@/components/Link";
-
 import { ITdHandler } from "./interface";
+
+import { Link } from "@/components/Link";
 
 export const TdHandler: React.FC<ITdHandler> = ({ value, valueUrl, to, isTextLeft = false }) => {
   return (
@@ -15,6 +15,7 @@ export const TdHandler: React.FC<ITdHandler> = ({ value, valueUrl, to, isTextLef
           className={`hover:underline ${isTextLeft ? "translate-x-0" : "translate-x-2"} ${
             isTextLeft ? "group-hover:translate-x-2" : "group-hover:translate-x-0"
           } transition max-w-[300px] overflow-hidden text-ellipsis`}
+          rel="noreferrer"
         >
           {value}
         </a>

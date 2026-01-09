@@ -77,7 +77,7 @@ describe("PortalDataMapper", () => {
   test("findOneById should throw an error if the response status is not 200", async () => {
     (subgraphCall as jest.Mock).mockResolvedValue({ status: 500 });
 
-    await expect(portalDataMapper.findOneById("1")).rejects.toThrowError("Error(s) while fetching portal");
+    await expect(portalDataMapper.findOneById("1")).rejects.toThrow("Error(s) while fetching portal");
   });
 
   test("findBy should return portals if found", async () => {
@@ -133,6 +133,6 @@ describe("PortalDataMapper", () => {
   test("findBy should throw an error if the response status is not 200", async () => {
     (subgraphCall as jest.Mock).mockResolvedValue({ status: 500 });
 
-    await expect(portalDataMapper.findBy()).rejects.toThrowError("Error(s) while fetching portals");
+    await expect(portalDataMapper.findBy()).rejects.toThrow("Error(s) while fetching portals");
   });
 });

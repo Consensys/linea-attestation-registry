@@ -2,14 +2,14 @@ import { t } from "i18next";
 import { Moon, Sun, SunMoon } from "lucide-react";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import { ILightDarkModeSwitcher } from "./interface";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { ILightDarkModeSwitcher } from "./interface";
 
 export const LightDarkModeSwitcher: React.FC<ILightDarkModeSwitcher> = ({ isMobile }) => {
   const { ternaryDarkMode, setTernaryDarkMode, toggleTernaryDarkMode } = useTernaryDarkMode();

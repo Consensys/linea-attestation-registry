@@ -103,7 +103,6 @@ Here are the addresses on those networks:
 
   <details>
     <summary>Standard Library</summary>
-
   - ECDSAModule: 0x43Ed26E6A6f020687F65cf61125a33EcFCa9D608
   - ERC1271Module: 0x3130F70a771DccdE24680656Ab340b579BDF539E
   - FeeModule: 0xC5555Bf0584AdE1c90DcDCA20Ac4b6814F009a4e
@@ -134,7 +133,6 @@ Here are the addresses on those networks:
 
   <details>
     <summary>Standard Library</summary>
-
   - ECDSAModule: 0x2878bdc6A7615600e9b6Aa04f7802267891FFAE5
   - ERC1271Module: 0xb2553A7E443DFA7C9dEc01D327FdDff1A5eF59b0
   - FeeModule: 0xD2B60076a83C6f6fad2506aF51b297a8725e8E0b
@@ -163,7 +161,6 @@ Here are the addresses on those networks:
 
   <details>
     <summary>Standard Library</summary>
-
   - ECDSAModule: 0x84D0c725CCe4eB7a7b95A4C36Bc0Ee5B5Df147d6
   - ERC1271Module: 0xFa13B02636d888C46e504C16F267CF87131feB07
   - FeeModule: 0x41b809c4B5c61FeBB0323F17aF179F7B16500fb3

@@ -1,6 +1,6 @@
-import { AttestationCard } from "@/pages/Attestation/components/AttestationCard";
-
 import { ICardViewProps } from "./interface";
+
+import { AttestationCard } from "@/pages/Attestation/components/AttestationCard";
 
 export const CardView: React.FC<ICardViewProps> = ({ attestationsList }) => {
   return (

@@ -16,7 +16,7 @@ async function main() {
   try {
     await upgrades.forceImport(routerProxyAddress, Router, { kind: "transparent" });
     console.log("✅ Router re-imported");
-  } catch (e) {
+  } catch (_e) {
     console.log("❌ Router already registered");
   }
 
@@ -27,7 +27,7 @@ async function main() {
   try {
     await upgrades.forceImport(attestationRegistryProxyAddress, AttestationRegistry, { kind: "transparent" });
     console.log("✅ AttestationRegistry re-imported");
-  } catch (e) {
+  } catch (_e) {
     console.log("❌ AttestationRegistry already registered");
   }
 
@@ -38,7 +38,7 @@ async function main() {
   try {
     await upgrades.forceImport(moduleRegistryProxyAddress, ModuleRegistry, { kind: "transparent" });
     console.log("✅ ModuleRegistry re-imported");
-  } catch (e) {
+  } catch (_e) {
     console.log("❌ ModuleRegistry already registered");
   }
 
@@ -49,7 +49,7 @@ async function main() {
   try {
     await upgrades.forceImport(portalRegistryProxyAddress, PortalRegistry, { kind: "transparent" });
     console.log("✅ PortalRegistry re-imported");
-  } catch (e) {
+  } catch (_e) {
     console.log("❌ PortalRegistry already registered");
   }
 
@@ -60,7 +60,7 @@ async function main() {
   try {
     await upgrades.forceImport(schemaRegistryProxyAddress, SchemaRegistry, { kind: "transparent" });
     console.log("✅ SchemaRegistry re-imported");
-  } catch (e) {
+  } catch (_e) {
     console.log("❌ SchemaRegistry already registered");
   }
 
@@ -71,7 +71,7 @@ async function main() {
   try {
     await upgrades.forceImport(attestationReaderProxyAddress, AttestationReader, { kind: "transparent" });
     console.log("✅ AttestationReader re-imported");
-  } catch (e) {
+  } catch (_e) {
     console.log("❌ AttestationReader already registered");
   }
 

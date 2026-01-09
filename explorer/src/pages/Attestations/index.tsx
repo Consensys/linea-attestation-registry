@@ -9,6 +9,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import { TitleAndSwitcher } from "./components/TitleAndSwitcher";
+
 import { DataTable } from "@/components/DataTable";
 import { Pagination } from "@/components/Pagination";
 import { BasicPagination } from "@/components/Pagination/Basic";
@@ -28,8 +30,6 @@ import { APP_ROUTES } from "@/routes/constants";
 import { mainnets, testnets } from "@/utils";
 import { pageBySearchParams } from "@/utils/paginationUtils";
 import { pageToTimestampCursor, storePaginationCursors } from "@/utils/timestampPaginationUtils";
-
-import { TitleAndSwitcher } from "./components/TitleAndSwitcher";
 
 interface CacheEntry {
   count: number;
@@ -231,7 +231,7 @@ export const Attestations: React.FC = () => {
         });
 
         return sortedAttestations.slice(0, itemsPerPage);
-      } catch (error) {
+      } catch (_error) {
         return [];
       }
     },

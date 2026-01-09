@@ -1,6 +1,6 @@
-import { NavLink } from "@/components/NavLink";
-
 import { options } from "./options";
+
+import { NavLink } from "@/components/NavLink";
 
 export const ListSwitcher: React.FC = () => {
   return (

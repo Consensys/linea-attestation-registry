@@ -3,6 +3,11 @@ import { Trans } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import { SearchAttestationsReceived } from "./components/SearchAttestationsReceived";
+import { SearchModules } from "./components/SearchModules";
+import { SearchPortals } from "./components/SearchPortals";
+import { SearchSchemas } from "./components/SearchSchemas";
+
 import archive from "@/assets/icons/archive.svg";
 import magnifyingGlass from "@/assets/icons/magnifying-glass.svg";
 import { InfoBlock } from "@/components/InfoBlock";
@@ -12,11 +17,6 @@ import { EQueryParams } from "@/enums/queryParams";
 import { Page, SearchElementProps } from "@/interfaces/components";
 import { toAttestationById, toAttestationsBySubject } from "@/routes/constants";
 import { parseSearch } from "@/utils/searchUtils";
-
-import { SearchAttestationsReceived } from "./components/SearchAttestationsReceived";
-import { SearchModules } from "./components/SearchModules";
-import { SearchPortals } from "./components/SearchPortals";
-import { SearchSchemas } from "./components/SearchSchemas";
 
 export const Search = () => {
   const navigate = useNavigate();

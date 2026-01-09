@@ -63,7 +63,7 @@ describe("ModuleDataMapper", () => {
   test("findOneById should throw an error if the response status is not 200", async () => {
     (subgraphCall as jest.Mock).mockResolvedValue({ status: 500 });
 
-    await expect(moduleDataMapper.findOneById("1")).rejects.toThrowError("Error(s) while fetching module");
+    await expect(moduleDataMapper.findOneById("1")).rejects.toThrow("Error(s) while fetching module");
   });
 
   test("findBy should return modules if found", async () => {
@@ -115,6 +115,6 @@ describe("ModuleDataMapper", () => {
   test("findBy should throw an error if the response status is not 200", async () => {
     (subgraphCall as jest.Mock).mockResolvedValue({ status: 500 });
 
-    await expect(moduleDataMapper.findBy()).rejects.toThrowError("Error(s) while fetching modules");
+    await expect(moduleDataMapper.findBy()).rejects.toThrow("Error(s) while fetching modules");
   });
 });

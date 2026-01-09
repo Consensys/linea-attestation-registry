@@ -1,10 +1,10 @@
 import { ArrowUpRight } from "lucide-react";
 
+import { IBannerProps } from "./interface";
+
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { Chips } from "@/components/Chips";
-
-import { IBannerProps } from "./interface";
 
 export const Banner: React.FC<IBannerProps> = ({ name, CTALink, CTATitle, logo, keywords }) => {
   const IssuerLogo = logo;

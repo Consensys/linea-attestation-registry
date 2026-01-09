@@ -1,6 +1,6 @@
-import { EMPTY_STRING } from "@/constants";
-
 import { IChipsProps } from "./interface";
+
+import { EMPTY_STRING } from "@/constants";
 
 export const Chips: React.FC<IChipsProps> = ({ name, additionalClass = EMPTY_STRING }) => {
   return (

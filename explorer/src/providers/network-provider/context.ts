@@ -73,7 +73,7 @@ export const getSDKForAttestationId = (id: string, networkType?: NetworkType): V
     const networkConfig = NetworkResolver.getChainFromNetwork(networkName);
 
     return getSDKForNetwork(networkConfig);
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 };

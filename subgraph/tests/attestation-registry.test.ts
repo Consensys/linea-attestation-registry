@@ -353,7 +353,6 @@ describe("AttestationRegistry", () => {
   });
 });
 
-/* eslint-disable @typescript-eslint/ban-types */
 function mockGetAttestation(
   overrideRevoked: boolean = revoked,
   overrideRevocationDate: BigInt = revocationDate,
@@ -374,7 +373,6 @@ function mockGetAttestation(
     ethereum.Value.fromBytes(overrideSubject),
     ethereum.Value.fromBytes(attestationData),
   ];
-  /* eslint-enable @typescript-eslint/ban-types */
 
   // Convert it to the Tuple type
   const tuple = changetype<ethereum.Tuple>(tupleArray);

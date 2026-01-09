@@ -1,13 +1,13 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";
 
-import { APP_ROUTES } from "@/routes/constants";
-
 import { Attestations } from "./components/Attestations";
 import { Banner } from "./components/Banner";
 import { Description } from "./components/Description";
 import { Schemas } from "./components/Schemas";
 import { issuersData } from "../Home/data";
+
+import { APP_ROUTES } from "@/routes/constants";
 
 export const Issuer: React.FC = () => {
   const { id } = useParams();

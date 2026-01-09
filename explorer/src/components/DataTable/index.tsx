@@ -3,10 +3,10 @@ import { Attestation, ChainName, Module, Schema } from "@verax-attestation-regis
 import { t } from "i18next";
 import { generatePath, useNavigate } from "react-router-dom";
 
+import { DataTableProps } from "./interfaces";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { NetworkResolver } from "@/utils/networkResolver.ts";
-
-import { DataTableProps } from "./interfaces";
 
 type TRowOriginal = Schema | Attestation | Module;
 

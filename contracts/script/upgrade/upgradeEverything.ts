@@ -1,8 +1,5 @@
 import { ethers, upgrades } from "hardhat";
-import dotenv from "dotenv";
 import { getNetworkConfig, verifyContract } from "../utils";
-
-dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`Upgrading all contracts...`);

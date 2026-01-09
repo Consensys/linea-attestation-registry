@@ -1,10 +1,7 @@
 import { ethers } from "hardhat";
-import dotenv from "dotenv";
 import { SchemaRegistry } from "../../typechain-types";
 import { EventLog } from "ethers";
 import { verifyContract } from "../utils";
-
-dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`START ISSUERS SCRIPT`);

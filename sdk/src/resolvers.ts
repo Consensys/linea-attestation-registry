@@ -1,17 +1,24 @@
-import { Attestation, Module, Portal, Resolvers, Schema } from "../.graphclient";
+import { Attestation, MeshContext, Module, Portal, Resolvers, Schema } from "../.graphclient";
+
+// Extended context with chainName for multichain queries
+type ExtendedMeshContext = MeshContext & { chainName?: string };
 
 export const resolvers: Resolvers = {
   Attestation: {
-    chainName: (root, _args, context) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
+    chainName: (root, _args, context) =>
+      root.chainName || (context as ExtendedMeshContext).chainName || "verax-v2-linea",
   },
   Portal: {
-    chainName: (root, _args, context) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
+    chainName: (root, _args, context) =>
+      root.chainName || (context as ExtendedMeshContext).chainName || "verax-v2-linea",
   },
   Schema: {
-    chainName: (root, _args, context) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
+    chainName: (root, _args, context) =>
+      root.chainName || (context as ExtendedMeshContext).chainName || "verax-v2-linea",
   },
   Module: {
-    chainName: (root, _args, context) => root.chainName || context.chainName || "verax-v2-linea", // The value we provide in the config
+    chainName: (root, _args, context) =>
+      root.chainName || (context as ExtendedMeshContext).chainName || "verax-v2-linea",
   },
   Query: {
     multichainAttestations: async (root, args, context, info) =>
@@ -23,7 +30,7 @@ export const resolvers: Resolvers = {
             context: {
               ...context,
               chainName,
-            },
+            } as ExtendedMeshContext,
             info,
           }).then((attestations: Attestation[]) =>
             attestations.map((attestation: Attestation) => ({
@@ -42,7 +49,7 @@ export const resolvers: Resolvers = {
             context: {
               ...context,
               chainName,
-            },
+            } as ExtendedMeshContext,
             info,
           }).then((portals: Portal[]) =>
             portals.map((portal: Portal) => ({
@@ -61,7 +68,7 @@ export const resolvers: Resolvers = {
             context: {
               ...context,
               chainName,
-            },
+            } as ExtendedMeshContext,
             info,
           }).then((schemas: Schema[]) =>
             schemas.map((schema: Schema) => ({
@@ -80,7 +87,7 @@ export const resolvers: Resolvers = {
             context: {
               ...context,
               chainName,
-            },
+            } as ExtendedMeshContext,
             info,
           }).then((modules: Module[]) =>
             modules.map((module: Module) => ({

@@ -3,7 +3,12 @@ import { defineConfig } from "tsup";
 export default defineConfig({
   entry: ["src/index.ts"],
   format: ["esm", "cjs"],
-  dts: true,
+  dts: {
+    compilerOptions: {
+      composite: false,
+    },
+  },
+  tsconfig: "tsconfig.build.json",
   splitting: false,
   sourcemap: true,
   clean: true,
@@ -13,11 +18,10 @@ export default defineConfig({
     /^@graphprotocol/,
     /^@graphql-mesh/,
     /^@graphql-yoga/,
+    /^@graphql-typed-document-node/,
     /^@whatwg-node/,
     /^axios/,
-    /^dotenv/,
     /^graphql/,
-    /^ipfs-http-client/,
   ],
   treeshake: true,
   minify: true,

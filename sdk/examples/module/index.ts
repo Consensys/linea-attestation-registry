@@ -1,11 +1,6 @@
 import { Hex } from "viem";
 import { VeraxSdk } from "../../src/VeraxSdk";
 import ModuleExamples from "./moduleExamples";
-import { config } from "dotenv";
-import * as path from "path";
-
-const envPath = path.resolve(__dirname, "../../.env");
-config({ path: envPath });
 
 const privateKey = process.env.PRIVATE_KEY as Hex;
 

@@ -1414,10 +1414,13 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   Aggregation_interval: Aggregation_interval;
   Attestation: ResolverTypeWrapper<Attestation>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Attestation_filter: Attestation_filter;
   Attestation_orderBy: Attestation_orderBy;
   Audit: ResolverTypeWrapper<Audit>;
   AuditInformation: ResolverTypeWrapper<AuditInformation>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   AuditInformation_filter: AuditInformation_filter;
   AuditInformation_orderBy: AuditInformation_orderBy;
   Audit_filter: Audit_filter;
@@ -1426,14 +1429,10 @@ export type ResolversTypes = ResolversObject<{
   BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
   BlockChangedFilter: BlockChangedFilter;
   Block_height: Block_height;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Bytes: ResolverTypeWrapper<Scalars['Bytes']['output']>;
   Counter: ResolverTypeWrapper<Counter>;
   Counter_filter: Counter_filter;
   Counter_orderBy: Counter_orderBy;
-  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Int8: ResolverTypeWrapper<Scalars['Int8']['output']>;
   Issuer: ResolverTypeWrapper<Issuer>;
   Issuer_filter: Issuer_filter;
@@ -1451,33 +1450,32 @@ export type ResolversTypes = ResolversObject<{
   Schema: ResolverTypeWrapper<Schema>;
   Schema_filter: Schema_filter;
   Schema_orderBy: Schema_orderBy;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   _Block_: ResolverTypeWrapper<_Block_>;
   _Meta_: ResolverTypeWrapper<_Meta_>;
   _SubgraphErrorPolicy_: _SubgraphErrorPolicy_;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Query: {};
   Attestation: Attestation;
+  ID: Scalars['ID']['output'];
+  Boolean: Scalars['Boolean']['output'];
   Attestation_filter: Attestation_filter;
   Audit: Audit;
   AuditInformation: AuditInformation;
+  Int: Scalars['Int']['output'];
   AuditInformation_filter: AuditInformation_filter;
   Audit_filter: Audit_filter;
   BigDecimal: Scalars['BigDecimal']['output'];
   BigInt: Scalars['BigInt']['output'];
   BlockChangedFilter: BlockChangedFilter;
   Block_height: Block_height;
-  Boolean: Scalars['Boolean']['output'];
   Bytes: Scalars['Bytes']['output'];
   Counter: Counter;
   Counter_filter: Counter_filter;
-  Float: Scalars['Float']['output'];
-  ID: Scalars['ID']['output'];
-  Int: Scalars['Int']['output'];
   Int8: Scalars['Int8']['output'];
   Issuer: Issuer;
   Issuer_filter: Issuer_filter;
@@ -1489,10 +1487,10 @@ export type ResolversParentTypes = ResolversObject<{
   RegistryVersion_filter: RegistryVersion_filter;
   Schema: Schema;
   Schema_filter: Schema_filter;
-  String: Scalars['String']['output'];
   Timestamp: Scalars['Timestamp']['output'];
   _Block_: _Block_;
   _Meta_: _Meta_;
+  String: Scalars['String']['output'];
 }>;
 
 export type entityDirectiveArgs = { };
@@ -1700,7 +1698,8 @@ export type DirectiveResolvers<ContextType = MeshContext & { chainName: string }
 export type MeshContext = LineaAttestationRegistryTypes.Context & BaseMeshContext;
 
 
-const baseDir = pathModule.join(typeof __dirname === 'string' ? __dirname : '/', '..');
+import { fileURLToPath } from '@graphql-mesh/utils';
+const baseDir = pathModule.join(pathModule.dirname(fileURLToPath(import.meta.url)), '..');
 
 const importFn: ImportFn = <T>(moduleId: string) => {
   const relativeModuleId = (pathModule.isAbsolute(moduleId) ? pathModule.relative(baseDir, moduleId) : moduleId).split('\\').join('/').replace(baseDir + '/', '');

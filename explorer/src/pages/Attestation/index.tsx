@@ -2,16 +2,16 @@ import { memo, useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
+import { AttestationData } from "./components/AttestationData";
+import { AttestationInfo } from "./components/AttestationInfo";
+import { AttestationLoadingSkeleton } from "./components/AttestationLoadingSkeleton";
+import { AttestationSchemaCard } from "./components/AttestationSchemaCard";
+
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
-
-import { AttestationData } from "./components/AttestationData";
-import { AttestationInfo } from "./components/AttestationInfo";
-import { AttestationLoadingSkeleton } from "./components/AttestationLoadingSkeleton";
-import { AttestationSchemaCard } from "./components/AttestationSchemaCard";
 
 const MemoizedBack = memo(Back);
 const MemoizedAttestationInfo = memo(AttestationInfo);
@@ -20,7 +20,7 @@ const MemoizedAttestationData = memo(AttestationData);
 const MemoizedNotFoundPage = memo(NotFoundPage);
 const MemoizedAttestationLoadingSkeleton = memo(AttestationLoadingSkeleton);
 
-export const Attestation = memo(() => {
+function AttestationComponent() {
   const { id } = useParams();
   const { getSDKForAttestationId } = useNetworkContext();
   const { networkType } = useNetwork();
@@ -65,4 +65,6 @@ export const Attestation = memo(() => {
       </div>
     );
   }, [attestation, id, isLoading, isValidating]);
-});
+}
+
+export const Attestation = memo(AttestationComponent);

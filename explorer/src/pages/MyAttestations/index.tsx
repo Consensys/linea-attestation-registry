@@ -7,6 +7,9 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import useSWR from "swr";
 import { useAccount } from "wagmi";
 
+import { CardView } from "../Attestations/components/CardView";
+import { TitleAndSwitcher } from "../Attestations/components/TitleAndSwitcher";
+
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
 import { InfoBlock } from "@/components/InfoBlock";
@@ -18,9 +21,6 @@ import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { mainnets, testnets } from "@/utils";
 import { cropString } from "@/utils/stringUtils";
-
-import { CardView } from "../Attestations/components/CardView";
-import { TitleAndSwitcher } from "../Attestations/components/TitleAndSwitcher";
 
 export const MyAttestations: React.FC = () => {
   const { sdk } = useNetworkContext();

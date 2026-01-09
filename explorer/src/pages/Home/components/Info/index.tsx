@@ -1,9 +1,9 @@
 import { ArrowUpRight } from "lucide-react";
 
+import { infoData } from "./data";
+
 import { Button } from "@/components/Buttons";
 import { EButtonType } from "@/components/Buttons/enum";
-
-import { infoData } from "./data";
 
 export const Info: React.FC = () => {
   return (

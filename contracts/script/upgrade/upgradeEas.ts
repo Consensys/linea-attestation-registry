@@ -1,8 +1,5 @@
 import { ethers, upgrades } from "hardhat";
-import dotenv from "dotenv";
 import { verifyContract } from "../utils";
-
-dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`Upgrading EAS-related contracts...`);
@@ -29,9 +26,8 @@ async function main() {
 
   console.log(`\n----\n`);
 
-  const attestationReaderImplementationAddress = await upgrades.erc1967.getImplementationAddress(
-    attestationReaderProxyAddress,
-  );
+  const attestationReaderImplementationAddress =
+    await upgrades.erc1967.getImplementationAddress(attestationReaderProxyAddress);
 
   try {
     await verifyContract(attestationReaderProxyAddress, [], shouldVerify);

@@ -1,8 +1,5 @@
 import { ethers } from "hardhat";
-import dotenv from "dotenv";
 import { verifyContract } from "../utils";
-
-dotenv.config({ path: "../.env" });
 
 async function main() {
   console.log(`Deploying Standard Library...`);

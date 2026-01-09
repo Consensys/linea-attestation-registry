@@ -45,8 +45,8 @@ export const NetworkTypeToggle: React.FC<NetworkTypeToggleProps> = ({ className 
                   ? "text-white"
                   : "text-gray-800"
                 : isDarkMode
-                ? "text-gray-400"
-                : "text-gray-400",
+                  ? "text-gray-400"
+                  : "text-gray-400",
             )}
           >
             M
@@ -59,8 +59,8 @@ export const NetworkTypeToggle: React.FC<NetworkTypeToggleProps> = ({ className 
                   ? "text-white"
                   : "text-gray-800"
                 : isDarkMode
-                ? "text-gray-400"
-                : "text-gray-400",
+                  ? "text-gray-400"
+                  : "text-gray-400",
             )}
           >
             T

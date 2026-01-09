@@ -3,11 +3,11 @@ import { ConnectKitProvider } from "connectkit";
 import { Outlet } from "react-router-dom";
 import { WagmiProvider } from "wagmi";
 
+import { NetworkContextProvider } from "./network-provider";
+
 import { config } from "@/config";
 import { NetworkProvider } from "@/contexts/NetworkProvider";
 import { Layout } from "@/pages/Layout";
-
-import { NetworkContextProvider } from "./network-provider";
 
 export const Providers = () => {
   const queryClient = new QueryClient();

@@ -56,6 +56,7 @@ export const Footer: React.FC = () => {
               href={url}
               target="_blank"
               className="text-sm font-medium flex justify-center items-center self-center gap-2 dark:text-text-quaternary hover:text-text-darkBlue dark:hover:text-text-secondaryDark transition group"
+              rel="noreferrer"
             >
               <Logo className="group-hover:svg-dark-blue dark:group-hover:svg-white [&>path]:transition [&>rect]:transition [&>g>path]:transition" />
               {title}
@@ -63,7 +64,7 @@ export const Footer: React.FC = () => {
           );
         })}
       </div>
-      <a href={"https://hapi.one/"} target="_blank" className="group">
+      <a href={"https://hapi.one/"} target="_blank" className="group" rel="noreferrer">
         {isDarkMode ? (
           <HapiLogoDark className="group-hover:[&>path]:fill-whiteDefault [&>path]:transition" />
         ) : (

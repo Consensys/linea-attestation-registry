@@ -8,6 +8,10 @@ import { Address } from "viem";
 import { mainnet } from "viem/chains";
 import { useEnsName } from "wagmi";
 
+import { PortalLoadingSkeleton } from "./components/PortalLoadingSkeleton";
+import { PortalModules } from "./components/PortalModules";
+import { RecentAttestations } from "../Schema/components/RecentAttestations";
+
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { Tooltip } from "@/components/Tooltip";
@@ -18,10 +22,6 @@ import { regexEthAddress } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { getBlockExplorerLink } from "@/utils";
-
-import { PortalLoadingSkeleton } from "./components/PortalLoadingSkeleton";
-import { PortalModules } from "./components/PortalModules";
-import { RecentAttestations } from "../Schema/components/RecentAttestations";
 
 export const Portal = () => {
   const { id, network } = useParams();
@@ -121,6 +121,7 @@ export const Portal = () => {
                   href={link}
                   target="_blank"
                   className="break-words dark:text-text-secondaryDark hover:underline flex items-center gap-2"
+                  rel="noreferrer"
                 >
                   {subtitle}
                   <ArrowUpRight width="1rem" height="auto" />

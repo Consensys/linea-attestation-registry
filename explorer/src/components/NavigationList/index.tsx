@@ -1,9 +1,9 @@
 import { Dispatch, Fragment, SetStateAction } from "react";
 
+import { ListItemWithSubmenu } from "./components/ListItemWithSubmenu";
+
 import { NavLink } from "@/components/NavLink";
 import { DEFAULT_ROUTES } from "@/constants/components";
-
-import { ListItemWithSubmenu } from "./components/ListItemWithSubmenu";
 
 export const NavigationList: React.FC<{ setIsOpened?: Dispatch<SetStateAction<boolean>> }> = ({ setIsOpened }) => {
   const closeBurgerMenu = () => {

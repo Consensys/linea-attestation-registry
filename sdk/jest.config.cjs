@@ -10,9 +10,6 @@ const config = {
   resetMocks: true,
   testTimeout: 20000,
   modulePathIgnorePatterns: ["<rootDir>/dist/", "<rootDir>/lib/"],
-  moduleNameMapper: {
-    "^ipfs-http-client$": "<rootDir>/src/__mocks__/ipfs-http-client.ts",
-  },
 };
 
 module.exports = config;

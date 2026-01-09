@@ -2,6 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ChainName, Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 
+import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
+
 import { TdHandler } from "@/components/DataTable/components/TdHandler";
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { Link } from "@/components/Link";
@@ -10,8 +12,6 @@ import { NETWORK_TOOLTIP_STYLE } from "@/constants/components";
 import { ColumnsOptions } from "@/interfaces/components";
 import { toSchemaById } from "@/routes/constants";
 import { NetworkResolver } from "@/utils/networkResolver.ts";
-
-import { EMPTY_STRING, ITEMS_PER_PAGE_DEFAULT } from "../index";
 
 interface ColumnsProps {
   isDarkMode: boolean;

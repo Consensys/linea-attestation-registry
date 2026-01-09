@@ -3,6 +3,8 @@ import moment from "moment";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import { IAttestationCardProps } from "./interface";
+
 import circleInfo from "@/assets/icons/circle-info.svg";
 import StampLogo from "@/assets/logo/stamp-logo.svg?react";
 import { Button } from "@/components/Buttons";
@@ -14,8 +16,6 @@ import { issuersData } from "@/pages/Home/data";
 import { IIssuer } from "@/pages/Home/interface";
 import { APP_ROUTES } from "@/routes/constants";
 import { NetworkResolver } from "@/utils/networkResolver.ts";
-
-import { IAttestationCardProps } from "./interface";
 
 export const AttestationCard: React.FC<IAttestationCardProps> = ({
   id,

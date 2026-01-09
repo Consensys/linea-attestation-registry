@@ -21,7 +21,7 @@ function decodeWrapped(schema: string, attestationData: Hex): readonly unknown[]
   try {
     const parsedParams = tryParse(schema);
     return decodeAbiParameters(parsedParams, attestationData);
-  } catch (e) {
+  } catch (_e) {
     return [];
   }
 }
@@ -35,7 +35,7 @@ function tryParse(schema: string): readonly AbiParameter[] {
     if ((e as BaseError).shortMessage === "Invalid ABI parameter.") {
       try {
         return parseAbiParameters(reverseSchema(preparedSchema));
-      } catch (e) {
+      } catch (_e) {
         return [];
       }
     }

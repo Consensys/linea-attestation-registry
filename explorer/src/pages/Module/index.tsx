@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import { ModuleLoadingSkeleton } from "./components/ModuleLoadingSkeleton";
+import { ModulePortals } from "./components/ModulePortals";
+
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { Tooltip } from "@/components/Tooltip";
@@ -12,9 +15,6 @@ import { regexEthAddress } from "@/constants/regex";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { getBlockExplorerLink } from "@/utils";
-
-import { ModuleLoadingSkeleton } from "./components/ModuleLoadingSkeleton";
-import { ModulePortals } from "./components/ModulePortals";
 
 export const Module = () => {
   const { id, network } = useParams();
@@ -80,6 +80,7 @@ export const Module = () => {
           href={`${blockExplorerLink}/${module.moduleAddress}`}
           target="_blank"
           className="cursor-pointer hover:underline break-all sm:w-fit dark:text-text-secondaryDark flex items-center gap-2"
+          rel="noreferrer"
         >
           <span className="flex-1">{module.moduleAddress}</span>
           <ArrowUpRight height="auto" width="1rem" />

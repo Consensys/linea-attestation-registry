@@ -1,16 +1,16 @@
 import { t } from "i18next";
 import useSWR from "swr";
 
+import { loadModuleList } from "./loadModuleList";
+import { SearchComponentProps } from "../interfaces";
+import { SearchWrapper } from "../SearchWrapper";
+
 import { DataTable } from "@/components/DataTable";
 import { columns } from "@/constants/columns/module";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
-
-import { loadModuleList } from "./loadModuleList";
-import { SearchComponentProps } from "../interfaces";
-import { SearchWrapper } from "../SearchWrapper";
 
 export const SearchModules: React.FC<SearchComponentProps> = ({ getSearchData, parsedString, search, isDarkMode }) => {
   const {

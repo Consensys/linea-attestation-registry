@@ -1,8 +1,5 @@
 import { ethers } from "hardhat";
-import dotenv from "dotenv";
 import { SchemaRegistry } from "../../typechain-types";
-
-dotenv.config({ path: "../.env" });
 
 async function main() {
   const proxyAddress = process.env.SCHEMA_REGISTRY_ADDRESS ?? "";

@@ -6,11 +6,11 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import ReactJson from "react-json-view";
 import { useTernaryDarkMode } from "usehooks-ts";
 
+import { getAttestationData } from "./utils";
+
 import { HelperIndicator } from "@/components/HelperIndicator";
 import { EMPTY_STRING, THOUSAND } from "@/constants";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
-
-import { getAttestationData } from "./utils";
 
 export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
   const screen = useWindowDimensions();
@@ -43,12 +43,13 @@ export const AttestationData: React.FC<Attestation> = ({ ...attestation }) => {
       };
   const toggleButtonSize = screen.sm ? 24 : 16;
 
+  // Calculate height difference for "show more" button (runs once after initial render)
+  // The `!heightDifference` guard prevents infinite loops
   useEffect(() => {
     if (!heightDifference && ref.current && ref.current.scrollHeight > ref.current.clientHeight) {
       setHeightDifference(ref.current.scrollHeight - ref.current.clientHeight);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref]);
+  }, [heightDifference]);
 
   return (
     <div className="w-full flex-col justify-start items-start gap-4 inline-flex">

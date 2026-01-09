@@ -2,12 +2,12 @@ import { Loader } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useSWR from "swr";
 
+import { IAttestationProps } from "./interface";
+
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
 import { formatNumber } from "@/utils/amountUtils";
-
-import { IAttestationProps } from "./interface";
 
 import "./styles.css";
 

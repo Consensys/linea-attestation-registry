@@ -3,6 +3,16 @@ import { Attestation, MeshContext, Module, Portal, Resolvers, Schema } from "../
 // Extended context with chainName for multichain queries
 type ExtendedMeshContext = MeshContext & { chainName?: string };
 
+/**
+ * Helper to extract successful results from Promise.allSettled.
+ * Filters out rejected promises and returns only fulfilled values.
+ */
+function getSuccessfulResults<T>(results: PromiseSettledResult<T>[]): T[] {
+  return results
+    .filter((result): result is PromiseFulfilledResult<T> => result.status === "fulfilled")
+    .map((result) => result.value);
+}
+
 export const resolvers: Resolvers = {
   Attestation: {
     chainName: (root, _args, context) =>
@@ -21,8 +31,8 @@ export const resolvers: Resolvers = {
       root.chainName || (context as ExtendedMeshContext).chainName || "verax-v2-linea",
   },
   Query: {
-    multichainAttestations: async (root, args, context, info) =>
-      Promise.all(
+    multichainAttestations: async (root, args, context, info) => {
+      const results = await Promise.allSettled(
         args.chainNames.map((chainName) =>
           context["linea-attestation-registry"].Query.attestations({
             root,
@@ -39,9 +49,11 @@ export const resolvers: Resolvers = {
             })),
           ),
         ),
-      ).then((allAttestations) => allAttestations.flat()),
-    multichainPortals: async (root, args, context, info) =>
-      Promise.all(
+      );
+      return getSuccessfulResults(results).flat();
+    },
+    multichainPortals: async (root, args, context, info) => {
+      const results = await Promise.allSettled(
         args.chainNames.map((chainName) =>
           context["linea-attestation-registry"].Query.portals({
             root,
@@ -58,9 +70,11 @@ export const resolvers: Resolvers = {
             })),
           ),
         ),
-      ).then((allPortals) => allPortals.flat()),
-    multichainSchemas: async (root, args, context, info) =>
-      Promise.all(
+      );
+      return getSuccessfulResults(results).flat();
+    },
+    multichainSchemas: async (root, args, context, info) => {
+      const results = await Promise.allSettled(
         args.chainNames.map((chainName) =>
           context["linea-attestation-registry"].Query.schemas({
             root,
@@ -77,9 +91,11 @@ export const resolvers: Resolvers = {
             })),
           ),
         ),
-      ).then((allSchemas) => allSchemas.flat()),
-    multichainModules: async (root, args, context, info) =>
-      Promise.all(
+      );
+      return getSuccessfulResults(results).flat();
+    },
+    multichainModules: async (root, args, context, info) => {
+      const results = await Promise.allSettled(
         args.chainNames.map((chainName) =>
           context["linea-attestation-registry"].Query.modules({
             root,
@@ -96,6 +112,8 @@ export const resolvers: Resolvers = {
             })),
           ),
         ),
-      ).then((allModules) => allModules.flat()),
+      );
+      return getSuccessfulResults(results).flat();
+    },
   },
 };

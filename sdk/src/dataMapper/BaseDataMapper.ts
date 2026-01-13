@@ -1,19 +1,26 @@
 import { PublicClient, WalletClient } from "viem";
-import { Conf, CrossChainClient } from "../types";
-import { getBuiltGraphSDK, OrderDirection } from "../../.graphclient";
+import { ChainName, Conf, CrossChainClient } from "../types";
+import { OrderDirection } from "../../.graphclient";
 import { VeraxSdk } from "../VeraxSdk";
 import { stringifyWhereClause, subgraphCall } from "../utils/graphClientHelper";
-import { getCustomGraphSDK } from "../utils/graphClientBuilder";
+import { getCustomGraphSDKForChains } from "../utils/graphClientBuilder";
+import { getSDKForChains } from "../utils/meshInstanceManager";
 import { getConfiguredSubgraphUrl } from "../utils/urlResolver";
+import { NetworkType, inferNetworkType } from "../utils/networkTypeUtils";
 
 export default abstract class BaseDataMapper<T, TFilter, TOrder> {
   protected readonly conf: Conf;
   protected readonly web3Client: PublicClient;
   protected readonly walletClient: WalletClient | undefined;
-  private crossChainClientPromise: Promise<CrossChainClient> | null = null;
   protected readonly veraxSdk: VeraxSdk;
   protected abstract typeName: string;
   protected abstract gqlInterface: string;
+
+  /**
+   * Cache of cross-chain clients keyed by network type.
+   * Maintains separate clients for mainnet and testnet to prevent cache pollution.
+   */
+  private crossChainClients: Map<NetworkType, Promise<CrossChainClient>> = new Map();
 
   constructor(_conf: Conf, _web3Client: PublicClient, _veraxSdk: VeraxSdk, _walletClient?: WalletClient) {
     this.conf = _conf;
@@ -22,18 +29,35 @@ export default abstract class BaseDataMapper<T, TFilter, TOrder> {
     this.walletClient = _walletClient;
   }
 
-  protected async getCrossChainClient(): Promise<CrossChainClient> {
-    if (!this.crossChainClientPromise) {
-      // Initialize the client lazily on first use
+  /**
+   * Gets a cross-chain client for the specified chain names.
+   * Automatically infers the network type (mainnet/testnet) and returns
+   * an appropriately isolated client to prevent cache pollution.
+   *
+   * @param chainNames - Array of chain names to query
+   * @returns Promise resolving to a CrossChainClient
+   * @throws Error if chain names mix mainnet and testnet
+   */
+  protected async getCrossChainClient(chainNames: (ChainName | string)[]): Promise<CrossChainClient> {
+    const networkType = inferNetworkType(chainNames);
+
+    // Check if we have a cached client for this network type
+    let clientPromise = this.crossChainClients.get(networkType);
+
+    if (!clientPromise) {
+      // Create new client with proper isolation
       if (this.conf.subgraphUrlOverrides) {
         // Use custom SDK builder with URL overrides
-        this.crossChainClientPromise = getCustomGraphSDK(this.conf.subgraphUrlOverrides);
+        clientPromise = getCustomGraphSDKForChains(chainNames, this.conf.subgraphUrlOverrides);
       } else {
-        // Use default SDK without overrides
-        this.crossChainClientPromise = Promise.resolve(getBuiltGraphSDK());
+        // Use standard SDK with network-type isolation
+        clientPromise = getSDKForChains(chainNames);
       }
+
+      this.crossChainClients.set(networkType, clientPromise);
     }
-    return this.crossChainClientPromise;
+
+    return clientPromise;
   }
 
   async findOneById(id: string) {

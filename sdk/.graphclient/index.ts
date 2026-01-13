@@ -7,7 +7,7 @@ import type { GetMeshOptions } from '@graphql-mesh/runtime';
 import type { YamlConfig } from '@graphql-mesh/types';
 import { PubSub } from '@graphql-mesh/utils';
 import { DefaultLogger } from '@graphql-mesh/utils';
-import MeshCache from "@graphql-mesh/cache-localforage";
+import MeshCache from "@graphql-mesh/cache-inmemory-lru";
 import { fetch as fetchFn } from '@whatwg-node/fetch';
 
 import { MeshResolvedSource } from '@graphql-mesh/runtime';
@@ -1727,7 +1727,7 @@ const pubsub = new PubSub();
 const sourcesStore = rootStore.child('sources');
 const logger = new DefaultLogger("GraphClient");
 const cache = new (MeshCache as any)({
-      ...({} as any),
+      ...({"max":1000} as any),
       importFn,
       store: rootStore.child('cache'),
       pubsub,

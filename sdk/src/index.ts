@@ -37,6 +37,18 @@ export * from "./utils/constants";
 // Utilities (for advanced usage)
 export { encode, decodeWithRetry } from "./utils/abiCoder";
 export { handleError } from "./utils/errorHandler";
-export { getCustomGraphSDK } from "./utils/graphClientBuilder";
+export { getCustomGraphSDK, getCustomGraphSDKForChains, clearCustomSDKCache } from "./utils/graphClientBuilder";
 export { getSubgraphUrlForChain, getConfiguredSubgraphUrl } from "./utils/urlResolver";
 export type { IPFSConfig } from "./types";
+
+// Network type utilities (for cache isolation)
+export {
+  inferNetworkType,
+  getNetworkTypeForChain,
+  isTestnetChain,
+  validateNetworkType,
+  type NetworkType,
+} from "./utils/networkTypeUtils";
+
+// Mesh instance management (for advanced cache control)
+export { getSDKForNetworkType, getSDKForChains, clearMeshCache, getMeshCacheStatus } from "./utils/meshInstanceManager";

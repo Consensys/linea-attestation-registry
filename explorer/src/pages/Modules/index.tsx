@@ -1,6 +1,5 @@
 import { t } from "i18next";
-import { useMemo, useRef, useState } from "react";
-import useSWR from "swr";
+import { useRef, useState } from "react";
 import { useTernaryDarkMode } from "usehooks-ts";
 
 import { DataTable } from "@/components/DataTable";
@@ -10,6 +9,7 @@ import { columns, moduleColumnsOption, skeletonModules } from "@/constants/colum
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { EQueryParams } from "@/enums/queryParams";
+import { useNetworkTypeSWR } from "@/hooks/useNetworkTypeSWR";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
@@ -21,9 +21,9 @@ export const Modules: React.FC = () => {
   const { networkType } = useNetwork();
   const { isDarkMode } = useTernaryDarkMode();
 
-  const chainsForQuery = useMemo(() => (networkType === "mainnet" ? mainnets : testnets), [networkType]);
+  const chainsForQuery = networkType === "mainnet" ? mainnets : testnets;
 
-  const { data: modulesCount } = useSWR(
+  const { data: modulesCount } = useNetworkTypeSWR(
     `${SWRKeys.GET_MODULE_COUNT}`,
     () => sdk.module.getModulesNumber() as Promise<bigint>,
   );
@@ -35,8 +35,9 @@ export const Modules: React.FC = () => {
 
   const [skip, setSkip] = useState<number>(getItemsByPage(page, itemsPerPage));
 
-  const { data: modulesList, isLoading } = useSWR(`${SWRKeys.GET_MODULE_LIST}/${itemsPerPage}/${skip}`, () =>
-    sdk.module.findByMultiChain(chainsForQuery, itemsPerPage, skip),
+  const { data: modulesList, isLoading } = useNetworkTypeSWR(
+    `${SWRKeys.GET_MODULE_LIST}/${chainsForQuery.join(",")}/${itemsPerPage}/${skip}`,
+    () => sdk.module.findByMultiChain(chainsForQuery, itemsPerPage, skip),
   );
 
   const handlePage = (retrievedPage: number) => {

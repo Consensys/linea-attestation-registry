@@ -1,9 +1,8 @@
 import { OrderDirection } from "@verax-attestation-registry/verax-sdk";
 import { Check, Copy } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useParams } from "react-router-dom";
-import useSWR from "swr";
 import { isAddress } from "viem";
 
 import { CardView } from "../Attestations/components/CardView";
@@ -12,6 +11,7 @@ import { Title } from "@/components/Title";
 import { THOUSAND } from "@/constants";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { EQueryParams } from "@/enums/queryParams";
+import { useNetworkTypeSWR } from "@/hooks/useNetworkTypeSWR";
 import useWindowDimensions from "@/hooks/useWindowDimensions.ts";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
@@ -29,7 +29,7 @@ export const Subject: React.FC = () => {
 
   const [copied, setCopied] = useState<boolean>(false);
 
-  const chainsForQuery = useMemo(() => (networkType === "mainnet" ? mainnets : testnets), [networkType]);
+  const chainsForQuery = networkType === "mainnet" ? mainnets : testnets;
 
   const handleCopy = (text: string, result: boolean) => {
     if (!result || !text) return;
@@ -41,8 +41,8 @@ export const Subject: React.FC = () => {
 
   const CopyIcon = copied ? Check : Copy;
 
-  const { data: attestationsList } = useSWR(
-    `${SWRKeys.GET_ATTESTATION_LIST}/${subject}/${sortByDateDirection}`,
+  const { data: attestationsList } = useNetworkTypeSWR(
+    `${SWRKeys.GET_ATTESTATION_LIST}/${chainsForQuery.join(",")}/${subject}/${sortByDateDirection}`,
     async () => {
       const rawAttestations = await sdk.attestation.findByMultiChain(
         chainsForQuery,

@@ -5,13 +5,13 @@ import { lineaSepolia } from "viem/chains";
 import { ChainName, Conf } from "../types";
 import { SDKMode, VeraxSdk } from "../VeraxSdk";
 import { subgraphCall, stringifyWhereClause } from "../utils/graphClientHelper";
-import { getCustomGraphSDK } from "../utils/graphClientBuilder";
-import { getBuiltGraphSDK } from "../../.graphclient";
+import { getCustomGraphSDKForChains } from "../utils/graphClientBuilder";
+import { getSDKForChains } from "../utils/meshInstanceManager";
 import { getConfiguredSubgraphUrl } from "../utils/urlResolver";
 
 jest.mock("../utils/graphClientHelper");
 jest.mock("../utils/graphClientBuilder");
-jest.mock("../../.graphclient");
+jest.mock("../utils/meshInstanceManager");
 jest.mock("../utils/urlResolver");
 
 type TestType = {
@@ -189,17 +189,18 @@ describe("BaseDataMapper", () => {
     };
 
     beforeEach(() => {
-      (getBuiltGraphSDK as jest.Mock).mockReturnValue(mockCrossChainClient);
-      (getCustomGraphSDK as jest.Mock).mockResolvedValue(mockCrossChainClient);
+      (getSDKForChains as jest.Mock).mockResolvedValue(mockCrossChainClient);
+      (getCustomGraphSDKForChains as jest.Mock).mockResolvedValue(mockCrossChainClient);
     });
 
     it("should use default SDK when no URL overrides are provided", async () => {
       const mapper = new MockDataMapper(mockConf, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+      const chainNames = [ChainName.LINEA_MAINNET];
 
-      const client = await mapper["getCrossChainClient"]();
+      const client = await mapper["getCrossChainClient"](chainNames);
 
-      expect(getBuiltGraphSDK).toHaveBeenCalled();
-      expect(getCustomGraphSDK).not.toHaveBeenCalled();
+      expect(getSDKForChains).toHaveBeenCalledWith(chainNames);
+      expect(getCustomGraphSDKForChains).not.toHaveBeenCalled();
       expect(client).toBe(mockCrossChainClient);
     });
 
@@ -212,23 +213,25 @@ describe("BaseDataMapper", () => {
       };
 
       const mapper = new MockDataMapper(confWithOverrides, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+      const chainNames = [ChainName.LINEA_MAINNET];
 
-      const client = await mapper["getCrossChainClient"]();
+      const client = await mapper["getCrossChainClient"](chainNames);
 
-      expect(getCustomGraphSDK).toHaveBeenCalledWith(confWithOverrides.subgraphUrlOverrides);
-      expect(getBuiltGraphSDK).not.toHaveBeenCalled();
+      expect(getCustomGraphSDKForChains).toHaveBeenCalledWith(chainNames, confWithOverrides.subgraphUrlOverrides);
+      expect(getSDKForChains).not.toHaveBeenCalled();
       expect(client).toBe(mockCrossChainClient);
     });
 
-    it("should cache the client instance on subsequent calls", async () => {
+    it("should cache the client instance on subsequent calls for same network type", async () => {
       const mapper = new MockDataMapper(mockConf, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+      const chainNames = [ChainName.LINEA_MAINNET];
 
-      // Call twice
-      const client1 = await mapper["getCrossChainClient"]();
-      const client2 = await mapper["getCrossChainClient"]();
+      // Call twice with same network type
+      const client1 = await mapper["getCrossChainClient"](chainNames);
+      const client2 = await mapper["getCrossChainClient"](chainNames);
 
-      // Should only call getBuiltGraphSDK once (lazy initialization)
-      expect(getBuiltGraphSDK).toHaveBeenCalledTimes(1);
+      // Should only call getSDKForChains once (cached by network type)
+      expect(getSDKForChains).toHaveBeenCalledTimes(1);
       expect(client1).toBe(client2);
     });
 
@@ -241,14 +244,28 @@ describe("BaseDataMapper", () => {
       };
 
       const mapper = new MockDataMapper(confWithOverrides, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+      const chainNames = [ChainName.LINEA_MAINNET];
 
       // Call twice
-      const client1 = await mapper["getCrossChainClient"]();
-      const client2 = await mapper["getCrossChainClient"]();
+      const client1 = await mapper["getCrossChainClient"](chainNames);
+      const client2 = await mapper["getCrossChainClient"](chainNames);
 
-      // Should only call getCustomGraphSDK once (lazy initialization)
-      expect(getCustomGraphSDK).toHaveBeenCalledTimes(1);
+      // Should only call getCustomGraphSDKForChains once (cached by network type)
+      expect(getCustomGraphSDKForChains).toHaveBeenCalledTimes(1);
       expect(client1).toBe(client2);
+    });
+
+    it("should create separate clients for mainnet and testnet chains", async () => {
+      const mapper = new MockDataMapper(mockConf, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+
+      // Call with mainnet chains
+      await mapper["getCrossChainClient"]([ChainName.LINEA_MAINNET]);
+
+      // Call with testnet chains
+      await mapper["getCrossChainClient"]([ChainName.LINEA_SEPOLIA]);
+
+      // Should call getSDKForChains twice (different network types)
+      expect(getSDKForChains).toHaveBeenCalledTimes(2);
     });
   });
 });

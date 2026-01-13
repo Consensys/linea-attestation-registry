@@ -1,12 +1,12 @@
 import { t } from "i18next";
-import { useMemo, useRef } from "react";
-import useSWR from "swr";
+import { useRef } from "react";
 import { useTernaryDarkMode } from "usehooks-ts";
 
 import { DataTable } from "@/components/DataTable";
 import { attestationColumnsOption, columns, skeletonAttestations } from "@/constants/columns/attestation";
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
+import { useNetworkTypeSWR } from "@/hooks/useNetworkTypeSWR";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
@@ -17,13 +17,13 @@ export const RecentAttestations: React.FC<{ schemaId?: string; portalId?: string
   const { networkType } = useNetwork();
   const { isDarkMode } = useTernaryDarkMode();
 
-  const chainsForQuery = useMemo(() => (networkType === "mainnet" ? mainnets : testnets), [networkType]);
+  const chainsForQuery = networkType === "mainnet" ? mainnets : testnets;
 
   const fetchKey = schemaId
-    ? `${SWRKeys.GET_RECENT_ATTESTATION_SCHEMA}/${schemaId}`
+    ? `${SWRKeys.GET_RECENT_ATTESTATION_SCHEMA}/${chainsForQuery.join(",")}/${schemaId}`
     : portalId
-      ? `${SWRKeys.GET_RECENT_ATTESTATION_PORTAL}/${portalId}`
-      : `${SWRKeys.GET_RECENT_ATTESTATION_GLOBAL}`;
+      ? `${SWRKeys.GET_RECENT_ATTESTATION_PORTAL}/${chainsForQuery.join(",")}/${portalId}`
+      : `${SWRKeys.GET_RECENT_ATTESTATION_GLOBAL}/${chainsForQuery.join(",")}`;
 
   const fetchFunction = schemaId
     ? () => sdk.attestation.findByMultiChain(chainsForQuery, 5, 0, { schema: schemaId }, "attestedDate", "desc")
@@ -31,7 +31,7 @@ export const RecentAttestations: React.FC<{ schemaId?: string; portalId?: string
       ? () => sdk.attestation.findByMultiChain(chainsForQuery, 5, 0, { portal: portalId }, "attestedDate", "desc")
       : () => sdk.attestation.findByMultiChain(chainsForQuery, 5, 0, {}, "attestedDate", "desc");
 
-  const { data: attestations, isLoading } = useSWR(fetchKey, fetchFunction, {
+  const { data: attestations, isLoading } = useNetworkTypeSWR(fetchKey, fetchFunction, {
     shouldRetryOnError: false,
   });
 

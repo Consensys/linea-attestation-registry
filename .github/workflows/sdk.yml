@@ -6,7 +6,6 @@ on:
       - main
       - dev
       - release/*
-      - feat/multichain
   push:
     branches:
       - main
@@ -19,6 +18,8 @@ concurrency:
 
 jobs:
   unit-test-sdk:
+    # Skip initial Dependabot PR run - will re-run after lockfile update
+    if: github.actor != 'dependabot[bot]' || github.event.action == 'synchronize'
     runs-on: ubuntu-latest
 
     defaults:
@@ -72,6 +73,8 @@ jobs:
           echo "✅ Coverage not uploaded to Codecov" >> $GITHUB_STEP_SUMMARY
 
   integration-test-sdk:
+    # Skip initial Dependabot PR run - will re-run after lockfile update
+    if: github.actor != 'dependabot[bot]' || github.event.action == 'synchronize'
     runs-on: ubuntu-latest
 
     defaults:

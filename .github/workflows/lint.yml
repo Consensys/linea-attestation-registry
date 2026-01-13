@@ -6,7 +6,6 @@ on:
       - main
       - dev
       - release/*
-      - feat/multichain
   push:
     branches:
       - main
@@ -19,6 +18,8 @@ concurrency:
 
 jobs:
   lint:
+    # Skip initial Dependabot PR run - will re-run after lockfile update
+    if: github.actor != 'dependabot[bot]' || github.event.action == 'synchronize'
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo

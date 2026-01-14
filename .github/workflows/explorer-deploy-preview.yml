@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - dev
-      - feat/multichain
     paths:
       - explorer/**
 
@@ -14,6 +13,8 @@ concurrency:
 
 jobs:
   deploy-explorer-preview:
+    # Skip initial Dependabot PR run - will re-run after lockfile update
+    if: github.actor != 'dependabot[bot]' || github.event.action == 'synchronize'
     runs-on: ubuntu-latest
 
     defaults:

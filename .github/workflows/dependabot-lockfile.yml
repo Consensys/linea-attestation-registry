@@ -29,6 +29,9 @@ jobs:
           node-version-file: "package.json"
           cache: "pnpm"
 
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
       - name: Update lockfile
         run: pnpm install --no-frozen-lockfile
 

@@ -1,5 +1,4 @@
 import { t } from "i18next";
-import useSWR from "swr";
 
 import { loadModuleList } from "./loadModuleList";
 import { SearchComponentProps } from "../interfaces";
@@ -8,6 +7,7 @@ import { SearchWrapper } from "../SearchWrapper";
 import { DataTable } from "@/components/DataTable";
 import { columns } from "@/constants/columns/module";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
+import { useNetworkTypeSWR } from "@/hooks/useNetworkTypeSWR";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
@@ -19,12 +19,11 @@ export const SearchModules: React.FC<SearchComponentProps> = ({ getSearchData, p
 
   const { networkType } = useNetwork();
 
-  const { data } = useSWR(
+  const { data } = useNetworkTypeSWR(
     `${SWRKeys.GET_MODULE_LIST}/${SWRKeys.SEARCH}/${search}`,
     async () => loadModuleList(module, parsedString, networkType),
     {
       shouldRetryOnError: false,
-      revalidateAll: false,
       onSuccess: (successData) => getSearchData(successData.length, true),
       onError: () => getSearchData(0, true),
     },

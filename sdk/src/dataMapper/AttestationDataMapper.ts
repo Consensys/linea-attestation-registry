@@ -86,7 +86,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
     orderBy?: Attestation_orderBy,
     orderDirection?: OrderDirection,
   ) {
-    const crossChainClient = await this.getCrossChainClient();
+    const crossChainClient = await this.getCrossChainClient(chainNames);
     const attestationsResult = await crossChainClient.MultichainAttestationsQuery({
       chainNames: chainNames,
       first: first,

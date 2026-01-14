@@ -1,6 +1,6 @@
 {
   "name": "@verax-attestation-registry/verax-sdk",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Verax Attestation Registry SDK to interact with the subgraph and the contracts",
   "keywords": [
     "linea-attestation-registry",
@@ -58,7 +58,7 @@
     "test:unit:coverage": "pnpm run test:unit --coverage"
   },
   "dependencies": {
-    "@graphql-mesh/cache-localforage": "^0.105.19",
+    "@graphql-mesh/cache-inmemory-lru": "^0.8.20",
     "@graphql-mesh/cross-helpers": "^0.4.11",
     "@graphql-mesh/graphql": "^0.104.20",
     "@graphql-mesh/http": "^0.106.20",

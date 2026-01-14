@@ -1,7 +1,6 @@
 import { Schema } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import { useMemo, useRef, useState } from "react";
-import useSWR from "swr";
 import { useTernaryDarkMode } from "usehooks-ts";
 
 import { DataTable } from "@/components/DataTable";
@@ -11,6 +10,7 @@ import { columns, schemaColumnsOption, skeletonSchemas } from "@/constants/colum
 import { columnsSkeleton } from "@/constants/columns/skeleton";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { EQueryParams } from "@/enums/queryParams";
+import { useNetworkTypeSWR } from "@/hooks/useNetworkTypeSWR";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
@@ -27,10 +27,11 @@ export const Schemas: React.FC = () => {
   const { networkType } = useNetwork();
   const { isDarkMode } = useTernaryDarkMode();
 
-  const chainsForQuery = useMemo(() => (networkType === "mainnet" ? mainnets : testnets), [networkType]);
+  const chainsForQuery = networkType === "mainnet" ? mainnets : testnets;
 
-  const { data: allSchemas, isLoading: isLoadingSchemas } = useSWR(`${SWRKeys.GET_ALL_SCHEMAS}`, () =>
-    sdk.schema.findByMultiChain(chainsForQuery),
+  const { data: allSchemas, isLoading: isLoadingSchemas } = useNetworkTypeSWR(
+    `${SWRKeys.GET_ALL_SCHEMAS}/${chainsForQuery.join(",")}`,
+    () => sdk.schema.findByMultiChain(chainsForQuery),
   );
 
   const uniqueSchemas = useMemo(() => {

@@ -1,7 +1,6 @@
 import { ChainName } from "@verax-attestation-registry/verax-sdk";
 import { t } from "i18next";
 import { useParams } from "react-router-dom";
-import useSWR from "swr";
 import { useTernaryDarkMode } from "usehooks-ts";
 
 import { RecentAttestations } from "./components/RecentAttestations";
@@ -12,6 +11,7 @@ import { NotFoundPage } from "@/components/NotFoundPage";
 import { Tooltip } from "@/components/Tooltip";
 import { regexEthAddress, urlRegex } from "@/constants/regex";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
+import { useNetworkTypeSWR } from "@/hooks/useNetworkTypeSWR";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { mainnets, testnets } from "@/utils";
@@ -23,20 +23,17 @@ export const Schema: React.FC = () => {
   const { networkType } = useNetwork();
   const { isDarkMode } = useTernaryDarkMode();
 
+  const chainsForQuery = networkType === "mainnet" ? mainnets : testnets;
+
   const {
     data: schemaData,
     isLoading,
     isValidating,
-  } = useSWR(
-    `${SWRKeys.GET_SCHEMA_BY_ID}/${id}`,
+  } = useNetworkTypeSWR(
+    `${SWRKeys.GET_SCHEMA_BY_ID}/${chainsForQuery.join(",")}/${id}`,
     async () => {
       if (id && regexEthAddress.byNumberOfChar[64].test(id)) {
-        const schemas = await sdk.schema.findByMultiChain(
-          networkType === "mainnet" ? mainnets : testnets,
-          undefined,
-          undefined,
-          { id },
-        );
+        const schemas = await sdk.schema.findByMultiChain(chainsForQuery, undefined, undefined, { id });
 
         if (schemas && schemas.length > 0) {
           const schema = schemas[0];

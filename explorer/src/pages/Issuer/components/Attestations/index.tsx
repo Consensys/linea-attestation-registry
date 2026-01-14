@@ -1,22 +1,29 @@
 import { Loader } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import useSWR from "swr";
 
 import { IAttestationProps } from "./interface";
 
+import { useNetwork } from "@/contexts/NetworkContext";
+import { useNetworkTypeSWR } from "@/hooks/useNetworkTypeSWR";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
+import { mainnets, testnets } from "@/utils";
 import { formatNumber } from "@/utils/amountUtils";
 
 import "./styles.css";
 
 export const Attestations: React.FC<IAttestationProps> = ({ address }) => {
   const { sdk } = useNetworkContext();
+  const { networkType } = useNetwork();
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: portals, isLoading } = useSWR(`${SWRKeys.GET_PORTALS_BY_ISSUER}/${address}`, () =>
-    sdk.portal.findBy(undefined, undefined, { ownerAddress: address }),
+
+  const chainsForQuery = networkType === "mainnet" ? mainnets : testnets;
+
+  const { data: portals, isLoading } = useNetworkTypeSWR(
+    `${SWRKeys.GET_PORTALS_BY_ISSUER}/${address}/${chainsForQuery.join(",")}`,
+    () => sdk.portal.findByMultiChain(chainsForQuery, undefined, undefined, { ownerAddress: address }),
   );
 
   const attestationCounter = portals ? portals.reduce((total, portal) => total + portal.attestationCounter, 0) : 0;

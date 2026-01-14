@@ -1,6 +1,5 @@
 import { memo, useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import useSWR from "swr";
 
 import { AttestationData } from "./components/AttestationData";
 import { AttestationInfo } from "./components/AttestationInfo";
@@ -10,6 +9,7 @@ import { AttestationSchemaCard } from "./components/AttestationSchemaCard";
 import { Back } from "@/components/Back";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
+import { useNetworkTypeSWR } from "@/hooks/useNetworkTypeSWR";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 
@@ -41,7 +41,7 @@ function AttestationComponent() {
     data: attestation,
     isLoading,
     isValidating,
-  } = useSWR(`${SWRKeys.GET_ATTESTATION_BY_ID}/${id}`, fetchAttestation, {
+  } = useNetworkTypeSWR(`${SWRKeys.GET_ATTESTATION_BY_ID}/${id}`, fetchAttestation, {
     shouldRetryOnError: false,
     revalidateOnFocus: false,
   });

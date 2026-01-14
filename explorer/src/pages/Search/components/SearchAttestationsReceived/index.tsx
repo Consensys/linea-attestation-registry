@@ -1,5 +1,4 @@
 import { t } from "i18next";
-import useSWR from "swr";
 
 import { loadAttestationReceivedList } from "./loadAttestationReceivedList.ts";
 import { SearchComponentProps } from "../interfaces";
@@ -9,6 +8,7 @@ import { DataTable } from "@/components/DataTable";
 import { columns } from "@/constants/columns/attestation";
 import { useNetwork } from "@/contexts/NetworkContext.ts";
 import { EQueryParams } from "@/enums/queryParams.ts";
+import { useNetworkTypeSWR } from "@/hooks/useNetworkTypeSWR";
 import { SWRKeys } from "@/interfaces/swr/enum";
 import { useNetworkContext } from "@/providers/network-provider/context";
 import { APP_ROUTES } from "@/routes/constants";
@@ -25,12 +25,11 @@ export const SearchAttestationsReceived: React.FC<SearchComponentProps> = ({
   const searchParams = new URLSearchParams(window.location.search);
   const sortByDateDirection = searchParams.get(EQueryParams.SORT_BY_DATE);
 
-  const { data } = useSWR(
+  const { data } = useNetworkTypeSWR(
     `${SWRKeys.GET_ATTESTATION_LIST}/${SWRKeys.SEARCH}/${search}/${sortByDateDirection}`,
     async () => loadAttestationReceivedList(sdk.attestation, parsedString, sortByDateDirection, networkType),
     {
       shouldRetryOnError: false,
-      revalidateAll: false,
       onSuccess: (successData) => getSearchData(successData.length, true),
       onError: () => getSearchData(0, true),
     },

@@ -1,4 +1,12 @@
 # .graphclientrc.yml
+
+# Use in-memory cache to avoid cross-network cache pollution
+# The localforage cache keys are based on query+variables but NOT context,
+# so mainnet and testnet queries with same variables would collide
+cache:
+  inmemoryLru:
+    max: 1000
+
 sources:
   - name: linea-attestation-registry
     handler:

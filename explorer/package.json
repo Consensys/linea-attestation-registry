@@ -48,7 +48,7 @@
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^3.1.1",
     "viem": "catalog:web3",
-    "vite-tsconfig-paths": "^5.1.4",
+    "vite-tsconfig-paths": "^6.0.4",
     "wagmi": "^2.18.2"
   },
   "devDependencies": {

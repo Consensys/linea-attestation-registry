@@ -44,7 +44,7 @@
     "react-json-view": "^1.21.3",
     "react-router-dom": "^6.30.2",
     "swr": "^2.3.8",
-    "tailwind-merge": "^2.6.0",
+    "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^3.1.1",
     "viem": "catalog:web3",

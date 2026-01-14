@@ -21,8 +21,6 @@ env:
 
 jobs:
   build-examples:
-    # Skip initial Dependabot PR run - will re-run after lockfile update
-    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     defaults:

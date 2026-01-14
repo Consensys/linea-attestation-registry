@@ -34,7 +34,7 @@
     "clsx": "^2.1.1",
     "connectkit": "^1.9.1",
     "framer-motion": "^11.18.0",
-    "i18next": "^23.16.8",
+    "i18next": "^25.7.4",
     "lucide-react": "^0.562.0",
     "moment": "^2.30.1",
     "react": "19.2.3",

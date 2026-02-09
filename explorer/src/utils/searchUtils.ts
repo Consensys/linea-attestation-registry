@@ -78,3 +78,40 @@ export const parseSearch = (search: string | null, chainPrefix?: Hex): Partial<R
 export const uniqMap = <T>(array: T[], by: keyof T): T[] => [
   ...new Map(array.map((result) => [result[by], result])).values(),
 ];
+
+interface WithChainName {
+  chainName?: string;
+}
+
+export interface WithNetworks {
+  networks: string[];
+  networkCount: number;
+}
+
+/**
+ * Groups items by `id`, collecting distinct `chainName` values
+ * into `networks[]` and `networkCount` for multi-chain display.
+ */
+export const aggregateByNetwork = <T extends WithChainName>(items: T[], by: keyof T): (T & WithNetworks)[] => {
+  const map = new Map<unknown, T & WithNetworks>();
+
+  for (const item of items) {
+    const key = item[by];
+    const existing = map.get(key);
+
+    if (existing) {
+      if (item.chainName && !existing.networks.includes(item.chainName)) {
+        existing.networks.push(item.chainName);
+        existing.networkCount = existing.networks.length;
+      }
+    } else {
+      map.set(key, {
+        ...item,
+        networks: item.chainName ? [item.chainName] : [],
+        networkCount: item.chainName ? 1 : 0,
+      });
+    }
+  }
+
+  return Array.from(map.values());
+};

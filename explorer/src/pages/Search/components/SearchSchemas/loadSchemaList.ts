@@ -3,8 +3,8 @@ import { SchemaDataMapper } from "@verax-attestation-registry/verax-sdk";
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { NetworkType } from "@/contexts/NetworkContext.ts";
 import { ResultParseSearch } from "@/interfaces/components";
-import { isNotNullOrUndefined, mainnets, testnets } from "@/utils";
-import { uniqMap } from "@/utils/searchUtils";
+import { mainnets, testnets } from "@/utils";
+import { aggregateByNetwork } from "@/utils/searchUtils";
 
 export const loadSchemaList = async (
   schema: SchemaDataMapper,
@@ -24,27 +24,36 @@ export const loadSchemaList = async (
       ])
     : [];
 
-  const listByIds = (
-    parsedString.schemasIds ? await Promise.all(parsedString.schemasIds.map((id) => schema.findOneById(id))) : []
-  ).filter(isNotNullOrUndefined);
+  const listByIds =
+    parsedString.schemasIds && parsedString.schemasIds.length > 0
+      ? await schema.findByMultiChain(chainsToSearch, ITEMS_PER_PAGE_DEFAULT, undefined, {
+          id_in: parsedString.schemasIds,
+        })
+      : [];
 
   const listBySchemaString = parsedString.schema
-    ? await schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { schema_contains: parsedString.schema })
+    ? await schema.findByMultiChain(chainsToSearch, ITEMS_PER_PAGE_DEFAULT, undefined, {
+        schema_contains: parsedString.schema,
+      })
     : [];
 
-  const [listByContext] = parsedString.urls
-    ? await Promise.all(
-        parsedString.urls.map((url) => schema.findBy(ITEMS_PER_PAGE_DEFAULT, undefined, { context_contains: url })),
-      )
+  const listByContext = parsedString.urls
+    ? (
+        await Promise.all(
+          parsedString.urls.map((url) =>
+            schema.findByMultiChain(chainsToSearch, ITEMS_PER_PAGE_DEFAULT, undefined, { context_contains: url }),
+          ),
+        )
+      ).flat()
     : [];
 
   const results = [
     ...(listByIds || []),
-    ...listBySchemaString,
+    ...(listBySchemaString || []),
     ...(listByName || []),
     ...(listByDescription || []),
     ...(listByContext || []),
   ];
 
-  return uniqMap(results, "id");
+  return aggregateByNetwork(results, "id");
 };

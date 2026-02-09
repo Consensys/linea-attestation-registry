@@ -34,24 +34,27 @@ export const columns = ({ isDarkMode }: ColumnsProps): ColumnDef<SchemaWithNetwo
     cell: ({ row }) => {
       const name = row.getValue("name") as string;
       const id = row.original.id;
-      const networks = row.original.networks || [row.original.chainName as string];
-      const networkCount = row.original.networkCount || 1;
+      const networks = row.original.networks || (row.original.chainName ? [row.original.chainName] : []);
+      const networkCount = row.original.networkCount || networks.length;
 
-      const primaryNetwork = networks[0] as ChainName;
-      const networkName = NetworkResolver.getNetworkNameFromChainName(primaryNetwork);
+      const primaryNetwork = networks[0] as ChainName | undefined;
 
       return (
         <div className="flex space-x-2 items-center">
           <div className="flex items-center">
-            <Tooltip
-              content={<div style={NETWORK_TOOLTIP_STYLE}>{networkName}</div>}
-              placement="top"
-              isDarkMode={isDarkMode}
-              minWidth="auto"
-              compact
-            >
-              <div className="w-[24px]">{NetworkResolver.getNetworkLogoByChainName(primaryNetwork, isDarkMode)}</div>
-            </Tooltip>
+            {primaryNetwork && (
+              <Tooltip
+                content={
+                  <div style={NETWORK_TOOLTIP_STYLE}>{NetworkResolver.getNetworkNameFromChainName(primaryNetwork)}</div>
+                }
+                placement="top"
+                isDarkMode={isDarkMode}
+                minWidth="auto"
+                compact
+              >
+                <div className="w-[24px]">{NetworkResolver.getNetworkLogoByChainName(primaryNetwork, isDarkMode)}</div>
+              </Tooltip>
+            )}
             {networkCount > 1 && (
               <div className="ml-1 text-xs font-semibold bg-gray-200 dark:bg-gray-700 rounded-full px-1.5 py-0.5">
                 +{networkCount - 1}

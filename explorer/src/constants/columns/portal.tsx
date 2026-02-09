@@ -19,7 +19,12 @@ interface ColumnsProps {
   isDarkMode: boolean;
 }
 
-export const columns = ({ isDarkMode }: ColumnsProps): ColumnDef<Portal>[] => [
+interface PortalWithNetworks extends Portal {
+  networks?: string[];
+  networkCount?: number;
+}
+
+export const columns = ({ isDarkMode }: ColumnsProps): ColumnDef<PortalWithNetworks>[] => [
   {
     accessorKey: "name",
     header: () => (
@@ -31,26 +36,41 @@ export const columns = ({ isDarkMode }: ColumnsProps): ColumnDef<Portal>[] => [
     cell: ({ row }) => {
       const name = row.getValue("name") as string;
       const id = row.original.id;
-      const chainName = row.original.chainName as ChainName;
-      const network = NetworkResolver.getNetworkSlugFromChainName(chainName);
-      const networkName = NetworkResolver.getNetworkNameFromChainName(chainName);
+      const networks = row.original.networks || (row.original.chainName ? [row.original.chainName] : []);
+      const networkCount = row.original.networkCount || networks.length;
+
+      const primaryNetwork = networks[0] as ChainName | undefined;
+      const network = primaryNetwork ? NetworkResolver.getNetworkSlugFromChainName(primaryNetwork) : undefined;
 
       return (
         <div className="flex space-x-2 items-center">
-          <Tooltip
-            content={<div style={NETWORK_TOOLTIP_STYLE}>{networkName}</div>}
-            placement="top"
-            isDarkMode={isDarkMode}
-            minWidth="auto"
-            compact
-          >
-            <div className="w-[24px]">
-              {NetworkResolver.getNetworkLogoByChainName(chainName as ChainName, isDarkMode)}
-            </div>
-          </Tooltip>
-          <Link to={toPortalById(id, network)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
-            {name}
-          </Link>
+          <div className="flex items-center">
+            {primaryNetwork && (
+              <Tooltip
+                content={
+                  <div style={NETWORK_TOOLTIP_STYLE}>{NetworkResolver.getNetworkNameFromChainName(primaryNetwork)}</div>
+                }
+                placement="top"
+                isDarkMode={isDarkMode}
+                minWidth="auto"
+                compact
+              >
+                <div className="w-[24px]">{NetworkResolver.getNetworkLogoByChainName(primaryNetwork, isDarkMode)}</div>
+              </Tooltip>
+            )}
+            {networkCount > 1 && (
+              <div className="ml-1 text-xs font-semibold bg-gray-200 dark:bg-gray-700 rounded-full px-1.5 py-0.5">
+                +{networkCount - 1}
+              </div>
+            )}
+          </div>
+          {network ? (
+            <Link to={toPortalById(id, network)} className="hover:underline" onClick={(e) => e.stopPropagation()}>
+              {name}
+            </Link>
+          ) : (
+            <span>{name}</span>
+          )}
         </div>
       );
     },
@@ -69,17 +89,18 @@ export const columns = ({ isDarkMode }: ColumnsProps): ColumnDef<Portal>[] => [
     cell: ({ row }) => {
       const address = row.original.ownerAddress;
       const id = row.original.id;
-      const chainName = row.original.chainName as ChainName;
-      const network = NetworkResolver.getNetworkSlugFromChainName(chainName);
+      const networks = row.original.networks || (row.original.chainName ? [row.original.chainName] : []);
+      const primaryNetwork = networks[0] as ChainName | undefined;
+      const network = primaryNetwork ? NetworkResolver.getNetworkSlugFromChainName(primaryNetwork) : undefined;
 
-      const networkConfig = chains.find((chain) => chain.network === network);
+      const networkConfig = network ? chains.find((chain) => chain.network === network) : undefined;
       const blockExplorerLink = networkConfig ? getBlockExplorerLink(networkConfig.chain) : "";
 
       return (
         <TdHandler
-          valueUrl={`${blockExplorerLink}/${address}`}
+          valueUrl={blockExplorerLink ? `${blockExplorerLink}/${address}` : undefined}
           value={cropString(address)}
-          to={toPortalById(id, network)}
+          to={network ? toPortalById(id, network) : ""}
         />
       );
     },

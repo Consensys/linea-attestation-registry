@@ -3,8 +3,8 @@ import { ModuleDataMapper } from "@verax-attestation-registry/verax-sdk";
 import { ITEMS_PER_PAGE_DEFAULT } from "@/constants";
 import { NetworkType } from "@/contexts/NetworkContext.ts";
 import { ResultParseSearch } from "@/interfaces/components";
-import { isNotNullOrUndefined, mainnets, testnets } from "@/utils";
-import { uniqMap } from "@/utils/searchUtils";
+import { mainnets, testnets } from "@/utils";
+import { aggregateByNetwork } from "@/utils/searchUtils";
 
 export const loadModuleList = async (
   module: ModuleDataMapper,
@@ -24,11 +24,14 @@ export const loadModuleList = async (
       ])
     : [];
 
-  const listByIds = (
-    parsedString.address ? await Promise.all(parsedString.address.map((id) => module.findOneById(id))) : []
-  ).filter(isNotNullOrUndefined);
+  const listByIds =
+    parsedString.address && parsedString.address.length > 0
+      ? await module.findByMultiChain(chainsToSearch, ITEMS_PER_PAGE_DEFAULT, undefined, {
+          id_in: parsedString.address,
+        })
+      : [];
 
   const results = [...(listByIds || []), ...(listByName || []), ...(listByDescription || [])];
 
-  return uniqMap(results, "id");
+  return aggregateByNetwork(results, "id");
 };

@@ -34,7 +34,11 @@ export class NetworkResolver {
     return chain.network;
   }
 
-  static getNetworkFromChainName(chainName: ChainName | string): INetwork {
+  static getNetworkFromChainName(chainName: ChainName | string | null | undefined): INetwork {
+    if (!chainName) {
+      throw new NetworkResolverError(`No network found for chain name: ${String(chainName)}`);
+    }
+
     const chainBySubgraph = chains.find((chain) => chain.subgraphName === chainName);
     if (chainBySubgraph) {
       return chainBySubgraph;

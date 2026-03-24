@@ -12,6 +12,8 @@ on:
       - dev
       - release/*
 
+permissions: {} # lock everything by default (least-privilege)
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -19,6 +21,8 @@ concurrency:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check out the repo
         uses: actions/checkout@v6

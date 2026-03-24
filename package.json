@@ -19,7 +19,7 @@
     "src"
   ],
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
+    "preinstall": "npx only-allow@1.2.2 pnpm",
     "lint": "eslint . --max-warnings 0",
     "prepare": "husky install",
     "prettier:check": "prettier --check \"**/*.{json,md,svg,yml,sol,js,jsx,ts,tsx,graphql}\"",

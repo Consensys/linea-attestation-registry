@@ -3,6 +3,8 @@ name: Explorer production
 on:
   workflow_dispatch:
 
+permissions: {} # lock everything by default (least-privilege)
+
 jobs:
   deploy-explorer-prod:
     if:
@@ -10,6 +12,8 @@ jobs:
       github.actor  == 'arthur-remy' || github.actor  == 'ars9' || github.actor  == 'Solniechniy'
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     defaults:
       run:

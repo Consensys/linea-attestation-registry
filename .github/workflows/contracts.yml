@@ -12,6 +12,8 @@ on:
       - dev
       - release/*
 
+permissions: {} # lock everything by default (least-privilege)
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -22,6 +24,8 @@ env:
 jobs:
   build-contracts:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     defaults:
       run:
@@ -52,6 +56,8 @@ jobs:
 
   test-contracts:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     defaults:
       run:
@@ -84,6 +90,8 @@ jobs:
 
   coverage-contracts:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     needs: build-contracts
 
@@ -154,6 +162,8 @@ jobs:
 
   upgradeability-contracts:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     defaults:
       run:
@@ -289,6 +299,8 @@ jobs:
 
   size-contracts:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     defaults:
       run:

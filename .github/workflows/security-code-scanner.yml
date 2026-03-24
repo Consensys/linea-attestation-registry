@@ -17,13 +17,15 @@ on:
         required: false
   workflow_dispatch:
 
+permissions: {} # lock everything by default (least-privilege)
+
 jobs:
   security-scan:
-    uses: MetaMask/action-security-code-scanner/.github/workflows/security-scan.yml@v2
     permissions:
       actions: read
       contents: read
       security-events: write
+    uses: MetaMask/action-security-code-scanner/.github/workflows/security-scan.yml@v2
     with:
       repo: ${{ github.repository }}
       scanner-ref: "v2"

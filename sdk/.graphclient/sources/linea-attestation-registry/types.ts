@@ -25,6 +25,13 @@ export type Scalars = {
   Timestamp: { input: any; output: any; }
 };
 
+/** Indicates whether the current, partially filled bucket should be included in the response. Defaults to `exclude` */
+export type Aggregation_current =
+  /** Exclude the current, partially filled bucket from the response */
+  | 'exclude'
+  /** Include the current, partially filled bucket in the response */
+  | 'include';
+
 export type Aggregation_interval =
   | 'hour'
   | 'day';
@@ -707,9 +714,7 @@ export type Portal_filter = {
   modules?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   modules_not?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   modules_contains?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  modules_contains_nocase?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   modules_not_contains?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  modules_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   isRevocable?: InputMaybe<Scalars['Boolean']['input']>;
   isRevocable_not?: InputMaybe<Scalars['Boolean']['input']>;
   isRevocable_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;

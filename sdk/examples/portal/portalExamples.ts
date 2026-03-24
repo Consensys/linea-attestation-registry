@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src";
 import {
   DEFAULT_PORTAL_ADDRESS,
   DEFAULT_PORTAL_ADDRESS_2,

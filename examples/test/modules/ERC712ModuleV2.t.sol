@@ -12,8 +12,9 @@ contract ERC712ModuleV2Test is Test {
   uint256 private signerPk;
   address private receiver;
   bytes32 private eip712DomainHash;
-  bytes32 private constant DOMAIN_TYPE_HASH =
-    keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
+  bytes32 private constant DOMAIN_TYPE_HASH = keccak256(
+    "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
+  );
   bytes32 private constant TXN_TYPE_HASH = keccak256("Transaction(address from,address to,uint256 value)");
 
   event ModuleRegistered(string name, string description, address moduleAddress);

@@ -121,6 +121,47 @@ const schemaAST = {
     },
     {
       "kind": "EnumTypeDefinition",
+      "description": {
+        "kind": "StringValue",
+        "value": "Indicates whether the current, partially filled bucket should be included in the response. Defaults to `exclude`",
+        "block": true
+      },
+      "name": {
+        "kind": "Name",
+        "value": "Aggregation_current"
+      },
+      "values": [
+        {
+          "kind": "EnumValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "Exclude the current, partially filled bucket from the response",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "exclude"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "Include the current, partially filled bucket in the response",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "include"
+          },
+          "directives": []
+        }
+      ],
+      "directives": []
+    },
+    {
+      "kind": "EnumTypeDefinition",
       "name": {
         "kind": "Name",
         "value": "Aggregation_interval"
@@ -9835,49 +9876,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "modules_contains_nocase"
-          },
-          "type": {
-            "kind": "ListType",
-            "type": {
-              "kind": "NonNullType",
-              "type": {
-                "kind": "NamedType",
-                "name": {
-                  "kind": "Name",
-                  "value": "Bytes"
-                }
-              }
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
             "value": "modules_not_contains"
-          },
-          "type": {
-            "kind": "ListType",
-            "type": {
-              "kind": "NonNullType",
-              "type": {
-                "kind": "NamedType",
-                "name": {
-                  "kind": "Name",
-                  "value": "Bytes"
-                }
-              }
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "modules_not_contains_nocase"
           },
           "type": {
             "kind": "ListType",

@@ -1,9 +1,6 @@
 /**
  * Constants containing React elements (JSX) for navigation and UI.
- * react-refresh/only-export-components is disabled because this file exports
- * data structures, not React components. Fast Refresh is not applicable here.
  */
-/* eslint-disable react-refresh/only-export-components */
 import { t } from "i18next";
 
 import GitbookIcon from "@/assets/icons/gitbook.svg?react";

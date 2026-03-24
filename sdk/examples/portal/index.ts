@@ -1,5 +1,5 @@
 import { Hex } from "viem";
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { VeraxSdk } from "../../src";
 import PortalExamples from "./portalExamples";
 
 const privateKey = process.env.PRIVATE_KEY as Hex;

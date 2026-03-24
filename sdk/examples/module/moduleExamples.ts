@@ -1,6 +1,6 @@
 import { Address } from "viem";
 import { parseEther } from "viem";
-import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src";
 import {
   DEFAULT_MODULE_ADDRESS,
   DEFAULT_MODULE_ADDRESS_2,

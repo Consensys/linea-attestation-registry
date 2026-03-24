@@ -1,4 +1,4 @@
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { VeraxSdk } from "../../src";
 
 const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA);
 

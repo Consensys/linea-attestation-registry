@@ -1,4 +1,4 @@
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { VeraxSdk } from "../../src";
 import fs from "fs";
 import path from "path";
 

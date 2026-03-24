@@ -1,4 +1,4 @@
-import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src";
 
 describe("PortalDataMapper", () => {
   let veraxSdk: VeraxSdk;

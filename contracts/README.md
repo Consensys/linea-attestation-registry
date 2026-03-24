@@ -8,6 +8,56 @@ Verax is mainly composed of a set of smart contracts that allows anyone to read 
 - [pnpm](https://pnpm.io/installation) (>=9.10.0)
 - [Foundry](https://book.getfoundry.sh/getting-started/installation)
 
+## Environment variables reference
+
+Copy `env/.env.<network>` to `.env` in this package (see [Deployment](#deployment-of-a-new-verax-instance)). Variables
+below are read by Hardhat and the TypeScript scripts under `script/`.
+
+### Network and keys (Hardhat)
+
+| Variable                | Networks                | Description                                                                                                                                                     |
+| ----------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `INFURA_KEY`            | All configured networks | When set, used to build the default JSON-RPC URL for that network (where Hardhat does not use a dedicated override).                                            |
+| `PRIVATE_KEY_TESTNET`   | Testnets                | Hex private key for deployments and upgrades on test networks. Omit for read-only tasks (e.g. `check:upgradeability`) if your scripts do not send transactions. |
+| `PRIVATE_KEY_MAINNET`   | Mainnets                | Hex private key for deployments and upgrades on main networks.                                                                                                  |
+| `LINEA_MAINNET_RPC_URL` | `linea` only            | Optional. Full HTTP RPC URL for Linea mainnet. If set, used instead of Infura (`INFURA_KEY`) or the public Linea RPC.                                           |
+| `LINEA_SEPOLIA_RPC_URL` | `linea-sepolia` only    | Optional. Full HTTP RPC URL for Linea Sepolia. Same precedence as above.                                                                                        |
+
+### Block explorer API keys (contract verification)
+
+Used when verifying contracts on the corresponding explorer (see `etherscan` in `hardhat.config.ts`).
+
+| Variable            | Networks                       |
+| ------------------- | ------------------------------ |
+| `ARBISCAN_API_KEY`  | `arbitrum`, `arbitrum-sepolia` |
+| `BASESCAN_API_KEY`  | `base`, `base-sepolia`         |
+| `BSCSCAN_API_KEY`   | `bsc`, `bsc-testnet`           |
+| `LINEASCAN_API_KEY` | `linea`, `linea-sepolia`       |
+| `ETHERSCAN_API_KEY` | `sepolia`                      |
+
+### Deployed proxy addresses and EAS
+
+Set after deployment (see `env/.env.*` examples). Used by upgrade, reimport, `check:upgradeability`, and related
+scripts.
+
+| Variable                       | Description                                                              |
+| ------------------------------ | ------------------------------------------------------------------------ |
+| `ROUTER_ADDRESS`               | Transparent proxy address of the Router.                                 |
+| `ATTESTATION_REGISTRY_ADDRESS` | AttestationRegistry proxy.                                               |
+| `MODULE_REGISTRY_ADDRESS`      | ModuleRegistry proxy.                                                    |
+| `PORTAL_REGISTRY_ADDRESS`      | PortalRegistry proxy.                                                    |
+| `SCHEMA_REGISTRY_ADDRESS`      | SchemaRegistry proxy.                                                    |
+| `ATTESTATION_READER_ADDRESS`   | AttestationReader proxy (optional; omit or leave empty if not deployed). |
+| `EAS_REGISTRY_ADDRESS`         | EAS registry address on the chain (for EAS deploy/upgrade flows).        |
+
+### Script behavior
+
+| Variable                           | Default        | Description                                                                                                                                                                                                             |
+| ---------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VERIFY_CONTRACTS`                 | verify enabled | Deploy and upgrade scripts verify on the explorer unless this is set to the string `false`.                                                                                                                             |
+| `UPGRADEABILITY_RPC_RETRIES`       | `5`            | Used by `check:upgradeability` only. Maximum number of **total** RPC attempts per contract check (including the first). Non-finite or negative values fall back to `5`. `0` is treated as **one** attempt (no retries). |
+| `UPGRADEABILITY_RPC_RETRY_BASE_MS` | `1500`         | Base delay in milliseconds for exponential backoff between transient RPC retries in `check:upgradeability`. Unset, empty, non-finite, or negative values use `1500`.                                                    |
+
 ## Development commands
 
 ### Build contracts
@@ -33,7 +83,9 @@ forge coverage
 ### 1. Environment setup
 
 1. Copy an `.env.NETWORK` file from the `env` folder to a `.env` file: `cp env/.env.linea .env`
-2. Fill it with your Infura key, your private key and your chain explorer API key
+2. Fill it with your Infura key, your private key and your chain explorer API key (see
+   [Environment variables reference](#environment-variables-reference); optional variables are listed as comments in
+   each `env/.env.*` template)
 3. Update the `hardhat.config.ts` file with:
    1. A new entry to the `networks` object
    2. A new entry to the `etherscan.apiKey` object
@@ -87,6 +139,11 @@ Run `pnpm run check:upgradeability NETWORK_NAME` (replacing `NETWORK_NAME` with 
 check if the already deployed registries are upgradable to the new local versions.
 
 :warning: Note: this is a dynamic check, run against the already deployed contracts.
+
+RPC endpoints can return transient errors during `eth_getStorageAt` (EIP-1967 reads). The script retries those
+automatically; see `UPGRADEABILITY_RPC_RETRIES` and `UPGRADEABILITY_RPC_RETRY_BASE_MS` in
+[Environment variables reference](#environment-variables-reference). For Linea RPC overrides, use
+`LINEA_MAINNET_RPC_URL` or `LINEA_SEPOLIA_RPC_URL`.
 
 ### 3. Check the contracts size
 

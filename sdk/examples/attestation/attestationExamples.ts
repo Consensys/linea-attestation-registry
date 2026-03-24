@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src";
 import { Attestation_filter } from "../../.graphclient";
 import { DEFAULT_ATTESTATION_ID, DEFAULT_PORTAL_ADDRESS_4, DEFAULT_SUBJECT } from "../constants";
 

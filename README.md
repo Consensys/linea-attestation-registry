@@ -52,6 +52,15 @@ the network.</h4>
 
 Each package has its own README file for more details and installation process description.
 
+### Environment variables
+
+- **contracts** — Copy `contracts/env/.env.<network>` to `contracts/.env`. See the
+  [Environment variables reference](contracts/README.md#environment-variables-reference) in `contracts/README.md`
+  (Hardhat, deploy/upgrade scripts, `check:upgradeability`, optional RPC overrides).
+- **sdk** — Copy `sdk/.env.example` to `sdk/.env` for examples and integration tests (`PRIVATE_KEY`, optional
+  `THE_GRAPH_API_KEY`).
+- **explorer** — Copy `explorer/.env.example` to `explorer/.env` (`VITE_*` variables).
+
 ## Getting Started
 
 ### Prerequisites

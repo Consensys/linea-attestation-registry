@@ -1,5 +1,5 @@
 import { Hex } from "viem";
-import { VeraxSdk } from "../../src/VeraxSdk";
+import { VeraxSdk } from "../../src";
 import AttestationExamples from "./attestationExamples";
 
 const privateKey = process.env.PRIVATE_KEY as Hex;

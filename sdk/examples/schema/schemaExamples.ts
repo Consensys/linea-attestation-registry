@@ -1,4 +1,4 @@
-import { ChainName, VeraxSdk } from "../../src/VeraxSdk";
+import { ChainName, VeraxSdk } from "../../src";
 import { DEFAULT_SCHEMA_ID, DEFAULT_SCHEMA_STRING } from "../constants";
 import { Schema_filter } from "../../.graphclient";
 

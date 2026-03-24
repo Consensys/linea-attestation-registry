@@ -15,6 +15,16 @@ creates a virtual field on the entity that may be queried but cannot be set manu
 """
 directive @derivedFrom(field: String!) on FIELD_DEFINITION
 
+"""
+Indicates whether the current, partially filled bucket should be included in the response. Defaults to `exclude`
+"""
+enum Aggregation_current {
+  """Exclude the current, partially filled bucket from the response"""
+  exclude
+  """Include the current, partially filled bucket in the response"""
+  include
+}
+
 enum Aggregation_interval {
   hour
   day
@@ -705,9 +715,7 @@ input Portal_filter {
   modules: [Bytes!]
   modules_not: [Bytes!]
   modules_contains: [Bytes!]
-  modules_contains_nocase: [Bytes!]
   modules_not_contains: [Bytes!]
-  modules_not_contains_nocase: [Bytes!]
   isRevocable: Boolean
   isRevocable_not: Boolean
   isRevocable_in: [Boolean!]

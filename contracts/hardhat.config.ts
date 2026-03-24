@@ -35,6 +35,7 @@ const config: HardhatUserConfig = {
           : "https://arbitrum-sepolia.gateway.tenderly.co"
       }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
+      timeout: 120_000,
     },
     arbitrum: {
       url: `${
@@ -43,6 +44,7 @@ const config: HardhatUserConfig = {
           : "https://arbitrum.llamarpc.com"
       }`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
+      timeout: 120_000,
     },
     "base-sepolia": {
       url: `${
@@ -51,6 +53,7 @@ const config: HardhatUserConfig = {
           : "https://sepolia.base.org"
       }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
+      timeout: 120_000,
     },
     base: {
       url: `${
@@ -59,6 +62,7 @@ const config: HardhatUserConfig = {
           : "https://mainnet.base.org"
       }`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
+      timeout: 120_000,
     },
     "bsc-testnet": {
       url: `${
@@ -67,6 +71,7 @@ const config: HardhatUserConfig = {
           : "https://bsc-testnet-rpc.publicnode.com"
       }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
+      timeout: 120_000,
     },
     bsc: {
       url: `${
@@ -75,22 +80,27 @@ const config: HardhatUserConfig = {
           : "https://binance.llamarpc.com"
       }`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
+      timeout: 120_000,
     },
     "linea-sepolia": {
       url: `${
-        process.env.INFURA_KEY
+        process.env.LINEA_SEPOLIA_RPC_URL ||
+        (process.env.INFURA_KEY
           ? `https://linea-sepolia.infura.io/v3/${process.env.INFURA_KEY}`
-          : "https://rpc.sepolia.linea.build"
+          : "https://rpc.sepolia.linea.build")
       }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
+      timeout: 120_000,
     },
     linea: {
       url: `${
-        process.env.INFURA_KEY
+        process.env.LINEA_MAINNET_RPC_URL ||
+        (process.env.INFURA_KEY
           ? `https://linea-mainnet.infura.io/v3/${process.env.INFURA_KEY}`
-          : "https://rpc.linea.build"
+          : "https://rpc.linea.build")
       }`,
       accounts: process.env.PRIVATE_KEY_MAINNET !== undefined ? [process.env.PRIVATE_KEY_MAINNET] : [],
+      timeout: 120_000,
     },
     sepolia: {
       url: `${
@@ -99,6 +109,7 @@ const config: HardhatUserConfig = {
           : "https://ethereum-sepolia-rpc.publicnode.com"
       }`,
       accounts: process.env.PRIVATE_KEY_TESTNET !== undefined ? [process.env.PRIVATE_KEY_TESTNET] : [],
+      timeout: 120_000,
     },
   },
   paths: {

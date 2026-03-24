@@ -33,9 +33,9 @@
     "eslint-plugin-react-hooks": "catalog:react",
     "eslint-plugin-react-refresh": "catalog:react",
     "globals": "catalog:eslint",
-    "husky": "^9.1.7",
+    "husky": "9.1.7",
     "prettier": "catalog:core",
-    "prettier-plugin-solidity": "^2.2.1",
+    "prettier-plugin-solidity": "2.3.1",
     "typescript": "catalog:core",
     "typescript-eslint": "catalog:eslint"
   },

@@ -7,6 +7,8 @@ on:
     paths:
       - explorer/**
 
+permissions: {} # lock everything by default (least-privilege)
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -14,6 +16,10 @@ concurrency:
 jobs:
   deploy-explorer-preview:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      deployments: write
+      pull-requests: write
 
     defaults:
       run:

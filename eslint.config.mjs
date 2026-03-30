@@ -36,7 +36,7 @@ export default tseslint.config(
   // Global settings for all non-React files
   {
     files: ["**/*.{ts,tsx,js,mjs,cjs}"],
-    ignores: ["explorer/**"],
+    ignores: ["explorer/**", "tutorial/**"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -66,10 +66,10 @@ export default tseslint.config(
   },
 
   // ============================================
-  // Explorer (React) specific configuration
+  // React apps (Explorer, Tutorial) shared configuration
   // ============================================
   {
-    files: ["explorer/src/**/*.{ts,tsx}"],
+    files: ["{explorer,tutorial}/src/**/*.{ts,tsx}"],
     plugins: {
       react,
       "react-hooks": reactHooks,
@@ -95,17 +95,14 @@ export default tseslint.config(
       },
     },
     rules: {
-      // React rules
       ...react.configs.recommended.rules,
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
 
-      // React Refresh
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
 
-      // TypeScript
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -122,7 +119,6 @@ export default tseslint.config(
         },
       ],
 
-      // Import ordering
       "sort-imports": [
         "error",
         {
@@ -145,14 +141,18 @@ export default tseslint.config(
         },
       ],
 
-      // Code style
       quotes: ["error", "double", { avoidEscape: true }],
     },
   },
 
-  // Explorer config files (CJS/ESM)
+  // React apps config files (CJS/ESM)
   {
-    files: ["explorer/*.config.{js,ts,mjs}", "explorer/*.cjs", "explorer/postcss.config.js", "explorer/tailwind.config.js"],
+    files: [
+      "{explorer,tutorial}/*.config.{js,ts,mjs}",
+      "explorer/*.cjs",
+      "explorer/postcss.config.js",
+      "explorer/tailwind.config.js",
+    ],
     languageOptions: {
       globals: {
         ...globals.node,

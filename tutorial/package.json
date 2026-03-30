@@ -1,0 +1,48 @@
+{
+  "name": "@verax-attestation-registry/verax-tutorial",
+  "version": "0.0.1",
+  "description": "Tutorial for building with the Verax SDK",
+  "private": true,
+  "keywords": [
+    "linea-attestation-registry",
+    "blockchain",
+    "attestation",
+    "ethereum",
+    "verax",
+    "tutorial"
+  ],
+  "repository": "github.com/Consensys/linea-attestation-registry",
+  "license": "MIT",
+  "author": "Consensys",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "lint": "eslint . --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "7.2.0",
+    "@fortawesome/free-brands-svg-icons": "7.2.0",
+    "@fortawesome/free-solid-svg-icons": "7.2.0",
+    "@fortawesome/react-fontawesome": "3.3.0",
+    "@reown/appkit": "1.8.19",
+    "@reown/appkit-adapter-wagmi": "1.8.19",
+    "@tanstack/react-query": "catalog:react",
+    "@verax-attestation-registry/verax-sdk": "workspace:*",
+    "react": "catalog:react",
+    "react-dom": "catalog:react",
+    "react-json-view-lite": "2.5.0",
+    "viem": "catalog:web3",
+    "wagmi": "3.5.0"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "@vitejs/plugin-react": "5.1.4",
+    "prettier": "catalog:core",
+    "typescript": "catalog:core",
+    "vite": "7.3.1",
+    "vite-plugin-radar": "catalog:react"
+  }
+}

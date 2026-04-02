@@ -128,7 +128,7 @@ jobs:
 
       - name: Upload coverage report to Codecov
         if: steps.check-changes.outputs.changed == 'true' && env.CODECOV_TOKEN != ''
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}

@@ -1,0 +1,77 @@
+---
+description: Docker multi stage builds, security, caching
+globs: ["**/Dockerfile", "**/docker-compose*.yaml"]
+---
+
+Multi stage builds mandatory.
+Minimize final image size and attack surface.
+
+# Node Version
+
+Read Node version from `.nvmrc` via build arg.
+Never hardcode Node version in Dockerfile.
+
+```dockerfile
+ARG NODE_VERSION=lts
+FROM node:${NODE_VERSION}-alpine AS base
+```
+
+CI must pass `--build-arg NODE_VERSION=$(cat .nvmrc)`.
+
+# Non Root User
+
+Never run as root in production.
+Create dedicated user and group with explicit IDs.
+
+```dockerfile
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nodejs
+USER nodejs
+```
+
+Use `--chown` when copying files to set ownership.
+Final stage must declare `USER` before `CMD`.
+
+# Build Stages
+
+Use named stages for clarity:
+- `base` for shared setup
+- `pruner` for dependency isolation
+- `builder` for compilation
+- `runner` for production
+
+Prune workspace dependencies before build.
+Copy only necessary artifacts to final stage.
+
+# Caching
+
+Use pnpm store cache for faster builds:
+
+```dockerfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+```
+
+Use `--prefer-offline` when possible.
+Enable Docker BuildKit caching in CI.
+
+# Security
+
+Alpine is preferred by default.
+
+Debian slim images are allowed when:
+- required by native dependencies
+- security patches are better supported
+- explicitly documented and reviewed
+
+Install only required system packages.
+Remove build tools from final stage.
+Never copy secrets or credentials into image.
+Never install dev dependencies in runner stage.
+
+Scan images for vulnerabilities before push.
+
+# Reproducibility
+
+Use `--frozen-lockfile` for deterministic installs.
+Pin base image versions in production builds.
+Document required build args.

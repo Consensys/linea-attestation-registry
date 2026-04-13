@@ -1,0 +1,29 @@
+---
+description: Release strategy, rollouts, and production safety
+alwaysApply: true
+---
+
+# Release Strategy
+
+Production releases must define:
+- rollout strategy
+- success metrics
+- rollback conditions
+
+# Progressive Exposure
+
+Prefer:
+- canary releases
+- percentage based rollout
+- environment based exposure
+
+Avoid full blast releases for risky changes.
+
+# Verification
+
+After release:
+- verify metrics
+- verify logs
+- verify user facing behavior
+
+Release is not complete until verification is done.

@@ -1,0 +1,64 @@
+---
+description: Prisma client, migrations, relations, and transactions
+globs: ["**/prisma/**", "**/*.prisma"]
+---
+
+Prefer Prisma for all database access.
+Raw SQL forbidden unless justified for performance and documented.
+
+This file defines Prisma specific implementation rules.
+
+Generic data layer principles (pagination, N+1 prevention, backfills)
+are defined in 45-data-layer.mdc and must not be duplicated here.
+
+# Client
+
+Use singleton pattern for PrismaClient.
+Instantiate once and reuse across requests.
+Handle connection lifecycle in NestJS module.
+
+Enable query logging in development only.
+Never log queries in production.
+
+# Schema
+
+Use snake_case for table and column names.
+Use explicit `@id` and `@unique` constraints.
+Add `@@index` for columns used in WHERE and ORDER BY.
+Document non obvious relations and constraints.
+
+Prefer explicit types over defaults.
+Use `@db` modifiers for precision control.
+
+# Migrations
+
+Migrations must be backward compatible.
+Avoid destructive changes in single migration.
+Split risky changes into expand and contract phases.
+
+Test migrations against production like data.
+Include rollback notes for risky migrations.
+
+Never edit committed migrations.
+Create new migration to fix issues.
+
+# Relations
+
+Prefer explicit relation fields over implicit.
+Use `include` and `select` intentionally.
+Use `findMany` with explicit `where` over `findFirst` chains.
+
+# Transactions
+
+Use `$transaction` for multi step writes.
+Keep transactions short to avoid lock contention.
+Handle transaction rollback explicitly.
+
+Prefer interactive transactions for complex logic.
+Avoid long running operations inside transactions.
+
+# Performance
+
+Use `count` instead of `findMany` plus length.
+Profile slow queries with `EXPLAIN ANALYZE`.
+Add indexes based on actual query patterns.

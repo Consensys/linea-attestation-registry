@@ -1,0 +1,16 @@
+---
+description: Consolidated reliability: idempotency, consistency, resilience
+alwaysApply: true
+---
+
+Idempotency for writes, payments, duplicates harmful endpoints (exactly once or at least once semantics documented).
+
+Chunk or batch heavy operations; avoid large migrations in single tx.
+
+Document consistency: strong where needed (e.g., financial), eventual where acceptable.
+
+Make retries safe or idempotent; handle flaky networks gracefully.
+
+Jobs and background tasks must be idempotent, retry safe, observable with progress, resumable.
+
+Nonce based replay protection and explicit expiry mandatory for signatures and attestations.

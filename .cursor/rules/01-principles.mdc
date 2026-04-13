@@ -1,0 +1,20 @@
+---
+description: Core cross cutting engineering principles
+alwaysApply: true
+---
+
+Follow SOLID principles.
+Prefer KISS over cleverness.
+Respect Clean Architecture boundaries.
+Isolate business logic from frameworks.
+Push side effects to edges.
+
+Use design patterns only when justified.
+Avoid over abstraction or premature optimization.
+Optimize for readability, long term maintenance, and scalability.
+
+Apply 12 Factor App: config via env, stateless processes, concurrency, disposability.
+
+Error handling must be robust, predictable, with graceful degradation.
+
+Distinguish must (mandatory, blocking) vs should (recommended) in all rules.

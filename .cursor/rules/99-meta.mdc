@@ -1,0 +1,12 @@
+---
+description: Meta rules for governance and updates
+alwaysApply: true
+---
+
+Version rules files with Git tags and changelog.
+Review annually or on major tool changes (e.g., Solidity upgrades).
+
+Track waivers and justifications in PRs and tickets.
+Update rules via PR with team review.
+
+Enforce via CI (e.g., lint rules files for consistency) when worth the maintenance cost.

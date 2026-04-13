@@ -1,0 +1,41 @@
+---
+description: Solidity security, upgradeability, gas, and testing
+globs: ["**/*.sol"]
+---
+
+Solidity ^0.8.x.
+OpenZeppelin Contracts v5+ pinned.
+
+Explicit visibility everywhere.
+NatSpec required for public and critical functions.
+
+# Security
+
+Explicit access control.
+Reentrancy protection or checks effects interactions.
+Never assume ERC20 compliance.
+Validate external calls.
+No hardcoded secrets.
+
+# Upgradeability
+
+Document proxy pattern.
+Identify admin, guardian, timelock or multisig.
+Document upgrade, rotation, and rollback.
+Define invariants across upgrades.
+
+# Gas and Cost
+
+Estimate gas for user facing functions.
+Avoid unbounded loops.
+Prefer constants and immutable.
+Optimize storage where relevant.
+
+# Testing and Analysis
+
+Unit tests mandatory.
+Fuzz or invariant tests for critical paths.
+Static analysis required.
+Fork tests for external integrations.
+
+Foundry preferred, Hardhat tolerated with justification

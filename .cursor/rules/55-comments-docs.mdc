@@ -1,0 +1,15 @@
+---
+description: Comments and documentation discipline
+alwaysApply: true
+---
+
+Minimize comments.
+Explain intent only when non obvious.
+English only.
+No commented out code.
+
+Update docs when behavior changes:
+- API docs (e.g., Swagger/OpenAPI)
+- README
+- runbooks
+- migration notes

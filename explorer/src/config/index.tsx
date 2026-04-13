@@ -1,6 +1,6 @@
 import { ChainName, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { getDefaultConfig } from "connectkit";
-import { createConfig, http } from "wagmi";
+import { type Config, createConfig, http } from "wagmi";
 import {
   arbitrum,
   arbitrumSepolia,
@@ -166,7 +166,7 @@ const chains: INetwork[] = [
   },
 ];
 
-const config = createConfig(
+const config: Config = createConfig(
   getDefaultConfig({
     appName: "Verax | Explorer",
     appIcon: veraxColoredIcon,

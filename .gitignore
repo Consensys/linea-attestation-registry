@@ -39,13 +39,6 @@ dist
 tracking.json
 source.json
 
-# Everything below is related to the Snap
-dist/
-build/
-coverage/
-.cache/
-public/
-
 # Logs
 logs
 *.log

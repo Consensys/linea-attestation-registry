@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://docs.ver.ax/"><img src="https://raw.githubusercontent.com/Consensys/linea-attestation-registry/dev/doc/verax-logo-circle.png" alt="Verax"></a>
+  <a href="https://docs.ver.ax/"><img src="https://raw.githubusercontent.com/Consensys/linea-attestation-registry/dev/tutorial/public/verax-logo-circle.svg" alt="Verax"></a>
   <br>
   Verax Attestation Registry
   <br>

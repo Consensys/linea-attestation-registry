@@ -1,141 +1,105 @@
 # Create a Portal
 
-[Portals](../../core-concepts/portals.md) are smart contracts that are registered in the "Portal Registry" and that you
-can consider as the entry point to the Verax Attestation Registry. This is where the payloads to be attested start their
-journey.
+Portals are the issuer entrypoint into Verax. You can either use the built-in default portal or deploy your own custom
+portal contract.
 
-There are two ways of creating a Portal: use a default Portal or create your own custom Portal. I you just need an entry
-point to the Verax Attestation Registry, go for the [default Portal](create-a-portal.md#using-a-default-portal). But if
-you want to add your own custom logic to this entry point, go for a
-[custom Portal.](create-a-portal.md#using-a-custom-portal)
+## Option 1: deploy a default portal
 
-## Using a default Portal
+This is the fastest path when you only need:
 
-It is possible to deploy a Portal without writing a single line of code, by simply calling the `deployDefaultPortal`
-function on the Portal Registry contract. This function accepts the following parameters:
+- a list of modules;
+- a name and description;
+- revocation enabled or disabled;
+- no custom contract logic.
+
+`PortalRegistry` exposes:
 
 ```solidity
 function deployDefaultPortal(
   address[] calldata modules,
-  string memory name,
-  string memory description,
+  string calldata name,
+  string calldata description,
   bool isRevocable,
-  string memory ownerName
-)
+  string calldata ownerName
+) external;
 ```
 
-Descriptions for the parameters are as follows:
+This both deploys and registers a `DefaultPortalV2`.
 
-<table><thead><tr><th width="160.08201438848917">Parameter</th><th width="114">Datatype</th><th>Description</th></tr></thead><tbody><tr><td>modules</td><td>address[]</td><td>Address of the modules to execute for all attestations</td></tr><tr><td>name</td><td>string</td><td>A descriptive name for the portal</td></tr><tr><td>description</td><td>string</td><td>A description of the portal's functionality</td></tr><tr><td>isRevocable</td><td>bool</td><td>Whether attestations issued by the portal can be revoked</td></tr><tr><td>ownerName</td><td>string</td><td>The portal owner's name</td></tr></tbody></table>
+| Parameter     | Type        | Meaning                                          |
+| ------------- | ----------- | ------------------------------------------------ |
+| `modules`     | `address[]` | Modules to execute before registry writes        |
+| `name`        | `string`    | Portal name                                      |
+| `description` | `string`    | Portal description                               |
+| `isRevocable` | `bool`      | Whether issued attestations can later be revoked |
+| `ownerName`   | `string`    | Human-readable issuer name                       |
 
-Once you have created, deployed and registered your portal, you are ready to issue your first attestation!
+{% hint style="info" %} `deployDefaultPortal(...)` already registers the new portal. You only need a separate
+registration step for custom portal contracts. {% endhint %}
 
-And, of course, you can also do this operation via the Verax SDK:
+### SDK
 
-```typescript
-await this.veraxSdk.portal.deployDefaultPortal(
-        modules: [],
-        name: "ExamplePortal",
-        description: "This Portal is used as an example",
-        isRevocable: true,
-        ownerName: "Verax",
+```ts
+await veraxSdk.portal.deployDefaultPortal(
+  [],
+  "Example Portal",
+  "Default portal used in documentation examples",
+  true,
+  "Example Issuer",
+  { waitForConfirmation: true },
 );
 ```
 
-## Using a custom Portal
+## Option 2: deploy a custom portal
 
-A Portal must implement the `AbstractPortalV2` contract to be considered as valid by Verax. Hopefully, we provide all
-the core contracts of the Verax platform as an npm package to help developers create their own custom implementations.
-
-- Install the dependency: `npm i @verax-attestation-registry/verax-contracts`
-- Import the `AbstractPortalV2` contract:\
-
-  ```solidity
-  import { AbstractPortalV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractPortalV2.sol";
-  ```
-
-- Define your custom Portal:\
-
-  ```solidity
-  contract ExamplePortal is AbstractPortalV2 { ... }
-  ```
-
-And now ... the floor is yours! You can add your custom functions, of course, but also use the hooks exposed by the
-`AbstractPortalV2`. They will help you add some custom logic in the main processes.
-
-{% hint style="warning" %} When multiple Modules are used in a workflow, ensure that at most one Module processes
-`msg.value` to avoid accounting issues, as the total `msg.value` is forwarded to all Modules. {% endhint %}
-
-## Hooks
-
-### `_onAttest`
-
-This hook is called during the attestation issuance process, _after_ the modules are run, and _before_ the payload is
-sent to the `AttestationRegistry`.
-
-### `_onReplace`
-
-This hook is called during the attestation replacement process, _after_ the modules are run, and _before_ the payload is
-sent to the `AttestationRegistry`.
-
-### `_onBulkAttest`
-
-This hook is called during the bulk attestation issuance process, _after_ the modules are run, and _before_ the payloads
-are sent to the `AttestationRegistry`.
-
-### `_onBulkReplace`
-
-This hook is called during the bulk attestation replacement process, _after_ the modules are run, and _before_ the
-payloads are sent to the `AttestationRegistry`.
-
-### `_onRevoke`
-
-This hook is called during the attestation revocation process, _before_ the revocation is registered at the
-`AttestationRegistry` level.
-
-### `_onBulkRevoke`
-
-This hook is called during the bulk attestation revocation process, _before_ the revocation are registered at the
-`AttestationRegistry` level.
-
-## Example
-
-Here is a simple custom Portal example:
+Inherit `AbstractPortalV2`:
 
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.21;
-
-import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { AbstractPortalV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractPortalV2.sol";
-import { AttestationPayload } from "@verax-attestation-registry/verax-contracts/contracts/types/Structs.sol";
 
-contract ExamplePortal is AbstractPortalV2, Ownable {
-  error InsufficientFee();
-  error WithdrawFail();
-
+contract ExamplePortal is AbstractPortalV2 {
   constructor(address[] memory modules, address router) AbstractPortalV2(modules, router) {}
-
-  function _onAttest(
-    AttestationPayload memory /*attestationPayload*/,
-    bytes[] memory /*validationPayloads*/,
-    uint256 value
-  ) internal pure override {
-    if (value < 1000000000000000) revert InsufficientFee();
-  }
-
-  function withdraw(address payable to, uint256 amount) external override onlyOwner {
-    (bool s, ) = to.call{ value: amount }("");
-    if (!s) revert WithdrawFail();
-  }
 }
 ```
 
-This `ExamplePortal` implements the `AbstractPortalV2` contract, but is also an `Ownable` contract. This means that you
-can clearly add a lot of features to your Portal, for example via the OpenZeppelin contracts.
+The constructor takes:
 
-In this example, we are using the `_onAttest` hook to add some logic in the attestation issuance process. In this case,
-it verifies that the issuing transaction is paying a 0.001 ETH fee. If this condition is not met, an error is thrown.
+- the module addresses;
+- the deployment's `Router` address.
 
-This example also implements the `withdraw` function, to be able to get the money from the fees out of the contract.
-Which is obviously a good idea...
+Use the `Router`, not raw registry addresses, so your portal resolves the right registries for that deployment.
+
+{% hint style="warning" %} Use the deployment's `Router` address, not hard-coded registry addresses, when building a
+custom portal. That keeps the portal correctly wired to the target Verax instance. {% endhint %}
+
+## Hooks
+
+Custom portals can override:
+
+- `_onAttest(...)`
+- `_onBulkAttest(...)`
+- `_onReplace(...)`
+- `_onBulkReplace(...)`
+- `_onRevoke(...)`
+- `_onBulkRevoke(...)`
+
+Example:
+
+```solidity
+function _onAttest(AttestationPayload memory, bytes[] memory, uint256 value) internal pure override {
+  if (value < 0.001 ether) revert InsufficientFee();
+}
+```
+
+## Ownership and lifecycle defaults
+
+By default in `AbstractPortalV2`:
+
+- `replace`, `bulkReplace`, `revoke`, and `bulkRevoke` are restricted to the portal owner;
+- the portal owner is resolved from `PortalRegistry`;
+- `withdraw(...)` is also owner-only.
+
+## Next step
+
+- If you used `deployDefaultPortal(...)`, registration is already done.
+- If you deployed a custom portal, continue with [Register a Portal](register-a-portal.md).

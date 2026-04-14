@@ -1,39 +1,97 @@
 # Attestations
 
-## Overview
+An attestation is a statement made by an attester about a subject through a registered portal and according to a
+registered schema.
 
-Attestations are statements made by an issuer about a subject. The subject can be an EVM address, or a DID, or an IPFS
-hash, or even another attestation.
+Examples:
 
-Examples of attestations could include:
+- "This address passed KYC."
+- "This contract was audited."
+- "This user belongs to this organization."
+- "This attestation references that other attestation."
 
-- Owner of address `0xbabe1999…` has completed a course on Solidity
-- Contract at address `0x666bea5f…` is a malicious erc-20 token
-- Owner of address `0xd00daa…` is a human being (i.e. not a bot)
-- Owner of address `0xdeadbeef…` is a member of DimSumDAO
-- Attestation `0x1435` is a valid/invalid attestation
-- Attestation `0x2877` is a "like" for content stored at `0xa1b2c3d4…`
-- Owner of address `0x1facedf00dba11…` attended event `0xf00dba11…`
+## Payload shape
 
-Attestations are created through things called "[portals](portals.md)" that make sure the attestations are consistent
-with the logic of a specific domain.
+Portals issue attestations with the `AttestationPayload` struct:
 
-Attestations are created following "[schemas](schemas.md)", which describe the structure of the attestation data, i.e.
-the various fields and their respective data types.
+```solidity
+struct AttestationPayload {
+  bytes32 schemaId;
+  uint64 expirationDate;
+  bytes subject;
+  bytes attestationData;
+}
+```
 
-Attestations can be [linked](linked-data.md) together to form complex graphs of attestations. Anyone can create a link
-between attestations, and attestations themselves can have attestations. This allows for deriving complex reputation
-scores, which grow more factual the more data in the registry, resulting in a hyper-scale signal-to-noise ratio.
+`subject` is intentionally `bytes`, not `address`, so Verax can attest more than EVM accounts.
 
-## Attestation Metadata
+## Stored attestation metadata
 
-Attestations have various metadata recorded besides the raw attestation data itself. A description of this metadata is
-listed in the table below:
+When an attestation is created, `AttestationRegistry` stores both the payload and protocol metadata.
 
-<table><thead><tr><th width="172.8296089385475">Property</th><th width="108.33333333333331">Datatype</th><th>Description</th></tr></thead><tbody><tr><td>attestationId</td><td>bytes32</td><td>The unique identifier of the attestation</td></tr><tr><td>schemaId</td><td>bytes32</td><td>The identifier of the <a href="schemas.md">schema</a> this attestation adheres to</td></tr><tr><td>replacedBy</td><td>uint256</td><td>The attestation ID that replaces this attestation</td></tr><tr><td>attester</td><td>address</td><td>The address issuing the attestation to the subject</td></tr><tr><td>portal</td><td>address</td><td>The address of the <a href="portals.md">portal</a> that created the attestation</td></tr><tr><td>attestedDate</td><td>uint64</td><td>The date the attestation is issued</td></tr><tr><td>expirationDate</td><td>uint64</td><td>The expiration date of the attestation</td></tr><tr><td>revocationDate</td><td>uint64</td><td>The date when the attestation was revoked</td></tr><tr><td>version</td><td>uint16</td><td>Version of the registry when the attestation was created</td></tr><tr><td>revoked</td><td>bool</td><td>Whether the attestation is <a href="../developer-guides/for-attestation-issuers/revoke-an-attestation.md">revoked</a> or not</td></tr><tr><td>subject</td><td>bytes</td><td>The ID of the attestee e.g. an EVM address, DID, URL etc.</td></tr><tr><td>attestationData</td><td>bytes</td><td>The raw attestation data</td></tr></tbody></table>
+| Field             | Type      | Meaning                                            |
+| ----------------- | --------- | -------------------------------------------------- |
+| `attestationId`   | `bytes32` | Unique chain-prefixed attestation identifier       |
+| `schemaId`        | `bytes32` | Registered schema used by the attestation          |
+| `replacedBy`      | `bytes32` | ID of the replacement attestation, if any          |
+| `attester`        | `address` | Account recorded as issuer for this attestation    |
+| `portal`          | `address` | Portal that created the attestation                |
+| `attestedDate`    | `uint64`  | Block timestamp at issuance                        |
+| `expirationDate`  | `uint64`  | Expiration timestamp, or `0` for no expiry         |
+| `revocationDate`  | `uint64`  | Timestamp of revocation or replacement, if revoked |
+| `version`         | `uint16`  | Registry version number at issuance                |
+| `revoked`         | `bool`    | Revocation status                                  |
+| `subject`         | `bytes`   | Raw subject identifier                             |
+| `attestationData` | `bytes`   | ABI-encoded payload                                |
 
-When reading attestations directly from the registry, you need the attestation ID. The attestation data that is returned
-from the registry in an array of bytes, which can be decoded using the schema string, which can be retrieved with the
-schema ID in the attestation metadata.
+## ID format
 
-The next section describes schemas, what they are, and how they are used.
+Verax prefixes attestation IDs with a chain-specific prefix stored in `AttestationRegistry`. That makes the same numeric
+counter produce different IDs on different networks.
+
+This matters for:
+
+- multi-chain indexing;
+- cross-chain discovery;
+- linked-data workflows that reference attestations by ID.
+
+## Creation checks
+
+`AttestationRegistry.attest(...)` rejects a new attestation when:
+
+- the schema is not registered;
+- the `subject` field is empty;
+- the `attestationData` field is empty;
+- the caller is not a registered portal.
+
+Any additional issuer-specific rules are handled in the portal and its modules before the registry write happens.
+
+## Revocation and replacement
+
+Revocation and replacement are portal-mediated lifecycle actions.
+
+- `revoke(attestationId)` marks the existing attestation as revoked.
+- `replace(attestationId, newPayload, ...)` revokes the existing attestation, creates a new one, and sets `replacedBy`.
+
+By default, `AbstractPortalV2` restricts revoke and replace operations to the portal owner.
+
+## Reading attestations
+
+There are three common read paths:
+
+- onchain through `AttestationRegistry` or `AttestationReader`;
+- indexed reads through the subgraph;
+- typed reads through `veraxSdk.attestation`.
+
+The SDK adds useful decoding and enrichment:
+
+- `decodedPayload` based on the schema string;
+- `findByMultiChain(...)`;
+- `getRelatedAttestations(...)`;
+- offchain payload resolution for the canonical `Offchain` schema.
+
+## Related concepts
+
+- [Schemas](schemas.md)
+- [Linked Data](linked-data.md)
+- [Canonical Schemas](canonical-schemas.md)

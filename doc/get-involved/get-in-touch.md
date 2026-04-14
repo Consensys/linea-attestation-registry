@@ -1,8 +1,10 @@
 # Get in Touch
 
-We welcome feedback, suggestions, questions and ideas in all forms, so please feel free to get in touch using any of the
-following channels:
+Use the channel that matches the kind of feedback you have:
 
-- Discord: [https://discord.gg/Sq4EmYdBEk](https://discord.gg/Sq4EmYdBEk)
-- GitHub:
-  [https://github.com/Consensys/linea-attestation-registry](https://github.com/Consensys/linea-attestation-registry)
+- GitHub issues and PRs for code and documentation changes in this monorepo
+- the community forum for governance and protocol discussion
+- Discord for quick questions and integration help
+
+Start from the repository when the topic is concrete and actionable. Use the forum when the topic is policy, roadmap, or
+governance.

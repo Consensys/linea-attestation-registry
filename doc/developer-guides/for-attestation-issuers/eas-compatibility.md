@@ -1,24 +1,39 @@
-# EAS compatibility
+# EAS Interoperability
 
-Verax is designed to be compatible with the [Ethereum Attestation Service](https://attest.org) (EAS), allowing for
-seamless integration and interoperability between the two systems. This compatibility is achieved through several
-components and processes:
+Verax is not EAS, but the repository includes interoperability building blocks.
 
-1. Emitting Attestations on Verax and EAS
+## `AttestationReader`
 
-For projects that wish to emit attestations on both Verax and EAS, the
-[EASPortal contract](https://github.com/Consensys/linea-attestation-registry/blob/dev/examples/src/portals/EASPortal.sol)
-is used. This contract acts as a bridge, allowing attestations to be issued on both platforms simultaneously.
+`AttestationReader` is a helper contract that reads from:
 
-2. Reading Attestations from Verax and EAS
+1. EAS first;
+2. Verax second if the UID does not exist in EAS.
 
-The
-[AttestationReader contract](https://github.com/Consensys/linea-attestation-registry/blob/caf5cdd254c086fdeb4820e230f3053db2a9dbcd/contracts/src/AttestationReader.sol#L70)
-is used to read attestations from both Verax and EAS. This contract provides a unified interface to access attestations,
-regardless of the platform they were issued on.
+It returns data in the EAS attestation struct format. This is useful when you want an EAS-like read surface across both
+systems.
 
-3. Migrating Attestations from EAS to Verax
+Important caveat:
 
-For projects that have existing attestations on EAS and wish to duplicate them on Verax, a mass import process is
-available. This involves using a script to push attestations to a Verax portal. The process is facilitated by the
-`bulkAttest` function, which allows for bulk creation of attestations.&#x20;
+- if a Verax attestation subject is not address-like, the converted EAS `recipient` becomes the zero address.
+
+## `EASPortal` example
+
+The repository also ships an example portal at `examples/src/portals/EASPortal.sol`.
+
+This example shows how to:
+
+- accept EAS-style payloads;
+- convert them into Verax attestation payloads;
+- optionally create a relationship attestation for `refUID`.
+
+This example portal is not part of the core Verax deployment. Treat it as reference code, not as a protocol primitive.
+
+## When to use these tools
+
+Use them when:
+
+- you already have EAS-shaped payloads and want a migration bridge;
+- you need an EAS-compatible read layer for consumers;
+- you want to compare or coexist with EAS rather than fully replacing it.
+
+See also [Verax vs EAS and Other Attestation Models](../../core-concepts/verax-vs-eas-and-other-attestation-models.md).

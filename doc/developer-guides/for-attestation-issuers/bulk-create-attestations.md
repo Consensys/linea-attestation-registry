@@ -1,22 +1,53 @@
 # Bulk Create Attestations
 
-For certain use cases, issuers may want to create Zttestations in bulk to save on transaction fees.&#x20;
+Bulk issuance lets a portal create several attestations in one transaction.
 
-The `AbstractPortal` contract that every Portal inherits from defines the following function:
+## Portal interface
+
+`AbstractPortalV2` exposes:
 
 ```solidity
-function bulkAttest(
-  AttestationPayload[] memory attestationsPayloads,
-  bytes[][] memory validationPayloads
-) public payable;
+function bulkAttest(AttestationPayload[] memory attestationPayloads, bytes[][] memory validationPayloads) public;
 ```
 
-This function is like the normal `attest` function but with a couple of differences. First, it takes an array of
-`AttestationPayload` structs as the first parameter, each one corresponding to a single Attestation. Second, it takes a
-two-dimensional array of `validationPayloads` in the second parameter. The first dimension of the array is a validation
-payload for each respective Attestation payload, the second dimension is the validation payload for each module in the
-module chain, to verify the respective Attestation.
+Unlike `attest(...)`, this function is not payable in `AbstractPortalV2`.
 
-{% hint style="danger" %} This method may have unexpected behavior if one of the checks is done on the Attestation ID,
-as this ID won't be incremented before the end of the transaction. If you need to check the attestation ID, please use
-the `attest` method. {% endhint %}
+`validationPayloads` is two-dimensional:
+
+- one outer entry per attestation;
+- one inner entry per module used by the portal for that attestation.
+
+{% hint style="info" %} `bulkAttest(...)` is useful for gas savings, but it is not just "`attest(...)` repeated". The
+shape of `validationPayloads` and the lack of payable support matter for some integrations. {% endhint %}
+
+## SDK
+
+```ts
+await veraxSdk.portal.bulkAttest(
+  "0xPortalAddress",
+  [
+    {
+      schemaId: "0xSchemaId",
+      expirationDate: 0,
+      subject: "0xRecipient1",
+      attestationData: [{ active: true }],
+    },
+    {
+      schemaId: "0xSchemaId",
+      expirationDate: 0,
+      subject: "0xRecipient2",
+      attestationData: [{ active: true }],
+    },
+  ],
+  [[], []],
+  { waitForConfirmation: true },
+);
+```
+
+## Important caveat
+
+{% hint style="warning" %} Bulk issuance can be a bad fit for modules that depend on predicting the next attestation ID.
+During bulk workflows, IDs are not incremented between module checks the same way a one-by-one flow might assume.
+{% endhint %}
+
+If your logic depends on attestation IDs, prefer single `attest(...)`.

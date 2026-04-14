@@ -1,40 +1,27 @@
----
-description: >-
-  Description of the official SchemaModule contract. This module aims to provide a standard way of checking if the
-  Schema ID used in an attestation request is authorized for a given portal.
----
-
 # SchemaModule
 
-## [Link to the code](https://github.com/Consensys/linea-attestation-registry/blob/dev/contracts/src/stdlib/SchemaModuleV2.sol)
+Source: `contracts/src/stdlib/SchemaModuleV2.sol`
 
-## When to use this module?
+## What it does
 
-An Issuer might want to restrict the Schemas with which an attestation can be issued through his portal. To avoid
-re-developing this feature for each portal, Verax proposes a standard module to that effect.
+`SchemaModuleV2` restricts a portal to an allowlist of schema IDs.
 
-Once this module is set for a portal, any attestation request going through the portal will need to use an authorized
-Schema.
+```solidity
+mapping(address portal => mapping(bytes32 schemaId => bool authorized))
+  public authorizedSchemaIds;
+```
 
-The list of authorized Schemas may change over time, that's why the issuer can add and/or remove authorized Schemas
-easily via this module.
+If an attestation payload uses an unauthorized schema ID, the module reverts.
 
-{% hint style="info" %} Only the address identified as the 'owner' of a portal can edit the list of authorized Schemas
-for his portal. {% endhint %}
+## Portal-owner configuration
 
-## When not to use this module?
+```solidity
+function setAuthorizedSchemaIds(address portal, bytes32[] calldata schemaIds, bool[] calldata authorizedStatus) public;
+```
 
-If the logic of your authorization mechanism goes beyond "Schema 0x… is/isn't authorized", you'll probably need a custom
-module to enforce your rules.
+Only the portal owner can update the schema allowlist for that portal.
 
-## How to use this module?
+## Good fit when
 
-1. Add one or multiple authorized Schema(s) for a given portal, by calling the `setAuthorizedSchemaIds` function
-2. Pass the address of this module when registering your portal
-3. Change the list of authorized Schemas for a given portal, by calling the `setAuthorizedSchemaIds`function again
-4. An event is emitted when the list is updated, containing all the changes
-
-## How to check the authorized sender(s)?
-
-1. The `SchemaModule` exposes an `authorizedSchemaIds` mapping
-2. Anyone can call this public mapping for a portal address and get the list of authorized Schema IDs
+- one portal should issue only a small set of approved schemas;
+- you want contract-level enforcement instead of relying on frontend behavior.

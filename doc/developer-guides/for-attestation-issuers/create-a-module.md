@@ -1,33 +1,34 @@
 # Create a Module
 
-[Modules](../../core-concepts/modules.md) are smart contracts that are registered in the "Module Registry" and that
-perform specific validation logic on attestations before they are issued into the registry.
+Create a custom module when the standard library does not cover your validation logic.
 
-## Using a custom Module
+If a standard-library module already fits your need, you can skip this page and just register or reuse that module.
 
-A Module must implement the `AbstractModuleV2` contract to be considered as valid by Verax. Hopefully, we provide all
-the core contracts of the Verax platform as an npm package to help developers create their own custom implementations.
+## Contract base
 
-- Install the dependency: `npm i @verax-attestation-registry/verax-contracts`
-- Import the `AbstractModuleV2` contract:\
+Custom modules inherit `AbstractModuleV2`:
 
-  ```solidity
-  import { AbstractModuleV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractModuleV2.sol";
-  ```
+```solidity
+import { AbstractModuleV2 } from "@verax-attestation-registry/verax-contracts/contracts/abstracts/AbstractModuleV2.sol";
+```
 
-- Define your custom Module:\
+Then implement:
 
-  ```solidity
-  contract ExampleModule is AbstractModuleV2 { ... }
-  ```
+```solidity
+function run(
+  AttestationPayload calldata attestationPayload,
+  bytes calldata validationPayload,
+  address initialCaller,
+  uint256 value,
+  address attester,
+  address portal,
+  OperationType operationType
+) public virtual;
+```
 
-And now ... the floor is yours! You can add your custom functions, of course, but mostly you need to implement the `run`
-function that is called in the validation process, before registering the attestation payload.
+`run(...)` should revert when validation fails.
 
-{% hint style="warning" %} When multiple Modules are used in a workflow, ensure that at most one Module processes
-`msg.value` to avoid accounting issues, as the total `msg.value` is forwarded to all Modules. {% endhint %}
-
-## Example
+## Minimal example
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -41,20 +42,32 @@ contract ExampleModule is AbstractModuleV2 {
   error InsufficientFee();
 
   function run(
-    AttestationPayload memory /*attestationPayload*/,
-    bytes memory /*validationPayload*/,
-    address /*initialCaller*/,
+    AttestationPayload calldata,
+    bytes calldata,
+    address,
     uint256 value,
-    address /*attester*/,
-    address /*portal*/,
-    OperationType /*operationType*/
+    address,
+    address,
+    OperationType
   ) public pure override {
-    if (value < 1000000000000000) revert InsufficientFee();
+    if (value < 0.001 ether) revert InsufficientFee();
   }
 }
 ```
 
-This `ExampleModule` implements the `AbstractModuleV2` contract.
+## Important implementation notes
 
-In this example, we are checking that the paid value for this Attestation is at least 0.001 ETH. If it is the case, the
-process goes onto the next Module check, and if not, the process stops there and the transaction reverts.
+- Inheriting `AbstractModuleV2` already gives you ERC-165 support for registration checks.
+- `validationPayload` is where you pass signatures, proofs, or any module-specific data.
+- `operationType` lets you distinguish attest vs bulk attest vs replace.
+- If you rely on `msg.value`, remember that only one module in a chain should interpret it.
+- Bulk module execution currently passes `0` as value in `ModuleRegistry.bulkRunModulesV2(...)`.
+
+{% hint style="warning" %} If your module depends on fees or any other payable behavior, remember that bulk module
+execution currently passes `0` as value. {% endhint %}
+
+## Next step
+
+Once deployed, register the module in `ModuleRegistry`.
+
+See [Register a Module](register-a-module.md).

@@ -1,25 +1,22 @@
----
-description: >-
-  This section outlines the standard library of modules that you can use to suit your needs without redeveloping them
-  from scratch.
-cover: >-
-  https://images.unsplash.com/photo-1568667256549-094345857637?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHw0fHxsaWJyYXJ5fGVufDB8fHx8MTcwNDQ5NDgwMnww&ixlib=rb-4.0.3&q=85
-coverY: -369.4459724950884
----
+# Modules Standard Library
 
-# 📚 Modules Standard Library
+This section documents the reusable modules shipped in `contracts/src/stdlib/`.
 
-There will be more modules added here over time as more integrations come online.
+These modules are good starting points when you do not want to write custom validation logic from scratch.
 
-Even though you can publish your own modules, if you believe they are reusable and could be added here, please
-[contact us](../../get-involved/get-in-touch.md)!
+## Included modules
 
-## List of Standard Modules
+- [ECDSAModule](ecdsamodule.md)
+- [ERC1271Module](erc1271module.md)
+- [FeeModule](feemodule.md)
+- [IndexerModule](indexermodule.md)
+- [IssuersModule](issuersmodule.md)
+- [SchemaModule](schemamodule.md)
+- [SenderModule](sendermodule.md)
 
-- [ecdsamodule.md](ecdsamodule.md "mention")
-- [erc1271module.md](erc1271module.md "mention")
-- [feemodule.md](feemodule.md "mention")
-- [indexermodule.md](indexermodule.md "mention")
-- [issuersmodule.md](issuersmodule.md "mention")
-- [schemamodule.md](schemamodule.md "mention")
-- [sendermodule.md](sendermodule.md "mention")
+## How to use a standard-library module
+
+1. Deploy the module or reuse an existing deployment on your target chain.
+2. Configure it if the module exposes per-portal settings.
+3. Register it in `ModuleRegistry` if you want shared discoverability in that Verax deployment.
+4. Include its address in your portal's module list.

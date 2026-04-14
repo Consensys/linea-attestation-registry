@@ -1,21 +1,12 @@
 # Table of contents
 
-- [👋 Introduction](README.md)
-- [⚒️ Getting Started](getting-started.md)
+- [Introduction](README.md)
 
-## Core Concepts
+## Build with Verax
 
-- [High-Level Overview](core-concepts/high-level-overview.md)
-- [Attestations](core-concepts/attestations.md)
-- [Schemas](core-concepts/schemas.md)
-- [Linked Data](core-concepts/linked-data.md)
-- [Modules](core-concepts/modules.md)
-- [Portals](core-concepts/portals.md)
-- [Ecosystem](core-concepts/ecosystem.md)
-
-## Developer Guides
-
-- [♒ For Attestation Issuers](developer-guides/for-attestation-issuers/README.md)
+- [Quickstart](getting-started.md)
+- [Networks and Addresses](developer-guides/networks-and-addresses.md)
+- [Build Workflow](developer-guides/for-attestation-issuers/README.md)
   - [Create and register a Schema](developer-guides/for-attestation-issuers/create-a-schema.md)
   - [Create a Module](developer-guides/for-attestation-issuers/create-a-module.md)
   - [Register a Module](developer-guides/for-attestation-issuers/register-a-module.md)
@@ -25,19 +16,15 @@
   - [Encoding Attestation Data](developer-guides/for-attestation-issuers/encoding-attestation-data.md)
   - [Revoke an Attestation](developer-guides/for-attestation-issuers/revoke-an-attestation.md)
   - [Replace an Attestation](developer-guides/for-attestation-issuers/replace-an-attestation.md)
-  - [Link Attestations](developer-guides/for-attestation-issuers/link-attestations.md)
   - [Bulk Create Attestations](developer-guides/for-attestation-issuers/bulk-create-attestations.md)
-  - [EAS compatibility](developer-guides/for-attestation-issuers/eas-compatibility.md)
-- [🧑‍🏫 Tutorials](developer-guides/tutorials/README.md)
-  - [From a Schema to an Attestation](developer-guides/tutorials/from-a-schema-to-an-attestation.md)
-  - [Using Ceramic to store the Attestation Payload](developer-guides/tutorials/using-ceramic-to-store-the-attestation-payload.md)
-- [🚀 Examples](developer-guides/examples.md)
-- [🌐 Using the Subgraph](developer-guides/using-the-subgraph.md)
-- [🛠️ Using the SDK](developer-guides/using-the-sdk.md)
-
-## Discover
-
-- [📚 Modules Standard Library](discover/modules-standard-library/README.md)
+  - [Link Attestations](developer-guides/for-attestation-issuers/link-attestations.md)
+  - [Offchain Payloads](developer-guides/offchain-payloads.md)
+  - [EAS Interoperability](developer-guides/for-attestation-issuers/eas-compatibility.md)
+- [Using the SDK](developer-guides/using-the-sdk.md)
+- [Using the Subgraph](developer-guides/using-the-subgraph.md)
+- [Using the Explorer](developer-guides/using-the-explorer.md)
+- [Deploy a Verax Instance](developer-guides/deploying-a-verax-instance.md)
+- [Standard Library Modules](discover/modules-standard-library/README.md)
   - [ECDSAModule](discover/modules-standard-library/ecdsamodule.md)
   - [ERC1271Module](discover/modules-standard-library/erc1271module.md)
   - [FeeModule](discover/modules-standard-library/feemodule.md)
@@ -45,14 +32,32 @@
   - [IssuersModule](discover/modules-standard-library/issuersmodule.md)
   - [SchemaModule](discover/modules-standard-library/schemamodule.md)
   - [SenderModule](discover/modules-standard-library/sendermodule.md)
-- [🤝 Integrations](discover/integrations.md)
+- [Tutorials](developer-guides/tutorials/README.md)
+  - [From a Schema to an Attestation](developer-guides/tutorials/from-a-schema-to-an-attestation.md)
+  - [Ceramic Integration Example](developer-guides/tutorials/using-ceramic-to-store-the-attestation-payload.md)
+- [Examples](developer-guides/examples.md)
+  - [NFT-Compatible Portal Example](discover/standard-library/nft-portal.md)
 
-## Get Involved
+## Research Verax
 
-- [Get in Touch](get-involved/get-in-touch.md)
-- [Contribute](get-involved/contribute.md)
+- [High-Level Overview](core-concepts/high-level-overview.md)
+- [Attestations](core-concepts/attestations.md)
+- [Schemas](core-concepts/schemas.md)
+- [Linked Data](core-concepts/linked-data.md)
+- [Canonical Schemas](core-concepts/canonical-schemas.md)
+- [Modules](core-concepts/modules.md)
+- [Portals](core-concepts/portals.md)
+- [Trust Model and Limitations](core-concepts/trust-model-and-limitations.md)
+- [Verax vs EAS, NFTs, SBTs and VCs](core-concepts/verax-vs-eas-and-other-attestation-models.md)
+- [Ecosystem](core-concepts/ecosystem.md)
+
+## Protocol & Community
+
+- [Integrations](discover/integrations.md)
 - [Governance](get-involved/governance/README.md)
   - [Governance Charter](get-involved/governance/governance-charter.md)
   - [Governance Parameters](get-involved/governance/governance-parameters.md)
   - [Overview of Governance](get-involved/governance/overview-of-governance.md)
   - [Proposal Templates](get-involved/governance/proposal-templates.md)
+- [Contribute](get-involved/contribute.md)
+- [Get in Touch](get-involved/get-in-touch.md)

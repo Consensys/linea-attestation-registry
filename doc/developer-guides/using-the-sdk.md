@@ -1,181 +1,349 @@
-# 🛠️ Using the SDK
+# Using the SDK
 
-## Installation
+The Verax SDK is the easiest way to read and write Verax data from a frontend, backend, script, or indexer helper.
 
-VeraxSDK is a [npm package](https://www.npmjs.com/package/verax-sdk/).
+Package:
 
-```
-# npm
-npm i --save @verax-attestation-registry/verax-sdk
-```
-
-```
-# yarn
-yarn add @verax-attestation-registry/verax-sdk
+```bash
+npm i @verax-attestation-registry/verax-sdk
 ```
 
----
+## Instantiate the SDK
 
-## Getting Started <a href="#user-content-getting-started" id="user-content-getting-started"></a>
-
-### 1. Import VeraxSdk <a href="#user-content-1-import-veraxsdk" id="user-content-1-import-veraxsdk"></a>
-
-```
-// CommonJS
-var VeraxSdk = require("@verax-attestation-registry/verax-sdk");
+```ts
+import { SDKMode, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 ```
 
-```
-// ES6
-import { VeraxSdk } from "@verax-attestation-registry/verax-sdk";
-```
+### Backend defaults
 
-### 2. Instantiate VeraxSdk <a href="#user-content-2-instantiate-veraxsdk" id="user-content-2-instantiate-veraxsdk"></a>
+The canonical built-in network configs are:
 
-<pre class="language-javascript"><code class="lang-javascript">// Default configuration for Linea Sepolia
+- `VeraxSdk.DEFAULT_LINEA_MAINNET`
+- `VeraxSdk.DEFAULT_LINEA_SEPOLIA`
+- `VeraxSdk.DEFAULT_ARBITRUM`
+- `VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA`
+- `VeraxSdk.DEFAULT_BASE`
+- `VeraxSdk.DEFAULT_BASE_SEPOLIA`
+- `VeraxSdk.DEFAULT_BSC`
+- `VeraxSdk.DEFAULT_BSC_TESTNET`
 
-// Frontend
-const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA_FRONTEND);
-// Backend
-<strong>const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA);
-</strong></code></pre>
+Example:
 
-Or:
-
-```javascript
-// Default configuration for Linea Mainnet
-// Frontend
-const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_MAINNET_FRONTEND);
-// Backend
-const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_MAINNET);
+```ts
+const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA);
 ```
 
-Or:
+### Frontend defaults
 
-```javascript
-// Custom configuration
+Frontend variants exist for each network and set `mode: SDKMode.FRONTEND`:
 
+```ts
+const veraxSdk = new VeraxSdk(VeraxSdk.DEFAULT_LINEA_SEPOLIA_FRONTEND, userAddress);
+```
+
+### Custom configuration
+
+```ts
+import { ChainName, SDKMode, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 import { optimism } from "viem/chains";
 
-const myVeraxConfiguration = {
+const customConf = {
   chain: optimism,
   mode: SDKMode.BACKEND,
-  subgraphUrl: "https://my.subgraph.url",
-  portalRegistryAddress: "0xMyPortalRegistryAddress",
-  moduleRegistryAddress: "0xMyModuleRegistryAddress",
-  schemaRegistryAddress: "0xMySchemaRegistryAddress",
-  attestationRegistryAddress: "0xMyAttestationRegistryAddress",
+  rpcUrl: "<your-rpc-url>",
+  subgraphUrl: "<your-subgraph-url>",
+  portalRegistryAddress: "0xMyPortalRegistry",
+  moduleRegistryAddress: "0xMyModuleRegistry",
+  schemaRegistryAddress: "0xMySchemaRegistry",
+  attestationRegistryAddress: "0xMyAttestationRegistry",
+  subgraphUrlOverrides: {
+    [ChainName.LINEA_SEPOLIA]: "<your-linea-sepolia-subgraph-url>",
+  },
 };
 
-const veraxSdk = new VeraxSdk(myVeraxConfiguration);
+const veraxSdk = new VeraxSdk(customConf);
 ```
 
----
+Use `subgraphUrlOverrides` when you need custom URLs for multi-chain reads.
 
-## Read and write objects <a href="#user-content-read-and-write-objects" id="user-content-read-and-write-objects"></a>
+## Data mappers
 
-### 1. Get DataMappers <a href="#user-content-1-get-datamappers" id="user-content-1-get-datamappers"></a>
+| Mapper                 | Purpose                                                             |
+| ---------------------- | ------------------------------------------------------------------- |
+| `veraxSdk.schema`      | Read and write schemas                                              |
+| `veraxSdk.module`      | Read and register modules                                           |
+| `veraxSdk.portal`      | Read portals and write lifecycle operations                         |
+| `veraxSdk.attestation` | Read attestations, multi-chain queries, related-attestation helpers |
+| `veraxSdk.utils`       | Encode, decode, and light utility helpers                           |
 
-```javascript
-// Each Verax class has its corresponding DataMapper
-// Get them from the SDK instance
-const portalDataMapper = veraxSdk.portal; // RW Portals
-const schemaDataMapper = veraxSdk.schema; // RW Schemas
-const moduleDataMapper = veraxSdk.module; // RW Modules
-const attestationDataMapper = veraxSdk.attestation; // RW Attestations
-const utilsDataMapper = veraxSdk.utils; // Utils
+```ts
+const schema = veraxSdk.schema;
+const module = veraxSdk.module;
+const portal = veraxSdk.portal;
+const attestation = veraxSdk.attestation;
+const utils = veraxSdk.utils;
 ```
 
-### 2. Read content (one object) <a href="#user-content-2-read-content-one-object" id="user-content-2-read-content-one-object"></a>
+## Read operations
 
-Each DataMapper comes with the method `findOneById` to get one object by ID.
+### Read one object
 
-{% code fullWidth="true" %}
+```ts
+const portalById = await veraxSdk.portal.findOneById("0x...");
+const schemaById = await veraxSdk.schema.findOneById("0x...");
+const moduleById = await veraxSdk.module.findOneById("0x...");
+const attestationById = await veraxSdk.attestation.findOneById("0x...");
+```
 
-```javascript
-const myPortal = await portalDataMapper.findOneById("0x34798a866f52949208e67fb57ad36244024c50c0");
+### Read many objects
 
-const mySchema = await schemaDataMapper.findOneById(
-  "0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e",
+The base `findBy` signature is:
+
+```ts
+findBy(first?, skip?, where?, orderBy?, orderDirection?)
+```
+
+Example:
+
+```ts
+const attestations = await veraxSdk.attestation.findBy(
+  20,
+  0,
+  { revoked: false, portal: "0xPortalAddress" },
+  "attestedDate",
+  "desc",
 );
+```
 
-const myModule = await moduleDataMapper.findOneById("0x4bb8769e18f1518c35be8405d43d7cc07ecf501c");
+This returns an array, not a paginated wrapper object.
 
-const mySchema = await schemaDataMapper.findOneById(
-  "0xce2647ed39aa89e6d1528a56deb6c30667ed2aae1ec2378ec3140c0c5d98a61e",
-);
+### Multi-chain reads
 
-const myAttestation = await attestationDataMapper.findOneById(
-  "0x000000000000000000000000000000000000000000000000000000000000109b",
+```ts
+import { ChainName } from "@verax-attestation-registry/verax-sdk";
+
+const schemas = await veraxSdk.schema.findByMultiChain([ChainName.LINEA_SEPOLIA, ChainName.ARBITRUM_SEPOLIA], 20, 0, {
+  name_contains_nocase: "passport",
+});
+
+const portals = await veraxSdk.portal.findByMultiChain([ChainName.LINEA_MAINNET, ChainName.BASE_MAINNET], 50, 0, {
+  ownerName_contains_nocase: "verax",
+});
+
+const attestations = await veraxSdk.attestation.findByMultiChain(
+  [ChainName.LINEA_MAINNET, ChainName.ARBITRUM_MAINNET],
+  20,
+  0,
+  { revoked: false },
+  "attestedDate",
+  "desc",
 );
 ```
 
-{% endcode %}
+### Related-attestation queries
 
-### 3. Read content (list / many objects) <a href="#user-content-3-read-content-list--many-objects" id="user-content-3-read-content-list--many-objects"></a>
+```ts
+const related = await veraxSdk.attestation.getRelatedAttestations(attestationId);
+```
 
-Each DataMapper comes with the method `findBy` to get objects by criteria. Each DataMapper comes with the method
-`findBy` to get objects by criteria.
+This queries canonical relationship attestations indexed by the subgraph.
 
-{% code fullWidth="true" %}
+### Counts
 
-```javascript
-//
-// args:
-// 	- criteria: object {property1: value1, property2: value2, ...}
-// 	- page: integer (optional, default 0)
-// 	- offset: integer (optional, default 50, max= 500)
-// 	- orderBy: string (optional, default createdAt)
-// 	- order(property?): enum string "ASC", "DESC" (optional, default "DESC")
-//
-const myAttestations = await attestationDataMapper.findBy(
-  { portalId: "37773", subject: "John" },
-  4,
-  30,
-  "schemaId",
-  "ASC",
+```ts
+const totalSchemas = await veraxSdk.schema.getSchemasNumber();
+const totalAttestations = await veraxSdk.attestation.getAttestationIdCounter();
+
+const multiChainCount = await veraxSdk.attestation.getAttestationCountMultiChain([
+  ChainName.LINEA_SEPOLIA,
+  ChainName.BASE_SEPOLIA,
+]);
+```
+
+If exact aggregated counts are critical to your application, validate them against the current SDK version and your
+deployment setup before depending on them operationally.
+
+{% hint style="warning" %} Treat helper counts as convenience APIs, not as unquestioned accounting truth, until you have
+validated them against the SDK version and deployment topology you are using. {% endhint %}
+
+## Write operations
+
+### Create a schema
+
+```ts
+const receipt = await veraxSdk.schema.create(
+  "Example Schema",
+  "Schema used in documentation examples",
+  "https://schema.org/Thing",
+  "(bool active, uint16 score)",
+  { waitForConfirmation: true },
 );
-
-console.log(myAttestations);
-//
-// totalNumber: 147,
-// page: 0,
-// objects: [
-// 	{id: "12345", schemaId: "99AE34", portalId: "37773", subject: "Florian", ...},
-// 	{id: "2221E", schemaId: "AAF77E", portalId: "37773", subject: "Florian", ...},
-// 	...
-// ]
-//
 ```
 
-{% endcode %}
+### Register a module
 
-### 4. Write content <a href="#user-content-4-write-content" id="user-content-4-write-content"></a>
-
-Each dataMapper comes with methods to write data that may vary depending on the class. See the detail of write method
-per class dataMapper.
-
-{% code fullWidth="true" %}
-
-```javascript
-const portalAddress = "0xeea25bc2ec56cae601df33b8fc676673285e12cc";
-const attestationPayload = {
-  schemaId: "0x9ba590dd7fbd5bd1a7d06cdcb4744e20a49b3520560575cd63de17734a408738",
-  expirationDate: 1693583329,
-  subject: "0x828c9f04D1a07E3b0aBE12A9F8238a3Ff7E57b47",
-  attestationData: [{ isBuidler: true }],
-};
-const validationPayloads = [];
-const newAttestation = await this.veraxSdk.portal.attest(portalAddress, attestationPayload, validationPayloads);
+```ts
+await veraxSdk.module.register("ExampleModule", "Checks issuer-specific validation rules", "0xModuleAddress", {
+  waitForConfirmation: true,
+});
 ```
 
-{% endcode %}
+### Deploy a default portal
 
----
+```ts
+const receipt = await veraxSdk.portal.deployDefaultPortal(
+  ["0xOptionalModuleAddress"],
+  "Example Portal",
+  "Portal used in documentation examples",
+  true,
+  "Example Issuer",
+  { waitForConfirmation: true },
+);
+```
 
-## Other operations <a href="#user-content-other-operations" id="user-content-other-operations"></a>
+### Register a custom portal
 
-\[Work in progress] The class `veraxSdk.utils` extends the capabilities:
+```ts
+await veraxSdk.portal.register(
+  "0xPortalAddress",
+  "Example Portal",
+  "Custom portal registered in Verax",
+  true,
+  "Example Issuer",
+  { waitForConfirmation: true },
+);
+```
 
-- precompute the ID of an attestation
-- encode decode payload
+### Attest
+
+```ts
+await veraxSdk.portal.attest(
+  "0xPortalAddress",
+  {
+    schemaId: "0xSchemaId",
+    expirationDate: 0,
+    subject: "0xRecipientAddress",
+    attestationData: [{ active: true, score: 42 }],
+  },
+  [],
+  { waitForConfirmation: true },
+);
+```
+
+### Bulk attest
+
+```ts
+await veraxSdk.portal.bulkAttest(
+  "0xPortalAddress",
+  [
+    {
+      schemaId: "0xSchemaId",
+      expirationDate: 0,
+      subject: "0xRecipient1",
+      attestationData: [{ active: true, score: 1 }],
+    },
+    {
+      schemaId: "0xSchemaId",
+      expirationDate: 0,
+      subject: "0xRecipient2",
+      attestationData: [{ active: true, score: 2 }],
+    },
+  ],
+  [[], []],
+  { waitForConfirmation: true },
+);
+```
+
+### Revoke and replace
+
+```ts
+await veraxSdk.portal.revoke("0xPortalAddress", "0xAttestationId", {
+  waitForConfirmation: true,
+});
+
+await veraxSdk.portal.replace(
+  "0xPortalAddress",
+  "0xAttestationId",
+  {
+    schemaId: "0xSchemaId",
+    expirationDate: 0,
+    subject: "0xRecipientAddress",
+    attestationData: [{ active: true, score: 99 }],
+  },
+  [],
+  { waitForConfirmation: true },
+);
+```
+
+### Offchain payloads over IPFS
+
+The SDK supports Verax-native offchain attestations using the canonical `Offchain` schema:
+
+```ts
+const veraxSdk = new VeraxSdk({
+  ...VeraxSdk.DEFAULT_LINEA_SEPOLIA,
+  offchainConfig: {
+    projectId: process.env.INFURA_IPFS_PROJECT_ID!,
+    projectSecret: process.env.INFURA_IPFS_PROJECT_SECRET!,
+  },
+});
+
+await veraxSdk.portal.attestOffChain(
+  "0xPortalAddress",
+  {
+    schemaId: "0xOriginalSchemaId",
+    expirationDate: 0,
+    subject: "0xRecipientAddress",
+    attestationData: [],
+    offchainData: {
+      schemaId: "0xOriginalSchemaId",
+      payload: {
+        github: "alice",
+        score: 42,
+      },
+    },
+  },
+  [],
+  { waitForConfirmation: true },
+);
+```
+
+See [Offchain Payloads](offchain-payloads.md).
+
+## Utilities
+
+Use `veraxSdk.utils` when you want direct ABI encoding and decoding helpers:
+
+```ts
+const encoded = veraxSdk.utils.encode("(string handle, uint16 score)", ["alice", 42]);
+const decoded = veraxSdk.utils.decode("(string handle, uint16 score)", encoded);
+```
+
+These helpers are especially useful when:
+
+- debugging encoded payloads;
+- integrating with custom contracts;
+- building your own low-level tooling.
+
+## Transaction return shape
+
+Write methods use the common transaction helper:
+
+- by default they return `{ transactionHash }`;
+- with `{ waitForConfirmation: true }` they return the full transaction receipt.
+
+{% hint style="info" %} For frontend flows and tutorials, `{ waitForConfirmation: true }` usually makes the rest of your
+code simpler because you can read logs and derived IDs immediately from the receipt. {% endhint %}
+
+## Practical advice
+
+- Use built-in defaults unless you run your own deployment.
+- Use `findByMultiChain(...)` for cross-chain product views.
+- Use `utils.encode/decode` when you need deterministic low-level control.
+- Use `attestOffChain(...)` for Verax-native IPFS-backed payloads instead of inventing a parallel custom pattern first.
+
+## Related guides
+
+- [Networks and Addresses](networks-and-addresses.md)
+- [Offchain Payloads](offchain-payloads.md)
+- [Using the Subgraph](using-the-subgraph.md)

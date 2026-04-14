@@ -1,0 +1,86 @@
+---
+description: GitHub Actions security, performance, conventions
+globs: [".github/workflows/*.yml", ".github/actions/**"]
+---
+
+Principle of least privilege for all workflows.
+Fail fast and fail loud.
+
+# Permissions
+
+Declare minimal permissions at workflow level.
+Default to `contents: read` only.
+
+```yaml
+permissions:
+  contents: read
+```
+
+Add permissions only when required:
+- `pull-requests: read` for change detection
+- `packages: write` for container registry
+- `id-token: write` for OIDC
+
+Never use `permissions: write-all`.
+Document why each permission is needed.
+
+# Secrets
+
+Never echo or log secrets.
+Use OIDC for cloud auth when available.
+Prefer GitHub environments for secret scoping.
+Rotate secrets on suspected exposure.
+
+# Node Version
+
+Use custom action to read `.nvmrc`:
+
+```yaml
+- uses: ./.github/actions/get-node-version
+  id: get-node-version
+```
+
+Pass version to setup and Docker build steps.
+Never hardcode Node version in workflows.
+
+# Change Detection
+
+Skip jobs when files are unchanged.
+Use `dorny/paths-filter` or similar.
+Include dependency files in filters:
+- `pnpm-workspace.yaml`
+- `pnpm-lock.yaml`
+- `.nvmrc`
+
+Create skip jobs to satisfy branch protection.
+
+# Reusable Components
+
+Extract common steps into composite actions in `.github/actions/`.
+Use a `setup-env` action for consistent environment.
+Avoid duplicating setup logic across workflows.
+
+# Caching
+
+Cache pnpm store across runs.
+Cache Docker layers with `type=gha`.
+Use `--frozen-lockfile` for reproducibility.
+
+# Job Structure
+
+Use `needs` for explicit dependencies.
+Use `if` conditions to skip unnecessary work.
+Use matrix for parallel test execution.
+Name jobs clearly for status checks.
+
+# Security Scanning
+
+Enable Dependabot for updates.
+
+# Branch Protection
+
+Require status checks before merge.
+Require PR reviews for protected branches.
+Never allow force push to main branches.
+
+Use PR templates with checklists (e.g., DoD verification) where helpful.

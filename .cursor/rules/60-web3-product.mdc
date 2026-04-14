@@ -1,0 +1,31 @@
+---
+description: Web3 UX and product reliability
+alwaysApply: true
+---
+
+Never force network switch.
+Handle chain mismatch explicitly.
+Provide UX fallbacks.
+
+Document bridging and onramp failure modes.
+Define timeouts and refund paths.
+Backend idempotency mandatory. (Cross ref: 02-reliability.mdc)
+
+Server side verification for attestations.
+Replay protection required. (Cross ref: 02-reliability.mdc)
+Privacy and retention documented.
+
+Measure time to wallet ready and meaningful feedback.
+Never leave the user in RPC silence.
+
+# Feature Flags and Progressive Rollouts
+
+Risky user facing changes must use feature flags.
+
+Feature flags must support:
+- gradual rollout
+- per environment configuration
+- instant disablement
+
+Flags must not become permanent configuration.
+A removal plan is required.

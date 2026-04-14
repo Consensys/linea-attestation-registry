@@ -1,0 +1,21 @@
+---
+description: Testing and CI gates
+alwaysApply: true
+---
+
+Tests mandatory for critical surfaces:
+- business logic
+- auth
+- security
+- money
+- onchain writes
+- bridging
+- signatures
+- data migrations logic
+
+Prefer realistic tests over mocks.
+
+CI blocks merges if tests, lint, typecheck, or build fail.
+Dependency audits required before production.
+
+Avoid coverage driven testing. Use coverage as a signal only; critical paths must be meaningfully tested and gaps justified.

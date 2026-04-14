@@ -1,0 +1,81 @@
+---
+description: pnpm workspaces, catalogs, versioning, dependency hygiene
+globs: ["pnpm-workspace.yaml", "pnpm-lock.yaml", "**/package.json", ".nvmrc"]
+---
+
+pnpm is mandatory for internal development.
+
+For external repositories or third party contributions,
+npm or yarn may be temporarily tolerated if:
+- conversion cost is prohibitive
+- the repository is not the source of truth
+
+Such cases must be documented explicitly.
+
+# Enforcing pnpm
+
+Root package.json must include:
+
+```json
+"preinstall": "npx only-allow@1.2.2 pnpm"
+```
+
+Root package.json must declare explicit engine versions:
+
+```json
+"packageManager": "pnpm@<version>",
+"engines": {
+  "node": ">=<version>",
+  "pnpm": ">=<version>"
+}
+```
+
+# Node Version
+
+Single source of truth in `.nvmrc` at root.
+All CI and Docker builds must read from `.nvmrc`.
+Never hardcode Node version elsewhere.
+
+# Workspace Structure
+
+All packages live in `packages/` for new projects, or `apps/` for existing ones.
+Use `pnpm-workspace.yaml` to declare workspace globs.
+
+# Catalogs
+
+Use `catalog:` references for shared dependencies.
+If a dependency is used by two or more packages it must go in catalog.
+
+Organize catalogs by theme:
+- `default` for tooling (eslint, prettier, typescript)
+- `blockchain` for viem, wagmi
+- `nestjs` for NestJS stack
+- `next15` for Next.js stack
+- `react19` for React stack
+- `prisma` for Prisma stack
+- `security` for audit tools
+- `common` for shared utilities
+
+Bump catalog versions in one place to update all consumers.
+
+# Overrides
+
+Use `overrides` in `pnpm-workspace.yaml` to patch vulnerable transitive dependencies.
+Document why each override exists.
+Remove overrides when upstream fixes land.
+
+# Dependency Hygiene
+
+Run `pnpm update --interactive --latest` for major bumps.
+Run `pnpm dedupe` after major upgrades.
+Use `minimumReleaseAge` to avoid bleeding edge packages.
+
+Add dependencies to the package that uses them.
+Avoid hoisting unless explicitly needed.
+Run `pnpm install` from root only.
+
+# Lock File
+
+Lock file must be committed and up to date.
+Review lock file changes in PRs for unexpected additions.
+Never manually edit `pnpm-lock.yaml`.

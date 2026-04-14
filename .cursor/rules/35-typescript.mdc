@@ -1,0 +1,14 @@
+---
+description: TypeScript strictness and domain modeling
+alwaysApply: true
+---
+
+Strict mode assumed.
+No implicit any.
+No unsafe casts.
+
+Prefer domain types over primitives.
+Avoid stringly typed code.
+Use exhaustive checks for unions.
+
+Fail at compile time, not runtime.

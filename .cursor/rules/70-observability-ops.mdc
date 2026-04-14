@@ -1,0 +1,14 @@
+---
+description: Observability, ops, and incident readiness
+alwaysApply: true
+---
+
+Logs must be structured and redacted.
+Metrics must cover latency, error rate, throughput, dependency health.
+
+Define failure modes for critical paths.
+Prefer actionable alerts.
+
+Jobs must be idempotent, retry safe, observable, resumable. (Cross ref: 02-reliability.mdc)
+
+Document runbooks for risky systems, with ownership definition.

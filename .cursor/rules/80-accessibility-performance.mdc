@@ -1,0 +1,16 @@
+---
+description: Accessibility and frontend performance
+alwaysApply: true
+---
+
+Use semantic HTML.
+Keyboard navigation required.
+Accessible names for controls.
+Manage focus correctly.
+
+Prevent performance regressions on critical user flows.
+Prefer code splitting for heavy features.
+Avoid unnecessary rerenders.
+Handle flaky networks gracefully.
+
+Support i18n and responsive design where the product requires it.

@@ -1,0 +1,47 @@
+---
+description: NestJS backend robustness
+globs: ["**/api/**", "**/backend/**"]
+---
+
+Strict DTOs.
+ValidationPipe whitelist.
+Separate AuthN and AuthZ.
+
+Rate limiting and brute force protection required.
+
+Use viem publicClient for reads.
+Server side signature verification.
+Never trust client onchain state.
+
+Chunk heavy operations.
+
+# Healthchecks
+
+Expose `/health/live` endpoint for liveness.
+Expose `/health/ready` endpoint for readiness.
+Check database and cache connectivity in readiness.
+Use `@nestjs/terminus` for health indicators.
+
+Return structured response with component status.
+Fail fast if critical dependencies are down.
+
+# Metrics
+
+Expose `/metrics` endpoint for Prometheus scraping.
+Use `prom-client` or `@willsoto/nestjs-prometheus`.
+
+Track at minimum:
+- HTTP request duration histogram
+- HTTP request count by status code
+- active connections gauge
+- database query duration
+- cache hit and miss rates
+- queue depth for async jobs
+
+Use consistent label naming.
+Avoid high cardinality labels.
+
+# Env Vars
+
+Manage env vars with dotenv or similar; validate with zod or class-validator.
+Document required vars in README.

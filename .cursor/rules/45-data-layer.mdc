@@ -1,0 +1,22 @@
+---
+description: Data layer discipline
+alwaysApply: true
+---
+
+This file is the single source of truth for cross stack data rules.
+
+ORM or database specific files must not redefine these principles,
+only their concrete implementation.
+
+Prevent N plus 1 queries.
+Add indexes for user facing queries.
+Use pagination.
+Avoid unbounded queries.
+
+Migrations should be backward compatible.
+Destructive changes require phased rollout and rollback. (Cross ref: 02-reliability.mdc)
+
+Backfills must be chunked, resumable, observable.
+Avoid long blocking transactions.
+
+Document consistency expectations. (Cross ref: 02-reliability.mdc)

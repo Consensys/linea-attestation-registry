@@ -1,0 +1,53 @@
+---
+description: End to end security, privacy, and abuse resistance
+alwaysApply: true
+---
+
+Assume hostile input everywhere.
+Apply defense in depth.
+Prefer secure defaults.
+
+# Application Security
+
+Validate and sanitize all inputs at boundaries.
+Never trust client supplied identifiers, roles, addresses, chain state, or feature flags.
+Never rely on frontend validation.
+
+Explicitly mitigate:
+- SQL NoSQL command and SSTI injection
+- XSS with CSP and escaping
+- CSRF for cookie based auth
+- SSRF with allowlists
+- IDOR and broken authorization
+- race conditions and TOCTOU
+- privilege escalation
+- open redirects
+- file upload attacks
+
+# Auth and Sessions
+
+Separate authentication and authorization.
+Avoid implicit permissions.
+Reason explicitly about auth bypass, token leakage, session fixation, misconfiguration.
+
+# Web3 Security
+
+Never trust client reported onchain state.
+Verify signatures server side.
+
+# Data Protection and Privacy
+
+Treat user data as PII unless proven otherwise.
+Minimize collection and retention.
+Document data lifecycle and deletion.
+Never log secrets, tokens, private keys, raw signatures, or sensitive payloads.
+
+# OSINT Awareness
+
+Do not leak internal URLs, infra details, RPC keys, or stack traces.
+
+# Abuse Protection
+
+Rate limit public endpoints.
+Add brute force protection.
+Use idempotency for dangerous writes. (Cross ref: 02-reliability.mdc)

@@ -1,0 +1,46 @@
+---
+description: Foundry testing, fuzzing, deployment scripts
+globs: ["**/*.sol", "**/foundry.toml", "**/script/**"]
+---
+
+Foundry is the default toolchain for Solidity development.
+
+Alternative toolchains are allowed only with explicit justification
+and must meet equivalent guarantees for testing.
+
+# Testing
+
+Unit tests mandatory for all contracts.
+Use `forge test` with verbosity flags for debugging.
+Prefer realistic fork tests over mocks for external integrations.
+
+Fuzz tests required for math heavy or user input functions.
+Define meaningful bounds with `vm.assume` or `bound`.
+Avoid unbounded fuzzing that wastes cycles.
+
+Invariant tests required for stateful contracts.
+Define explicit invariants as view functions.
+Document what each invariant protects.
+
+# Scripts
+
+Use Foundry scripts for deployments and admin operations.
+Scripts must be idempotent where possible. (Cross ref: 02-reliability.mdc)
+Never hardcode private keys or secrets in scripts.
+Use environment variables or secure keystores.
+
+Document deployment sequence and dependencies.
+Verify contracts on block explorers post deployment.
+
+# Cheatcodes
+
+Use `vm.prank` and `vm.startPrank` for access control tests.
+Use `vm.expectRevert` with specific error selectors.
+Use `vm.warp` and `vm.roll` for time dependent logic.
+Use `deal` and `hoax` for balance manipulation in tests.
+
+# Coverage
+
+Run `forge coverage` for critical contracts.
+Aim for high branch coverage on security critical paths.
+Coverage gaps on admin only functions are acceptable if access control is tested.

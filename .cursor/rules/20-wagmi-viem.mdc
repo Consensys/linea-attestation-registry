@@ -1,0 +1,22 @@
+---
+description: wagmi v3 and viem v2 frontend discipline
+globs: ["**/*.ts", "**/*.tsx"]
+---
+
+viem first.
+ethers forbidden for new code unless justified and documented.
+
+wagmi config must define supported chains including Linea, RPC fallback, timeouts, retry policy.
+
+Prefer multicall for reads.
+Avoid aggressive polling.
+
+Writes must handle pending, replacement, cancellation, and receipt confirmation.
+
+Explicitly handle EIP 1193 errors.
+Never hide wallet or RPC failures.
+
+Signatures must use signTypedData with explicit domain and user readable intent.
+Backend replay protection mandatory. (Cross ref: 02-reliability.mdc)
+
+Frontend events are never authoritative for critical state.

@@ -29,7 +29,7 @@
     "@reown/appkit": "1.8.19",
     "@reown/appkit-adapter-wagmi": "1.8.19",
     "@tanstack/react-query": "catalog:react",
-    "@verax-attestation-registry/verax-sdk": "workspace:*",
+    "@verax-attestation-registry/verax-sdk": "5.4.0",
     "react": "catalog:react",
     "react-dom": "catalog:react",
     "react-json-view-lite": "2.5.0",

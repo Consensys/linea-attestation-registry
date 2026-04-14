@@ -42,7 +42,7 @@
     "@vitejs/plugin-react": "5.1.4",
     "prettier": "catalog:core",
     "typescript": "catalog:core",
-    "vite": "7.3.1",
+    "vite": "7.3.2",
     "vite-plugin-radar": "catalog:react"
   }
 }

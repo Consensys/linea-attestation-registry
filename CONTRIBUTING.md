@@ -1,119 +1,110 @@
 # Verax Attestation Registry - Contribution Guide
 
-Welcome to the Verax Attestation Registry! 🚀  
-We’re a **community-led initiative**, and we’re thrilled to have developers from diverse companies and backgrounds
-contributing to this project. To make collaboration smooth and effective, we’ve set up a few guidelines and best
-practices. Let’s dive in!
+This guide is for contributors working in the public Verax monorepo. It focuses on the workflow that is observable from
+the repository itself, and it calls out the maintainer/community conventions that live alongside that repo truth.
 
-### Guidelines for Non-Code and other Trivial Contributions
+## Before You Start
 
-Please keep in mind that we do not accept non-code contributions like fixing comments, typos or some other trivial
-fixes. Although we appreciate the extra help, managing lots of these small contributions is unfeasible, and puts extra
-pressure in our continuous delivery systems (running all tests, etc). Feel free to open an issue pointing to any of
-those errors, and we will batch them into a single change.
+- Contributions normally target the `dev` branch.
+- Install dependencies from the monorepo root with `pnpm install`.
+- CI reads Node.js and pnpm from the root `package.json`, so use the versions declared there.
+- Foundry is required when working on `contracts/` or `examples/`.
 
----
+If you are not sure where a change belongs, start from the root [README.md](README.md) and then jump to the relevant
+workspace README.
 
-## 🛠️ **Project Management**
+## Repo-Observable Workflow
 
-We keep track of tasks and progress using:
+The repository currently exposes the following contributor-facing checks and automation:
 
-- **[GitHub Issues](https://github.com/Consensys/linea-attestation-registry/issues)**: For bugs, features, and
-  improvements.
-- **[GitHub Project Board](https://github.com/orgs/Consensys/projects/17/views/9)**: For an overview of ongoing work and
-  priorities.
+- `lint.yml` runs ESLint and Prettier checks across the repo.
+- `contracts.yml` builds, tests, measures coverage, and runs upgradeability checks for `contracts/`.
+- `contracts-examples.yml` builds and tests `examples/`.
+- `sdk.yml` runs unit and integration tests for `sdk/`.
+- `subgraph.yml` builds and tests `subgraph/`.
+- `explorer-build.yml` builds `explorer/`.
+- `explorer-deploy-preview.yml` publishes a preview deployment for pull requests that touch `explorer/`.
+- `releaser.yml` is a maintainer-only manual release flow.
 
----
+Tutorial changes do not currently have a dedicated GitHub Actions workflow, so contributors should run its local
+commands before opening a PR.
 
-## 🔄 **Issue Lifecycle**
+## Branches, Pull Requests, and Reviews
 
-Here’s the journey an issue takes:
+### Branches
 
-1. **Draft**: The idea is logged and under discussion.
-2. **Ready for Development**: Approved and ready for action.
-3. **In Progress**: Actively being worked on.
-4. **Peer Review**: Code submitted and under review.
-5. **Done**: Merged and considered complete.
-6. **Released**: Deployed and available to users.
+The repo currently works with:
 
----
+- `dev` for day-to-day integration work
+- `main` for the stable release branch
+- `release/*` branches, which are visible in workflow triggers
 
-## 🌳 **Branching Model**
+Common branch prefixes such as `feat/`, `fix/`, `chore/`, or `docs/` are useful conventions, but they are not enforced
+by repository tooling.
 
-We follow a **GitFlow branching model** to keep everything clean and organized.
+### Pull requests
 
-### Key Branches:
+- Open pull requests against `dev` unless a maintainer asked for a different base.
+- Use a clear PR title that identifies the area being changed, for example `contracts: ...`, `sdk: ...`, or `docs: ...`.
+- Fill out the pull request template and link the related issue when one exists.
+- Expect maintainers to review before merge. If the branch comes from a personal fork, GitHub Actions may require a
+  maintainer to approve CI execution.
 
-- **`main`**: The latest stable release.
-- **`release/VERSION_NUMBER`**: Code validated and ready for release.
-- **`dev`**: The integration branch for the latest features under development.
-- **`feat/slug-name`**: A branch for each new feature.
-- **`fix/slug-name`**: A branch for bug fixes.
-- **`chore/name`**: A branch for tasks like dependency updates.
+The repo does not currently expose a `CODEOWNERS` file, so keep review expectations phrased as maintainer process, not
+as repo-enforced policy.
 
-### Pull Requests:
+## Validation by Workspace
 
-- Name your PR following the branch pattern: `feat(component-name): Title of the ticket`.
-- **Squash commits**: All commits in a PR are squashed into one before merging.
-- **Approval required**: At least one code owner must approve the PR (two are encouraged).
-- **No self-validation**: You cannot approve your own PR.
-- **Rebase encouraged**: Keep your branch up-to-date by rebasing it onto `dev`.
+Run the relevant commands for the areas you changed.
 
-CI tests must pass before merging. If you’re using a personal fork, CI will need approval from a code owner to run.
+| Workspace    | Typical commands from the repo root                                                                |
+| ------------ | -------------------------------------------------------------------------------------------------- |
+| `contracts/` | `pnpm --filter @verax-attestation-registry/verax-contracts build`, `test`, `check:implementations` |
+| `examples/`  | `pnpm --filter @verax-attestation-registry/verax-examples build`, `test`                           |
+| `sdk/`       | `pnpm --filter @verax-attestation-registry/verax-sdk test:unit`, `test:integration`                |
+| `subgraph/`  | `pnpm --filter linea-attestation-registry-subgraph build:linea-sepolia`, `test`                    |
+| `explorer/`  | `pnpm --filter verax-explorer lint`, `build`                                                       |
+| `tutorial/`  | `pnpm --filter @verax-attestation-registry/verax-tutorial build`                                   |
 
----
+If a change affects public behavior, deployment instructions, or contributor workflow, update the relevant README and
+the GitBook source under `doc/` when needed.
 
-## 🔧 **Development**
+## Documentation Changes
 
-We use the **Foundry framework** for Solidity development and follow these practices:
+Repository contributor docs live in:
 
-- **Linters/Formatters**: Prettier, ESLint, and Solhint.
-- **Continuous Integration**: Managed with GitHub Actions, running linting, compilation, unit tests, and coverage
-  checks.
+- the root `README.md`
+- workspace READMEs such as `contracts/README.md` and `sdk/README.md`
+- GitHub templates under `.github/`
 
----
+Published user-facing docs live in `doc/`, inside the same monorepo. There is no separate documentation repository to
+target for normal Verax docs updates.
 
-## 🛠️ **Bugs**
+Small typo-only changes are welcome, but if you are planning many tiny documentation edits across the repo, opening a
+single issue first can help maintainers batch or coordinate them.
 
-Encountered a bug? Here’s what to do:
+## Maintainer and Community Process
 
-1. Open an issue on [GitHub](https://github.com/Consensys/linea-attestation-registry/issues).
-2. Provide:
+The following surfaces are part of the current collaboration model, even though they are not enforced by repo config:
 
-- A clear description of the problem.
-- Steps to reproduce it.
-- (Optional) Your proposed solution.
+- [GitHub Issues](https://github.com/Consensys/linea-attestation-registry/issues) for bugs, features, and improvements
+- [GitHub Project Board](https://github.com/orgs/Consensys/projects/17/views/9) for maintainer planning and tracking
+- [Discord](https://discord.gg/Sq4EmYdBEk) for day-to-day communication
+- [Community Forum](https://community.ver.ax/) for larger discussions when maintainers want broader alignment
 
-For fixes, create a `fix/slug-name` branch and submit a PR when ready.
+If you are proposing a large protocol, SDK, or deployment workflow change, starting with an issue or discussion helps
+avoid duplicated work.
 
----
+## Release Flow
 
-## 📚 **Documentation**
+The repository currently exposes a maintainer-only release flow through `releaser.yml` and `release.sh`:
 
-Clear documentation helps everyone. If you see gaps or have ideas for improvements:
+1. check out `main`
+2. merge `dev` into `main`
+3. push `main`
+4. check out `dev`
+5. rebase `dev` onto `main`
+6. push `dev`
 
-- **Request a new topic**: Open an issue.
-- **Write it yourself**: Open a PR in the documentation repository.
-- **Draft it elsewhere**: Use tools like Notion or Google Docs and share the link—we’ll handle the rest!
-
----
-
-## 🚀 **Getting Started**
-
-Not sure where to start? Check out our
-[Good First Issues](https://github.com/Consensys/linea-attestation-registry/issues?q=is%3Aopen+is%3Aissue+label%3A%22Good+first+issue%22).
-These are beginner-friendly tasks with clear descriptions.\*\*
-
-Need help? Ping us on **[Discord](https://discord.gg/Sq4EmYdBEk)**. We’re here to guide you.
-
----
-
-## 💬 **Communication**
-
-All project communication happens on **[Discord](https://discord.gg/Sq4EmYdBEk)**.  
-For complex changes or features, start a discussion on the **[Community Forum](https://community.ver.ax/)**. Once agreed
-upon, contributors can vote before development begins.
-
----
-
-We’re excited to have you on board. Let’s build something amazing together!
+That flow is a maintainer responsibility. Regular contributors should target `dev` and let maintainers handle the
+release step.

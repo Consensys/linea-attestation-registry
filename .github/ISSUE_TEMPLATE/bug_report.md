@@ -8,6 +8,9 @@ assignees: ""
 
 **Describe the bug** A clear and concise description of what the bug is.
 
+**Affected area/package** For example: `contracts`, `examples`, `sdk`, `subgraph`, `explorer`, `tutorial`, `doc/`,
+`repo docs`.
+
 **To Reproduce** Steps to reproduce the behavior:
 
 1. Go to '...'

@@ -1,36 +1,70 @@
 # Verax Attestation Registry - SDK
 
-The Verax SDK facilitates the interactions with the contracts and the subgraph, both from a frontend and a backend.
+This workspace owns the TypeScript SDK used to read and write Verax data from backends, frontends, scripts, and demo
+apps.
 
-## Installation
+This README is maintainer-oriented. For end-user integration guidance, see the published docs at
+[docs.ver.ax](https://docs.ver.ax/verax-documentation/developer-guides/using-the-sdk).
 
-VeraxSDK is an [npm package](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk/).
+## Local Setup
+
+From the monorepo root:
 
 ```bash
-# npm
-npm i @verax-attestation-registry/verax-sdk
-
-# yarn
-yarn add @verax-attestation-registry/verax-sdk
-
-# pnpm
-pnpm add @verax-attestation-registry/verax-sdk
+pnpm install
 ```
 
-## Getting Started
+Inside `sdk/`, copy the example env file when you want to run examples or integration tests:
 
-Check the
-[SDK documentation](https://docs.ver.ax/verax-documentation/developer-guides/using-the-sdk#user-content-getting-started)
+```bash
+cp .env.example .env
+```
 
-## Using Custom Subgraph URLs
+`PRIVATE_KEY` is used by example scripts and integration tests. `THE_GRAPH_API_KEY` is optional and helps when you want
+to test against The Graph gateway instead of the public Studio endpoints.
 
-By default, the SDK uses free-tier subgraph URLs from The Graph Studio, which have rate limits. For production
-applications, you can override these URLs with your own endpoints that use The Graph API keys for higher rate limits.
+## Common Commands
 
-### Basic Usage
+Run these commands from `sdk/`.
+
+| Command                                                 | Purpose                                                      |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| `pnpm run build`                                        | Regenerate the Graph client and build the package            |
+| `pnpm run generate`                                     | Regenerate the Graph client only                             |
+| `pnpm run test:unit`                                    | Run unit tests                                               |
+| `pnpm run test:integration`                             | Run integration tests                                        |
+| `pnpm run test:ci`                                      | Copy `.env.example` to `.env` and run the default test suite |
+| `pnpm run test:integration:ci`                          | Copy `.env.example` to `.env` and run integration tests      |
+| `pnpm run schema` / `module` / `portal` / `attestation` | Run contributor example scripts under `examples/`            |
+| `pnpm run publish:public`                               | Publish the package to npm                                   |
+
+## SDK Defaults and Network Support
+
+The built-in default configs currently live in:
+
+- `src/VeraxSdk.ts`
+- `src/types/index.ts` for `ChainName`
+- `src/utils/urlResolver.ts` for multi-chain fallback URLs
+
+When you add or update a supported network, keep **all three** in sync. In particular:
+
+1. add the backend and frontend defaults in `src/VeraxSdk.ts`
+2. add or update the matching `ChainName` entry in `src/types/index.ts`
+3. update `src/utils/urlResolver.ts` so fallback URLs match the published deployment
+4. update tests and any example scripts affected by the change
+5. update the root `README.md` matrix if public endpoints or addresses changed
+
+The root README and the SDK defaults should reflect the same public deployments.
+
+## Custom Subgraph URLs
+
+The SDK supports `subgraphUrlOverrides` for contributors or operators who want to test against custom gateway or Studio
+endpoints.
+
+Example:
 
 ```typescript
-import { VeraxSdk, ChainName } from "@verax-attestation-registry/verax-sdk";
+import { ChainName, VeraxSdk } from "@verax-attestation-registry/verax-sdk";
 
 const sdk = new VeraxSdk({
   ...VeraxSdk.DEFAULT_LINEA_MAINNET,
@@ -41,58 +75,39 @@ const sdk = new VeraxSdk({
 });
 ```
 
-### How It Works
+For contributors, the important part is that single-chain defaults, multi-chain fallbacks, and the published README
+matrix all stay aligned when deployments change.
 
-The SDK uses **cascading fallback logic** to resolve subgraph URLs for any chain:
+## Examples and CLI Surface
 
-1. **First**: Check `subgraphUrlOverrides[chainName]` (your custom URL)
-2. **Then**: Check `subgraphUrl` (if querying the configured chain)
-3. **Finally**: Use default free-tier URL
+The package includes contributor utilities under `examples/` and a command reference in
+[doc/cli-examples.md](./doc/cli-examples.md).
 
-This unified approach works for **both single-chain and multi-chain queries**, providing consistent behavior throughout
-the SDK.
+Those commands are useful for smoke testing SDK flows during development, but they are not a separately versioned public
+CLI product.
 
-### Benefits
+## Publishing
 
-- **Higher rate limits** - Use paid API keys to avoid throttling
-- **Production-ready** - Suitable for high-traffic applications
-- **Flexible** - Override only the chains you need
-- **Consistent** - Same logic for all query types
+The published package is
+[`@verax-attestation-registry/verax-sdk`](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk).
 
-## CLI examples
+Before publishing:
 
-cf. [CLI examples](./doc/cli-examples.md)
+1. run the relevant tests
+2. confirm generated artifacts are up to date
+3. bump the package version in `package.json`
+4. publish with:
 
-## Deployment of a new Verax instance
+```bash
+pnpm run publish:public
+```
 
-When a new instance of Verax is deployed onchain, the SDK needs to be updated with the new addresses.
+## Contributor Checklist for New Chains
 
-1. Add a new backend `Conf` object in [src/VeraxSdk.ts](src/VeraxSdk.ts):
+When a new Verax deployment is added:
 
-   ```typescript
-   static DEFAULT_XXX_MAINNET: Conf = {
-     chain: xxx,
-     mode: SDKMode.BACKEND,
-     subgraphUrl: "<SUBGRAPH_URL>",
-     portalRegistryAddress: "0x...",
-     moduleRegistryAddress: "0x...",
-     schemaRegistryAddress: "0x...",
-     attestationRegistryAddress: "0x...",
-   };
-   ```
-
-2. Add a new frontend `Conf` object in [src/VeraxSdk.ts](src/VeraxSdk.ts):
-
-   ```typescript
-   static DEFAULT_XXX_MAINNET_FRONTEND: Conf = {
-       ...VeraxSdk.DEFAULT_XXX_MAINNET,
-       mode: SDKMode.FRONTEND,
-   };
-   ```
-
-3. Increment the version of the package in [package.json](package.json)
-4. Publish the package to [npm](https://www.npmjs.com/package/@verax-attestation-registry/verax-sdk)
-
-   ```bash
-   pnpm run publish:public
-   ```
+- update `src/VeraxSdk.ts`
+- update `src/types/index.ts`
+- update `src/utils/urlResolver.ts`
+- confirm explorer/demo apps still compile against the new SDK version
+- update the root `README.md` public matrix

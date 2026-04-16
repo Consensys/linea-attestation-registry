@@ -1,18 +1,12 @@
 # Modules
 
-Modules are smart contracts that inherit the
-[`AbstractModuleV2`](https://github.com/Consensys/linea-attestation-registry/blob/dev/contracts/src/abstracts/AbstractModuleV2.sol)contract
-and are registered in the registry. They allow for attestation creators to run custom logic to do things like:
+Modules are reusable validation contracts that portals can execute before an attestation is written onchain.
 
-- verify that attestations conform to some business logic
-- verify a signature or a zk-snark
-- perform other actions like transferring some tokens or minting an NFT
-- recursively create another attestation
+They are the main way to keep issuance logic modular instead of hard-coding every rule into every portal.
 
-Modules are specified in a [portal](portals.md) and all attestations created by that portal are routed through the
-specified modules. Modules can also be chained together into discrete pieces of specific functionality.
+## Contract interface
 
-Each module exposes a public function called `run`:
+Modules inherit `AbstractModuleV2` and implement:
 
 ```solidity
 function run(
@@ -26,40 +20,71 @@ function run(
 ) public virtual;
 ```
 
-The function executes whatever logic it needs to, and reverts if the incoming transaction doesn't conform to the
-required logic. The parameters are:
+Key inputs:
 
-- `attestationPayload`: The raw data of the incoming attestation
-- `validationPayload`: Any qualifying data required for verification, but that doesn't make it into the on-chain
-  attestation (e.g. a snark proof, merkle proof or signature)
-- `initialCaller`: The address of the initial transaction sender
-- `value`: The amount of ETH paid with the attestation transaction
-- `attester`: The address defined by the Portal as the attester for this payload
-- `portal`: The address of the Portal issuing the attestation
-- `operationType`: The type of operation being performed (see below)
+- `attestationPayload`: the payload being issued or replaced;
+- `validationPayload`: module-specific proof or extra data;
+- `initialCaller`: original transaction sender;
+- `value`: `msg.value` forwarded by the portal;
+- `attester`: account the portal records as attester;
+- `portal`: issuing portal address;
+- `operationType`: `Attest`, `BulkAttest`, `Replace`, or `BulkReplace`.
 
-### OperationType Enum
+The module should revert when validation fails.
 
-The `OperationType` parameter indicates what operation is being performed:
+## Registration model
 
-- `Attest`: A new attestation is being created
-- `BulkAttest`: Multiple attestations are being created in a single transaction
-- `Replace`: An existing attestation is being replaced
-- `BulkReplace`: Multiple attestations are being replaced in a single transaction
+Modules must be registered in `ModuleRegistry` before portals can rely on them as part of the shared Verax deployment.
 
-This allows modules to apply different validation logic depending on the operation type.
+Registration stores:
 
-As well as implementing the `Module` interface, a module must also implement
-[ERC-165](https://eips.ethereum.org/EIPS/eip-165) to ensure that it can be verified properly when being registered.
+- the module contract address;
+- a human-readable name;
+- a description string.
 
-{% hint style="warning" %} When multiple Modules are used in a workflow, ensure that at most one Module processes
-`msg.value` to avoid accounting issues, as the total `msg.value` is forwarded to all Modules. {% endhint %}
+Because `AbstractModuleV2` already inherits `ERC165` and exposes `supportsInterface`, most custom modules do not need
+extra ERC165 boilerplate beyond inheriting the abstract base.
 
-## Module Metadata
+## Important caveat about `msg.value`
 
-Once the module smart contract is deployed, it can be registered with the following metadata:
+Every module in a portal chain receives the same forwarded value during `attest` and `replace`.
 
-<table><thead><tr><th width="171.32064128256513">Field</th><th width="120">Type</th><th>Description</th></tr></thead><tbody><tr><td>moduleAddress</td><td>address</td><td>(required) The address of the module smart contract</td></tr><tr><td>name</td><td>string</td><td>(required) A descriptive name for the module</td></tr><tr><td>description</td><td>string (URI)</td><td>(optional) A link to documentation about the module, its intended use, etc.</td></tr></tbody></table>
+If more than one module tries to account for the same `msg.value`, your workflow can become inconsistent. In practice:
 
-The metadata above is intended to help to discover modules that can be reused once created. Modules are chained together
-and executed in [portals](portals.md). The next section dives into portals, what they are, and how to create them.
+- only one module in a module chain should interpret `msg.value`;
+- bulk module execution currently uses `0` as value in `ModuleRegistry.bulkRunModulesV2(...)`.
+
+That second point matters if you rely on payable logic for bulk attest or bulk replace.
+
+{% hint style="warning" %} If you use fee-like or payable validation logic, treat `msg.value` as a shared resource. More
+than one module trying to account for it can make the workflow inconsistent. {% endhint %}
+
+## Standard-library modules
+
+The repository includes reusable modules such as:
+
+- `ECDSAModuleV2`
+- `ERC1271ModuleV2`
+- `FeeModuleV2`
+- `SchemaModuleV2`
+- `SenderModuleV2`
+- `IssuersModuleV2`
+- `IndexerModuleV2`
+
+See [Modules Standard Library](../discover/modules-standard-library/README.md).
+
+## When to write a custom module
+
+Use a custom module when you need logic like:
+
+- signature verification with custom replay protection;
+- external state checks;
+- merkle proof verification;
+- issuer-specific authorization rules;
+- integration with another contract system.
+
+## Related concepts
+
+- [Portals](portals.md)
+- [Create a Module](../developer-guides/for-attestation-issuers/create-a-module.md)
+- [Register a Module](../developer-guides/for-attestation-issuers/register-a-module.md)

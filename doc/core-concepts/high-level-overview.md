@@ -1,63 +1,119 @@
 # High-Level Overview
 
-Verax is simply a set of smart contracts that allow dApps to register attestations. DApps can record attestations in a
-consolidated location on-chain, rather than recording those attestations in their own contracts, or as an NFT.
+Verax is a modular onchain attestation registry. It gives applications a shared place to publish attestations instead of
+burying them inside product-specific contracts, NFTs, or private databases.
 
-Most attestations are recorded as NFTs or SBTs, but recording attestations in a consolidated storage location on-chain
-makes them much easier to discover, and makes them much easier to consume.
+The protocol is made of:
 
-## How Attestations are Recorded in the Registry
+- a `Router` that stores the registry addresses for one deployment;
+- a `SchemaRegistry` for attestation data models;
+- a `ModuleRegistry` for reusable validation modules;
+- a `PortalRegistry` for issuer-controlled entrypoints;
+- an `AttestationRegistry` for the attestations themselves;
+- an `AttestationReader` helper for EAS-style reads across Verax and EAS.
 
-### Portals
+## The issuance model
 
-Verax is designed for dApps to store attestations, it is not designed for the end users to interact with directly. DApps
-interact with Verax through a smart contract called a [**portal**](portals.md), owned and controlled by the dApp. The
-attestation registry will only accept attestations from registered portals.
+Verax is designed around a simple flow:
 
-<figure><img src="../.gitbook/assets/high-level-flow-01.drawio.png" alt=""><figcaption><p>Users interact with dApps, dApps record attestations through their portal contract</p></figcaption></figure>
+1. A team defines or reuses a schema.
+2. The team optionally composes validation modules.
+3. The team deploys a portal, or uses `DefaultPortalV2`.
+4. Users or backend systems call that portal.
+5. The portal validates the request, then writes the attestation into `AttestationRegistry`.
 
-Users interact with the dApp and send transactions to the dApp's portal contract, which will perform verification checks
-or other actions according to the dApps own business logic. The portal contract will then record an attestation in the
-registry. This gives the dApp complete control over how their users interact with the registry and what business rules
-they want to establish. Portal contracts are deployed by dApps, and are under their complete control.
+This is the main architectural difference from simpler attestation systems: Verax separates storage, validation, and
+issuer-specific business logic.
 
-### Modules
+<figure><img src="../.gitbook/assets/high-level-flow-01.drawio.png" alt=""><figcaption><p>Users interact with applications, and applications publish attestations through their portal contract.</p></figcaption></figure>
 
-Most dApps will probably want to do a few basic things, like verify a signature, check the data structure of an
-attestation, perhaps charge a fee for issuing the attestation. DApps can do these things using
-[**modules**](modules.md), which are small smart contracts that perform simple verification logic. A portal can chain
-together these modules, and every new attestation goes through each module in the chain, and each module performs a
-simple check. If all modules verify the new attestation successfully, the portal then submits the attestation in the
-registry.
-
-<figure><img src="../.gitbook/assets/high-level-flow.drawio.png" alt=""><figcaption><p>A dApp that uses a chain of modules to perform verification checks on incoming attestations</p></figcaption></figure>
-
-It is worth pointing out that dApps don't have to use modules. They can customise the portal contract and put all their
-logic in there, but the benefit of using modules is that dApps can use the modules that other dApps created before. For
-example, if one dApp decides it needs a module to verify a merkle proof, then any other dApp that needs to verify a
-merkle proof can just reuse that module.
+## Core building blocks
 
 ### Schemas
 
-Attestations are only useful if people can reference them and understand what they are attesting to. To do this, there
-needs to be a way to describe the data structure of the attestation data. To do this, every attestation references a
-[**schema**](schemas.md). A schema is basically a description of the properties in an attestation and what their
-respective data types are. DApps can use any existing schema or create their own. They can use as many schemas as they
-want, but only one per attestation.
+A schema is the ABI-like description of an attestation payload, for example:
 
-In order for an attestation to reference a schema, that schema needs to be registered in the schema registry. Portals
-and modules also need to be registered. When a new attestation is made, the attestation registry checks if the portal
-submitting the attestation is registered, and checks if the schema the attestation is based on is also registered.
+```text
+(string handle, uint16 score, bool active)
+```
 
-<figure><img src="../.gitbook/assets/high-level-flow-02.drawio.png" alt=""><figcaption></figcaption></figure>
+Schemas are registered once and can then be reused by many issuers.
 
----
+### Portals
 
-To get more of an overview of how the attestation registry is used and how it fits into the ecosystem, see the
-[ecosystem page](ecosystem.md) for information of the various actors, and the roles they play.
+A portal is the contract that actually issues attestations into Verax. It is the public entrypoint for an issuer's
+workflow.
 
----
+Portals can:
 
-As Verax is composed of on-chain smart contracts that dApps issue attestations to, the first thing to learn about is how
-these smart contracts are organized and how attestations are issued. Fortunately, the core concepts are all relatively
-simple, so getting started is quick and easy. The first concept to learn about is what attestations are.
+- call validation modules;
+- enforce issuer-specific rules;
+- issue, revoke, replace, bulk attest, and bulk replace;
+- remain minimal by inheriting `AbstractPortalV2`.
+
+### Modules
+
+Modules are small reusable contracts that validate incoming attestation requests. Examples include:
+
+- restricting allowed senders;
+- restricting allowed schemas;
+- checking signatures;
+- checking that a subject is an issuer;
+- enforcing a fee.
+
+<figure><img src="../.gitbook/assets/high-level-flow.drawio.png" alt=""><figcaption><p>A portal can chain several modules before writing the attestation into the shared registry.</p></figcaption></figure>
+
+### Attestations
+
+An attestation is a statement made by an attester, through a portal, about a subject, with payload data that follows a
+registered schema.
+
+The `subject` is stored as raw `bytes`, which means it can represent:
+
+- an EVM address;
+- another attestation ID;
+- a DID;
+- an IPFS reference;
+- any other byte-serializable identifier.
+
+Schemas, modules, and portals become much more useful once they are registered and discoverable inside the same Verax
+deployment.
+
+<figure><img src="../.gitbook/assets/high-level-flow-02.drawio.png" alt=""><figcaption><p>Verax separates discoverability registries from the attestation store itself.</p></figcaption></figure>
+
+## Why a shared registry matters
+
+Because many issuers publish into the same registry shape, Verax makes it easier to:
+
+- discover schemas, portals, modules, and attestations;
+- build shared indexing with the subgraph;
+- compare attestations across issuers and chains;
+- build higher-level reputation, research, and analytics workflows;
+- reuse canonical schemas such as `Relationship` and `Offchain`.
+
+## What is not handled by the protocol
+
+Verax guarantees registry mechanics, not meaning or trust. It does not guarantee:
+
+- that an issuer is honest;
+- that a schema is well designed;
+- that a context URL resolves forever;
+- that explorer curation equals protocol truth;
+- that a consumer should trust any specific attestation.
+
+Trust is built by portals, issuer reputation, schema design, external verification, and consumer policy.
+
+## Mainnet and testnet behavior
+
+On testnets, schema and portal registration is permissionless because `PortalRegistry.isAllowlisted(user)` returns
+`true` when `isTestnet` is enabled.
+
+On mainnets, schema creation and portal registration still depend on issuer allowlisting in `PortalRegistry`.
+
+## Next reads
+
+- [Attestations](attestations.md)
+- [Schemas](schemas.md)
+- [Modules](modules.md)
+- [Portals](portals.md)
+- [Trust Model and Limitations](trust-model-and-limitations.md)

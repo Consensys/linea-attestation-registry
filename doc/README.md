@@ -1,54 +1,52 @@
-# 👋 Introduction
+# Introduction
 
-## Overview
+Verax is a shared attestation registry for EVM chains. It gives applications a common place to publish attestations,
+discover attestations from other issuers, and compose that data across products, networks, and use cases.
 
-Verax is a shared, public attestation registry that can deployed to EVM chains. It can be used by dApps to store data
-that is of public interest, aka "attestations", that can be easily accessed and composed together by anyone that's
-interested. It is designed to be deployed as a single instance per network, so that all dApps on that network can issue
-their attestations to the same place, so that they can be easily discovered and consumed.
+This documentation is organized around two primary audiences:
 
-Attestations are usually statements made by an attestation issuer about something specific. They are also sometimes
-known as claims or credentials. Examples of attestations could include:
+- `Build with Verax`: developers who want to issue attestations, query them, reuse the SDK and subgraph, or deploy a
+  Verax stack on a new chain.
+- `Research Verax`: readers who want to understand the Verax model, its linked-data orientation, how it compares with
+  EAS and other attestation systems, and what trade-offs it makes.
 
-- Owner of address `0xbabe1999…` has completed a course on Solidity
-- Contract at address `0x666bea5f…` is a malicious erc-20 token
-- Owner of address `0xd00daa…` is a human being (i.e. not a bot)
-- Owner of address `0xdeadbeef…` is a member of DimSumDAO
-- Attestation `0xa2345` is an (in)valid attestation
-- Attestation `0x98765` is a “like” for content stored at `0xa1b2c3d4…`
+`Protocol & Community` remains available as a secondary section for governance, contribution, integrations, and
+documentation maintenance.
 
----
+## What Verax adds
 
-## How is Verax used?
+At a high level, Verax combines:
 
-**For issuers of attestations:**
+- a shared onchain registry for attestations, schemas, portals, and modules;
+- a portal model that lets issuers control how attestations are created;
+- reusable modules for validation and policy enforcement;
+- a subgraph and SDK for discovery and cross-chain consumption;
+- compatibility helpers for EAS-oriented ecosystems.
 
-If you are a dApp that offers credentials / attestations, you can choose to issue them to an existing Verax instance on
-a network. Issuing to Verax gives access to your attestations to any dApp that reads from Verax. Your attestation data
-becomes widely discoverable and easily consumed, as well as being easily composed with other attestations. Your
-attestations can start receiving attestations themselves, allowing you to add to your reputation as a trusted
-datasource.
+An attestation in Verax is usually an issuer making a statement about a subject:
 
-**For consumers of attestations:**
+- an address completed a course;
+- a contract is malicious;
+- a user belongs to a DAO;
+- an attestation is linked to another attestation;
+- an offchain document is referenced by a canonical onchain pointer.
 
-Your dApp can now compose attestations from multiple sources, meaning you no longer have to choose between issuer A or
-issuer B. You can be sure that users of dApp can prove they are not a bot without being tied to a specific provider. You
-can start to discover what kind of users are interacting with your dApp, and start incentivizing them to onboard with
-your dApp through issuing attestations yourself!
+## Start Here
 
-**For reputation protocols:**
+- If you want to integrate Verax into an app, begin with [Quickstart](getting-started.md).
+- If you need network addresses and supported environments, go to
+  [Networks and Addresses](developer-guides/networks-and-addresses.md).
+- If you want the shortest path to issuing attestations, go to
+  [Build Workflow](developer-guides/for-attestation-issuers/README.md).
+- If you want the protocol model first, go to [High-Level Overview](core-concepts/high-level-overview.md).
 
-Start leveraging linked data and shared ontologies to easily create rich and powerful semantic graphs to provide your
-users with valuable insights and information. Cut down hours of development of scraping data from disparate
-heterogeneous sources and give your users fine-grained, nuanced and holistic reputation scores that have real meaning.
+## Notes
 
----
+- On testnets, Verax instances are configured as permissionless through `PortalRegistry.getIsTestnet()`.
+- On mainnets, schema and portal registration is still gated by the issuer allowlist managed in `PortalRegistry`.
+- The monorepo is the source of truth for contracts, SDK, explorer, tutorial app, and subgraph.
 
-Dive in to the relevant section or go through the [High Level Overview](core-concepts/ecosystem.md) section to start
-learning more.
+## Contact
 
-You can find out more information or contact any of the contributors on any of these channels:
-
-- Discord: [https://discord.gg/Sq4EmYdBEk](https://discord.gg/Sq4EmYdBEk)
-- GitHub:
-  [https://github.com/Consensys/linea-attestation-registry](https://github.com/Consensys/linea-attestation-registry)
+- Discord: [discord.gg/Sq4EmYdBEk](https://discord.gg/Sq4EmYdBEk)
+- GitHub: [Consensys/linea-attestation-registry](https://github.com/Consensys/linea-attestation-registry)

@@ -1,37 +1,36 @@
-# 🚀 Examples
+# Examples
 
-What better way to start building on Verax than to check some real-life examples and their codebase?
+Use the in-repo examples as reference implementations. They are closer to the current source of truth than older
+external demo apps.
 
-## Proof of Audit
+## In this repository
 
-Attest the audit of a smart contract
+### Tutorial app
 
-Webapp: [https://audit.examples.ver.ax/](https://audit.examples.ver.ax/)
+The `tutorial/` package shows the simplest end-to-end flow for:
 
-GitHub Repository: [https://github.com/alainncls/proof-of-audit](https://github.com/alainncls/proof-of-audit)
+- schema creation;
+- default portal deployment;
+- attestation issuance;
+- attestation readback.
 
-## eFrogs Attestation
+### Example portals
 
-Prove that you own an eFrog NFT
+Under `examples/src/portals/`:
 
-Webapp: [https://efrogs.alainnicolas.fr/](https://efrogs.alainnicolas.fr/)
+- `EASPortal.sol`
+- `NFTPortal.sol`
+- `PausablePortal.sol`
 
-GitHub Repository:
-[https://github.com/alainncls/efrogs-attestation](https://github.com/alainncls/efrogs-attestation)&#x20;
+### Example modules
 
-## Discord Attestation
+Under `examples/src/modules/`:
 
-Attest that you are part of a Discord server
+- `ERC712ModuleV2.sol`
+- `MerkleProofModuleV2.sol`
 
-Webapp: [https://discord.alainnicolas.fr/](https://discord.alainnicolas.fr/)
+## How to use examples safely
 
-GitHub Repository: [https://github.com/alainncls/discord-attestation](https://github.com/alainncls/discord-attestation)
-
-## Proof of Monitoring
-
-Prove that a smart contract is actively monitored
-
-Webapp: [https://verax-security-attestations.netlify.app/](https://verax-security-attestations.netlify.app/)
-
-GitHub Repository:
-[https://github.com/satyajeetkolhapure/verax-security-attestations](https://github.com/satyajeetkolhapure/verax-security-attestations)
+- Treat examples as reference code, not as drop-in production policy.
+- Verify network addresses and registry assumptions against your deployment.
+- Prefer the SDK and contract sources over older demo screenshots or explorer walkthroughs.

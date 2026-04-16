@@ -1,39 +1,29 @@
----
-description: >-
-  Description of the official SchemaModule contract. This module aims to provide a standard way of checking if the
-  subject of an Attestation payload is an Issuer.
----
-
 # IssuersModule
 
-## [Link to the code](https://github.com/Consensys/linea-attestation-registry/blob/dev/contracts/src/stdlib/IssuersModuleV2.sol)
+Source: `contracts/src/stdlib/IssuersModuleV2.sol`
 
-## When to use this module?
+## What it does
 
-An Issuer might want to restrict his portal to only Issuers. In other words, his portal will only be able to attest
-Issuers as subjects (entities being attested) of the future attestations.
+`IssuersModuleV2` restricts a portal so that the attestation `subject` must be a registered issuer in `PortalRegistry`.
 
-Once this module is set for a portal, any attestation request going through the portal will need to be destined to an
-Issuer as a subject.
+The module expects the subject to encode an address in either:
 
-The list of Issuers changes over time, but is not controlled by this module. It is managed at the `PortalRegistry`
-level.
+- 20-byte raw address form;
+- 32-byte ABI-like address form.
 
-## When not to use this module?
+If the subject is not address-like or is not registered as an issuer, the module reverts.
 
-This Module probably serves its purpose in only a few cases, so make sure your use case requires to only issue
-attestations to Issuers.
+## Good fit when
 
-## How to use this module?
+- your portal should only attest other issuer entities;
+- you want protocol-level allowlisted issuer subjects.
 
-This Module doesn't require any preliminary setup, you need to pass its address registering your Portal.
+## Important note about discovery
 
-## How to check the list of Issuers?
+Do not rely on the explorer home-page issuer showcase as the exhaustive issuer set. That UI is curated.
 
-### Via the Explorer
+For protocol truth, use:
 
-The Issuers are listed on the [landing page of the Explorer](https://explorer.ver.ax)
-
-### Via the SDK
-
-Pending issue [#506](https://github.com/Consensys/linea-attestation-registry/issues/506) resolution.
+- `PortalRegistry.isIssuer(address)`;
+- direct contract reads;
+- indexed data built from registry events.

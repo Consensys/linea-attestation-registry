@@ -1,66 +1,60 @@
 # Link Attestations
 
-{% hint style="info" %} For now, linking Attestations must be done through a dedicated implementation to be created by
-the developers. In the future, the Verax SDK will expose a dedicated method to do that more easily. {% endhint %}
+In Verax, the standard way to link attestations is to issue another attestation that uses the canonical `Relationship`
+schema.
 
-## Using the Relationship Schema
+## Canonical relationship schemas
 
-Linking two Attestations together is relatively straightforward. It involves creating another Attestation based on a
-specific Schema called the `Relationship` Schema.
+Bootstrapped in post-deployment:
 
-The `Relationship` Schema looks like the following:
+```text
+Relationship: (bytes32 subject, string predicate, bytes32 object)
+namedGraphRelationship: (string namedGraph, bytes32 subject, string predicate, bytes32 object)
+```
 
-`(bytes subject, string predicate, bytes32 object)`
+Canonical IDs:
 
-This `Relationship` Schema exists as a first-class citizen of the registry, and Attestations that are based on this
-Schema are used for linking other Attestations together. The `subject` field is the Attestation that is being linked to
-another Attestation, the `predicate` field is a name that describes the _type_ of relationship, and the `subject` is the
-Attestation being linked to.
+- `Relationship`: `0x89bd76e17fd84df8e1e448fa1b46dd8d97f7e8e806552b003f8386a5aebcb9f0`
+- `namedGraphRelationship`: `0x5003a7832fa2734780a5bf6a1f3940b84c0c66a398e62dd4e7f183fdbc7da6ee`
 
-Examples of relationship Attestations are:
+## Example relationship
 
-- `0x46582...` "isFollowerOf" `0x10345...`
-- `0x31235...` "hasVotedFor" `0x52991...`
-- `0x74851...` "isAlumniOf" `0x31122...`
+You can model:
 
-Anyone can create any type of relationship between any Attestation and any other Attestations, allowing for the
-emergence of an organic [folksonomy](https://en.wikipedia.org/wiki/Folksonomy). However, it also makes canonical
-relationships important to define in the Schema. Otherwise, ambiguity may arise between the relationship Attestations
-intended by the Attestation issuer, and those arbitrarily added later by third parties.
+```text
+Attestation A "isMemberOf" Attestation B
+```
 
-{% hint style="info" %} The schema ID for the relationship schema is:
+by issuing a relationship attestation whose encoded payload contains:
 
-`0x89bd76e17fd84df8e1e448fa1b46dd8d97f7e8e806552b003f8386a5aebcb9f0`
+- `subject = Attestation A`
+- `predicate = "isMemberOf"`
+- `object = Attestation B`
 
-It can be found on the
-[Explorer](https://explorer.ver.ax/linea/schemas/0x89bd76e17fd84df8e1e448fa1b46dd8d97f7e8e806552b003f8386a5aebcb9f0).
-{% endhint %}
+## Important modeling note
 
-## One-to-One, One-to-Many, Many-to-Many
+The relationship semantics live inside the encoded payload. The outer Verax `subject` field of the relationship
+attestation is still your choice.
 
-You can create as many `Relationship` Attestations as you want, so that one Attestation can be related to many other
-Attestations, and _vice versa_.
+Many teams mirror the relationship subject there for easier indexing, but that is a convention, not a protocol rule.
 
----
+## Issuing a relationship attestation
 
-## Triples, Quads and Named Graphs
+There is no dedicated SDK helper for creating relationship attestations today. You simply issue a normal attestation
+through a portal that supports the canonical relationship schema.
 
-Many readers will have recognised that the Relationship Schema is actually just an
-[RDF triple](https://en.wikipedia.org/wiki/Semantic_triple). RDF triples are used to link Attestations to each other,
-which means that the on-chain Attestation data can easily be indexed into a graph DB and can be serialized using RDFS,
-OWL, Turtle etc.
+The SDK does provide a read helper:
 
-Certain use cases may require relationships to be grouped together into a "named graph". This allows for ring-fencing a
-certain group of links, to single them out, or label / identify them among the many other relationships that may exist
-between two or more Attestations. In this case, a special `namedGraphRelationship` Schema that can be utilized, which
-looks like:
+```ts
+const related = await veraxSdk.attestation.getRelatedAttestations(attestationId);
+```
 
-`(string namedGraph, bytes32 subject, string predicate, bytes32 object)`
+## When to use named graphs
 
-{% hint style="info" %} The schema ID for the named graph relationship schema is:
+Use `namedGraphRelationship` when the same two attestations may be related in several distinct scopes and you need to
+label that scope explicitly.
 
-`0x5003a7832fa2734780a5bf6a1f3940b84c0c66a398e62dd4e7f183fdbc7da6ee`
+## Related reads
 
-It can be found on the
-[Explorer](https://explorer.ver.ax/linea/schemas/0x5003a7832fa2734780a5bf6a1f3940b84c0c66a398e62dd4e7f183fdbc7da6ee).
-{% endhint %}
+- [Linked Data](../../core-concepts/linked-data.md)
+- [Canonical Schemas](../../core-concepts/canonical-schemas.md)

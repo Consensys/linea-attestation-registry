@@ -1,31 +1,60 @@
-# ⚒️ Getting Started
+# Quickstart
 
-If you're a dApp, and you want to publish attestations, here are the steps to get up and running:
+Verax supports two common paths:
 
-1. Decide on your [_**schema**_](core-concepts/schemas.md), which is a description of what your attestations will look
-   like.
-2. Deploy your [_**portal**_](core-concepts/portals.md), which is a contract through which you push attestations into
-   the registry\
-   (note: you can also call a smart contract function to do this for you — simple!).
-3. Send your [_**attestations**_](core-concepts/attestations.md) to your portal contract, which will push them to the
-   registry.
-4. All done! :coffee:
+1. Use an existing Verax deployment on a supported network.
+2. Deploy and operate your own Verax instance on a new network.
 
----
+## Use an existing Verax deployment
 
-You can call a function on the registry to deploy a portal contract for you, or you can deploy your own portal contract,
-over which you have full control to customize the way you wish.
+This is the fastest path for most teams.
 
-You can decide to keep your portal simple, and you can also use one or more [_**modules**_](core-concepts/modules.md),
-which are small smart contracts that run extra verification logic over the attestations before they are registered. We
-have some
-[examples modules in our GitHub repo](https://github.com/Consensys/linea-attestation-registry/tree/dev/examples/src/modules)
-that you can use, and more are being added all the time.
+{% hint style="info" %} Choose this path if you want to issue or consume attestations on an existing Verax network
+without operating contracts, subgraph, or explorer infrastructure yourself. {% endhint %}
 
-{% hint style="success" %} Please feel free to contact the developers in the community for support! They are always
-eager to help teams to get up and running quickly! You can find advice on our
-[**Discord server**](https://discord.gg/Sq4EmYdBEk). {% endhint %}
+1. Pick a supported network from [Networks and Addresses](developer-guides/networks-and-addresses.md).
+2. Decide whether you only need to consume attestations, or whether you also need to issue them.
+3. If you only need reads, start with the [SDK](developer-guides/using-the-sdk.md), the
+   [Subgraph](developer-guides/using-the-subgraph.md), or the [Explorer](developer-guides/using-the-explorer.md).
+4. If you want to issue attestations, follow the [Build Workflow](developer-guides/for-attestation-issuers/README.md):
+   1. choose or create a schema;
+   2. optionally add modules;
+   3. deploy or register a portal;
+   4. issue attestations through that portal.
 
-_**Note:**_ the Verax registry is now permissionless on testnets, but still permissioned on mainnets, so you'll need to
-get on the allowlist to register Schemas or Portals. Fortunately this is fairly easy,
-[reach out to us](get-involved/get-in-touch.md)! :smile:
+Use this path when:
+
+- you want Verax discoverability without operating infrastructure;
+- your application can fit into the existing shared registry model on a supported chain;
+- you want to prototype quickly on Linea, Arbitrum, Base, or BSC.
+
+## Deploy your own Verax instance
+
+Use this path when you need a new chain deployment or want to operate the full stack yourself.
+
+{% hint style="warning" %} Running your own instance means owning more than contracts. You will usually need to operate
+or customize the subgraph, SDK config, explorer config, canonical schema bootstrapping, and deployment addresses too.
+{% endhint %}
+
+1. Deploy the contracts and registries.
+2. Run post-deployment bootstrapping for canonical schemas.
+3. Optionally deploy the standard library and EAS compatibility helpers.
+4. Deploy a subgraph for the new chain.
+5. Add the new configuration to the SDK and explorer.
+
+The full workflow is documented in [Deploy a Verax Instance](developer-guides/deploying-a-verax-instance.md).
+
+## Main Concepts
+
+- `Schema`: the typed structure an attestation follows.
+- `Portal`: the contract entrypoint used to issue attestations.
+- `Module`: reusable validation logic chained by a portal.
+- `Attestation`: the onchain record stored by `AttestationRegistry`.
+
+## Operational Notes
+
+{% hint style="warning" %} Testnets are permissionless for schema and portal registration. Mainnets still require issuer
+allowlisting for schema and portal registration. {% endhint %}
+
+{% hint style="info" %} `subject` is stored as raw `bytes`, and attestation IDs are chain-prefixed. Both choices are
+important for cross-chain and non-address use cases. {% endhint %}

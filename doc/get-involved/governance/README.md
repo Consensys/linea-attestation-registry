@@ -1,12 +1,12 @@
 # Governance
 
-The Verax community is establishing formal protocol governance that seeks to help coordinate the various teams that are
-contributing to Verax, as well as giving a voice to stakeholders that have integrated with Verax, or are otherwise
-dependent on it by consuming its data.
+These pages describe Verax governance as a secondary protocol surface, not as the primary build path for developers.
 
-The main principles of the protocol governance that we have established are transparency, inclusivity and fairness. As
-the protocol matures, and the community grows, governance will necessarily need to evolve, and we welcome contributions
-in the form of research, insights, ideas and feedback.
+They are most useful when you need:
 
-The following pages describe in more detail the governance system that is currently in place and how the various
-participants and processes in the governance system.
+- the current governance framing;
+- issuer-onboarding process context for mainnet deployments;
+- proposal templates and charter language.
+
+Because governance process evolves faster than static product docs, always confirm live operational details on the
+community forum before relying on any historical wording here.

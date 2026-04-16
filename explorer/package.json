@@ -35,7 +35,7 @@
     "connectkit": "1.9.1",
     "framer-motion": "11.18.2",
     "i18next": "23.16.8",
-    "lucide-react": "0.577.0",
+    "lucide-react": "1.8.0",
     "moment": "2.30.1",
     "react": "catalog:react",
     "react-copy-to-clipboard": "5.1.1",

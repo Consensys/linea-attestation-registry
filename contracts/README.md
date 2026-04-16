@@ -1,31 +1,47 @@
 # Verax Attestation Registry - Contracts
 
-Verax is mainly composed of a set of smart contracts that allows anyone to read and write Attestations.
+This workspace owns the core Verax smart contracts, deployment templates, upgrade scripts, and the published
+`@verax-attestation-registry/verax-contracts` package.
 
-## Pre-requisites
+## Tooling and Local Setup
 
-- [Node.js](https://nodejs.org/en/) (>= 18)
-- [pnpm](https://pnpm.io/installation) (>=9.10.0)
+Prerequisites:
+
+- Node.js and pnpm from the root `package.json`
 - [Foundry](https://book.getfoundry.sh/getting-started/installation)
 
-## Environment variables reference
+From the monorepo root:
 
-Copy `env/.env.<network>` to `.env` in this package (see [Deployment](#deployment-of-a-new-verax-instance)). Variables
-below are read by Hardhat and the TypeScript scripts under `script/`.
+```bash
+pnpm install
+```
 
-### Network and keys (Hardhat)
+Inside `contracts/`, copy one of the network templates under `env/` to `.env` before running deploy, upgrade, or
+verification scripts.
 
-| Variable                | Networks                | Description                                                                                                                                                     |
-| ----------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `INFURA_KEY`            | All configured networks | When set, used to build the default JSON-RPC URL for that network (where Hardhat does not use a dedicated override).                                            |
-| `PRIVATE_KEY_TESTNET`   | Testnets                | Hex private key for deployments and upgrades on test networks. Omit for read-only tasks (e.g. `check:upgradeability`) if your scripts do not send transactions. |
-| `PRIVATE_KEY_MAINNET`   | Mainnets                | Hex private key for deployments and upgrades on main networks.                                                                                                  |
-| `LINEA_MAINNET_RPC_URL` | `linea` only            | Optional. Full HTTP RPC URL for Linea mainnet. If set, used instead of Infura (`INFURA_KEY`) or the public Linea RPC.                                           |
-| `LINEA_SEPOLIA_RPC_URL` | `linea-sepolia` only    | Optional. Full HTTP RPC URL for Linea Sepolia. Same precedence as above.                                                                                        |
+Example:
 
-### Block explorer API keys (contract verification)
+```bash
+cp env/.env.linea-sepolia .env
+```
 
-Used when verifying contracts on the corresponding explorer (see `etherscan` in `hardhat.config.ts`).
+## Environment Variables Reference
+
+Variables below are consumed by Hardhat and the TypeScript scripts under `script/`.
+
+### Network and keys
+
+| Variable                | Networks                | Description                                                              |
+| ----------------------- | ----------------------- | ------------------------------------------------------------------------ |
+| `INFURA_KEY`            | All configured networks | Used to build the default JSON-RPC URL when no dedicated override exists |
+| `PRIVATE_KEY_TESTNET`   | Testnets                | Hex private key for deploy and upgrade flows on test networks            |
+| `PRIVATE_KEY_MAINNET`   | Mainnets                | Hex private key for deploy and upgrade flows on main networks            |
+| `LINEA_MAINNET_RPC_URL` | `linea`                 | Optional full HTTP RPC URL override for Linea mainnet                    |
+| `LINEA_SEPOLIA_RPC_URL` | `linea-sepolia`         | Optional full HTTP RPC URL override for Linea Sepolia                    |
+
+### Explorer API keys
+
+Used when verifying contracts through Hardhat.
 
 | Variable            | Networks                       |
 | ------------------- | ------------------------------ |
@@ -37,170 +53,144 @@ Used when verifying contracts on the corresponding explorer (see `etherscan` in 
 
 ### Deployed proxy addresses and EAS
 
-Set after deployment (see `env/.env.*` examples). Used by upgrade, reimport, `check:upgradeability`, and related
-scripts.
+These values are stored in the `env/.env.<network>` templates and reused by upgrade, reimport, and optional deploy
+steps.
 
-| Variable                       | Description                                                              |
-| ------------------------------ | ------------------------------------------------------------------------ |
-| `ROUTER_ADDRESS`               | Transparent proxy address of the Router.                                 |
-| `ATTESTATION_REGISTRY_ADDRESS` | AttestationRegistry proxy.                                               |
-| `MODULE_REGISTRY_ADDRESS`      | ModuleRegistry proxy.                                                    |
-| `PORTAL_REGISTRY_ADDRESS`      | PortalRegistry proxy.                                                    |
-| `SCHEMA_REGISTRY_ADDRESS`      | SchemaRegistry proxy.                                                    |
-| `ATTESTATION_READER_ADDRESS`   | AttestationReader proxy (optional; omit or leave empty if not deployed). |
-| `EAS_REGISTRY_ADDRESS`         | EAS registry address on the chain (for EAS deploy/upgrade flows).        |
+| Variable                       | Description                                                 |
+| ------------------------------ | ----------------------------------------------------------- |
+| `ROUTER_ADDRESS`               | Router proxy address                                        |
+| `ATTESTATION_REGISTRY_ADDRESS` | AttestationRegistry proxy address                           |
+| `MODULE_REGISTRY_ADDRESS`      | ModuleRegistry proxy address                                |
+| `PORTAL_REGISTRY_ADDRESS`      | PortalRegistry proxy address                                |
+| `SCHEMA_REGISTRY_ADDRESS`      | SchemaRegistry proxy address                                |
+| `ATTESTATION_READER_ADDRESS`   | AttestationReader proxy address when deployed               |
+| `EAS_REGISTRY_ADDRESS`         | EAS registry address for `deploy:eas` / `upgrade:eas` flows |
 
 ### Script behavior
 
-| Variable                           | Default        | Description                                                                                                                                                                                                             |
-| ---------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `VERIFY_CONTRACTS`                 | verify enabled | Deploy and upgrade scripts verify on the explorer unless this is set to the string `false`.                                                                                                                             |
-| `UPGRADEABILITY_RPC_RETRIES`       | `5`            | Used by `check:upgradeability` only. Maximum number of **total** RPC attempts per contract check (including the first). Non-finite or negative values fall back to `5`. `0` is treated as **one** attempt (no retries). |
-| `UPGRADEABILITY_RPC_RETRY_BASE_MS` | `1500`         | Base delay in milliseconds for exponential backoff between transient RPC retries in `check:upgradeability`. Unset, empty, non-finite, or negative values use `1500`.                                                    |
+| Variable                           | Default        | Description                                                                |
+| ---------------------------------- | -------------- | -------------------------------------------------------------------------- |
+| `VERIFY_CONTRACTS`                 | verify enabled | Deploy and upgrade scripts verify unless this is explicitly set to `false` |
+| `UPGRADEABILITY_RPC_RETRIES`       | `5`            | Total RPC attempts per contract during `check:upgradeability`              |
+| `UPGRADEABILITY_RPC_RETRY_BASE_MS` | `1500`         | Base delay for exponential backoff during `check:upgradeability`           |
 
-## Development commands
+## Common Commands
 
-### Build contracts
+Run these commands from `contracts/`.
+
+| Command                                   | Purpose                                                             |
+| ----------------------------------------- | ------------------------------------------------------------------- |
+| `pnpm run build`                          | Build the contracts with Foundry                                    |
+| `pnpm run test`                           | Run the Foundry test suite                                          |
+| `pnpm run test:coverage`                  | Generate a local coverage report                                    |
+| `pnpm run check:size`                     | Check contract size against deployment limits                       |
+| `pnpm run check:implementations`          | Static upgrade-safety check for implementations                     |
+| `pnpm run check:upgradeability <network>` | Dynamic proxy upgradeability check against a deployed network       |
+| `pnpm run deploy <network>`               | Deploy Router + core registries and wire the Router                 |
+| `pnpm run deploy:eas <network>`           | Deploy the optional AttestationReader / EAS compatibility contract  |
+| `pnpm run deploy:post <network>`          | Create canonical schemas after the core deployment                  |
+| `pnpm run deploy:stdlib <network>`        | Deploy and register the standard library modules                    |
+| `pnpm run deploy:issuers <network>`       | Create the issuer schema, issuer modules, and the Issuers Portal    |
+| `pnpm run reimport <network>`             | Regenerate deployment JSON files from the proxy addresses in `.env` |
+| `pnpm run upgrade <network>`              | Upgrade the core registry proxies                                   |
+| `pnpm run upgrade:eas <network>`          | Upgrade the optional EAS compatibility contract                     |
+
+## Deploying a New Verax Instance
+
+### 1. Add network support when the chain is new to the repo
+
+If the target chain is not already configured, update:
+
+- `hardhat.config.ts` with the network and explorer configuration
+- `script/utils.ts` with `isTestnet` and the attestation ID chain prefix
+- `env/.env.<network>` with the new template
+
+### 2. Deploy the core stack
+
+Run:
 
 ```bash
-forge build
+pnpm run deploy <network>
 ```
 
-### Test contracts
+This script deploys:
+
+- `Router`
+- `AttestationRegistry`
+- `ModuleRegistry`
+- `PortalRegistry`
+- `SchemaRegistry`
+
+It then updates `Router` with the deployed registry addresses.
+
+`deployEverything.ts` does **not** deploy:
+
+- `AttestationReader`
+- standard library modules
+- canonical schemas
+- issuer-specific helper modules and portal
+
+If explorer verification is not available, use `pnpm run deploy:no-verify <network>`.
+
+### 3. Optionally deploy EAS compatibility
+
+If the network has an EAS instance and you want the compatibility reader:
+
+1. set `EAS_REGISTRY_ADDRESS` in `.env`
+2. run `pnpm run deploy:eas <network>`
+3. copy the resulting `ATTESTATION_READER_ADDRESS` back into `.env` and the matching env template
+
+### 4. Bootstrap post-deployment assets
+
+After the core proxies exist, use the optional scripts as needed:
+
+- `pnpm run deploy:post <network>` creates the canonical `Relationship`, `namedGraphRelationship`, and `Offchain`
+  schemas
+- `pnpm run deploy:stdlib <network>` deploys and registers `ECDSAModule`, `ERC1271Module`, `FeeModule`, `IndexerModule`,
+  `IssuersModule`, `SchemaModule`, and `SenderModule`
+- `pnpm run deploy:issuers <network>` creates the `Issuer` schema, deploys issuer-specific modules, and deploys the
+  `Issuers Portal`
+
+### 5. Finalize tracked deployment data
+
+Once proxy addresses are known:
+
+1. store them in `.env` and `env/.env.<network>`
+2. run `pnpm run reimport <network>`
+
+`reimport` regenerates the deployment JSON files in `contracts/deployments/` from the proxy addresses in `.env`. Run it
+from the branch or commit that corresponds to the deployed contracts version.
+
+## Upgrading an Existing Deployment
+
+Recommended flow:
+
+1. `pnpm run check:implementations`
+2. `pnpm run check:upgradeability <network>`
+3. `pnpm run upgrade <network>`
+4. optionally `pnpm run upgrade:eas <network>`
+5. `pnpm run reimport <network>`
+
+If you need to skip explorer verification during the upgrade, use the `:no-verify` variants.
+
+## Publishing the Contracts Package
+
+The published package is
+[`@verax-attestation-registry/verax-contracts`](https://www.npmjs.com/package/@verax-attestation-registry/verax-contracts).
+
+From `contracts/`:
 
 ```bash
-forge test
+pnpm run publish:dry-run
+pnpm run publish:public
 ```
 
-### Generate a coverage report
+`prepublishOnly` already runs `clean`, `lint`, `build`, and `test`.
 
-```bash
-forge coverage
-```
+## Notes for Contributors
 
-## Deployment of a new Verax instance
-
-### 1. Environment setup
-
-1. Copy an `.env.NETWORK` file from the `env` folder to a `.env` file: `cp env/.env.linea .env`
-2. Fill it with your Infura key, your private key and your chain explorer API key (see
-   [Environment variables reference](#environment-variables-reference); optional variables are listed as comments in
-   each `env/.env.*` template)
-3. Update the `hardhat.config.ts` file with:
-   1. A new entry to the `networks` object
-   2. A new entry to the `etherscan.apiKey` object
-   3. A new entry to the `etherscan.customChains` array
-4. Add a new entry to the `script/utils.ts` file to define:
-   1. If the network is a testnet or a mainnet (cf. `isTestnet`)
-   2. The network's dedicated chain prefix (cf. `chainPrefix`)
-
-### 2. Registries deployments
-
-1. Run the `pnpm run deploy NETWORK_NAME` command (replacing `NETWORK_NAME` with the name of the targeted network)
-   - If you want to skip contract verification (e.g., for networks without a functioning explorer), use
-     `pnpm run deploy:no-verify NETWORK_NAME` instead
-2. Note down the summarized addresses (proxies), and the total logs can be of interest too
-3. Add the addresses of the Verax registries to the `.env.NETWORK` and your `.env` files
-
-### 3. EAS compatibility
-
-If the targeted network benefits from an EAS instance, you can deploy the contract enabling the EAS-Verax compatibility.
-
-1. Add the address of the EAS registry to the `EAS_REGISTRY_ADDRESS` value in your `.env` file
-2. Run the `pnpm run deploy:eas NETWORK_NAME` command (replacing `NETWORK_NAME` with the name of the targeted network)
-   - If you want to skip contract verification, use `pnpm run deploy:eas:no-verify NETWORK_NAME` instead
-3. Note down the Attestation Reader contract address
-4. Add the Attestation Reader contract address to the `.env.NETWORK` and your `.env` files
-
-### 4. Platform bootstrapping
-
-#### 4.1. On a mainnet instance
-
-1. Gather the first list of Issuer addresses
-2. Set the issuers via the PortalRegistry’s `setIssuers` method
-
-#### 4.2. On all instances
-
-1. Deploy an instance of DefaultPortal via the PortalRegistry’s `deployDefaultPortal` method and note down its address
-2. Verify this contract via `npx hardhat verify --network NETWORK_NAME ADDRESS` (replacing `NETWORK_NAME` with the name
-   of the targeted network and `ADDRESS` with the address of the freshly deployed `DefaultPortal`)
-
-## Verax contracts upgrade
-
-### 1. Check all registry implementations follow the upgradeability rules
-
-Run `pnpm run check:implementations` to check if the local versions of the registries follow the upgradeability rules.
-
-:warning: Note: this is a static check, not run against the already deployed contracts.
-
-### 2. Check all registry implementations are upgradeable
-
-Run `pnpm run check:upgradeability NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to
-check if the already deployed registries are upgradable to the new local versions.
-
-:warning: Note: this is a dynamic check, run against the already deployed contracts.
-
-RPC endpoints can return transient errors during `eth_getStorageAt` (EIP-1967 reads). The script retries those
-automatically; see `UPGRADEABILITY_RPC_RETRIES` and `UPGRADEABILITY_RPC_RETRY_BASE_MS` in
-[Environment variables reference](#environment-variables-reference). For Linea RPC overrides, use
-`LINEA_MAINNET_RPC_URL` or `LINEA_SEPOLIA_RPC_URL`.
-
-### 3. Check the contracts size
-
-Run `pnpm run check:size` to check if all the contracts have a size below the threshold for deployment (24KiB).
-
-### 4. Do upgrade
-
-1. Check your `.env` file contains the address of all the proxies for the targeted network
-2. Upgrade only the implementations that have changed since the last upgrade via the `pnpm run upgrade NETWORK_NAME`
-   command
-   - If you want to skip contract verification, use `pnpm run upgrade:no-verify NETWORK_NAME` instead
-3. _Optional_: If you need to upgrade EAS-related contracts, use the `pnpm run upgrade:eas NETWORK_NAME` command
-   - If you want to skip contract verification, use `pnpm run upgrade:eas:no-verify NETWORK_NAME` instead
-
-:warning: Note: Forcing the redeployment of all the implementations is more expensive!
-
-### 5. Update the network files
-
-:warning: Note: this script must only be run on a branch/commit corresponding to the version of the contracts deployed
-on the targeted network!.
-
-Run `pnpm run reimport NETWORK_NAME` (replacing `NETWORK_NAME` with the name of the targeted network) to re-generate the
-network files describing the deployed contracts.
-
-:warning: Note: This step is mandatory to avoid being desynchronized.
-
-### 6. Deploy the contract library
-
-The core contracts are available on [npm](https://www.npmjs.com/package/@verax-attestation-registry/verax-contracts) as
-a library. To deploy the library, follow the steps below:
-
-1. Upgrade the package version in [package.json](./package.json)
-2. Test the deployment on npm
-   ```bash
-   pnpm run publish:dry-run
-   ```
-3. Deploy on npm
-   ```bash
-   pnpm run publish:public
-   ```
-
-## Utils
-
-### Verify with arguments
-
-Change the arguments you want to use for the verify action in `contracts/script/arguments.ts`, then run:
-
-```
-npx hardhat verify --network NETWORK_NAME CONTRACT_ADDRESS --constructor-args contracts/script/arguments.ts
-```
-
-## Important Notes
-
-### Removal of Issuers and Schemas ownership
-
-Issuers may have Schemas associated with them. When removing issuers, you will need to reassign schema ownership by
-calling the following methods :
-
-1. updateSchemaIssuer
-2. bulkUpdateSchemasIssuers
+- The portal allowlist is managed through `PortalRegistry.setIssuer(address)`, not `setIssuers`.
+- Removing or rotating an issuer may require `SchemaRegistry.updateSchemaIssuer(...)` or
+  `SchemaRegistry.bulkUpdateSchemasIssuers(...)` to keep schema ownership consistent.
+- The env templates under `env/` are part of the public operator surface. If public addresses change, update those
+  templates and the root `README.md` together.

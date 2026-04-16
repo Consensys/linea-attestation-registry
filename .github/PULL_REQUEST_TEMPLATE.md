@@ -1,19 +1,33 @@
-## What does this PR do?
+## Summary
 
-### Related ticket
+Describe the change and why it is needed.
 
-Fixes #
+## Related issue
 
-### Type of change
+Closes #
+
+## Type of change
 
 - [ ] Chore
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Documentation update
 
-## Check list
+## Affected areas
 
-- [ ] My&nbsp;contribution&nbsp;follows&nbsp;the&nbsp;project's&nbsp;[guidelines](https://github.com/Consensys/linea-attestation-registry/blob/dev/CONTRIBUTING.md)
-- [ ] I have made corresponding changes to the documentation
-- [ ] Unit tests for any smart contract change
-- [ ] Contracts and functions are documented
+- [ ] Root / contributor docs
+- [ ] Contracts
+- [ ] Examples
+- [ ] SDK
+- [ ] Subgraph
+- [ ] Explorer
+- [ ] Tutorial
+- [ ] GitBook source (`doc/`)
+
+## Validation
+
+- [ ] I followed the contributor guide in
+      [`CONTRIBUTING.md`](https://github.com/Consensys/linea-attestation-registry/blob/dev/CONTRIBUTING.md)
+- [ ] I ran the relevant local commands for the areas I changed
+- [ ] I updated documentation, env/config notes, or public matrices when behavior changed
+- [ ] I noted any follow-up deployment or release work if applicable

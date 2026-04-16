@@ -1,22 +1,66 @@
 # Verax Attestation Registry - Explorer
 
-This package manages the explorer of Verax Attestation Registry, hosted at [explorer.ver.ax](https://explorer.ver.ax).
+This workspace owns the public explorer hosted at [explorer.ver.ax](https://explorer.ver.ax).
 
-## Getting Started
+## Local Setup
 
-### Launch in development mode
+From the monorepo root:
 
 ```bash
-pnpm run dev
+pnpm install
 ```
 
-## Deployment of a new Verax instance
+Inside `explorer/`, copy the example env file:
 
-When a new Verax instance is deployed, the explorer must be updated with the environment.
+```bash
+cp .env.example .env
+```
 
-1. Add the newly deployed Verax instance's configuration to the list of chains in
-   [src/config/index.ts](src/config/index.tsx)
-2. Add the network logo in [src/assets/networks](src/assets/networks)
-3. Once the corresponding PR is approved and merged, re-deploy the explorer via the manual
-   "[Deploy production explorer](https://github.com/Consensys/linea-attestation-registry/actions/workflows/explorer-deploy-prod.yml)"
-   GitHub Action
+Expected variables:
+
+- `VITE_WALLETCONNECT_PROJECT_ID`
+- `VITE_INFURA_API_KEY`
+- `VITE_THE_GRAPH_API_KEY`
+
+If `VITE_THE_GRAPH_API_KEY` is omitted, the explorer falls back to the SDK default Studio URLs instead of the gateway
+overrides defined in `src/config/subgraphUrls.ts`.
+
+## Common Commands
+
+Run these commands from `explorer/`.
+
+| Command                  | Purpose                                   |
+| ------------------------ | ----------------------------------------- |
+| `pnpm run dev`           | Start the local development server        |
+| `pnpm run build`         | Type-check and build the app              |
+| `pnpm run build:netlify` | Build the Netlify-ready production bundle |
+| `pnpm run preview`       | Preview the production build locally      |
+| `pnpm run lint`          | Run ESLint                                |
+
+## Adding or Updating a Network
+
+When the explorer needs to support a new Verax deployment, update the files that define network behavior, not just the
+visual chain list.
+
+Core surfaces:
+
+- `src/config/index.tsx` for the chain entry, SDK defaults, RPC URL, and displayed metadata
+- `src/config/subgraphUrls.ts` for The Graph gateway overrides
+- `src/interfaces/config/index.ts` for `NetworkName`
+- `src/utils/networkResolver.ts` and related helpers that map attestation ID prefixes and chain names
+- `src/assets/networks/` for the network logo assets
+
+Follow the existing patterns for mainnet/testnet naming so the explorer stays aligned with:
+
+- the root `README.md` public matrix
+- `sdk/src/VeraxSdk.ts`
+- `contracts/script/utils.ts`
+
+## CI and Deployments
+
+The repo currently exposes two explorer deployment workflows:
+
+- pull requests touching `explorer/` get a preview deploy through `explorer-deploy-preview.yml`
+- maintainers can trigger production deployment through `explorer-deploy-prod.yml`
+
+Both workflows build the explorer with the same `VITE_*` secrets used in production.

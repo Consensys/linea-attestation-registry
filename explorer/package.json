@@ -65,7 +65,7 @@
     "eslint-plugin-react-hooks": "catalog:react",
     "eslint-plugin-react-refresh": "catalog:react",
     "globals": "catalog:eslint",
-    "postcss": "8.5.8",
+    "postcss": "8.5.10",
     "prettier": "catalog:core",
     "tailwindcss": "3.4.19",
     "typescript": "catalog:core",

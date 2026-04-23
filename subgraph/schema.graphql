@@ -1,4 +1,4 @@
-type Attestation @entity {
+type Attestation @entity(immutable: false) {
   id: ID!
   schema: Schema!
   replacedBy: Bytes!
@@ -16,7 +16,7 @@ type Attestation @entity {
   auditInformation: AuditInformation!
 }
 
-type Module @entity {
+type Module @entity(immutable: false) {
   id: ID!
   moduleAddress: Bytes!
   name: String!
@@ -24,7 +24,7 @@ type Module @entity {
   auditInformation: AuditInformation!
 }
 
-type Portal @entity {
+type Portal @entity(immutable: false) {
   id: ID!
   ownerAddress: Bytes!
   modules: [Bytes!]
@@ -36,7 +36,7 @@ type Portal @entity {
   auditInformation: AuditInformation!
 }
 
-type Schema @entity {
+type Schema @entity(immutable: false) {
   id: ID!
   name: String!
   description: String!
@@ -46,7 +46,7 @@ type Schema @entity {
   auditInformation: AuditInformation!
 }
 
-type Counter @entity {
+type Counter @entity(immutable: false) {
   id: ID!
   attestations: Int
   modules: Int
@@ -54,26 +54,26 @@ type Counter @entity {
   schemas: Int
 }
 
-type Issuer @entity {
+type Issuer @entity(immutable: false) {
   id: ID!
   auditInformation: AuditInformation!
 }
 
-type RegistryVersion @entity {
+type RegistryVersion @entity(immutable: false) {
   id: ID!
   versionNumber: Int
   timestamp: BigInt
   auditInformation: AuditInformation!
 }
 
-type AuditInformation @entity {
+type AuditInformation @entity(immutable: false) {
   id: ID!
   creation: Audit!
   lastModification: Audit!
   modifications: [Audit!]!
 }
 
-type Audit @entity {
+type Audit @entity(immutable: false) {
   id: ID!
   blockNumber: BigInt!
   transactionHash: Bytes!
@@ -84,7 +84,7 @@ type Audit @entity {
   gasPrice: BigInt
 }
 
-type RegistryUpdate @entity {
+type RegistryUpdate @entity(immutable: false) {
   id: ID!
   registryType: String!
   registryName: String!

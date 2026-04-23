@@ -8,18 +8,18 @@ packages:
 
 catalogs:
   core:
-    prettier: 3.8.1
+    prettier: 3.8.3
     typescript: 5.9.3
   eslint:
     '@eslint/js': 9.39.4
     eslint: 9.39.4
     eslint-plugin-import-x: 4.16.2
     globals: 16.5.0
-    typescript-eslint: 8.57.2
+    typescript-eslint: 8.58.2
   react:
     react: 19.2.5
-    react-dom: 19.2.4
-    '@tanstack/react-query': 5.95.2
+    react-dom: 19.2.5
+    '@tanstack/react-query': 5.99.2
     '@types/react': 19.2.14
     '@types/react-dom': 19.2.3
     eslint-plugin-react: 7.37.5
@@ -31,42 +31,36 @@ catalogs:
     '@openzeppelin/contracts-upgradeable': 4.9.6
     solhint: 5.2.0
   types:
-    '@types/node': 22.19.15
+    '@types/node': 22.19.17
   web3:
-    viem: 2.47.6
+    viem: 2.48.1
 
 overrides:
-  '@graphprotocol/graph-cli>js-yaml': '3.14.1' # Required
-  '@graphprotocol/graph-cli>yaml': '1.10.2' # Required
-  ajv@<6.14.0: '>=6.14.0'
-  ajv@>=7.0.0-alpha.0 <8.18.0: '>=8.18.0'
-  axios@<0.30.0: '>=0.30.0'
-  axios@<=0.30.2: '>=0.30.3'
-  axios@>=0.8.1 <0.28.0: '>=0.28.0'
+  '@ardatan/relay-compiler>immutable': '5.1.5'
+  '@graphprotocol/graph-cli>js-yaml': '3.14.2' # Required by graph-cli
+  '@graphprotocol/graph-cli>undici': '7.24.0'
+  '@graphprotocol/graph-cli>yaml': '2.8.3'
+  '@nomicfoundation/hardhat-verify>undici': '7.24.0'
+  axios@<0.31.0: '>=0.31.0'
   bn.js@<4.12.3: '>=4.12.3'
   cookie@<0.7.0: '>=0.7.0'
   cross-spawn@>=7.0.0 <7.0.5: '>=7.0.5'
   ejs@<3.1.10: '>=3.1.10'
-  fast-xml-parser@>=4.0.0-beta.3 <=5.5.5: '>=5.5.6'
-  fast-xml-parser@>=4.0.0-beta.3 <=5.5.6: '>=5.5.7'
-  fast-xml-parser@>=5.0.0 <5.3.5: '>=5.3.5'
-  fast-xml-parser@>=5.0.0 <5.3.6: '>=5.3.6'
-  fast-xml-parser@>=5.0.0 <5.3.8: '>=5.3.8'
-  fast-xml-parser@>=5.0.9 <=5.3.3: '>=5.3.4'
+  fast-xml-parser@>=4.0.0-beta.3 <5.7.0: '>=5.7.0'
+  follow-redirects@<1.16.0: '>=1.16.0'
+  glob@<11.1.0: '>=11.1.0'
+  hardhat>undici: '7.24.0'
+  hono@<4.12.14: '>=4.12.14'
   immutable@<3.8.3: '>=3.8.3'
   immutable@>=4.0.0-rc.1 <4.3.8: '>=4.3.8'
+  immutable@>=5.0.0 <5.1.5: '>=5.1.5'
   js-yaml@<3.14.2: '>=3.14.2'
-  lodash@>=4.0.0 <=4.17.22: '>=4.17.23'
-  parse-duration@<2.1.3: '>=2.1.3'
+  lodash@>=4.0.0 <=4.17.23: '>=4.18.0'
+  protobufjs@<7.5.5: '>=7.5.5'
   semver@>=7.0.0 <7.5.2: '>=7.5.2'
-  serialize-javascript@<=7.0.2: '>=7.0.3'
-  solhint>ajv: '6.12.6' # Required
-  tar@<7.5.7: '>=7.5.7'
-  tar@<7.5.8: '>=7.5.8'
-  tar@<=7.5.10: '>=7.5.11'
-  tar@<=7.5.2: '>=7.5.3'
-  tar@<=7.5.3: '>=7.5.4'
-  tar@<=7.5.9: '>=7.5.10'
-  tmp@<=0.2.3: '>=0.2.4'
-  undici@<6.23.0: '>=6.23.0'
-  undici@<6.24.0: '>=6.24.0'
+  serialize-javascript@<=7.0.4: '>=7.0.5'
+  solhint>ajv: '6.14.0' # Required by solhint 5.x
+  tar@<7.5.13: '>=7.5.13'
+  tmp@<=0.2.3: '>=0.2.5'
+  undici@<6.24.1: '>=6.24.1'
+  undici@>=7.0.0 <7.24.0: '>=7.24.0'

@@ -25,7 +25,7 @@
     "@fortawesome/fontawesome-svg-core": "7.2.0",
     "@fortawesome/free-brands-svg-icons": "7.2.0",
     "@fortawesome/free-solid-svg-icons": "7.2.0",
-    "@fortawesome/react-fontawesome": "3.3.0",
+    "@fortawesome/react-fontawesome": "3.3.1",
     "@reown/appkit": "1.8.19",
     "@reown/appkit-adapter-wagmi": "1.8.19",
     "@tanstack/react-query": "catalog:react",
@@ -34,12 +34,12 @@
     "react-dom": "catalog:react",
     "react-json-view-lite": "2.5.0",
     "viem": "catalog:web3",
-    "wagmi": "3.5.0"
+    "wagmi": "3.6.3"
   },
   "devDependencies": {
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "@vitejs/plugin-react": "5.1.4",
+    "@vitejs/plugin-react": "5.2.0",
     "prettier": "catalog:core",
     "typescript": "catalog:core",
     "vite": "7.3.2",

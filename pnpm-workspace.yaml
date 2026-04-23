@@ -36,11 +36,13 @@ catalogs:
     viem: 2.48.1
 
 overrides:
+  babel-jest>babel-plugin-istanbul: '8.0.2'
+  '@jest/transform>babel-plugin-istanbul': '8.0.2'
   '@ardatan/relay-compiler>immutable': '5.1.5'
   '@graphprotocol/graph-cli>js-yaml': '3.14.2' # Required by graph-cli
   '@graphprotocol/graph-cli>undici': '7.24.0'
   '@graphprotocol/graph-cli>yaml': '2.8.3'
-  '@nomicfoundation/hardhat-verify>undici': '7.24.0'
+  '@nomicfoundation/hardhat-verify>undici': '6.24.1'
   axios@<0.31.0: '>=0.31.0'
   bn.js@<4.12.3: '>=4.12.3'
   cookie@<0.7.0: '>=0.7.0'
@@ -49,7 +51,7 @@ overrides:
   fast-xml-parser@>=4.0.0-beta.3 <5.7.0: '>=5.7.0'
   follow-redirects@<1.16.0: '>=1.16.0'
   glob@<11.1.0: '>=11.1.0'
-  hardhat>undici: '7.24.0'
+  hardhat>undici: '6.24.1'
   hono@<4.12.14: '>=4.12.14'
   immutable@<3.8.3: '>=3.8.3'
   immutable@>=4.0.0-rc.1 <4.3.8: '>=4.3.8'

@@ -48,7 +48,6 @@
     "tailwindcss-animate": "1.0.7",
     "usehooks-ts": "3.1.1",
     "viem": "catalog:web3",
-    "vite-tsconfig-paths": "5.1.4",
     "wagmi": "2.19.5"
   },
   "devDependencies": {
@@ -57,7 +56,7 @@
     "@types/react": "catalog:react",
     "@types/react-copy-to-clipboard": "5.0.7",
     "@types/react-dom": "catalog:react",
-    "@vitejs/plugin-react": "4.7.0",
+    "@vitejs/plugin-react": "6.0.1",
     "autoprefixer": "10.5.0",
     "eslint": "catalog:eslint",
     "eslint-plugin-import-x": "catalog:eslint",
@@ -70,8 +69,8 @@
     "tailwindcss": "3.4.19",
     "typescript": "catalog:core",
     "typescript-eslint": "catalog:eslint",
-    "vite": "6.4.2",
+    "vite": "8.0.10",
     "vite-plugin-radar": "catalog:react",
-    "vite-plugin-svgr": "4.5.0"
+    "vite-plugin-svgr": "5.2.0"
   }
 }

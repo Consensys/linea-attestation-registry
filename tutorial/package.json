@@ -39,10 +39,10 @@
   "devDependencies": {
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "@vitejs/plugin-react": "5.2.0",
+    "@vitejs/plugin-react": "6.0.1",
     "prettier": "catalog:core",
     "typescript": "catalog:core",
-    "vite": "7.3.2",
+    "vite": "8.0.10",
     "vite-plugin-radar": "catalog:react"
   }
 }

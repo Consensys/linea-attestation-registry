@@ -10,13 +10,3 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
-
-  # Maintain npm dependencies
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    commit-message:
-      prefix: "deps(global)"
-    labels:
-      - "dependencies"

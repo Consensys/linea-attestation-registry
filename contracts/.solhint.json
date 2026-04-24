@@ -16,6 +16,7 @@
     "named-parameters-mapping": "warn",
     "no-empty-blocks": "off",
     "not-rely-on-time": "off",
+    "use-natspec": "off",
     "var-name-mixedcase": "off",
     "gas-calldata-parameters": "warn"
   }

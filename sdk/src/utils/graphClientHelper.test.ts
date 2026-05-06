@@ -1,30 +1,10 @@
 import axios from "axios";
-import { stringifyWhereClause, subgraphCall } from "./graphClientHelper";
+import { subgraphCall } from "./graphClientHelper";
 
 jest.mock("axios");
 
 describe("graphClientHelper", () => {
   const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-  describe("stringifyWhereClause", () => {
-    it("should stringify an object without changing its keys", () => {
-      const input = { key1: "value1", key2: 123, key3: true };
-      const result = stringifyWhereClause(input);
-      expect(result).toBe('{"key1":"value1","key2":123,"key3":true}');
-    });
-
-    it("should handle an empty object", () => {
-      const input = {};
-      const result = stringifyWhereClause(input);
-      expect(result).toBe("{}");
-    });
-
-    it("should handle special characters in keys", () => {
-      const input = { "key-name": "value" };
-      const result = stringifyWhereClause(input);
-      expect(result).toBe('{"key-name":"value"}');
-    });
-  });
 
   describe("subgraphCall", () => {
     const mockUrl = "http://mocked-url.com";

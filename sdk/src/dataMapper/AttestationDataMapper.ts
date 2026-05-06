@@ -15,6 +15,15 @@ import { executeTransaction } from "../utils/transactionSender";
 import { getIPFSContent } from "../utils/ipfsClient";
 import { VeraxSdk } from "../VeraxSdk";
 
+type StructuredOffchainDataError = {
+  code: "MALFORMED_POINTER" | "MALFORMED_FETCHED_CONTENT";
+  message: string;
+};
+
+type EnrichedOffchainData = Omit<OffchainData, "error"> & {
+  error?: OffchainData["error"] | StructuredOffchainDataError;
+};
+
 export default class AttestationDataMapper extends BaseDataMapper<
   Attestation,
   Attestation_filter,
@@ -171,20 +180,39 @@ export default class AttestationDataMapper extends BaseDataMapper<
 
     // Check if data is stored off-chain
     if (attestation.schema.id === Constants.OFFCHAIN_DATA_SCHEMA_ID) {
-      attestation.offchainData = {
-        schemaId: (attestation.decodedPayload as OffchainData[])[0].schemaId,
-        uri: (attestation.decodedPayload as OffchainData[])[0].uri,
-      };
+      attestation.offchainData = this.getOffchainDataPointer(attestation.decodedPayload);
       attestation.decodedPayload = {};
+      if (attestation.offchainData.error) {
+        return;
+      }
       if (attestation.offchainData.uri.startsWith("ipfs://")) {
         try {
           const ipfsHash = attestation.offchainData.uri.split("//")[1];
           const response = await getIPFSContent(ipfsHash);
-          if (response.toString().startsWith("0x")) {
-            const offChainDataSchema = (await this.veraxSdk.schema.findOneById(
-              attestation.offchainData.schemaId,
-            )) as Schema;
-            attestation.decodedPayload = decodeWithRetry(offChainDataSchema.schema, attestation.attestationData as Hex);
+          const responseContent = response.toString();
+          if (responseContent.startsWith("0x")) {
+            const offChainDataSchema = (await this.veraxSdk.schema.findOneById(attestation.offchainData.schemaId)) as
+              | Schema
+              | undefined;
+
+            if (!offChainDataSchema) {
+              this.setStructuredOffchainDataError(attestation.offchainData, {
+                code: "MALFORMED_FETCHED_CONTENT",
+                message: "Malformed fetched off-chain content: referenced schema was not found.",
+              });
+              return;
+            }
+
+            const decodedPayload = decodeWithRetry(offChainDataSchema.schema, responseContent as Hex);
+            if (!decodedPayload.length) {
+              this.setStructuredOffchainDataError(attestation.offchainData, {
+                code: "MALFORMED_FETCHED_CONTENT",
+                message: "Malformed fetched off-chain content: could not decode IPFS response with referenced schema.",
+              });
+              return;
+            }
+
+            attestation.decodedPayload = decodedPayload as object;
           } else {
             attestation.decodedPayload = response as unknown as object;
           }
@@ -193,6 +221,43 @@ export default class AttestationDataMapper extends BaseDataMapper<
         }
       }
     }
+  }
+
+  private getOffchainDataPointer(decodedPayload: unknown): OffchainData {
+    const pointer = Array.isArray(decodedPayload) ? decodedPayload[0] : undefined;
+
+    if (
+      !this.isRecord(pointer) ||
+      typeof pointer.schemaId !== "string" ||
+      pointer.schemaId.length === 0 ||
+      typeof pointer.uri !== "string" ||
+      pointer.uri.length === 0
+    ) {
+      return this.createOffchainData("", "", {
+        code: "MALFORMED_POINTER",
+        message: "Malformed off-chain pointer: expected decoded payload with string schemaId and uri.",
+      });
+    }
+
+    return this.createOffchainData(pointer.schemaId, pointer.uri);
+  }
+
+  private createOffchainData(schemaId: string, uri: string, error?: StructuredOffchainDataError): OffchainData {
+    const offchainData: EnrichedOffchainData = { schemaId, uri };
+
+    if (error) {
+      offchainData.error = error;
+    }
+
+    return offchainData as OffchainData;
+  }
+
+  private setStructuredOffchainDataError(offchainData: OffchainData, error: StructuredOffchainDataError) {
+    (offchainData as EnrichedOffchainData).error = error;
+  }
+
+  private isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === "object" && value !== null && !Array.isArray(value);
   }
 
   async getRelatedAttestations(id: string) {

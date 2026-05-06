@@ -49,13 +49,14 @@ describe("ModuleDataMapper", () => {
     const result = await moduleDataMapper.findOneById("1");
 
     expect(subgraphCall).toHaveBeenCalledWith(
-      `query get_module { module(id: "1") {
+      `query get_module($id: ID!) { module(id: $id) {
         id
         moduleAddress
         name
         description
   } }`,
       "http://mock-subgraph.com",
+      { id: "1" },
     );
     expect(result).toEqual(mockData.data.module);
   });
@@ -80,26 +81,13 @@ describe("ModuleDataMapper", () => {
 
     const result = await moduleDataMapper.findBy();
 
-    expect(subgraphCall).toHaveBeenCalledWith(
-      `
-        query get_modules{
-          modules(
-            first: 100
-            skip: 0
-            where: null
-            orderBy: null
-            orderDirection: null
-          )
-          {
-        id
-        moduleAddress
-        name
-        description
-  }
-        }
-    `,
-      mockConf.subgraphUrl,
-    );
+    expect(subgraphCall).toHaveBeenCalledWith(expect.stringContaining("$where: Module_filter"), mockConf.subgraphUrl, {
+      first: 100,
+      skip: 0,
+      where: null,
+      orderBy: null,
+      orderDirection: null,
+    });
     expect(result).toEqual(mockData.data.modules);
   });
 

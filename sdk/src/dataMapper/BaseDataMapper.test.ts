@@ -4,7 +4,7 @@ import { lineaSepolia } from "viem/chains";
 
 import { ChainName, Conf } from "../types";
 import { SDKMode, VeraxSdk } from "../VeraxSdk";
-import { subgraphCall, stringifyWhereClause } from "../utils/graphClientHelper";
+import { subgraphCall } from "../utils/graphClientHelper";
 import { getCustomGraphSDKForChains } from "../utils/graphClientBuilder";
 import { getSDKForChains } from "../utils/meshInstanceManager";
 import { getConfiguredSubgraphUrl } from "../utils/urlResolver";
@@ -25,6 +25,11 @@ type TestFilter = {
 
 class MockDataMapper extends BaseDataMapper<TestType, TestFilter, unknown> {
   protected typeName = "TestType";
+  protected gqlInterface = "{ id, name }";
+}
+
+class MockModuleDataMapper extends BaseDataMapper<TestType, Record<string, unknown>, unknown> {
+  protected typeName = "module";
   protected gqlInterface = "{ id, name }";
 }
 
@@ -59,10 +64,17 @@ describe("BaseDataMapper", () => {
       const result = await mockDataMapper.findOneById("1");
 
       expect(subgraphCall).toHaveBeenCalledWith(
-        `query get_TestType { TestType(id: "1") { id, name } }`,
+        `query get_TestType($id: ID!) { TestType(id: $id) { id, name } }`,
         mockConf.subgraphUrl,
+        { id: "1" },
       );
       expect(result).toEqual({ id: "1", name: "Test" });
+    });
+
+    it("should reject unsafe ids before calling subgraphCall", async () => {
+      await expect(mockDataMapper.findOneById('1") { id } malicious { id: "2')).rejects.toThrow("Invalid TestType id");
+
+      expect(subgraphCall).not.toHaveBeenCalled();
     });
 
     it("should throw an error if the status is not 200", async () => {
@@ -97,25 +109,37 @@ describe("BaseDataMapper", () => {
       };
       (subgraphCall as jest.Mock).mockResolvedValueOnce(mockResponse);
 
-      const filter: TestFilter | undefined = { name: "Test" };
-      (stringifyWhereClause as jest.Mock).mockReturnValueOnce('{name:"Test"}');
+      const filter: TestFilter = { name: "Test" };
 
       const result = await mockDataMapper.findBy(10, 0, filter, "name", "asc");
 
       expect(subgraphCall).toHaveBeenCalledWith(
         `
-        query get_TestTypes{
+        query get_TestTypes(
+          $first: Int
+          $skip: Int
+          $where: TestType_filter
+          $orderBy: TestType_orderBy
+          $orderDirection: OrderDirection
+        ){
           TestTypes(
-            first: 10
-            skip: 0
-            where: {name:"Test"}
-            orderBy: name
-            orderDirection: asc
+            first: $first
+            skip: $skip
+            where: $where
+            orderBy: $orderBy
+            orderDirection: $orderDirection
           )
           { id, name }
         }
     `,
         mockConf.subgraphUrl,
+        {
+          first: 10,
+          skip: 0,
+          where: filter,
+          orderBy: "name",
+          orderDirection: "asc",
+        },
       );
       expect(result).toEqual([
         { id: "1", name: "Test1" },
@@ -129,6 +153,13 @@ describe("BaseDataMapper", () => {
 
       const result = await mockDataMapper.findBy();
 
+      expect(subgraphCall).toHaveBeenCalledWith(expect.any(String), mockConf.subgraphUrl, {
+        first: 100,
+        skip: 0,
+        where: null,
+        orderBy: null,
+        orderDirection: null,
+      });
       expect(result).toEqual([]);
     });
 
@@ -146,6 +177,67 @@ describe("BaseDataMapper", () => {
       (subgraphCall as jest.Mock).mockResolvedValueOnce(mockResponse);
 
       await expect(mockDataMapper.findBy()).rejects.toThrow("Error(s) while fetching TestTypes");
+    });
+
+    it("should reject invalid pagination before calling subgraphCall", async () => {
+      await expect(mockDataMapper.findBy(-1)).rejects.toThrow("Invalid pagination value for first");
+      await expect(mockDataMapper.findBy(10, 1.5)).rejects.toThrow("Invalid pagination value for skip");
+
+      expect(subgraphCall).not.toHaveBeenCalled();
+    });
+
+    it("should reject invalid order direction before calling subgraphCall", async () => {
+      await expect(mockDataMapper.findBy(10, 0, undefined, undefined, "sideways" as never)).rejects.toThrow(
+        "Invalid orderDirection for TestTypes",
+      );
+
+      expect(subgraphCall).not.toHaveBeenCalled();
+    });
+
+    it("should reject unsafe order fields before calling subgraphCall", async () => {
+      await expect(mockDataMapper.findBy(10, 0, undefined, "name) { id }" as never)).rejects.toThrow(
+        "Invalid orderBy field for TestTypes",
+      );
+
+      expect(subgraphCall).not.toHaveBeenCalled();
+    });
+
+    it("should reject unknown order fields for known mapper types before calling subgraphCall", async () => {
+      const moduleMapper = new MockModuleDataMapper(mockConf, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+
+      await expect(moduleMapper.findBy(10, 0, undefined, "unknownField")).rejects.toThrow(
+        "Invalid orderBy field for modules",
+      );
+
+      expect(subgraphCall).not.toHaveBeenCalled();
+    });
+
+    it("should reject unsafe filter keys before calling subgraphCall", async () => {
+      await expect(mockDataMapper.findBy(10, 0, { 'name") { id }': "Test" } as unknown as TestFilter)).rejects.toThrow(
+        'Invalid filter key "where.name") { id }"',
+      );
+
+      expect(subgraphCall).not.toHaveBeenCalled();
+    });
+
+    it("should reject unknown filter keys for known mapper types before calling subgraphCall", async () => {
+      const moduleMapper = new MockModuleDataMapper(mockConf, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+
+      await expect(moduleMapper.findBy(10, 0, { notAFilter: "Test" })).rejects.toThrow(
+        'Invalid filter key "where.notAFilter"',
+      );
+
+      expect(subgraphCall).not.toHaveBeenCalled();
+    });
+
+    it("should validate nested known filters before calling subgraphCall", async () => {
+      const moduleMapper = new MockModuleDataMapper(mockConf, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+
+      await expect(
+        moduleMapper.findBy(10, 0, { auditInformation_: { creation_: { badField: "Test" } } }),
+      ).rejects.toThrow('Invalid filter key "where.auditInformation_.creation_.badField"');
+
+      expect(subgraphCall).not.toHaveBeenCalled();
     });
   });
 

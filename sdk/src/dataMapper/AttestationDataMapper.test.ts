@@ -60,27 +60,46 @@ describe("AttestationDataMapper", () => {
     offchainData: undefined,
   };
 
+  const createMockAttestation = (overrides: Partial<Attestation> = {}): Attestation => ({
+    ...mockAttestation,
+    schema: {
+      ...mockAttestation.schema,
+    },
+    portal: {
+      ...mockAttestation.portal,
+    },
+    offchainData: undefined,
+    ...overrides,
+  });
+
   const mockWeb3Client = {} as PublicClient;
   const mockWalletClient = {} as WalletClient;
-  const mockVeraxSdk = {} as VeraxSdk;
+  const mockVeraxSdk = {
+    schema: {
+      findOneById: jest.fn(),
+    },
+  } as unknown as VeraxSdk;
 
   beforeEach(() => {
     attestationDataMapper = new AttestationDataMapper(mockConf, mockWeb3Client, mockVeraxSdk, mockWalletClient);
+    (attestationDataMapper as unknown as { veraxSdk: VeraxSdk }).veraxSdk = mockVeraxSdk;
     jest.clearAllMocks();
   });
 
   describe("findOneById", () => {
     it("should find attestation by id and enrich it", async () => {
-      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(mockAttestation);
+      const attestation = createMockAttestation();
+      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(attestation);
       (decodeWithRetry as jest.Mock).mockReturnValue([
         { schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID, uri: "ipfs://QmHash" },
       ]);
+      (getIPFSContent as jest.Mock).mockResolvedValue("data");
 
       const result = await attestationDataMapper.findOneById("1");
 
       expect(BaseDataMapper.prototype.findOneById).toHaveBeenCalledWith("1");
-      expect(decodeWithRetry).toHaveBeenCalledWith(mockAttestation.schema.schema, mockAttestation.attestationData);
-      expect(result).toEqual(mockAttestation);
+      expect(decodeWithRetry).toHaveBeenCalledWith(attestation.schema.schema, attestation.attestationData);
+      expect(result).toEqual(attestation);
     });
 
     it("should return undefined if no attestation is found", async () => {
@@ -95,11 +114,12 @@ describe("AttestationDataMapper", () => {
 
   describe("findBy", () => {
     it("should find attestations and enrich each of them", async () => {
-      const attestations = [mockAttestation];
+      const attestations = [createMockAttestation()];
       (BaseDataMapper.prototype.findBy as jest.Mock).mockResolvedValue(attestations);
       (decodeWithRetry as jest.Mock).mockReturnValue([
         { schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID, uri: "ipfs://QmHash" },
       ]);
+      (getIPFSContent as jest.Mock).mockResolvedValue("data");
 
       const result = await attestationDataMapper.findBy(10, 0, {}, "attestedDate", "desc");
 
@@ -111,7 +131,8 @@ describe("AttestationDataMapper", () => {
 
   describe("enrichAttestation", () => {
     it("should enrich attestation with decoded payload for off-chain data schema", async () => {
-      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(mockAttestation);
+      const attestation = createMockAttestation();
+      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(attestation);
       (decodeWithRetry as jest.Mock).mockReturnValue([
         { schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID, uri: "ipfs://QmHash" },
       ]);
@@ -127,7 +148,8 @@ describe("AttestationDataMapper", () => {
     });
 
     it("should set offchainData.error if IPFS request fails", async () => {
-      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(mockAttestation);
+      const attestation = createMockAttestation();
+      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(attestation);
       (decodeWithRetry as jest.Mock).mockReturnValue([
         { schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID, uri: "ipfs://QmHash" },
       ]);
@@ -139,9 +161,91 @@ describe("AttestationDataMapper", () => {
       expect(result?.offchainData?.error).toBe("IPFS Error");
     });
 
+    it.each([
+      { name: "empty decoded payload", decodedPayload: [] },
+      { name: "non-object pointer", decodedPayload: ["invalid"] },
+      { name: "non-string URI", decodedPayload: [{ schemaId: Constants.OFFCHAIN_DATA_SCHEMA_ID, uri: 42 }] },
+    ])("should set structured offchainData.error for malformed pointer: $name", async ({ decodedPayload }) => {
+      const attestation = createMockAttestation();
+      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(attestation);
+      (decodeWithRetry as jest.Mock).mockReturnValue(decodedPayload);
+
+      const result = await attestationDataMapper.findOneById("1");
+
+      expect(result?.decodedPayload).toEqual({});
+      expect(result?.offchainData).toEqual({
+        schemaId: "",
+        uri: "",
+        error: {
+          code: "MALFORMED_POINTER",
+          message: "Malformed off-chain pointer: expected decoded payload with string schemaId and uri.",
+        },
+      });
+      expect(getIPFSContent).not.toHaveBeenCalled();
+    });
+
+    it("should decode fetched IPFS hex content with the referenced schema", async () => {
+      const attestation = createMockAttestation();
+      const referencedSchema = {
+        id: "0xReferencedSchema",
+        name: "Referenced Schema",
+        description: "Referenced schema",
+        context: "http://schema.org",
+        schema: "bool isBuidler",
+        attestationCounter: 1,
+      };
+      const decodedFetchedPayload = [{ isBuidler: true }];
+      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(attestation);
+      (decodeWithRetry as jest.Mock)
+        .mockReturnValueOnce([{ schemaId: referencedSchema.id, uri: "ipfs://QmHash" }])
+        .mockReturnValueOnce(decodedFetchedPayload);
+      (getIPFSContent as jest.Mock).mockResolvedValue("0x01");
+      (mockVeraxSdk.schema.findOneById as jest.Mock).mockResolvedValue(referencedSchema);
+
+      const result = await attestationDataMapper.findOneById("1");
+
+      expect(mockVeraxSdk.schema.findOneById).toHaveBeenCalledWith(referencedSchema.id);
+      expect(decodeWithRetry).toHaveBeenNthCalledWith(2, referencedSchema.schema, "0x01");
+      expect(result?.decodedPayload).toEqual(decodedFetchedPayload);
+      expect(result?.offchainData).toEqual({
+        schemaId: referencedSchema.id,
+        uri: "ipfs://QmHash",
+      });
+    });
+
+    it("should set structured offchainData.error if fetched IPFS hex content cannot be decoded", async () => {
+      const attestation = createMockAttestation();
+      const referencedSchema = {
+        id: "0xReferencedSchema",
+        name: "Referenced Schema",
+        description: "Referenced schema",
+        context: "http://schema.org",
+        schema: "bool isBuidler",
+        attestationCounter: 1,
+      };
+      (BaseDataMapper.prototype.findOneById as jest.Mock).mockResolvedValue(attestation);
+      (decodeWithRetry as jest.Mock)
+        .mockReturnValueOnce([{ schemaId: referencedSchema.id, uri: "ipfs://QmHash" }])
+        .mockReturnValueOnce([]);
+      (getIPFSContent as jest.Mock).mockResolvedValue("0x01");
+      (mockVeraxSdk.schema.findOneById as jest.Mock).mockResolvedValue(referencedSchema);
+
+      const result = await attestationDataMapper.findOneById("1");
+
+      expect(result?.decodedPayload).toEqual({});
+      expect(result?.offchainData).toEqual({
+        schemaId: referencedSchema.id,
+        uri: "ipfs://QmHash",
+        error: {
+          code: "MALFORMED_FETCHED_CONTENT",
+          message: "Malformed fetched off-chain content: could not decode IPFS response with referenced schema.",
+        },
+      });
+    });
+
     it("should not enrich if schema ID is not offchain data", async () => {
       const nonOffchainAttestation = {
-        ...mockAttestation,
+        ...createMockAttestation(),
         schema: { ...mockAttestation.schema, id: "0x123" },
         offchainData: undefined,
       };

@@ -39,7 +39,9 @@ export type Attestation = OnChainAttestation & {
   chainName?: string;
 };
 
-export type OffchainData = { schemaId: string; uri: string; error?: string };
+export type OffchainDataError = string | { code: string; message: string };
+
+export type OffchainData = { schemaId: string; uri: string; error?: OffchainDataError };
 
 export interface IPFSConfig {
   projectId: string;

@@ -49,7 +49,7 @@ describe("SchemaDataMapper", () => {
     const result = await schemaDataMapper.findOneById("1");
 
     expect(subgraphCall).toHaveBeenCalledWith(
-      `query get_schema { schema(id: "1") {
+      `query get_schema($id: ID!) { schema(id: $id) {
         id
         name
         description
@@ -58,6 +58,7 @@ describe("SchemaDataMapper", () => {
         attestationCounter
   } }`,
       "http://mock-subgraph.com",
+      { id: "1" },
     );
     expect(result).toEqual(mockData.data.schema);
   });
@@ -82,28 +83,13 @@ describe("SchemaDataMapper", () => {
 
     const result = await schemaDataMapper.findBy();
 
-    expect(subgraphCall).toHaveBeenCalledWith(
-      `
-        query get_schemas{
-          schemas(
-            first: 100
-            skip: 0
-            where: null
-            orderBy: null
-            orderDirection: null
-          )
-          {
-        id
-        name
-        description
-        context
-        schema
-        attestationCounter
-  }
-        }
-    `,
-      mockConf.subgraphUrl,
-    );
+    expect(subgraphCall).toHaveBeenCalledWith(expect.stringContaining("$where: Schema_filter"), mockConf.subgraphUrl, {
+      first: 100,
+      skip: 0,
+      where: null,
+      orderBy: null,
+      orderDirection: null,
+    });
     expect(result).toEqual(mockData.data.schemas);
   });
 

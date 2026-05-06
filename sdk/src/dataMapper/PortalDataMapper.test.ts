@@ -59,7 +59,7 @@ describe("PortalDataMapper", () => {
     const result = await portalDataMapper.findOneById("1");
 
     expect(subgraphCall).toHaveBeenCalledWith(
-      `query get_portal { portal(id: "1") {
+      `query get_portal($id: ID!) { portal(id: $id) {
         id
         ownerAddress
         modules
@@ -70,6 +70,7 @@ describe("PortalDataMapper", () => {
         attestationCounter
   } }`,
       "http://mock-subgraph.com",
+      { id: "1" },
     );
     expect(result).toEqual(mockData.data.portal);
   });
@@ -94,30 +95,13 @@ describe("PortalDataMapper", () => {
 
     const result = await portalDataMapper.findBy();
 
-    expect(subgraphCall).toHaveBeenCalledWith(
-      `
-        query get_portals{
-          portals(
-            first: 100
-            skip: 0
-            where: null
-            orderBy: null
-            orderDirection: null
-          )
-          {
-        id
-        ownerAddress
-        modules
-        isRevocable
-        name
-        description
-        ownerName
-        attestationCounter
-  }
-        }
-    `,
-      mockConf.subgraphUrl,
-    );
+    expect(subgraphCall).toHaveBeenCalledWith(expect.stringContaining("$where: Portal_filter"), mockConf.subgraphUrl, {
+      first: 100,
+      skip: 0,
+      where: null,
+      orderBy: null,
+      orderDirection: null,
+    });
     expect(result).toEqual(mockData.data.portals);
   });
 

@@ -5,13 +5,22 @@ on:
 
 permissions: {} # lock everything by default (least-privilege)
 
+concurrency:
+  group: production-release
+  cancel-in-progress: false
+
 jobs:
   release:
-    if:
-      github.actor == 'alainncls' || github.actor  == 'satyajeetkolhapure' || github.actor  == 'orbmis' ||
-      github.actor  == 'arthur-remy'
+    if: >-
+      github.ref == 'refs/heads/main' && (
+        github.actor == 'alainncls' ||
+        github.actor == 'satyajeetkolhapure' ||
+        github.actor == 'orbmis' ||
+        github.actor == 'arthur-remy'
+      )
 
     runs-on: ubuntu-latest
+    environment: production-release
     permissions:
       contents: read
 
@@ -20,6 +29,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: main
           token: ${{ secrets.PROD_RELEASER_GH_TOKEN }}
 
       - name: "Run release script"

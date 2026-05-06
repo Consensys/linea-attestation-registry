@@ -7,11 +7,14 @@ permissions: {} # lock everything by default (least-privilege)
 
 jobs:
   deploy-explorer-prod:
-    if:
-      github.actor == 'alainncls' || github.actor  == 'satyajeetkolhapure' || github.actor  == 'orbmis' ||
-      github.actor  == 'arthur-remy' || github.actor  == 'ars9' || github.actor  == 'Solniechniy'
+    if: >-
+      github.ref == 'refs/heads/main' && (
+        github.actor == 'alainncls' || github.actor == 'satyajeetkolhapure' || github.actor == 'orbmis' ||
+        github.actor == 'arthur-remy' || github.actor == 'ars9' || github.actor == 'Solniechniy'
+      )
 
     runs-on: ubuntu-latest
+    environment: explorer-production
     permissions:
       contents: read
 
@@ -34,12 +37,10 @@ jobs:
           VITE_THE_GRAPH_API_KEY: ${{ secrets.VITE_THE_GRAPH_API_KEY }}
 
       - name: Deploy explorer to Netlify
-        uses: netlify/actions/cli@master
+        run: pnpm exec netlify deploy --dir=dist --site="$NETLIFY_SITE_ID" --prod --no-build
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        with:
-          args: deploy --dir=./explorer/dist --filter explorer --prod --no-build
 
       - name: Add explorer deployment summary
         run: |

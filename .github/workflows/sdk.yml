@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup environment
         uses: ./.github/actions/setup-env
@@ -45,7 +45,7 @@ jobs:
         if: env.CODECOV_TOKEN != ''
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           files: ./sdk/lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -53,7 +53,7 @@ jobs:
           verbose: true
 
       - name: Check test coverage
-        uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
+        uses: terencetcf/github-actions-lcov-minimum-coverage-checker@537e486d32b4763f3be8fbe81a79c3421071b190 # v1.4.1
         with:
           coverage-file: sdk/lcov.info
           minimum-coverage: 50
@@ -85,7 +85,7 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup environment
         uses: ./.github/actions/setup-env

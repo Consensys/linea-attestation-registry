@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
 
@@ -41,7 +41,7 @@ jobs:
         uses: ./.github/actions/setup-env
 
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
+        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
 
       - name: Show the Foundry config
         run: forge config
@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
 
@@ -78,7 +78,7 @@ jobs:
         uses: ./.github/actions/setup-env
 
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
+        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
 
       - name: Run the unit tests
         run: forge test
@@ -97,7 +97,7 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           fetch-depth: 0
@@ -116,7 +116,7 @@ jobs:
 
       - name: Install Foundry
         if: steps.check-changes.outputs.changed == 'true'
-        uses: foundry-rs/foundry-toolchain@v1
+        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
 
       - name: Generate the coverage report using the unit tests
         if: steps.check-changes.outputs.changed == 'true'
@@ -128,7 +128,7 @@ jobs:
 
       - name: Upload coverage report to Codecov
         if: steps.check-changes.outputs.changed == 'true' && env.CODECOV_TOKEN != ''
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           files: ./lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -137,7 +137,7 @@ jobs:
 
       - name: Check test coverage
         if: steps.check-changes.outputs.changed == 'true'
-        uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
+        uses: terencetcf/github-actions-lcov-minimum-coverage-checker@537e486d32b4763f3be8fbe81a79c3421071b190 # v1.4.1
         with:
           coverage-file: lcov.info
           minimum-coverage: 94
@@ -173,7 +173,7 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           fetch-depth: 0
@@ -192,7 +192,7 @@ jobs:
 
       - name: Install Foundry
         if: steps.check-changes.outputs.changed == 'true'
-        uses: foundry-rs/foundry-toolchain@v1
+        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
 
       - name: Check contracts implementations
         if: steps.check-changes.outputs.changed == 'true'
@@ -310,7 +310,7 @@ jobs:
 
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: recursive
           fetch-depth: 0
@@ -329,7 +329,7 @@ jobs:
 
       - name: Install Foundry
         if: steps.check-changes.outputs.changed == 'true'
-        uses: foundry-rs/foundry-toolchain@v1
+        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
 
       - name: Check contracts size
         if: steps.check-changes.outputs.changed == 'true'

@@ -9,7 +9,7 @@ import {
   OrderDirection,
 } from "../../.graphclient";
 import { handleError } from "../utils/errorHandler";
-import { Address, Hex, WriteContractParameters } from "viem";
+import { Address, createPublicClient, Hex, http, PublicClient, WriteContractParameters } from "viem";
 import { decodeWithRetry, encode } from "../utils/abiCoder";
 import { executeTransaction } from "../utils/transactionSender";
 import { getIPFSContent } from "../utils/ipfsClient";
@@ -29,6 +29,8 @@ export default class AttestationDataMapper extends BaseDataMapper<
   Attestation_filter,
   Attestation_orderBy
 > {
+  private readonly chainReadClients = new Map<ChainName, PublicClient>();
+
   typeName = "attestation";
   gqlInterface = `{
             id
@@ -120,7 +122,7 @@ export default class AttestationDataMapper extends BaseDataMapper<
     const countPromises = chainNames.map(async (chainName) => {
       try {
         const count = await this.executeReadMethodForChain(chainName, "getAttestationIdCounter", []);
-        return typeof count === "number" ? count : 0;
+        return this.toAttestationCount(count);
       } catch (_error) {
         return 0;
       }
@@ -346,23 +348,47 @@ export default class AttestationDataMapper extends BaseDataMapper<
   }
 
   private async executeReadMethodForChain(chainName: ChainName, functionName: string, args: unknown[]) {
-    const registryAddresses = {
-      [ChainName.LINEA_MAINNET]: VeraxSdk.DEFAULT_LINEA_MAINNET.attestationRegistryAddress,
-      [ChainName.LINEA_SEPOLIA]: VeraxSdk.DEFAULT_LINEA_SEPOLIA.attestationRegistryAddress,
-      [ChainName.ARBITRUM_MAINNET]: VeraxSdk.DEFAULT_ARBITRUM.attestationRegistryAddress,
-      [ChainName.ARBITRUM_SEPOLIA]: VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA.attestationRegistryAddress,
-      [ChainName.BASE_MAINNET]: VeraxSdk.DEFAULT_BASE.attestationRegistryAddress,
-      [ChainName.BASE_SEPOLIA]: VeraxSdk.DEFAULT_BASE_SEPOLIA.attestationRegistryAddress,
-      [ChainName.BSC_MAINNET]: VeraxSdk.DEFAULT_BSC.attestationRegistryAddress,
-      [ChainName.BSC_TESTNET]: VeraxSdk.DEFAULT_BSC_TESTNET.attestationRegistryAddress,
-    };
-
-    const contractAddress = registryAddresses[chainName] as Address;
-    if (!contractAddress) {
+    const chainConf = this.getConfForChain(chainName);
+    if (!chainConf?.attestationRegistryAddress) {
       throw new Error(`No contract address found for chain ${chainName}`);
     }
 
-    return this.executeReadMethod(functionName, args);
+    let chainReadClient = this.chainReadClients.get(chainName);
+    if (!chainReadClient) {
+      chainReadClient = createPublicClient({
+        chain: chainConf.chain,
+        transport: http(chainConf.rpcUrl),
+      });
+      this.chainReadClients.set(chainName, chainReadClient);
+    }
+
+    return chainReadClient.readContract({
+      abi: abiAttestationRegistry,
+      address: chainConf.attestationRegistryAddress,
+      functionName,
+      args,
+    });
+  }
+
+  private toAttestationCount(count: unknown) {
+    if (typeof count === "number") return count;
+    if (typeof count === "bigint") return Number(count);
+    return 0;
+  }
+
+  private getConfForChain(chainName: ChainName) {
+    const confByChainName = {
+      [ChainName.LINEA_MAINNET]: VeraxSdk.DEFAULT_LINEA_MAINNET,
+      [ChainName.LINEA_SEPOLIA]: VeraxSdk.DEFAULT_LINEA_SEPOLIA,
+      [ChainName.ARBITRUM_MAINNET]: VeraxSdk.DEFAULT_ARBITRUM,
+      [ChainName.ARBITRUM_SEPOLIA]: VeraxSdk.DEFAULT_ARBITRUM_SEPOLIA,
+      [ChainName.BASE_MAINNET]: VeraxSdk.DEFAULT_BASE,
+      [ChainName.BASE_SEPOLIA]: VeraxSdk.DEFAULT_BASE_SEPOLIA,
+      [ChainName.BSC_MAINNET]: VeraxSdk.DEFAULT_BSC,
+      [ChainName.BSC_TESTNET]: VeraxSdk.DEFAULT_BSC_TESTNET,
+    };
+
+    return confByChainName[chainName];
   }
 
   private async simulateContract(functionName: string, args: unknown[]): Promise<WriteContractParameters> {

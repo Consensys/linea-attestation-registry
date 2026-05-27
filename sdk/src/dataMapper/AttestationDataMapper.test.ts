@@ -2,15 +2,21 @@ import AttestationDataMapper from "./AttestationDataMapper";
 import { Constants, SDKMode } from "../utils/constants";
 import { decodeWithRetry } from "../utils/abiCoder";
 import { getIPFSContent } from "../utils/ipfsClient";
-import { Attestation, Conf } from "../types";
+import { abiAttestationRegistry } from "../abi/AttestationRegistry";
+import { Attestation, ChainName, Conf } from "../types";
 import BaseDataMapper from "./BaseDataMapper";
 import { lineaSepolia } from "viem/chains";
-import { PublicClient, WalletClient } from "viem";
+import { createPublicClient, http, PublicClient, WalletClient } from "viem";
 import { VeraxSdk } from "../VeraxSdk";
 
 jest.mock("./BaseDataMapper");
 jest.mock("../utils/abiCoder");
 jest.mock("../utils/ipfsClient");
+jest.mock("viem", () => ({
+  ...jest.requireActual("viem"),
+  createPublicClient: jest.fn(),
+  http: jest.fn(),
+}));
 
 describe("AttestationDataMapper", () => {
   let attestationDataMapper: AttestationDataMapper;
@@ -72,7 +78,7 @@ describe("AttestationDataMapper", () => {
     ...overrides,
   });
 
-  const mockWeb3Client = {} as PublicClient;
+  const mockWeb3Client = { readContract: jest.fn() } as unknown as PublicClient;
   const mockWalletClient = {} as WalletClient;
   const mockVeraxSdk = {
     schema: {
@@ -126,6 +132,50 @@ describe("AttestationDataMapper", () => {
       expect(BaseDataMapper.prototype.findBy).toHaveBeenCalledWith(10, 0, {}, "attestedDate", "desc");
       expect(decodeWithRetry).toHaveBeenCalledTimes(1);
       expect(result).toEqual(attestations);
+    });
+  });
+
+  describe("getAttestationCountMultiChain", () => {
+    it("should read counts from each requested chain and sum them", async () => {
+      const lineaReadContract = jest.fn().mockResolvedValue(7);
+      const arbitrumReadContract = jest.fn().mockResolvedValue(11n);
+      const lineaTransport = { name: "linea-transport" };
+      const arbitrumTransport = { name: "arbitrum-transport" };
+
+      (http as jest.Mock).mockReturnValueOnce(lineaTransport).mockReturnValueOnce(arbitrumTransport);
+      (createPublicClient as jest.Mock)
+        .mockReturnValueOnce({ readContract: lineaReadContract })
+        .mockReturnValueOnce({ readContract: arbitrumReadContract });
+
+      const result = await attestationDataMapper.getAttestationCountMultiChain([
+        ChainName.LINEA_MAINNET,
+        ChainName.ARBITRUM_MAINNET,
+      ]);
+
+      expect(result).toBe(18);
+      expect(mockWeb3Client.readContract).not.toHaveBeenCalled();
+      expect(http).toHaveBeenNthCalledWith(1, VeraxSdk.DEFAULT_LINEA_MAINNET.rpcUrl);
+      expect(http).toHaveBeenNthCalledWith(2, VeraxSdk.DEFAULT_ARBITRUM.rpcUrl);
+      expect(createPublicClient).toHaveBeenNthCalledWith(1, {
+        chain: VeraxSdk.DEFAULT_LINEA_MAINNET.chain,
+        transport: lineaTransport,
+      });
+      expect(createPublicClient).toHaveBeenNthCalledWith(2, {
+        chain: VeraxSdk.DEFAULT_ARBITRUM.chain,
+        transport: arbitrumTransport,
+      });
+      expect(lineaReadContract).toHaveBeenCalledWith({
+        abi: abiAttestationRegistry,
+        address: VeraxSdk.DEFAULT_LINEA_MAINNET.attestationRegistryAddress,
+        functionName: "getAttestationIdCounter",
+        args: [],
+      });
+      expect(arbitrumReadContract).toHaveBeenCalledWith({
+        abi: abiAttestationRegistry,
+        address: VeraxSdk.DEFAULT_ARBITRUM.attestationRegistryAddress,
+        functionName: "getAttestationIdCounter",
+        args: [],
+      });
     });
   });
 

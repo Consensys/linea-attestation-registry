@@ -173,7 +173,7 @@ const config: Config = createConfig(
     walletConnectProjectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "",
     chains: [mainnet, ...chains.map((el) => el.chain)],
     transports,
-  }),
+  }) as Parameters<typeof createConfig>[0],
 );
 
 const defaultChain = chains[0];

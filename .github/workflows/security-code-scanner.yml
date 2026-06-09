@@ -25,7 +25,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: MetaMask/action-security-code-scanner/.github/workflows/security-scan.yml@0a58c584f25e8c121927884b5e8a86e846090e5c
+    uses: MetaMask/action-security-code-scanner/.github/workflows/security-scan.yml@804432c736dd650a60f278814b20e0fbd8d2c460
     with:
       repo: ${{ github.repository }}
       scanner-ref: "0a58c584f25e8c121927884b5e8a86e846090e5c"

@@ -44,7 +44,7 @@ export const MenuButton: React.FC<MenuButtonProps> = ({ isOpened, setIsOpened, c
     vectorEffect: "non-scaling-stroke",
     initial: "closed",
     animate: variant,
-    transition: { type: "spring", stiffness: 260, damping: 20 },
+    transition: { type: "spring" as const, stiffness: 260, damping: 20 },
   };
   const width = 20;
   const height = 13;

@@ -1,9 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../tailwind.config.js";
 
 @layer base {
   :root {
@@ -94,11 +93,11 @@
 
 @layer base {
   * {
-    @apply font-inter;
+    font-family: "Inter", sans-serif;
   }
 
   body {
-    @apply bg-surface-primary;
+    background-color: var(--surface-primary);
   }
 
   html.dark body {
@@ -155,7 +154,9 @@
   }
 
   .scroll-lock {
-    @apply touch-none overflow-hidden overscroll-contain;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    touch-action: none;
   }
 }
 
@@ -176,19 +177,55 @@
   }
 
   .button-primary-white {
-    @apply text-button-primaryWhite-text bg-button-primaryWhite-background hover:bg-button-primaryWhite-hover dark:hover:bg-button-primaryWhite-hover;
+    background-color: var(--button-primary-white-background);
+    color: var(--button-primary-white-text);
+  }
+
+  .button-primary-white:hover,
+  .dark .button-primary-white:hover {
+    background-color: var(--button-primary-white-hover);
   }
 
   .button-primary-lime {
-    @apply text-button-primary-text bg-button-primary-background hover:bg-button-primary-hover dark:hover:bg-button-primary-hoverDark;
+    background-color: var(--button-primary-background);
+    color: var(--button-primary-text);
+  }
+
+  .button-primary-lime:hover {
+    background-color: var(--button-primary-hover);
+  }
+
+  .dark .button-primary-lime:hover {
+    background-color: var(--button-primary-dark-hover);
   }
 
   .button-primary-black {
-    @apply text-button-primaryBlack-text bg-button-primaryBlack-background hover:bg-button-primaryBlack-hover;
+    background-color: var(--button-primary-black-background);
+    color: var(--button-primary-black-text);
+  }
+
+  .button-primary-black:hover {
+    background-color: var(--button-primary-black-hover);
   }
 
   .button-outlined {
-    @apply border-button-outlined-border dark:border-button-outlined-borderDark border text-button-outlined-text dark:text-whiteDefault text-base hover:border-button-outlined-borderHover dark:hover:border-button-outlined-borderDarkHover;
+    border: 1px solid var(--button-outlined-border);
+    color: var(--button-outlined-text);
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .dark .button-outlined {
+    border-color: var(--button-outlined-border-dark);
+    color: var(--white-default);
+  }
+
+  .button-outlined:hover {
+    border-color: var(--button-outlined-border-hover);
+  }
+
+  .dark .button-outlined:hover {
+    border-color: var(--button-outlined-border-dark-hover);
   }
 
   .sort-arrows path {

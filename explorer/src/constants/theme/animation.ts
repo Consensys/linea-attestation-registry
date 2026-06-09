@@ -1,3 +1,5 @@
+import type { Variants } from "framer-motion";
+
 export const slideBurgerMenuAnimation = {
   open: {
     rotateX: 0,
@@ -21,4 +23,4 @@ export const slideBurgerMenuAnimation = {
       display: "none",
     },
   },
-};
+} satisfies Variants;

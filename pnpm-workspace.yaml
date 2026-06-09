@@ -15,12 +15,12 @@ catalogs:
     eslint: 9.39.4
     eslint-plugin-import-x: 4.16.2
     globals: 16.5.0
-    typescript-eslint: 8.58.2
+    typescript-eslint: 8.60.1
   react:
-    react: 19.2.5
-    react-dom: 19.2.5
-    '@tanstack/react-query': 5.99.2
-    '@types/react': 19.2.14
+    react: 19.2.7
+    react-dom: 19.2.7
+    '@tanstack/react-query': 5.101.0
+    '@types/react': 19.2.17
     '@types/react-dom': 19.2.3
     eslint-plugin-react: 7.37.5
     eslint-plugin-react-hooks: 5.2.0
@@ -31,9 +31,9 @@ catalogs:
     '@openzeppelin/contracts-upgradeable': 4.9.6
     solhint: 6.2.1
   types:
-    '@types/node': 22.19.17
+    '@types/node': 22.19.20
   web3:
-    viem: 2.48.1
+    viem: 2.52.2
 
 overrides:
   babel-jest>babel-plugin-istanbul: '8.0.2'

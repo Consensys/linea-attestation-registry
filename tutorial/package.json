@@ -34,15 +34,15 @@
     "react-dom": "catalog:react",
     "react-json-view-lite": "2.5.0",
     "viem": "catalog:web3",
-    "wagmi": "3.6.3"
+    "wagmi": "3.6.16"
   },
   "devDependencies": {
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "@vitejs/plugin-react": "6.0.1",
+    "@vitejs/plugin-react": "6.0.2",
     "prettier": "catalog:core",
     "typescript": "catalog:core",
-    "vite": "8.0.10",
+    "vite": "8.0.16",
     "vite-plugin-radar": "catalog:react"
   }
 }

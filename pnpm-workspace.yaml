@@ -6,6 +6,20 @@ packages:
   - subgraph
   - tutorial
 
+allowBuilds:
+  '@parcel/watcher': true
+  '@reown/appkit': false
+  bufferutil: true
+  esbuild: true
+  keccak: true
+  netlify-cli: false
+  node-libcurl: true
+  secp256k1: true
+  sharp: true
+  unix-dgram: true
+  unrs-resolver: true
+  utf-8-validate: true
+
 catalogs:
   core:
     prettier: 3.8.3

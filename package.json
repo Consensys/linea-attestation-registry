@@ -39,9 +39,9 @@
     "typescript": "catalog:core",
     "typescript-eslint": "catalog:eslint"
   },
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@11.9.0",
   "engines": {
-    "node": "24.14.1",
-    "pnpm": "10.32.1"
+    "node": "24.18.0",
+    "pnpm": "11.9.0"
   }
 }

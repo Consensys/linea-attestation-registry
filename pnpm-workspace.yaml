@@ -22,60 +22,69 @@ allowBuilds:
 
 catalogs:
   core:
-    prettier: 3.8.3
+    prettier: 3.8.4
     typescript: 5.9.3
   eslint:
     '@eslint/js': 9.39.4
     eslint: 9.39.4
-    eslint-plugin-import-x: 4.16.2
+    eslint-plugin-import-x: 4.17.0
     globals: 16.5.0
-    typescript-eslint: 8.60.1
+    typescript-eslint: 8.62.0
   react:
     react: 19.2.7
     react-dom: 19.2.7
-    '@tanstack/react-query': 5.101.0
+    '@tanstack/react-query': 5.101.1
     '@types/react': 19.2.17
     '@types/react-dom': 19.2.3
     eslint-plugin-react: 7.37.5
     eslint-plugin-react-hooks: 5.2.0
-    eslint-plugin-react-refresh: 0.5.2
-    vite-plugin-radar: 0.10.1
+    eslint-plugin-react-refresh: 0.5.3
+    vite-plugin-radar: 0.11.0
   solidity:
     '@openzeppelin/contracts': 4.9.6
     '@openzeppelin/contracts-upgradeable': 4.9.6
-    solhint: 6.2.1
+    solhint: 6.2.3
   types:
-    '@types/node': 22.19.20
+    '@types/node': 22.20.0
   web3:
-    viem: 2.52.2
+    viem: 2.53.1
 
 overrides:
   babel-jest>babel-plugin-istanbul: '8.0.2'
   '@jest/transform>babel-plugin-istanbul': '8.0.2'
   '@ardatan/relay-compiler>immutable': '5.1.5'
+  '@babel/core@<=7.29.0': '7.29.6'
+  '@opentelemetry/core@<2.8.0': '2.8.0'
   '@graphprotocol/graph-cli>js-yaml': '3.14.2' # Required by graph-cli
-  '@graphprotocol/graph-cli>undici': '7.24.0'
+  '@graphprotocol/graph-cli>undici': '7.28.0'
   '@graphprotocol/graph-cli>yaml': '2.8.3'
-  '@nomicfoundation/hardhat-verify>undici': '6.24.1'
-  axios@<0.31.0: '>=0.31.0'
-  bn.js@<4.12.3: '>=4.12.3'
-  cookie@<0.7.0: '>=0.7.0'
-  cross-spawn@>=7.0.0 <7.0.5: '>=7.0.5'
-  ejs@<3.1.10: '>=3.1.10'
-  fast-xml-parser@>=4.0.0-beta.3 <5.7.0: '>=5.7.0'
-  follow-redirects@<1.16.0: '>=1.16.0'
-  glob@<11.1.0: '>=11.1.0'
-  hardhat>undici: '6.24.1'
-  hono@<4.12.14: '>=4.12.14'
-  immutable@<3.8.3: '>=3.8.3'
-  immutable@>=4.0.0-rc.1 <4.3.8: '>=4.3.8'
-  immutable@>=5.0.0 <5.1.5: '>=5.1.5'
-  js-yaml@<3.14.2: '>=3.14.2'
-  lodash@>=4.0.0 <=4.17.23: '>=4.18.0'
-  protobufjs@<7.5.5: '>=7.5.5'
-  semver@>=7.0.0 <7.5.2: '>=7.5.2'
-  serialize-javascript@<=7.0.4: '>=7.0.5'
-  tar@<7.5.13: '>=7.5.13'
-  tmp@<=0.2.3: '>=0.2.5'
-  undici@<6.24.1: '>=6.24.1'
-  undici@>=7.0.0 <7.24.0: '>=7.24.0'
+  '@nomicfoundation/hardhat-verify>undici': '6.27.0'
+  axios@<0.31.0: '1.18.1'
+  bn.js@<4.12.3: '4.12.3'
+  brace-expansion@>=5.0.0 <5.0.6: '5.0.6'
+  cookie@<0.7.0: '0.7.2'
+  cross-spawn@>=7.0.0 <7.0.5: '7.0.6'
+  ejs@<3.1.10: '3.1.10'
+  esbuild@>=0.27.3 <0.28.1: '0.28.1'
+  fast-xml-builder@<=1.1.6: '1.1.7'
+  fast-xml-parser@>=4.0.0-beta.3 <5.7.0: '5.7.1'
+  follow-redirects@<1.16.0: '1.16.0'
+  form-data@>=4.0.0 <4.0.6: '4.0.6'
+  glob@<11.1.0: '11.1.0'
+  hardhat>undici: '6.27.0'
+  hono@<4.12.25: '4.12.25'
+  http-proxy-middleware@>=3.0.4 <3.0.7: '3.0.7'
+  immutable@<3.8.3: '3.8.3'
+  immutable@>=4.0.0-rc.1 <4.3.8: '4.3.8'
+  immutable@>=5.0.0 <5.1.5: '5.1.5'
+  ip-address@<=10.1.0: '10.1.1'
+  js-yaml@<3.14.2: '3.14.2'
+  lodash@>=4.0.0 <=4.17.23: '4.18.1'
+  semver@>=7.0.0 <7.5.2: '7.5.2'
+  serialize-javascript@<=7.0.4: '7.0.5'
+  tar@<7.5.13: '7.5.16'
+  tmp@<0.2.7: '0.2.7'
+  undici@<6.27.0: '6.27.0'
+  undici@>=7.0.0 <7.28.0: '7.28.0'
+  ws@>=7.0.0 <7.5.11: '7.5.11'
+  ws@>=8.0.0 <8.21.0: '8.21.0'

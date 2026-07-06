@@ -25,10 +25,10 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    uses: MetaMask/action-security-code-scanner/.github/workflows/security-scan.yml@ff5edd492dfd4a70813066fe9f1552a2ac13766f
+    uses: MetaMask/action-security-code-scanner/.github/workflows/security-scan.yml@ff5edd492dfd4a70813066fe9f1552a2ac13766f # v2.1.0
     with:
       repo: ${{ github.repository }}
-      scanner-ref: "0a58c584f25e8c121927884b5e8a86e846090e5c"
+      scanner-ref: "ff5edd492dfd4a70813066fe9f1552a2ac13766f"
       paths-ignored: |
         node_modules
         **/node_modules/**

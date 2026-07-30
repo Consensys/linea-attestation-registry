@@ -41,7 +41,7 @@ jobs:
         uses: ./.github/actions/setup-env
 
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
+        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1.9.1
 
       - name: Show the Foundry config
         run: forge config
@@ -78,7 +78,7 @@ jobs:
         uses: ./.github/actions/setup-env
 
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
+        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1.9.1
 
       - name: Run the unit tests
         run: forge test
@@ -116,7 +116,7 @@ jobs:
 
       - name: Install Foundry
         if: steps.check-changes.outputs.changed == 'true'
-        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
+        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1.9.1
 
       - name: Generate the coverage report using the unit tests
         if: steps.check-changes.outputs.changed == 'true'
@@ -192,7 +192,7 @@ jobs:
 
       - name: Install Foundry
         if: steps.check-changes.outputs.changed == 'true'
-        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
+        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1.9.1
 
       - name: Check contracts implementations
         if: steps.check-changes.outputs.changed == 'true'
@@ -329,7 +329,7 @@ jobs:
 
       - name: Install Foundry
         if: steps.check-changes.outputs.changed == 'true'
-        uses: foundry-rs/foundry-toolchain@c7450ba673e133f5ee30098b3b54f444d3a2ca2d # v1.8.0
+        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1.9.1
 
       - name: Check contracts size
         if: steps.check-changes.outputs.changed == 'true'

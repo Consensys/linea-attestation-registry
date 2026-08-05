@@ -3,12 +3,6 @@ description: Operating model, authority, modes, planning, tickets, strict DoD, o
 alwaysApply: true
 ---
 
-# Authority and Git
-
-Cursor is strictly forbidden from committing, pushing, rebasing, merging, force pushing, tagging, or modifying Git history.
-Git operations are informational only when explicitly requested.
-The human user is the sole authority for Git actions, releases, and deployments.
-
 # Ownership and Decision Authority
 
 Every domain or system must have a clearly identified human owner.

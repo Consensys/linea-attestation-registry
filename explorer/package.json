@@ -15,6 +15,10 @@
   "license": "MIT",
   "author": "Consensys",
   "type": "module",
+  "engines": {
+    "node": "24.18.0",
+    "pnpm": "11.9.0"
+  },
   "scripts": {
     "build": "tsc && vite build",
     "build:netlify": "pnpm run build && pnpm run redirect",

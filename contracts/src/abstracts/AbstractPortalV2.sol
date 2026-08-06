@@ -9,6 +9,7 @@ import { AttestationPayload } from "../types/Structs.sol";
 import { ERC165 } from "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import { IRouter } from "../interfaces/IRouter.sol";
 import { IPortal } from "../interfaces/IPortal.sol";
+import { uncheckedInc256 } from "../Common.sol";
 
 /**
  * @title Abstract Portal V2
@@ -72,19 +73,20 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    *               as the total `msg.value` is forwarded to all modules.
    */
   function attest(AttestationPayload memory attestationPayload, bytes[] memory validationPayloads) public payable {
+    address attester = getAttester(attestationPayload, validationPayloads);
     moduleRegistry.runModulesV2(
       modules,
       attestationPayload,
       validationPayloads,
       msg.value,
       msg.sender,
-      getAttester(),
+      attester,
       OperationType.Attest
     );
 
     _onAttest(attestationPayload, validationPayloads, msg.value);
 
-    attestationRegistry.attest(attestationPayload, getAttester());
+    attestationRegistry.attest(attestationPayload, attester);
   }
 
   /**
@@ -96,18 +98,24 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
    *                  If you need to check the attestation ID, please use the `attestV2` method.
    */
   function bulkAttest(AttestationPayload[] memory attestationPayloads, bytes[][] memory validationPayloads) public {
-    moduleRegistry.bulkRunModulesV2(
+    // Get attester for each payload
+    address[] memory attesters = new address[](attestationPayloads.length);
+    for (uint256 i = 0; i < attestationPayloads.length; i = uncheckedInc256(i)) {
+      attesters[i] = getAttester(attestationPayloads[i], validationPayloads[i]);
+    }
+
+    moduleRegistry.bulkRunModulesV2WithAttesters(
       modules,
       attestationPayloads,
       validationPayloads,
       msg.sender,
-      getAttester(),
+      attesters,
       OperationType.BulkAttest
     );
 
     _onBulkAttest(attestationPayloads, validationPayloads);
 
-    attestationRegistry.bulkAttest(attestationPayloads, getAttester());
+    attestationRegistry.bulkAttestWithAttesters(attestationPayloads, attesters);
   }
 
   /**
@@ -122,19 +130,20 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
     AttestationPayload memory attestationPayload,
     bytes[] memory validationPayloads
   ) public payable onlyPortalOwner {
+    address attester = getAttester(attestationPayload, validationPayloads);
     moduleRegistry.runModulesV2(
       modules,
       attestationPayload,
       validationPayloads,
       msg.value,
       msg.sender,
-      getAttester(),
+      attester,
       OperationType.Replace
     );
 
-    _onReplace(attestationId, attestationPayload, getAttester(), msg.value);
+    _onReplace(attestationId, attestationPayload, attester, msg.value);
 
-    attestationRegistry.replace(attestationId, attestationPayload, getAttester());
+    attestationRegistry.replace(attestationId, attestationPayload, attester);
   }
 
   /**
@@ -151,18 +160,24 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
     AttestationPayload[] memory attestationsPayloads,
     bytes[][] memory validationPayloads
   ) public onlyPortalOwner {
-    moduleRegistry.bulkRunModulesV2(
+    // Get attester for each payload
+    address[] memory attesters = new address[](attestationsPayloads.length);
+    for (uint256 i = 0; i < attestationsPayloads.length; i = uncheckedInc256(i)) {
+      attesters[i] = getAttester(attestationsPayloads[i], validationPayloads[i]);
+    }
+
+    moduleRegistry.bulkRunModulesV2WithAttesters(
       modules,
       attestationsPayloads,
       validationPayloads,
       msg.sender,
-      getAttester(),
+      attesters,
       OperationType.BulkReplace
     );
 
     _onBulkReplace(attestationIds, attestationsPayloads, validationPayloads);
 
-    attestationRegistry.bulkReplace(attestationIds, attestationsPayloads, getAttester());
+    attestationRegistry.bulkReplaceWithAttesters(attestationIds, attestationsPayloads, attesters);
   }
 
   /**
@@ -209,9 +224,15 @@ abstract contract AbstractPortalV2 is IPortal, ERC165 {
 
   /**
    * @notice Defines the address of the entity issuing attestations to the subject
+   * @param attestationPayload the attestation payload
+   * @param validationPayloads the validation payloads
+   * @return The address of the attester
    * @dev We strongly encourage a reflection when overriding this rule: who should be set as the attester?
    */
-  function getAttester() internal view virtual returns (address) {
+  function getAttester(
+    AttestationPayload memory attestationPayload,
+    bytes[] memory validationPayloads
+  ) internal view virtual returns (address) {
     return msg.sender;
   }
 

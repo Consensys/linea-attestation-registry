@@ -45,6 +45,8 @@ contract ModuleRegistry is OwnableUpgradeable {
   error ModuleNotRegistered();
   /// @notice Error thrown when module addresses and validation payload length mismatch
   error ModuleValidationPayloadMismatch();
+  /// @notice Error thrown when array lengths don't match
+  error ArrayLengthMismatch();
   /// @notice Error thrown when the router address is the zero address
   error RouterAddressInvalid();
 
@@ -207,6 +209,9 @@ contract ModuleRegistry is OwnableUpgradeable {
    * @param modulesAddresses the addresses of the registered modules
    * @param attestationPayloads the payloads to attest
    * @param validationPayloads the payloads to check for each module
+   * @param initialCaller the address of the initial caller (transaction sender)
+   * @param attester the address defined by the Portal as the attester for all payloads
+   * @param operationType the type of operation being performed
    * @dev NOTE: Currently the bulk run modules does not handle payable modules
    *            a default value of 0 is used.
    * @dev DISCLAIMER: This method may have unexpected behavior if one of the checks is done on the attestation ID
@@ -229,6 +234,43 @@ contract ModuleRegistry is OwnableUpgradeable {
         0,
         initialCaller,
         attester,
+        operationType
+      );
+    }
+  }
+
+  /**
+   * @notice Executes the V2 modules validation for all attestations payloads with individual attesters for each payload
+   * @param modulesAddresses the addresses of the registered modules
+   * @param attestationPayloads the payloads to attest
+   * @param validationPayloads the payloads to check for each module
+   * @param initialCaller the address of the initial caller (transaction sender)
+   * @param attesters the addresses defined by the Portal as the attester for each payload
+   *                  (must match length of attestationPayloads)
+   * @param operationType the type of operation being performed
+   * @dev NOTE: Currently the bulk run modules does not handle payable modules
+   *            a default value of 0 is used.
+   * @dev DISCLAIMER: This method may have unexpected behavior if one of the checks is done on the attestation ID
+   *                  as this ID won't be incremented before the end of the transaction.
+   *                  If you need to check the attestation ID, please use the `attestV2` method.
+   */
+  function bulkRunModulesV2WithAttesters(
+    address[] calldata modulesAddresses,
+    AttestationPayload[] calldata attestationPayloads,
+    bytes[][] calldata validationPayloads,
+    address initialCaller,
+    address[] calldata attesters,
+    OperationType operationType
+  ) public {
+    if (attestationPayloads.length != attesters.length) revert ArrayLengthMismatch();
+    for (uint32 i = 0; i < attestationPayloads.length; i = uncheckedInc32(i)) {
+      runModulesV2(
+        modulesAddresses,
+        attestationPayloads[i],
+        validationPayloads[i],
+        0,
+        initialCaller,
+        attesters[i],
         operationType
       );
     }

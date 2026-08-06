@@ -139,10 +139,26 @@ contract AttestationRegistry is OwnableUpgradeable {
   /**
    * @notice Registers attestations to the AttestationRegistry
    * @param attestationsPayloads the attestations payloads to create attestations and register them
+   * @param attester the account address issuing the attestations
    */
   function bulkAttest(AttestationPayload[] calldata attestationsPayloads, address attester) public {
     for (uint256 i = 0; i < attestationsPayloads.length; i = uncheckedInc256(i)) {
       attest(attestationsPayloads[i], attester);
+    }
+  }
+
+  /**
+   * @notice Registers attestations to the AttestationRegistry with individual attesters for each attestation
+   * @param attestationsPayloads the attestations payloads to create attestations and register them
+   * @param attesters the account addresses issuing each attestation (must match length of attestationsPayloads)
+   */
+  function bulkAttestWithAttesters(
+    AttestationPayload[] calldata attestationsPayloads,
+    address[] calldata attesters
+  ) public {
+    if (attestationsPayloads.length != attesters.length) revert ArrayLengthMismatch();
+    for (uint256 i = 0; i < attestationsPayloads.length; i = uncheckedInc256(i)) {
+      attest(attestationsPayloads[i], attesters[i]);
     }
   }
 
@@ -201,6 +217,25 @@ contract AttestationRegistry is OwnableUpgradeable {
     if (attestationIds.length != attestationPayloads.length) revert ArrayLengthMismatch();
     for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
       replace(attestationIds[i], attestationPayloads[i], attester);
+    }
+  }
+
+  /**
+   * @notice Replaces attestations for given identifiers and replaces them with new attestations,
+   *         with individual attesters for each attestation
+   * @param attestationIds the list of IDs of the attestations to replace
+   * @param attestationPayloads the list of attestation payloads to create the new attestations and register them
+   * @param attesters the account addresses issuing each attestation (must match length of attestationPayloads)
+   */
+  function bulkReplaceWithAttesters(
+    bytes32[] calldata attestationIds,
+    AttestationPayload[] calldata attestationPayloads,
+    address[] calldata attesters
+  ) public {
+    if (attestationIds.length != attestationPayloads.length) revert ArrayLengthMismatch();
+    if (attestationPayloads.length != attesters.length) revert ArrayLengthMismatch();
+    for (uint256 i = 0; i < attestationIds.length; i = uncheckedInc256(i)) {
+      replace(attestationIds[i], attestationPayloads[i], attesters[i]);
     }
   }
 

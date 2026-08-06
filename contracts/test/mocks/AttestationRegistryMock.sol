@@ -43,6 +43,13 @@ contract AttestationRegistryMock {
     emit BulkAttestationsRegistered();
   }
 
+  function bulkAttestWithAttesters(
+    AttestationPayload[] calldata /*attestationsPayloads*/,
+    address[] calldata /*attesters*/
+  ) public {
+    emit BulkAttestationsRegistered();
+  }
+
   function replace(
     bytes32 /*attestationId*/,
     AttestationPayload calldata /*attestationPayload*/,
@@ -56,6 +63,14 @@ contract AttestationRegistryMock {
     bytes32[] calldata /*attestationId*/,
     AttestationPayload[] calldata /*attestationPayload*/,
     address /*attester*/
+  ) public {
+    emit BulkAttestationsReplaced();
+  }
+
+  function bulkReplaceWithAttesters(
+    bytes32[] calldata /*attestationId*/,
+    AttestationPayload[] calldata /*attestationPayload*/,
+    address[] calldata /*attesters*/
   ) public {
     emit BulkAttestationsReplaced();
   }

@@ -190,19 +190,19 @@ contract IndexerModuleV2 is AbstractModuleV2 {
     address portal
   ) internal view returns (Attestation memory) {
     return
-      Attestation(
-        attestationRegistry.getNextAttestationId(),
-        attestationPayload.schemaId,
-        bytes32(0),
-        attester,
-        portal,
-        uint64(block.timestamp),
-        attestationPayload.expirationDate,
-        0,
-        attestationRegistry.getVersionNumber(),
-        false,
-        attestationPayload.subject,
-        attestationPayload.attestationData
-      );
+      Attestation({
+        attestationId: attestationRegistry.getNextAttestationId(),
+        schemaId: attestationPayload.schemaId,
+        replacedBy: bytes32(0),
+        attester: attester,
+        portal: portal,
+        attestedDate: uint64(block.timestamp),
+        expirationDate: attestationPayload.expirationDate,
+        revocationDate: 0,
+        version: attestationRegistry.getVersionNumber(),
+        revoked: false,
+        subject: attestationPayload.subject,
+        attestationData: attestationPayload.attestationData
+      });
   }
 }

@@ -119,20 +119,20 @@ contract AttestationRegistry is OwnableUpgradeable {
     bytes32 id = generateAttestationId(attestationIdCounter);
     assert(id != 0x0 && !isRegistered(id));
     // Create attestation
-    attestations[id] = Attestation(
-      id,
-      attestationPayload.schemaId,
-      bytes32(0),
-      attester,
-      msg.sender,
-      uint64(block.timestamp),
-      attestationPayload.expirationDate,
-      0,
-      version,
-      false,
-      attestationPayload.subject,
-      attestationPayload.attestationData
-    );
+    attestations[id] = Attestation({
+      attestationId: id,
+      schemaId: attestationPayload.schemaId,
+      replacedBy: bytes32(0),
+      attester: attester,
+      portal: msg.sender,
+      attestedDate: uint64(block.timestamp),
+      expirationDate: attestationPayload.expirationDate,
+      revocationDate: 0,
+      version: version,
+      revoked: false,
+      subject: attestationPayload.subject,
+      attestationData: attestationPayload.attestationData
+    });
     emit AttestationRegistered(id);
   }
 
@@ -154,20 +154,20 @@ contract AttestationRegistry is OwnableUpgradeable {
       bytes32 id = generateAttestationId(attestationIdCounter);
       assert(id != 0x0 && !isRegistered(id));
       // Create attestation
-      attestations[id] = Attestation(
-        id,
-        attestationsPayloads[i].schemaId,
-        bytes32(0),
-        msg.sender,
-        portal,
-        uint64(block.timestamp),
-        attestationsPayloads[i].expirationDate,
-        0,
-        version,
-        false,
-        attestationsPayloads[i].subject,
-        attestationsPayloads[i].attestationData
-      );
+      attestations[id] = Attestation({
+        attestationId: id,
+        schemaId: attestationsPayloads[i].schemaId,
+        replacedBy: bytes32(0),
+        attester: msg.sender,
+        portal: portal,
+        attestedDate: uint64(block.timestamp),
+        expirationDate: attestationsPayloads[i].expirationDate,
+        revocationDate: 0,
+        version: version,
+        revoked: false,
+        subject: attestationsPayloads[i].subject,
+        attestationData: attestationsPayloads[i].attestationData
+      });
       emit AttestationRegistered(id);
     }
   }
